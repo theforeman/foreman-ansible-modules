@@ -43,13 +43,13 @@ Now your playbooks and roles should have access to the modules contained in the 
 
 This is a list of modules currently in the repository (please add to the list if adding a module).
 
-### Entity Modules
+#### Entity Modules
 
  * foreman_organization: create and maintain organizations
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
 
-### Action Modules
+#### Action Modules
 
  * katello_sync: sync Katello repositories and products
  * katello_upload: upload files, rpms, etc. to repositories
