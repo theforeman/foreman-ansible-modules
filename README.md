@@ -44,7 +44,7 @@ Now your playbooks and roles should have access to the modules contained in the 
 This is a list of modules currently in the repository (please add to the list if adding a module).
 
 ### Entity Modules
-
+ * foreman_global_parameter: create and maintain global parameters 
  * foreman_organization: create and maintain organizations
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
