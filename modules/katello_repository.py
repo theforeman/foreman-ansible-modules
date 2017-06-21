@@ -52,6 +52,10 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    url:
+        description:
+            - Repository URL to sync from
+        required: true
 '''
 
 EXAMPLES = '''
@@ -104,7 +108,7 @@ class NailGun(object):
         else:
             self._module.fail_json(msg="No Product found for %s" % name)
 
-    def repository(self, name, type, product, organization):
+    def repository(self, name, content_type, product, organization, url=None):
         updated = False
         product = self.find_product(product, organization)
 
@@ -113,19 +117,19 @@ class NailGun(object):
         repository.organization = product.organization
         repository = repository.search()
 
-        if len(repository) == 1:
-            repository = repository[0]
+        repository = repository[0] if len(repository) == 1 else None
 
-        if repository and repository.name != name:
-            repository = self._entities.Repository(self._server, name=name, id=repository.id)
+        if repository and (repository.name != name or ('url' in repository.url and repository.url != url)):
+            repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url)
             repository.update()
             updated = True
         elif not repository:
             repository = self._entities.Repository(
                     self._server,
                     name=name,
-                    content_type=type,
+                    content_type=content_type,
                     product=product,
+                    url=url
             )
             repository.create()
             updated = True
@@ -142,7 +146,8 @@ def main():
             product=dict(required=True, no_log=False),
             organization=dict(required=True, no_log=False),
             name=dict(required=True, no_log=False),
-            type=dict(required=True, no_log=False),
+            content_type=dict(required=True, no_log=False),
+            url=dict(required=False, no_log=False),
         ),
         supports_check_mode=True
     )
@@ -157,7 +162,8 @@ def main():
     product = module.params['product']
     organization = module.params['organization']
     name = module.params['name']
-    type = module.params['type']
+    content_type = module.params['content_type']
+    url = module.params['url']
 
     server = ServerConfig(
         url=server_url,
@@ -174,7 +180,7 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        changed = ng.repository(name, type, product, organization)
+        changed = ng.repository(name, content_type, product, organization, url=url)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
