@@ -72,23 +72,33 @@ options:
 
 EXAMPLES = '''
 - name: "Create a Global Parameter"
-  local_action:
-      module: foreman_global_parameter
-      username: "admin"
-      password: "admin"
-      server_url: "https://fakeserver.com"
-      name: "TheAnswer"
-      value: "42"
-      state: present
+  foreman_global_parameter
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "TheAnswer"
+    value: "42"
+    state: present
+  deletegate_to: localhost
+
+- name: "Update a Global Parameter"
+  foreman_global_parameter
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "TheAnswer"
+    value: "43"
+    state: present
+  deletegate_to: localhost
 
 - name: "Delete a Global Parameter"
-  local_action:
-      module: foreman_global_parameter
-      username: "admin"
-      password: "admin"
-      server_url: "https://fakeserver.com"
-      name: "TheAnswer"
-      state: absent
+  foreman_global_parameter
+    username: "admin"
+    password: "admin"
+    server_url: "https://fakeserver.com"
+    name: "TheAnswer"
+    state: absent
+  delegate_to: localhost
 '''
 
 RETURN = ''' # '''
