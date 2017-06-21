@@ -93,7 +93,9 @@ class NailGun(object):
         updated = False
         org = self.find_organization(organization)
         product = self._entities.Product(self._server, name=name, organization=org)
-        product = product.search()[0]
+        product = product.search()
+
+        product = product[0] if len(product) == 1 else None
 
         if product and product.name != name:
             product = self._entities.Product(self._server, name=name, id=product.id)
