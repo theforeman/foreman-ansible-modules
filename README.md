@@ -45,6 +45,7 @@ This is a list of modules currently in the repository (please add to the list if
 
 #### Entity Modules
 
+ * foreman_global_parameter: create and maintain global parameters
  * foreman_organization: create and maintain organizations
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
