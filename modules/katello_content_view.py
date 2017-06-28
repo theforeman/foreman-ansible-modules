@@ -59,7 +59,7 @@ options:
 '''
 
 EXAMPLES = '''
-- name: "Create Fedora content view"
+- name: "Create or update Fedora content view"
   katello_content_view:
     username: "admin"
     password: "admin"
@@ -81,6 +81,7 @@ try:
 except:
     HAS_NAILGUN_PACKAGE = False
 
+
 class NailGun(object):
     def __init__(self, server, entities, module):
         self._server = server
@@ -97,9 +98,7 @@ class NailGun(object):
             self._module.fail_json(msg="No organization found for %s" % name)
 
     def find_product(self, name, organization):
-        org = self.find_organization(organization)
-
-        product = self._entities.Product(self._server, name=name, organization=org)
+        product = self._entities.Product(self._server, name=name, organization=organization)
         response = product.search()
 
         if len(response) == 1:
@@ -120,34 +119,31 @@ class NailGun(object):
         else:
             self._module.fail_json(msg="No Repository found for %s" % name)
 
+    def find_repositories(self, repositories, organization):
+        return map(lambda repository: self.find_repository(repository['name'], repository['product'], organization), repositories)
+
     def content_view(self, name, organization, repositories=[]):
         updated = False
-        org = self.find_organization(organization)
+        organization = self.find_organization(organization)
 
-        content_view = self._entities.ContentView(self._server, name=name, organization=org)
+        content_view = self._entities.ContentView(self._server, name=name, organization=organization)
         response = content_view.search()
 
-        content_view = response[0] if len(response) == 1 else None
-
-        if not content_view:
+        if len(response) == 1:
+            content_view = response[0]
+        elif len(response) == 0:
             content_view = content_view.create()
             updated = True
 
-        if len(repositories) > 0:
-            repos = []
+        repositories = self.find_repositories(repositories, organization)
 
-            for repository in repositories:
-                repository = self.find_repository(repository['name'], repository['product'], org.name)
-                found = [repo for repo in content_view.repository if repo.id == repository.id]
-
-                if not found:
-                    content_view.repository.append(repository)
-                    updated = True
-
-            if updated:
-                content_view.update(['repository'])
+        if set(map(lambda r: r.id, repositories)) != set(map(lambda r: r.id, content_view.repository)):
+            content_view.repository = repositories
+            content_view.update(['repository'])
+            updated = True
 
         return updated
+
 
 def main():
     module = AnsibleModule(
@@ -188,8 +184,12 @@ def main():
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
+    kwargs = {}
+    if repositories:
+        kwargs['repositories'] = repositories
+
     try:
-        changed = ng.content_view(name, organization, repositories=repositories)
+        changed = ng.content_view(name, organization, **kwargs)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
