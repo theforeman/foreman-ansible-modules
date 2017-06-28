@@ -50,6 +50,7 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
  * katello_content_view: create and maintain content views
+ * katello_sync_plan: create and maintain sync plans
 
 #### Action Modules
 
