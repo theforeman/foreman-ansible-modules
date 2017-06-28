@@ -68,6 +68,7 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_repository: create and maintain repositories
  * katello_content_view: create and maintain content views
  * katello_sync_plan: create and maintain sync plans
+ * katello_activation_key: create and maintain activation keys
 
 #### Action Modules
 
