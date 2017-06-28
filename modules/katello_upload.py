@@ -86,6 +86,7 @@ except:
 
 
 class NailGun(object):
+
     def __init__(self, server, entities, module):
         self._server = server
         self._entities = entities
@@ -129,6 +130,7 @@ class NailGun(object):
             return response[0]
         else:
             self._module.fail_json(msg="No Repository found for %s" % name)
+
 
 def main():
     module = AnsibleModule(

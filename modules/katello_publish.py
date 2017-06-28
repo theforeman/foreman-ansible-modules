@@ -64,7 +64,7 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities, entity_fields, entity_mixins
+    from nailgun import entities, entity_mixins
     from nailgun.config import ServerConfig
     HAS_NAILGUN_PACKAGE = True
 except:
@@ -72,11 +72,12 @@ except:
 
 
 class NailGun(object):
+
     def __init__(self, server, entities, module):
         self._server = server
         self._entities = entities
         self._module = module
-        entity_mixins.TASK_TIMEOUT = 180000 #Publishes can sometimes take a long, long time
+        entity_mixins.TASK_TIMEOUT = 180000  # Publishes can sometimes take a long, long time
 
     def find_organization(self, name):
         org = self._entities.Organization(self._server, name=name)

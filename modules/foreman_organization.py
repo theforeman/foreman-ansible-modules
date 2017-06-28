@@ -63,11 +63,12 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities, entity_fields
+    from nailgun import entities
     from nailgun.config import ServerConfig
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
 
 class NailGun(object):
     def __init__(self, server, entities, module):
@@ -90,6 +91,7 @@ class NailGun(object):
             updated = True
 
         return updated
+
 
 def main():
     module = AnsibleModule(
