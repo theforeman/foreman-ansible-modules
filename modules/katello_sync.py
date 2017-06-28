@@ -77,11 +77,12 @@ except:
 
 
 class NailGun(object):
+
     def __init__(self, server, entities, module):
         self._server = server
         self._entities = entities
         self._module = module
-        entity_mixins.TASK_TIMEOUT = 180000 #Publishes can sometimes take a long, long time
+        entity_mixins.TASK_TIMEOUT = 180000  # Publishes can sometimes take a long, long time
 
     def find_organization(self, name):
         org = self._entities.Organization(self._server, name=name)
@@ -116,15 +117,14 @@ class NailGun(object):
         else:
             self._module.fail_json(msg="No Repository found for %s" % name)
 
-    def sync(self, product, organization, repository = None):
-        org = self.find_organization(organization)
-
-        if repository == None:
+    def sync(self, product, organization, repository=None):
+        if repository is None:
             product = self.find_product(product, organization)
             return product.sync()
         else:
             repository = self.find_repository(repository, product, organization)
             return repository.sync()
+
 
 def main():
     module = AnsibleModule(

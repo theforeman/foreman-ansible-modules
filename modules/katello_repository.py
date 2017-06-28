@@ -82,6 +82,7 @@ except:
 
 
 class NailGun(object):
+
     def __init__(self, server, entities, module):
         self._server = server
         self._entities = entities
@@ -125,16 +126,17 @@ class NailGun(object):
             updated = True
         elif not repository:
             repository = self._entities.Repository(
-                    self._server,
-                    name=name,
-                    content_type=content_type,
-                    product=product,
-                    url=url
+                self._server,
+                name=name,
+                content_type=content_type,
+                product=product,
+                url=url
             )
             repository.create()
             updated = True
 
         return updated
+
 
 def main():
     module = AnsibleModule(
