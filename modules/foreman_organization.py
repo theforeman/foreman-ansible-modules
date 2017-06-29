@@ -78,8 +78,13 @@ class NailGun(object):
 
     def organization(self, name):
         org = self._entities.Organization(self._server, name=name)
-        org = org.search(set(), {'search': 'name={}'.format(name)})[0]
         updated = False
+
+        response = org.search(set(), {'search': 'name={}'.format(name)})
+        if len(response) == 1:
+            org = response[0]
+        else:
+            org = None
 
         if org and org.name != name:
             org = self._entities.Organization(self._server, name=name, id=org.id)
