@@ -67,6 +67,7 @@ def create_entity(entity_class, entity_dict, module):
     except Exception as e:
         module.fail_json(msg='Error while creating {0}: {1}'.format(
             entity_class.__name__, str(e)))
+    return True
 
 
 def update_entity(old_entity, entity_dict, module):
@@ -84,6 +85,15 @@ def update_entity(old_entity, entity_dict, module):
     except Exception as e:
         module.fail_json(msg='Error while updating {0}: {1}'.format(
             old_entity.__class__.__name__, str(e)))
+
+
+def delete_entity(entity, module):
+    try:
+        entity.delete()
+    except Exception as e:
+        module.fail_json(msg='Error while deleting {0}: {1}'.format(
+            entity.__class__.__name__, str(e)))
+    return True
 
 
 # Helper for templates

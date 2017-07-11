@@ -229,6 +229,7 @@ try:
         find_entities,
         create_entity,
         update_entity,
+        delete_entity,
         parse_template,
         parse_template_from_file,
     )
@@ -287,9 +288,9 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=True),
-            audit_comment=dict(required=False),
-            kind=dict(required=False, choices=[
+            verify_ssl=dict(type='bool', default=True),
+            audit_comment=dict(),
+            kind=dict(choices=[
                 'finish',
                 'iPXE',
                 'job_template',
@@ -304,13 +305,13 @@ def main():
                 'user_data',
                 'ZTP',
             ]),
-            template=dict(required=False),
-            file_name=dict(required=False, type='path'),
-            locations=dict(required=False, type='list'),
-            locked=dict(required=False, type='bool', default=False),
-            name=dict(required=False),
-            organizations=dict(required=False, type='list'),
-            oses=dict(required=False),
+            template=dict(),
+            file_name=dict(type='path'),
+            locations=dict(type='list'),
+            locked=dict(type='bool', default=False),
+            name=dict(),
+            organizations=dict(type='list'),
+            oses=dict(),
             state=dict(required=True, choices=['absent', 'present', 'latest']),
         ),
         supports_check_mode=True,
@@ -366,8 +367,7 @@ def main():
 
     # Set Locations of Template
     if 'locations' in template_dict:
-        template_dict['locations'] = find_entities(Location, template_dict[
-            'locations'], module)
+        template_dict['locations'] = find_entities(Location, template_dict['locations'], module)
 
     # Set Organizations of Template
     if 'organizations' in template_dict:
@@ -384,18 +384,16 @@ def main():
 
     if state == 'present':
         if len(entity) == 0:
-            create_entity(ProvisioningTemplate, template_dict, module)
-            changed = True
+            changed = create_entity(ProvisioningTemplate, template_dict, module)
     elif state == 'latest':
         if len(entity) == 0:
-            create_entity(ProvisioningTemplate, template_dict, module)
-            changed = True
+            changed = create_entity(ProvisioningTemplate, template_dict, module)
         else:
             changed = update_entity(entity[0], template_dict, module)
     else:
+        # state == 'absent'
         if len(entity) != 0:
-            entity[0].delete()
-            changed = True
+            changed = delete_entity(entity[0], module)
 
     module.exit_json(changed=changed)
 
