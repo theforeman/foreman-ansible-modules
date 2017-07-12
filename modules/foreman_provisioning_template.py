@@ -227,9 +227,7 @@ try:
         create_server,
         find_entity,
         find_entities,
-        create_entity,
-        update_entity,
-        delete_entity,
+        ansity,
         parse_template,
         parse_template_from_file,
     )
@@ -328,8 +326,6 @@ def main():
             msg='Missing required nailgun module'
                 '(check docs or install with: pip install nailgun)')
 
-    changed = False
-
     template_dict = dict(
         [(k, v) for (k, v) in module.params.iteritems() if v is not None])
 
@@ -382,18 +378,7 @@ def main():
 
     template_dict = sanitize_template_dict(template_dict)
 
-    if state == 'present':
-        if len(entity) == 0:
-            changed = create_entity(ProvisioningTemplate, template_dict, module)
-    elif state == 'latest':
-        if len(entity) == 0:
-            changed = create_entity(ProvisioningTemplate, template_dict, module)
-        else:
-            changed = update_entity(entity[0], template_dict, module)
-    else:
-        # state == 'absent'
-        if len(entity) != 0:
-            changed = delete_entity(entity[0], module)
+    changed = ansity(ProvisioningTemplate, template_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 

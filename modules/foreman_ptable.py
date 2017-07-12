@@ -204,9 +204,7 @@ try:
         create_server,
         find_entity,
         find_entities,
-        create_entity,
-        update_entity,
-        delete_entity,
+        ansity,
         parse_template,
         parse_template_from_file,
     )
@@ -271,8 +269,6 @@ def main():
             msg='Missing required nailgun module'
                 '(check docs or install with: pip install nailgun')
 
-    changed = False
-
     ptable_dict = dict(
         [(k, v) for (k, v) in module.params.iteritems() if v is not None])
 
@@ -314,18 +310,7 @@ def main():
 
     ptable_dict = sanitize_ptable_dict(ptable_dict)
 
-    if state == 'present':
-        if len(entity) == 0:
-            changed = create_entity(PartitionTable, ptable_dict, module)
-    elif state == 'latest':
-        if len(entity) == 0:
-            changed = create_entity(PartitionTable, ptable_dict, module)
-        else:
-            changed = update_entity(entity[0], ptable_dict, module)
-    else:
-        # state == 'absent'
-        if len(entity) != 0:
-            changed = delete_entity(entity[0], module)
+    changed = ansity(PartitionTable, ptable_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 

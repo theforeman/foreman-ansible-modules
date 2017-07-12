@@ -41,6 +41,23 @@ def create_server(server_url, auth, verify_ssl):
 
 
 # Common functionality to manipulate entities
+def ansity(entity_class, entity_dict, entity, state, module):
+    changed = False
+    if state == 'present':
+        if len(entity) == 0:
+            changed = create_entity(entity_class, entity_dict, module)
+    elif state == 'latest':
+        if len(entity) == 0:
+            changed = create_entity(entity_class, entity_dict, module)
+        else:
+            changed = update_entity(entity[0], entity_dict, module)
+    else:
+        # state == 'absent'
+        if len(entity) != 0:
+            changed = delete_entity(entity[0], module)
+    return changed
+
+
 def find_entity(entity_class, **kwargs):
     return entity_class().search(
         query={'search': ','.join(['{0}="{1}"'.format(
