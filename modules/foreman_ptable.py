@@ -204,7 +204,7 @@ try:
         create_server,
         find_entity,
         find_entities,
-        ansity,
+        naildown_entity_state,
         parse_template,
         parse_template_from_file,
     )
@@ -310,7 +310,7 @@ def main():
 
     ptable_dict = sanitize_ptable_dict(ptable_dict)
 
-    changed = ansity(PartitionTable, ptable_dict, entity, state, module)
+    changed = naildown_entity_state(PartitionTable, ptable_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
