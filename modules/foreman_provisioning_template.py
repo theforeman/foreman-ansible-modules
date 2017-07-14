@@ -62,19 +62,19 @@ options:
         - The provisioning template kind
         required: false
         choices:
-        -finish
-        -iPXE
-        -job_template
-        -POAP
-        -provision
-        -ptable
-        -PXELinux
-        -PXEGrub
-        -PXEGrub2
-        -script
-        -snippet
-        -user_data
-        -ZTP
+        - finish
+        - iPXE
+        - job_template
+        - POAP
+        - provision
+        - ptable
+        - PXELinux
+        - PXEGrub
+        - PXEGrub2
+        - script
+        - snippet
+        - user_data
+        - ZTP
     template:
         description:
         - |
@@ -112,8 +112,8 @@ options:
         description:
         - The organizations the template shall be assigned to
         required: false
-    oses:
-        description: The OSes the template shall be assigned to
+    operatingsystems:
+        description: The Operatingsystems the template shall be assigned to
         required: false
     state:
         description: The state the template should be in.
@@ -266,6 +266,7 @@ def sanitize_template_dict(template_dict):
         'locked': 'locked',
         'name': 'name',
         'organizations': 'organization',
+        'operatingsystems': 'operatingsystem',
         'snippet': 'snippet',
         'template': 'template',
     }
@@ -309,7 +310,7 @@ def main():
             locked=dict(type='bool', default=False),
             name=dict(),
             organizations=dict(type='list'),
-            oses=dict(),
+            operatingsystems=dict(),
             state=dict(required=True, choices=['absent', 'present', 'latest']),
         ),
         supports_check_mode=True,
@@ -370,9 +371,9 @@ def main():
         template_dict['organizations'] = find_entities(
             Organization, template_dict['organizations'], module)
 
-    if 'oses' in template_dict:
-        template_dict['oses'] = find_entities(OperatingSystem, template_dict[
-            'oses'], module)
+    if 'operatingsystems' in template_dict:
+        template_dict['operatingsystems'] = find_entities(OperatingSystem, template_dict[
+            'operatingsystems'], module)
 
     template_dict = find_template_kind(template_dict, module)
 
