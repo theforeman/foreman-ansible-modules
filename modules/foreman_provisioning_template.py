@@ -227,7 +227,7 @@ try:
         create_server,
         find_entity,
         find_entities,
-        ansity,
+        naildown_entity_state,
         parse_template,
         parse_template_from_file,
     )
@@ -378,7 +378,7 @@ def main():
 
     template_dict = sanitize_template_dict(template_dict)
 
-    changed = ansity(ProvisioningTemplate, template_dict, entity, state, module)
+    changed = naildown_entity_state(ProvisioningTemplate, template_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 

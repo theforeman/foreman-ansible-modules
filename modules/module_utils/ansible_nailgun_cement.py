@@ -41,7 +41,7 @@ def create_server(server_url, auth, verify_ssl):
 
 
 # Common functionality to manipulate entities
-def ansity(entity_class, entity_dict, entity, state, module):
+def naildown_entity_state(entity_class, entity_dict, entity, state, module):
     changed = False
     if state == 'present':
         if len(entity) == 0:
@@ -132,8 +132,8 @@ def parse_template(template_content, module):
 
 def parse_template_from_file(file_name, module):
     try:
-        with open(file_name) as file:
-            template_content = ''.join(file)
+        with open(file_name) as input_file:
+            template_content = input_file.read()
             template_dict = parse_template(template_content, module)
     except Exception as e:
         module.fail_json(msg='Error while reading template file: ' + str(e))
