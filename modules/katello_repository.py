@@ -65,7 +65,7 @@ EXAMPLES = '''
     password: "admin"
     server_url: "https://foreman.example.com"
     name: "My repository"
-    type: "yum"
+    content_type: "yum"
     product: "My Product"
     organization: "Default Organization"
   delegate_to: localhost
@@ -120,7 +120,7 @@ class NailGun(object):
 
         repository = repository[0] if len(repository) == 1 else None
 
-        if repository and (repository.name != name or ('url' in repository.url and repository.url != url)):
+        if repository and (repository.name != name or repository.url != url):
             repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url)
             repository.update()
             updated = True

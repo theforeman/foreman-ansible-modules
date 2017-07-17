@@ -176,12 +176,13 @@ def main():
     try:
         ng.upload(file, repository, product, organization)
     except Exception as e:
-        module.fail_json(msg=e)
+        module.fail_json(msg=to_native(e))
 
     module.exit_json(changed=True, result="File successfully uploaded to %s" % repository)
 
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_native
 
 if __name__ == '__main__':
     main()

@@ -39,6 +39,23 @@ library = foreman-ansible-modules/modules
 
 Now your playbooks and roles should have access to the modules contained in the repository for use, testing or development of new modules.
 
+## How to debug this repository
+
+Set up debugging using ansible's test-module
+
+```sh
+ansible-playbook debug-setup.yml
+```
+
+Debug with ansible's test-module
+
+```sh
+./ansible/hacking/test-module -m <path to ansible module> -a @<path to input arguments to module> -D <path to debugger>
+
+# Example: debug the activation_key module with pdb
+./ansible/hacking/test-module -m ./foreman-ansible-modules/modules/katello_activation_key.py -a @activation-key-args.json -D /usr/lib/python2.7/site-packages/pdb/pdb.py
+```
+
 ## Modules List
 
 This is a list of modules currently in the repository (please add to the list if adding a module).
@@ -50,6 +67,7 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
  * katello_content_view: create and maintain content views
+ * katello_sync_plan: create and maintain sync plans
 
 #### Action Modules
 

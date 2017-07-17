@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Clone ansible
+      git:
+        repo: 'https://github.com/ansible/ansible.git'
+        dest: ./.tmp/ansible
+    - name: Install project pip dependencies
+      pip:
+        requirements: "{{ playbook_dir }}/requirements.txt"
+    - name: Install project pip development dependencies
+      pip:
+        requirements: "{{ playbook_dir }}/requirements-dev.txt"
+    - name: Install ansible pip dependencies
+      pip:
+        requirements: "{{ playbook_dir }}/.tmp/ansible/requirements.txt"
+    - name: Find where pdb is installed
+      shell: "echo $(pip show pdb | grep Location: | sed 's/Location: //')/pdb/pdb.py"
+      changed_when: False
+      register: pdb_path
+    - debug:
+        msg: "Example: ./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @test/data/content-view.json -D {{ pdb_path.stdout }}"
