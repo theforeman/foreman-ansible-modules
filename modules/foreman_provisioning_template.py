@@ -308,7 +308,7 @@ def main():
             locked=dict(type='bool', default=False),
             name=dict(),
             organizations=dict(type='list'),
-            operatingsystems=dict(),
+            operatingsystems=dict(type='list'),
             state=dict(required=True, choices=['absent', 'present', 'latest']),
         ),
         supports_check_mode=True,
