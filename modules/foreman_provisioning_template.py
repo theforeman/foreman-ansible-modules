@@ -241,7 +241,7 @@ from ansible.module_utils._text import to_bytes, to_native
 
 def find_template_kind(template_dict, module):
     if 'kind' not in template_dict:
-        module.fail_json(msg='Could not infer template kind!')
+        return template_dict
 
     template_dict['snippet'] = (template_dict['kind'] == 'snippet')
     if template_dict['snippet']:
