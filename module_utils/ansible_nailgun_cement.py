@@ -3,6 +3,7 @@
 # (c) Matthias Dellweg 2017
 # (c) Andrew Kofink 2017
 
+import sys
 import re
 import yaml
 
@@ -77,34 +78,37 @@ def update_fields(new, old, fields):
 
 # Common functionality to manipulate entities
 def naildown_entity_state(entity_class, entity_dict, entity, state, module):
+    """ Ensure that a given entity has a certain state """
     changed = False
     if state == 'present':
-        if len(entity) == 0:
+        if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
     elif state == 'latest':
-        if len(entity) == 0:
+        if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
         else:
-            changed = update_entity(entity[0], entity_dict, module)
+            changed = update_entity(entity, entity_dict, module)
     else:
         # state == 'absent'
-        if len(entity) != 0:
-            changed = delete_entity(entity[0], module)
+        if entity is not None:
+            changed = delete_entity(entity, module)
     return changed
 
 
-def find_entity(entity_class, **kwargs):
+def find_entities(entity_class, **kwargs):
+    """ Find entities by certain criteria """
     return entity_class().search(
         query={'search': ','.join(['{0}="{1}"'.format(
-            key, kwargs[key]) for key in kwargs])}
+            key, kwargs[key]) for key in kwargs]), 'per_page': sys.maxint}
     )
 
 
-def find_entities(entity_class, name_list, module):
+def find_entities_by_name(entity_class, name_list, module):
+    """ Find entities of a given class by their names """
     return_list = []
     for element in name_list:
         try:
-            return_list.append(find_entity(entity_class, name=element)[0])
+            return_list.append(find_entities(entity_class, name=element)[0])
         except Exception:
             module.fail_json(
                 msg='Could not find the {0} {1}'.format(
