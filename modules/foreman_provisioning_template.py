@@ -107,6 +107,8 @@ options:
             A name must be provided.
             Possible sources are, ordererd by preference:
             The "name" parameter, config header (inline or in a file), basename of a file.
+            The special name "*" (only possible as parameter) is used
+            to perform bulk actions on all existing templates.
         required: false
     organizations:
         description:
@@ -318,6 +320,13 @@ def main():
         ],
 
     )
+
+    # We do not want a template text for bulk operations
+    if module.params['name'] == '*':
+        if module.params['file_name'] or module.params['template']:
+            module.fail_json(
+                msg="neither file_name nor template allowed if name: *")
+
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
             msg='Missing required nailgun module'
@@ -333,13 +342,15 @@ def main():
     state = template_dict.pop('state')
     file_name = template_dict.pop('file_name', None)
 
-    if file_name:
+    if file_name or 'template' in template_dict:
+        if file_name:
+            parsed_dict = parse_template_from_file(file_name, module)
+        else:
+            parsed_dict = parse_template(template_dict['template'], module)
+        # sanitize name from template data
+        if 'name' in parsed_dict and parsed_dict['name'] == '*':
+            module.fail_json(msg="Cannot use '*' as a template name!")
         # module params are priorized
-        parsed_dict = parse_template_from_file(file_name, module)
-        parsed_dict.update(template_dict)
-        template_dict = parsed_dict
-    elif template_dict['template']:
-        parsed_dict = parse_template(template_dict['template'], module)
         parsed_dict.update(template_dict)
         template_dict = parsed_dict
 
@@ -352,20 +363,22 @@ def main():
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
+    name = template_dict['name']
+
     try:
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg='Failed to connect to Foreman server: %s ' % e)
 
     ping_server(module)
+
     try:
-        entities = find_entities(ProvisioningTemplate, name=template_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
+        if name == '*':
+            entities = find_entities(ProvisioningTemplate)
         else:
-            entity = None
+            entities = find_entities(ProvisioningTemplate, name=template_dict['name'])
     except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+        module.fail_json(msg='Failed to search for entities: %s ' % e)
 
     # Set Locations of Template
     if 'locations' in template_dict:
@@ -381,11 +394,24 @@ def main():
         template_dict['operatingsystems'] = find_entities_by_name(OperatingSystem, template_dict[
             'operatingsystems'], module)
 
-    template_dict = find_template_kind(template_dict, module)
+    if name != '*':
+        template_dict = find_template_kind(template_dict, module)
 
     template_dict = sanitize_template_dict(template_dict)
 
-    changed = naildown_entity_state(ProvisioningTemplate, template_dict, entity, state, module)
+    changed = False
+    if name != '*':
+        if len(entities) == 0:
+            entity = None
+        else:
+            entity = entities[0]
+        changed = naildown_entity_state(
+            ProvisioningTemplate, template_dict, entity, state, module)
+    else:
+        template_dict.pop('name')
+        for entity in entities:
+            changed |= naildown_entity_state(
+                ProvisioningTemplate, template_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
