@@ -312,6 +312,9 @@ def main():
         else:
             parsed_dict = parse_template(ptable_dict['layout'], module)
         # sanitize name from template data
+        # The following condition can actually be hit, when someone is trying to import a
+        # template with the name set to '*'.
+        # Besides not being sensible, this would go horribly wrong in this module.
         if 'name' in parsed_dict and parsed_dict['name'] == '*':
             module.fail_json(msg="Cannot use '*' as a partition table name!")
         # module params are priorized
