@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  - name: "Create/update katello content view"
+    katello_content_view:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://katello.example.com"
+      verify_ssl: false
+      name: "cv3"
+      organization: "Default Organization"
+      repositories:
+        - name: "repo1"
+          product: "product1"
+        - name: "zoo"
+          product: "zoo product"
