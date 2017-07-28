@@ -13,6 +13,7 @@ from nailgun.entities import (
     Ping,
     TemplateKind,
 )
+from nailgun import entity_mixins
 
 
 # Mix compare functionality into some entities as needed
@@ -195,3 +196,7 @@ def current_subscription_manifest(module, organization):
     org_json = organization.read_json()
     if 'owner_details' in org_json and 'upstreamConsumer' in org_json['owner_details']:
         return org_json['owner_details']['upstreamConsumer']
+
+
+def set_task_timeout(timeout_ms):
+    entity_mixins.TASK_TIMEOUT = timeout_ms
