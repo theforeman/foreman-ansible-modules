@@ -11,6 +11,9 @@ from nailgun.entities import (
     Location,
     Organization,
     Ping,
+    Product,
+    Repository,
+    RepositorySet,
     TemplateKind,
 )
 from nailgun import entity_mixins
@@ -182,6 +185,26 @@ def find_lifecycle_environment(module, name, organization, failsafe=False):
     return handle_find_response(module, response, message="No lifecycle environment found for %s" % name, failsafe=failsafe)
 
 
+def find_product(module, name, organization, failsafe=False):
+    product = Product(name=name, organization=organization)
+    del(product._fields['sync_plan'])
+    return handle_find_response(module, product.search(), message="No product found for %s" % name, failsafe=failsafe)
+
+
+def find_repositories(module, repositories, product):
+    return map(lambda repository: find_repository(module, repository, product), repositories)
+
+
+def find_repository(module, name, product):
+    repository = Repository(name=name, product=product)
+    return handle_find_response(module, repository.search(), message="No Repository found for %s" % name)
+
+
+def find_repository_set(module, name, product, failsafe=False):
+    repo_set = RepositorySet(name=name, product=product)
+    return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
 def handle_find_response(module, response, message=None, failsafe=False):
     message = "Find failed for entity: %s" % response if message is None else message
     if len(response) == 1:
@@ -190,6 +213,11 @@ def handle_find_response(module, response, message=None, failsafe=False):
         return None
     else:
         module.fail_json(msg=message)
+
+
+def handle_no_nailgun(module, has_nailgun):
+    if not has_nailgun:
+        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun)")
 
 
 def current_subscription_manifest(module, organization):

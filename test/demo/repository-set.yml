@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Enable RHEL 7 RPMs repositories"
+    katello_repository_set:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://katello.example.com"
+      verify_ssl: false
+      name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+      organization: "Default Organization"
+      product: "Red Hat Enterprise Linux Server"
+      state: 'enabled'
+      repositories:
+      - releasever: "7.0"
+        basearch: "x86_64"
+      - releasever: "7.1"
+        basearch: "x86_64"
+      - releasever: "7.2"
+        basearch: "x86_64"
+      - releasever: "7.3"
+        basearch: "x86_64"
+- hosts: localhost
+  tasks:
+  - name: "Disable RHEL 7 RPMs repositories"
+    katello_repository_set:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://katello.example.com"
+      verify_ssl: false
+      name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+      organization: "Default Organization"
+      product: "Red Hat Enterprise Linux Server"
+      state: 'disabled'
+      repositories:
+      - releasever: "7.0"
+        basearch: "x86_64"
+      - releasever: "7.1"
+        basearch: "x86_64"
+      - releasever: "7.2"
+        basearch: "x86_64"
+      - releasever: "7.3"
+        basearch: "x86_64"
