@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) Bernhard Hopfenmüller 2017
 # (c) Matthias Dellweg 2017
+# (c) Andrew Kofink 2017
 
 import re
 import yaml
