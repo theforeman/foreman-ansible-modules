@@ -18,8 +18,9 @@ from nailgun.entities import (
     Repository,
     RepositorySet,
     TemplateKind,
+    AbstractComputeResource
 )
-from nailgun import entity_mixins
+from nailgun import entity_mixins, entity_fields
 
 
 # Mix compare functionality into some entities as needed
@@ -54,6 +55,55 @@ class CommonParameter(
     entity_mixins.EntityUpdateMixin,
 ):
     pass
+
+
+class VMWareComputeResource(AbstractComputeResource):  # pylint:disable=R0901
+    def __init__(self, server_config=None, **kwargs):
+        self._fields = {
+            'set_console_password': entity_fields.BooleanField(),
+            'user': entity_fields.StringField(),
+            'password': entity_fields.StringField(),
+            'datacenter': entity_fields.StringField()
+        }
+        super(VMWareComputeResource, self).__init__(server_config, **kwargs)
+        self._fields['provider'].default = 'Vmware'
+        self._fields['provider'].required = True
+        self._fields['provider_friendly_name'].default = 'VMware'
+
+    def read(self, entity=None, attrs=None, ignore=None, params=None):
+        if attrs is None:
+            attrs = self.read_json()
+
+        if ignore is None:
+            ignore = set()
+
+        ignore.add('password')
+
+        return super(VMWareComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
+
+
+class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
+    def __init__(self, server_config=None, **kwargs):
+        self._fields = {
+            'set_console_password': entity_fields.BooleanField(),
+            'user': entity_fields.StringField(),
+            'password': entity_fields.StringField()
+        }
+        super(OVirtComputeResource, self).__init__(server_config, **kwargs)
+        self._fields['provider'].default = 'Ovirt'
+        self._fields['provider'].required = True
+        self._fields['provider_friendly_name'].default = 'OVirt'
+
+    def read(self, entity=None, attrs=None, ignore=None, params=None):
+        if attrs is None:
+            attrs = self.read_json()
+
+        if ignore is None:
+            ignore = set()
+
+        ignore.add('password')
+
+        return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
 
 
 # Connection helper
@@ -196,9 +246,18 @@ def parse_template_from_file(file_name, module):
 
 
 def find_organization(module, name, failsafe=False):
-    org = Organization(name=name)
-    response = org.search(set(), {'search': 'name="{}"'.format(name)})
-    return handle_find_response(module, response, message="No organization found for %s" % name, failsafe=failsafe)
+    org = Organization(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, org, message="No organization found for %s" % name, failsafe=failsafe)
+
+
+def find_location(module, name, failsafe=False):
+    loc = Location(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, loc, message="No location found for %s" % name, failsafe=failsafe)
+
+
+def find_compute_resource(module, name, failsafe=False):
+    compute_resource = AbstractComputeResource(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, compute_resource, message="No compute resource found for %s" % name, failsafe=failsafe)
 
 
 def find_lifecycle_environment(module, name, organization, failsafe=False):
