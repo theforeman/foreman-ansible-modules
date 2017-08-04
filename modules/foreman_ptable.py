@@ -79,7 +79,7 @@ options:
             The "name" parameter, config header (inline or in a file),
             basename of a file.
             The special name "*" (only possible as parameter) is used
-            to perform bulk actions on all existing partition tables.
+            to perform bulk actions (modify, delete) on all existing partition tables.
         required: false
     organizations:
         description:
@@ -185,6 +185,29 @@ EXAMPLES = '''
       with_fileglob:
        - "./arsenal_templates/*.erb"
 
+# with name set to "*" bulk actions can be performed
+- name: "Delete *ALL* partition tables"
+  local_action:
+      module: foreman_ptable
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: absent
+
+- name: "Assign all partition tables to the same organization(s)"
+  local_action:
+      module: foreman_ptable
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: latest
+      organizations:
+      - DALEK INC
+      - sky.net
+      - Doc Brown's garage
+
 '''
 
 RETURN = ''' # '''
@@ -266,7 +289,7 @@ def main():
     if module.params['name'] == '*':
         if module.params['file_name'] or module.params['layout']:
             module.fail_json(
-                msg="neither file_name nor layout allowed if name: *")
+                msg="Neither file_name nor layout allowed if 'name: *'!")
 
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
@@ -305,6 +328,14 @@ def main():
                 msg='No name specified and no filename to infer it.')
 
     name = ptable_dict['name']
+
+    # sanitize user input, filter unuseful configuration combinations with 'name: *'
+    if name == '*':
+        if state == 'present':
+            module.fail_json(msg="'state: present' and 'name: *' is no operation")
+        if state == 'absent':
+            if ptable_dict.keys() != ['name']:
+                module.fail_json(msg="When deleting all partition tables, there is no need to specify further parameters.")
 
     try:
         create_server(server_url, (username, password), verify_ssl)

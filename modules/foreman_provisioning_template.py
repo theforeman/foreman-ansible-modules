@@ -108,7 +108,7 @@ options:
             Possible sources are, ordererd by preference:
             The "name" parameter, config header (inline or in a file), basename of a file.
             The special name "*" (only possible as parameter) is used
-            to perform bulk actions on all existing templates.
+            to perform bulk actions (modify, delete) on all existing templates.
         required: false
     organizations:
         description:
@@ -204,6 +204,29 @@ EXAMPLES = '''
       - DALEK INC
       with_fileglob:
        - "./arsenal_templates/*.erb"
+
+# with name set to "*" bulk actions can be performed
+- name: "Delete *ALL* provisioning templates"
+  local_action:
+      module: foreman_provisioning_template
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: absent
+
+- name: "Assign all provisioning templates to the same organization(s)"
+  local_action:
+      module: foreman_provisioning_template
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: latest
+      organizations:
+      - DALEK INC
+      - sky.net
+      - Doc Brown's garage
 
 '''
 
@@ -325,7 +348,7 @@ def main():
     if module.params['name'] == '*':
         if module.params['file_name'] or module.params['template']:
             module.fail_json(
-                msg="neither file_name nor template allowed if name: *")
+                msg="Neither file_name nor template allowed if 'name: *'!")
 
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
@@ -364,6 +387,15 @@ def main():
                 msg='No name specified and no filename to infer it.')
 
     name = template_dict['name']
+
+    # sanitize user input, filter unuseful configuration combinations with 'name: *'
+    if name == '*':
+        if state == 'present':
+            module.fail_json(msg="'state: present' and 'name: *' is no operation")
+        if state == 'absent':
+            if template_dict.keys() != ['name', 'locked']:
+                module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
+
 
     try:
         create_server(server_url, (username, password), verify_ssl)
