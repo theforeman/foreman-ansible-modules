@@ -11,6 +11,9 @@ from nailgun.entities import (
     LifecycleEnvironment,
     Location,
     Organization,
+    OperatingSystem,
+    Architecture,
+    Host,
     Ping,
     Product,
     Repository,
@@ -39,6 +42,13 @@ class Organization(EntityCompareMixin, Organization):
 
 
 class Location(EntityCompareMixin, Location):
+    pass
+
+class OperatingSystem(EntityCompareMixin, OperatingSystem):
+    pass
+
+
+class Architecture(EntityCompareMixin, Architecture):
     pass
 
 
@@ -184,6 +194,29 @@ def find_organization(module, name, failsafe=False):
 def find_lifecycle_environment(module, name, organization, failsafe=False):
     response = LifecycleEnvironment(name=name, organization=organization).search()
     return handle_find_response(module, response, message="No lifecycle environment found for %s" % name, failsafe=failsafe)
+
+
+def find_location(module, name, failsafe=False):
+    loc = Location(name=name)
+    response = loc.search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, response, message="No location found for %s" % name, failsafe=failsafe)
+
+
+def find_operatingsystem(module, name, failsafe=False):
+    response = OperatingSystem(name=name).search(set(), {'search': 'name={}'.format(name)})
+    return handle_find_response(module, response, message="No operating system found for %s" % name, failsafe=failsafe)
+
+
+def find_architecture(module, name, failsafe=False):
+    arch = Architecture(name=name)
+    response = arch.search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, response, message="No architecture found for %s" % name, failsafe=failsafe)
+
+
+def find_host(module, name, failsafe=False):
+    host = Host(name=name)
+    response = host.search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, response, message="No hostname found for %s" % name, failsafe=failsafe)
 
 
 def find_product(module, name, organization, failsafe=False):
