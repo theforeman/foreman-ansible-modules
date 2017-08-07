@@ -80,7 +80,7 @@ class NailGun(object):
         org = self._entities.Organization(self._server, name=name)
         updated = False
 
-        response = org.search(set(), {'search': 'name={}'.format(name)})
+        response = org.search(set(), {'search': 'name="{}"'.format(name)})
         if len(response) == 1:
             org = response[0]
         else:

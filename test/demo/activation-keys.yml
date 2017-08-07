@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Create katello client activation key"
+    katello_activation_key:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://katello.example.com"
+      verify_ssl: false
+      name: "Katello Clients"
+      organization: "Default Organization"
+      lifecycle_environment: "Library"
+      content_view: 'client content view'
+      subscriptions:
+        - name: "Red Hat Satellite Employee Subscription"
+        - name: "Employee SKU"
+    delegate_to: localhost
