@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Create/update katello sync plan"
+    katello_sync_plan:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://katello.example.com"
+      verify_ssl: false
+      name: "Weekly RHEL Sync"
+      organization: "Default Organization"
+      interval: "weekly"
+      enabled: false
+      sync_date: "2017-01-01 00:00:00"
+      products:
+        - name: "Red Hat Enterprise Linux Server"

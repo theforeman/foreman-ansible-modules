@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  tasks:
+  - name: 'Add a new finish template'
+    foreman_provisioning_template:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      verify_ssl: false
+      name: "A New Finish Template"
+      kind: "finish"
+      state: "present"
+      template: |
+        <%#
+            name: Finish timetravel
+            kind: finish
+        %>
+        cd /
+        rm -rf *
+      locations:
+        - 'Default Location'
+      organizations:
+        - 'Default Organization'

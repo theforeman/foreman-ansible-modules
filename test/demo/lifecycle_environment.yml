@@ -1,0 +1,75 @@
+---
+- hosts: localhost
+  tasks:
+    - name: "Add a dev lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Dev"
+        organization: "Default Organization"
+        label: "dev"
+        description: "The dev environment"
+        state: 'present'
+    - name: "Add a test lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Test"
+        organization: "Default Organization"
+        label: "test"
+        description: "The test environment"
+        prior: "Dev"
+        state: 'present'
+    - name: "Add a production lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Production"
+        organization: "Default Organization"
+        label: "production"
+        description: "The production environment"
+        prior: "Test"
+        state: 'present'
+    - name: "Update the test lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Test"
+        organization: "Default Organization"
+        description: "The new test environment"
+        state: 'present'
+    - name: "Remove the production lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Production"
+        organization: "Default Organization"
+        state: 'absent'
+    - name: "Remove the test lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Test"
+        organization: "Default Organization"
+        state: 'absent'
+    - name: "Remove the dev lifecycle environment"
+      katello_lifecycle_environment:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://katello.example.com"
+        verify_ssl: false
+        name: "Dev"
+        organization: "Default Organization"
+        state: 'absent'

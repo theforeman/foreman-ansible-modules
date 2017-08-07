@@ -28,16 +28,14 @@ cd infra/
 git clone https://github.com/theforeman/foreman-ansible-modules.git
 ```
 
-Now, add or update your `ansible.cfg` file to include the modules path:
+Note the `ansible.cfg` file cloned with foreman-ansible-modules. The ansible.cfg
+needs to be in your current directory when you run `ansible` or
+`ansible-playbook`. You can copy it to another location or add it to your
+current ansible configuration; make sure to update the relative paths to the
+foreman-ansible-module `modules` and `module_utils` if you do so.
 
-```
-cat ansible.cfg
-
-[defaults]
-library = foreman-ansible-modules/modules
-```
-
-Now your playbooks and roles should have access to the modules contained in the repository for use, testing or development of new modules.
+Now your playbooks and roles should have access to the modules and module_utils
+contained in the repository for use, testing, or development of new modules.
 
 ## How to debug this repository
 
@@ -64,11 +62,13 @@ This is a list of modules currently in the repository (please add to the list if
 
  * foreman_global_parameter: create and maintain global parameters
  * foreman_organization: create and maintain organizations
- * foreman_host: create or maintain host
+ * foreman_ptable: create and maintain partition templates
+ * foreman_provisioning_template: create and maintain provisioning templates
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
  * katello_content_view: create and maintain content views
  * katello_sync_plan: create and maintain sync plans
+ * katello_activation_key: create and maintain activation keys
 
 #### Action Modules
 
