@@ -20,9 +20,9 @@
 DOCUMENTATION = '''
 ---
 module: foreman_host
-short_description: Create or update host
+short_description: Manage Foreman Host
 description:
-    - Allows the upload of content to a Katello repository
+    - Manage host
 author: "Ismael Puerto (@ismaelpuerto)"
 requirements:
     - "nailgun >= 0.28.0"
@@ -88,74 +88,44 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities, entity_fields, entity_mixins
-    from nailgun.config import ServerConfig
+    from nailgun.entities import (
+            Host,
+    )
+    from ansible.module_utils.ansible_nailgun_cement import (
+            create_server,
+            create_entity,
+            update_entity,
+            handle_no_nailgun,
+            find_organization,
+            find_operatingsystem,
+            find_architecture,
+            find_location,
+            ping_server,
+    )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
+def create_host(module, hostname, mac, organization, location, architecture, operatingsystem):
+    changed = False
+    location_id = find_location(module, location)
+    organization_id = find_organization(module, organization)
+    architecture_id = find_architecture(module, architecture)
+    operatingsystem_id = find_operatingsystem(module, operatingsystem)
 
-class NailGun(object):
+    host = Host(name=hostname)
+    host = host.search(set(), {'search': 'name="{}"'.format(hostname)})
 
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-        entity_mixins.TASK_TIMEOUT = 1000
+    if len(host) == 0:
+        props = { 'name': hostname, 'organization': organization_id, 'location': location_id, 'mac': mac, 'architecture': architecture_id, 'operatingsystem': operatingsystem_id }
+        create_entity(Host, props, module)
+        changed = True
+    else:
+        props = { 'name': hostname, 'organization': organization_id, 'location': location_id, 'mac': mac, 'architecture': architecture_id, 'operatingsystem': operatingsystem_id }
+        update_entity(host[0], props, module)
+        changed = True
 
-
-    def create_host(self, hostname, mac, organization, location, architecture, operatingsystem):
-        location_id = self.find_location(location)
-        organization_id = self.find_organization(organization)
-        architecture_id = self.find_architecture(architecture)
-        operatingsystem_id = self.find_operatingsystem(operatingsystem)
-
-        host = self._entities.Host(self._server, name=hostname, organization=organization_id, location=location_id, mac=mac, architecture=architecture_id, operatingsystem=operatingsystem_id)
-        response = host.search(set(), {'search': 'name={}'.format(hostname)})
-        if len(response) == 0:
-            host.create()
-        else:
-            #host_id = response[0]
-            host_id = response[0]
-            host = self._entities.Host(self._server, name=hostname, id=host_id.id, organization=organization_id, location=location_id, mac=mac, architecture=architecture_id, operatingsystem=operatingsystem_id)
-            host.update()
-
-    def find_operatingsystem(self, name, **params):
-        os = self._entities.OperatingSystem(self._server, name=name, **params)
-        response = os.search(set(), {'search': 'name={}'.format(name)})
-        
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No operating found for %s" % name)
-
-    def find_architecture(self, name, **params):
-        org = self._entities.Architecture(self._server, name=name, **params)
-        response = org.search(set(), {'search': 'name={}'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No architecture found for %s" % name)
-
-    def find_organization(self, name, **params):
-        org = self._entities.Organization(self._server, name=name, **params)
-        response = org.search(set(), {'search': 'name={}'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def find_location(self, name, **params):
-        loc = self._entities.Location(self._server, name=name, **params)
-        response = loc.search(set(), {'search': 'name={}'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No Location found for %s" % name)
-
+    return changed
 
 def main():
     module = AnsibleModule(
@@ -171,11 +141,9 @@ def main():
             architecture=dict(required=True, no_log=False),
             operatingsystem=dict(required=True, no_log=False),
         ),
-        supports_check_mode=True
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -188,27 +156,14 @@ def main():
     operatingsystem = module.params['operatingsystem']
     verify_ssl = module.params['verify_ssl']
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
-
-    # Lets make an connection to the server with username and password
-    try:
-        org = entities.Organization(server)
-        org.search()
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+    create_server(server_url, (username, password), verify_ssl)
+    ping_server(module)
 
     try:
-        ng.create_host(hostname, mac, organization, location, architecture, operatingsystem)
+        changed = create_host(module, hostname, mac, organization, location, architecture, operatingsystem)
+        module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=to_native(e))
-
-    module.exit_json(changed=True, result="Host")
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native
