@@ -9,6 +9,7 @@ import yaml
 
 from nailgun.config import ServerConfig
 from nailgun.entities import (
+    CommonParameter,
     LifecycleEnvironment,
     Location,
     Organization,
@@ -40,6 +41,18 @@ class Organization(EntityCompareMixin, Organization):
 
 
 class Location(EntityCompareMixin, Location):
+    pass
+
+
+class CommonParameter(
+    CommonParameter,
+    entity_mixins.Entity,
+    entity_mixins.EntityCreateMixin,
+    entity_mixins.EntityDeleteMixin,
+    entity_mixins.EntityReadMixin,
+    entity_mixins.EntitySearchMixin,
+    entity_mixins.EntityUpdateMixin,
+):
     pass
 
 
