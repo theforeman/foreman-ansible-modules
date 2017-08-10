@@ -17,6 +17,52 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
+DOCUMENTATION = '''
+---
+module: foreman_compute_profile
+short_description: Manage Foreman Compute Profiles using Foreman API v2
+description:
+- Create and delete Foreman Compute Profiles using Foreman API v2
+options:
+  name:
+    description: compute profile name
+    required: true
+  updated_name:
+    description: new compute profile name
+    required: false
+  server_url:
+    description: foreman url
+    required: true
+  username:
+    description: foreman username
+    required: true
+  password:
+    description: foreman user password
+    required: true
+  verify_ssl:
+    description: verify ssl connection when communicating with foreman
+    default: true
+  state:
+    description: compute profile presence
+    default: present
+    choices: ["present", "absent", "latest"]
+notes:
+- Requires nailgun
+version_added: "2.0"
+author: "Philipp Joos (@philippj)"
+'''
+
+EXAMPLES = '''
+- name: compute profile
+  foreman_compute_profile:
+    name: example_compute_profile
+    server_url: foreman.example.com
+    username: admin
+    password: secret
+    verify_ssl: false
+    state: present
+'''
+
 RETURN = ''' # '''
 
 try:
