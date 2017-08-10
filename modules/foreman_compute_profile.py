@@ -117,9 +117,9 @@ if __name__ == '__main__':
         argument_spec=dict(
             name=dict(type='str', required=True),
             updated_name=dict(type='str'),
-            server_url=dict(type='str'),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
+            server_url=dict(required=True, type='str'),
+            username=dict(required=True, type='str'),
+            password=dict(required=True, no_log=True, type='str'),
             verify_ssl=dict(type='bool', default=True),
             state=dict(type='str', default='present', choices=['present', 'absent', 'latest']),
         ),
