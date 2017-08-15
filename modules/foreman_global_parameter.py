@@ -73,7 +73,7 @@ options:
 
 EXAMPLES = '''
 - name: "Create a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"
@@ -83,7 +83,7 @@ EXAMPLES = '''
   deletegate_to: localhost
 
 - name: "Update a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"
@@ -93,7 +93,7 @@ EXAMPLES = '''
   deletegate_to: localhost
 
 - name: "Delete a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
     password: "admin"
     server_url: "https://fakeserver.com"
