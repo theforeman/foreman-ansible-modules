@@ -69,7 +69,6 @@ EXAMPLES = '''
     repositories:
       - name: 'Fedora 26'
         product: 'Fedora'
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

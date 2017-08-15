@@ -68,7 +68,6 @@ EXAMPLES = '''
     content_type: "yum"
     product: "My Product"
     organization: "Default Organization"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

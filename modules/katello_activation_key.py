@@ -75,7 +75,6 @@ EXAMPLES = '''
     content_view: 'client content view'
     subscriptions:
         - name: "Red Hat Enterprise Linux"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

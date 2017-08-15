@@ -112,8 +112,7 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Partition Table inline"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -132,8 +131,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Partition Template from a file"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -145,8 +143,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Delete a Partition Template"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -158,8 +155,7 @@ EXAMPLES = '''
       state: absent
 
 - name: "Create a Partition Template from a file and modify with parameter(s)"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -174,8 +170,7 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of partition templates"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"

@@ -74,7 +74,6 @@ EXAMPLES = '''
     organization: "Default Organization"
     state: present
     manifest_path: "/tmp/manifest.zip"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

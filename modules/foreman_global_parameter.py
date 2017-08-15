@@ -80,7 +80,6 @@ EXAMPLES = '''
     name: "TheAnswer"
     value: "42"
     state: present
-  deletegate_to: localhost
 
 - name: "Update a Global Parameter"
   foreman_global_parameter:
@@ -90,7 +89,6 @@ EXAMPLES = '''
     name: "TheAnswer"
     value: "43"
     state: latest
-  deletegate_to: localhost
 
 - name: "Delete a Global Parameter"
   foreman_global_parameter:
@@ -99,7 +97,6 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     state: absent
-  delegate_to: localhost
 '''
 
 RETURN = ''' # '''

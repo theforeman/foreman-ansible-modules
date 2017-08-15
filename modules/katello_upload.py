@@ -72,7 +72,6 @@ EXAMPLES = '''
     repository: "Build RPMs"
     product: "My Product"
     organization: "Default Organization"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

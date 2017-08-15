@@ -57,7 +57,6 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My Cool New Organization"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

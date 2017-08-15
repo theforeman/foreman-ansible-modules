@@ -83,7 +83,6 @@ EXAMPLES = '''
     sync_date: "2017-01-01 00:00:00"
     products:
       - name: 'Red Hat Enterprise Linux Server'
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''
