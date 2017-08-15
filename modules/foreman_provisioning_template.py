@@ -225,8 +225,9 @@ try:
         Organization,
         Location,
         create_server,
-        find_entity,
+        ping_server,
         find_entities,
+        find_entities_by_name,
         naildown_entity_state,
         parse_template,
         parse_template_from_file,
@@ -250,7 +251,7 @@ def find_template_kind(template_dict, module):
         template_dict.pop('kind')
     else:
         try:
-            template_dict['kind'] = find_entity(
+            template_dict['kind'] = find_entities(
                 TemplateKind, name=template_dict['kind'])[0]
         except Exception as e:
             module.fail_json(msg='Template kind not found!')
@@ -318,7 +319,7 @@ def main():
             ['file_name', 'template'],
         ],
         required_one_of=[
-            ['file_name', 'template'],
+            ['name', 'file_name', 'template'],
         ],
 
     )
@@ -358,21 +359,31 @@ def main():
 
     try:
         create_server(server_url, (username, password), verify_ssl)
-        entity = find_entity(ProvisioningTemplate, name=template_dict['name'])
     except Exception as e:
         module.fail_json(msg='Failed to connect to Foreman server: %s ' % e)
 
+    ping_server(module)
+    try:
+        entities = find_entities(ProvisioningTemplate, name=template_dict['name'])
+        if len(entities) > 0:
+            entity = entities[0]
+        else:
+            entity = None
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
+
     # Set Locations of Template
     if 'locations' in template_dict:
-        template_dict['locations'] = find_entities(Location, template_dict['locations'], module)
+        template_dict['locations'] = find_entities_by_name(
+            Location, template_dict['locations'], module)
 
     # Set Organizations of Template
     if 'organizations' in template_dict:
-        template_dict['organizations'] = find_entities(
+        template_dict['organizations'] = find_entities_by_name(
             Organization, template_dict['organizations'], module)
 
     if 'operatingsystems' in template_dict:
-        template_dict['operatingsystems'] = find_entities(OperatingSystem, template_dict[
+        template_dict['operatingsystems'] = find_entities_by_name(OperatingSystem, template_dict[
             'operatingsystems'], module)
 
     template_dict = find_template_kind(template_dict, module)

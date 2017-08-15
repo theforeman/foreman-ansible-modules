@@ -63,7 +63,7 @@ options:
     layout:
         description:
         - |
-            The content of the provisioning template, either this or file_name
+            The content of the Partitioning Table Template, either this or file_name
             is required as a source for the Partition Template "content".
         required: false
     locations:
@@ -202,8 +202,9 @@ try:
         Organization,
         Location,
         create_server,
-        find_entity,
+        ping_server,
         find_entities,
+        find_entities_by_name,
         naildown_entity_state,
         parse_template,
         parse_template_from_file,
@@ -260,10 +261,11 @@ def main():
             ['file_name', 'layout'],
         ],
         required_one_of=[
-            ['file_name', 'layout'],
+            ['name', 'file_name', 'layout'],
         ],
 
     )
+
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
             msg='Missing required nailgun module'
@@ -289,23 +291,38 @@ def main():
         parsed_dict.update(ptable_dict)
         ptable_dict = parsed_dict
 
+    # make sure, we have a name
     if 'name' not in ptable_dict:
-        ptable_dict['name'] = os.path.splitext(os.path.basename(file_name))[0]
+        if file_name:
+            ptable_dict['name'] = os.path.splitext(
+                os.path.basename(file_name))[0]
+        else:
+            module.fail_json(
+                msg='No name specified and no filename to infer it.')
 
     try:
         create_server(server_url, (username, password), verify_ssl)
-        entity = find_entity(PartitionTable, name=ptable_dict['name'])
     except Exception as e:
         module.fail_json(msg='Failed to connect to Foreman server: %s ' % e)
 
+    ping_server(module)
+    try:
+        entities = find_entities(PartitionTable, name=ptable_dict['name'])
+        if len(entities) > 0:
+            entity = entities[0]
+        else:
+            entity = None
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
+
     # Set Locations of partition table
     if 'locations' in ptable_dict:
-        ptable_dict['locations'] = find_entities(Location, ptable_dict[
+        ptable_dict['locations'] = find_entities_by_name(Location, ptable_dict[
             'locations'], module)
 
     # Set Organizations of partition table
     if 'organizations' in ptable_dict:
-        ptable_dict['organizations'] = find_entities(
+        ptable_dict['organizations'] = find_entities_by_name(
             Organization, ptable_dict['organizations'], module)
 
     ptable_dict = sanitize_ptable_dict(ptable_dict)
