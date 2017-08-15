@@ -44,7 +44,6 @@ options:
         description:
         - Username on Foreman server
         required: true
-        default: true
     password:
         description:
         - Password for user accessing Foreman server
@@ -53,6 +52,7 @@ options:
         description:
         - Verify SSL of the Foreman server
         required: false
+        default: true
     file_name:
         description:
         - |
