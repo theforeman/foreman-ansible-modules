@@ -54,7 +54,7 @@ EXAMPLES = '''
 - name: "Create CI Organization"
   foreman_organization:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My Cool New Organization"
   delegate_to: localhost

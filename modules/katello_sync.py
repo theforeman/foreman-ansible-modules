@@ -58,7 +58,7 @@ EXAMPLES = '''
 - name: "Sync repository"
   katello_sync:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     repository: "My repository"
     product: "My Product"

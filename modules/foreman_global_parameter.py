@@ -75,7 +75,7 @@ EXAMPLES = '''
 - name: "Create a Global Parameter"
   foreman_global_parameter:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "42"
@@ -85,7 +85,7 @@ EXAMPLES = '''
 - name: "Update a Global Parameter"
   foreman_global_parameter:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "43"
@@ -95,8 +95,8 @@ EXAMPLES = '''
 - name: "Delete a Global Parameter"
   foreman_global_parameter:
     username: "admin"
-    password: "admin"
-    server_url: "https://fakeserver.com"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
     name: "TheAnswer"
     state: absent
   delegate_to: localhost

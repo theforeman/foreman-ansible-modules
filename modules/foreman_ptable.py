@@ -115,7 +115,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_ptable
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: A New Partition Template
       state: present
@@ -135,7 +135,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_ptable
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       state: present
@@ -148,7 +148,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_ptable
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: timeywimey
       layout: |
@@ -161,7 +161,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_ptable
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       name: Wibbly Wobbly Template
@@ -177,7 +177,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_ptable
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: "{{ item }}"
       state: present

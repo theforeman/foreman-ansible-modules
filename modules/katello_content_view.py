@@ -62,7 +62,7 @@ EXAMPLES = '''
 - name: "Create or update Fedora content view"
   katello_content_view:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Fedora CV"
     organization: "My Cool new Organization"

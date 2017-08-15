@@ -132,7 +132,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_provisioning_template
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: A New Finish Template
       kind: finish
@@ -153,7 +153,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_provisioning_template
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       state: present
@@ -168,7 +168,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_provisioning_template
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: timeywimey_template
       template: |
@@ -181,7 +181,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_provisioning_template
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       name: Wibbly Wobbly Template
@@ -197,7 +197,7 @@ EXAMPLES = '''
   local_action:
       module: foreman_provisioning_template
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: "{{ item }}"
       state: present

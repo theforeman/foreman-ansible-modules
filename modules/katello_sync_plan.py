@@ -74,7 +74,7 @@ EXAMPLES = '''
 - name: "Create or update weekly RHEL sync plan"
   katello_sync_plan:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Weekly RHEL Sync"
     organization: "Default Organization"

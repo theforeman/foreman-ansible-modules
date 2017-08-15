@@ -62,7 +62,7 @@ EXAMPLES = '''
 - name: "Create repository"
   katello_repository:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My repository"
     content_type: "yum"

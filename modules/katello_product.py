@@ -58,7 +58,7 @@ EXAMPLES = '''
 - name: "Create Fedora product"
   katello_product:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Fedora"
     organization: "My Cool new Organization"

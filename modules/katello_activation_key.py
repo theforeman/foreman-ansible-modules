@@ -67,7 +67,7 @@ EXAMPLES = '''
 - name: "Create katello client activation key"
   katello_activation_key:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Katello Clients"
     organization: "Default Organization"

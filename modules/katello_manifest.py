@@ -68,8 +68,8 @@ EXAMPLES = '''
 - name: "Upload the RHEL developer edition manifest"
   katello_manifest:
     username: "admin"
-    password: "admin"
-    server_url: "https://katello.example.com"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
     verify_ssl: false
     organization: "Default Organization"
     state: present
