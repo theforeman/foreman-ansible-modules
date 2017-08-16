@@ -332,10 +332,11 @@ def main():
 
     name = ptable_dict['name']
 
+    affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
-    if name == '*':
+    if affects_multiple:
         if state == 'present':
-            module.fail_json(msg="'state: present' and 'name: *' is no operation")
+            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
         if state == 'absent':
             if ptable_dict.keys() != ['name']:
                 module.fail_json(msg="When deleting all partition tables, there is no need to specify further parameters.")
@@ -348,7 +349,7 @@ def main():
     ping_server(module)
 
     try:
-        if name == '*':
+        if affects_multiple:
             entities = find_entities(PartitionTable)
         else:
             entities = find_entities(PartitionTable, name=ptable_dict['name'])
@@ -368,7 +369,7 @@ def main():
     ptable_dict = sanitize_ptable_dict(ptable_dict)
 
     changed = False
-    if name != '*':
+    if not affects_multiple:
         if len(entities) == 0:
             entity = None
         else:

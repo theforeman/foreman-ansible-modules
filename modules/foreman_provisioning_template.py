@@ -391,10 +391,11 @@ def main():
 
     name = template_dict['name']
 
+    affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
-    if name == '*':
+    if affects_multiple:
         if state == 'present':
-            module.fail_json(msg="'state: present' and 'name: *' is no operation")
+            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
         if state == 'absent':
             if template_dict.keys() != ['name', 'locked']:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
@@ -407,7 +408,7 @@ def main():
     ping_server(module)
 
     try:
-        if name == '*':
+        if affects_multiple:
             entities = find_entities(ProvisioningTemplate)
         else:
             entities = find_entities(ProvisioningTemplate, name=template_dict['name'])
@@ -428,13 +429,13 @@ def main():
         template_dict['operatingsystems'] = find_entities_by_name(OperatingSystem, template_dict[
             'operatingsystems'], module)
 
-    if name != '*':
+    if not affects_multiple:
         template_dict = find_template_kind(template_dict, module)
 
     template_dict = sanitize_template_dict(template_dict)
 
     changed = False
-    if name != '*':
+    if not affects_multiple:
         if len(entities) == 0:
             entity = None
         else:
