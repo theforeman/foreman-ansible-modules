@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  tasks:
+  - name: 'Add a new ptable'
+    foreman_ptable:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      verify_ssl: false
+      name: A New Partition Template
+      state: present
+      layout: |
+        <%#
+            name: A Partition Template
+        %>
+        zerombr
+        clearpart --all --initlabel
+        autopart
+      locations:
+        - 'Default Location'
+      organizations:
+        - 'Default Organization'
