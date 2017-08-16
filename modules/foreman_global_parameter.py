@@ -67,6 +67,7 @@ options:
         required: false
         choices:
         - present
+        - lastest
         - absent
 '''
 
@@ -88,7 +89,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "43"
-    state: present
+    state: latest
   deletegate_to: localhost
 
 - name: "Delete a Global Parameter"
@@ -104,54 +105,34 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 try:
-    from nailgun.config import ServerConfig
-    import nailgun.entity_mixins
-    import nailgun.entities
+    from ansible.module_utils.ansible_nailgun_cement import (
+        CommonParameter,
+        Organization,
+        Location,
+        create_server,
+        ping_server,
+        find_entities,
+        naildown_entity_state,
+    )
+
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
 from ansible.module_utils.basic import AnsibleModule
 
-'''CommonParameter needs to inherit functionalities
-   for searching, updating and deleting'''
 
-
-class CommonParameter(
-    nailgun.entities.CommonParameter,
-    nailgun.entity_mixins.Entity,
-    nailgun.entity_mixins.EntityCreateMixin,
-    nailgun.entity_mixins.EntityDeleteMixin,
-    nailgun.entity_mixins.EntityReadMixin,
-    nailgun.entity_mixins.EntitySearchMixin,
-    nailgun.entity_mixins.EntityUpdateMixin
-):
-
-    pass
-
-
-def createCommonParameter(name, value):
-    CommonParameter(name=name, value=value).create()
-
-
-def updateCommonParameter(name, value):
-    CommonParameter(name=name, value=value).update()
-
-
-def createServer(server_url, auth, verify_ssl):
-    ServerConfig(
-        url=server_url,
-        auth=auth,
-        verify=verify_ssl,
-    ).save()
-
-
-def findEntity(entity, **kwargs):
-    instance = entity(**kwargs)
-    return instance.search(
-        set(),
-        dict(('search', '{0}="{1}"'.format(key, kwargs[key])) for key in kwargs)
-    )
+def sanitize_global_parameter_dict(global_parameter_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+        'value': 'value',
+    }
+    result = {}
+    for key, value in name_map.iteritems():
+        if key in global_parameter_dict:
+            result[value] = global_parameter_dict[key]
+    return result
 
 
 def main():
@@ -163,9 +144,12 @@ def main():
             verify_ssl=dict(required=False, type='bool', default=True),
             name=dict(required=True),
             value=dict(required=False),
-            state=dict(required=True, choices=['present', 'absent']),
+            state=dict(required=True, choices=['present', 'latest', 'absent']),
         ),
-        required_if=(['state', 'present', ['value']],),
+        required_if=(
+            ['state', 'present', ['value']],
+            ['state', 'latest', ['value']],
+        ),
         supports_check_mode=True
     )
     if not HAS_NAILGUN_PACKAGE:
@@ -174,38 +158,36 @@ def main():
             with: pip install nailgun"""
         )
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    value = module.params['value']
-    state = module.params['state']
-    auth = (username, password)
-    changed = False
+    global_parameter_dict = dict(
+        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+
+    server_url = global_parameter_dict.pop('server_url')
+    username = global_parameter_dict.pop('username')
+    password = global_parameter_dict.pop('password')
+    verify_ssl = global_parameter_dict.pop('verify_ssl')
+    state = global_parameter_dict.pop('state')
+
     try:
-        createServer(server_url, auth, verify_ssl)
-        param = findEntity(CommonParameter, name=name)
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+
+    ping_server(module)
     try:
-        if state == 'present':
-            if len(param) == 1:
-                if param[0].value != value:
-                    param[0].value = value
-                    param[0].update()
-                    changed = True
-            else:
-                createCommonParameter(name, value)
-                changed = True
-        elif state == 'absent':
-            if len(param) == 1:
-                param[0].delete()
-                changed = True
+        entities = find_entities(CommonParameter, name=global_parameter_dict['name'])
+        if len(entities) > 0:
+            entity = entities[0]
+        else:
+            entity = None
     except Exception as e:
-        module.fail_json(msg=e)
+        module.fail_json(msg='Failed to find entity: %s ' % e)
+
+    global_parameter_dict = sanitize_global_parameter_dict(global_parameter_dict)
+
+    changed = naildown_entity_state(CommonParameter, global_parameter_dict, entity, state, module)
 
     module.exit_json(changed=changed)
+
 
 if __name__ == '__main__':
     main()
