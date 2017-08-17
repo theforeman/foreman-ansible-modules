@@ -132,7 +132,8 @@ def find_entities_by_name(entity_class, name_list, module):
 def create_entity(entity_class, entity_dict, module):
     try:
         entity = entity_class(**entity_dict)
-        entity.create()
+        if not module.check_mode:
+            entity.create()
     except Exception as e:
         module.fail_json(msg='Error while creating {0}: {1}'.format(
             entity_class.__name__, str(e)))
@@ -148,7 +149,8 @@ def update_entity(old_entity, entity_dict, module):
                 volatile_entity.__setattr__(key, entity_dict[key])
                 fields.append(key)
         if len(fields) > 0:
-            volatile_entity.update(fields)
+            if not module.check_mode:
+                volatile_entity.update(fields)
             return True
         return False
     except Exception as e:
@@ -158,7 +160,8 @@ def update_entity(old_entity, entity_dict, module):
 
 def delete_entity(entity, module):
     try:
-        entity.delete()
+        if not module.check_mode:
+            entity.delete()
     except Exception as e:
         module.fail_json(msg='Error while deleting {0}: {1}'.format(
             entity.__class__.__name__, str(e)))
