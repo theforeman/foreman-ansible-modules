@@ -44,7 +44,6 @@ options:
         description:
         - Username on Foreman server
         required: true
-        default: true
     password:
         description:
         - Password for user accessing Foreman server
@@ -53,6 +52,7 @@ options:
         description:
         - Verify SSL of the Foreman server
         required: false
+        default: true
     audit_comment:
         description:
         - Content of the audit comment field
@@ -129,10 +129,9 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Provisioning Template inline"
-  local_action:
-      module: foreman_provisioning_template
+  foreman_provisioning_template:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: A New Finish Template
       kind: finish
@@ -150,10 +149,9 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Provisioning Template from a file"
-  local_action:
-      module: foreman_provisioning_template
+  foreman_provisioning_template:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       state: present
@@ -165,10 +163,9 @@ EXAMPLES = '''
 # Due to the module logic, deleting requires a template dummy,
 # either inline or from a file.
 - name: "Delete a Provisioning Template"
-  local_action:
-      module: foreman_provisioning_template
+  foreman_provisioning_template:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: timeywimey_template
       template: |
@@ -178,10 +175,9 @@ EXAMPLES = '''
       state: absent
 
 - name: "Create a Provisioning Template from a file and modify with parameter"
-  local_action:
-      module: foreman_provisioning_template
+  foreman_provisioning_template:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       name: Wibbly Wobbly Template
@@ -194,10 +190,9 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of provisioning templates"
-  local_action:
-      module: foreman_provisioning_template
+  foreman_provisioning_template:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: "{{ item }}"
       state: present

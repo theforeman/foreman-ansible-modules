@@ -67,7 +67,7 @@ EXAMPLES = '''
 - name: "Create katello client activation key"
   katello_activation_key:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Katello Clients"
     organization: "Default Organization"
@@ -75,7 +75,6 @@ EXAMPLES = '''
     content_view: 'client content view'
     subscriptions:
         - name: "Red Hat Enterprise Linux"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

@@ -66,13 +66,12 @@ EXAMPLES = '''
 - name: "Upload my.rpm"
   katello_upload:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     file: "my.rpm"
     repository: "Build RPMs"
     product: "My Product"
     organization: "Default Organization"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

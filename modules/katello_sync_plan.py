@@ -74,7 +74,7 @@ EXAMPLES = '''
 - name: "Create or update weekly RHEL sync plan"
   katello_sync_plan:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Weekly RHEL Sync"
     organization: "Default Organization"
@@ -83,7 +83,6 @@ EXAMPLES = '''
     sync_date: "2017-01-01 00:00:00"
     products:
       - name: 'Red Hat Enterprise Linux Server'
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''

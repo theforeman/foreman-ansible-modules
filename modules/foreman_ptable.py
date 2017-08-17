@@ -44,7 +44,6 @@ options:
         description:
         - Username on Foreman server
         required: true
-        default: true
     password:
         description:
         - Password for user accessing Foreman server
@@ -53,6 +52,7 @@ options:
         description:
         - Verify SSL of the Foreman server
         required: false
+        default: true
     file_name:
         description:
         - |
@@ -112,10 +112,9 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Partition Table inline"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: A New Partition Template
       state: present
@@ -132,10 +131,9 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Partition Template from a file"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       state: present
@@ -145,10 +143,9 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Delete a Partition Template"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       name: timeywimey
       layout: |
@@ -158,10 +155,9 @@ EXAMPLES = '''
       state: absent
 
 - name: "Create a Partition Template from a file and modify with parameter(s)"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: timeywimey_template.erb
       name: Wibbly Wobbly Template
@@ -174,10 +170,9 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of partition templates"
-  local_action:
-      module: foreman_ptable
+  foreman_ptable:
       username: "admin"
-      password: "admin"
+      password: "changeme"
       server_url: "https://foreman.example.com"
       file_name: "{{ item }}"
       state: present

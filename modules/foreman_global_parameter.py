@@ -44,7 +44,6 @@ options:
         description:
         - Username on Foreman server
         required: true
-        default: true
     password:
         description:
         - Password for user accessing Foreman server
@@ -53,6 +52,7 @@ options:
         description:
         - Verify SSL of the Foreman server
         required: false
+        default: true
     name:
         description:
         - Name of the Global Parameter
@@ -73,33 +73,30 @@ options:
 
 EXAMPLES = '''
 - name: "Create a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "42"
     state: present
-  deletegate_to: localhost
 
 - name: "Update a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "43"
     state: latest
-  deletegate_to: localhost
 
 - name: "Delete a Global Parameter"
-  foreman_global_parameter
+  foreman_global_parameter:
     username: "admin"
-    password: "admin"
-    server_url: "https://fakeserver.com"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
     name: "TheAnswer"
     state: absent
-  delegate_to: localhost
 '''
 
 RETURN = ''' # '''

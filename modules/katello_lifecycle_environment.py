@@ -75,7 +75,7 @@ EXAMPLES = '''
   katello_lifecycle_environment:
     username: "admin"
     password: "changeme"
-    server_url: "https://katello.example.com"
+    server_url: "https://foreman.example.com"
     verify_ssl: false
     name: "Production"
     label: "production"

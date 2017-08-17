@@ -54,11 +54,10 @@ EXAMPLES = '''
 - name: "Publish a content view"
   katello_publish:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     content_view: "CV 1"
     organization: "Default Organization"
-  delegate_to: localhost
 '''
 
 RETURN = '''# '''
