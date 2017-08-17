@@ -256,7 +256,7 @@ def main():
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
             state=dict(required=True, choices=['absent', 'present', 'latest']),
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
         mutually_exclusive=[
             ['file_name', 'layout'],
         ],

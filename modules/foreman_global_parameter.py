@@ -150,7 +150,7 @@ def main():
             ['state', 'present', ['value']],
             ['state', 'latest', ['value']],
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
