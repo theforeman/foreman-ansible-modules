@@ -314,7 +314,7 @@ def main():
             operatingsystems=dict(),
             state=dict(required=True, choices=['absent', 'present', 'latest']),
         ),
-        supports_check_mode=True,
+        supports_check_mode=False,
         mutually_exclusive=[
             ['file_name', 'template'],
         ],
