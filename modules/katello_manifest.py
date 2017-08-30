@@ -43,6 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
+        default: True
     organization:
         description:
             - Organization that the manifest is in
@@ -153,7 +154,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             organization=dict(required=True),
             manifest_path=dict(),
             state=dict(required=True, choices=['absent', 'present', 'refreshed']),
