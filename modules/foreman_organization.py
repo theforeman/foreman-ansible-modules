@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2016, Eric D Helms <ericdhelms@gmail.com>
+# (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
 #
 # This file is part of Ansible
 #
@@ -23,7 +24,9 @@ module: foreman_organization
 short_description: Manage Foreman Organization
 description:
     - Manage Foreman Organization
-author: "Eric D Helms (@ehelms)"
+author:
+    - "Eric D Helms (@ehelms)"
+    - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
@@ -44,10 +47,18 @@ options:
         description:
             - Verify SSL of the Foreman server
         required: false
+        default: true
     name:
         description:
             - Name of the Foreman organization
         required: true
+    state:
+        description:
+            - State of the Organization
+        required: true
+        coices:
+            - present
+            - absent
 '''
 
 EXAMPLES = '''
@@ -57,44 +68,39 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My Cool New Organization"
+    state: present
 '''
 
 RETURN = '''# '''
 
 try:
-    from nailgun import entities
-    from nailgun.config import ServerConfig
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        handle_no_nailgun,
+        find_entities,
+        naildown_entity_state,
+    )
+    from nailgun.entities import Organization
+
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
 
-class NailGun(object):
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
+from ansible.module_utils.basic import AnsibleModule
 
-    def organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        updated = False
 
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-        if len(response) == 1:
-            org = response[0]
-        else:
-            org = None
-
-        if org and org.name != name:
-            org = self._entities.Organization(self._server, name=name, id=org.id)
-            org.update()
-            updated = True
-        elif not org:
-            org = self._entities.Organization(self._server, name=name)
-            org.create()
-            updated = True
-
-        return updated
+def sanitize_organization_dict(organization_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+    }
+    result = {}
+    for key, value in name_map.iteritems():
+        if key in organization_dict:
+            result[value] = organization_dict[key]
+    return result
 
 
 def main():
@@ -103,43 +109,45 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            name=dict(required=True, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            name=dict(required=True),
+            state=dict(required=True, choices=['present', 'absent']),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
+    organization_dict = dict(
+        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    server_url = organization_dict.pop('server_url')
+    username = organization_dict.pop('username')
+    password = organization_dict.pop('password')
+    verify_ssl = organization_dict.pop('verify_ssl')
+    state = organization_dict.pop('state')
 
-    # Lets make an connection to the server with username and password
     try:
-        org = entities.Organization(server)
-        org.search()
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
+    ping_server(module)
     try:
-        changed = ng.organization(name)
-        module.exit_json(changed=changed)
+        entities = find_entities(Organization, name=organization_dict['name'])
+        if len(entities) > 0:
+            entity = entities[0]
+        else:
+            entity = None
     except Exception as e:
-        module.fail_json(msg=e)
+        module.fail_json(msg='Failed to find entity: %s ' % e)
 
+    organization_dict = sanitize_organization_dict(organization_dict)
 
-from ansible.module_utils.basic import AnsibleModule
+    changed = naildown_entity_state(Organization, organization_dict, entity, state, module)
+
+    module.exit_json(changed=changed)
+
 
 if __name__ == '__main__':
     main()
