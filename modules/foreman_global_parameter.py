@@ -64,7 +64,7 @@ options:
     state:
         description:
         - State of the Global Parameter
-        required: false
+        required: true
         choices:
         - present
         - lastest
@@ -108,6 +108,7 @@ try:
         Location,
         create_server,
         ping_server,
+        handle_no_nailgun,
         find_entities,
         naildown_entity_state,
     )
@@ -138,9 +139,9 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=True),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
-            value=dict(required=False),
+            value=dict(),
             state=dict(required=True, choices=['present', 'latest', 'absent']),
         ),
         required_if=(
@@ -149,11 +150,8 @@ def main():
         ),
         supports_check_mode=True,
     )
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(
-            msg="""Missing required nailgun module (check docs or install)
-            with: pip install nailgun"""
-        )
+
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     global_parameter_dict = dict(
         [(k, v) for (k, v) in module.params.iteritems() if v is not None])
