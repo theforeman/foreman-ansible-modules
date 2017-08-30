@@ -40,6 +40,10 @@ options:
         description:
             - Password for user accessing Foreman server
         required: true
+    verify_ssl:
+        description:
+            - Verify SSL of the Foreman server
+        default: true
     repository:
         description:
             - Name of the repository to sync
@@ -131,12 +135,12 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            product=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
-            repository=dict(required=False, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            product=dict(required=True),
+            organization=dict(required=True),
+            repository=dict(),
         ),
-        supports_check_mode=True
+        supports_check_mode=False,
     )
 
     if not HAS_NAILGUN_PACKAGE:
