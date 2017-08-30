@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        default: false
+        default: true
     name:
         description:
             - Name of the activation key
@@ -193,14 +193,14 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
-            name=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
-            lifecycle_environment=dict(no_log=False),
-            content_view=dict(no_log=False),
-            subscriptions=dict(no_log=False, type='list'),
+            verify_ssl=dict(type='bool', default=True),
+            name=dict(required=True),
+            organization=dict(required=True),
+            lifecycle_environment=dict(),
+            content_view=dict(),
+            subscriptions=dict(type='list'),
         ),
-        supports_check_mode=True
+        supports_check_mode=False,
     )
 
     if not HAS_NAILGUN_PACKAGE:
