@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        default: false
+        default: true
     name:
         description:
             - Name of the repository set
@@ -151,7 +151,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             product=dict(),
             organization=dict(required=True),
