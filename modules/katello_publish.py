@@ -40,6 +40,10 @@ options:
         description:
             - Password for user accessing Foreman server
         required: true
+    verify_ssl:
+        description:
+            - Verify SSL of the Foreman server
+        default: true
     content_view:
         description:
             - Name of the content view to publish
@@ -110,11 +114,11 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            content_view=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            content_view=dict(required=True),
+            organization=dict(required=True),
         ),
-        supports_check_mode=True
+        supports_check_mode=False,
     )
 
     if not HAS_NAILGUN_PACKAGE:
