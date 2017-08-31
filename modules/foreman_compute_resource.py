@@ -61,7 +61,7 @@ options:
     description: compute resource presence
     required: false
     default: present
-    choices: ["present", "absent", "latest"]
+    choices: ["present", "absent", "present_with_defaults"]
 notes:
 - Nailed down version of https://github.com/Nosmoht/python-foreman (@Nosmoht). Requires nailgun
 version_added: "2.0"
@@ -166,7 +166,7 @@ def main(module):
     data['provider'] = provider
     provider_params = get_provider_params(provider=provider)
 
-    if state in ['present', 'latest']:
+    if state in ['present', 'present_with_defaults']:
         if not provider_params and not compute_resource:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
@@ -197,7 +197,7 @@ if __name__ == '__main__':
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            state=dict(type='str', default='present', choices=['present', 'absent', 'latest']),
+            state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
             # provider-params
             url=dict(type='str'),
             display_type=dict(type='str'),

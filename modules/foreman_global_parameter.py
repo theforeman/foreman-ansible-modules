@@ -79,7 +79,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "42"
-    state: present
+    state: present_with_defaults
 
 - name: "Update a Global Parameter"
   foreman_global_parameter:
@@ -88,7 +88,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "TheAnswer"
     value: "43"
-    state: latest
+    state: present
 
 - name: "Delete a Global Parameter"
   foreman_global_parameter:
@@ -142,11 +142,11 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             value=dict(),
-            state=dict(required=True, choices=['present', 'latest', 'absent']),
+            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=(
+            ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
-            ['state', 'latest', ['value']],
         ),
         supports_check_mode=True,
     )
