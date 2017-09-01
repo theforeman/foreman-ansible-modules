@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c)Matthias Dellweg & Bernhard Hopfenmüller 2017
+# (c) 2017 Matthias Dellweg & Bernhard Hopfenmüller (ATIX AG)
 #
 # This file is part of Ansible
 #
@@ -31,8 +31,8 @@ description:
     - "Uses https://github.com/SatelliteQE/nailgun"
 version_added: "2.4"
 author:
-- "Bernhard Hopfenmueller(@Fobhep)"
-- "Matthias Dellweg (@mdellweg)"
+- "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
+- "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
     - nailgun >= 0.29.0
 options:
