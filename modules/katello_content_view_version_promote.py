@@ -112,7 +112,8 @@ def content_view_promote(module, name, organization, to_environment, from_enviro
     content_view_version = find_content_view_version(module, content_view, environment=from_environment, version=version)
 
     if to_environment.id not in map(lambda environment: environment.id, content_view_version.environment):
-        content_view_version.promote(data={'environment_ids': [to_environment.id]})
+        if not module.check_mode:
+            content_view_version.promote(data={'environment_ids': [to_environment.id]})
         changed = True
 
     return changed
@@ -132,7 +133,8 @@ def main():
             to_environment=dict(required=True),
         ),
         required_one_of=[['from_environment', 'version']],
-        mutually_exclusive=[['from_environment', 'version']]
+        mutually_exclusive=[['from_environment', 'version']],
+        supports_check_mode=True,
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
