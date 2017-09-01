@@ -65,7 +65,7 @@ options:
 
 EXAMPLES = '''
 - name: "Promote the 1.0 content view version to Library"
-katello_content_view_version_promote:
+  katello_content_view_version_promote:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
