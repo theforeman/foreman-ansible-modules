@@ -78,6 +78,8 @@ options:
             Possible sources are, ordererd by preference:
             The "name" parameter, config header (inline or in a file),
             basename of a file.
+            The special name "*" (only possible as parameter) is used
+            to perform bulk actions (modify, delete) on all existing partition tables.
         required: false
     organizations:
         description:
@@ -183,6 +185,29 @@ EXAMPLES = '''
       with_fileglob:
        - "./arsenal_templates/*.erb"
 
+# with name set to "*" bulk actions can be performed
+- name: "Delete *ALL* partition tables"
+  local_action:
+      module: foreman_ptable
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: absent
+
+- name: "Assign all partition tables to the same organization(s)"
+  local_action:
+      module: foreman_ptable
+      username: "admin"
+      password: "admin"
+      server_url: "https://foreman.example.com"
+      name: "*"
+      state: latest
+      organizations:
+      - DALEK INC
+      - sky.net
+      - Doc Brown's garage
+
 '''
 
 RETURN = ''' # '''
@@ -260,6 +285,11 @@ def main():
         ],
 
     )
+    # We do not want a layout text for bulk operations
+    if module.params['name'] == '*':
+        if module.params['file_name'] or module.params['layout']:
+            module.fail_json(
+                msg="Neither file_name nor layout allowed if 'name: *'!")
 
     if not HAS_NAILGUN_PACKAGE:
         module.fail_json(
@@ -276,13 +306,18 @@ def main():
     state = ptable_dict.pop('state')
     file_name = ptable_dict.pop('file_name', None)
 
-    if file_name:
+    if file_name or 'layout' in ptable_dict:
+        if file_name:
+            parsed_dict = parse_template_from_file(file_name, module)
+        else:
+            parsed_dict = parse_template(ptable_dict['layout'], module)
+        # sanitize name from template data
+        # The following condition can actually be hit, when someone is trying to import a
+        # template with the name set to '*'.
+        # Besides not being sensible, this would go horribly wrong in this module.
+        if 'name' in parsed_dict and parsed_dict['name'] == '*':
+            module.fail_json(msg="Cannot use '*' as a partition table name!")
         # module params are priorized
-        parsed_dict = parse_template_from_file(file_name, module)
-        parsed_dict.update(ptable_dict)
-        ptable_dict = parsed_dict
-    elif ptable_dict['layout']:
-        parsed_dict = parse_template(ptable_dict['layout'], module)
         parsed_dict.update(ptable_dict)
         ptable_dict = parsed_dict
 
@@ -295,18 +330,29 @@ def main():
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
+    name = ptable_dict['name']
+
+    affects_multiple = name == '*'
+    # sanitize user input, filter unuseful configuration combinations with 'name: *'
+    if affects_multiple:
+        if state == 'present':
+            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
+        if state == 'absent':
+            if ptable_dict.keys() != ['name']:
+                module.fail_json(msg="When deleting all partition tables, there is no need to specify further parameters.")
+
     try:
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg='Failed to connect to Foreman server: %s ' % e)
 
     ping_server(module)
+
     try:
-        entities = find_entities(PartitionTable, name=ptable_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
+        if affects_multiple:
+            entities = find_entities(PartitionTable)
         else:
-            entity = None
+            entities = find_entities(PartitionTable, name=ptable_dict['name'])
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
@@ -322,7 +368,19 @@ def main():
 
     ptable_dict = sanitize_ptable_dict(ptable_dict)
 
-    changed = naildown_entity_state(PartitionTable, ptable_dict, entity, state, module)
+    changed = False
+    if not affects_multiple:
+        if len(entities) == 0:
+            entity = None
+        else:
+            entity = entities[0]
+        changed = naildown_entity_state(
+            PartitionTable, ptable_dict, entity, state, module)
+    else:
+        ptable_dict.pop('name')
+        for entity in entities:
+            changed |= naildown_entity_state(
+                PartitionTable, ptable_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
