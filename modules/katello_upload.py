@@ -94,8 +94,12 @@ class NailGun(object):
 
     def upload(self, src, repository, product, organization):
         repo = self.find_repository(repository, product, organization)
-        with open(src) as content:
-            repo.upload_content(files={'content': content})
+        content_upload = self._entities.ContentUpload(self._server, repository=repo)
+        if hasattr(content_upload, 'upload'):
+            content_upload.upload(src)
+        else:
+            with open(src) as content:
+                repo.upload_content(files={'content': content})
 
     def find_organization(self, name, **params):
         org = self._entities.Organization(self._server, name=name, **params)
