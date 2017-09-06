@@ -44,7 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         required: false
-    file:
+    src:
         description:
             - File to upload
         required: true
@@ -68,7 +68,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    file: "my.rpm"
+    src: "my.rpm"
     repository: "Build RPMs"
     product: "My Product"
     organization: "Default Organization"
@@ -92,9 +92,9 @@ class NailGun(object):
         self._module = module
         entity_mixins.TASK_TIMEOUT = 1000
 
-    def upload(self, file, repository, product, organization):
+    def upload(self, src, repository, product, organization):
         repo = self.find_repository(repository, product, organization)
-        with open(file) as content:
+        with open(src) as content:
             repo.upload_content(files={'content': content})
 
     def find_organization(self, name, **params):
@@ -138,7 +138,7 @@ def main():
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(required=False, type='bool', default=False),
-            file=dict(required=True, no_log=True),
+            src=dict(required=True, no_log=True, aliases=['file']),
             repository=dict(required=True, no_log=False),
             product=dict(required=True, no_log=False),
             organization=dict(required=True, no_log=False),
@@ -152,7 +152,7 @@ def main():
     server_url = module.params['server_url']
     username = module.params['username']
     password = module.params['password']
-    file = module.params['file']
+    src = module.params['src']
     repository = module.params['repository']
     product = module.params['product']
     organization = module.params['organization']
@@ -173,7 +173,7 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        ng.upload(file, repository, product, organization)
+        ng.upload(src, repository, product, organization)
     except Exception as e:
         module.fail_json(msg=to_native(e))
 
