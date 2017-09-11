@@ -56,7 +56,7 @@ options:
         description:
             - State of the Organization
         required: true
-        coices:
+        choices:
             - present
             - absent
 '''
