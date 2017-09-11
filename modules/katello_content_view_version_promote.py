@@ -61,6 +61,14 @@ options:
         description:
             - The lifecycle environments to add to the content view version
         required: true
+    force:
+        description:
+            - Force content view promotion and bypass lifecycle environment restriction
+        default: false
+    force_yum_metadata_regeneration:
+        description:
+            - Force metadata regeneration on the repositories in the content view version
+
 '''
 
 EXAMPLES = '''
@@ -101,20 +109,29 @@ except:
     HAS_NAILGUN_PACKAGE = False
 
 
-def content_view_promote(module, name, organization, to_environment, from_environment=None, version=None):
+def content_view_promote(module, name, organization, to_environment, **kwargs):
     changed = False
 
     organization = find_organization(module, organization)
     content_view = find_content_view(module, name=name, organization=organization)
-    if from_environment is not None:
-        from_environment = find_lifecycle_environment(module, name=from_environment, organization=organization)
+    if kwargs['from_environment'] is not None:
+        kwargs['from_environment'] = find_lifecycle_environment(module, name=kwargs['from_environment'], organization=organization)
     to_environment = find_lifecycle_environment(module, name=to_environment, organization=organization)
-    content_view_version = find_content_view_version(module, content_view, environment=from_environment, version=version)
+    content_view_version = find_content_view_version(module, content_view, environment=kwargs.pop('from_environment'), version=kwargs.pop('version'))
 
-    if to_environment.id not in map(lambda environment: environment.id, content_view_version.environment):
-        if not module.check_mode:
-            content_view_version.promote(data={'environment_ids': [to_environment.id]})
-        changed = True
+    request_data = {'environment_ids': [to_environment.id]}
+    request_data.update({k: v for k, v in kwargs.iteritems() if v is not None})
+
+    current_environment_ids = map(lambda environment: environment.id, content_view_version.environment)
+
+    if to_environment.id not in current_environment_ids:
+        if to_environment.prior.id in current_environment_ids or kwargs['force']:
+            if not module.check_mode:
+                content_view_version.promote(data=request_data)
+            changed = True
+        elif to_environment.prior.id not in current_environment_ids:
+            module.fail_json(msg="Cannot promote directly to {} without having already promoted to {} without the force parameter"
+                             .format(to_environment.name, to_environment.prior.read().name))
 
     return changed
 
@@ -131,6 +148,8 @@ def main():
             from_environment=dict(),
             version=dict(),
             to_environment=dict(required=True),
+            force=dict(type='bool'),
+            force_yum_metadata_regeneration=dict(type='bool')
         ),
         required_one_of=[['from_environment', 'version']],
         mutually_exclusive=[['from_environment', 'version']],
@@ -148,12 +167,15 @@ def main():
     from_environment = module.params['from_environment']
     version = module.params['version']
     to_environment = module.params['to_environment']
+    force = module.params['force']
+    force_yum_metadata_regeneration = module.params['force_yum_metadata_regeneration']
 
     create_server(server_url, (username, password), verify_ssl)
     ping_server(module)
 
     try:
-        changed = content_view_promote(module, name, organization, to_environment, from_environment=from_environment, version=version)
+        changed = content_view_promote(module, name, organization, to_environment, from_environment=from_environment, version=version, force=force,
+                                       force_yum_metadata_regeneration=force_yum_metadata_regeneration)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)

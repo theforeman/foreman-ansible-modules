@@ -11,7 +11,7 @@
       organization: "Default Organization"
       version: "1.0"
       to_environment: "Library"
-  - name: "Promote the client content view from Library to Development"
+  - name: "Promote the client content view from Library to Testing (skip Development, expect error)"
     katello_content_view_version_promote:
       username: "admin"
       password: "changeme"
@@ -20,4 +20,25 @@
       name: "Fedora CV"
       organization: "Default Organization"
       from_environment: "Library"
-      to_environment: "Development"
+      to_environment: "Testing"
+  - name: "Force promote the client content view from Library to Testing (skip Development)"
+    katello_content_view_version_promote:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      verify_ssl: false
+      name: "Fedora CV"
+      organization: "Default Organization"
+      from_environment: "Library"
+      to_environment: "Testing"
+      force: true
+  - name: "Promote the client content view from Testing to Production"
+    katello_content_view_version_promote:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      verify_ssl: false
+      name: "Fedora CV"
+      organization: "Default Organization"
+      from_environment: "Testing"
+      to_environment: "Production"
