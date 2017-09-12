@@ -241,10 +241,12 @@ from ansible.module_utils._text import to_bytes, to_native
 def sanitize_ptable_dict(ptable_dict):
     # This is the only true source for names (and conversions thereof)
     name_map = {
+        'template': 'layout', # the parse_template_* methods stores the "layout" in "template"
         'layout': 'layout',
         'locations': 'location',
         'name': 'name',
         'organizations': 'organization',
+        'oses': 'os_family', # the foreman community templates are using oses instead of os_family (which is wrong?)
         'os_family': 'os_family',
     }
     result = {}
