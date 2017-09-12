@@ -52,6 +52,10 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    content_type:
+        description:
+            - The content type of the repository (e.g. yum)
+        required: true
     url:
         description:
             - Repository URL to sync from
