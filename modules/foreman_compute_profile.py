@@ -20,9 +20,9 @@
 DOCUMENTATION = '''
 ---
 module: foreman_compute_profile
-short_description: Manage Foreman Compute Profiles using Foreman API v2
+short_description: Manage Foreman Compute Profiles using Foreman API
 description:
-- Create and delete Foreman Compute Profiles using Foreman API v2
+- Create and delete Foreman Compute Profiles using Foreman API
 options:
   name:
     description: compute profile name
@@ -70,13 +70,13 @@ try:
     import nailgun.entity_mixins
     import nailgun.entities
     import nailgun.entity_fields
+    import ansible.module_utils.ansible_nailgun_cement as cement
     HAS_NAILGUN_PACKAGE = True
 
 except:
     HAS_NAILGUN_PACKAGE = False
 
 from ansible.module_utils.basic import *
-import ansible.module_utils.ansible_nailgun_cement as cement
 
 
 def main(module):

@@ -87,6 +87,10 @@ class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
         return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
 
 
+class ComputeProfile(ComputeProfile, entity_mixins.EntitySearchMixin):
+    pass
+
+
 # Connection helper
 def create_server(server_url, auth, verify_ssl):
     entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
@@ -248,7 +252,7 @@ def find_compute_resource(module, name, failsafe=False):
 
 def find_compute_profile(module, name, failsafe=False):
     compute_profile = ComputeProfile(name=name).search(set(), {'search': 'name="{}"'.format(name)})
-    return handle_find_response(module, response, message="No compute profile found for %s" % name, failsafe=failsafe)
+    return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
 
 
 def find_lifecycle_environment(module, name, organization, failsafe=False):
