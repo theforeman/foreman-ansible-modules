@@ -132,14 +132,16 @@ class NailGun(object):
         if len(response) == 1:
             content_view = response[0]
         elif len(response) == 0:
-            content_view = content_view.create()
+            if not self.check_mode():
+                content_view = content_view.create()
             updated = True
 
         repositories = self.find_repositories(repositories, organization)
 
         if set(map(lambda r: r.id, repositories)) != set(map(lambda r: r.id, content_view.repository)):
-            content_view.repository = repositories
-            content_view.update(['repository'])
+            if not self.check_mode():
+                content_view.repository = repositories
+                content_view.update(['repository'])
             updated = True
 
         return updated
@@ -156,7 +158,7 @@ def main():
             organization=dict(required=True),
             repositories=dict(type='list'),
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     if not HAS_NAILGUN_PACKAGE:
