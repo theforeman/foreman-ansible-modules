@@ -4,8 +4,6 @@
 # (c) Andrew Kofink (Red Hat) 2017
 
 import sys
-import re
-import yaml
 
 from nailgun.config import ServerConfig
 from nailgun.entities import (
@@ -214,33 +212,6 @@ def delete_entity(entity, module):
     return True
 
 
-# Helper for templates
-def parse_template(template_content, module):
-    try:
-        data = re.match(
-            '.*\s*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
-        if data:
-            datalist = data.group(1)
-            if datalist[-1] == '-':
-                datalist = datalist[:-1]
-            template_dict = yaml.safe_load(datalist)
-        # No metadata, import template anyway
-        template_dict['template'] = template_content
-    except Exception as e:
-        module.fail_json(msg='Error while parsing template: ' + str(e))
-    return template_dict
-
-
-def parse_template_from_file(file_name, module):
-    try:
-        with open(file_name) as input_file:
-            template_content = input_file.read()
-            template_dict = parse_template(template_content, module)
-    except Exception as e:
-        module.fail_json(msg='Error while reading template file: ' + str(e))
-    return template_dict
-
-
 def find_content_view(module, name, organization, failsafe=False):
     content_view = ContentView(name=name, organization=organization)
     return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
@@ -305,11 +276,6 @@ def handle_find_response(module, response, message=None, failsafe=False):
         return None
     else:
         module.fail_json(msg=message)
-
-
-def handle_no_nailgun(module, has_nailgun):
-    if not has_nailgun:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun)")
 
 
 def current_subscription_manifest(module, organization):

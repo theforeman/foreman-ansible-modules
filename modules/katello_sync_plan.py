@@ -87,12 +87,17 @@ EXAMPLES = '''
 
 RETURN = '''# '''
 
+from datetime import datetime
+
 try:
     from nailgun import entities
     from nailgun.config import ServerConfig
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 class NailGun(object):
@@ -189,8 +194,7 @@ def main():
         supports_check_mode=True
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -223,8 +227,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-from ansible.module_utils.basic import AnsibleModule
-from datetime import datetime
 
 if __name__ == '__main__':
     main()

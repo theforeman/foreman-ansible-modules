@@ -226,8 +226,6 @@ try:
         find_entities,
         find_entities_by_name,
         naildown_entity_state,
-        parse_template,
-        parse_template_from_file,
     )
     HAS_NAILGUN_PACKAGE = True
 except ImportError:
@@ -236,6 +234,11 @@ except ImportError:
 import os
 from ansible.module_utils.basic import AnsibleModule, get_module_path
 from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils.foreman_helper import (
+    handle_no_nailgun,
+    parse_template,
+    parse_template_from_file,
+)
 
 
 def sanitize_ptable_dict(ptable_dict):
@@ -293,10 +296,7 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor layout allowed if 'name: *'!")
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(
-            msg='Missing required nailgun module'
-                '(check docs or install with: pip install nailgun')
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     ptable_dict = dict(
         [(k, v) for (k, v) in module.params.iteritems() if v is not None])

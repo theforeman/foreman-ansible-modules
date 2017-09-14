@@ -101,6 +101,7 @@ except:
     HAS_NAILGUN_PACKAGE = False
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def get_provider_params(provider):
@@ -132,7 +133,7 @@ def get_provider_params(provider):
 
 
 def main(module):
-    cement.handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     name = module.params.get('name')
     state = module.params.get('state')
@@ -181,6 +182,7 @@ def main(module):
     changed = cement.naildown_entity_state(provider_params.get('class'), data, compute_resource, state, module)
 
     return changed
+
 
 if __name__ == '__main__':
     module = AnsibleModule(

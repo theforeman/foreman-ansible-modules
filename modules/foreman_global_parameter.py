@@ -108,7 +108,6 @@ try:
         Location,
         create_server,
         ping_server,
-        handle_no_nailgun,
         find_entities,
         naildown_entity_state,
     )
@@ -118,6 +117,7 @@ except:
     HAS_NAILGUN_PACKAGE = False
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def sanitize_global_parameter_dict(global_parameter_dict):

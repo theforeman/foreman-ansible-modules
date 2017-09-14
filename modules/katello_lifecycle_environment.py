@@ -91,17 +91,19 @@ try:
     from nailgun.entities import (
         LifecycleEnvironment
     )
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        find_lifecycle_environment,
+        update_fields,
+    )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
-from ansible.module_utils.ansible_nailgun_cement import (
-    create_server,
-    ping_server,
-    find_organization,
-    find_lifecycle_environment,
-    update_fields,
-)
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state, label=None, description=None, prior=None):
@@ -171,9 +173,7 @@ def main():
         supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install "
-                             "with: pip install nailgun)")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -196,8 +196,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

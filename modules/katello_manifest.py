@@ -87,17 +87,20 @@ try:
     from nailgun.entity_mixins import (
         TaskFailedError
     )
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        current_subscription_manifest,
+        set_task_timeout,
+    )
+
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
-from ansible.module_utils.ansible_nailgun_cement import (
-    create_server,
-    ping_server,
-    find_organization,
-    current_subscription_manifest,
-    set_task_timeout,
-)
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state=None, manifest_path=None):
@@ -170,8 +173,7 @@ def main():
         supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     set_task_timeout(300000)  # 5 minutes
 
@@ -195,7 +197,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

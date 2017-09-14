@@ -96,7 +96,6 @@ RETURN = '''# '''
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
-        handle_no_nailgun,
         find_organization,
         find_product,
         find_repository_set,
@@ -105,6 +104,9 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def get_desired_repos(desired_substitutions, available_repos):
@@ -184,8 +186,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

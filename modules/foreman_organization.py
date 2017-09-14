@@ -77,7 +77,6 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
-        handle_no_nailgun,
         find_entities,
         naildown_entity_state,
     )
@@ -89,6 +88,7 @@ except:
 
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def sanitize_organization_dict(organization_dict):
