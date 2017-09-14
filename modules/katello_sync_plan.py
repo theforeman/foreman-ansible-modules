@@ -149,22 +149,24 @@ class NailGun(object):
         if len(response) == 1:
             response[0].sync_date = datetime.strptime(response[0].sync_date, '%Y/%m/%d %H:%M:%S %Z')
             updated, sync_plan = self.update_fields(sync_plan, response[0], ['interval', 'enabled', 'sync_date'])
-            if updated:
+            if updated and not self.check_mode():
                 sync_plan.update()
         elif len(response) == 0:
-            sync_plan = sync_plan.create()
+            if not self.check_mode():
+                sync_plan = sync_plan.create()
             updated = True
 
         desired_product_ids = map(lambda p: p.id, self.find_products(products, organization))
         current_product_ids = map(lambda p: p.id, sync_plan.product)
 
         if set(desired_product_ids) != set(current_product_ids):
-            product_ids_to_add = set(desired_product_ids) - set(current_product_ids)
-            if len(product_ids_to_add) > 0:
-                sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
-            product_ids_to_remove = set(current_product_ids) - set(desired_product_ids)
-            if len(product_ids_to_remove) > 0:
-                sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
+            if not self.check_mode():
+                product_ids_to_add = set(desired_product_ids) - set(current_product_ids)
+                if len(product_ids_to_add) > 0:
+                    sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
+                product_ids_to_remove = set(current_product_ids) - set(desired_product_ids)
+                if len(product_ids_to_remove) > 0:
+                    sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
             updated = True
 
         return updated
