@@ -163,12 +163,14 @@ class NailGun(object):
         response = activation_key.search({'name', 'organization'})
 
         if len(response) == 0:
-            activation_key = activation_key.create()
+            if not self.check_mode():
+                activation_key = activation_key.create()
             updated = True
         elif len(response) == 1:
             updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view'])
             if updated:
-                activation_key.update()
+                if not self.check_mode():
+                    activation_key.update()
 
         if subscriptions is None:
             subscriptions = []
@@ -178,10 +180,11 @@ class NailGun(object):
         current_subscription_ids = map(lambda s: s.id, current_subscriptions)
 
         if set(desired_subscription_ids) != set(current_subscription_ids):
-            for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
-                activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-            for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
-                activation_key.remove_subscriptions(data={'subscription_id': subscription_id})
+            if not self.check_mode():
+                for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
+                    activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
+                for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
+                    activation_key.remove_subscriptions(data={'subscription_id': subscription_id})
             updated = True
 
         return updated
@@ -200,7 +203,7 @@ def main():
             content_view=dict(),
             subscriptions=dict(type='list'),
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     if not HAS_NAILGUN_PACKAGE:
