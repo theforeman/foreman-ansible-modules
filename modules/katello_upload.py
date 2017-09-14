@@ -178,7 +178,7 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        if not module.check_mode():
+        if not module.check_mode:
             ng.upload(src, repository, product, organization)
     except Exception as e:
         module.fail_json(msg=to_native(e))

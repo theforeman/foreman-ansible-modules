@@ -99,12 +99,12 @@ class NailGun(object):
 
         if product and product.name != name:
             product = self._entities.Product(self._server, name=name, id=product.id)
-            if not self.check_mode():
+            if not self.check_mode:
                 product.update()
             updated = True
         elif not product:
             product = self._entities.Product(self._server, name=name, organization=org)
-            if not self.check_mode():
+            if not self.check_mode:
                 product.create()
             updated = True
 

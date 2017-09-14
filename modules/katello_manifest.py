@@ -115,7 +115,7 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
     manifest_present = current_manifest is not None
 
     if organization.redhat_repository_url != redhat_repository_url:
-        if not module.check_mode():
+        if not module.check_mode:
             organization.redhat_repository_url = redhat_repository_url
             organization.update({'redhat_repository_url'})
         changed = True
@@ -126,7 +126,7 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
                 files = {'content': (manifest_path, manifest_file, 'application/zip')}
                 data = {'organization_id': organization.id, 'repository_url': redhat_repository_url}
                 headers = {'content_type': 'multipart/form-data', 'multipart': 'true'}
-                if not module.check_mode():
+                if not module.check_mode:
                     Subscription().upload(data=data, files=files, headers=headers)
                 changed = True
         except IOError as e:
@@ -139,14 +139,14 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
             else:
                 module.fail_json(msg="Upload of the mainfest failed: %s" % e)
     elif state == 'absent' and manifest_present:
-        if not module.check_mode():
+        if not module.check_mode:
             Subscription().delete_manifest(data={'organization_id': organization.id})
         changed = True
     elif state == 'refreshed':
         if not manifest_present:
             module.fail_json(msg="No manifest found to refresh.")
         else:
-            if not module.check_mode():
+            if not module.check_mode:
                 Subscription().refresh_manifest(data={'organization_id': organization.id})
             changed = True
     return changed

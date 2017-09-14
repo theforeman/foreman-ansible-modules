@@ -132,14 +132,14 @@ class NailGun(object):
         if len(response) == 1:
             content_view = response[0]
         elif len(response) == 0:
-            if not self.check_mode():
+            if not self.check_mode:
                 content_view = content_view.create()
             updated = True
 
         repositories = self.find_repositories(repositories, organization)
 
         if set(map(lambda r: r.id, repositories)) != set(map(lambda r: r.id, content_view.repository)):
-            if not self.check_mode():
+            if not self.check_mode:
                 content_view.repository = repositories
                 content_view.update(['repository'])
             updated = True

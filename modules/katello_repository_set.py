@@ -135,13 +135,13 @@ def repository_set(module, name, organization, product, state, repositories=[]):
     if state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
             repo_to_enable = (r for r in available_repos if r['repo_name'] == repo).next()
-            if not module.check_mode():
+            if not module.check_mode:
                 repo_set.enable(data=repo_to_enable['substitutions'])
             changed = True
     elif state == 'disabled':
         for repo in current_repo_names & desired_repo_names:
             repo_to_disable = (r for r in available_repos if r['repo_name'] == repo).next()
-            if not module.check_mode():
+            if not module.check_mode:
                 repo_set.disable(data=repo_to_disable['substitutions'])
             changed = True
     return changed

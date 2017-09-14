@@ -139,16 +139,16 @@ def lifecycle_environment(module, name, organization, state, label=None, descrip
         if current_environment is not None:
             (needs_update, le) = update_fields(desired_environment, current_environment, fields)
             if needs_update:
-                if not module.check_mode():
+                if not module.check_mode:
                     le.update(fields)
                 changed = True
         else:
             desired_environment.prior = find_prior(module, "Library", organization) if prior is None else prior
-            if not module.check_mode():
+            if not module.check_mode:
                 desired_environment.create()
             changed = True
     elif current_environment is not None:
-        if not module.check_mode():
+        if not module.check_mode:
             current_environment.delete()
         changed = True
     return changed
