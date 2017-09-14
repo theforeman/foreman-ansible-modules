@@ -135,12 +135,14 @@ def repository_set(module, name, organization, product, state, repositories=[]):
     if state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
             repo_to_enable = (r for r in available_repos if r['repo_name'] == repo).next()
-            repo_set.enable(data=repo_to_enable['substitutions'])
+            if not module.check_mode():
+                repo_set.enable(data=repo_to_enable['substitutions'])
             changed = True
     elif state == 'disabled':
         for repo in current_repo_names & desired_repo_names:
             repo_to_disable = (r for r in available_repos if r['repo_name'] == repo).next()
-            repo_set.disable(data=repo_to_disable['substitutions'])
+            if not module.check_mode():
+                repo_set.disable(data=repo_to_disable['substitutions'])
             changed = True
     return changed
 
@@ -157,7 +159,8 @@ def main():
             organization=dict(required=True),
             repositories=dict(required=True, type='list'),
             state=dict(required=True, choices=['disabled', 'enabled']),
-        )
+        ),
+        supports_check_mode=True,
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
