@@ -99,11 +99,13 @@ class NailGun(object):
 
         if product and product.name != name:
             product = self._entities.Product(self._server, name=name, id=product.id)
-            product.update()
+            if not self.check_mode():
+                product.update()
             updated = True
         elif not product:
             product = self._entities.Product(self._server, name=name, organization=org)
-            product.create()
+            if not self.check_mode():
+                product.create()
             updated = True
 
         return updated
@@ -119,7 +121,7 @@ def main():
             name=dict(required=True),
             organization=dict(required=True),
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     if not HAS_NAILGUN_PACKAGE:
