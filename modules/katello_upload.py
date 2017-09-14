@@ -148,7 +148,7 @@ def main():
             product=dict(required=True),
             organization=dict(required=True),
         ),
-        supports_check_mode=False,
+        supports_check_mode=True,
     )
 
     if not HAS_NAILGUN_PACKAGE:
@@ -178,7 +178,8 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        ng.upload(src, repository, product, organization)
+        if not module.check_mode():
+            ng.upload(src, repository, product, organization)
     except Exception as e:
         module.fail_json(msg=to_native(e))
 
