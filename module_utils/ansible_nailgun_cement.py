@@ -229,7 +229,7 @@ def parse_template(template_content, module):
             datalist = data.group(1)
             if datalist[-1] == '-':
                 datalist = datalist[:-1]
-            template_dict = yaml.load(datalist)
+            template_dict = yaml.safe_load(datalist)
         # No metadata, import template anyway
         template_dict['template'] = template_content
     except Exception as e:
