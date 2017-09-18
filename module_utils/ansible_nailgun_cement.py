@@ -10,6 +10,8 @@ import yaml
 from nailgun.config import ServerConfig
 from nailgun.entities import (
     CommonParameter,
+    ContentView,
+    ContentViewVersion,
     LifecycleEnvironment,
     Location,
     Organization,
@@ -243,6 +245,22 @@ def parse_template_from_file(file_name, module):
     except Exception as e:
         module.fail_json(msg='Error while reading template file: ' + str(e))
     return template_dict
+
+
+def find_content_view(module, name, organization, failsafe=False):
+    content_view = ContentView(name=name, organization=organization)
+    return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
+
+
+def find_content_view_version(module, content_view, environment=None, version=None, failsafe=False):
+    if environment is not None:
+        response = ContentViewVersion(content_view=content_view).search(['content_view'], {'environment_id': environment.id})
+        return handle_find_response(module, response, message="No content view version found on content view {} promoted to environment {}".
+                                    format(content_view.name, environment.name), failsafe=failsafe)
+    elif version is not None:
+        response = ContentViewVersion(content_view=content_view, version=version).search()
+        return handle_find_response(module, response, message="No content view version found on content view {} for version {}".
+                                    format(content_view.name, version), failsafe=failsafe)
 
 
 def find_organization(module, name, failsafe=False):
