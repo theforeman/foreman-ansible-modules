@@ -110,11 +110,11 @@ class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
 
 # Connection helper
 def create_server(server_url, auth, verify_ssl):
-    ServerConfig(
+    entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
         url=server_url,
         auth=auth,
         verify=verify_ssl,
-    ).save()
+    )
 
 
 # Prerequisite: create_server
