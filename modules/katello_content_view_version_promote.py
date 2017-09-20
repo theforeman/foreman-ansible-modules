@@ -43,6 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
+        default: true
     name:
         description:
             - Name of the Katello content view
@@ -142,7 +143,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
             from_environment=dict(),
