@@ -206,6 +206,7 @@ if __name__ == '__main__':
         required_if=(
             ['state', 'present', ['provider']],
         ),
+        supports_check_mode=True,
     )
     result = main(module)
     module.exit_json(changed=result)
