@@ -66,27 +66,32 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 try:
-    from nailgun.config import ServerConfig
-    import nailgun.entity_mixins
     import nailgun.entities
-    import nailgun.entity_fields
     import ansible.module_utils.ansible_nailgun_cement as cement
     HAS_NAILGUN_PACKAGE = True
 
 except:
     HAS_NAILGUN_PACKAGE = False
 
-from ansible.module_utils.basic import *
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
+
+
+def sanitize_compute_profile_dict(entity_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+    }
+    result = {}
+    for key, value in name_map.iteritems():
+        if key in entity_dict:
+            result[value] = entity_dict[key]
+    return result
 
 
 def main(module):
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(
-            msg="""Missing required nailgun module (check docs or install)
-            with: pip install nailgun"""
-        )
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    name = module.params.get('name')
     updated_name = module.params.get('updated_name')
     state = module.params.get('state')
 
@@ -99,7 +104,7 @@ def main(module):
     cement.ping_server(module)
 
     data = {
-        'name': name
+        'name': module.params.get('name')
     }
 
     compute_profile = cement.find_compute_profile(module, name=data.get('name'), failsafe=True)
@@ -107,23 +112,25 @@ def main(module):
     if state == 'latest':
         data['name'] = updated_name
 
+    data = sanitize_compute_profile_dict(data)
+
     changed = cement.naildown_entity_state(nailgun.entities.ComputeProfile, data, compute_profile, state, module)
 
-    return changed, compute_profile
+    return changed
 
 
 if __name__ == '__main__':
     module = AnsibleModule(
         argument_spec=dict(
-            name=dict(type='str', required=True),
-            updated_name=dict(type='str'),
-            server_url=dict(required=True, type='str'),
-            username=dict(required=True, type='str'),
-            password=dict(required=True, no_log=True, type='str'),
+            name=dict(required=True),
+            updated_name=dict(),
+            server_url=dict(required=True),
+            username=dict(required=True),
+            password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            state=dict(type='str', default='present', choices=['present', 'absent', 'latest']),
+            state=dict(default='present', choices=['present', 'absent', 'latest']),
         ),
         required_if=(['state', 'latest', ['updated_name']],),
     )
-    result = main(module)
-    module.exit_json(changed=result[0])
+    changed = main(module)
+    module.exit_json(changed=changed)
