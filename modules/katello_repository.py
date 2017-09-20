@@ -40,6 +40,10 @@ options:
         description:
             - Password for user accessing Foreman server
         required: true
+    verify_ssl:
+        description:
+            - Verify SSL of the Foreman server
+        default: true
     name:
         description:
             - Name of the repository
@@ -83,6 +87,9 @@ try:
 except:
     HAS_NAILGUN_PACKAGE = False
 
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
+
 
 class NailGun(object):
 
@@ -125,7 +132,8 @@ class NailGun(object):
 
         if repository and (repository.name != name or repository.url != url):
             repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url)
-            repository.update()
+            if not self.check_mode:
+                repository.update()
             updated = True
         elif not repository:
             repository = self._entities.Repository(
@@ -135,7 +143,8 @@ class NailGun(object):
                 product=product,
                 url=url
             )
-            repository.create()
+            if not self.check_mode:
+                repository.create()
             updated = True
 
         return updated
@@ -147,18 +156,17 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            product=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
-            name=dict(required=True, no_log=False),
-            content_type=dict(required=True, no_log=False),
-            url=dict(required=False, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            product=dict(required=True),
+            organization=dict(required=True),
+            name=dict(required=True),
+            content_type=dict(required=True),
+            url=dict(),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     verify_ssl = module.params['verify_ssl']
@@ -190,8 +198,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

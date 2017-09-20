@@ -4,11 +4,10 @@
 # (c) Andrew Kofink (Red Hat) 2017
 
 import sys
-import re
-import yaml
 
 from nailgun.config import ServerConfig
 from nailgun.entities import (
+    Entity,
     CommonParameter,
     ContentView,
     ContentViewVersion,
@@ -23,28 +22,6 @@ from nailgun.entities import (
     AbstractComputeResource
 )
 from nailgun import entity_mixins, entity_fields
-
-
-# Mix compare functionality into some entities as needed
-class EntityCompareMixin:
-
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __ne__(self, other):
-        return self.id != other.id
-
-
-class TemplateKind(EntityCompareMixin, TemplateKind):
-    pass
-
-
-class Organization(EntityCompareMixin, Organization):
-    pass
-
-
-class Location(EntityCompareMixin, Location):
-    pass
 
 
 class CommonParameter(
@@ -192,12 +169,27 @@ def create_entity(entity_class, entity_dict, module):
     return True
 
 
+def fields_equal(value1, value2):
+    # field contains an Entity
+    if isinstance(value1, Entity) and isinstance(value2, Entity):
+        return value1.id == value2.id
+    # field contains a list of possibly Entities
+    if isinstance(value1, list) and isinstance(value2, list):
+        entity_ids_1 = set(entity.id for entity in value1 if isinstance(entity, Entity))
+        entity_ids_2 = set(entity.id for entity in value2 if isinstance(entity, Entity))
+        fields1 = set(field for field in value1 if not isinstance(field, Entity))
+        fields2 = set(field for field in value2 if not isinstance(field, Entity))
+        return entity_ids_1 == entity_ids_2 and fields1 == fields2
+    # 'normal' value
+    return value1 == value2
+
+
 def update_entity(old_entity, entity_dict, module):
     try:
         volatile_entity = old_entity.read()
         fields = []
         for key, value in volatile_entity.get_values().iteritems():
-            if key in entity_dict and value != entity_dict[key]:
+            if key in entity_dict and not fields_equal(value, entity_dict[key]):
                 volatile_entity.__setattr__(key, entity_dict[key])
                 fields.append(key)
         if len(fields) > 0:
@@ -218,33 +210,6 @@ def delete_entity(entity, module):
         module.fail_json(msg='Error while deleting {0}: {1}'.format(
             entity.__class__.__name__, str(e)))
     return True
-
-
-# Helper for templates
-def parse_template(template_content, module):
-    try:
-        data = re.match(
-            '.*\s*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
-        if data:
-            datalist = data.group(1)
-            if datalist[-1] == '-':
-                datalist = datalist[:-1]
-            template_dict = yaml.safe_load(datalist)
-        # No metadata, import template anyway
-        template_dict['template'] = template_content
-    except Exception as e:
-        module.fail_json(msg='Error while parsing template: ' + str(e))
-    return template_dict
-
-
-def parse_template_from_file(file_name, module):
-    try:
-        with open(file_name) as input_file:
-            template_content = input_file.read()
-            template_dict = parse_template(template_content, module)
-    except Exception as e:
-        module.fail_json(msg='Error while reading template file: ' + str(e))
-    return template_dict
 
 
 def find_content_view(module, name, organization, failsafe=False):
@@ -311,11 +276,6 @@ def handle_find_response(module, response, message=None, failsafe=False):
         return None
     else:
         module.fail_json(msg=message)
-
-
-def handle_no_nailgun(module, has_nailgun):
-    if not has_nailgun:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun)")
 
 
 def current_subscription_manifest(module, organization):

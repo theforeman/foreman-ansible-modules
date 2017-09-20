@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        required: false
+        default: true
     name:
         description:
             - Name of the Katello product
@@ -73,6 +73,9 @@ try:
 except:
     HAS_NAILGUN_PACKAGE = False
 
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
+
 
 class NailGun(object):
     def __init__(self, server, entities, module):
@@ -99,11 +102,13 @@ class NailGun(object):
 
         if product and product.name != name:
             product = self._entities.Product(self._server, name=name, id=product.id)
-            product.update()
+            if not self.check_mode:
+                product.update()
             updated = True
         elif not product:
             product = self._entities.Product(self._server, name=name, organization=org)
-            product.create()
+            if not self.check_mode:
+                product.create()
             updated = True
 
         return updated
@@ -115,15 +120,14 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            name=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            name=dict(required=True),
+            organization=dict(required=True),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -152,8 +156,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

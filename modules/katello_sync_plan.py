@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        required: false
+        default: true
     name:
         description:
             - Name of the Katello sync plan
@@ -87,12 +87,17 @@ EXAMPLES = '''
 
 RETURN = '''# '''
 
+from datetime import datetime
+
 try:
     from nailgun import entities
     from nailgun.config import ServerConfig
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 class NailGun(object):
@@ -149,22 +154,24 @@ class NailGun(object):
         if len(response) == 1:
             response[0].sync_date = datetime.strptime(response[0].sync_date, '%Y/%m/%d %H:%M:%S %Z')
             updated, sync_plan = self.update_fields(sync_plan, response[0], ['interval', 'enabled', 'sync_date'])
-            if updated:
+            if updated and not self.check_mode:
                 sync_plan.update()
         elif len(response) == 0:
-            sync_plan = sync_plan.create()
+            if not self.check_mode:
+                sync_plan = sync_plan.create()
             updated = True
 
         desired_product_ids = map(lambda p: p.id, self.find_products(products, organization))
         current_product_ids = map(lambda p: p.id, sync_plan.product)
 
         if set(desired_product_ids) != set(current_product_ids):
-            product_ids_to_add = set(desired_product_ids) - set(current_product_ids)
-            if len(product_ids_to_add) > 0:
-                sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
-            product_ids_to_remove = set(current_product_ids) - set(desired_product_ids)
-            if len(product_ids_to_remove) > 0:
-                sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
+            if not self.check_mode:
+                product_ids_to_add = set(desired_product_ids) - set(current_product_ids)
+                if len(product_ids_to_add) > 0:
+                    sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
+                product_ids_to_remove = set(current_product_ids) - set(desired_product_ids)
+                if len(product_ids_to_remove) > 0:
+                    sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
             updated = True
 
         return updated
@@ -176,7 +183,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
             interval=dict(required=True),
@@ -187,8 +194,7 @@ def main():
         supports_check_mode=True
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -221,8 +227,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-from ansible.module_utils.basic import AnsibleModule
-from datetime import datetime
 
 if __name__ == '__main__':
     main()

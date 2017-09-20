@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        default: false
+        default: True
     name:
         description:
             - Name of the lifecycle environment
@@ -91,17 +91,19 @@ try:
     from nailgun.entities import (
         LifecycleEnvironment
     )
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        find_lifecycle_environment,
+        update_fields,
+    )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
-from ansible.module_utils.ansible_nailgun_cement import (
-    create_server,
-    ping_server,
-    find_organization,
-    find_lifecycle_environment,
-    update_fields,
-)
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state, label=None, description=None, prior=None):
@@ -139,14 +141,17 @@ def lifecycle_environment(module, name, organization, state, label=None, descrip
         if current_environment is not None:
             (needs_update, le) = update_fields(desired_environment, current_environment, fields)
             if needs_update:
-                le.update(fields)
+                if not module.check_mode:
+                    le.update(fields)
                 changed = True
         else:
             desired_environment.prior = find_prior(module, "Library", organization) if prior is None else prior
-            desired_environment.create()
+            if not module.check_mode:
+                desired_environment.create()
             changed = True
     elif current_environment is not None:
-        current_environment.delete()
+        if not module.check_mode:
+            current_environment.delete()
         changed = True
     return changed
 
@@ -157,19 +162,18 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             label=dict(),
             description=dict(),
             prior=dict(),
             organization=dict(required=True),
             state=dict(required=True),
-        )
+        ),
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install "
-                             "with: pip install nailgun)")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -192,8 +196,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

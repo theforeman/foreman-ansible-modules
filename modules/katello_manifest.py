@@ -43,6 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
+        default: True
     organization:
         description:
             - Organization that the manifest is in
@@ -86,17 +87,20 @@ try:
     from nailgun.entity_mixins import (
         TaskFailedError
     )
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        current_subscription_manifest,
+        set_task_timeout,
+    )
+
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
 
-from ansible.module_utils.ansible_nailgun_cement import (
-    create_server,
-    ping_server,
-    find_organization,
-    current_subscription_manifest,
-    set_task_timeout,
-)
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state=None, manifest_path=None):
@@ -114,8 +118,9 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
     manifest_present = current_manifest is not None
 
     if organization.redhat_repository_url != redhat_repository_url:
-        organization.redhat_repository_url = redhat_repository_url
-        organization.update({'redhat_repository_url'})
+        if not module.check_mode:
+            organization.redhat_repository_url = redhat_repository_url
+            organization.update({'redhat_repository_url'})
         changed = True
 
     if state == 'present':
@@ -124,7 +129,8 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
                 files = {'content': (manifest_path, manifest_file, 'application/zip')}
                 data = {'organization_id': organization.id, 'repository_url': redhat_repository_url}
                 headers = {'content_type': 'multipart/form-data', 'multipart': 'true'}
-                Subscription().upload(data=data, files=files, headers=headers)
+                if not module.check_mode:
+                    Subscription().upload(data=data, files=files, headers=headers)
                 changed = True
         except IOError as e:
             module.fail_json(msg="Unable to open the manifest file: %s" % e)
@@ -136,13 +142,15 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
             else:
                 module.fail_json(msg="Upload of the mainfest failed: %s" % e)
     elif state == 'absent' and manifest_present:
-        Subscription().delete_manifest(data={'organization_id': organization.id})
+        if not module.check_mode:
+            Subscription().delete_manifest(data={'organization_id': organization.id})
         changed = True
     elif state == 'refreshed':
         if not manifest_present:
             module.fail_json(msg="No manifest found to refresh.")
         else:
-            Subscription().refresh_manifest(data={'organization_id': organization.id})
+            if not module.check_mode:
+                Subscription().refresh_manifest(data={'organization_id': organization.id})
             changed = True
     return changed
 
@@ -153,7 +161,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             organization=dict(required=True),
             manifest_path=dict(),
             state=dict(required=True, choices=['absent', 'present', 'refreshed']),
@@ -161,11 +169,11 @@ def main():
         ),
         required_if=[
             ['state', 'present', ['manifest_path']],
-        ]
+        ],
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     set_task_timeout(300000)  # 5 minutes
 
@@ -189,7 +197,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

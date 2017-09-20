@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        default: false
+        default: true
     name:
         description:
             - Name of the repository set
@@ -96,7 +96,6 @@ RETURN = '''# '''
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
-        handle_no_nailgun,
         find_organization,
         find_product,
         find_repository_set,
@@ -105,6 +104,9 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def get_desired_repos(desired_substitutions, available_repos):
@@ -135,12 +137,14 @@ def repository_set(module, name, organization, product, state, repositories=[]):
     if state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
             repo_to_enable = (r for r in available_repos if r['repo_name'] == repo).next()
-            repo_set.enable(data=repo_to_enable['substitutions'])
+            if not module.check_mode:
+                repo_set.enable(data=repo_to_enable['substitutions'])
             changed = True
     elif state == 'disabled':
         for repo in current_repo_names & desired_repo_names:
             repo_to_disable = (r for r in available_repos if r['repo_name'] == repo).next()
-            repo_set.disable(data=repo_to_disable['substitutions'])
+            if not module.check_mode:
+                repo_set.disable(data=repo_to_disable['substitutions'])
             changed = True
     return changed
 
@@ -151,13 +155,14 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
+            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             product=dict(),
             organization=dict(required=True),
             repositories=dict(required=True, type='list'),
             state=dict(required=True, choices=['disabled', 'enabled']),
-        )
+        ),
+        supports_check_mode=True,
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
@@ -181,8 +186,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

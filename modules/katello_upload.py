@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         required: false
+        default: true
     src:
         description:
             - File to upload
@@ -82,6 +83,10 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_native
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 class NailGun(object):
@@ -141,17 +146,16 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(required=False, type='bool', default=False),
-            src=dict(required=True, no_log=True, aliases=['file']),
-            repository=dict(required=True, no_log=False),
-            product=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
+            verify_ssl=dict(type='bool', default=True),
+            src=dict(required=True, aliases=['file']),
+            repository=dict(required=True),
+            product=dict(required=True),
+            organization=dict(required=True),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -177,15 +181,13 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        ng.upload(src, repository, product, organization)
+        if not module.check_mode:
+            ng.upload(src, repository, product, organization)
     except Exception as e:
         module.fail_json(msg=to_native(e))
 
     module.exit_json(changed=True, result="File successfully uploaded to %s" % repository)
 
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native
 
 if __name__ == '__main__':
     main()

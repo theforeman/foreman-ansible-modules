@@ -43,7 +43,7 @@ options:
     verify_ssl:
         description:
             - Verify SSL of the Foreman server
-        default: false
+        default: true
     name:
         description:
             - Name of the activation key
@@ -85,6 +85,9 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 class NailGun(object):
@@ -163,12 +166,14 @@ class NailGun(object):
         response = activation_key.search({'name', 'organization'})
 
         if len(response) == 0:
-            activation_key = activation_key.create()
+            if not self.check_mode:
+                activation_key = activation_key.create()
             updated = True
         elif len(response) == 1:
             updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view'])
             if updated:
-                activation_key.update()
+                if not self.check_mode:
+                    activation_key.update()
 
         if subscriptions is None:
             subscriptions = []
@@ -178,10 +183,11 @@ class NailGun(object):
         current_subscription_ids = map(lambda s: s.id, current_subscriptions)
 
         if set(desired_subscription_ids) != set(current_subscription_ids):
-            for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
-                activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-            for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
-                activation_key.remove_subscriptions(data={'subscription_id': subscription_id})
+            if not self.check_mode:
+                for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
+                    activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
+                for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
+                    activation_key.remove_subscriptions(data={'subscription_id': subscription_id})
             updated = True
 
         return updated
@@ -193,19 +199,17 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=False),
-            name=dict(required=True, no_log=False),
-            organization=dict(required=True, no_log=False),
-            lifecycle_environment=dict(no_log=False),
-            content_view=dict(no_log=False),
-            subscriptions=dict(no_log=False, type='list'),
+            verify_ssl=dict(type='bool', default=True),
+            name=dict(required=True),
+            organization=dict(required=True),
+            lifecycle_environment=dict(),
+            content_view=dict(),
+            subscriptions=dict(type='list'),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
-    if not HAS_NAILGUN_PACKAGE:
-        module.fail_json(msg="Missing required nailgun module (check docs or install "
-                             "with: pip install nailgun)")
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     server_url = module.params['server_url']
     username = module.params['username']
@@ -237,8 +241,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()
