@@ -64,6 +64,14 @@ options:
         description:
             - Repository URL to sync from
         required: true
+    download_policy:
+        description:
+            - download policy for sync from upstream
+        choices:
+            - background
+            - immediate
+            - on_demand
+        required: false
 '''
 
 EXAMPLES = '''
@@ -76,6 +84,8 @@ EXAMPLES = '''
     content_type: "yum"
     product: "My Product"
     organization: "Default Organization"
+    url: "http://yum.theforeman.org/releases/latest/el7/x86_64/"
+    download_policy: background
 '''
 
 RETURN = '''# '''
@@ -119,7 +129,7 @@ class NailGun(object):
         else:
             self._module.fail_json(msg="No Product found for %s" % name)
 
-    def repository(self, name, content_type, product, organization, url=None):
+    def repository(self, name, content_type, product, organization, url=None, download_policy=None):
         updated = False
         product = self.find_product(product, organization)
 
@@ -128,10 +138,10 @@ class NailGun(object):
         repository.organization = product.organization
         repository = repository.search()
 
-        repository = repository[0] if len(repository) == 1 else None
+        repository = repository[0].read() if len(repository) == 1 else None
 
-        if repository and (repository.name != name or repository.url != url):
-            repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url)
+        if repository and (repository.name != name or repository.url != url or (download_policy and repository.download_policy != download_policy)):
+            repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url, download_policy=download_policy)
             if not self._module.check_mode:
                 repository.update()
             updated = True
@@ -141,7 +151,8 @@ class NailGun(object):
                 name=name,
                 content_type=content_type,
                 product=product,
-                url=url
+                url=url,
+                download_policy=download_policy,
             )
             if not self._module.check_mode:
                 repository.create()
@@ -162,6 +173,7 @@ def main():
             name=dict(required=True),
             content_type=dict(required=True),
             url=dict(),
+            download_policy=dict(choices=['background', 'immediate', 'on_demand']),
         ),
         supports_check_mode=True,
     )
@@ -177,6 +189,7 @@ def main():
     name = module.params['name']
     content_type = module.params['content_type']
     url = module.params['url']
+    download_policy = module.params['download_policy']
 
     server = ServerConfig(
         url=server_url,
@@ -193,7 +206,7 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        changed = ng.repository(name, content_type, product, organization, url=url)
+        changed = ng.repository(name, content_type, product, organization, url=url, download_policy=download_policy)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
