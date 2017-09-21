@@ -132,7 +132,7 @@ class NailGun(object):
 
         if repository and (repository.name != name or repository.url != url):
             repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url)
-            if not self.check_mode:
+            if not self._module.check_mode:
                 repository.update()
             updated = True
         elif not repository:
@@ -143,7 +143,7 @@ class NailGun(object):
                 product=product,
                 url=url
             )
-            if not self.check_mode:
+            if not self._module.check_mode:
                 repository.create()
             updated = True
 
