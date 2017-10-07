@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Update REALM for an Organization
+    foreman_realm:
+      server_url: "https://satellite.redhat.local"
+      username: "admin"
+      password: "redhat"
+      verify_ssl: false
+      name: "EXAMPLE.COM"
+      realm_proxy: 1
+      realm_type: "Red Hat Identity Management"
+      state: present
+    register: response
+    tags:
+      - rc2
+
+  - debug:
+      var: response
+
