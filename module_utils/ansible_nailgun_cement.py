@@ -16,6 +16,7 @@ from nailgun.entities import (
     Organization,
     Ping,
     Product,
+    Realm,
     Repository,
     RepositorySet,
     TemplateKind,
@@ -231,7 +232,6 @@ def find_content_view_version(module, content_view, environment=None, version=No
 def find_organization(module, name, failsafe=False):
     org = Organization(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, org, message="No organization found for %s" % name, failsafe=failsafe)
-
 
 def find_location(module, name, failsafe=False):
     loc = Location(name=name).search(set(), {'search': 'name="{}"'.format(name)})
