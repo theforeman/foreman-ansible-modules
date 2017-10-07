@@ -1,0 +1,184 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# (c) 2016, Eric D Helms <ericdhelms@gmail.com>
+# (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
+# (c) 2017, Lester R Claudio <claudiol@redhat.com> 
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
+DOCUMENTATION = '''
+---
+module: foreman_realm
+short_description: Manage Foreman Realms
+description:
+    - Manage Foreman Realms 
+author:
+    - "Eric D Helms (@ehelms)"
+    - "Matthias M Dellweg (@mdellweg) ATIX AG"
+    - "Lester R Claudio (@claudiol1)"
+requirements:
+    - "nailgun >= 0.28.0"
+    - "python >= 2.6"
+options:
+    server_url:
+        description:
+            - URL of Foreman server
+        required: true
+    username:
+        description:
+            - Username on Foreman server
+        required: true
+    password:
+        description:
+            - Password for user accessing Foreman server
+        required: true
+    verify_ssl:
+        description:
+            - Verify SSL of the Foreman server
+        required: false
+        default: true
+    name:
+        description:
+            - Name of the Foreman realm
+        required: true
+    real_proxy:
+        description:
+            - Id of Proxy to use for this realm
+            - Value: Must be a number. 
+        required: true
+    realm_type:
+        description: 
+            - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
+            - Value: Must be String 
+        required: true
+    #location:
+    #    description: 
+    #        - REPLACE locations with given ids 
+    #        - Value: Must be an array of any type 
+    #    required: false
+    #organization:
+    #    description: 
+    #        - REPLACE organizations with given ids 
+    #        - Value: Must be an array of any type 
+    #    required: false
+    state:
+        description:
+            - State of the Realm
+        required: true
+        choices:
+            - present
+            - absent
+'''
+
+EXAMPLES = '''
+- name: "Create EXAMPLE.LOCAL Realm"
+  foreman_realm:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "EXAMPLE.COM"
+    real_proxy: 1
+    realm_type: "Red Hat Identity Management"
+    state: present
+'''
+
+RETURN = '''# '''
+
+try:
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        entity_mixins,
+        find_entities,
+        naildown_entity_state,
+    )
+    from nailgun.entities import Realm
+
+    HAS_NAILGUN_PACKAGE = True
+except:
+    HAS_NAILGUN_PACKAGE = False
+
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import handle_no_nailgun
+
+
+def sanitize_realm_dict (realm_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+        'realm_proxy': 'realm_proxy',
+        'realm_type': 'realm_type',
+    }
+    result = {}
+    for key, value in name_map.iteritems():
+        if key in realm_dict:
+            result[value] = realm_dict[key]
+    return result
+
+
+def main():
+
+    module = AnsibleModule(
+        argument_spec=dict(
+            server_url=dict(required=True),
+            username=dict(required=True, no_log=True),
+            password=dict(required=True, no_log=True),
+            verify_ssl=dict(type='bool', default=True),
+            name=dict(required=True),
+            realm_proxy=dict(type='int', required=True),
+            realm_type=dict(required=True),
+            state=dict(required=True, choices=['present', 'absent']),
+        ),
+        supports_check_mode=True,
+    )
+
+    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+
+    realm_dict = dict(
+        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+
+    server_url = realm_dict.pop('server_url')
+    username = realm_dict.pop('username')
+    password = realm_dict.pop('password')
+    verify_ssl = realm_dict.pop('verify_ssl')
+    state = realm_dict.pop('state')
+
+    try:
+        create_server(server_url, (username, password), verify_ssl)
+    except Exception as e:
+        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+
+    ping_server(module)
+    try:
+        #entities = find_entities(Realm, name=realm_dict['name'], realm_proxy=realm_dict['realm_proxy'], realm_type=realm_dict['realm_type'] )
+        entities = find_entities(Realm, name=realm_dict['name'] )
+        if len(entities) > 0:
+            entity = entities[0]
+        else:
+            entity = None
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
+
+    realm_dict = sanitize_realm_dict(realm_dict)
+
+    changed = naildown_entity_state(Realm, realm_dict, entity, state, module)
+
+    module.exit_json(changed=changed)
+
+
+if __name__ == '__main__':
+    main()
