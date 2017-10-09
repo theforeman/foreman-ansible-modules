@@ -54,7 +54,7 @@ options:
         description:
             - Name of the Foreman realm
         required: true
-    real_proxy:
+    realm_proxy:
         description:
             - Id of Proxy to use for this realm
             - Value: Must be a number. 
@@ -64,16 +64,6 @@ options:
             - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
             - Value: Must be String 
         required: true
-    #location:
-    #    description: 
-    #        - REPLACE locations with given ids 
-    #        - Value: Must be an array of any type 
-    #    required: false
-    #organization:
-    #    description: 
-    #        - REPLACE organizations with given ids 
-    #        - Value: Must be an array of any type 
-    #    required: false
     state:
         description:
             - State of the Realm
@@ -164,7 +154,6 @@ def main():
 
     ping_server(module)
     try:
-        #entities = find_entities(Realm, name=realm_dict['name'], realm_proxy=realm_dict['realm_proxy'], realm_type=realm_dict['realm_type'] )
         entities = find_entities(Realm, name=realm_dict['name'] )
         if len(entities) > 0:
             entity = entities[0]
