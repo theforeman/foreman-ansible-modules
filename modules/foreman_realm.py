@@ -1,7 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2016, Eric D Helms <ericdhelms@gmail.com>
-# (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
 # (c) 2017, Lester R Claudio <claudiol@redhat.com> 
 #
 # This file is part of Ansible
@@ -26,11 +24,9 @@ short_description: Manage Foreman Realms
 description:
     - Manage Foreman Realms 
 author:
-    - "Eric D Helms (@ehelms)"
-    - "Matthias M Dellweg (@mdellweg) ATIX AG"
     - "Lester R Claudio (@claudiol1)"
 requirements:
-    - "nailgun >= 0.28.0"
+    - "nailgun >= 0.32.0"
     - "python >= 2.6"
 options:
     server_url:
@@ -130,7 +126,7 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             realm_proxy=dict(type='int', required=True),
-            realm_type=dict(required=True),
+            realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
             state=dict(required=True, choices=['present', 'absent']),
         ),
         supports_check_mode=True,
