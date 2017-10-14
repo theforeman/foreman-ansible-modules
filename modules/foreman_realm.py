@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2017, Lester R Claudio <claudiol@redhat.com> 
+# (c) 2017, Lester R Claudio <claudiol@redhat.com>
 #
 # This file is part of Ansible
 #
@@ -22,11 +22,11 @@ DOCUMENTATION = '''
 module: foreman_realm
 short_description: Manage Foreman Realms
 description:
-    - Manage Foreman Realms 
+    - Manage Foreman Realms
 author:
     - "Lester R Claudio (@claudiol1)"
 requirements:
-    - "nailgun >= 0.32.0"
+    - "nailgun >= 0.30.2"
     - "python >= 2.6"
 options:
     server_url:
@@ -53,10 +53,10 @@ options:
     realm_proxy:
         description:
             - Id of Proxy to use for this realm
-            - Value: Must be a number. 
+            - Value: Must be a number.
         required: true
     realm_type:
-        description: 
+        description:
             - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
             - Value: Must be String 
         required: true
@@ -102,7 +102,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_realm_dict (realm_dict):
+def sanitize_realm_dict(realm_dict):
     # This is the only true source for names (and conversions thereof)
     name_map = {
         'name': 'name',
@@ -150,7 +150,7 @@ def main():
 
     ping_server(module)
     try:
-        entities = find_entities(Realm, name=realm_dict['name'] )
+        entities = find_entities(Realm, name=realm_dict['name'])
         if len(entities) > 0:
             entity = entities[0]
         else:

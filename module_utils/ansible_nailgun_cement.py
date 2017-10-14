@@ -233,6 +233,7 @@ def find_organization(module, name, failsafe=False):
     org = Organization(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, org, message="No organization found for %s" % name, failsafe=failsafe)
 
+
 def find_location(module, name, failsafe=False):
     loc = Location(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, loc, message="No location found for %s" % name, failsafe=failsafe)
