@@ -58,7 +58,7 @@ options:
     realm_type:
         description:
             - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
-            - Value: Must be String 
+            - Value: Must be String
         required: true
     state:
         description:
