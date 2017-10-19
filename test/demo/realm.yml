@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Create REALM 
+    foreman_realm:
+      server_url: "https://satellite.redhat.local"
+      username: "admin"
+      password: "redhat"
+      verify_ssl: false
+      name: "EXAMPLE.COM"
+      realm_proxy: 1
+      realm_type: "Red Hat Identity Management"
+      state: present
+  - name:  Delete REALM 
+    foreman_realm:
+      server_url: "https://satellite.redhat.local"
+      username: "admin"
+      password: "redhat"
+      verify_ssl: false
+      name: "EXAMPLE.COM"
+      realm_proxy: 1
+      realm_type: "Red Hat Identity Management"
+      state: absent
+

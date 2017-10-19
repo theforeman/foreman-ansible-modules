@@ -16,6 +16,7 @@ from nailgun.entities import (
     Organization,
     Ping,
     Product,
+    Realm,
     Repository,
     RepositorySet,
     TemplateKind,
