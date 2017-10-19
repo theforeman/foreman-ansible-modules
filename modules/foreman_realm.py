@@ -76,7 +76,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "EXAMPLE.COM"
-    real_proxy: 1
+    realm_proxy: 1
     realm_type: "Red Hat Identity Management"
     state: present
 '''
