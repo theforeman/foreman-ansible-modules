@@ -123,18 +123,19 @@ def update_fields(new, old, fields):
 def naildown_entity_state(entity_class, entity_dict, entity, state, module):
     """ Ensure that a given entity has a certain state """
     changed = False
-    if state == 'present':
+    if state == 'present_with_defaults':
         if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
-    elif state == 'latest':
+    elif state == 'present':
         if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
         else:
             changed = update_entity(entity, entity_dict, module)
-    else:
-        # state == 'absent'
+    elif state == 'absent':
         if entity is not None:
             changed = delete_entity(entity, module)
+    else:
+        module.fail_json(msg='Not a valid state: {}'.format(state))
     return changed
 
 

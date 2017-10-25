@@ -105,8 +105,8 @@ options:
         require: true
         choices:
         - absent
-        - latest
         - present
+        - present_with_defaults
 
 '''
 
@@ -202,7 +202,7 @@ EXAMPLES = '''
       password: "admin"
       server_url: "https://foreman.example.com"
       name: "*"
-      state: latest
+      state: present
       organizations:
       - DALEK INC
       - sky.net
@@ -279,7 +279,7 @@ def main():
             name=dict(),
             organizations=dict(type='list'),
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
-            state=dict(required=True, choices=['absent', 'present', 'latest']),
+            state=dict(required=True, choices=['absent', 'present_with_defaults', 'present']),
         ),
         supports_check_mode=True,
         mutually_exclusive=[
