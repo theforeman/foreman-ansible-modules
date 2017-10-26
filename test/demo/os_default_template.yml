@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Assign preseed default finish to debian"
+    foreman_os_default_template:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://centos7-devel.example.com"
+      verify_ssl: false
+      operatingsystem: "Debian 9"
+      template_kind: "finish"
+      provisioning_template: "Preseed default finish"
+      state: "present"
