@@ -20,7 +20,8 @@ from nailgun.entities import (
     Repository,
     RepositorySet,
     TemplateKind,
-    AbstractComputeResource
+    AbstractComputeResource,
+    ComputeProfile,
 )
 from nailgun import entity_mixins, entity_fields
 
@@ -84,6 +85,10 @@ class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
         ignore.add('password')
 
         return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
+
+
+class ComputeProfile(ComputeProfile, entity_mixins.EntitySearchMixin):
+    pass
 
 
 # Connection helper
@@ -243,6 +248,11 @@ def find_location(module, name, failsafe=False):
 def find_compute_resource(module, name, failsafe=False):
     compute_resource = AbstractComputeResource(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, compute_resource, message="No compute resource found for %s" % name, failsafe=failsafe)
+
+
+def find_compute_profile(module, name, failsafe=False):
+    compute_profile = ComputeProfile(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
 
 
 def find_lifecycle_environment(module, name, organization, failsafe=False):
