@@ -45,7 +45,7 @@ options:
   state:
     description: compute profile presence
     default: present
-    choices: ["present", "absent", "latest"]
+    choices: ["present", "absent"]
 notes:
 - Requires nailgun
 version_added: "2.0"
@@ -109,7 +109,7 @@ def main(module):
 
     compute_profile = cement.find_compute_profile(module, name=data.get('name'), failsafe=True)
 
-    if state == 'latest':
+    if state == 'present' and updated_name:
         data['name'] = updated_name
 
     data = sanitize_compute_profile_dict(data)
@@ -128,9 +128,9 @@ if __name__ == '__main__':
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            state=dict(default='present', choices=['present', 'absent', 'latest']),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
-        required_if=(['state', 'latest', ['updated_name']],),
+        supports_check_mode=True,
     )
     changed = main(module)
     module.exit_json(changed=changed)
