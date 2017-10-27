@@ -1,12 +1,15 @@
 ---
 - hosts: localhost
   tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
   - name: "Create katello repository"
     katello_repository:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      verify_ssl: false
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
       organization: "Default Organization"
       name: "repo2"
       product: "product1"

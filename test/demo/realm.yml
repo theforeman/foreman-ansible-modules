@@ -1,22 +1,25 @@
 ---
 - hosts: localhost
   tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
   - name: Create REALM 
     foreman_realm:
-      server_url: "https://satellite.redhat.local"
-      username: "admin"
-      password: "redhat"
-      verify_ssl: false
+      server_url: "{{ foreman_server_url }}"
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
       name: "EXAMPLE.COM"
       realm_proxy: 1
       realm_type: "Red Hat Identity Management"
       state: present
   - name:  Delete REALM 
     foreman_realm:
-      server_url: "https://satellite.redhat.local"
-      username: "admin"
-      password: "redhat"
-      verify_ssl: false
+      server_url: "{{ foreman_server_url }}"
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
       name: "EXAMPLE.COM"
       realm_proxy: 1
       realm_type: "Red Hat Identity Management"
