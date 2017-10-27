@@ -61,6 +61,8 @@ This is a list of modules currently in the repository (please add to the list if
 #### Entity Modules
 
  * foreman_global_parameter: create and maintain global parameters
+ * foreman_operating_system: create and maintain operating systems
+ * foreman_os_default_template: create and maintain the association of default templates to operating systems
  * foreman_organization: create and maintain organizations
  * foreman_ptable: create and maintain partition templates
  * foreman_provisioning_template: create and maintain provisioning templates

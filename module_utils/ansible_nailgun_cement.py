@@ -21,6 +21,7 @@ from nailgun.entities import (
     RepositorySet,
     TemplateKind,
     AbstractComputeResource,
+    OSDefaultTemplate,
     ComputeProfile,
 )
 from nailgun import entity_mixins, entity_fields
@@ -278,6 +279,12 @@ def find_repository(module, name, product):
 def find_repository_set(module, name, product, failsafe=False):
     repo_set = RepositorySet(name=name, product=product)
     return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
+def find_os_default_template(module, operatingsystem, template_kind, failsafe=False):
+    response = OSDefaultTemplate(operatingsystem=operatingsystem).search()
+    response = [item for item in response if item.template_kind.id == template_kind.id]
+    return handle_find_response(module, response, message="No default template found for %s/%s" % (operatingsystem.name, template_kind.name), failsafe=failsafe)
 
 
 def handle_find_response(module, response, message=None, failsafe=False):
