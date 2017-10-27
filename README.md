@@ -40,7 +40,7 @@ contained in the repository for use, testing, or development of new modules.
 ## How to test modules in this repository
 
 In `test/demo` there are example playbooks for most of the modules.
-To use them, you need a running instance of `foreman` probably with `katello` (use forklift if unsure).
+To use them, you need a running instance of `foreman` probably with `katello` (use [forklift](https://github.com/theforeman/forklift) if unsure).
 Also you need to setup `server_vars.yml`:
 
 ```sh
