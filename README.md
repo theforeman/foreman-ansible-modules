@@ -37,7 +37,27 @@ foreman-ansible-module `modules` and `module_utils` if you do so.
 Now your playbooks and roles should have access to the modules and module_utils
 contained in the repository for use, testing, or development of new modules.
 
-## How to debug this repository
+## How to test modules in this repository
+
+In `test/demo` there are example playbooks for most of the modules.
+To use them, you need a running instance of `foreman` probably with `katello` (use [forklift](https://github.com/theforeman/forklift) if unsure).
+Also you need to setup `server_vars.yml`:
+
+```sh
+cp test/demo/server_vars.yml.example test/demo/server_vars.yml
+vi test/demo/server_vars.yml
+```
+
+Now you can call the playbooks that operate on your foreman instance:
+
+```sh
+ansible-playbook test/demo/<module>.yml
+
+# Example:
+ansible-playbook test/demo/organization.yml
+```
+
+## How to debug modules in this repository
 
 Set up debugging using ansible's test-module
 
