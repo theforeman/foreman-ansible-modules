@@ -39,22 +39,19 @@ contained in the repository for use, testing, or development of new modules.
 
 ## How to test modules in this repository
 
-In `test/demo` there are example playbooks for most of the modules.
-To use them, you need a running instance of `foreman` probably with `katello` (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to setup `server_vars.yml`:
+To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
+Also you need to run test-setup and update test/test_playbooks/server_vars.yml:
 
 ```sh
-cp test/demo/server_vars.yml.example test/demo/server_vars.yml
-vi test/demo/server_vars.yml
+make test-setup
+vi test/test_playbooks/server_vars.yml # point to your Foreman instance
 ```
 
-Now you can call the playbooks that operate on your foreman instance:
+To run the tests:
 
 ```sh
-ansible-playbook test/demo/<module>.yml
-
-# Example:
-ansible-playbook test/demo/organization.yml
+make test # all tests
+make test TEST="-k product" # single module test
 ```
 
 ## How to debug modules in this repository
@@ -62,17 +59,21 @@ ansible-playbook test/demo/organization.yml
 Set up debugging using ansible's test-module
 
 ```sh
-ansible-playbook debug-setup.yml
+make debug-setup
 ```
 
 Debug with ansible's test-module
 
 ```sh
-./ansible/hacking/test-module -m <path to ansible module> -a @<path to input arguments to module> -D <path to debugger>
+make debug MODULE=<module name>
 
-# Example: debug the activation_key module with pdb
-./ansible/hacking/test-module -m ./foreman-ansible-modules/modules/katello_activation_key.py -a @activation-key-args.json -D /usr/lib/python2.7/site-packages/pdb/pdb.py
+# Example: debug the katello_content_view module
+$ make debug MODULE=katello_content_view
+./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @test/data/content-view.json -D /usr/lib64/python2.7/pdb.py
+...
 ```
+
+You can set a number of environment variables besides `MODULE` to configure make. Check the [Makefile](https://github.com/theforeman/foreman-ansible-modules/blob/master/Makefile) for more configuration options.
 
 ## Modules List
 
