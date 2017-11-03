@@ -10,17 +10,19 @@
       password: "{{ foreman_password }}"
       server_url: "{{ foreman_server_url }}"
       verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Foreman's finest"
+      name: "Katello's finest"
       organization: 'Default Organization'
+      label: "katello_selection"
       state: present
-  - name: 'Edit the product (not really)'
+  - name: 'Edit the product'
     katello_product:
       username: "{{ foreman_username }}"
       password: "{{ foreman_password }}"
       server_url: "{{ foreman_server_url }}"
       verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Foreman's finest"
+      name: "Katello's finest"
       organization: 'Default Organization'
+      description: "Fancy assortment of well matured cask strength repositories"
       state: present
   - name: 'Delete the product'
     katello_product:
@@ -28,6 +30,6 @@
       password: "{{ foreman_password }}"
       server_url: "{{ foreman_server_url }}"
       verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Foreman's finest"
+      name: "Katello's finest"
       organization: 'Default Organization'
       state: absent

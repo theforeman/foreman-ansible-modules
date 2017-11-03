@@ -54,6 +54,22 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    label:
+        description:
+            - Label to show the user
+        required: false
+    description:
+        description:
+            - Possibly long descriptionto show the user in detail view
+        required: false
+    state:
+        description:
+        - State of the Global Parameter
+        required: true
+        choices:
+        - present
+        - lastest
+        - absent
 '''
 
 EXAMPLES = '''
@@ -64,6 +80,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "Fedora"
     organization: "My Cool new Organization"
+    state: present
 '''
 
 RETURN = '''# '''
@@ -90,6 +107,10 @@ def sanitize_product_dict(entity_dict):
     name_map = {
         'name': 'name',
         'organization': 'organization',
+        'description': 'description',
+        # 'gpg_key': 'gpg_key',  # wait for Nailgun
+        # 'sync_plan': 'sync_plan',  # wait for Nailgun
+        'label': 'label',
     }
     result = {}
     for key, value in name_map.iteritems():
@@ -107,6 +128,8 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
+            label=dict(),
+            description=dict(),
             state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
