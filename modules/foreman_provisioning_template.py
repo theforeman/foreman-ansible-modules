@@ -394,8 +394,8 @@ def main():
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if state == 'present':
-            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
+        if state == 'present_with_defaults':
+            module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
             if template_dict.keys() != ['name', 'locked']:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
