@@ -54,6 +54,13 @@ make test # all tests
 make test TEST="-k product" # single module test
 ```
 
+The tests are run against prerecorded server-responses.
+If you need to (re-)record some cassettes, delete the stale ones in `test/test_playbooks/fixtures` and record new ones with
+
+```sh
+pytest -k <module name> --record
+```
+
 ## How to debug modules in this repository
 
 Set up debugging using ansible's test-module
