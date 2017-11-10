@@ -96,7 +96,7 @@ options:
         description:
         - Determines whether the template shall be locked
         required: false
-        defaul: false
+        default: false
         choices:
         - true
         - false

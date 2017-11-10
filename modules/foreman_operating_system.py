@@ -81,15 +81,15 @@ options:
   media:
     description:
       - list of installation media
-    requred: false
+    required: false
   ptables:
     description:
       - list of partitioning tables
-    requred: false
+    required: false
   provisioning_templates:
     description:
       - list of provisioning templates
-    requred: false
+    required: false
   password_hash:
     description:
       - hashing algorithm for passwd
