@@ -144,6 +144,7 @@ try:
         ping_server,
         find_entities,
         find_entities_by_name,
+        find_operating_system_by_title,
         naildown_entity_state,
     )
 
@@ -225,11 +226,22 @@ def main():
 
     ping_server(module)
     try:
-        entities = find_entities(OperatingSystem, name=operating_system_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
+        # Try to find the Operating System to work on
+        # name is however not unique, but description is, as well as "<name> <major>[.<minor>]"
+        entity = None
+        # If we have a description, search for it
+        if 'description' in operating_system_dict and operating_system_dict['description'] != '' :
+            entity = find_operating_system_by_title(module, title=operating_system_dict['description'], failsafe=True)
+        # If we did not yet find a unique OS, search by name & version
+        if entity is None:
+            search_dict = { 'name': operating_system_dict['name'] }
+            if 'major' in operating_system_dict:
+                search_dict['major'] = operating_system_dict['major']
+            if 'minor' in operating_system_dict:
+                search_dict['minor'] = operating_system_dict['minor']
+            entities = find_entities(OperatingSystem, **search_dict)
+            if len(entities) == 1:
+                entity = entities[0]
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 

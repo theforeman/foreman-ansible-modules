@@ -236,8 +236,6 @@ RETURN = ''' # '''
 try:
     from nailgun.entities import (
         ProvisioningTemplate,
-        OperatingSystem,
-        _OPERATING_SYSTEMS,
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
@@ -248,6 +246,7 @@ try:
         ping_server,
         find_entities,
         find_entities_by_name,
+        find_operating_system_by_title,
         naildown_entity_state,
     )
 
@@ -300,8 +299,6 @@ def sanitize_template_dict(template_dict):
             result[value] = template_dict[key]
     return result
     # Missing parameters:
-    # operatingsystem=[]
-    # template_combinations=''
     # default
 
 
@@ -426,8 +423,8 @@ def main():
             Organization, template_dict['organizations'], module)
 
     if 'operatingsystems' in template_dict:
-        template_dict['operatingsystems'] = find_entities_by_name(OperatingSystem, template_dict[
-            'operatingsystems'], module)
+        template_dict['operatingsystems'] = [ find_operating_system_by_title(module, title)
+            for title in template_dict['operatingsystems'] ]
 
     if not affects_multiple:
         template_dict = find_template_kind(template_dict, module)
