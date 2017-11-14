@@ -230,7 +230,6 @@ RETURN = ''' # '''
 try:
     from nailgun.entities import (
         PartitionTable,
-        OperatingSystem,
         _OPERATING_SYSTEMS,
     )
 
