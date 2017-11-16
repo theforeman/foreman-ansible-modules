@@ -103,6 +103,7 @@ try:
         ping_server,
         find_entities_by_name,
         find_os_default_template,
+        find_operating_system_by_title,
         naildown_entity_state,
     )
 
@@ -172,13 +173,8 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     ping_server(module)
-    os_list = OperatingSystem().search(set(), {'search': 'title~"{}"'.format(entity_dict['operatingsystem'])})
-    if len(os_list) == 0:
-        module.fail_json(msg='Operating system "{}" not found.'.format(entity_dict['operatingsystem']))
-    if len(os_list) > 1:
-        module.fail_json(msg='Provided operating system ({}) is not unique.'.format(entity_dict['operatingsystem']))
 
-    entity_dict['operatingsystem'] = os_list[0]
+    entity_dict['operatingsystem'] = find_operating_system_by_title(module, entity_dict['operatingsystem'])
     entity_dict['template_kind'] = find_entities_by_name(
         TemplateKind, [entity_dict['template_kind']], module)[0]
 

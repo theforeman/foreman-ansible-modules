@@ -13,6 +13,7 @@ from nailgun.entities import (
     ContentViewVersion,
     LifecycleEnvironment,
     Location,
+    OperatingSystem,
     Organization,
     Ping,
     Product,
@@ -279,6 +280,11 @@ def find_repository(module, name, product):
 def find_repository_set(module, name, product, failsafe=False):
     repo_set = RepositorySet(name=name, product=product)
     return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
+def find_operating_system_by_title(module, title, failsafe=False):
+    response = OperatingSystem().search(set(), {'search': 'title~"{}"'.format(title)})
+    return handle_find_response(module, response, message="No unique Operating System found with title %s" % title, failsafe=failsafe)
 
 
 def find_os_default_template(module, operatingsystem, template_kind, failsafe=False):
