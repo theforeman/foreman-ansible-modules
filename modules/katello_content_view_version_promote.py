@@ -98,7 +98,6 @@ RETURN = '''# '''
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
-        handle_no_nailgun,
         find_organization,
         find_lifecycle_environment,
         find_content_view,
@@ -108,6 +107,7 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def content_view_promote(module, name, organization, to_environment, **kwargs):
