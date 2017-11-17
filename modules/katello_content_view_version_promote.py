@@ -103,6 +103,7 @@ try:
         find_content_view,
         find_content_view_version,
         ping_server,
+        set_task_timeout,
     )
     HAS_NAILGUN_PACKAGE = True
 except:
@@ -158,6 +159,8 @@ def main():
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+
+    set_task_timeout(3600000)  # 60 minutes
 
     server_url = module.params['server_url']
     username = module.params['username']
