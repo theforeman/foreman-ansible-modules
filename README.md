@@ -7,7 +7,7 @@ This repository contains Ansible modules for interacting with a Foreman server A
 The intent of this repository is to be a place that community members can develop or contribute modules. The goals of this repository are:
 
   * centralized location for community modules
-  * a single repository to clone for interacting with Foreman
+  * a single repository to clone for interacting with Foreman & plugins
   * an intermediate landing place for modules before pushing them to Ansible community
   * repository maintainers will be working to push the modules into Ansible proper [https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman](https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman)
 
@@ -104,9 +104,11 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_content_view: create and maintain content views
  * katello_sync_plan: create and maintain sync plans
  * katello_activation_key: create and maintain activation keys
+ * redhat_manifest: create and maintain manifests
 
 #### Action Modules
 
  * katello_sync: sync Katello repositories and products
  * katello_upload: upload files, rpms, etc. to repositories
  * katello_content_view_publish: publish Katello content views
+ * katello_manifest: upload and Manage Katello manifests
