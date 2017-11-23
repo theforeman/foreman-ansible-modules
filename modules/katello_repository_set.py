@@ -89,6 +89,19 @@ EXAMPLES = '''
     - releasever: "7.3"
       basearch: "x86_64"
     state: enabled
+
+- name: "Disable RHEL 7 Extras RPMs repository"
+  katello_repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    verify_ssl: false
+    name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
+    organization: "Default Organization"
+    product: Red Hat Enterprise Linux Server
+    state: disabled
+    repositories:
+      - basearch: x86_64
 '''
 
 RETURN = '''# '''
