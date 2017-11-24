@@ -111,6 +111,7 @@ try:
         ping_server,
         find_entities,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
 
     HAS_NAILGUN_PACKAGE = True
@@ -121,17 +122,11 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_global_parameter_dict(global_parameter_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-        'value': 'value',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in global_parameter_dict:
-            result[value] = global_parameter_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+    'value': 'value',
+}
 
 
 def main():
@@ -178,7 +173,7 @@ def main():
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
-    global_parameter_dict = sanitize_global_parameter_dict(global_parameter_dict)
+    global_parameter_dict = sanitize_entity_dict(global_parameter_dict, name_map)
 
     changed = naildown_entity_state(CommonParameter, global_parameter_dict, entity, state, module)
 
