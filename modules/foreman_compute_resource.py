@@ -23,11 +23,14 @@ module: foreman_compute_resource
 short_description: Manage Foreman Compute resources using Foreman API
 description:
 - Create and delete Foreman Compute Resources using Foreman API
+requirements:
+    - "nailgun >= 0.28.0"
 options:
   name:
     description: compute resource name
     required: true
-  description: compute resource description
+  description:
+    description: compute resource description
     required: false
   provider:
     description: provider
@@ -38,12 +41,16 @@ options:
     description: provider authentication
     required: false
     default: None
-  locations: List of locations the compute resource should be assigned to
+  locations:
+    description: List of locations the compute resource should be assigned to
     required: false
     default: None
-  organizations: List of organizations the compute resource should be assigned to
+    type: list
+  organizations:
+    description: List of organizations the compute resource should be assigned to
     required: false
     default: None
+    type: list
   server_url:
     description: foreman url
     required: true
@@ -57,13 +64,12 @@ options:
     description: verify ssl connection when communicating with foreman
     required: false
     default: true
+    type: bool
   state:
     description: compute resource presence
     required: false
     default: present
     choices: ["present", "absent", "present_with_defaults"]
-notes:
-- Nailed down version of https://github.com/Nosmoht/python-foreman (@Nosmoht). Requires nailgun
 version_added: "2.0"
 author: "Philipp Joos (@philippj)"
 '''
@@ -74,9 +80,9 @@ EXAMPLES = '''
     name: example_compute_resource
     datacenter: ax01
     locations:
-    - Munich
+      - Munich
     organizations:
-    - ATIX
+      - ATIX
     provider: vmware
     provider_auth:
       url: vsphere.example.com

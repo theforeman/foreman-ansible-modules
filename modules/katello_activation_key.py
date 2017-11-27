@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the activation key
@@ -61,6 +62,7 @@ options:
     subscriptions:
         description:
             - List of subscriptions that include name
+        type: list
 '''
 
 EXAMPLES = '''

@@ -53,6 +53,7 @@ options:
         - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     audit_comment:
         description:
         - Content of the audit comment field
@@ -88,10 +89,12 @@ options:
             Either this or template is required as a source for
             the Provisioning Template "content".
         required: false
+        type: path
     locations:
         description:
         - The locations the template should be assigend to
         required: false
+        type: list
     locked:
         description:
         - Determines whether the template shall be locked
@@ -100,6 +103,7 @@ options:
         choices:
         - true
         - false
+        type: bool
     name:
         description:
         - |
@@ -114,9 +118,11 @@ options:
         description:
         - The organizations the template shall be assigned to
         required: false
+        type: list
     operatingsystems:
         description: The Operatingsystems the template shall be assigned to
         required: false
+        type: list
     state:
         description: The state the template should be in.
         require: true

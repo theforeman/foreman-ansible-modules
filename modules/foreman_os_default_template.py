@@ -52,6 +52,7 @@ options:
       - Verify SSL of the Foreman server
     required: false
     default: true
+    type: bool
   operatingsystem:
     description:
       - Name of the Operating System
