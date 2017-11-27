@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: True
+        type: bool
     name:
         description:
             - Name of the lifecycle environment

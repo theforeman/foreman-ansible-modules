@@ -45,10 +45,14 @@ options:
             - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     src:
         description:
             - File to upload
         required: true
+        type: path
+        aliases:
+          - file
     repository:
         description:
             - Repository to upload file in to
@@ -147,7 +151,7 @@ def main():
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            src=dict(required=True, aliases=['file']),
+            src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
             product=dict(required=True),
             organization=dict(required=True),

@@ -48,6 +48,7 @@ options:
         description:
             - Name of the repository set
         required: true
+        type: bool
     product:
         description:
             - Name of the parent product
@@ -56,6 +57,7 @@ options:
         description:
             - Release version and base architecture of the repositories to enable
         required: true
+        type: list
     organization:
         description:
             - Organization name that the repository set is in

@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     content_view:
         description:
             - Name of the content view to publish

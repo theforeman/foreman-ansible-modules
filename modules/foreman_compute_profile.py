@@ -42,6 +42,7 @@ options:
   verify_ssl:
     description: verify ssl connection when communicating with foreman
     default: true
+    type: bool
   state:
     description: compute profile presence
     default: present

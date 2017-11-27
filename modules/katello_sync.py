@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     repository:
         description:
             - Name of the repository to sync

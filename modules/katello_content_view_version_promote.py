@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello content view
@@ -66,6 +67,7 @@ options:
         description:
             - Force content view promotion and bypass lifecycle environment restriction
         default: false
+        type: bool
     force_yum_metadata_regeneration:
         description:
             - Force metadata regeneration on the repositories in the content view version

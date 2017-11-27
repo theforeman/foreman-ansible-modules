@@ -54,6 +54,7 @@ options:
       - Verify SSL of the Foreman server
     required: false
     default: true
+    type: bool
   name:
     description:
       - Name of the Operating System
@@ -78,18 +79,22 @@ options:
     description:
       - architectures, the operating system can be installed on
     required: false
+    type: list
   media:
     description:
       - list of installation media
     required: false
+    type: list
   ptables:
     description:
       - list of partitioning tables
     required: false
+    type: list
   provisioning_templates:
     description:
       - list of provisioning templates
     required: false
+    type: list
   password_hash:
     description:
       - hashing algorithm for passwd

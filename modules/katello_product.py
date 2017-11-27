@@ -46,6 +46,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello product

@@ -53,6 +53,7 @@ options:
         - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     name:
         description:
         - Name of the Global Parameter

@@ -53,6 +53,7 @@ options:
         - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     file_name:
         description:
         - |
@@ -60,6 +61,7 @@ options:
             Either this or layout is required as a source for
             the Partition Template "content".
         required: false
+        type: path
     layout:
         description:
         - |
@@ -70,6 +72,7 @@ options:
         description:
         - The locations the template should be assigend to
         required: false
+        type: list
     name:
         description:
         - |
@@ -85,6 +88,7 @@ options:
         description:
         - The organizations the template shall be assigned to
         required: false
+        type: list
     os_family:
         description: The OS family the template shall be assigned with.
         required: false
