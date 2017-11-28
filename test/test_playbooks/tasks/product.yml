@@ -1,0 +1,15 @@
+---
+- name: "Ensure product '{{ product_name }}' is {{ product_state }}"
+  vars:
+    - organization_name: "Test Organization"
+    - product_name: "Test Product"
+    - product_description: "A happy little test product"
+  katello_product:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ product_name }}"
+    organization: "{{ organization_name }}"
+    description: "{{ product_description }}"
+    state: "{{ product_state }}"

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
