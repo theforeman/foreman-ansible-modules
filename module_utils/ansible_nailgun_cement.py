@@ -197,7 +197,7 @@ def update_entity(old_entity, entity_dict, module):
     try:
         volatile_entity = old_entity.read()
         fields = []
-        for key, value in volatile_entity.get_values().iteritems():
+        for key, value in volatile_entity.get_values().items():
             if key in entity_dict and not fields_equal(value, entity_dict[key]):
                 volatile_entity.__setattr__(key, entity_dict[key])
                 fields.append(key)

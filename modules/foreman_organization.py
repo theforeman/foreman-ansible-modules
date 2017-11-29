@@ -98,7 +98,7 @@ def sanitize_organization_dict(organization_dict):
         'name': 'name',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in organization_dict:
             result[value] = organization_dict[key]
     return result
@@ -120,7 +120,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     organization_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = organization_dict.pop('server_url')
     username = organization_dict.pop('username')

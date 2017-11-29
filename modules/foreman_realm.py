@@ -110,7 +110,7 @@ def sanitize_realm_dict(realm_dict):
         'realm_type': 'realm_type',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in realm_dict:
             result[value] = realm_dict[key]
     return result
@@ -135,7 +135,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     realm_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = realm_dict.pop('server_url')
     username = realm_dict.pop('username')

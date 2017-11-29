@@ -84,7 +84,7 @@ def sanitize_compute_profile_dict(entity_dict):
         'name': 'name',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in entity_dict:
             result[value] = entity_dict[key]
     return result
