@@ -5,7 +5,7 @@ import sys
 import vcr
 import json
 
-VCR_PARAMS_FILE = '../../.vcr_params.json'
+VCR_PARAMS_FILE = os.environ['FAM_TEST_VCR_PARAMS_FILE']
 
 # Remove the name of the wrapper from argv
 # (to make it look like the module had been called directly)
