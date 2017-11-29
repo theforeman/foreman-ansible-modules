@@ -150,7 +150,10 @@ def find_entities(entity_class, **kwargs):
     """ Find entities by certain criteria """
     return entity_class().search(
         query={'search': ','.join(['{0}="{1}"'.format(
-            key, kwargs[key]) for key in kwargs]), 'per_page': sys.maxint}
+            key, kwargs[key]) for key in kwargs]),
+            # This is a hack to work around pagination in API-V2
+            # See Redmine: #21800
+            'per_page': 2 << 31}
     )
 
 
