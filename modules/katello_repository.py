@@ -22,7 +22,7 @@ DOCUMENTATION = '''
 module: katello_repository
 short_description: Create and manage Katello repository
 description:
-    - Crate and manage a Katello repository
+    - Create and manage a Katello repository
 author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
@@ -163,7 +163,7 @@ def main():
             url=dict(),
             docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
-            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )

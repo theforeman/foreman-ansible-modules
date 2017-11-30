@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: "Create/update katello composite content view"
+    katello_content_view:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "ccv5"
+      organization: "Default Organization"
+      content_views:
+        - name: "cv3"
+          version "1.0"
