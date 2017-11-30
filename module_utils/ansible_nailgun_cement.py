@@ -394,6 +394,11 @@ def find_errata(module, id, organization, failsafe=False):
     return handle_find_response(module, errata, message="No errata found for %s" % id, failsafe=failsafe)
 
 
+def find_content_views(module, content_views, organization, failsafe=False):
+    return map(lambda content_view: find_content_view(module, content_view['name'], content_view['version'],
+                                                      organization, failsafe=failsafe), content_views)
+
+
 def find_content_view(module, name, organization, failsafe=False):
     content_view = ContentView(name=name, organization=organization)
     return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
