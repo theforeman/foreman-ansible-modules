@@ -19,7 +19,7 @@
 
 DOCUMENTATION = '''
 ---
-module: katello_publish
+module: katello_content_view_publish
 short_description: Publish a Katello content view
 description:
     - Publish a Katello content view
@@ -57,7 +57,7 @@ options:
 
 EXAMPLES = '''
 - name: "Publish a content view"
-  katello_publish:
+  katello_content_view_publish:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
