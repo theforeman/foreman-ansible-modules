@@ -25,6 +25,12 @@ lint:
 test:
 	pytest $(TEST)
 
+test_%: FORCE
+	pytest -k $*
+
+record_%: FORCE
+	pytest -k $* --record
+
 debug:
 ifndef MODULE
 	$(error MODULE is undefined)
@@ -43,4 +49,6 @@ test-setup: test/test_playbooks/server_vars.yml
 test/test_playbooks/server_vars.yml:
 	cp test/test_playbooks/server_vars.yml.example test/test_playbooks/server_vars.yml
 
-.PHONY: help debug lint test setup debug-setup test-setup
+FORCE:
+
+.PHONY: help debug lint test setup debug-setup test-setup FORCE

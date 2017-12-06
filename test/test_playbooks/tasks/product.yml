@@ -14,6 +14,6 @@
     description: "{{ product_description }}"
     state: "{{ product_state }}"
   register: result
-- debug:
-    msg: "Ensure product is {{ product_state }} (expect to change: {{ expected_change | default('unknown') }})"
-  failed_when: (expected_change is defined) and (result.changed != expected_change)
+- fail:
+    msg: "Ensuring product is {{ product_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
