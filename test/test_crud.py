@@ -28,7 +28,7 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
         json.dump(test_params, params_file.file)
         params_file.file.close()
         os.environ['FAM_TEST_VCR_PARAMS_FILE'] = params_file.name
-        return run_playbook(module, extra_args=extra_args, extra_vars=extra_vars)
+        return run_playbook(module, extra_vars=extra_vars, extra_args=extra_args)
 
 
 def run_playbook(module, extra_vars=None, extra_args=None):

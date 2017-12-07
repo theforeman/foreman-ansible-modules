@@ -29,6 +29,7 @@ test_%: FORCE
 	pytest -k $*
 
 record_%: FORCE
+	$(RM) test/test_playbooks/fixtures/$*-*.yml
 	pytest -k $* --record
 
 debug:
