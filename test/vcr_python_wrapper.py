@@ -23,7 +23,9 @@ with open(VCR_PARAMS_FILE, 'w') as params_file:
 # Call the original python script with vcr-cassette in place
 with vcr.use_cassette(cassette_file,
                       record_mode=test_params['record_mode'],
-                      match_on=['method', 'scheme', 'port', 'path', 'query']):
+                      match_on=['method', 'scheme', 'port', 'path', 'query'],
+                      filter_headers=['Authorization'],
+                      ):
     with open(sys.argv[0]) as f:
         code = compile(f.read(), sys.argv[0], 'exec')
         exec(code)
