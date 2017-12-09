@@ -71,6 +71,7 @@ options:
         - present_with_defaults
         - present
         - absent
+        - present_with_defaults
 '''
 
 EXAMPLES = '''

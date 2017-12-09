@@ -68,7 +68,7 @@ options:
         required: true
         choices:
         - present
-        - lastest
+        - present_with_defaults
         - absent
 '''
 
