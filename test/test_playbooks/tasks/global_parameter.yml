@@ -1,0 +1,19 @@
+---
+- name: "Ensure Global Parameter '{{ global_parameter_name }}' is {{ global_parameter_state }}"
+  vars:
+    global_parameter_name: "TheAnswer"
+    global_parameter_value: 42
+    global_parameter_state: present
+  foreman_global_parameter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ global_parameter_name }}"
+    value: "{{ global_parameter_value }}"
+    state: "{{ global_parameter_state }}"
+  register: result
+- fail:
+    msg: "Ensuring global parameter is {{ organization_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
