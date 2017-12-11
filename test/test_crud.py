@@ -6,10 +6,11 @@ from ansible.cli.playbook import PlaybookCLI
 
 
 MODULES = [
-        'global_parameter',
-        'organization',
-        'product',
-    ]
+    'compute_profile',
+    'global_parameter',
+    'organization',
+    'product',
+]
 
 
 def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
