@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello content view
@@ -66,6 +67,7 @@ options:
         description:
             - Force content view promotion and bypass lifecycle environment restriction
         default: false
+        type: bool
     force_yum_metadata_regeneration:
         description:
             - Force metadata regeneration on the repositories in the content view version
@@ -98,16 +100,17 @@ RETURN = '''# '''
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
-        handle_no_nailgun,
         find_organization,
         find_lifecycle_environment,
         find_content_view,
         find_content_view_version,
         ping_server,
+        set_task_timeout,
     )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
+from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def content_view_promote(module, name, organization, to_environment, **kwargs):
@@ -120,7 +123,7 @@ def content_view_promote(module, name, organization, to_environment, **kwargs):
     to_environment = find_lifecycle_environment(module, name=to_environment, organization=organization)
     content_view_version = find_content_view_version(module, content_view, environment=kwargs.pop('from_environment'), version=kwargs.pop('version'))
 
-    request_data = {'environment_ids': [to_environment.id]}
+    request_data = {'environment_id': to_environment.id}
     request_data.update({k: v for k, v in kwargs.iteritems() if v is not None})
 
     current_environment_ids = map(lambda environment: environment.id, content_view_version.environment)
@@ -158,6 +161,8 @@ def main():
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+
+    set_task_timeout(3600000)  # 60 minutes
 
     server_url = module.params['server_url']
     username = module.params['username']

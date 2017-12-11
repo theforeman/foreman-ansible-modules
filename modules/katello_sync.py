@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     repository:
         description:
             - Name of the repository to sync
@@ -52,6 +53,10 @@ options:
         description:
             - Product to which the repository lives in
         required: true
+    synchronous:
+        description:
+            - Wait for the Sync task to complete if True. Immediately return if False.
+        default: true
     organization:
         description:
             - Organization that the Product is in
@@ -123,13 +128,13 @@ class NailGun(object):
         else:
             self._module.fail_json(msg="No Repository found for %s" % name)
 
-    def sync(self, product, organization, repository=None):
+    def sync(self, product, organization, synchronous, repository=None):
         if repository is None:
             product = self.find_product(product, organization)
-            return product.sync()
+            return product.sync(synchronous)
         else:
             repository = self.find_repository(repository, product, organization)
-            return repository.sync()
+            return repository.sync(synchronous)
 
 
 def main():
@@ -140,6 +145,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             product=dict(required=True),
+            synchronous=dict(type='bool', default=True),
             organization=dict(required=True),
             repository=dict(),
         ),
@@ -154,6 +160,7 @@ def main():
     password = module.params['password']
     repository = module.params['repository']
     product = module.params['product']
+    synchronous = module.params['synchronous']
     organization = module.params['organization']
 
     server = ServerConfig(
@@ -171,7 +178,7 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        changed = ng.sync(product, organization, repository)
+        changed = ng.sync(product, organization, synchronous, repository)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)

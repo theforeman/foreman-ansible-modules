@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the activation key
@@ -61,6 +62,7 @@ options:
     subscriptions:
         description:
             - List of subscriptions that include name
+        type: list
 '''
 
 EXAMPLES = '''
@@ -166,13 +168,13 @@ class NailGun(object):
         response = activation_key.search({'name', 'organization'})
 
         if len(response) == 0:
-            if not self.check_mode:
+            if not self._module.check_mode:
                 activation_key = activation_key.create()
             updated = True
         elif len(response) == 1:
             updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view'])
             if updated:
-                if not self.check_mode:
+                if not self._module.check_mode:
                     activation_key.update()
 
         if subscriptions is None:
@@ -183,7 +185,7 @@ class NailGun(object):
         current_subscription_ids = map(lambda s: s.id, current_subscriptions)
 
         if set(desired_subscription_ids) != set(current_subscription_ids):
-            if not self.check_mode:
+            if not self._module.check_mode:
                 for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
                     activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
                 for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):

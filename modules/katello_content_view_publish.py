@@ -19,7 +19,7 @@
 
 DOCUMENTATION = '''
 ---
-module: katello_publish
+module: katello_content_view_publish
 short_description: Publish a Katello content view
 description:
     - Publish a Katello content view
@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     content_view:
         description:
             - Name of the content view to publish
@@ -56,7 +57,7 @@ options:
 
 EXAMPLES = '''
 - name: "Publish a content view"
-  katello_publish:
+  katello_content_view_publish:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

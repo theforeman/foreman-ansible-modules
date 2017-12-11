@@ -13,6 +13,7 @@ from nailgun.entities import (
     ContentViewVersion,
     LifecycleEnvironment,
     Location,
+    OperatingSystem,
     Organization,
     Ping,
     Product,
@@ -20,7 +21,9 @@ from nailgun.entities import (
     Repository,
     RepositorySet,
     TemplateKind,
-    AbstractComputeResource
+    AbstractComputeResource,
+    OSDefaultTemplate,
+    ComputeProfile,
 )
 from nailgun import entity_mixins, entity_fields
 
@@ -86,6 +89,10 @@ class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
         return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
 
 
+class ComputeProfile(ComputeProfile, entity_mixins.EntitySearchMixin):
+    pass
+
+
 # Connection helper
 def create_server(server_url, auth, verify_ssl):
     entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
@@ -123,18 +130,19 @@ def update_fields(new, old, fields):
 def naildown_entity_state(entity_class, entity_dict, entity, state, module):
     """ Ensure that a given entity has a certain state """
     changed = False
-    if state == 'present':
+    if state == 'present_with_defaults':
         if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
-    elif state == 'latest':
+    elif state == 'present':
         if entity is None:
             changed = create_entity(entity_class, entity_dict, module)
         else:
             changed = update_entity(entity, entity_dict, module)
-    else:
-        # state == 'absent'
+    elif state == 'absent':
         if entity is not None:
             changed = delete_entity(entity, module)
+    else:
+        module.fail_json(msg='Not a valid state: {}'.format(state))
     return changed
 
 
@@ -244,6 +252,11 @@ def find_compute_resource(module, name, failsafe=False):
     return handle_find_response(module, compute_resource, message="No compute resource found for %s" % name, failsafe=failsafe)
 
 
+def find_compute_profile(module, name, failsafe=False):
+    compute_profile = ComputeProfile(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
+
+
 def find_lifecycle_environment(module, name, organization, failsafe=False):
     response = LifecycleEnvironment(name=name, organization=organization).search()
     return handle_find_response(module, response, message="No lifecycle environment found for %s" % name, failsafe=failsafe)
@@ -267,6 +280,17 @@ def find_repository(module, name, product):
 def find_repository_set(module, name, product, failsafe=False):
     repo_set = RepositorySet(name=name, product=product)
     return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
+def find_operating_system_by_title(module, title, failsafe=False):
+    response = OperatingSystem().search(set(), {'search': 'title~"{}"'.format(title)})
+    return handle_find_response(module, response, message="No unique Operating System found with title %s" % title, failsafe=failsafe)
+
+
+def find_os_default_template(module, operatingsystem, template_kind, failsafe=False):
+    response = OSDefaultTemplate(operatingsystem=operatingsystem).search()
+    response = [item for item in response if item.template_kind.id == template_kind.id]
+    return handle_find_response(module, response, message="No default template found for %s/%s" % (operatingsystem.name, template_kind.name), failsafe=failsafe)
 
 
 def handle_find_response(module, response, message=None, failsafe=False):

@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  tasks:
+  - name: "Create Debian operating system"
+    foreman_operating_system:
+      username: "admin"
+      password: "changeme"
+      server_url: "https://centos7-devel.example.com"
+      verify_ssl: false
+      name: "Debian"
+      major: 9
+      minor: 2
+      family: "Debian"
+      password_hash: "SHA256"
+      state: "present"

@@ -1,9 +1,6 @@
 language: python
 python:
-  - "2.6"
+  - "2.7"
   - "3.5"
-install:
-  - "pip install --upgrade pip"
-  - "pip install pep8"
-  - "pip install -r requirements.txt"
-script: "pep8 --ignore=E402 --max-line-length=160 ."
+install: make test-setup
+script: make lint

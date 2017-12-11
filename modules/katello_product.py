@@ -23,7 +23,9 @@ module: katello_product
 short_description: Create and Manage Katello products
 description:
     - Create and Manage Katello products
-author: "Eric D Helms (@ehelms)"
+author:
+    - "Eric D Helms (@ehelms)"
+    - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
@@ -44,6 +46,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello product
@@ -52,6 +55,22 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    label:
+        description:
+            - Label to show the user
+        required: false
+    description:
+        description:
+            - Possibly long descriptionto show the user in detail view
+        required: false
+    state:
+        description:
+        - State of the Global Parameter
+        required: true
+        choices:
+        - present
+        - lastest
+        - absent
 '''
 
 EXAMPLES = '''
@@ -62,13 +81,20 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "Fedora"
     organization: "My Cool new Organization"
+    state: present
 '''
 
 RETURN = '''# '''
 
 try:
-    from nailgun import entities
-    from nailgun.config import ServerConfig
+    from ansible.module_utils.ansible_nailgun_cement import (
+        Product,
+        create_server,
+        ping_server,
+        find_organization,
+        find_product,
+        naildown_entity_state,
+    )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
@@ -77,41 +103,21 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-class NailGun(object):
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-
-    def find_organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def product(self, name, organization):
-        updated = False
-        org = self.find_organization(organization)
-        product = self._entities.Product(self._server, name=name, organization=org)
-        product = product.search()
-
-        product = product[0] if len(product) == 1 else None
-
-        if product and product.name != name:
-            product = self._entities.Product(self._server, name=name, id=product.id)
-            if not self._module.check_mode:
-                product.update()
-            updated = True
-        elif not product:
-            product = self._entities.Product(self._server, name=name, organization=org)
-            if not self._module.check_mode:
-                product.create()
-            updated = True
-
-        return updated
+def sanitize_product_dict(entity_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+        'organization': 'organization',
+        'description': 'description',
+        # 'gpg_key': 'gpg_key',  # wait for Nailgun
+        # 'sync_plan': 'sync_plan',  # wait for Nailgun
+        'label': 'label',
+    }
+    result = {}
+    for key, value in name_map.iteritems():
+        if key in entity_dict:
+            result[value] = entity_dict[key]
+    return result
 
 
 def main():
@@ -123,38 +129,39 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
+            label=dict(),
+            description=dict(),
+            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    organization = module.params['organization']
+    entity_dict = dict(
+        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
 
-    # Lets make an connection to the server with username and password
     try:
-        org = entities.Organization(server)
-        org.search()
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
-    try:
-        changed = ng.product(name, organization)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    ping_server(module)
+
+    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
+    entity = find_product(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
+
+    entity_dict = sanitize_product_dict(entity_dict)
+
+    changed = naildown_entity_state(Product, entity_dict, entity, state, module)
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':

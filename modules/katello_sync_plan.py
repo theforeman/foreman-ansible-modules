@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello sync plan
@@ -68,6 +69,7 @@ options:
         description:
             - List of products to include in the sync plan
         required: false
+        type: list
 '''
 
 EXAMPLES = '''

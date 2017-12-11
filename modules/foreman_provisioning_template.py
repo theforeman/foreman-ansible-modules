@@ -53,6 +53,7 @@ options:
         - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     audit_comment:
         description:
         - Content of the audit comment field
@@ -88,18 +89,21 @@ options:
             Either this or template is required as a source for
             the Provisioning Template "content".
         required: false
+        type: path
     locations:
         description:
         - The locations the template should be assigend to
         required: false
+        type: list
     locked:
         description:
         - Determines whether the template shall be locked
         required: false
-        defaul: false
+        default: false
         choices:
         - true
         - false
+        type: bool
     name:
         description:
         - |
@@ -114,16 +118,18 @@ options:
         description:
         - The organizations the template shall be assigned to
         required: false
+        type: list
     operatingsystems:
         description: The Operatingsystems the template shall be assigned to
         required: false
+        type: list
     state:
         description: The state the template should be in.
         require: true
         choices:
         - absent
-        - latest
         - present
+        - present_with_defaults
 
 '''
 
@@ -222,7 +228,7 @@ EXAMPLES = '''
       password: "admin"
       server_url: "https://foreman.example.com"
       name: "*"
-      state: latest
+      state: present
       organizations:
       - DALEK INC
       - sky.net
@@ -236,8 +242,6 @@ RETURN = ''' # '''
 try:
     from nailgun.entities import (
         ProvisioningTemplate,
-        OperatingSystem,
-        _OPERATING_SYSTEMS,
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
@@ -248,6 +252,7 @@ try:
         ping_server,
         find_entities,
         find_entities_by_name,
+        find_operating_system_by_title,
         naildown_entity_state,
     )
 
@@ -300,8 +305,6 @@ def sanitize_template_dict(template_dict):
             result[value] = template_dict[key]
     return result
     # Missing parameters:
-    # operatingsystem=[]
-    # template_combinations=''
     # default
 
 
@@ -335,7 +338,7 @@ def main():
             name=dict(),
             organizations=dict(type='list'),
             operatingsystems=dict(type='list'),
-            state=dict(required=True, choices=['absent', 'present', 'latest']),
+            state=dict(required=True, choices=['absent', 'present_with_defaults', 'present']),
         ),
         supports_check_mode=True,
         mutually_exclusive=[
@@ -394,8 +397,8 @@ def main():
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if state == 'present':
-            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
+        if state == 'present_with_defaults':
+            module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
             if template_dict.keys() != ['name', 'locked']:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
@@ -426,8 +429,8 @@ def main():
             Organization, template_dict['organizations'], module)
 
     if 'operatingsystems' in template_dict:
-        template_dict['operatingsystems'] = find_entities_by_name(OperatingSystem, template_dict[
-            'operatingsystems'], module)
+        template_dict['operatingsystems'] = [find_operating_system_by_title(module, title)
+                                             for title in template_dict['operatingsystems']]
 
     if not affects_multiple:
         template_dict = find_template_kind(template_dict, module)

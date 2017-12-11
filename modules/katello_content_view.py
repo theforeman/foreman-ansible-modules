@@ -45,6 +45,7 @@ options:
             - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     name:
         description:
             - Name of the Katello product
@@ -57,6 +58,7 @@ options:
         description:
             - List of repositories that include name and product
         required: false
+        type: list
 '''
 
 EXAMPLES = '''

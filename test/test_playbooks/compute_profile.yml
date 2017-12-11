@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: "Create a compute profile"
+    foreman_compute_profile:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Enterprise"
+      state: "present"
+  - name: "Remove the compute profile"
+    foreman_compute_profile:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Enterprise"
+      state: "absent"

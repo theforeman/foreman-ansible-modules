@@ -53,6 +53,7 @@ options:
         - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     file_name:
         description:
         - |
@@ -60,6 +61,7 @@ options:
             Either this or layout is required as a source for
             the Partition Template "content".
         required: false
+        type: path
     layout:
         description:
         - |
@@ -70,6 +72,7 @@ options:
         description:
         - The locations the template should be assigend to
         required: false
+        type: list
     name:
         description:
         - |
@@ -85,6 +88,7 @@ options:
         description:
         - The organizations the template shall be assigned to
         required: false
+        type: list
     os_family:
         description: The OS family the template shall be assigned with.
         required: false
@@ -105,8 +109,8 @@ options:
         require: true
         choices:
         - absent
-        - latest
         - present
+        - present_with_defaults
 
 '''
 
@@ -202,7 +206,7 @@ EXAMPLES = '''
       password: "admin"
       server_url: "https://foreman.example.com"
       name: "*"
-      state: latest
+      state: present
       organizations:
       - DALEK INC
       - sky.net
@@ -279,7 +283,7 @@ def main():
             name=dict(),
             organizations=dict(type='list'),
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
-            state=dict(required=True, choices=['absent', 'present', 'latest']),
+            state=dict(required=True, choices=['absent', 'present_with_defaults', 'present']),
         ),
         supports_check_mode=True,
         mutually_exclusive=[
@@ -337,8 +341,8 @@ def main():
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if state == 'present':
-            module.fail_json(msg="'state: present' and 'name: *' cannot be used together")
+        if state == 'present_with_defaults':
+            module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
             if ptable_dict.keys() != ['name']:
                 module.fail_json(msg="When deleting all partition tables, there is no need to specify further parameters.")

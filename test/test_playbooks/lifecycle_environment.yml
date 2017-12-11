@@ -1,0 +1,78 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: "Add a dev lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Dev"
+      organization: "Default Organization"
+      label: "dev"
+      description: "The dev environment"
+      state: 'present'
+  - name: "Add a test lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Test"
+      organization: "Default Organization"
+      label: "test"
+      description: "The test environment"
+      prior: "Dev"
+      state: 'present'
+  - name: "Add a production lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Production"
+      organization: "Default Organization"
+      label: "production"
+      description: "The production environment"
+      prior: "Test"
+      state: 'present'
+  - name: "Update the test lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Test"
+      organization: "Default Organization"
+      description: "The new test environment"
+      state: 'present'
+  - name: "Remove the production lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Production"
+      organization: "Default Organization"
+      state: 'absent'
+  - name: "Remove the test lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Test"
+      organization: "Default Organization"
+      state: 'absent'
+  - name: "Remove the dev lifecycle environment"
+    katello_lifecycle_environment:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "Dev"
+      organization: "Default Organization"
+      state: 'absent'

@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: "Create a Global Parameter"
+    foreman_global_parameter:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: "TheAnswer"
+      value: "42"
+      state: present
+

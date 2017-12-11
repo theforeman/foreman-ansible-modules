@@ -37,22 +37,43 @@ foreman-ansible-module `modules` and `module_utils` if you do so.
 Now your playbooks and roles should have access to the modules and module_utils
 contained in the repository for use, testing, or development of new modules.
 
-## How to debug this repository
+## How to test modules in this repository
+
+To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
+Also you need to run test-setup and update test/test_playbooks/server_vars.yml:
+
+```sh
+make test-setup
+vi test/test_playbooks/server_vars.yml # point to your Foreman instance
+```
+
+To run the tests:
+
+```sh
+make test # all tests
+make test TEST="-k product" # single module test
+```
+
+## How to debug modules in this repository
 
 Set up debugging using ansible's test-module
 
 ```sh
-ansible-playbook debug-setup.yml
+make debug-setup
 ```
 
 Debug with ansible's test-module
 
 ```sh
-./ansible/hacking/test-module -m <path to ansible module> -a @<path to input arguments to module> -D <path to debugger>
+make debug MODULE=<module name>
 
-# Example: debug the activation_key module with pdb
-./ansible/hacking/test-module -m ./foreman-ansible-modules/modules/katello_activation_key.py -a @activation-key-args.json -D /usr/lib/python2.7/site-packages/pdb/pdb.py
+# Example: debug the katello_content_view module
+$ make debug MODULE=katello_content_view
+./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @test/data/content-view.json -D /usr/lib64/python2.7/pdb.py
+...
 ```
+
+You can set a number of environment variables besides `MODULE` to configure make. Check the [Makefile](https://github.com/theforeman/foreman-ansible-modules/blob/master/Makefile) for more configuration options.
 
 ## Modules List
 
@@ -61,6 +82,8 @@ This is a list of modules currently in the repository (please add to the list if
 #### Entity Modules
 
  * foreman_global_parameter: create and maintain global parameters
+ * foreman_operating_system: create and maintain operating systems
+ * foreman_os_default_template: create and maintain the association of default templates to operating systems
  * foreman_organization: create and maintain organizations
  * foreman_ptable: create and maintain partition templates
  * foreman_provisioning_template: create and maintain provisioning templates
@@ -75,4 +98,4 @@ This is a list of modules currently in the repository (please add to the list if
 
  * katello_sync: sync Katello repositories and products
  * katello_upload: upload files, rpms, etc. to repositories
- * katello_publish: publish Katello content views
+ * katello_content_view_publish: publish Katello content views

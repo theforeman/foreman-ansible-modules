@@ -46,6 +46,7 @@ options:
             - Verify SSL of the Foreman server
         required: false
         default: true
+        type: bool
     name:
         description:
             - Name of the Foreman realm
@@ -53,12 +54,11 @@ options:
     realm_proxy:
         description:
             - Id of Proxy to use for this realm
-            - Value: Must be a number.
+        type: int
         required: true
     realm_type:
         description:
             - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
-            - Value: Must be String
         required: true
     state:
         description:
@@ -167,3 +167,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

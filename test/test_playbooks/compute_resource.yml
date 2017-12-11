@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: vmware compute resource
+    foreman_compute_resource:
+      server_url: "{{ foreman_server_url }}"
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      name: example_compute_resource
+      datacenter: ax01
+      locations:
+      - Munich
+      organizations:
+      - ATIX
+      provider: vmware
+      provider_auth:
+        url: https://vsphere.example.com
+        user: admin
+        password: "secret"
+      state: present

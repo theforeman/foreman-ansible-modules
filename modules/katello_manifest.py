@@ -44,6 +44,7 @@ options:
         description:
             - Verify SSL of the Foreman server
         default: True
+        type: bool
     organization:
         description:
             - Organization that the manifest is in

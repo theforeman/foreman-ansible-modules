@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: "Remove the Katello manifest"
+    katello_manifest:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      organization: "Default Organization"
+      state: 'absent'
+  - name: "Upload a Katello manifest"
+    katello_manifest:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      organization: "Default Organization"
+      repository_url: "https://cdn.redhat.com"
+      manifest_path: "/tmp/manifest.zip"
+      state: 'present'
+  - name: "Try to upload the same Katello manifest"
+    katello_manifest:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      organization: "Default Organization"
+      repository_url: "https://cdn.redhat.com"
+      manifest_path: "/tmp/manifest.zip"
+      state: 'present'
+  - name: "Refresh the manifest"
+    katello_manifest:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      organization: "Default Organization"
+      repository_url: "https://cdn.redhat.com"
+      state: 'refreshed'

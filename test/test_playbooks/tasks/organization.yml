@@ -1,0 +1,11 @@
+---
+- name: "Ensure organization '{{ organization_name }}' is {{ organization_state }}"
+  vars:
+    - organization_name: "Test Organization"
+  foreman_organization:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ organization_name }}"
+    state: "{{ organization_state }}"
