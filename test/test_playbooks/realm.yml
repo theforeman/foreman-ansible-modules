@@ -4,24 +4,16 @@
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: Create REALM 
-    foreman_realm:
-      server_url: "{{ foreman_server_url }}"
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "EXAMPLE.COM"
+  - include: tasks/realm.yml
+    vars:
+      realm_name: "EXAMPLE.LOCAL"
       realm_proxy: 1
       realm_type: "Red Hat Identity Management"
-      state: present
-  - name:  Delete REALM 
-    foreman_realm:
-      server_url: "{{ foreman_server_url }}"
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "EXAMPLE.COM"
+      realm_state: present
+  - include: tasks/realm.yml
+    vars:
+      realm_name: "EXAMPLE.LOCAL"
       realm_proxy: 1
       realm_type: "Red Hat Identity Management"
-      state: absent
+      realm_state: absent
 
