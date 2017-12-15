@@ -46,7 +46,6 @@ options:
             - Verify SSL of the Foreman server
         required: false
         default: true
-        type: bool
     name:
         description:
             - Name of the Foreman realm
@@ -167,4 +166,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

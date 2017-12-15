@@ -2,7 +2,7 @@ import pytest
 from ansible.cli.playbook import PlaybookCLI
 
 
-MODULES = ['organization', 'product']
+MODULES = ['organization', 'product', 'realm']
 
 
 def run_playbook(path, extra_vars=""):
