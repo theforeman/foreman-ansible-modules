@@ -1,0 +1,16 @@
+---
+- name: "Promote the content view version to target environment"
+  vars:
+    - organization_name: "Test Organization"
+    - content_view_name: "cv1"
+    - content_view_version: "1.0"
+    - content_view_version_promote_to_environment: "Library"
+  katello_content_view_version_promote:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ content_view_name }}"
+    organization: "{{ organization_name }}"
+    version: "{{ content_view_version }}"
+    to_environment: "{{ content_view_version_promote_to_environment }}"

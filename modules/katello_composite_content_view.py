@@ -60,6 +60,14 @@ options:
             - List of content views that include name and version
         required: false
         type: list
+    state:
+        description:
+        - State of the Global Parameter
+        required: true
+        choices:
+        - present
+        - absent
+        - present_with_defaults
 '''
 
 EXAMPLES = '''
@@ -94,7 +102,6 @@ try:
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
@@ -124,6 +131,7 @@ def main():
             name=dict(required=True),
             organization=dict(required=True),
             content_views=dict(type='list'),
+            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )
@@ -154,7 +162,7 @@ def main():
 
     entity = find_content_view(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
 
-    entity_dict['content_views'] = find_content_views(module, entity_dict['content_views'], organization=entity_dict['organization'], failsafe=True)
+    entity_dict['content_views'] = find_content_views(module, entity_dict['content_views'], organization=entity_dict['organization'])
 
     entity_dict = sanitize_composite_content_view_dict(entity_dict)
 

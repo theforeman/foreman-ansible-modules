@@ -130,7 +130,7 @@ def main():
             organization=dict(required=True),
             label=dict(),
             description=dict(),
-            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
+            state=dict(required=True, choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )

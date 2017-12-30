@@ -1,17 +1,58 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include_tasks: tasks/product.yml
+    vars:
+      product_state: present
+  - include_tasks: tasks/repository.yml
+    vars:
+      product_state: present
+  - include_tasks: tasks/content_view.yml
+    vars:
+      content_view_state: present
+  - include_tasks: tasks/content_view_publish.yml
+  - include_tasks: tasks/content_view_version_promote.yml
+
+- hosts: tests
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Create/update katello composite content view"
-    katello_content_view:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "ccv5"
-      organization: "Default Organization"
-      content_views:
-        - name: "cv3"
-          version "1.0"
+  - include_tasks: tasks/composite_content_view.yml
+    vars:
+      composite_content_view_state: present
+  - include_tasks: tasks/composite_content_view.yml
+    ignore_errors: yes
+    vars:
+      composite_content_view_state: absent
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include_tasks: tasks/content_view.yml
+    ignore_errors: yes
+    vars:
+      content_view_state: absent
+  - include_tasks: tasks/repository.yml
+    ignore_errors: yes
+    vars:
+      repository_view_state: absent
+  - include_tasks: tasks/product.yml
+    ignore_errors: yes
+    vars:
+      product_view_state: absent
+  - include_tasks: tasks/organization.yml
+    ignore_errors: yes
+    vars:
+      organization_view_state: absent

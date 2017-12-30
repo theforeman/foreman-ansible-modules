@@ -5,51 +5,71 @@
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - include: tasks/organization.yml
-    vars:
-      organization_state: present
-  - include: tasks/product.yml
-    vars:
-      product_state: present
-  - include: tasks/repository.yml
-    vars:
-      repository_state: present
+
+  - name: Build the things
+    block:
+    - include_tasks: tasks/organization.yml
+      vars:
+	organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+	product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+	repository_state: present
 
 - hosts: tests
   gather_facts: false
   tasks:
-  - name: 'Load server config'
+  - name: Load server config
     include_vars:
       file: server_vars.yml
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: present
-      expected_change: true
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: present
-      expected_change: false
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: absent
-      expected_change: true
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: absent
-      expected_change: false
+  - name: Test the things
+    block:
+    - include_tasks: tasks/content_view.yml
+      vars:
+	content_view_state: present
+    always:
+    - include_tasks: tasks/content_view.yml
+      ignore_errors: yes
+      vars:
+	content_view_state: absent
 
 - hosts: fixtures
   gather_facts: false
   tasks:
-  - name: 'Load server config'
+  - name: Load server config
     include_vars:
       file: server_vars.yml
-  - include: tasks/repository.yml
-    vars:
-      repository_state: absent
-  - include: tasks/product.yml
-    vars:
-      product_state: absent
-  - include: tasks/organization.yml
-    vars:
-      organization_state: absent
+  - name: Test the things
+    block:
+    - include_tasks: tasks/content_view.yml
+      vars:
+	content_view_state: present
+    always:
+    - include_tasks: tasks/content_view.yml
+      ignore_errors: yes
+      vars:
+	content_view_state: absent
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: Tear down the things
+    always:
+    - include_tasks: tasks/repository.yml
+      ignore_errors: yes
+      vars:
+	repository_state: absent
+    - include_tasks: tasks/product.yml
+      ignore_errors: yes
+      vars:
+	product_state: absent
+    - include_tasks: tasks/organization.yml
+      ignore_errors: yes
+      vars:
+	organization_state: absent
+

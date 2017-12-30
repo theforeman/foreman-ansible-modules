@@ -1,0 +1,12 @@
+---
+- name: "Publish the content view"
+  vars:
+    - organization_name: "Test Organization"
+    - content_view_name: "cv1"
+  katello_content_view_publish:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    content_view: "{{ content_view_name }}"
+    organization: "{{ organization_name }}"

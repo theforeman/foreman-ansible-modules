@@ -1,23 +1,55 @@
 ---
-- name: "Create katello content view"
-  vars:
-    - content_view_name: "Test Content View"
-    - organization_name: "Test Organization"
-    - repositories:
-        - name: "Test Repository"
-          product: "Test Product"
-  katello_content_view:
-    username: "{{ foreman_username }}"
-    password: "{{ foreman_password }}"
-    server_url: "{{ foreman_server_url }}"
-    verify_ssl: "{{ foreman_verify_ssl }}"
-    state: "{{ content_view_state | default(omit) }}"
-    name: "{{ content_view_name }}"
-    organization: "{{ organization_name }}"
-    repositories: "{{ repositories }}"
-  register: result
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
 
-- fail:
-    msg: "Creating/updating content view failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
-...
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: present
+      expected_change: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: present
+      expected_change: false
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: absent
+      expected_change: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: absent
+      expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent

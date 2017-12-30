@@ -1,0 +1,18 @@
+---
+- name: "Create/update katello composite content view"
+  vars:
+    - organization_name: "Test Organization"
+    - composite_content_view_name: "ccv1"
+    - content_view_name: "cv1"
+    - content_view_version: "1.0"
+  katello_composite_content_view:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ composite_content_view_name }}"
+    organization: "{{ organization_name }}"
+    state: "{{ composite_content_view_state }}"
+    content_views:
+      - name: "{{ content_view_name }}"
+        version: "{{ content_view_version }}"
