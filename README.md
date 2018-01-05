@@ -51,7 +51,15 @@ To run the tests:
 
 ```sh
 make test # all tests
-make test TEST="-k product" # single module test
+make test_product  # single test
+make test TEST="-k 'organzation or product'"  # select tests by expression (see `pytest -h`)
+```
+
+The tests are run against prerecorded server-responses.
+You can (re-)record the cassettes for a specific test with
+
+```sh
+make record_<test name>
 ```
 
 ## How to debug modules in this repository

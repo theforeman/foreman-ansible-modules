@@ -11,19 +11,28 @@ DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 default: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of:"
-	@echo "  help         to show this message"
-	@echo "  lint         to run flake8 and pylint"
-	@echo "  test         to run unit tests"
-	@echo "  debug        debug a module using the ansible hacking module"
-	@echo "  setup        to set up test, lint, and debugging"
-	@echo "  test-setup   to install test dependencies"
-	@echo "  debug-setup  to set up the ansible hacking module"
+	@echo "  help           to show this message"
+	@echo "  lint           to run flake8 and pylint"
+	@echo "  test           to run unit tests"
+	@echo "  debug          debug a module using the ansible hacking module"
+	@echo "  setup          to set up test, lint, and debugging"
+	@echo "  test-setup     to install test dependencies"
+	@echo "  debug-setup    to set up the ansible hacking module"
+	@echo "  test_<test>    to run a specific unittest"
+	@echo "  record_<test>  to (re-)record the server answers for a specific test"
 
 lint:
 	pycodestyle --ignore=E402,E722 --max-line-length=160 modules test
 
 test:
 	pytest $(TEST)
+
+test_%: FORCE
+	pytest -k $*
+
+record_%: FORCE
+	$(RM) test/test_playbooks/fixtures/$*-*.yml
+	pytest -k $* --record
 
 debug:
 ifndef MODULE
@@ -43,4 +52,6 @@ test-setup: test/test_playbooks/server_vars.yml
 test/test_playbooks/server_vars.yml:
 	cp test/test_playbooks/server_vars.yml.example test/test_playbooks/server_vars.yml
 
-.PHONY: help debug lint test setup debug-setup test-setup
+FORCE:
+
+.PHONY: help debug lint test setup debug-setup test-setup FORCE

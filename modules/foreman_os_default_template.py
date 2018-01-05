@@ -132,7 +132,7 @@ def sanitize_os_default_template_dict(entity_dict):
         'provisioning_template': 'provisioning_template',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in entity_dict:
             result[value] = entity_dict[key]
     return result
@@ -160,7 +160,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     entity_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = entity_dict.pop('server_url')
     username = entity_dict.pop('username')

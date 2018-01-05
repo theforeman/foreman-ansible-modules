@@ -124,7 +124,7 @@ def content_view_promote(module, name, organization, to_environment, **kwargs):
     content_view_version = find_content_view_version(module, content_view, environment=kwargs.pop('from_environment'), version=kwargs.pop('version'))
 
     request_data = {'environment_id': to_environment.id}
-    request_data.update({k: v for k, v in kwargs.iteritems() if v is not None})
+    request_data.update({k: v for k, v in kwargs.items() if v is not None})
 
     current_environment_ids = map(lambda environment: environment.id, content_view_version.environment)
 

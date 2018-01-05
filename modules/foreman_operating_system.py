@@ -185,7 +185,7 @@ def sanitize_operating_system_dict(operating_system_dict):
         'password_hash': 'password_hash',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in operating_system_dict:
             result[value] = operating_system_dict[key]
     return result
@@ -216,7 +216,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     operating_system_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = operating_system_dict.pop('server_url')
     username = operating_system_dict.pop('username')

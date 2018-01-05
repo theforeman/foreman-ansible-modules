@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
   - name: 'Load server config'
     include_vars:
@@ -7,16 +8,40 @@
   - include: tasks/organization.yml
     vars:
       organization_state: present
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
   - include: tasks/product.yml
     vars:
       product_state: present
+      expected_change: true
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+      expected_change: false
   - include: tasks/product.yml
     vars:
       product_description: 'A product with an updated description'
       product_state: present
+      expected_change: true
   - include: tasks/product.yml
     vars:
       product_state: absent
+      expected_change: true
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: absent
+...

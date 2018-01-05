@@ -128,7 +128,7 @@ def sanitize_global_parameter_dict(global_parameter_dict):
         'value': 'value',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in global_parameter_dict:
             result[value] = global_parameter_dict[key]
     return result
@@ -155,7 +155,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     global_parameter_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = global_parameter_dict.pop('server_url')
     username = global_parameter_dict.pop('username')

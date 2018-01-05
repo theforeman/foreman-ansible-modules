@@ -300,7 +300,7 @@ def sanitize_template_dict(template_dict):
         'template': 'template',
     }
     result = {}
-    for key, value in name_map.iteritems():
+    for key, value in name_map.items():
         if key in template_dict:
             result[value] = template_dict[key]
     return result
@@ -359,7 +359,7 @@ def main():
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
     template_dict = dict(
-        [(k, v) for (k, v) in module.params.iteritems() if v is not None])
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
     server_url = template_dict.pop('server_url')
     username = template_dict.pop('username')

@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- hosts: tests
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
@@ -7,6 +8,13 @@
   - include: tasks/organization.yml
     vars:
       organization_state: present
+    expected_change: true
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+    expected_change: false
   - include: tasks/organization.yml
     vars:
       organization_state: absent
+    expected_change: true
+...

@@ -150,7 +150,10 @@ def find_entities(entity_class, **kwargs):
     """ Find entities by certain criteria """
     return entity_class().search(
         query={'search': ','.join(['{0}="{1}"'.format(
-            key, kwargs[key]) for key in kwargs]), 'per_page': sys.maxint}
+            key, kwargs[key]) for key in kwargs]),
+            # This is a hack to work around pagination in API-V2
+            # See Redmine: #21800
+            'per_page': 2 << 31}
     )
 
 
@@ -197,7 +200,7 @@ def update_entity(old_entity, entity_dict, module):
     try:
         volatile_entity = old_entity.read()
         fields = []
-        for key, value in volatile_entity.get_values().iteritems():
+        for key, value in volatile_entity.get_values().items():
             if key in entity_dict and not fields_equal(value, entity_dict[key]):
                 volatile_entity.__setattr__(key, entity_dict[key])
                 fields.append(key)

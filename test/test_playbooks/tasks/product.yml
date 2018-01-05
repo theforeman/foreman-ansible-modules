@@ -13,3 +13,8 @@
     organization: "{{ organization_name }}"
     description: "{{ product_description }}"
     state: "{{ product_state }}"
+  register: result
+- fail:
+    msg: "Ensuring product is {{ product_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
