@@ -1,22 +1,31 @@
 ---
-- hosts: localhost
+- hosts: tests
+  vars:
+    auth_params: &auth_params
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
   - name: "Create a compute profile"
     foreman_compute_profile:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
+      <<: *auth_params
       name: "Enterprise"
       state: "present"
+    register: result
+  - fail:
+      msg: "Create compute profile did not report expected change!"
+    when: result.changed != true
   - name: "Remove the compute profile"
     foreman_compute_profile:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
+      <<: *auth_params
       name: "Enterprise"
       state: "absent"
+    register: result
+  - fail:
+      msg: "Remove compute profile did not report expected change!"
+    when: result.changed != true

@@ -5,7 +5,13 @@ import json
 from ansible.cli.playbook import PlaybookCLI
 
 
-MODULES = ['organization', 'product']
+MODULES = [
+    'compute_profile',
+    'global_parameter',
+    'operating_system',
+    'organization',
+    'product',
+]
 
 
 def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
