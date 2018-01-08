@@ -211,6 +211,18 @@ EXAMPLES = '''
       with_fileglob:
        - "./arsenal_templates/*.erb"
 
+# If the templates are stored locally and the ansible module is executed on a remote host
+- name: Ensure latest version of all Provisioning Community Templates
+  foreman_provisioning_template:
+    server_url: "https://foreman.example.com"
+    username:  "admin"
+    password:  "changeme"
+    state: present
+    template: '{{ lookup("file", item.src) }}'
+  with_filetree: '/path/to/provisioning/templates'
+  when: item.state == 'file'
+
+
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* provisioning templates"
   local_action:
