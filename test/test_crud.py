@@ -8,6 +8,7 @@ from ansible.cli.playbook import PlaybookCLI
 MODULES = [
     'compute_profile',
     'global_parameter',
+    'location',
     'operating_system',
     'organization',
     'product',
