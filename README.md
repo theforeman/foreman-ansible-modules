@@ -62,6 +62,8 @@ You can (re-)record the cassettes for a specific test with
 make record_<test name>
 ```
 
+See also [Guidedeline to writing tests](test/README.md).
+
 ## How to debug modules in this repository
 
 Set up debugging using ansible's test-module
