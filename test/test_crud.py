@@ -9,6 +9,7 @@ MODULES = [
     'compute_profile',
     'global_parameter',
     'location',
+    'lifecycle_environment',
     'operating_system',
     'organization',
     'product',
