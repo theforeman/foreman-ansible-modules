@@ -13,6 +13,7 @@ MODULES = [
     'organization',
     'product',
     'provisioning_template',
+    'ptable',
     'repository',
 ]
 

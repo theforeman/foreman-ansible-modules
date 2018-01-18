@@ -1,25 +1,55 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
-  - name: Load server config
+  - name: 'Load server config'
     include_vars:
       file: server_vars.yml
-  - name: 'Add a new ptable'
-    foreman_ptable:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: A New Partition Template
-      state: present
-      layout: |
-        <%#
-            name: A Partition Template
-        %>
-        zerombr
-        clearpart --all --initlabel
-        autopart
-      locations:
-        - 'Default Location'
-      organizations:
-        - 'Default Organization'
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      expected_change: false
+  - include: tasks/ptable.yml
+    vars:
+      ptable_layout: 'A partition table with a changed layout'
+      ptable_state: present
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: absent
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: absent
+      expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...
