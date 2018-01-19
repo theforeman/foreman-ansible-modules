@@ -11,6 +11,7 @@ MODULES = [
     'operating_system',
     'organization',
     'product',
+    'repository',
 ]
 
 

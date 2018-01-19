@@ -73,6 +73,13 @@ options:
             - immediate
             - on_demand
         required: false
+    state:
+        description:
+            - State of the Repository
+        default: true
+        choices:
+        - present
+        - absent
 '''
 
 EXAMPLES = '''
@@ -92,8 +99,15 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities, entity_fields, entity_mixins
-    from nailgun.config import ServerConfig
+    from ansible.module_utils.ansible_nailgun_cement import (
+        Repository,
+        create_server,
+        ping_server,
+        find_organization,
+        find_product,
+        find_repository,
+        naildown_entity_state,
+    )
     HAS_NAILGUN_PACKAGE = True
 except:
     HAS_NAILGUN_PACKAGE = False
@@ -102,64 +116,20 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-class NailGun(object):
-
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-        entity_mixins.TASK_TIMEOUT = 1000
-
-    def find_organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def find_product(self, name, organization):
-        org = self.find_organization(organization)
-
-        product = self._entities.Product(self._server, name=name, organization=org)
-        response = product.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No Product found for %s" % name)
-
-    def repository(self, name, content_type, product, organization, url=None, download_policy=None):
-        updated = False
-        product = self.find_product(product, organization)
-
-        repository = self._entities.Repository(self._server, name=name, product=product)
-        repository._fields['organization'] = entity_fields.OneToOneField(entities.Organization)
-        repository.organization = product.organization
-        repository = repository.search()
-
-        repository = repository[0].read() if len(repository) == 1 else None
-
-        if repository and (repository.name != name or repository.url != url or (download_policy and repository.download_policy != download_policy)):
-            repository = self._entities.Repository(self._server, name=name, id=repository.id, url=url, download_policy=download_policy)
-            if not self._module.check_mode:
-                repository.update()
-            updated = True
-        elif not repository:
-            repository = self._entities.Repository(
-                self._server,
-                name=name,
-                content_type=content_type,
-                product=product,
-                url=url,
-                download_policy=download_policy,
-            )
-            if not self._module.check_mode:
-                repository.create()
-            updated = True
-
-        return updated
+def sanitize_repository_dict(entity_dict):
+    # This is the only true source for names (and conversions thereof)
+    name_map = {
+        'name': 'name',
+        'product': 'product',
+        'content_type': 'content_type',
+        'url': 'url',
+        'download_policy': 'download_policy',
+    }
+    result = {}
+    for key, value in name_map.items():
+        if key in entity_dict:
+            result[value] = entity_dict[key]
+    return result
 
 
 def main():
@@ -175,42 +145,40 @@ def main():
             content_type=dict(required=True),
             url=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
+            state=dict(required=True, choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    server_url = module.params['server_url']
-    verify_ssl = module.params['verify_ssl']
-    username = module.params['username']
-    password = module.params['password']
-    product = module.params['product']
-    organization = module.params['organization']
-    name = module.params['name']
-    content_type = module.params['content_type']
-    url = module.params['url']
-    download_policy = module.params['download_policy']
+    entity_dict = dict(
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    server_url = entity_dict.pop('server_url')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    state = entity_dict.pop('state')
 
-    # Lets make an connection to the server with username and password
     try:
-        org = entities.Organization(server)
-        org.search()
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
-    try:
-        changed = ng.repository(name, content_type, product, organization, url=url, download_policy=download_policy)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    ping_server(module)
+
+    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
+
+    entity_dict['product'] = find_product(module, name=entity_dict['product'], organization=entity_dict['organization'])
+
+    entity = find_repository(module, name=entity_dict['name'], product=entity_dict['product'], failsafe=True)
+
+    entity_dict = sanitize_repository_dict(entity_dict)
+
+    changed = naildown_entity_state(Repository, entity_dict, entity, state, module)
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':
