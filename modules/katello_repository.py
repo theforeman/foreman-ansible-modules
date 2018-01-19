@@ -78,6 +78,7 @@ options:
             - State of the Repository
         default: true
         choices:
+        - present_with_defaults
         - present
         - absent
 '''
@@ -145,7 +146,7 @@ def main():
             content_type=dict(required=True),
             url=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
-            state=dict(required=True, choices=['present', 'absent']),
+            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )
