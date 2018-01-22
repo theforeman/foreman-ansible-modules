@@ -275,9 +275,9 @@ def find_repositories(module, repositories, product):
     return map(lambda repository: find_repository(module, repository, product), repositories)
 
 
-def find_repository(module, name, product):
+def find_repository(module, name, product, failsafe=False):
     repository = Repository(name=name, product=product)
-    return handle_find_response(module, repository.search(), message="No Repository found for %s" % name)
+    return handle_find_response(module, repository.search(), message="No Repository found for %s" % name, failsafe=failsafe)
 
 
 def find_repository_set(module, name, product, failsafe=False):

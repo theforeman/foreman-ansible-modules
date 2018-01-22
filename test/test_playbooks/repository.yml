@@ -1,19 +1,53 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Create katello repository"
-    katello_repository:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      organization: "Default Organization"
-      name: "repo2"
-      product: "product1"
-      content_type: "yum"
-      url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-      download_policy: "on_demand"
-    delegate_to: localhost
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
+      expected_change: true
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
+      expected_change: false
+  - include: tasks/repository.yml
+    vars:
+      repository_url: 'https://localhost/pulp/repos/demo_repos/zoo'
+      repository_state: present
+      expected_change: true
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+      expected_change: true
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...
