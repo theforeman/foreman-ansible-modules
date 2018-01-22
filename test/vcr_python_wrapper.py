@@ -13,8 +13,8 @@ def body_json_l2_matcher(r1, r2):
     if r1.headers.get('content-type') == 'application/json' and r2.headers.get('content-type') == 'application/json':
         if r1.body is None or r2.body is None:
             return r1.body == r2.body
-        body1 = json.loads(r1.body)
-        body2 = json.loads(r2.body)
+        body1 = json.loads(r1.body.decode('utf8'))
+        body2 = json.loads(r2.body.decode('utf8'))
         if 'search' in body1:
             body1['search'] = ','.join(sorted(re.findall(r'([^=,]*="(?:[^"]|\\")*")', body1['search'])))
         if 'search' in body2:
