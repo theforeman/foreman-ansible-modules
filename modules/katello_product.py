@@ -65,11 +65,11 @@ options:
         required: false
     state:
         description:
-        - State of the Global Parameter
+        - State of the Product
         required: true
         choices:
+        - present_with_defaults
         - present
-        - lastest
         - absent
 '''
 
