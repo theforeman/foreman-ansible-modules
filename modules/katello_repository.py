@@ -90,6 +90,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My repository"
+    state: present
     content_type: "yum"
     product: "My Product"
     organization: "Default Organization"
