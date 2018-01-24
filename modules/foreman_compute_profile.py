@@ -78,16 +78,10 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_compute_profile_dict(entity_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in entity_dict:
-            result[value] = entity_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+}
 
 
 def main(module):
@@ -113,7 +107,7 @@ def main(module):
     if state == 'present' and updated_name:
         data['name'] = updated_name
 
-    data = sanitize_compute_profile_dict(data)
+    data = cement.sanitize_entity_dict(data, name_map)
 
     changed = cement.naildown_entity_state(nailgun.entities.ComputeProfile, data, compute_profile, state, module)
 

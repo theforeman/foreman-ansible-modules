@@ -110,6 +110,14 @@ def ping_server(module):
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
 
+def sanitize_entity_dict(entity_dict, name_map):
+    result = {}
+    for key, value in name_map.items():
+        if key in entity_dict:
+            result[value] = entity_dict[key]
+    return result
+
+
 def update_fields(new, old, fields):
     needs_update = False
     for field in fields:

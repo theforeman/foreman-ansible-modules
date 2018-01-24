@@ -109,6 +109,7 @@ try:
         find_product,
         find_repository,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
     HAS_NAILGUN_PACKAGE = True
 except:
@@ -118,20 +119,14 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_repository_dict(entity_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-        'product': 'product',
-        'content_type': 'content_type',
-        'url': 'url',
-        'download_policy': 'download_policy',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in entity_dict:
-            result[value] = entity_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+    'product': 'product',
+    'content_type': 'content_type',
+    'url': 'url',
+    'download_policy': 'download_policy',
+}
 
 
 def main():
@@ -176,7 +171,7 @@ def main():
 
     entity = find_repository(module, name=entity_dict['name'], product=entity_dict['product'], failsafe=True)
 
-    entity_dict = sanitize_repository_dict(entity_dict)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
     changed = naildown_entity_state(Repository, entity_dict, entity, state, module)
 

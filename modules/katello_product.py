@@ -71,6 +71,7 @@ options:
         - present_with_defaults
         - present
         - absent
+        - present_with_defaults
 '''
 
 EXAMPLES = '''
@@ -94,6 +95,7 @@ try:
         find_organization,
         find_product,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
     HAS_NAILGUN_PACKAGE = True
 except:
@@ -103,21 +105,15 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_product_dict(entity_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-        'organization': 'organization',
-        'description': 'description',
-        # 'gpg_key': 'gpg_key',  # wait for Nailgun
-        # 'sync_plan': 'sync_plan',  # wait for Nailgun
-        'label': 'label',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in entity_dict:
-            result[value] = entity_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+    'organization': 'organization',
+    'description': 'description',
+    # 'gpg_key': 'gpg_key',  # wait for Nailgun
+    # 'sync_plan': 'sync_plan',  # wait for Nailgun
+    'label': 'label',
+}
 
 
 def main():
@@ -157,7 +153,7 @@ def main():
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
     entity = find_product(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
 
-    entity_dict = sanitize_product_dict(entity_dict)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
     changed = naildown_entity_state(Product, entity_dict, entity, state, module)
 

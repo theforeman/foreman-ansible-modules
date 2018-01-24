@@ -151,6 +151,7 @@ try:
         find_entities_by_name,
         find_operating_system_by_title,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
 
     from nailgun.entities import (
@@ -169,26 +170,20 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_operating_system_dict(operating_system_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-        'description': 'description',
-        'family': 'family',
-        'major': 'major',
-        'minor': 'minor',
-        'release_name': 'release_name',
-        'architectures': 'architecture',
-        'media': 'medium',
-        'ptables': 'ptable',
-        'provisioning_templates': 'provisioning_template',
-        'password_hash': 'password_hash',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in operating_system_dict:
-            result[value] = operating_system_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+    'description': 'description',
+    'family': 'family',
+    'major': 'major',
+    'minor': 'minor',
+    'release_name': 'release_name',
+    'architectures': 'architecture',
+    'media': 'medium',
+    'ptables': 'ptable',
+    'provisioning_templates': 'provisioning_template',
+    'password_hash': 'password_hash',
+}
 
 
 def main():
@@ -276,7 +271,7 @@ def main():
         operating_system_dict['provisioning_templates'] = find_entities_by_name(
             ProvisioningTemplate, operating_system_dict['provisioning_templates'], module)
 
-    operating_system_dict = sanitize_operating_system_dict(operating_system_dict)
+    operating_system_dict = sanitize_entity_dict(operating_system_dict, name_map)
 
     changed = naildown_entity_state(OperatingSystem, operating_system_dict, entity, state, module)
 

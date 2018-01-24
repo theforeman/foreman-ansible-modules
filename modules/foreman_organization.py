@@ -80,6 +80,7 @@ try:
         ping_server,
         find_entities,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
     from nailgun.entities import Organization
 
@@ -92,16 +93,10 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_organization_dict(organization_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in organization_dict:
-            result[value] = organization_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+}
 
 
 def main():
@@ -143,7 +138,7 @@ def main():
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
-    organization_dict = sanitize_organization_dict(organization_dict)
+    organization_dict = sanitize_entity_dict(organization_dict, name_map)
 
     changed = naildown_entity_state(Organization, organization_dict, entity, state, module)
 
