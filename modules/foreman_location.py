@@ -78,6 +78,7 @@ try:
         ping_server,
         find_entities,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
     from nailgun.entities import Location
 
@@ -90,16 +91,10 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
-def sanitize_location_dict(location_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'name': 'name',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in location_dict:
-            result[value] = location_dict[key]
-    return result
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+}
 
 
 def main():
@@ -117,14 +112,14 @@ def main():
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    location_dict = dict(
+    entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server_url = location_dict.pop('server_url')
-    username = location_dict.pop('username')
-    password = location_dict.pop('password')
-    verify_ssl = location_dict.pop('verify_ssl')
-    state = location_dict.pop('state')
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
 
     try:
         create_server(server_url, (username, password), verify_ssl)
@@ -133,7 +128,7 @@ def main():
 
     ping_server(module)
     try:
-        entities = find_entities(Location, name=location_dict['name'])
+        entities = find_entities(Location, name=entity_dict['name'])
         if len(entities) > 0:
             entity = entities[0]
         else:
@@ -141,9 +136,9 @@ def main():
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
-    location_dict = sanitize_location_dict(location_dict)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(Location, location_dict, entity, state, module)
+    changed = naildown_entity_state(Location, entity_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
