@@ -63,7 +63,8 @@ options:
         required: true
     sync_date:
         description:
-            - Start date and time of the first synchronization (default: now)
+            - Start date and time of the first synchronization
+        default: now
         required: true
     products:
         description:
