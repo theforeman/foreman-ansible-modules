@@ -1,78 +1,74 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+
+- hosts: tests
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Add a dev lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Dev"
-      organization: "Default Organization"
-      label: "dev"
-      description: "The dev environment"
-      state: 'present'
-  - name: "Add a test lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Test"
-      organization: "Default Organization"
-      label: "test"
-      description: "The test environment"
-      prior: "Dev"
-      state: 'present'
-  - name: "Add a production lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Production"
-      organization: "Default Organization"
-      label: "production"
-      description: "The production environment"
-      prior: "Test"
-      state: 'present'
-  - name: "Update the test lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Test"
-      organization: "Default Organization"
-      description: "The new test environment"
-      state: 'present'
-  - name: "Remove the production lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Production"
-      organization: "Default Organization"
-      state: 'absent'
-  - name: "Remove the test lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Test"
-      organization: "Default Organization"
-      state: 'absent'
-  - name: "Remove the dev lifecycle environment"
-    katello_lifecycle_environment:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Dev"
-      organization: "Default Organization"
-      state: 'absent'
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: present
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: present
+      lifecycle_environment_name: "Test"
+      lifecycle_environment_label: "test"
+      lifecycle_environment_prior: "Dev"
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: present
+      lifecycle_environment_name: "Production"
+      lifecycle_environment_label: "production"
+      lifecycle_environment_prior: "Test"
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: present
+      lifecycle_environment_name: "Test"
+      lifecycle_environment_description: "The new test environment"
+      lifecycle_environment_label:
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: absent
+      lifecycle_environment_name: "Production"
+      lifecycle_environment_description:
+      lifecycle_environment_label:
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: absent
+      lifecycle_environment_name: "Test"
+      lifecycle_environment_description:
+      lifecycle_environment_label:
+      expected_change: true
+  - include: tasks/lifecycle_environment.yml
+    vars:
+      lifecycle_environment_state: absent
+      lifecycle_environment_name: "Dev"
+      lifecycle_environment_description:
+      lifecycle_environment_label:
+      expected_change: true
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...
