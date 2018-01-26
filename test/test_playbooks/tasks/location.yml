@@ -1,0 +1,16 @@
+---
+- name: "Ensure location '{{ location_name }}' is {{ location_state }}"
+  vars:
+    - location_name: "Test Location"
+  foreman_location:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ location_name }}"
+    state: "{{ location_state }}"
+  register: result
+- fail:
+    msg: "Ensuring location is {{ location_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
