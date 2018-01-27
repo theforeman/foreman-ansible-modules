@@ -1,19 +1,44 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Create/update katello sync plan"
-    katello_sync_plan:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Weekly RHEL Sync"
-      organization: "Default Organization"
-      interval: "weekly"
-      enabled: false
-      sync_date: "2017-01-01 00:00:00"
-      products:
-        - name: "Red Hat Enterprise Linux Server"
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/sync_plan.yml
+    vars:
+      expected_change: true
+  - include: tasks/sync_plan.yml
+    vars:
+      expected_change: false
+  - include: tasks/sync_plan.yml
+    vars:
+      sync_plan_interval: "daily"
+      expected_change: true
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...

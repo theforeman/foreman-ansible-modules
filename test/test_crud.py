@@ -14,6 +14,7 @@ MODULES = [
     'organization',
     'product',
     'repository',
+    'sync_plan',
 ]
 
 

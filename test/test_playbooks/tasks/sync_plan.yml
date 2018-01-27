@@ -1,0 +1,26 @@
+---
+- name: "Create/update katello sync plan"
+  vars:
+    sync_plan_name: "Test Sync Plan"
+    sync_plan_organization: "Test Organization"
+    sync_plan_interval: "weekly"
+    sync_plan_enabled: false
+    sync_plan_sync_date: "2017-01-01 00:00:00"
+    sync_plan_products:
+      - name: "Test Product"
+  katello_sync_plan:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{sync_plan_name }}"
+    organization: "{{ sync_plan_organization }}"
+    interval: "{{sync_plan_interval }}"
+    enabled: "{{sync_plan_enabled }}"
+    sync_date: "{{sync_plan_sync_date }}"
+    products: "{{ sync_plan_products }}"
+  register: result
+- fail:
+    msg: "Creating/updating sync plan failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
