@@ -1,13 +1,64 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
-  - name: "Assign preseed default finish to debian"
-    foreman_os_default_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://centos7-devel.example.com"
-      verify_ssl: false
-      operatingsystem: "Debian 9"
-      template_kind: "finish"
-      provisioning_template: "Preseed default finish"
-      state: "present"
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_state: present
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/os_default_template.yml
+    vars:
+      os_default_template_state: present
+      expected_change: true
+  - include: tasks/os_default_template.yml
+    vars:
+      os_default_template_state: present
+      expected_change: false
+  - include: tasks/os_default_template.yml
+    vars:
+      provisioning_template_name:
+      os_default_template_state: absent
+      expected_change: true
+  - include: tasks/os_default_template.yml
+    vars:
+      provisioning_template_name:
+      os_default_template_state: absent
+      expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: absent
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_state: absent
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...
