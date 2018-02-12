@@ -1,0 +1,17 @@
+---
+- name: "Ensure compute_profile '{{ compute_profile_name }}' is {{ compute_profile_state }}"
+  vars:
+    - compute_profile_name: "Test Compute Profile"
+    - compute_profile_state: "present"
+  foreman_compute_profile:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ compute_profile_name }}"
+    state: "{{ compute_profile_state }}"
+  register: result
+- fail:
+    msg: "Ensuring compute profile is {{ compute_profile_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
