@@ -13,6 +13,8 @@ MODULES = [
     'operating_system',
     'organization',
     'product',
+    'provisioning_template',
+    'ptable',
     'repository',
 ]
 

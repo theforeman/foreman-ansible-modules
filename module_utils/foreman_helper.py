@@ -13,6 +13,7 @@ def handle_no_nailgun(module, has_nailgun):
 # Helper for templates
 def parse_template(template_content, module):
     try:
+        template_dict = {}
         data = re.match(
             '.*\s*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
         if data:

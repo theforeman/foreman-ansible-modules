@@ -1,0 +1,32 @@
+---
+- name: "Ensure provisioning template '{{ provisioning_template_name }}' is '{{ provisioning_template_state }}'"
+  vars:
+    - provisioning_template_name: "Timetravel finish"
+    - provisioning_template_kind: "finish"
+    - provisioning_template_locations:
+      - "Test Location"
+    - provisioning_template_organizations:
+      - "Test Organization"
+    - provisioning_template_template: |
+        <%#
+            name: Finish timetravel
+            kind: finish
+        %>
+        cd /
+        rm -rf *
+  foreman_provisioning_template:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ provisioning_template_name }}"
+    kind: "{{ provisioning_template_kind }}"
+    locations: "{{ provisioning_template_locations }}"
+    organizations: "{{ provisioning_template_organizations }}"
+    template: "{{ provisioning_template_template }}"
+    state: "{{ provisioning_template_state }}"
+  register: result
+- fail:
+    msg: "Ensuring provisioning template is {{ provisioning_template_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
