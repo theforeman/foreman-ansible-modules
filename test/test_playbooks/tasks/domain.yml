@@ -1,0 +1,19 @@
+---
+- name: "Create/Update/Delete domain"
+  vars:
+    domain_state: "present"
+  foreman_domain:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ domain_name }}"
+    dns_proxy: "{{ domain_dns_proxy }}"
+    locations: "{{ domain_locations }}"
+    organizations: "{{ domain_organizations }}"
+    state: "{{ domain_state }}"
+  register: result
+- fail:
+    msg: "Ensuring domain is {{ domain_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
