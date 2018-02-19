@@ -55,7 +55,7 @@ options:
     state:
         description:
             - The state of the manifest
-        required: true
+        default: present
         choices:
             - absent
             - present
@@ -165,7 +165,7 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             organization=dict(required=True),
             manifest_path=dict(),
-            state=dict(required=True, choices=['absent', 'present', 'refreshed']),
+            state=dict(default='present', choices=['absent', 'present', 'refreshed']),
             redhat_repository_url=dict(),
         ),
         required_if=[

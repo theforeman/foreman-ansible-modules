@@ -63,7 +63,7 @@ options:
     state:
         description:
             - State of the Realm
-        required: true
+        default: present
         choices:
             - present
             - absent
@@ -127,7 +127,7 @@ def main():
             name=dict(required=True),
             realm_proxy=dict(type='int', required=True),
             realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
-            state=dict(required=True, choices=['present', 'absent']),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )

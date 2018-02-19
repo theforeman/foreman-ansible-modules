@@ -65,7 +65,7 @@ options:
     state:
         description:
             - Whether the lifecycle environment should be present or absent on the server
-        required: true
+        default: present
         choices:
             - absent
             - present
@@ -169,7 +169,7 @@ def main():
             description=dict(),
             prior=dict(),
             organization=dict(required=True),
-            state=dict(required=True),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )

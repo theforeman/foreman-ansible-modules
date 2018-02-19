@@ -66,9 +66,8 @@ options:
     state:
         description:
         - State of the Product
-        required: true
+        default: present
         choices:
-        - present_with_defaults
         - present
         - absent
         - present_with_defaults
@@ -127,7 +126,7 @@ def main():
             organization=dict(required=True),
             label=dict(),
             description=dict(),
-            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )

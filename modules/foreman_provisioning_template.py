@@ -125,7 +125,7 @@ options:
         type: list
     state:
         description: The state the template should be in.
-        require: true
+        default: present
         choices:
         - absent
         - present
@@ -350,7 +350,7 @@ def main():
             name=dict(),
             organizations=dict(type='list'),
             operatingsystems=dict(type='list'),
-            state=dict(required=True, choices=['absent', 'present_with_defaults', 'present']),
+            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
         supports_check_mode=True,
         mutually_exclusive=[
