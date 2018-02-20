@@ -68,7 +68,7 @@ options:
   state:
     description:
       - State of the Association
-    required: true
+    default: present
     choices:
       - present
       - present_with_defaults
@@ -148,7 +148,7 @@ def main():
             operatingsystem=dict(required=True),
             template_kind=dict(required=True),
             provisioning_template=dict(required=False),
-            state=dict(required=True, choices=['present', 'present_with_defaults', 'absent']),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         required_if=(
             ['state', 'present', ['provisioning_template']],

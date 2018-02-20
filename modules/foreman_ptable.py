@@ -106,7 +106,7 @@ options:
         - Windows
     state:
         description: The state the template should be in.
-        require: true
+        default: present
         choices:
         - absent
         - present
@@ -294,7 +294,7 @@ def main():
             name=dict(),
             organizations=dict(type='list'),
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
-            state=dict(required=True, choices=['absent', 'present_with_defaults', 'present']),
+            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
         supports_check_mode=True,
         mutually_exclusive=[

@@ -54,7 +54,7 @@ options:
     state:
         description:
             - State of the Location
-        required: true
+        default: present
         choices:
             - present
             - absent
@@ -105,7 +105,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
-            state=dict(required=True, choices=['present', 'absent']),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )

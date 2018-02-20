@@ -65,7 +65,7 @@ options:
     state:
         description:
         - State of the Global Parameter
-        required: true
+        default: present
         choices:
         - present
         - present_with_defaults
@@ -138,7 +138,7 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             value=dict(),
-            state=dict(required=True, choices=['present_with_defaults', 'present', 'absent']),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=(
             ['state', 'present_with_defaults', ['value']],

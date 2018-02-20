@@ -106,7 +106,7 @@ options:
   state:
     description:
       - State of the Operating System
-    required: true
+    default: present
     choices:
       - present
       - present_with_defaults
@@ -203,7 +203,7 @@ def main():
             ptables=dict(type='list'),
             provisioning_templates=dict(type='list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
-            state=dict(required=True, choices=['present', 'present_with_defaults', 'absent']),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         supports_check_mode=True,
     )
