@@ -7,6 +7,7 @@ from ansible.cli.playbook import PlaybookCLI
 
 MODULES = [
     'compute_profile',
+    'domain',
     'global_parameter',
     'location',
     'lifecycle_environment',

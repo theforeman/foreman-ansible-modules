@@ -1,0 +1,67 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: Load domain test-config
+    include_vars:
+      file: domain_vars.yml
+  - include_tasks: tasks/location.yml
+    vars:
+      location_name: "{{ item }}"
+      location_state: "present"
+    with_items: "{{ domain_locations }}"
+  - include_tasks: tasks/organization.yml
+    vars:
+      organization_name: "{{ item }}"
+      organization_state: "present"
+    with_items: "{{ domain_organizations }}"
+  #TODO create smart_proxy, when ansible-module exists
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: Load domain test-config
+    include_vars:
+      file: domain_vars.yml
+  - include_tasks: tasks/domain.yml
+    vars:
+      domain_state: "present"
+      expected_change: true
+  - include_tasks: tasks/domain.yml
+    vars:
+      domain_state: "present"
+      expected_change: false
+  - include_tasks: tasks/domain.yml
+    vars:
+      domain_state: "absent"
+      expected_change: true
+  - include_tasks: tasks/domain.yml
+    vars:
+      domain_state: "absent"
+      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - name: Load domain test-config
+    include_vars:
+      file: domain_vars.yml
+  - include_tasks: tasks/location.yml
+    vars:
+      location_name: "{{ item }}"
+      location_state: "absent"
+    with_items: "{{ domain_locations }}"
+  - include_tasks: tasks/organization.yml
+    vars:
+      organization_name: "{{ item }}"
+      organization_state: "absent"
+    with_items: "{{ domain_organizations }}"
+  #TODO remove smart_proxy, when ansible-module exists
+...

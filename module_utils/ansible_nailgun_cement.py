@@ -11,6 +11,7 @@ from nailgun.entities import (
     CommonParameter,
     ContentView,
     ContentViewVersion,
+    Domain,
     LifecycleEnvironment,
     Location,
     OperatingSystem,
@@ -20,6 +21,7 @@ from nailgun.entities import (
     Realm,
     Repository,
     RepositorySet,
+    SmartProxy,
     TemplateKind,
     AbstractComputeResource,
     OSDefaultTemplate,
@@ -248,9 +250,17 @@ def find_content_view_version(module, content_view, environment=None, version=No
                                     format(content_view.name, version), failsafe=failsafe)
 
 
+def find_organizations(module, organizations):
+    return list(map(lambda organization: find_organization(module, organization), organizations))
+
+
 def find_organization(module, name, failsafe=False):
     org = Organization(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, org, message="No organization found for %s" % name, failsafe=failsafe)
+
+
+def find_locations(module, locations):
+    return list(map(lambda location: find_location(module, location), locations))
 
 
 def find_location(module, name, failsafe=False):
@@ -266,6 +276,11 @@ def find_compute_resource(module, name, failsafe=False):
 def find_compute_profile(module, name, failsafe=False):
     compute_profile = ComputeProfile(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
+
+
+def find_domain(module, name, failsafe=False):
+    domain = Domain().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, domain, message="No domain found for %s" % name, failsafe=failsafe)
 
 
 def find_lifecycle_environment(module, name, organization, failsafe=False):
@@ -291,6 +306,11 @@ def find_repository(module, name, product, failsafe=False):
 def find_repository_set(module, name, product, failsafe=False):
     repo_set = RepositorySet(name=name, product=product)
     return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
+def find_smart_proxy(module, name, failsafe=False):
+    smart_proxy = SmartProxy().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, smart_proxy, message="No Smart Proxy found for %s" % name, failsafe=failsafe)
 
 
 def find_operating_system_by_title(module, title, failsafe=False):
