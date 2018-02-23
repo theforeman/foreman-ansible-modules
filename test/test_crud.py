@@ -16,6 +16,7 @@ MODULES = [
     'product',
     'provisioning_template',
     'ptable',
+    'redhat_manifest',
     'repository',
 ]
 

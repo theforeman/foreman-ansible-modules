@@ -20,9 +20,9 @@
 DOCUMENTATION = '''
 ---
 module: katello_manifest
-short_description: Create and Manage Katello manifests
+short_description: Manage Katello manifests
 description:
-    - Create and Manage Katello manifests
+    - Upload and Manage Katello manifests
 author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.29.0"
