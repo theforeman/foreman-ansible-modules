@@ -15,6 +15,17 @@
       expected_change: false
   - include: tasks/location.yml
     vars:
+      location_state: present
+      location_name: sub
+      location_parent: Test Location
+      expected_change: true
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+      location_name: sub
+      expected_change: true
+  - include: tasks/location.yml
+    vars:
       location_state: absent
       expected_change: true
 ...
