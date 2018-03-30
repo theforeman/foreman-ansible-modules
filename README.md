@@ -89,27 +89,124 @@ You can set a number of environment variables besides `MODULE` to configure make
 
 This is a list of modules currently in the repository (please add to the list if adding a module).
 
-#### Entity Modules
+### Katello/Foreman API modules
 
- * foreman_global_parameter: create and maintain global parameters
- * foreman_operating_system: create and maintain operating systems
- * foreman_os_default_template: create and maintain the association of default templates to operating systems
- * foreman_organization: create and maintain organizations
- * foreman_location: create and maintain locations
- * foreman_ptable: create and maintain partition templates
- * foreman_provisioning_template: create and maintain provisioning templates
- * foreman_compute_resource: create and maintain compute resources
- * foreman_domain: create and maintain domains
- * katello_product: create and maintain products
- * katello_repository: create and maintain repositories
- * katello_content_view: create and maintain content views
- * katello_sync_plan: create and maintain sync plans
- * katello_activation_key: create and maintain activation keys
- * redhat_manifest: create and maintain manifests
+These are all API objects as of Foreman 1.17 and Katello 3.5 and their Ansible module in this repository, if available:
 
-#### Action Modules
+https://theforeman.org/plugins/katello/3.5/api/index.html  
+https://theforeman.org/api/1.17/index.html
 
- * katello_sync: sync Katello repositories and products
- * katello_upload: upload files, rpms, etc. to repositories
- * katello_content_view_publish: publish Katello content views
- * katello_manifest: upload and Manage Katello manifests
+Some APIs are readonly, a foreman_facts/katello_facts module would ideally offer them all at once to Ansible.
+
+- [x] Activation keys - [katello_activation_key](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_activation_key.py)
+- [ ] Architectures
+- [ ] Audits - readonly
+- [ ] Auth source ldaps
+- [ ] Autosign
+- [ ] Bookmarks
+- [ ] Capsule content
+- [ ] Capsules - readonly
+- [x] Common parameters - [foreman_global_parameter](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_global_parameter.py)
+- [ ] Compute attributes
+- [x] Compute profiles - [foreman_compute_profile](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_compute_profile.py)
+- [x] Compute resources - [foreman_compute_resource](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_compute_resource.py)
+- [ ] Config groups
+- [ ] Config reports
+- [ ] Config templates
+- [ ] Containers
+- [ ] Content uploads
+- [ ] Content view components
+- [ ] Content view filter rules
+- [ ] Content view filters
+- [ ] Content view histories - readonly
+- [ ] Content view puppet modules
+- [ ] Content view versions
+- [x] Content views - [katello_content_view](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_content_view.py)
+- [ ] Dashboard - readonly
+- [ ] Docker manifests - readonly
+- [ ] Docker tags - readonly
+- [x] Domains - [foreman_domain](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_domain.py)
+- [ ] Environments
+- [ ] Errata - readonly
+- [ ] External usergroups
+- [ ] Fact values - readonly
+- [ ] File units - readonly
+- [ ] Filters
+- [ ] Foreman tasks
+- [ ] Gpg keys
+- [ ] Home - readonly
+- [ ] Host classes
+- [ ] Host collections
+- [ ] Host errata
+- [ ] Host packages
+- [ ] Host subscriptions
+- [ ] Host tracer - readonly
+- [ ] Hostgroup classes
+- [ ] Hostgroups
+- [ ] Hosts
+- [ ] Hosts bulk actions
+- [ ] Http proxies - Introduced in Foreman 1.17
+- [ ] Images
+- [ ] Interfaces
+- [ ] Lifecycle environments
+- [x] Locations - [foreman_location](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_location.py)
+- [ ] Mail notifications - readonly
+- [ ] Media
+- [ ] Models
+- [x] Operating systems - [foreman_operating_system](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_operating_system.py)
+- [x] Organizations - [foreman_organization](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_organization.py)
+- [x] Os default templates - [foreman_os_default_template](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_os_default_template.py)
+- [ ] Ostree branches
+- [ ] Override values
+- [ ] Package groups
+- [ ] Packages - readonly
+- [ ] Parameters
+- [ ] Permissions - readonly
+- [ ] Ping - readonly
+- [ ] Personal access tokens - Introduced in Foreman 1.17
+- [ ] Plugins - readonly
+- [x] Products - [katello_product](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_product.py)
+- [ ] Products bulk actions
+- [x] Provisioning templates - [foreman_provisioning_template](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_provisioning_template.py)
+- [x] Ptables - [foreman_ptable](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/foreman_ptable.py)
+- [ ] Puppet hosts - Introduced in Foreman 1.17
+- [ ] Puppet modules - readonly
+- [ ] Puppetclasses
+- [ ] Realms
+- [ ] Recurring logics
+- [ ] Registries
+- [ ] Reports
+- [x] Repositories - [katello_repository](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_repository.py)
+- [ ] Repositories bulk actions
+- [ ] Repository sets
+- [ ] Roles
+- [ ] Settings
+- [ ] Smart class parameters
+- [ ] Smart proxies
+- [ ] Smart variables
+- [ ] Ssh keys
+- [ ] Statistics - readonly
+- [ ] Subnets
+- [ ] Subscriptions
+- [ ] Sync - readonly
+- [x] Sync plans - [katello_sync_plan](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_sync_plan.py)
+- [ ] Tasks - readonly
+- [ ] Template combinations
+- [ ] Template kinds - readonly
+- [ ] Usergroups
+- [ ] Users
+
+### Non-Katello/Foreman API modules
+
+These modules are not directly interacting with Foreman/Katello, but are in some case necessary as input or prerequisite for other modules.
+
+ * [redhat_manifest](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/redhat_manifest.py): create and maintain manifests
+
+### Action Modules
+
+These modules are not idempotent and will always cause a change on the target host.
+
+ * [katello_sync](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_sync.py): sync Katello repositories and products
+ * [katello_upload](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_upload.py): upload files, rpms, etc. to repositories
+ * [katello_content_view_publish](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_content_view_publish.py): publish Katello content views
+ * [katello_manifest](https://github.com/theforeman/foreman-ansible-modules/blob/master/modules/katello_manifest.py): upload and Manage Katello manifests
