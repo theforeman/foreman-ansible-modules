@@ -8,7 +8,7 @@
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_verify_ssl }}"
     name: "{{ location_name }}"
-    parent: "{{ location_parent | default('') }}"
+    parent: "{{ location_parent | default(omit) }}"
     state: "{{ location_state }}"
   register: result
 - fail:
