@@ -13,6 +13,7 @@ MODULES = [
     'lifecycle_environment',
     'operating_system',
     'organization',
+    'os_default_template',
     'product',
     'provisioning_template',
     'ptable',
