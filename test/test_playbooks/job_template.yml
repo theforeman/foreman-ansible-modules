@@ -1,0 +1,62 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/job_template.yml
+    vars:
+      job_template_state: present
+      expected_change: true
+  - include: tasks/job_template.yml
+    vars:
+      job_template_state: present
+      expected_change: false
+  - include: tasks/job_template.yml
+    vars:
+      template_inputs:
+        - name: "newer input"
+          input_type: "user"
+      job_template_state: present
+      expected_change: true
+  - include: tasks/job_template.yml
+    vars:
+      job_template_template: 'A job template with an template'
+      job_template_state: present
+      expected_change: true
+  - include: tasks/job_template.yml
+    vars:
+      job_template_state: absent
+      expected_change: true
+  - include: tasks/job_template.yml
+    vars:
+      job_template_state: absent
+      expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...

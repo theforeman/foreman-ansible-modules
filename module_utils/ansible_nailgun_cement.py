@@ -7,6 +7,7 @@ import sys
 
 from nailgun.config import ServerConfig
 from nailgun.entities import (
+    _check_for_value,
     Entity,
     CommonParameter,
     ContentView,
@@ -29,6 +30,107 @@ from nailgun.entities import (
     ComputeProfile,
 )
 from nailgun import entity_mixins, entity_fields
+
+
+class TemplateInput(
+    Entity,
+    entity_mixins.EntityCreateMixin,
+    entity_mixins.EntityDeleteMixin,
+    entity_mixins.EntityReadMixin,
+    entity_mixins.EntitySearchMixin,
+    entity_mixins.EntityUpdateMixin
+):
+
+    def __init__(self, server_config=None, **kwargs):
+        _check_for_value('template', kwargs)
+        self._fields = {
+            'advanced': entity_fields.BooleanField(),
+            'description': entity_fields.StringField(),
+            'fact_name': entity_fields.StringField(),
+            'input_type': entity_fields.StringField(),
+            'name': entity_fields.StringField(),
+            'options': entity_fields.StringField(),
+            'puppet_parameter_class': entity_fields.StringField(),
+            'puppet_parameter_name': entity_fields.StringField(),
+            'required': entity_fields.BooleanField(),
+            # There is no Template base class yet
+            'template': entity_fields.OneToOneField(JobTemplate, required=True),
+            'variable_name': entity_fields.StringField(),
+        }
+        super(TemplateInput, self).__init__(server_config, **kwargs)
+        self._meta = {
+            'api_path': '/api/v2/templates/{0}/template_inputs'.format(self.template.id),
+            'server_modes': ('sat')
+        }
+
+    def read(self, entity=None, attrs=None, ignore=None, params=None):
+        if entity is None:
+            entity = TemplateInput(template=self.template)
+        if ignore is None:
+            ignore = set()
+        ignore.add('advanced')
+        ignore.add('puppet_parameter_class')
+        return super(TemplateInput, self).read(entity=entity, attrs=attrs, ignore=ignore, params=params)
+
+
+class JobTemplate(
+    Entity,
+    entity_mixins.EntityCreateMixin,
+    entity_mixins.EntityDeleteMixin,
+    entity_mixins.EntityReadMixin,
+    entity_mixins.EntitySearchMixin,
+    entity_mixins.EntityUpdateMixin
+):
+    """A representation of a Job invocation entity."""
+
+    def __init__(self, server_config=None, **kwargs):
+        self._fields = {
+            'audit_comment': entity_fields.StringField(),
+            'description_format': entity_fields.StringField(),
+            'effective_user': entity_fields.DictField(),
+            'job_category': entity_fields.StringField(),
+            'location': entity_fields.OneToManyField(Location),
+            'locked': entity_fields.BooleanField(),
+            'name': entity_fields.StringField(),
+            'organization': entity_fields.OneToManyField(Organization),
+            'provider_type': entity_fields.StringField(),
+            'snippet': entity_fields.BooleanField(),
+            'template': entity_fields.StringField(),
+            'template_inputs': entity_fields.OneToManyField(TemplateInput),
+        }
+        self._meta = {
+            'api_path': 'api/v2/job_templates',
+            'server_modes': ('sat')}
+        super(JobTemplate, self).__init__(server_config, **kwargs)
+
+    def create_payload(self):
+        payload = super(JobTemplate, self).create_payload()
+        effective_user = payload.pop(u'effective_user', None)
+        if effective_user:
+            payload[u'ssh'] = {u'effective_user': effective_user}
+        return {u'job_template': payload}
+
+    def update_payload(self, fields=None):
+        payload = super(JobTemplate, self).update_payload(fields)
+        effective_user = payload.pop(u'effective_user', None)
+        if effective_user:
+            payload[u'ssh'] = {u'effective_user': effective_user}
+        return {u'job_template': payload}
+
+    def read(self, entity=None, attrs=None, ignore=None, params=None):
+        if attrs is None:
+            attrs = self.read_json(params=params)
+        if ignore is None:
+            ignore = set()
+        ignore.add('template_inputs')
+        entity = super(JobTemplate, self).read(entity=entity, attrs=attrs, ignore=ignore, params=params)
+        referenced_entities = [
+            TemplateInput(entity._server_config, id=entity_id, template=JobTemplate(id=entity.id))
+            for entity_id
+            in entity_mixins._get_entity_ids('template_inputs', attrs)
+        ]
+        setattr(entity, 'template_inputs', referenced_entities)
+        return entity
 
 
 class VMWareComputeResource(AbstractComputeResource):  # pylint:disable=R0901
@@ -127,22 +229,27 @@ def update_fields(new, old, fields):
 
 # Common functionality to manipulate entities
 def naildown_entity_state(entity_class, entity_dict, entity, state, module):
+    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module)
+    return changed
+
+
+def naildown_entity(entity_class, entity_dict, entity, state, module):
     """ Ensure that a given entity has a certain state """
-    changed = False
+    changed, changed_entity = False, entity
     if state == 'present_with_defaults':
         if entity is None:
-            changed = create_entity(entity_class, entity_dict, module)
+            changed, changed_entity = create_entity(entity_class, entity_dict, module)
     elif state == 'present':
         if entity is None:
-            changed = create_entity(entity_class, entity_dict, module)
+            changed, changed_entity = create_entity(entity_class, entity_dict, module)
         else:
-            changed = update_entity(entity, entity_dict, module)
+            changed, changed_entity = update_entity(entity, entity_dict, module)
     elif state == 'absent':
         if entity is not None:
-            changed = delete_entity(entity, module)
+            changed, changed_entity = delete_entity(entity, module)
     else:
         module.fail_json(msg='Not a valid state: {}'.format(state))
-    return changed
+    return changed, changed_entity
 
 
 def find_entities(entity_class, **kwargs):
@@ -171,13 +278,14 @@ def find_entities_by_name(entity_class, name_list, module):
 
 def create_entity(entity_class, entity_dict, module):
     try:
+        result = None
         entity = entity_class(**entity_dict)
         if not module.check_mode:
-            entity.create()
+            result = entity.create()
     except Exception as e:
         module.fail_json(msg='Error while creating {0}: {1}'.format(
             entity_class.__name__, str(e)))
-    return True
+    return True, result
 
 
 def fields_equal(value1, value2):
@@ -198,6 +306,7 @@ def fields_equal(value1, value2):
 def update_entity(old_entity, entity_dict, module):
     try:
         volatile_entity = old_entity.read()
+        result = volatile_entity
         fields = []
         for key, value in volatile_entity.get_values().items():
             if key in entity_dict and not fields_equal(value, entity_dict[key]):
@@ -205,9 +314,9 @@ def update_entity(old_entity, entity_dict, module):
                 fields.append(key)
         if len(fields) > 0:
             if not module.check_mode:
-                volatile_entity.update(fields)
-            return True
-        return False
+                result = volatile_entity.update(fields)
+            return True, result
+        return False, result
     except Exception as e:
         module.fail_json(msg='Error while updating {0}: {1}'.format(
             old_entity.__class__.__name__, str(e)))
@@ -220,7 +329,7 @@ def delete_entity(entity, module):
     except Exception as e:
         module.fail_json(msg='Error while deleting {0}: {1}'.format(
             entity.__class__.__name__, str(e)))
-    return True
+    return True, None
 
 
 def find_content_view(module, name, organization, failsafe=False):
@@ -305,6 +414,12 @@ def find_setting(module, name, failsafe=False):
 def find_smart_proxy(module, name, failsafe=False):
     smart_proxy = SmartProxy().search(query={'search': 'name="{}"'.format(name)})
     return handle_find_response(module, smart_proxy, message="No Smart Proxy found for %s" % name, failsafe=failsafe)
+
+
+def find_template_input(module, name, template, failsafe=True):
+    responses = TemplateInput(template=template).search()
+    response = [ti for ti in responses if ti.name == name]
+    return handle_find_response(module, response, message="No template input found for <%s> in job template" % name, failsafe=failsafe)
 
 
 def find_operating_system_by_title(module, title, failsafe=False):
