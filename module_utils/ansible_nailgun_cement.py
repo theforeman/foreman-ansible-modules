@@ -30,18 +30,6 @@ from nailgun.entities import (
 from nailgun import entity_mixins, entity_fields
 
 
-class CommonParameter(
-    CommonParameter,
-    entity_mixins.Entity,
-    entity_mixins.EntityCreateMixin,
-    entity_mixins.EntityDeleteMixin,
-    entity_mixins.EntityReadMixin,
-    entity_mixins.EntitySearchMixin,
-    entity_mixins.EntityUpdateMixin,
-):
-    pass
-
-
 class VMWareComputeResource(AbstractComputeResource):  # pylint:disable=R0901
     def __init__(self, server_config=None, **kwargs):
         self._fields = {
