@@ -49,8 +49,11 @@ options:
         type: bool
     name:
         description:
-            - Name of the Foreman location
+            - Name of the Foreman Location
         required: true
+    parent:
+        description:
+            - Name of a parent Location for nesting
     state:
         description:
             - State of the Location
@@ -70,13 +73,14 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
         find_entities,
+        find_location,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -94,6 +98,7 @@ from ansible.module_utils.foreman_helper import handle_no_nailgun
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
+    'parent': 'parent',
 }
 
 
@@ -105,6 +110,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
+            parent=dict(),
             state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
@@ -135,6 +141,10 @@ def main():
             entity = None
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
+
+    parent = entity_dict.pop('parent', None)
+    if parent:
+        entity_dict['parent'] = find_location(module, parent)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
