@@ -1,0 +1,29 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/setting.yml
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/setting.yml
+    vars:
+      setting_value: 'Welcome!'
+      expected_change: true
+  - include: tasks/setting.yml
+    vars:
+      setting_value: 'Welcome!'
+      expected_change: false
+  - include: tasks/setting.yml
+    vars:
+      expected_change: true
+  - include: tasks/setting.yml
+    vars:
+      expected_change: false
+...

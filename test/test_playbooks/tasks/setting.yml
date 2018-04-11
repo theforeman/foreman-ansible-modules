@@ -1,0 +1,16 @@
+---
+- name: "Ensure setting '{{ setting_name }}' is {{ setting_value | default(false) | ternary(\"'\" + setting_value | default('') + \"'\", 'undefined') }}"
+  vars:
+    - setting_name: 'login_text'
+  foreman_setting:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ setting_name }}"
+    value: "{{ setting_value | default(omit) }}"
+  register: result
+- fail:
+    msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + setting_value | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...

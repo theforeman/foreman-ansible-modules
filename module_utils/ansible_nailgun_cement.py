@@ -21,6 +21,7 @@ from nailgun.entities import (
     Realm,
     Repository,
     RepositorySet,
+    Setting,
     SmartProxy,
     TemplateKind,
     AbstractComputeResource,
@@ -294,6 +295,11 @@ def find_repository(module, name, product, failsafe=False):
 def find_repository_set(module, name, product, failsafe=False):
     repo_set = RepositorySet(name=name, product=product)
     return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+
+
+def find_setting(module, name, failsafe=False):
+    setting = Setting(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, setting, message="No setting found for %s" % name, failsafe=failsafe)
 
 
 def find_smart_proxy(module, name, failsafe=False):
