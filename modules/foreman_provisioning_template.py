@@ -254,12 +254,12 @@ RETURN = ''' # '''
 try:
     from nailgun.entities import (
         ProvisioningTemplate,
-    )
-
-    from ansible.module_utils.ansible_nailgun_cement import (
         TemplateKind,
         Organization,
         Location,
+    )
+
+    from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
         find_entities,

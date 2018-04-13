@@ -103,10 +103,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 try:
-    from ansible.module_utils.ansible_nailgun_cement import (
+    from nailgun.entities import (
         CommonParameter,
-        Organization,
-        Location,
+    )
+
+    from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
         find_entities,

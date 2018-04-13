@@ -231,11 +231,11 @@ try:
     from nailgun.entities import (
         PartitionTable,
         _OPERATING_SYSTEMS,
+        Organization,
+        Location,
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
-        Organization,
-        Location,
         create_server,
         ping_server,
         find_entities,
