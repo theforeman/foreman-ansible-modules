@@ -241,6 +241,7 @@ try:
         find_entities,
         find_entities_by_name,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
     HAS_NAILGUN_PACKAGE = True
 except ImportError:
@@ -256,27 +257,21 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
-def sanitize_ptable_dict(ptable_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'template': 'layout',  # the parse_template_* methods stores the "layout" in "template"
-        'layout': 'layout',
-        'locations': 'location',
-        'name': 'name',
-        'organizations': 'organization',
-        'oses': 'os_family',  # the foreman community templates are using oses instead of os_family (which is wrong?)
-        'os_family': 'os_family',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in ptable_dict:
-            result[value] = ptable_dict[key]
-    return result
-    # Missing parameters:
-    # snippet
-    # locked
-    # audit_comment
-    # default
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'template': 'layout',  # the parse_template_* methods stores the "layout" in "template"
+    'layout': 'layout',
+    'locations': 'location',
+    'name': 'name',
+    'organizations': 'organization',
+    'oses': 'os_family',  # the foreman community templates are using oses instead of os_family (which is wrong?)
+    'os_family': 'os_family',
+}
+# Missing parameters:
+# snippet
+# locked
+# audit_comment
+# default
 
 
 def main():
@@ -313,21 +308,21 @@ def main():
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    ptable_dict = dict(
+    entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server_url = ptable_dict.pop('server_url')
-    username = ptable_dict.pop('username')
-    password = ptable_dict.pop('password')
-    verify_ssl = ptable_dict.pop('verify_ssl')
-    state = ptable_dict.pop('state')
-    file_name = ptable_dict.pop('file_name', None)
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
+    file_name = entity_dict.pop('file_name', None)
 
-    if file_name or 'layout' in ptable_dict:
+    if file_name or 'layout' in entity_dict:
         if file_name:
             parsed_dict = parse_template_from_file(file_name, module)
         else:
-            parsed_dict = parse_template(ptable_dict['layout'], module)
+            parsed_dict = parse_template(entity_dict['layout'], module)
         # sanitize name from template data
         # The following condition can actually be hit, when someone is trying to import a
         # template with the name set to '*'.
@@ -335,19 +330,19 @@ def main():
         if 'name' in parsed_dict and parsed_dict['name'] == '*':
             module.fail_json(msg="Cannot use '*' as a partition table name!")
         # module params are priorized
-        parsed_dict.update(ptable_dict)
-        ptable_dict = parsed_dict
+        parsed_dict.update(entity_dict)
+        entity_dict = parsed_dict
 
     # make sure, we have a name
-    if 'name' not in ptable_dict:
+    if 'name' not in entity_dict:
         if file_name:
-            ptable_dict['name'] = os.path.splitext(
+            entity_dict['name'] = os.path.splitext(
                 os.path.basename(file_name))[0]
         else:
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    name = ptable_dict['name']
+    name = entity_dict['name']
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
@@ -355,7 +350,7 @@ def main():
         if state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
-            if ptable_dict.keys() != ['name']:
+            if entity_dict.keys() != ['name']:
                 module.fail_json(msg="When deleting all partition tables, there is no need to specify further parameters.")
 
     try:
@@ -369,21 +364,21 @@ def main():
         if affects_multiple:
             entities = find_entities(PartitionTable)
         else:
-            entities = find_entities(PartitionTable, name=ptable_dict['name'])
+            entities = find_entities(PartitionTable, name=entity_dict['name'])
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
     # Set Locations of partition table
-    if 'locations' in ptable_dict:
-        ptable_dict['locations'] = find_entities_by_name(Location, ptable_dict[
+    if 'locations' in entity_dict:
+        entity_dict['locations'] = find_entities_by_name(Location, entity_dict[
             'locations'], module)
 
     # Set Organizations of partition table
-    if 'organizations' in ptable_dict:
-        ptable_dict['organizations'] = find_entities_by_name(
-            Organization, ptable_dict['organizations'], module)
+    if 'organizations' in entity_dict:
+        entity_dict['organizations'] = find_entities_by_name(
+            Organization, entity_dict['organizations'], module)
 
-    ptable_dict = sanitize_ptable_dict(ptable_dict)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
     changed = False
     if not affects_multiple:
@@ -392,12 +387,12 @@ def main():
         else:
             entity = entities[0]
         changed = naildown_entity_state(
-            PartitionTable, ptable_dict, entity, state, module)
+            PartitionTable, entity_dict, entity, state, module)
     else:
-        ptable_dict.pop('name')
+        entity_dict.pop('name')
         for entity in entities:
             changed |= naildown_entity_state(
-                PartitionTable, ptable_dict, entity, state, module)
+                PartitionTable, entity_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
