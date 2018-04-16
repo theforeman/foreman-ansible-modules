@@ -59,6 +59,9 @@ options:
     description:
       - Name of the Operating System
     required: true
+  release_name:
+    description:
+      - Release name of the operating system (recommended for debian)
   description:
     description:
       - Description of the Operating System
@@ -194,6 +197,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
+            release_name=dict(),
             description=dict(),
             family=dict(),
             major=dict(),
