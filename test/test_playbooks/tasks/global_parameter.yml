@@ -14,6 +14,6 @@
     state: "{{ global_parameter_state }}"
   register: result
 - fail:
-    msg: "Ensuring global parameter is {{ organization_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    msg: "Ensuring global parameter is {{ global_parameter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
 ...

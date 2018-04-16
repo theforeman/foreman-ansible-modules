@@ -18,6 +18,7 @@ MODULES = [
     'ptable',
     'redhat_manifest',
     'repository',
+    'sync_plan',
 ]
 
 

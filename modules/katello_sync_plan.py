@@ -90,6 +90,8 @@ EXAMPLES = '''
 
 RETURN = '''# '''
 
+import six
+import pytz
 from datetime import datetime
 
 try:
@@ -101,6 +103,15 @@ except:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.foreman_helper import handle_no_nailgun
+
+
+# Workaround for python2 which does not understand "%z"
+if six.PY2:
+    def parse_time(sync_date):
+        return datetime.strptime(sync_date, '%Y/%m/%d %H:%M:%S +0000').replace(tzinfo=pytz.UTC)
+else:
+    def parse_time(sync_date):
+        return datetime.strptime(sync_date, '%Y/%m/%d %H:%M:%S %z')
 
 
 class NailGun(object):
@@ -155,7 +166,7 @@ class NailGun(object):
         response = sync_plan.search({'name', 'organization'})
 
         if len(response) == 1:
-            response[0].sync_date = datetime.strptime(response[0].sync_date, '%Y/%m/%d %H:%M:%S %Z')
+            response[0].sync_date = parse_time(response[0].sync_date)
             updated, sync_plan = self.update_fields(sync_plan, response[0], ['interval', 'enabled', 'sync_date'])
             if updated and not self._module.check_mode:
                 sync_plan.update()
@@ -207,7 +218,7 @@ def main():
     organization = module.params['organization']
     interval = module.params['interval']
     enabled = module.params['enabled']
-    sync_date = datetime.strptime(module.params['sync_date'], '%Y-%m-%d %H:%M:%S')
+    sync_date = datetime.strptime(module.params['sync_date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.UTC)
     products = module.params['products']
 
     server = ServerConfig(
