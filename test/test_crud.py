@@ -27,7 +27,6 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
     # Assemble extra parameters for playbook call
     if extra_args is None:
         extra_args = []
-    extra_args.extend(['--inventory', 'test/inventory/hosts'])
     if record:
         # Cassettes that are to be overwritten must be deleted first
         record_mode = 'once'
