@@ -11,7 +11,7 @@
     pool_state: "{{ pool_state }}"
     state: "{{ manifest_state }}"
     validate_certs: "{{ rhsm_validate_certs }}"
-    path: "{{ manifest_export_path | default(None) }}"
+    path: "{{ manifest_export_path | default(omit) }}"
   register: result
 - fail:
     msg: "Ensuring Manifest is {{ manifest_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
