@@ -266,6 +266,7 @@ try:
         find_entities_by_name,
         find_operating_system_by_title,
         naildown_entity_state,
+        sanitize_entity_dict,
     )
 
     HAS_NAILGUN_PACKAGE = True
@@ -282,42 +283,36 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
-def find_template_kind(template_dict, module):
-    if 'kind' not in template_dict:
-        return template_dict
+def find_template_kind(entity_dict, module):
+    if 'kind' not in entity_dict:
+        return entity_dict
 
-    template_dict['snippet'] = (template_dict['kind'] == 'snippet')
-    if template_dict['snippet']:
-        template_dict.pop('kind')
+    entity_dict['snippet'] = (entity_dict['kind'] == 'snippet')
+    if entity_dict['snippet']:
+        entity_dict.pop('kind')
     else:
         try:
-            template_dict['kind'] = find_entities(
-                TemplateKind, name=template_dict['kind'])[0]
+            entity_dict['kind'] = find_entities(
+                TemplateKind, name=entity_dict['kind'])[0]
         except Exception as e:
             module.fail_json(msg='Template kind not found!')
-    return template_dict
+    return entity_dict
 
 
-def sanitize_template_dict(template_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'audit_comment': 'audit_comment',
-        'kind': 'template_kind',
-        'locations': 'location',
-        'locked': 'locked',
-        'name': 'name',
-        'organizations': 'organization',
-        'operatingsystems': 'operatingsystem',
-        'snippet': 'snippet',
-        'template': 'template',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in template_dict:
-            result[value] = template_dict[key]
-    return result
-    # Missing parameters:
-    # default
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'audit_comment': 'audit_comment',
+    'kind': 'template_kind',
+    'locations': 'location',
+    'locked': 'locked',
+    'name': 'name',
+    'organizations': 'organization',
+    'operatingsystems': 'operatingsystem',
+    'snippet': 'snippet',
+    'template': 'template',
+}
+# Missing parameters:
+# default
 
 
 def main():
@@ -370,21 +365,21 @@ def main():
 
     handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
 
-    template_dict = dict(
+    entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server_url = template_dict.pop('server_url')
-    username = template_dict.pop('username')
-    password = template_dict.pop('password')
-    verify_ssl = template_dict.pop('verify_ssl')
-    state = template_dict.pop('state')
-    file_name = template_dict.pop('file_name', None)
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
+    file_name = entity_dict.pop('file_name', None)
 
-    if file_name or 'template' in template_dict:
+    if file_name or 'template' in entity_dict:
         if file_name:
             parsed_dict = parse_template_from_file(file_name, module)
         else:
-            parsed_dict = parse_template(template_dict['template'], module)
+            parsed_dict = parse_template(entity_dict['template'], module)
         # sanitize name from template data
         # The following condition can actually be hit, when someone is trying to import a
         # template with the name set to '*'.
@@ -392,19 +387,19 @@ def main():
         if 'name' in parsed_dict and parsed_dict['name'] == '*':
             module.fail_json(msg="Cannot use '*' as a template name!")
         # module params are priorized
-        parsed_dict.update(template_dict)
-        template_dict = parsed_dict
+        parsed_dict.update(entity_dict)
+        entity_dict = parsed_dict
 
     # make sure, we have a name
-    if 'name' not in template_dict:
+    if 'name' not in entity_dict:
         if file_name:
-            template_dict['name'] = os.path.splitext(
+            entity_dict['name'] = os.path.splitext(
                 os.path.basename(file_name))[0]
         else:
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    name = template_dict['name']
+    name = entity_dict['name']
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
@@ -412,7 +407,7 @@ def main():
         if state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
-            if template_dict.keys() != ['name', 'locked']:
+            if entity_dict.keys() != ['name', 'locked']:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
 
     try:
@@ -426,28 +421,28 @@ def main():
         if affects_multiple:
             entities = find_entities(ProvisioningTemplate)
         else:
-            entities = find_entities(ProvisioningTemplate, name=template_dict['name'])
+            entities = find_entities(ProvisioningTemplate, name=entity_dict['name'])
     except Exception as e:
         module.fail_json(msg='Failed to search for entities: %s ' % e)
 
     # Set Locations of Template
-    if 'locations' in template_dict:
-        template_dict['locations'] = find_entities_by_name(
-            Location, template_dict['locations'], module)
+    if 'locations' in entity_dict:
+        entity_dict['locations'] = find_entities_by_name(
+            Location, entity_dict['locations'], module)
 
     # Set Organizations of Template
-    if 'organizations' in template_dict:
-        template_dict['organizations'] = find_entities_by_name(
-            Organization, template_dict['organizations'], module)
+    if 'organizations' in entity_dict:
+        entity_dict['organizations'] = find_entities_by_name(
+            Organization, entity_dict['organizations'], module)
 
-    if 'operatingsystems' in template_dict:
-        template_dict['operatingsystems'] = [find_operating_system_by_title(module, title)
-                                             for title in template_dict['operatingsystems']]
+    if 'operatingsystems' in entity_dict:
+        entity_dict['operatingsystems'] = [find_operating_system_by_title(module, title)
+                                           for title in entity_dict['operatingsystems']]
 
     if not affects_multiple:
-        template_dict = find_template_kind(template_dict, module)
+        entity_dict = find_template_kind(entity_dict, module)
 
-    template_dict = sanitize_template_dict(template_dict)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
     changed = False
     if not affects_multiple:
@@ -456,12 +451,12 @@ def main():
         else:
             entity = entities[0]
         changed = naildown_entity_state(
-            ProvisioningTemplate, template_dict, entity, state, module)
+            ProvisioningTemplate, entity_dict, entity, state, module)
     else:
-        template_dict.pop('name')
+        entity_dict.pop('name')
         for entity in entities:
             changed |= naildown_entity_state(
-                ProvisioningTemplate, template_dict, entity, state, module)
+                ProvisioningTemplate, entity_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
