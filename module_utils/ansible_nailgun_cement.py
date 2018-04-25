@@ -395,7 +395,7 @@ def find_errata(module, id, organization, failsafe=False):
 
 
 def find_content_views(module, content_views, organization, failsafe=False):
-    return map(lambda content_view: find_content_view(module, content_view['name'], content_view['version'],
+    return map(lambda content_view: find_content_view(module, content_view['name'],
                                                       organization, failsafe=failsafe), content_views)
 
 

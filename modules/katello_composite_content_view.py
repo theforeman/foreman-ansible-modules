@@ -98,6 +98,7 @@ try:
         find_content_view_version,
         ping_server,
         set_task_timeout,
+        naildown_entity_state,
     )
     HAS_NAILGUN_PACKAGE = True
 except:
@@ -168,6 +169,7 @@ def main():
 
     changed = naildown_entity_state(ContentView, entity_dict, entity, state, module)
 
+    module.exit_json(changed=changed)
 
 if __name__ == '__main__':
     main()
