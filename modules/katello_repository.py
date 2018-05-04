@@ -163,7 +163,7 @@ def main():
             url=dict(),
             docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
-            state=dict(default='present', choices=['present', 'absent']),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )
