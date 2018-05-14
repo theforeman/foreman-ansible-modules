@@ -1,0 +1,13 @@
+---
+- name: "Verify setting '{{ setting_name }}' is '{{ setting_value }}'"
+  foreman_setting_facts:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ setting_name | default(omit) }}"
+  register: result
+- fail:
+    msg: "Verification that setting is '{{ setting_value }}' failed!"
+  when: (setting_name is defined) and (setting_value is defined) and (result.settings[0].value != setting_value)
+...
