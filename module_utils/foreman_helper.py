@@ -15,7 +15,7 @@ def parse_template(template_content, module):
     try:
         template_dict = {}
         data = re.match(
-            '.*\s*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
+            r'.*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
         if data:
             datalist = data.group(1)
             if datalist[-1] == '-':
