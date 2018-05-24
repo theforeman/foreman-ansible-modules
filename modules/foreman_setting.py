@@ -96,13 +96,13 @@ try:
         Setting,
     )
 
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
     raise
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 name_map = {
@@ -124,7 +124,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])

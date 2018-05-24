@@ -101,13 +101,13 @@ try:
     import nailgun.entities
     import nailgun.entity_fields
     import ansible.module_utils.ansible_nailgun_cement as cement
-    HAS_NAILGUN_PACKAGE = True
+    HAS_IMPORT_ERROR = False
 
-except:
-    HAS_NAILGUN_PACKAGE = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def get_provider_params(provider):
@@ -139,7 +139,8 @@ def get_provider_params(provider):
 
 
 def main(module):
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     name = module.params.get('name')
     state = module.params.get('state')

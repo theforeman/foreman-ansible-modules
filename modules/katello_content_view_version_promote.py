@@ -107,10 +107,10 @@ try:
         ping_server,
         set_task_timeout,
     )
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
-from ansible.module_utils.foreman_helper import handle_no_nailgun
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 
 def content_view_promote(module, name, organization, to_environment, **kwargs):
@@ -160,7 +160,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     set_task_timeout(3600000)  # 60 minutes
 

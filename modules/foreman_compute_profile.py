@@ -69,13 +69,13 @@ RETURN = ''' # '''
 try:
     import nailgun.entities
     import ansible.module_utils.ansible_nailgun_cement as cement
-    HAS_NAILGUN_PACKAGE = True
+    HAS_IMPORT_ERROR = False
 
-except:
-    HAS_NAILGUN_PACKAGE = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 # This is the only true source for names (and conversions thereof)
@@ -85,7 +85,8 @@ name_map = {
 
 
 def main(module):
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     updated_name = module.params.get('updated_name')
     state = module.params.get('state')

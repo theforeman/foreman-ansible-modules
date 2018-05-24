@@ -99,12 +99,12 @@ try:
         find_lifecycle_environment,
         update_fields,
     )
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state, label=None, description=None, prior=None):
@@ -174,7 +174,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     server_url = module.params['server_url']
     username = module.params['username']

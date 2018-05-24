@@ -5,11 +5,6 @@ import re
 import yaml
 
 
-def handle_no_nailgun(module, has_nailgun):
-    if not has_nailgun:
-        module.fail_json(msg="Missing required nailgun module (check docs or install with: pip install nailgun)")
-
-
 # Helper for templates
 def parse_template(template_content, module):
     try:

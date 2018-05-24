@@ -79,12 +79,12 @@ RETURN = '''# '''
 try:
     from nailgun import entities, entity_fields, entity_mixins
     from nailgun.config import ServerConfig
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 class NailGun(object):
@@ -152,7 +152,8 @@ def main():
         supports_check_mode=False,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     server_url = module.params['server_url']
     verify_ssl = module.params['verify_ssl']

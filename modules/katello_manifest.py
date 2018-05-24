@@ -96,12 +96,12 @@ try:
         set_task_timeout,
     )
 
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def validate_params(module, state=None, manifest_path=None):
@@ -174,7 +174,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     set_task_timeout(300000)  # 5 minutes
 

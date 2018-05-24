@@ -243,15 +243,15 @@ try:
         naildown_entity_state,
         sanitize_entity_dict,
     )
-    HAS_NAILGUN_PACKAGE = True
-except ImportError:
-    HAS_NAILGUN_PACKAGE = False
+    HAS_IMPORT_ERROR = False
+except ImportError as e:
+    HAS_IMPORT_ERROR = True
+    IMPORT_ERROR = str(e)
 
 import os
 from ansible.module_utils.basic import AnsibleModule, get_module_path
 from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils.foreman_helper import (
-    handle_no_nailgun,
     parse_template,
     parse_template_from_file,
 )
@@ -306,7 +306,8 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor layout allowed if 'name: *'!")
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if HAS_IMPORT_ERROR:
+        module.fail_json(msg=IMPORT_ERROR)
 
     entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
