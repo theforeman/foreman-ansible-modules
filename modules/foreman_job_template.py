@@ -502,7 +502,7 @@ def main():
                 changed |= ti_changed
 
             # remove template inputs if they aren't present in template_input_list
-            found_tis = TemplateInput(template=result).search()
+            found_tis = find_entities(entity_class=lambda: TemplateInput(template=result))
             template_input_names = set([ti['name'] for ti in template_input_list])
             for ti in found_tis:
                 if ti.name not in template_input_names:
