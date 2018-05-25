@@ -29,7 +29,6 @@ description:
     - "Manage Foreman Remote Execution Job Templates"
     - "Uses https://github.com/SatelliteQE/nailgun"
     - "Uses ansible_nailgun_cement in /module_utils"
-version_added: "2.4"
 author:
 - "Manuel Bonk (@manuelbonk) ATIX AG"
 - "Matthias Dellweg (@mdellweg) ATIX AG"
@@ -328,18 +327,19 @@ try:
         naildown_entity_state,
         sanitize_entity_dict,
     )
+
+    import os
+    from ansible.module_utils.foreman_helper import (
+        parse_template,
+        parse_template_from_file,
+    )
+
     HAS_IMPORT_ERROR = False
 except ImportError as e:
     HAS_IMPORT_ERROR = True
     IMPORT_ERROR = str(e)
 
-import os
 from ansible.module_utils.basic import AnsibleModule, get_module_path
-from ansible.module_utils._text import to_bytes, to_native
-from ansible.module_utils.foreman_helper import (
-    parse_template,
-    parse_template_from_file,
-)
 
 
 # This is the only true source for names (and conversions thereof)
@@ -503,9 +503,10 @@ def main():
 
             # remove template inputs if they aren't present in template_input_list
             found_tis = TemplateInput(template=result).search()
+            template_input_names = set([ti['name'] for ti in template_input_list])
             for ti in found_tis:
-                if not any(d['name'] == str(ti.name) for d in template_input_list):
-                    ti_changed  = naildown_entity_state(TemplateInput, None, ti, "absent", module)
+                if ti.name not in template_input_names:
+                    ti_changed = naildown_entity_state(TemplateInput, None, ti, "absent", module)
                     changed |= ti_changed
 
     else:
