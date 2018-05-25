@@ -107,10 +107,11 @@ try:
         ping_server,
         set_task_timeout,
     )
-    HAS_IMPORT_ERROR = False
+    has_import_error = False
 except ImportError as e:
-    HAS_IMPORT_ERROR = True
-    IMPORT_ERROR = str(e)
+    has_import_error = True
+    import_error_msg = str(e)
+from ansible.module_utils.basic import AnsibleModule
 
 
 def content_view_promote(module, name, organization, to_environment, **kwargs):
@@ -160,8 +161,8 @@ def main():
         supports_check_mode=True,
     )
 
-    if HAS_IMPORT_ERROR:
-        module.fail_json(msg=IMPORT_ERROR)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     set_task_timeout(3600000)  # 60 minutes
 
@@ -187,8 +188,6 @@ def main():
     except Exception as e:
         module.fail_json(msg=e)
 
-
-from ansible.module_utils.basic import AnsibleModule
 
 if __name__ == '__main__':
     main()

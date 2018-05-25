@@ -101,10 +101,10 @@ try:
         Domain,
     )
 
-    HAS_IMPORT_ERROR = False
+    has_import_error = False
 except ImportError as e:
-    HAS_IMPORT_ERROR = True
-    IMPORT_ERROR = str(e)
+    has_import_error = True
+    import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -136,8 +136,8 @@ def main():
         supports_check_mode=True,
     )
 
-    if HAS_IMPORT_ERROR:
-        module.fail_json(msg=IMPORT_ERROR)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     domain_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])

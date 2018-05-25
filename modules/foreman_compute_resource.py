@@ -101,11 +101,11 @@ try:
     import nailgun.entities
     import nailgun.entity_fields
     import ansible.module_utils.ansible_nailgun_cement as cement
-    HAS_IMPORT_ERROR = False
+    has_import_error = False
 
 except ImportError as e:
-    HAS_IMPORT_ERROR = True
-    IMPORT_ERROR = str(e)
+    has_import_error = True
+    import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -139,8 +139,8 @@ def get_provider_params(provider):
 
 
 def main(module):
-    if HAS_IMPORT_ERROR:
-        module.fail_json(msg=IMPORT_ERROR)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     name = module.params.get('name')
     state = module.params.get('state')

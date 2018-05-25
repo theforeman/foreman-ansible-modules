@@ -69,11 +69,11 @@ RETURN = ''' # '''
 try:
     import nailgun.entities
     import ansible.module_utils.ansible_nailgun_cement as cement
-    HAS_IMPORT_ERROR = False
+    has_import_error = False
 
 except ImportError as e:
-    HAS_IMPORT_ERROR = True
-    IMPORT_ERROR = str(e)
+    has_import_error = True
+    import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -85,8 +85,8 @@ name_map = {
 
 
 def main(module):
-    if HAS_IMPORT_ERROR:
-        module.fail_json(msg=IMPORT_ERROR)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     updated_name = module.params.get('updated_name')
     state = module.params.get('state')
