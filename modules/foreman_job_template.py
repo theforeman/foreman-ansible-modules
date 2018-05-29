@@ -106,6 +106,7 @@ options:
         required: true
         choices:
         - SSH
+        default: SSH
     snippet:
         description:
         - Determines whether the template shall be a snippet
@@ -376,7 +377,7 @@ def main():
             locked=dict(type='bool', default=False),
             name=dict(),
             organizations=dict(type='list'),
-            provider_type=dict(),
+            provider_type=dict(default='SSH'),
             snippet=dict(type='bool'),
             template=dict(),
             template_inputs=dict(type='list'),
@@ -443,7 +444,7 @@ def main():
         if state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
-            if entity_dict.keys() != ['name']:
+            if list(entity_dict.keys()) != ['name']:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
     try:
@@ -479,14 +480,14 @@ def main():
 
     changed = False
     if not affects_multiple:
-        if len(entities) == 0:
-            entity = None
-        else:
+        if entities:
             entity = entities[0]
+        else:
+            entity = None
         changed, result = naildown_entity(
             JobTemplate, entity_dict, entity, state, module)
 
-        if state == "present" or state == "present_with_defaults":
+        if state in ("present", "present_with_defaults"):
 
             # Manage TemplateInputs here
             for template_input_dict in template_input_list:
@@ -497,17 +498,15 @@ def main():
 
                 ti_entity = find_template_input(module, str(template_input_dict['name']), result)
 
-                ti_changed, _ = naildown_entity(
+                changed |= naildown_entity_state(
                     TemplateInput, template_input_dict, ti_entity, state, module)
-                changed |= ti_changed
 
             # remove template inputs if they aren't present in template_input_list
             found_tis = find_entities(entity_class=lambda: TemplateInput(template=result))
-            template_input_names = set([ti['name'] for ti in template_input_list])
+            template_input_names = set(ti['name'] for ti in template_input_list)
             for ti in found_tis:
                 if ti.name not in template_input_names:
-                    ti_changed = naildown_entity_state(TemplateInput, None, ti, "absent", module)
-                    changed |= ti_changed
+                    changed |= naildown_entity_state(TemplateInput, None, ti, "absent", module)
 
     else:
         entity_dict.pop('name')
