@@ -1,0 +1,19 @@
+---
+- name: "Ensure job template from file '{{ job_template_file_name }}' is '{{ job_template_state }}'"
+  vars:
+    job_template_name: "configure flux compensator"
+    job_template_provider_type: "SSH"
+  foreman_job_template:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    file_name: "{{ job_template_file_name }}"
+    locations: "{{ job_template_locations | default(omit) }}"
+    organizations: "{{ job_template_organizations | default(omit) }}"
+    state: "{{ job_template_state }}"
+  register: result
+- fail:
+    msg: "Ensuring job template is {{ job_template_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...

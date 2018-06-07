@@ -9,6 +9,7 @@ MODULES = [
     'compute_profile',
     'domain',
     'global_parameter',
+    'job_template',
     'location',
     'lifecycle_environment',
     'operating_system',
