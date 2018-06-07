@@ -99,12 +99,12 @@ try:
         naildown_entity_state,
         sanitize_entity_dict,
     )
-    HAS_NAILGUN_PACKAGE = True
-except:
-    HAS_NAILGUN_PACKAGE = False
+    has_import_error = False
+except ImportError as e:
+    has_import_error = True
+    import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 # This is the only true source for names (and conversions thereof)
@@ -134,7 +134,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])

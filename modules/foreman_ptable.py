@@ -228,6 +228,12 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 try:
+    import os
+    from ansible.module_utils.foreman_helper import (
+        parse_template,
+        parse_template_from_file,
+    )
+
     from nailgun.entities import (
         PartitionTable,
         _OPERATING_SYSTEMS,
@@ -243,18 +249,12 @@ try:
         naildown_entity_state,
         sanitize_entity_dict,
     )
-    HAS_NAILGUN_PACKAGE = True
-except ImportError:
-    HAS_NAILGUN_PACKAGE = False
 
-import os
+    has_import_error = False
+except ImportError as e:
+    has_import_error = True
+    import_error_msg = str(e)
 from ansible.module_utils.basic import AnsibleModule, get_module_path
-from ansible.module_utils._text import to_bytes, to_native
-from ansible.module_utils.foreman_helper import (
-    handle_no_nailgun,
-    parse_template,
-    parse_template_from_file,
-)
 
 
 # This is the only true source for names (and conversions thereof)
@@ -306,7 +306,8 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor layout allowed if 'name: *'!")
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
