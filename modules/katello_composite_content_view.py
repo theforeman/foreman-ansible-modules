@@ -100,12 +100,12 @@ try:
         set_task_timeout,
         naildown_entity_state,
     )
-    HAS_NAILGUN_PACKAGE = True
+    has_import_error = False
 except:
-    HAS_NAILGUN_PACKAGE = False
+    has_import_error = True
+    import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.foreman_helper import handle_no_nailgun
 
 
 def sanitize_composite_content_view_dict(entity_dict):
@@ -137,7 +137,8 @@ def main():
         supports_check_mode=True,
     )
 
-    handle_no_nailgun(module, HAS_NAILGUN_PACKAGE)
+    if has_import_error:
+        module.fail_json(msg=import_error_msg)
 
     entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
