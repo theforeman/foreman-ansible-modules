@@ -9,8 +9,8 @@ import yaml
 def parse_template(template_content, module):
     try:
         template_dict = {}
-        data = re.match(
-            r'.*<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
+        data = re.search(
+            r'<%#([^%]*([^%]*%*[^>%])*%*)%>', template_content)
         if data:
             datalist = data.group(1)
             if datalist[-1] == '-':
