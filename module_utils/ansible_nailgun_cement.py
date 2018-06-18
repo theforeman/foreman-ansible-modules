@@ -40,6 +40,7 @@ class TemplateInput(
     entity_mixins.EntitySearchMixin,
     entity_mixins.EntityUpdateMixin
 ):
+    """A representation of a Template Input entity."""
 
     def __init__(self, server_config=None, **kwargs):
         _check_for_value('template', kwargs)
@@ -81,7 +82,7 @@ class JobTemplate(
     entity_mixins.EntitySearchMixin,
     entity_mixins.EntityUpdateMixin
 ):
-    """A representation of a Job invocation entity."""
+    """A representation of a Job Template entity."""
 
     def __init__(self, server_config=None, **kwargs):
         self._fields = {
