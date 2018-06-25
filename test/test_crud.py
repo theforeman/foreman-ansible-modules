@@ -22,6 +22,7 @@ MODULES = [
     'repository',
     'setting',
     'sync_plan',
+    'activation_key',
 ]
 
 

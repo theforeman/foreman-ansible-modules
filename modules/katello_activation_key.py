@@ -63,6 +63,11 @@ options:
         description:
             - List of subscriptions that include name
         type: list
+    auto_attach:
+        description:
+            - Set Auto-Attach on or off
+        default: true
+        type: bool
 '''
 
 EXAMPLES = '''
@@ -77,6 +82,7 @@ EXAMPLES = '''
     content_view: 'client content view'
     subscriptions:
         - name: "Red Hat Enterprise Linux"
+    auto_attach: False
 '''
 
 RETURN = '''# '''
@@ -84,6 +90,7 @@ RETURN = '''# '''
 try:
     from nailgun import entities
     from nailgun.config import ServerConfig
+    from ansible.module_utils.ansible_nailgun_cement import fields_equal
     has_import_error = False
 except ImportError as e:
     has_import_error = True
@@ -144,7 +151,7 @@ class NailGun(object):
             if hasattr(new, field) and hasattr(old, field):
                 new_attr = getattr(new, field)
                 old_attr = getattr(old, field)
-                if old_attr is None or new_attr.id != old_attr.id:
+                if old_attr is None or not fields_equal(new_attr, old_attr):
                     setattr(old, field, new_attr)
                     needs_update = True
             elif hasattr(old, field) and getattr(old, field) is not None and not hasattr(new, field):
@@ -152,11 +159,11 @@ class NailGun(object):
                 needs_update = True
         return needs_update, old
 
-    def activation_key(self, name, organization, lifecycle_environment=None, content_view=None, subscriptions=[]):
+    def activation_key(self, name, organization, lifecycle_environment=None, content_view=None, subscriptions=[], auto_attach=True):
         updated = False
         organization = self.find_organization(organization)
 
-        kwargs = {'name': name, 'organization': organization}
+        kwargs = {'name': name, 'organization': organization, 'auto_attach': auto_attach}
 
         if lifecycle_environment:
             kwargs['environment'] = self.find_lifecycle_environment(lifecycle_environment, organization)
@@ -172,7 +179,7 @@ class NailGun(object):
                 activation_key = activation_key.create()
             updated = True
         elif len(response) == 1:
-            updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view'])
+            updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view', 'auto_attach'])
             if updated:
                 if not self._module.check_mode:
                     activation_key.update()
@@ -207,6 +214,7 @@ def main():
             lifecycle_environment=dict(),
             content_view=dict(),
             subscriptions=dict(type='list'),
+            auto_attach=dict(type='bool', default=True),
         ),
         supports_check_mode=True,
     )
@@ -223,6 +231,7 @@ def main():
     lifecycle_environment = module.params['lifecycle_environment']
     content_view = module.params['content_view']
     subscriptions = module.params['subscriptions']
+    auto_attach = module.params['auto_attach']
 
     server = ServerConfig(
         url=server_url,
@@ -239,7 +248,8 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        changed = ng.activation_key(name, organization, lifecycle_environment=lifecycle_environment, content_view=content_view, subscriptions=subscriptions)
+        changed = ng.activation_key(name, organization, lifecycle_environment=lifecycle_environment, content_view=content_view, subscriptions=subscriptions,
+                                    auto_attach=auto_attach)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
