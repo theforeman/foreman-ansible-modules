@@ -73,6 +73,12 @@ options:
         - The locations the template should be assigend to
         required: false
         type: list
+    locked:
+        description:
+        - Determines whether the template shall be locked
+        required: false
+        default: false
+        type: bool
     name:
         description:
         - |
@@ -262,6 +268,7 @@ name_map = {
     'template': 'layout',  # the parse_template_* methods stores the "layout" in "template"
     'layout': 'layout',
     'locations': 'location',
+    'locked': 'locked',
     'name': 'name',
     'organizations': 'organization',
     'oses': 'os_family',  # the foreman community templates are using oses instead of os_family (which is wrong?)
@@ -269,7 +276,6 @@ name_map = {
 }
 # Missing parameters:
 # snippet
-# locked
 # audit_comment
 # default
 
@@ -285,7 +291,7 @@ def main():
             layout=dict(),
             file_name=dict(type='path'),
             locations=dict(type='list'),
-            # locked=dict(type='bool', default=False),
+            locked=dict(type='bool', default=False),
             name=dict(),
             organizations=dict(type='list'),
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
