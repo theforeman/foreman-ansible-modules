@@ -10,14 +10,18 @@ from nailgun.entities import (
     _check_for_value,
     ActivationKey,
     Entity,
+    AbstractContentViewFilter,
     CommonParameter,
     ContentView,
+    ContentViewFilterRule,
     ContentViewVersion,
     Domain,
+    Errata,
     LifecycleEnvironment,
     Location,
     OperatingSystem,
     Organization,
+    PackageGroup,
     Ping,
     Product,
     Realm,
@@ -231,12 +235,12 @@ def update_fields(new, old, fields):
 
 
 # Common functionality to manipulate entities
-def naildown_entity_state(entity_class, entity_dict, entity, state, module):
-    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module)
+def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=[]):
+    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing)
     return changed
 
 
-def naildown_entity(entity_class, entity_dict, entity, state, module):
+def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=[]):
     """ Ensure that a given entity has a certain state """
     changed, changed_entity = False, entity
     if state == 'present_with_defaults':
@@ -246,7 +250,7 @@ def naildown_entity(entity_class, entity_dict, entity, state, module):
         if entity is None:
             changed, changed_entity = create_entity(entity_class, entity_dict, module)
         else:
-            changed, changed_entity = update_entity(entity, entity_dict, module)
+            changed, changed_entity = update_entity(entity, entity_dict, module, check_missing)
     elif state == 'copied':
         new_entity = entity_class(name=entity_dict['new_name'], organization=entity_dict['organization']).search()
         if entity is not None and len(new_entity) == 0:
@@ -323,13 +327,24 @@ def fields_equal(value1, value2):
     return value1 == value2
 
 
-def update_entity(old_entity, entity_dict, module):
+def update_entity(old_entity, entity_dict, module, check_missing):
     try:
         volatile_entity = old_entity.read()
         result = volatile_entity
         fields = []
         for key, value in volatile_entity.get_values().items():
             if key in entity_dict and not fields_equal(value, entity_dict[key]):
+                volatile_entity.__setattr__(key, entity_dict[key])
+                fields.append(key)
+            # check_missing is a special case, Foreman sometimes returns different values
+            # depending on what 'type' of same object you are requesting. Content View
+            # Filters are a prime example. We list these attributes in `check_missing`
+            # so we can ensure the entity is as the user specified.
+            if key not in entity_dict and key in check_missing:
+                volatile_entity.__setattr__(key, None)
+                fields.append(key)
+        for key in check_missing:
+            if key in entity_dict and key not in volatile_entity.get_values():
                 volatile_entity.__setattr__(key, entity_dict[key])
                 fields.append(key)
         if len(fields) > 0:
@@ -357,6 +372,16 @@ def find_activation_key(module, name, organization, failsafe=False):
     return handle_find_response(module, activation_key.search(), message="No activation key found for %s" % name, failsafe=failsafe)
 
 
+def find_package_group(module, name, failsafe=False):
+    package_group = PackageGroup().search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, package_group, message="No package group found for %s" % name, failsafe=failsafe)
+
+
+def find_errata(module, id, organization, failsafe=False):
+    errata = Errata().search(set(), {'search': 'id="{}"'.format(id)})
+    return handle_find_response(module, errata, message="No errata found for %s" % id, failsafe=failsafe)
+
+
 def find_content_view(module, name, organization, failsafe=False):
     content_view = ContentView(name=name, organization=organization)
     return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
@@ -371,6 +396,19 @@ def find_content_view_version(module, content_view, environment=None, version=No
         response = ContentViewVersion(content_view=content_view, version=version).search()
         return handle_find_response(module, response, message="No content view version found on content view {} for version {}".
                                     format(content_view.name, version), failsafe=failsafe)
+
+
+def find_content_view_filter_rule(module, content_view_filter, name=False, errata=False, failsafe=False):
+    if errata is not False:
+        content_view_filter_rule = ContentViewFilterRule(content_view_filter=content_view_filter, errata=errata).search()
+    else:
+        content_view_filter_rule = ContentViewFilterRule(name=name, content_view_filter=content_view_filter).search()
+    return handle_find_response(module, content_view_filter_rule, message="No content view filter rule found for %s" % name or errata, failsafe=failsafe)
+
+
+def find_content_view_filter(module, name, content_view, failsafe=False):
+    content_view_filter = AbstractContentViewFilter(name=name, content_view=content_view)
+    return handle_find_response(module, content_view_filter.search(), message="No content view filter found for %s" % name, failsafe=failsafe)
 
 
 def find_organizations(module, organizations):
