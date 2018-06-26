@@ -51,7 +51,7 @@ options:
         required: true
     organization:
         description:
-            - Organization that the Product is in
+            - Organization that the content view is in
         required: true
 '''
 
