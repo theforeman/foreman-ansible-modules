@@ -28,6 +28,30 @@
       expected_change: false
   - include: tasks/provisioning_template.yml
     vars:
+      provisioning_template_state: present
+      locked_state: false
+      expected_change: false
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: present
+      locked_state: true
+      expected_change: true
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: present
+      locked_state: true
+      expected_change: false
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: present
+      expected_change: false
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_state: present
+      locked_state: false
+      expected_change: true
+  - include: tasks/provisioning_template.yml
+    vars:
       provisioning_template_template: 'A provisioning template with an template'
       provisioning_template_state: present
       expected_change: true
