@@ -77,7 +77,6 @@ options:
         description:
         - Determines whether the template shall be locked
         required: false
-        default: false
         type: bool
     name:
         description:
@@ -291,7 +290,7 @@ def main():
             layout=dict(),
             file_name=dict(type='path'),
             locations=dict(type='list'),
-            locked=dict(type='bool', default=False),
+            locked=dict(type='bool'),
             name=dict(),
             organizations=dict(type='list'),
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
