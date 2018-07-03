@@ -34,7 +34,7 @@ author:
 - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun >= 0.29.0
+    - nailgun > 0.31.0
 options:
     server_url:
         description:
