@@ -1,19 +1,45 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Create/update katello content view"
-    katello_content_view:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "cv3"
-      organization: "Default Organization"
-      repositories:
-        - name: "repo1"
-          product: "product1"
-        - name: "zoo"
-          product: "zoo product"
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/content_view.yml
+    vars:
+      expected_change: true
+  - include: tasks/content_view.yml
+    vars:
+      expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent

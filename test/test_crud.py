@@ -6,7 +6,9 @@ from ansible.cli.playbook import PlaybookCLI
 
 
 MODULES = [
+    'activation_key',
     'compute_profile',
+    'content_view',
     'domain',
     'global_parameter',
     'job_template',
@@ -22,7 +24,6 @@ MODULES = [
     'repository',
     'setting',
     'sync_plan',
-    'activation_key',
 ]
 
 
