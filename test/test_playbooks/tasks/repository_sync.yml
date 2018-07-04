@@ -1,0 +1,37 @@
+---
+- name: "Sync katello repository"
+  vars:
+    - organization_name: "Test Organization"
+    - product_name: "Test Product"
+    - repository: "Test Repository"
+    - synchronous: True
+  katello_sync:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    organization: "{{ organization_name }}"
+    repository: "{{ repository }}"
+    product: "{{ product_name }}"
+    synchronous: "{{ synchronous }}"
+  register: result
+
+- fail:
+    msg: "Syncing repository failed! (expected_change: True)"
+  when: not result.changed
+
+- fail:
+    msg: "Syncing repository with synchronous: {{ synchronous }} took longer or shorter than expected!"
+  vars:
+    - synchronous: True
+  when: (synchronous and ((( result.changed.ended_at | replace(' UTC', '') | to_datetime ) - ( result.changed.started_at | replace(' UTC', '') | to_datetime )).total_seconds() < 2)) or
+        (not synchronous and result.changed.ended_at)  # result.changed.ended_at is not set if it matches result.changed.started_at
+
+- name: "Wait for asynchronous task to finish"
+  shell: sleep 10
+  vars:
+    - synchronous: True
+  when:
+    - not synchronous
+    - recording is defined
+...
