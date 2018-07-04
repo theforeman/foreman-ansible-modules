@@ -50,38 +50,31 @@ options:
     verify_ssl:
         description:
         - Verify SSL of the Foreman server
-        required: false
         default: true
         type: bool
     audit_comment:
         description:
         - Content of the audit comment field
-        required: false
     description_format:
         description:
         - description of the job template. Template inputs can be referenced.
-        required: false
     file_name:
         description:
         - |
             The path of a template file, that shall be imported.
             Either this or layout is required as a source for
             the Job Template "content".
-        required: false
         type: path
     job_category:
         description:
         - The category the template should be assigend to
-        required: false
     locations:
         description:
         - The locations the template should be assigend to
-        required: false
         type: list
     locked:
         description:
         - Determines whether the template shall be locked
-        required: false
         default: false
         type: bool
     name:
@@ -94,11 +87,9 @@ options:
             basename of a file.
             The special name "*" (only possible as parameter) is used
             to perform bulk actions (modify, delete) on all existing Job Templates.
-        required: false
     organizations:
         description:
         - The organizations the template shall be assigned to
-        required: false
         type: list
     provider_type:
         description:
@@ -110,7 +101,6 @@ options:
     snippet:
         description:
         - Determines whether the template shall be a snippet
-        required: false
         default: false
         type: bool
     template:
@@ -121,23 +111,19 @@ options:
     template_inputs:
         description:
         - The template inputs used in the Job Template
-        required: false
         type: list
         suboptions:
           advanced:
               description:
               - Template Input is advanced
-              required: false
               default: false
               type: bool
           description:
               description:
               - description of the Template Input
-              required: false
           fact_name:
               description:
               - description of the Template Input
-              required: false
           input_type:
               description:
               - input type
@@ -150,11 +136,9 @@ options:
           name:
               description:
               - description of the Template Input
-              required: false
           options:
               description:
               - selecTemplate values for user inputs. Must be an array of any type.
-              required: false
               type: list
           puppet_parameter_class:
               description:
@@ -162,17 +146,13 @@ options:
           puppet_parameter_name:
               description:
               - Puppet parameter name, used when input type is puppet_parameter
-              required: false
           required:
               description:
               - Is the input required
-              required: false
               type: bool
           variable_name:
               description:
               - Variable name, used when input type is variable
-              required: false
-        required: false
     state:
         description: The state the template should be in.
         default: present

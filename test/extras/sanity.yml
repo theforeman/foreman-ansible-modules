@@ -1,0 +1,27 @@
+---
+- hosts: fixtures
+  tasks:
+    - name: "Create {{ playbook_dir }}/../../.tmp/"
+      file:
+        path: "{{ playbook_dir }}/../../.tmp/"
+        state: directory
+
+    - name: Clone ansible
+      git:
+        repo: 'https://github.com/ansible/ansible.git'
+        dest: "{{ playbook_dir }}/../../.tmp/ansible"
+
+    - name: Copy files to Ansible core
+      copy:
+        src: "{{ playbook_dir }}/../../{{ item.src }}"
+        dest: "{{ playbook_dir }}/../../.tmp/ansible/{{ item.dest }}"
+      with_items:
+        - { src: "modules/", dest: "lib/ansible/modules/foreman-test" }
+        - { src: "module_utils/", dest: "lib/ansible/module_utils/foreman-test" }
+
+    - name: Build test options
+      set_fact:
+        test_targets: "lib/ansible/modules/foreman-test/ lib/ansible/module_utils/foreman-test/"
+    
+    - name: Run ansible-test
+      command: "{{ playbook_dir }}/../../.tmp/ansible/test/runner/ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --test ansible-doc --test compile {{ test_targets }}" 

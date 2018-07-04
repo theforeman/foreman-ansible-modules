@@ -14,6 +14,7 @@ help:
 	@echo "  help           to show this message"
 	@echo "  lint           to run flake8 and pylint"
 	@echo "  test           to run unit tests"
+	@echo "  sanity         to run santy tests"
 	@echo "  debug          debug a module using the ansible hacking module"
 	@echo "  setup          to set up test, lint, and debugging"
 	@echo "  test-setup     to install test dependencies"
@@ -34,6 +35,9 @@ record_%: FORCE
 	$(RM) test/test_playbooks/fixtures/$*-*.yml
 	pytest 'test/test_crud.py::test_crud[$*]' --record
 
+sanity:
+	ansible-playbook test/extras/sanity.yml
+
 debug:
 ifndef MODULE
 	$(error MODULE is undefined)
@@ -49,6 +53,7 @@ debug-setup: .tmp/ansible
 test-setup: test/test_playbooks/server_vars.yml
 	pip install --upgrade pip
 	pip install -r requirements-dev.txt
+	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt 
 test/test_playbooks/server_vars.yml:
 	cp test/test_playbooks/server_vars.yml.example test/test_playbooks/server_vars.yml
 
