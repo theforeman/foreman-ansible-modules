@@ -61,10 +61,20 @@ options:
         description:
             - The content type of the repository (e.g. yum)
         required: true
+        choices:
+            - deb
+            - docker
+            - file
+            - ostree
+            - puppet
+            - yum
     url:
         description:
             - Repository URL to sync from
         required: true
+    docker_upstream_name:
+        description:
+            - name of the upstream docker repository
     download_policy:
         description:
             - download policy for sync from upstream
@@ -128,6 +138,7 @@ name_map = {
     'product': 'product',
     'content_type': 'content_type',
     'url': 'url',
+    'docker_upstream_name': 'docker_upstream_name',
     'download_policy': 'download_policy',
 }
 
@@ -142,8 +153,9 @@ def main():
             product=dict(required=True),
             organization=dict(required=True),
             name=dict(required=True),
-            content_type=dict(required=True),
+            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
+            docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
@@ -161,6 +173,9 @@ def main():
     username = entity_dict.pop('username')
     password = entity_dict.pop('password')
     state = entity_dict.pop('state')
+
+    if entity_dict['content_type'] != 'docker' and 'docker_upstream_name' in entity_dict:
+        module.fail_json(msg="docker_upstream_name should not be set unless content_type: docker")
 
     try:
         create_server(server_url, (username, password), verify_ssl)
