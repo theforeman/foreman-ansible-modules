@@ -7,7 +7,6 @@
     - repository_content_type: "yum"
     - repository_state: present
     - repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-    - repository_download_policy: "on_demand"
   katello_repository:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -19,4 +18,5 @@
     product: "{{ product_name }}"
     content_type: "{{ repository_content_type }}"
     url: "{{ repository_url }}"
-    download_policy: "{{ repository_download_policy }}"
+    docker_upstream_name: "{{ repository_docker_upstream_name | default(omit) }}"
+    download_policy: "{{ repository_download_policy | default(omit) }}"
