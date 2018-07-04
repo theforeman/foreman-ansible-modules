@@ -61,6 +61,13 @@ options:
         description:
             - The content type of the repository (e.g. yum)
         required: true
+        choices:
+            - docker
+            - ostree
+            - yum
+            - puppet
+            - file
+            - deb
     url:
         description:
             - Repository URL to sync from
@@ -142,7 +149,7 @@ def main():
             product=dict(required=True),
             organization=dict(required=True),
             name=dict(required=True),
-            content_type=dict(required=True),
+            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
