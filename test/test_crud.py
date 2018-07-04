@@ -22,6 +22,7 @@ MODULES = [
     'ptable',
     'redhat_manifest',
     'repository',
+    'repository_sync',
     'setting',
     'sync_plan',
 ]
@@ -34,6 +35,7 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
     if record:
         # Cassettes that are to be overwritten must be deleted first
         record_mode = 'once'
+        extra_args.extend(['--extra-vars', 'recording=true'])
     else:
         # Never reach out to the internet
         record_mode = 'none'
