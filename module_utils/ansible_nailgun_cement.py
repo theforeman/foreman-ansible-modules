@@ -393,8 +393,11 @@ def find_product(module, name, organization, failsafe=False):
     return handle_find_response(module, product.search(), message="No product found for %s" % name, failsafe=failsafe)
 
 
-def find_repositories(module, repositories, product):
-    return map(lambda repository: find_repository(module, repository, product), repositories)
+def find_repositories(module, repositories, organization, failsafe=False):
+    products = dict()
+    for repository in repositories:
+        products[repository['name']] = find_product(module, repository['product'], organization)
+    return list(map(lambda repository: find_repository(module, repository['name'], products[repository['name']], failsafe=failsafe), repositories))
 
 
 def find_repository(module, name, product, failsafe=False):
