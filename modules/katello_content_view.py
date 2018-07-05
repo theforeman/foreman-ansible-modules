@@ -59,6 +59,14 @@ options:
             - List of repositories that include name and product
         required: false
         type: list
+    state:
+        description:
+            - State of the content view
+        default: present
+        choices:
+            - present
+            - present_with_defaults
+            - absent
 '''
 
 EXAMPLES = '''
@@ -77,8 +85,20 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities, entity_fields
-    from nailgun.config import ServerConfig
+    from nailgun.entities import (
+        ContentView,
+    )
+
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        find_content_view,
+        find_repositories,
+        naildown_entity_state,
+        sanitize_entity_dict,
+    )
+
     has_import_error = False
 except ImportError as e:
     has_import_error = True
@@ -86,70 +106,11 @@ except ImportError as e:
 
 from ansible.module_utils.basic import AnsibleModule
 
-
-class NailGun(object):
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-
-    def find_organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def find_product(self, name, organization):
-        product = self._entities.Product(self._server, name=name, organization=organization)
-        response = product.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No Product found for %s" % name)
-
-    def find_repository(self, name, product, organization):
-        product = self.find_product(product, organization)
-
-        repository = self._entities.Repository(self._server, name=name, product=product)
-        repository._fields['organization'] = entity_fields.OneToOneField(entities.Organization)
-        repository.organization = product.organization
-        response = repository.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No Repository found for %s" % name)
-
-    def find_repositories(self, repositories, organization):
-        return map(lambda repository: self.find_repository(repository['name'], repository['product'], organization), repositories)
-
-    def content_view(self, name, organization, repositories=[]):
-        updated = False
-        organization = self.find_organization(organization)
-
-        content_view = self._entities.ContentView(self._server, name=name, organization=organization)
-        response = content_view.search()
-
-        if len(response) == 1:
-            content_view = response[0]
-        elif len(response) == 0:
-            if not self._module.check_mode:
-                content_view = content_view.create()
-            updated = True
-
-        repositories = self.find_repositories(repositories, organization)
-
-        if set(map(lambda r: r.id, repositories)) != set(map(lambda r: r.id, content_view.repository)):
-            if not self._module.check_mode:
-                content_view.repository = repositories
-                content_view.update(['repository'])
-            updated = True
-
-        return updated
+name_map = {
+    'name': 'name',
+    'repositories': 'repository',
+    'organization': 'organization',
+}
 
 
 def main():
@@ -162,6 +123,7 @@ def main():
             name=dict(required=True),
             organization=dict(required=True),
             repositories=dict(type='list'),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
     )
@@ -169,37 +131,32 @@ def main():
     if has_import_error:
         module.fail_json(msg=import_error_msg)
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    organization = module.params['organization']
-    repositories = module.params['repositories']
+    entity_dict = dict(
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
 
-    # Lets make an connection to the server with username and password
     try:
-        org = entities.Organization(server)
-        org.search()
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
-    kwargs = {}
-    if repositories:
-        kwargs['repositories'] = repositories
+    ping_server(module)
 
-    try:
-        changed = ng.content_view(name, organization, **kwargs)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
+    if 'repositories' in entity_dict:
+        entity_dict['repositories'] = find_repositories(module, entity_dict['repositories'], entity_dict['organization'])
+
+    content_view_entity = find_content_view(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
+    content_view_dict = sanitize_entity_dict(entity_dict, name_map)
+
+    changed = naildown_entity_state(ContentView, content_view_dict, content_view_entity, state, module)
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':

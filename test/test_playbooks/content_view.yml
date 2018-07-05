@@ -23,9 +23,19 @@
       file: server_vars.yml
   - include: tasks/content_view.yml
     vars:
+      content_view_state: present
       expected_change: true
   - include: tasks/content_view.yml
     vars:
+      content_view_state: present
+      expected_change: false
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: absent
+      expected_change: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: absent
       expected_change: false
 
 - hosts: fixtures
