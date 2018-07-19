@@ -17,7 +17,6 @@ from nailgun.entities import (
     Location,
     OperatingSystem,
     Organization,
-    Ping,
     Product,
     Realm,
     Repository,
@@ -187,6 +186,14 @@ class ComputeProfile(ComputeProfile, entity_mixins.EntitySearchMixin):
     pass
 
 
+class ConnectionCheck(Entity, entity_mixins.EntitySearchMixin):
+    def __init__(self, server_config=None, **kwargs):
+        self._meta = {
+            'api_path': 'api/v2/',
+            'server_modes': ('sat')}
+        super(ConnectionCheck, self).__init__(server_config, **kwargs)
+
+
 # Connection helper
 def create_server(server_url, auth, verify_ssl):
     entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
@@ -199,7 +206,7 @@ def create_server(server_url, auth, verify_ssl):
 # Prerequisite: create_server
 def ping_server(module):
     try:
-        return Ping().search_json()
+        return ConnectionCheck().search_json()
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
