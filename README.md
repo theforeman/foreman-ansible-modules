@@ -115,3 +115,13 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_upload: upload files, rpms, etc. to repositories
  * katello_content_view_publish: publish Katello content views
  * katello_manifest: upload and Manage Katello manifests
+
+## Nailgun Versions
+
+Below is listed the correct Nailgun branch for your Server
+
+Server | Nailgun branch
+------------ | -------------
+Katello | master
+Satellite 6.3 | 6.3.z
+Satellite 6.2 | 6.2.z
