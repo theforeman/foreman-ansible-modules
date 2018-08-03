@@ -15,6 +15,7 @@ from nailgun.entities import (
     Domain,
     LifecycleEnvironment,
     Location,
+    Media,
     OperatingSystem,
     Organization,
     Ping,
@@ -382,6 +383,11 @@ def find_domain(module, name, failsafe=False):
     return handle_find_response(module, domain, message="No domain found for %s" % name, failsafe=failsafe)
 
 
+def find_installation_medium(module, name, failsafe=False):
+    medium = Media().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, medium, message="No installation medium found for %s" % name, failsafe=failsafe)
+
+
 def find_lifecycle_environment(module, name, organization, failsafe=False):
     response = LifecycleEnvironment(name=name, organization=organization).search()
     return handle_find_response(module, response, message="No lifecycle environment found for %s" % name, failsafe=failsafe)
@@ -424,6 +430,10 @@ def find_template_input(module, name, template, failsafe=True):
     responses = TemplateInput(template=template).search()
     response = [ti for ti in responses if ti.name == name]
     return handle_find_response(module, response, message="No template input found for <%s> in job template" % name, failsafe=failsafe)
+
+
+def find_operating_systems_by_title(module, titles):
+    return list(map(lambda operating_system: find_operating_system_by_title(module, operating_system), titles))
 
 
 def find_operating_system_by_title(module, title, failsafe=False):

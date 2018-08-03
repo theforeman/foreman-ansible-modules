@@ -11,6 +11,7 @@ MODULES = [
     'content_view',
     'domain',
     'global_parameter',
+    'installation_medium',
     'job_template',
     'location',
     'lifecycle_environment',
