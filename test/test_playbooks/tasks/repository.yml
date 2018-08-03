@@ -5,6 +5,7 @@
     - product_name: "Test Product"
     - repository_name: "Test Repository"
     - repository_content_type: "yum"
+    - repository_label: "just_a_test_repo"
     - repository_state: present
     - repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
   katello_repository:
@@ -14,6 +15,7 @@
     verify_ssl: "{{ foreman_verify_ssl }}"
     organization: "{{ organization_name }}"
     name: "{{ repository_name }}"
+    label: "{{ repository_label | default(omit) }}"
     state: "{{ repository_state }}"
     product: "{{ product_name }}"
     content_type: "{{ repository_content_type }}"
