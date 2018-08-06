@@ -1,7 +1,8 @@
 ---
-- name: "Create/update katello activation key"
+- name: "copy katello activation key"
   vars:
     activation_key_name: "Test Activation Key"
+    activation_key_new_name: "Test Activation Key Copy"
     activation_key_organization: "Test Organization"
     activation_key_lifecycle_environment: "Library"
     activation_key_content_view: "Default Organization View"
@@ -14,13 +15,15 @@
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_verify_ssl }}"
     name: "{{ activation_key_name }}"
+    new_name: "{{ activation_key_new_name }}"
     organization: "{{ activation_key_organization }}"
     lifecycle_environment: "{{ activation_key_lifecycle_environment }}"
     content_view: "{{  activation_key_content_view }}"
     subscriptions: "{{ activation_key_subscriptions }}"
     auto_attach: "{{ activation_key_auto_attach }}"
+    state: 'copied'
   register: result
 - fail:
-    msg: "Creating/updating activation key failed! (expected_change: {{ expected_change | default('unknown') }})"
+    msg: "copy activation key failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
 ...
