@@ -32,9 +32,25 @@
     vars:
       activation_key_auto_attach: True
       expected_change: false
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_auto_attach: False
+      activation_key_state: present_with_defaults
+      expected_change: false
   - include: tasks/activation_key_copy.yml
     vars:
       expected_change: true
+  - include: tasks/activation_key_copy.yml
+    vars:
+      expected_change: false
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_state: absent
+      expected_change: true
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_state: absent
+      expected_change: false
 
 - hosts: fixtures
   gather_facts: false
