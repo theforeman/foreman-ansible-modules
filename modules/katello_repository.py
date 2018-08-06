@@ -53,6 +53,9 @@ options:
         description:
             - Product to which the repository lives in
         required: true
+    label:
+        description:
+            - label of the repository
     organization:
         description:
             - Organization that the Product is in
@@ -137,6 +140,7 @@ name_map = {
     'name': 'name',
     'product': 'product',
     'content_type': 'content_type',
+    'label': 'label',
     'url': 'url',
     'docker_upstream_name': 'docker_upstream_name',
     'download_policy': 'download_policy',
@@ -151,6 +155,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             product=dict(required=True),
+            label=dict(),
             organization=dict(required=True),
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
