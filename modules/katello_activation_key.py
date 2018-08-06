@@ -68,6 +68,16 @@ options:
             - Set Auto-Attach on or off
         default: true
         type: bool
+    state:
+        description:
+            - State of the Activation Key
+        default: present
+        choices:
+        - present
+        - copied
+    new_name:
+        description:
+            - Name of the new activation key when state == copied
 '''
 
 EXAMPLES = '''
@@ -201,6 +211,25 @@ class NailGun(object):
 
         return updated
 
+    def activation_key_copy(self, name, organization, new_name):
+        updated = False
+        organization = self.find_organization(organization)
+
+        kwargs = {'name': name, 'organization': organization}
+        activation_key = self._entities.ActivationKey(self._server, **kwargs)
+        response = activation_key.search({'name', 'organization'})
+
+        kwargs = {'name': new_name, 'organization': organization}
+        new_activation_key = self._entities.ActivationKey(self._server, **kwargs)
+        new_response = new_activation_key.search({'name', 'organization'})
+
+        if len(response) == 1 and len(new_response) == 0:
+            if not self._module.check_mode:
+                new_activation_key = response[0].copy(data={'new_name': new_name})
+            updated = True
+
+        return updated
+
 
 def main():
     module = AnsibleModule(
@@ -210,13 +239,18 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
+            new_name=dict(),
             organization=dict(required=True),
             lifecycle_environment=dict(),
             content_view=dict(),
             subscriptions=dict(type='list'),
             auto_attach=dict(type='bool', default=True),
+            state=dict(default='present', choices=['present', 'copied']),
         ),
         supports_check_mode=True,
+        required_if=[
+            ['state', 'copied', ['new_name']],
+        ],
     )
 
     if has_import_error:
@@ -232,6 +266,8 @@ def main():
     content_view = module.params['content_view']
     subscriptions = module.params['subscriptions']
     auto_attach = module.params['auto_attach']
+    new_name = module.params['new_name']
+    state = module.params['state']
 
     server = ServerConfig(
         url=server_url,
@@ -248,8 +284,11 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     try:
-        changed = ng.activation_key(name, organization, lifecycle_environment=lifecycle_environment, content_view=content_view, subscriptions=subscriptions,
-                                    auto_attach=auto_attach)
+        if state == 'copied':
+            changed = ng.activation_key_copy(name, organization, new_name)
+        else:
+            changed = ng.activation_key(name, organization, lifecycle_environment=lifecycle_environment, content_view=content_view,
+                                        subscriptions=subscriptions, auto_attach=auto_attach)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
