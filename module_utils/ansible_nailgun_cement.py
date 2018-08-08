@@ -8,6 +8,7 @@ import sys
 from nailgun.config import ServerConfig
 from nailgun.entities import (
     _check_for_value,
+    ActivationKey,
     Entity,
     CommonParameter,
     ContentView,
@@ -24,6 +25,7 @@ from nailgun.entities import (
     RepositorySet,
     Setting,
     SmartProxy,
+    Subscription,
     TemplateKind,
     AbstractComputeResource,
     OSDefaultTemplate,
@@ -245,6 +247,12 @@ def naildown_entity(entity_class, entity_dict, entity, state, module):
             changed, changed_entity = create_entity(entity_class, entity_dict, module)
         else:
             changed, changed_entity = update_entity(entity, entity_dict, module)
+    elif state == 'copied':
+        new_entity = entity_class(name=entity_dict['new_name'], organization=entity_dict['organization']).search()
+        if entity is not None and len(new_entity) == 0:
+            changed, changed_entity = copy_entity(entity, entity_dict, module)
+        elif len(new_entity) == 1:
+            changed_entity = new_entity[0]
     elif state == 'absent':
         if entity is not None:
             changed, changed_entity = delete_entity(entity, module)
@@ -286,6 +294,17 @@ def create_entity(entity_class, entity_dict, module):
     except Exception as e:
         module.fail_json(msg='Error while creating {0}: {1}'.format(
             entity_class.__name__, str(e)))
+    return True, result
+
+
+def copy_entity(entity, entity_dict, module):
+    try:
+        result = None
+        if not module.check_mode:
+            result = entity.copy(data={'new_name': entity_dict['new_name']})
+    except Exception as e:
+        module.fail_json(msg='Error while copying {0}: {1}'.format(
+            entity.__class__.__name__, str(e)))
     return True, result
 
 
@@ -331,6 +350,11 @@ def delete_entity(entity, module):
         module.fail_json(msg='Error while deleting {0}: {1}'.format(
             entity.__class__.__name__, str(e)))
     return True, None
+
+
+def find_activation_key(module, name, organization, failsafe=False):
+    activation_key = ActivationKey(name=name, organization=organization)
+    return handle_find_response(module, activation_key.search(), message="No activation key found for %s" % name, failsafe=failsafe)
 
 
 def find_content_view(module, name, organization, failsafe=False):
@@ -418,6 +442,15 @@ def find_setting(module, name, failsafe=False):
 def find_smart_proxy(module, name, failsafe=False):
     smart_proxy = SmartProxy().search(query={'search': 'name="{}"'.format(name)})
     return handle_find_response(module, smart_proxy, message="No Smart Proxy found for %s" % name, failsafe=failsafe)
+
+
+def find_subscription(module, name, organization, failsafe=False):
+    subscription = Subscription(name=name, organization=organization)
+    return handle_find_response(module, subscription.search(), message="No subscription found for %s" % name, failsafe=failsafe)
+
+
+def find_subscriptions(module, subscriptions, organization, failsafe=False):
+    return map(lambda subscription: find_subscription(module, subscription['name'], organization, failsafe), subscriptions)
 
 
 def find_template_input(module, name, template, failsafe=True):

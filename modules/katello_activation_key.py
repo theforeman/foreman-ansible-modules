@@ -70,10 +70,13 @@ options:
         type: bool
     state:
         description:
-            - State of the Activation Key
+            - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name
+              and all other fields left untouched.
         default: present
         choices:
         - present
+        - present_with_defaults
+        - absent
         - copied
     new_name:
         description:
@@ -98,9 +101,23 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun import entities
-    from nailgun.config import ServerConfig
-    from ansible.module_utils.ansible_nailgun_cement import fields_equal
+    from ansible.module_utils.ansible_nailgun_cement import (
+        create_server,
+        ping_server,
+        find_organization,
+        find_location,
+        find_activation_key,
+        find_lifecycle_environment,
+        find_content_view,
+        find_subscriptions,
+        naildown_entity,
+        sanitize_entity_dict,
+    )
+
+    from nailgun.entities import (
+        ActivationKey,
+        Subscription,
+    )
     has_import_error = False
 except ImportError as e:
     has_import_error = True
@@ -108,127 +125,14 @@ except ImportError as e:
 
 from ansible.module_utils.basic import AnsibleModule
 
-
-class NailGun(object):
-
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-
-    def find_organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def find_lifecycle_environment(self, name, organization):
-        env = self._entities.LifecycleEnvironment(self._server, name=name,
-                                                  organization=organization)
-        response = env.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No lifecycle environment found for %s" % name)
-
-    def find_content_view(self, name, organization):
-        cv = self._entities.ContentView(self._server, name=name, organization=organization)
-        response = cv.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No content view found for %s" % name)
-
-    def find_subscription(self, name, organization):
-        subscriptions = self._entities.Subscription(self._server, organization=organization)
-        response = subscriptions.search(query={'search': 'name="{}"'.format(name)})
-        if len(response) == 1:
-            return response[0].read()
-        else:
-            self._module.fail_json(msg="No subscription found for %s" % name)
-
-    def find_subscriptions(self, subscriptions, organization):
-        return map(lambda subscription: self.find_subscription(subscription['name'], organization), subscriptions)
-
-    def update_fields(self, new, old, fields):
-        needs_update = False
-        for field in fields:
-            if hasattr(new, field) and hasattr(old, field):
-                new_attr = getattr(new, field)
-                old_attr = getattr(old, field)
-                if old_attr is None or not fields_equal(new_attr, old_attr):
-                    setattr(old, field, new_attr)
-                    needs_update = True
-            elif hasattr(old, field) and getattr(old, field) is not None and not hasattr(new, field):
-                setattr(old, field, None)
-                needs_update = True
-        return needs_update, old
-
-    def activation_key(self, name, organization, lifecycle_environment=None, content_view=None, subscriptions=[], auto_attach=True):
-        updated = False
-        organization = self.find_organization(organization)
-
-        kwargs = {'name': name, 'organization': organization, 'auto_attach': auto_attach}
-
-        if lifecycle_environment:
-            kwargs['environment'] = self.find_lifecycle_environment(lifecycle_environment, organization)
-
-        if content_view:
-            kwargs['content_view'] = self.find_content_view(content_view, organization)
-
-        activation_key = self._entities.ActivationKey(self._server, **kwargs)
-        response = activation_key.search({'name', 'organization'})
-
-        if len(response) == 0:
-            if not self._module.check_mode:
-                activation_key = activation_key.create()
-            updated = True
-        elif len(response) == 1:
-            updated, activation_key = self.update_fields(activation_key, response[0], ['organization', 'environment', 'content_view', 'auto_attach'])
-            if updated:
-                if not self._module.check_mode:
-                    activation_key.update()
-
-        if subscriptions is None:
-            subscriptions = []
-        desired_subscription_ids = map(lambda s: s.id, self.find_subscriptions(subscriptions, organization))
-        current_subscriptions = [entities.Subscription(self._server, **result)
-                                 for result in entities.Subscription(self._server).search_normalize(activation_key.subscriptions()['results'])]
-        current_subscription_ids = map(lambda s: s.id, current_subscriptions)
-
-        if set(desired_subscription_ids) != set(current_subscription_ids):
-            if not self._module.check_mode:
-                for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
-                    activation_key.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-                for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
-                    activation_key.remove_subscriptions(data={'subscription_id': subscription_id})
-            updated = True
-
-        return updated
-
-    def activation_key_copy(self, name, organization, new_name):
-        updated = False
-        organization = self.find_organization(organization)
-
-        kwargs = {'name': name, 'organization': organization}
-        activation_key = self._entities.ActivationKey(self._server, **kwargs)
-        response = activation_key.search({'name', 'organization'})
-
-        kwargs = {'name': new_name, 'organization': organization}
-        new_activation_key = self._entities.ActivationKey(self._server, **kwargs)
-        new_response = new_activation_key.search({'name', 'organization'})
-
-        if len(response) == 1 and len(new_response) == 0:
-            if not self._module.check_mode:
-                new_activation_key = response[0].copy(data={'new_name': new_name})
-            updated = True
-
-        return updated
+name_map = {
+    'name': 'name',
+    'new_name': 'new_name',
+    'auto_attach': 'auto_attach',
+    'content_view': 'content_view',
+    'organization': 'organization',
+    'lifecycle_environment': 'environment',
+}
 
 
 def main():
@@ -245,7 +149,7 @@ def main():
             content_view=dict(),
             subscriptions=dict(type='list'),
             auto_attach=dict(type='bool', default=True),
-            state=dict(default='present', choices=['present', 'copied']),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
         supports_check_mode=True,
         required_if=[
@@ -256,39 +160,57 @@ def main():
     if has_import_error:
         module.fail_json(msg=import_error_msg)
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    organization = module.params['organization']
-    lifecycle_environment = module.params['lifecycle_environment']
-    content_view = module.params['content_view']
-    subscriptions = module.params['subscriptions']
-    auto_attach = module.params['auto_attach']
-    new_name = module.params['new_name']
-    state = module.params['state']
+    entity_dict = dict(
+        [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
 
-    # Lets make an connection to the server with username and password
     try:
-        org = entities.Organization(server)
-        org.search()
+        create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
+    ping_server(module)
+
+    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
+    if 'lifecycle_environment' in entity_dict:
+        entity_dict['lifecycle_environment'] = find_lifecycle_environment(module, entity_dict['lifecycle_environment'], entity_dict['organization'])
+
+    if 'content_view' in entity_dict:
+        entity_dict['content_view'] = find_content_view(module, entity_dict['content_view'], entity_dict['organization'])
+
+    activation_key_dict = sanitize_entity_dict(entity_dict, name_map)
+    activation_key_entity = find_activation_key(module, name=entity_dict['name'], organization=entity_dict['organization'],
+                                                failsafe=True)
+
     try:
-        if state == 'copied':
-            changed = ng.activation_key_copy(name, organization, new_name)
-        else:
-            changed = ng.activation_key(name, organization, lifecycle_environment=lifecycle_environment, content_view=content_view,
-                                        subscriptions=subscriptions, auto_attach=auto_attach)
+        changed, activation_key_entity = naildown_entity(ActivationKey, activation_key_dict, activation_key_entity, state, module)
+
+        # only update subscriptions of newly created or updated AKs
+        # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
+        # deleted keys don't need subscriptions anymore either
+        if state == 'present':
+            if 'subscriptions' not in entity_dict:
+                subscriptions = []
+            else:
+                subscriptions = entity_dict['subscriptions']
+            desired_subscription_ids = map(lambda s: s.id, find_subscriptions(module, subscriptions, entity_dict['organization']))
+            current_subscriptions = [Subscription(**result)
+                                     for result in Subscription().search_normalize(activation_key_entity.subscriptions()['results'])]
+            current_subscription_ids = map(lambda s: s.id, current_subscriptions)
+
+            if set(desired_subscription_ids) != set(current_subscription_ids):
+                if not module.check_mode:
+                    for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
+                        activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
+                    for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
+                        activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
+                changed = True
+
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
