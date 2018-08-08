@@ -235,12 +235,12 @@ def update_fields(new, old, fields):
 
 
 # Common functionality to manipulate entities
-def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=[]):
+def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=None):
     changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing)
     return changed
 
 
-def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=[]):
+def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=None):
     """ Ensure that a given entity has a certain state """
     changed, changed_entity = False, entity
     if state == 'present_with_defaults':
@@ -340,13 +340,14 @@ def update_entity(old_entity, entity_dict, module, check_missing):
             # depending on what 'type' of same object you are requesting. Content View
             # Filters are a prime example. We list these attributes in `check_missing`
             # so we can ensure the entity is as the user specified.
-            if key not in entity_dict and key in check_missing:
+            if check_missing is not None and key not in entity_dict and key in check_missing:
                 volatile_entity.__setattr__(key, None)
                 fields.append(key)
-        for key in check_missing:
-            if key in entity_dict and key not in volatile_entity.get_values():
-                volatile_entity.__setattr__(key, entity_dict[key])
-                fields.append(key)
+        if check_missing is not None:
+            for key in check_missing:
+                if key in entity_dict and key not in volatile_entity.get_values():
+                    volatile_entity.__setattr__(key, entity_dict[key])
+                    fields.append(key)
         if len(fields) > 0:
             if not module.check_mode:
                 result = volatile_entity.update(fields)
