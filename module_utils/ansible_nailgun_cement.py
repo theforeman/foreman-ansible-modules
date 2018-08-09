@@ -445,8 +445,9 @@ def find_smart_proxy(module, name, failsafe=False):
 
 
 def find_subscription(module, name, organization, failsafe=False):
-    subscription = Subscription(name=name, organization=organization)
-    return handle_find_response(module, subscription.search(), message="No subscription found for %s" % name, failsafe=failsafe)
+    subscription = Subscription(organization=organization)
+    return handle_find_response(module, subscription.search(query={'search': 'name="{}"'.format(name)}),
+                                message="No subscription found for %s" % name, failsafe=failsafe)
 
 
 def find_subscriptions(module, subscriptions, organization, failsafe=False):
