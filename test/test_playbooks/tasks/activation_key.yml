@@ -8,6 +8,9 @@
     activation_key_content_view: "Default Organization View"
     activation_key_subscriptions:
       - name: "Test Product"
+    activation_key_content_overrides:
+      - label: "Test_Organization_Test_Product_just_a_test_repo"
+        override: disabled
     activation_key_auto_attach: False
   katello_activation_key:
     username: "{{ foreman_username }}"
@@ -19,6 +22,7 @@
     lifecycle_environment: "{{ activation_key_lifecycle_environment }}"
     content_view: "{{  activation_key_content_view }}"
     subscriptions: "{{ activation_key_subscriptions }}"
+    content_overrides: "{{ activation_key_content_overrides }}"
     auto_attach: "{{ activation_key_auto_attach }}"
     state: "{{ activation_key_state }}"
   register: result
