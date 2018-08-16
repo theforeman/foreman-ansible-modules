@@ -60,6 +60,9 @@ options:
         choices:
             - present
             - absent
+    label:
+        description:
+            - Label of the Foreman organization
 '''
 
 EXAMPLES = '''
@@ -78,7 +81,7 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
-        find_entities,
+        find_organization,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -96,6 +99,7 @@ from ansible.module_utils.basic import AnsibleModule
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
+    'label': 'label',
 }
 
 
@@ -107,6 +111,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
+            label=dict(),
             state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
@@ -115,14 +120,14 @@ def main():
     if has_import_error:
         module.fail_json(msg=import_error_msg)
 
-    organization_dict = dict(
+    entity_dict = dict(
         [(k, v) for (k, v) in module.params.items() if v is not None])
 
-    server_url = organization_dict.pop('server_url')
-    username = organization_dict.pop('username')
-    password = organization_dict.pop('password')
-    verify_ssl = organization_dict.pop('verify_ssl')
-    state = organization_dict.pop('state')
+    server_url = entity_dict.pop('server_url')
+    username = entity_dict.pop('username')
+    password = entity_dict.pop('password')
+    verify_ssl = entity_dict.pop('verify_ssl')
+    state = entity_dict.pop('state')
 
     try:
         create_server(server_url, (username, password), verify_ssl)
@@ -130,18 +135,11 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     ping_server(module)
-    try:
-        entities = find_entities(Organization, name=organization_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = find_organization(module, name=entity_dict['name'], failsafe=True)
 
-    organization_dict = sanitize_entity_dict(organization_dict, name_map)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(Organization, organization_dict, entity, state, module)
+    changed = naildown_entity_state(Organization, entity_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
