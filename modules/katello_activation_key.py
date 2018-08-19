@@ -193,7 +193,7 @@ def main():
         # only update subscriptions of newly created or updated AKs
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
         # deleted keys don't need subscriptions anymore either
-        if state == 'present':
+        if state == 'present' or (state == 'present_with_defaults' and changed):
             if 'subscriptions' not in entity_dict:
                 subscriptions = []
             else:
