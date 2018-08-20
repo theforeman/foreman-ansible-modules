@@ -9,6 +9,7 @@ MODULES = [
     'activation_key',
     'compute_profile',
     'content_view',
+    'content_view_filter',
     'domain',
     'global_parameter',
     'job_template',
