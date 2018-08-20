@@ -1,0 +1,50 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/product.yml
+    vars:
+      product_state: present
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
+
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/upload.yml
+    vars:
+      expected_change: True
+  - include: tasks/upload.yml
+    vars:
+      expected_change: False
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - name: remove RPM
+    file:
+      path: "{{ playbook_dir }}/data/bear-4.1-1.noarch.rpm"
+      state: absent
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+  - include: tasks/product.yml
+    vars:
+      product_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...

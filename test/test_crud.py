@@ -26,6 +26,7 @@ MODULES = [
     'repository_sync',
     'setting',
     'sync_plan',
+    'upload',
 ]
 
 
