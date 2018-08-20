@@ -194,22 +194,20 @@ def main():
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
         # deleted keys don't need subscriptions anymore either
         if state == 'present' or (state == 'present_with_defaults' and changed):
-            if 'subscriptions' not in entity_dict:
-                subscriptions = []
-            else:
+            if 'subscriptions' in entity_dict:
                 subscriptions = entity_dict['subscriptions']
-            desired_subscription_ids = map(lambda s: s.id, find_subscriptions(module, subscriptions, entity_dict['organization']))
-            current_subscriptions = [Subscription(**result)
-                                     for result in Subscription().search_normalize(activation_key_entity.subscriptions()['results'])]
-            current_subscription_ids = map(lambda s: s.id, current_subscriptions)
+                desired_subscription_ids = map(lambda s: s.id, find_subscriptions(module, subscriptions, entity_dict['organization']))
+                current_subscriptions = [Subscription(**result)
+                                         for result in Subscription().search_normalize(activation_key_entity.subscriptions()['results'])]
+                current_subscription_ids = map(lambda s: s.id, current_subscriptions)
 
-            if set(desired_subscription_ids) != set(current_subscription_ids):
-                if not module.check_mode:
-                    for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
-                        activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-                    for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
-                        activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
-                changed = True
+                if set(desired_subscription_ids) != set(current_subscription_ids):
+                    if not module.check_mode:
+                        for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
+                            activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
+                        for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
+                            activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
+                    changed = True
 
         module.exit_json(changed=changed)
     except Exception as e:
