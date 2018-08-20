@@ -63,6 +63,10 @@ options:
         description:
             - List of subscriptions that include name
         type: list
+    content_overrides:
+        description:
+            - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
+        type: list
     auto_attach:
         description:
             - Set Auto-Attach on or off
@@ -95,6 +99,9 @@ EXAMPLES = '''
     content_view: 'client content view'
     subscriptions:
         - name: "Red Hat Enterprise Linux"
+    content_overrides:
+        - label: rhel-7-server-optional-rpms
+          override: enabled
     auto_attach: False
 '''
 
@@ -135,6 +142,21 @@ name_map = {
 }
 
 
+def override_to_boolnone(override):
+    value = None
+    if isinstance(override, bool):
+        value = override
+    else:
+        override = override.lower()
+        if override == 'enabled':
+            value = True
+        elif override == 'disabled':
+            value = False
+        elif override == 'default':
+            value = None
+    return value
+
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
@@ -148,6 +170,7 @@ def main():
             lifecycle_environment=dict(),
             content_view=dict(),
             subscriptions=dict(type='list'),
+            content_overrides=dict(type='list'),
             auto_attach=dict(type='bool', default=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
@@ -207,6 +230,21 @@ def main():
                             activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
                         for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
                             activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
+                    changed = True
+
+            if 'content_overrides' in entity_dict:
+                content_overrides = entity_dict['content_overrides']
+                product_content = activation_key_entity.product_content()
+                current_content_overrides = set([(p['content']['label'], p['enabled_content_override']) for p in product_content['results']])
+                desired_content_overrides = set([(p['label'], override_to_boolnone(p['override'])) for p in content_overrides])
+
+                if desired_content_overrides != current_content_overrides:
+                    if not module.check_mode:
+                        for (label, override) in current_content_overrides - desired_content_overrides:
+                            activation_key_entity.content_override(data={'content_override': {'content_label': label, 'value': 'default'}})
+                        for (label, override) in desired_content_overrides - current_content_overrides:
+                            activation_key_entity.content_override(data={'content_override': {'content_label': label,
+                                                                         'value': str(override_to_boolnone(override)).lower()}})
                     changed = True
 
         module.exit_json(changed=changed)

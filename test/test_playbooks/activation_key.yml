@@ -11,6 +11,9 @@
   - include: tasks/product.yml
     vars:
       product_state: present
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
 
 - hosts: tests
   gather_facts: false
@@ -61,6 +64,9 @@
   - name: Load server config
     include_vars:
       file: server_vars.yml
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
   - include: tasks/product.yml
     vars:
       product_state: absent
