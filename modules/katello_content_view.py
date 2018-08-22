@@ -19,7 +19,7 @@
 
 DOCUMENTATION = '''
 ---
-module: katello_content_viiew
+module: katello_content_view
 short_description: Create and Manage Katello content views
 description:
     - Create and Manage Katello content views

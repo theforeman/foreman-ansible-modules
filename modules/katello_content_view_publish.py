@@ -17,9 +17,17 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
+ANSIBLE_METADATA = {'metadata_version': '1.0',
+                    'status': ['deprecated'],
+                    'supported_by': 'community'}
+
 DOCUMENTATION = '''
 ---
 module: katello_content_view_publish
+deprecated:
+  removed_in: "2.8"
+  why: This has been replaced with another module.
+  alternative: Use M(katello_content_view_version) instead.
 short_description: Publish a Katello content view
 description:
     - Publish a Katello content view
