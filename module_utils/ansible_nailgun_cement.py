@@ -58,7 +58,7 @@ class TemplateInput(
             'input_type': entity_fields.StringField(),
             'name': entity_fields.StringField(),
             'options': entity_fields.StringField(),
-            'puppet_parameter_class': entity_fields.StringField(),
+            'puppet_class_name': entity_fields.StringField(),
             'puppet_parameter_name': entity_fields.StringField(),
             'required': entity_fields.BooleanField(),
             # There is no Template base class yet
@@ -77,7 +77,6 @@ class TemplateInput(
         if ignore is None:
             ignore = set()
         ignore.add('advanced')
-        ignore.add('puppet_parameter_class')
         return super(TemplateInput, self).read(entity=entity, attrs=attrs, ignore=ignore, params=params)
 
 
