@@ -453,8 +453,7 @@ def main():
             Organization, entity_dict['organizations'], module)
 
     # TemplateInputs need to be added as separate entities later
-    if 'template_inputs' in entity_dict:
-        template_input_list = entity_dict['template_inputs']
+    template_input_list = entity_dict.get('template_inputs', [])
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
