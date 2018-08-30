@@ -3,10 +3,11 @@
   vars:
     - setting_name: 'login_text'
   foreman_setting:
-    username: "{{ foreman_username }}"
-    password: "{{ foreman_password }}"
-    server_url: "{{ foreman_server_url }}"
-    verify_ssl: "{{ foreman_verify_ssl }}"
+    auth_block:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
     name: "{{ setting_name }}"
     value: "{{ setting_value | default(omit) }}"
   register: result

@@ -203,6 +203,13 @@ def create_server(server_url, auth, verify_ssl):
     )
 
 
+def create_connection(auth_block, module):
+    try:
+        create_server(auth_block['server_url'], (auth_block['username'], auth_block['password']), auth_block['verify_ssl'])
+    except Exception as e:
+        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+
+
 # Prerequisite: create_server
 def ping_server(module):
     try:
