@@ -3,9 +3,6 @@
   vars:
     - content_view_name: "Test Content View"
     - organization_name: "Test Organization"
-    - repositories:
-        - name: "Test Repository"
-          product: "Test Product"
   katello_content_view:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -14,7 +11,10 @@
     state: "{{ content_view_state | default(omit) }}"
     name: "{{ content_view_name }}"
     organization: "{{ organization_name }}"
-    repositories: "{{ repositories }}"
+    repositories: "{{ repositories | default(omit) }}"
+    composite: "{{ composite | default(omit) }}"
+    components: "{{ components | default(omit) }}"
+    auto_publish: "{{ auto_publish | default(omit) }}"
   register: result
 
 - fail:

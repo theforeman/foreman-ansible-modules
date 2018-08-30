@@ -243,12 +243,12 @@ def update_fields(new, old, fields):
 
 
 # Common functionality to manipulate entities
-def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None):
-    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing, check_type)
+def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None, force_update=None):
+    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing, check_type, force_update)
     return changed
 
 
-def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None):
+def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None, force_update=None):
     """ Ensure that a given entity has a certain state """
     changed, changed_entity = False, entity
     if state == 'present_with_defaults':
@@ -258,7 +258,7 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
         if entity is None:
             changed, changed_entity = create_entity(entity_class, entity_dict, module)
         else:
-            changed, changed_entity = update_entity(entity, entity_dict, module, check_missing, check_type)
+            changed, changed_entity = update_entity(entity, entity_dict, module, check_missing, check_type, force_update)
     elif state == 'copied':
         new_entity = entity_class(name=entity_dict['new_name'], organization=entity_dict['organization']).search()
         if entity is not None and len(new_entity) == 0:
@@ -345,7 +345,7 @@ def fields_equal(value1, value2):
     return value1 == value2
 
 
-def update_entity(old_entity, entity_dict, module, check_missing, check_type):
+def update_entity(old_entity, entity_dict, module, check_missing, check_type, force_update):
     try:
         volatile_entity = old_entity.read()
         result = volatile_entity
@@ -371,6 +371,9 @@ def update_entity(old_entity, entity_dict, module, check_missing, check_type):
             # so we can ensure the entity is as the user specified.
             if check_missing is not None and key not in entity_dict and key in check_missing:
                 volatile_entity.__setattr__(key, None)
+                fields.append(key)
+        if force_update:
+            for key in force_update:
                 fields.append(key)
         if check_missing is not None:
             for key in check_missing:
@@ -417,6 +420,10 @@ def find_content_view(module, name, organization, failsafe=False):
     return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
 
 
+def find_content_views(module, content_views, organization, failsafe=False):
+    return list(map(lambda content_view: find_content_view(module, content_view, organization, failsafe), content_views))
+
+
 def find_content_view_version(module, content_view, environment=None, version=None, failsafe=False):
     if environment is not None:
         response = ContentViewVersion(content_view=content_view).search(['content_view'], {'environment_id': environment.id})
@@ -426,6 +433,10 @@ def find_content_view_version(module, content_view, environment=None, version=No
         response = ContentViewVersion(content_view=content_view, version=version).search()
         return handle_find_response(module, response, message="No content view version found on content view {} for version {}".
                                     format(content_view.name, version), failsafe=failsafe)
+
+
+def find_content_view_versions(module, content_views, environment=None, version=None, failsafe=False):
+    return list(map(lambda content_view: find_content_view_version(module, content_view, environment, version, failsafe), content_views))
 
 
 def find_content_view_filter_rule(module, content_view_filter, name=False, errata=False, failsafe=False):
