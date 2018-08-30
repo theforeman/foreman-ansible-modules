@@ -54,9 +54,20 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    composite:
+        description:
+            - Whether a composite content view or not
+        default: false
+        choices:
+            - true
+            - false
+    content_views:
+        description:
+            - List of content views to include in the composite content view. Ignored if composite is false.
+        required: false
     repositories:
         description:
-            - List of repositories that include name and product
+            - List of repositories that include name and product. Ignored if compsite is true.
         required: false
         type: list
     state:
@@ -80,6 +91,16 @@ EXAMPLES = '''
     repositories:
       - name: 'Fedora 26'
         product: 'Fedora'
+- name: "Create a composite content view
+  katello_content_view:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "Fedora CCV"
+    organization: "My Cool new Organization"
+    composite: true
+    content_views:
+    - Fedora CV
 '''
 
 RETURN = '''# '''
@@ -94,6 +115,9 @@ try:
         ping_server,
         find_organization,
         find_content_view,
+        find_content_views,
+        find_content_view_version,
+        find_content_view_versions,
         find_repositories,
         naildown_entity_state,
         sanitize_entity_dict,
@@ -110,6 +134,8 @@ name_map = {
     'name': 'name',
     'repositories': 'repository',
     'organization': 'organization',
+    'composite': 'composite',
+    'component': 'component'
 }
 
 
@@ -122,6 +148,8 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
+            composite=dict(type='bool', default=False),
+            content_views=dict(type='list'),
             repositories=dict(type='list'),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
@@ -150,6 +178,9 @@ def main():
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
     if 'repositories' in entity_dict:
         entity_dict['repositories'] = find_repositories(module, entity_dict['repositories'], entity_dict['organization'])
+    if 'content_views' in entity_dict:
+        entity_dict['content_views'] = find_content_views(module, entity_dict['content_views'], entity_dict['organization'])
+        entity_dict['component'] = find_content_view_versions(module, entity_dict['content_views'], environment=None, version=None)
 
     content_view_entity = find_content_view(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
     content_view_dict = sanitize_entity_dict(entity_dict, name_map)

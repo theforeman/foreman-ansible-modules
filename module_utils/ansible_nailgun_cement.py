@@ -389,6 +389,10 @@ def find_content_view(module, name, organization, failsafe=False):
     return handle_find_response(module, content_view.search(), message="No content view found for %s" % name, failsafe=failsafe)
 
 
+def find_content_views(module, content_views, organization, failsafe=False):
+    return list(map(lambda content_view: find_content_view(module, content_view, organization, failsafe), content_views))
+
+
 def find_content_view_version(module, content_view, environment=None, version=None, failsafe=False):
     if environment is not None:
         response = ContentViewVersion(content_view=content_view).search(['content_view'], {'environment_id': environment.id})
@@ -398,6 +402,10 @@ def find_content_view_version(module, content_view, environment=None, version=No
         response = ContentViewVersion(content_view=content_view, version=version).search()
         return handle_find_response(module, response, message="No content view version found on content view {} for version {}".
                                     format(content_view.name, version), failsafe=failsafe)
+
+
+def find_content_view_versions(module, content_views, environment=None, version=None, failsafe=False):
+    return list(map(lambda content_view: find_content_view_version(module, content_view, environment, version, failsafe), content_views))
 
 
 def find_content_view_filter_rule(module, content_view_filter, name=False, errata=False, failsafe=False):
