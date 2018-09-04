@@ -140,7 +140,7 @@ def create_manifest(module):
             'owner': module.params['rhsm_owner'],
             # TODO: Make these 2 configurable, we need to work out which horribly
             # undocumented API to use.
-            'facts': {'distributor_version': 'sat-6.0',
+            'facts': {'distributor_version': 'sat-6.3',
                       'system.certificate_version': '3.2'}}
     resp, info = fetch_portal(module, path, 'POST', data)
     return json.loads(to_text(resp.read()))
