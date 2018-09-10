@@ -81,14 +81,17 @@ EXAMPLES = '''
     name: "http_proxy"
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+foreman_setting:
+  description: Created / Updated state of the setting
+'''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
         find_setting,
-        naildown_entity_state,
+        naildown_entity,
         sanitize_entity_dict,
     )
 
@@ -153,9 +156,9 @@ def main():
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(Setting, entity_dict, entity, 'present', module)
+    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module)
 
-    module.exit_json(changed=changed)
+    module.exit_json(changed=changed, foreman_setting=entity.to_json_dict())
 
 
 if __name__ == '__main__':
