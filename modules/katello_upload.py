@@ -147,15 +147,14 @@ def main():
 
     ping_server(module)
 
-    name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
-                                                shell=True).split()
-
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
     entity_dict['product'] = find_product(module, name=entity_dict['product'], organization=entity_dict['organization'])
     entity_dict['repository'] = find_repository(module, name=entity_dict['repository'], product=entity_dict['product'])
 
     package = False
     if entity_dict['repository'].content_type == "yum":
+        name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
+                                                    shell=True).split()
         query = "name = \"{}\" and version = \"{}\" and release = \"{}\" and arch = \"{}\"".format(name, version, release, arch)
         package = find_package(module, query, repository=entity_dict['repository'], failsafe=True)
 
