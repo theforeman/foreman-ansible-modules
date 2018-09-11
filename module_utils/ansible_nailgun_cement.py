@@ -23,6 +23,7 @@ from nailgun.entities import (
     OperatingSystem,
     Organization,
     PackageGroup,
+    Package,
     Ping,
     Product,
     Realm,
@@ -517,6 +518,11 @@ def find_os_default_template(module, operatingsystem, template_kind, failsafe=Fa
     response = OSDefaultTemplate(operatingsystem=operatingsystem).search()
     response = [item for item in response if item.template_kind.id == template_kind.id]
     return handle_find_response(module, response, message="No default template found for %s/%s" % (operatingsystem.name, template_kind.name), failsafe=failsafe)
+
+
+def find_package(module, query, repository, failsafe=False):
+    package = Package(repository=repository).search(query={'search': '{}'.format(query)})
+    return handle_find_response(module, package, message="No Package found for %s" % query, failsafe=failsafe)
 
 
 def handle_find_response(module, response, message=None, failsafe=False):
