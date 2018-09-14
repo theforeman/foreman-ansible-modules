@@ -338,6 +338,10 @@ name_map = {
     'template': 'template',
 }
 
+template_defaults = {
+    'provider_type': 'SSH',
+}
+
 
 def main():
     module = AnsibleModule(
@@ -357,7 +361,7 @@ def main():
             locked=dict(type='bool', default=False),
             name=dict(),
             organizations=dict(type='list'),
-            provider_type=dict(default='SSH'),
+            provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),
             template_inputs=dict(type='list'),
@@ -405,7 +409,9 @@ def main():
             module.fail_json(msg="Cannot use '*' as a job template name!")
         # module params are priorized
         parsed_dict.update(entity_dict)
-        entity_dict = parsed_dict
+        # make sure certain values are set
+        entity_dict = template_defaults.copy()
+        entity_dict.update(parsed_dict)
 
     # make sure, we have a name
     if 'name' not in entity_dict:
