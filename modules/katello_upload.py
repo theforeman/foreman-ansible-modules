@@ -154,7 +154,7 @@ def main():
     package = False
     if entity_dict['repository'].content_type == "yum":
         name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
-                                                    shell=True).split()
+                                                    shell=True).decode('ascii').split()
         query = "name = \"{}\" and version = \"{}\" and release = \"{}\" and arch = \"{}\"".format(name, version, release, arch)
         package = find_package(module, query, repository=entity_dict['repository'], failsafe=True)
 
