@@ -174,8 +174,8 @@ class NailGun(object):
                 sync_plan = sync_plan.create()
             updated = True
 
-        desired_product_ids = map(lambda p: p.id, self.find_products(products, organization))
-        current_product_ids = map(lambda p: p.id, sync_plan.product)
+        desired_product_ids = list(map(lambda p: p.id, self.find_products(products, organization)))
+        current_product_ids = list(map(lambda p: p.id, sync_plan.product))
 
         if set(desired_product_ids) != set(current_product_ids):
             if not self._module.check_mode:
