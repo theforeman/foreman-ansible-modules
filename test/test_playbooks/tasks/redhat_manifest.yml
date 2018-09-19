@@ -1,3 +1,4 @@
+---
 - name: "Ensure {{ manifest_name }} is {{ manifest_state }} with {{ pool_quantity }} of {{ rhsm_pool_id }} subs {{ pool_state }}"
   vars:
     - manifest_name: "test.katello.org"
@@ -16,4 +17,4 @@
 - fail:
     msg: "Ensuring Manifest is {{ manifest_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
-
+...
