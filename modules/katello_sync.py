@@ -61,6 +61,10 @@ options:
         description:
             - Organization that the Product is in
         required: true
+    source_url:
+      description:
+            - Temporarily override feed URL for a repository sync.
+      required: false
 '''
 
 EXAMPLES = '''
@@ -72,6 +76,7 @@ EXAMPLES = '''
     repository: "My repository"
     product: "My Product"
     organization: "Default Organization"
+    source_url: "https://repo.example.com/zoo"
 '''
 
 RETURN = '''# '''
@@ -148,6 +153,7 @@ def main():
             synchronous=dict(type='bool', default=True),
             organization=dict(required=True),
             repository=dict(),
+            source_url=dict(required=False),
         ),
         supports_check_mode=False,
     )
@@ -163,6 +169,7 @@ def main():
     product = module.params['product']
     synchronous = module.params['synchronous']
     organization = module.params['organization']
+    source_url = module.params['source_url']
 
     server = ServerConfig(
         url=server_url,
