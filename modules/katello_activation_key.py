@@ -235,8 +235,13 @@ def main():
             if 'content_overrides' in entity_dict:
                 content_overrides = entity_dict['content_overrides']
                 product_content = activation_key_entity.product_content()
-                current_content_overrides = set([(p['content']['label'], p['enabled_content_override']) for p in product_content['results']])
-                desired_content_overrides = set([(p['label'], override_to_boolnone(p['override'])) for p in content_overrides])
+                current_content_overrides = set()
+                for product in product_content['results']:
+                    if product['enabled_content_override'] is not None:
+                        current_content_overrides.add((product['content']['label'], product['enabled_content_override']))
+                desired_content_overrides = set()
+                for product in content_overrides:
+                    desired_content_overrides.add((product['label'], override_to_boolnone(product['override'])))
 
                 if desired_content_overrides != current_content_overrides:
                     if not module.check_mode:
