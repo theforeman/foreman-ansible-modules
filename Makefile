@@ -26,7 +26,7 @@ lint:
 	pycodestyle --ignore=E402,E722 --max-line-length=160 modules test module_utils
 
 test:
-	pytest $(TEST)
+	pytest --junitxml=test_results.xml $(TEST)
 
 test_%: FORCE
 	pytest 'test/test_crud.py::test_crud[$*]'
