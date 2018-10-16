@@ -34,10 +34,6 @@
   - name: 'Load server config'
     include_vars:
       file: server_vars.yml
-  - name: remove RPM
-    file:
-      path: "{{ playbook_dir }}/data/bear-4.1-1.noarch.rpm"
-      state: absent
   - include: tasks/repository.yml
     vars:
       repository_state: absent
