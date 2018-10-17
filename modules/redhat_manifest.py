@@ -137,7 +137,6 @@ def create_manifest(module):
     path = "/subscription/consumers"
     data = {'name': module.params['name'],
             'type': "satellite",
-            'owner': module.params['rhsm_owner'],
             # TODO: Make these 2 configurable, we need to work out which horribly
             # undocumented API to use.
             'facts': {'distributor_version': 'sat-6.3',
