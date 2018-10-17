@@ -28,6 +28,30 @@
       expected_change: false
   - include: tasks/ptable.yml
     vars:
+      ptable_state: present
+      locked_state: false
+      expected_change: false
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      locked_state: true
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      locked_state: true
+      expected_change: false
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      expected_change: false
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+      locked_state: false
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
       ptable_layout: 'A partition table with a changed layout'
       ptable_state: present
       expected_change: true
