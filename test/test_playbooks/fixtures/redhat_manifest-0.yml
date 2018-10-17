@@ -15,10 +15,10 @@ interactions:
     headers:
       connection: [close]
       content-type: [application/json]
-      date: ['Wed, 17 Oct 2018 11:28:50 GMT']
+      date: ['Wed, 17 Oct 2018 11:28:39 GMT']
       server: [Apache-Coyote/1.1]
       transfer-encoding: [chunked]
-      x-candlepin-request-uuid: [6a5b399e-27ea-4e67-8ba1-6f6cac886369]
+      x-candlepin-request-uuid: [39f79ebe-b8bc-443f-b75b-9856d422aa38]
       x-version: [2.3.9-1]
     status: {code: 200, message: OK}
 - request:
@@ -33,14 +33,40 @@ interactions:
     method: GET
     uri: https://subscription.rhn.redhat.com/subscription/owners/11612516/consumers?type=satellite
   response:
-    body: {string: !!python/unicode '[{"created":"2018-10-17T11:28:43+0000","updated":"2018-10-17T11:28:48+0000","id":"8a99f9ab661ba83a016681c8f8e23591","uuid":"5349d1d0-5bda-480a-b7bd-ff41e2c29e03","name":"katello.example.com","username":"john-smith","entitlementStatus":null,"serviceLevel":"","owner":{"id":"8a99f9aa661baad10166819f4af56235","key":"11612516","displayName":"11612516","href":"/owners/11612516"},"environment":null,"entitlementCount":1,"lastCheckin":null,"installedProducts":[],"canActivate":false,"capabilities":[{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23595","name":"cert_v3"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23592","name":"cores"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23593","name":"instance_multiplier"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23594","name":"derived_product"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23596","name":"ram"}],"hypervisorId":null,"contentTags":[],"autoheal":true,"recipientOwnerKey":null,"annotations":null,"contentAccessMode":null,"type":{"id":"9","label":"satellite","manifest":true},"guestIds":[],"href":"/consumers/5349d1d0-5bda-480a-b7bd-ff41e2c29e03","releaseVer":{"releaseVer":null}}]'}
+    body: {string: !!python/unicode '[]'}
     headers:
       connection: [close]
       content-type: [application/json]
-      date: ['Wed, 17 Oct 2018 11:28:53 GMT']
+      date: ['Wed, 17 Oct 2018 11:28:41 GMT']
       server: [Apache-Coyote/1.1]
       transfer-encoding: [chunked]
-      x-candlepin-request-uuid: [f6588970-6a3d-483b-b636-746f1479d3e1]
+      x-candlepin-request-uuid: [a85bc55f-c291-4ff2-bb2d-e5fb088e7255]
+      x-version: [2.3.9-1]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"facts": {"distributor_version": "sat-6.3", "system.certificate_version":
+      "3.2"}, "type": "satellite", "name": "katello.example.com"}'
+    headers:
+      Accept: [application/json]
+      Connection: [close]
+      Content-Length: ['134']
+      Content-Type: [application/json]
+      Host: [subscription.rhn.redhat.com]
+      User-Agent: [ansible-httpget]
+    method: POST
+    uri: https://subscription.rhn.redhat.com/subscription/consumers
+  response:
+    body: {string: !!python/unicode '{"created":"2018-10-17T11:28:43+0000","updated":"2018-10-17T11:28:44+0000","id":"8a99f9ab661ba83a016681c8f8e23591","uuid":"5349d1d0-5bda-480a-b7bd-ff41e2c29e03","name":"katello.example.com","username":"john-smith","entitlementStatus":null,"serviceLevel":"","owner":{"id":"8a99f9aa661baad10166819f4af56235","key":"11612516","displayName":"11612516","href":"/owners/11612516"},"environment":null,"entitlementCount":0,"facts":{"distributor_version":"sat-6.3","system.certificate_version":"3.2"},"lastCheckin":null,"installedProducts":null,"canActivate":false,"capabilities":[{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23595","name":"cert_v3"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23592","name":"cores"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23593","name":"instance_multiplier"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23594","name":"derived_product"},{"created":null,"updated":null,"id":"8a99f9ab661ba83a016681c8f8e23596","name":"ram"}],"hypervisorId":null,"contentTags":null,"autoheal":true,"recipientOwnerKey":null,"annotations":null,"contentAccessMode":null,"type":{"id":"9","label":"satellite","manifest":true},"idCert":{"created":"2018-10-17T11:28:44+0000","updated":"2018-10-17T11:28:44+0000","id":"8a99f9ab661ba83a016681c8fa273598","key":"-----BEGIN
+        RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAtqWwdEWG4FK96m/kq38pLrsI9OD11gtumrRjRmvXihfAbiDQ\ngF8E1nSamFRAkeo8tN7Kb//e11tgPUYWmpVL+1RxH1099zNPYrn7fczaSA34++id\nzYqLW4Gl8kbpWG9Ji6WNBxudFKX2jmNRACnyvtdIsLyueEEarfD+Sakt7DyMVyGI\n/JKLK15bjr3ABRcZ0kaD1vEnkeZSxi6obxadZt+XvdAEMy6gKe8PUx9K+dRKge2Z\nV0m7loikalSIiI3++v6t+oYORhoPA7WmC+Zg2Dgk2kuatEdUBxCDclPVZqaq0690\nNgYwUwyMyipUYlZRDmJBr9dsMTbTE6A1WyDtCQIDAQABAoIBADvblTalyowd0cvR\nG9nwdKix9z95sleRq4/b6mUb1qmVGyV8b5iCi21VDY06n2ayo26LTUDjVD6z3Zh3\nLdU/dIVLqT8kKbioAi5S0U7rIeZXXfAAziacbwtwM9hw0OyAnFO9z7gynooz0dfc\nSKGLHdjZaSMy0uLqQzoaLtwpK7mtmHqTNjWBVV+KcIyoC0/dEsFNWBtXU70FFV12\nmarXxEWcS9PIHzooeFxcoiYmj0VpPdF5BEZ9p/RRHEFliY6X0a1Uxf3vJ70Yk9FT\niPBkPtgaCdKdW7+FzexUfDUzoPSGa3pDJHjw7UA8P+ja0QdOZuI4DrJlrZdSe3IB\nthJtj/kCgYEA2tJJlviteesgbMRRB8mdXd5MscqEkio/L6BzLQUJut9gTYmUjLD5\nZPhLbo/ORT9Gwao379JOVg7vvAIX5eezC/lG1/22KDUkE66mqUm/a72aWpeuqVjK\n4Hz7encxn0KueyvtVFADP5YP5sft2e2ittX07dBdLDXh/ZTPAuGx4lcCgYEA1a3+\nAYBobhdEGxfYNQb0fop9cGYD8boHRdNfDB6h7sokePM5yT85zVAj8Zblr2kROgxh\n5bF9MOs0fnCPFKtgG2YkyQLUXED3r+7GooHesE1nxfYmP1J07M2uz1HcB478vT84\nQjmGPV1aeXctszCN9Zv2+7CC83j7gKYc4grHz58CgYBmCWkHXS6Hi3yzO1gNqZYY\nD3Dz9tuazNhp/Qe4FoFTApaFkYITmPKygpWqGKS25aq45Abxbb/ZoV1o7hD2w/RZ\nwQOn9EbcuOr5wpc0mY8JToCLfe+USDNSOvWJRct92DpEdVdV2XmqTO9dTh07YfRe\nDacIvgC0fOvEs39UeKnaQQKBgQCSXv55Ttm6WCuqF3peUKZYrEtjHC6lflYPCcy5\nA57PcR7sz0gNSEczEiudCU3LC8DmL6c77YohYWzzE+2fLgnGmwClxU9s5oAEvx7I\nIQhHYq6sV4I5rCU2NWsCz0NW1ibhCBZknv0KuhEI1Y+ziJYl4bGdFXuOhphZtvBg\nExxuZwKBgQC2TN4O8c78y04qiBX4i4qSuV7tnL4TmFS5kexBipsxQLlQuZCn2erP\n+rCF8PW9Wn8hUUzoSjcqacPDrm2UFdDtaclNnG3u2Oq/s4EU4qlitjlZBuHJdWQ3\nFRXmnoqBo9GxwWjY7U8iktG7iAtj4zllcP4lgNhBUk+filngXkU96Q==\n-----END
+        RSA PRIVATE KEY-----\n","cert":"-----BEGIN CERTIFICATE-----\nMIIF8TCCA9mgAwIBAgIITim0AsWE5Y4wDQYJKoZIhvcNAQELBQAwgaQxCzAJBgNV\nBAYTAlVTMRcwFQYDVQQIDA5Ob3J0aCBDYXJvbGluYTEWMBQGA1UECgwNUmVkIEhh\ndCwgSW5jLjEYMBYGA1UECwwPUmVkIEhhdCBOZXR3b3JrMSQwIgYDVQQDDBtSZWQg\nSGF0IENhbmRsZXBpbiBBdXRob3JpdHkxJDAiBgkqhkiG9w0BCQEWFWNhLXN1cHBv\ncnRAcmVkaGF0LmNvbTAeFw0xODEwMTcxMDI4NDNaFw0xOTEwMTcxMTI4NDNaMC8x\nLTArBgNVBAMMJDUzNDlkMWQwLTViZGEtNDgwYS1iN2JkLWZmNDFlMmMyOWUwMzCC\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALalsHRFhuBSvepv5Kt/KS67\nCPTg9dYLbpq0Y0Zr14oXwG4g0IBfBNZ0mphUQJHqPLTeym//3tdbYD1GFpqVS/tU\ncR9dPfczT2K5+33M2kgN+Pvonc2Ki1uBpfJG6VhvSYuljQcbnRSl9o5jUQAp8r7X\nSLC8rnhBGq3w/kmpLew8jFchiPySiyteW469wAUXGdJGg9bxJ5HmUsYuqG8WnWbf\nl73QBDMuoCnvD1MfSvnUSoHtmVdJu5aIpGpUiIiN/vr+rfqGDkYaDwO1pgvmYNg4\nJNpLmrRHVAcQg3JT1WamqtOvdDYGMFMMjMoqVGJWUQ5iQa/XbDE20xOgNVsg7QkC\nAwEAAaOCAZkwggGVMBEGCWCGSAGG+EIBAQQEAwIFoDALBgNVHQ8EBAMCBLAwgd4G\nA1UdIwSB1jCB04AUdy6lzTcNqOHT6mHFVmdD6JHHbRyhgbekgbQwgbExCzAJBgNV\nBAYTAlVTMRcwFQYDVQQIDA5Ob3J0aCBDYXJvbGluYTEWMBQGA1UECgwNUmVkIEhh\ndCwgSW5jLjEYMBYGA1UECwwPUmVkIEhhdCBOZXR3b3JrMTEwLwYDVQQDDChSZWQg\nSGF0IEVudGl0bGVtZW50IE9wZXJhdGlvbnMgQXV0aG9yaXR5MSQwIgYJKoZIhvcN\nAQkBFhVjYS1zdXBwb3J0QHJlZGhhdC5jb22CAT8wHQYDVR0OBBYEFNORNtvNg3az\nWUGuI1IBpxXb7RV8MBMGA1UdJQQMMAoGCCsGAQUFBwMCMF4GA1UdEQRXMFWkMTAv\nMS0wKwYDVQQDDCQ1MzQ5ZDFkMC01YmRhLTQ4MGEtYjdiZC1mZjQxZTJjMjllMDOk\nIDAeMRwwGgYDVQQDDBNrYXRlbGxvLmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBCwUA\nA4ICAQApOCH2PWXr9/PGwSugA5uk2H99kPXyLGXHuNn17r1VSK5RrVlqcW4Ax13w\njG+v+jbr9IUFUFJEuFYOB5GxEGgpEyqY8/xkZX1h7Xw5s12O3JmAgk13dfNSD5XP\nXyULg6rzVZoETShrMBrpcA/1Hx1wbdmtcFL+2arpAKFxCO2FZP/tksNwpLrn6Cvi\naY038NYW2+NTS0mxWvrsyfGA/GGrfM7FrZXXgOgatXEx27p5FIsbDTXm54z2ub2Z\nAvUG+wBeQVKALeRpUlVlAjc65fe8r9NpxJ1NT3YpNzKYoXcoAkiTKaHLV0PwYtq8\nyWVNk/ESM3F/zcHAPefAgWkKTf4NUcTnSR8cYoTW8HyBObpYR4e/+HIendsoBmfl\nsMrcfV7woazjQP5iw1rIRja4tFBt1E+D4e4ktLOv4iDJGfdSddyI2cXgj+KRk2WR\nsxpl0a/oAK+rjMPNActxGdGfqMgj18Li/gfhX01PiuX/BS/nAdFanYz9tLDHHk5Z\n2ZdpvCVwmDCu8N5LTX/CxzvjETOr5BFHXT1nJzrVhJWxNR/WzndRFd98VHM4F6jO\nlJ4UmngHMcAWOx0SVWJmlq/schNxsiWBYPA7ooy6r6BNBBZkNdFXTC9CFW6splcy\nMt6g57w69FtAxIxTqxHXFieBToWBl8ek+Go3aJLvh90yCxs9sw==\n-----END
+        CERTIFICATE-----\n","serial":{"created":"2018-10-17T11:28:43+0000","updated":"2018-10-17T11:28:43+0000","id":5632230733000271246,"serial":5632230733000271246,"expiration":"2019-10-17T11:28:43+0000","collected":false,"revoked":false}},"guestIds":[],"href":"/consumers/5349d1d0-5bda-480a-b7bd-ff41e2c29e03","releaseVer":{"releaseVer":null}}'}
+    headers:
+      connection: [close]
+      content-type: [application/json]
+      date: ['Wed, 17 Oct 2018 11:28:44 GMT']
+      server: [Apache-Coyote/1.1]
+      transfer-encoding: [chunked]
+      x-candlepin-request-uuid: [b6b8c1b6-c679-4603-92e9-d9bf680e6231]
       x-version: [2.3.9-1]
     status: {code: 200, message: OK}
 - request:
@@ -54,6 +80,28 @@ interactions:
       User-Agent: [ansible-httpget]
     method: GET
     uri: https://subscription.rhn.redhat.com/subscription/consumers/5349d1d0-5bda-480a-b7bd-ff41e2c29e03/entitlements
+  response:
+    body: {string: !!python/unicode '[]'}
+    headers:
+      connection: [close]
+      content-type: [application/json]
+      date: ['Wed, 17 Oct 2018 11:28:46 GMT']
+      server: [Apache-Coyote/1.1]
+      transfer-encoding: [chunked]
+      x-candlepin-request-uuid: [56ee98fd-c04d-4e06-aaed-01b7df147953]
+      x-version: [2.3.9-1]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{}'
+    headers:
+      Accept: [application/json]
+      Connection: [close]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      Host: [!!python/unicode 'subscription.rhn.redhat.com']
+      User-Agent: [ansible-httpget]
+    method: POST
+    uri: https://subscription.rhn.redhat.com/subscription/consumers/5349d1d0-5bda-480a-b7bd-ff41e2c29e03/entitlements?pool=8a85f98c60357f09016035897d6800a7&quantity=1
   response:
     body: {string: !!python/unicode '[{"created":"2018-10-17T11:28:48+0000","updated":"2018-10-17T11:28:48+0000","id":"5910d2fc709a4581a83e0c37cd9bde6b","consumer":{"id":"8a99f9ab661ba83a016681c8f8e23591","uuid":"5349d1d0-5bda-480a-b7bd-ff41e2c29e03","name":"katello.example.com","href":"/consumers/5349d1d0-5bda-480a-b7bd-ff41e2c29e03"},"pool":{"created":"2018-10-17T11:14:16+0000","updated":"2018-10-17T11:28:48+0000","id":"8a85f98c60357f09016035897d6800a7","type":"NORMAL","owner":{"id":"8a99f9aa661baad10166819f4af56235","key":"11612516","displayName":"11612516","href":"/owners/11612516"},"activeSubscription":true,"createdByShare":false,"hasSharedAncestor":false,"sourceEntitlement":null,"quantity":50,"startDate":"2018-10-17T04:00:00+0000","endDate":"2019-10-17T23:59:59+0000","attributes":[],"restrictedToUsername":null,"contractNumber":null,"accountNumber":null,"orderNumber":null,"consumed":1,"exported":1,"shared":0,"branding":[{"created":"2018-10-17T11:14:16+0000","updated":"2018-10-17T11:14:16+0000","productId":"69","name":"RHEL","type":"OS"}],"calculatedAttributes":{"compliance_type":"Standard"},"upstreamPoolId":null,"upstreamEntitlementId":null,"upstreamConsumerId":null,"productName":"Red
         Hat Satellite Infrastructure Subscription","productId":"MCT3718","productAttributes":[{"name":"product_family","value":"RHEL"},{"name":"enabled_consumer_types","value":"satellite"},{"name":"management_enabled","value":"1"},{"name":"ph_product_line","value":"Red
@@ -77,10 +125,10 @@ interactions:
     headers:
       connection: [close]
       content-type: [application/json]
-      date: ['Wed, 17 Oct 2018 11:28:55 GMT']
+      date: ['Wed, 17 Oct 2018 11:28:47 GMT']
       server: [Apache-Coyote/1.1]
       transfer-encoding: [chunked]
-      x-candlepin-request-uuid: [4939179e-29be-4601-8775-b79db63da76d]
+      x-candlepin-request-uuid: [7c58c339-e1d4-47fc-8f73-81cc4169a761]
       x-version: [2.3.9-1]
     status: {code: 200, message: OK}
 version: 1
