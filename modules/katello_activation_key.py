@@ -22,12 +22,12 @@ DOCUMENTATION = '''
 module: katello_activation_key
 short_description: Create and Manage Katello activation keys
 description:
-    - Create and Manage Katello activation keys
+  - Create and Manage Katello activation keys
 author: "Andrew Kofink (@akofink)"
 requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
   server_url:
     description:
@@ -75,14 +75,13 @@ options:
     type: bool
   state:
     description:
-      - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name
-              and all other fields left untouched.
-      default: present
-      choices:
-        - present
-        - present_with_defaults
-        - absent
-        - copied
+      - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name and all other fields left untouched.
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+      - absent
+      - copied
   new_name:
     description:
       - Name of the new activation key when state == copied

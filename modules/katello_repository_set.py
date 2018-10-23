@@ -22,12 +22,12 @@ DOCUMENTATION = '''
 module: katello_repository_set
 short_description: Enable/disable repositories in Katello repository sets
 description:
-    - Enable/disable repositories in Katello repository sets
+  - Enable/disable repositories in Katello repository sets
 author: "Andrew Kofink (@akofink)"
 requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
   server_url:
     description:
@@ -67,9 +67,9 @@ options:
     description:
       - Whether the repositories are enabled or not
     required: true
-      choices:
-       - 'enabled'
-       - 'disabled'
+    choices:
+      - 'enabled'
+      - 'disabled'
 '''
 
 EXAMPLES = '''

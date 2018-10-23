@@ -49,11 +49,12 @@ options:
   content_view:
     description:
       - Name of the content view to publish
-        required: true
+    required: true
   organization:
     description:
       - Organization that the content view is in
     required: true
+
 '''
 
 EXAMPLES = '''
