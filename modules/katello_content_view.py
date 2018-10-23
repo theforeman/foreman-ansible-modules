@@ -27,46 +27,47 @@ author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Katello product
-        required: true
-    organization:
-        description:
-            - Organization that the Product is in
-        required: true
-    repositories:
-        description:
-            - List of repositories that include name and product
-        required: false
-        type: list
-    state:
-        description:
-            - State of the content view
-        default: present
-        choices:
-            - present
-            - present_with_defaults
-            - absent
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Katello product
+    required: true
+  organization:
+    description:
+      - Organization that the Product is in
+    required: true
+  repositories:
+    description:
+      - List of repositories that include name and product
+    required: false
+    type: list
+  state:
+    description:
+      - State of the content view
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+      - absent
 '''
 
 EXAMPLES = '''

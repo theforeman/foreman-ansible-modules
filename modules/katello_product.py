@@ -29,48 +29,49 @@ author:
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Katello product
-        required: true
-    organization:
-        description:
-            - Organization that the Product is in
-        required: true
-    label:
-        description:
-            - Label to show the user
-        required: false
+  server_url:
     description:
-        description:
-            - Possibly long descriptionto show the user in detail view
-        required: false
-    state:
-        description:
-        - State of the Product
-        default: present
-        choices:
-        - present
-        - absent
-        - present_with_defaults
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Katello product
+    required: true
+  organization:
+    description:
+      - Organization that the Product is in
+    required: true
+  label:
+    description:
+      - Label to show the user
+    required: false
+  description:
+    description:
+      - Possibly long descriptionto show the user in detail view
+    required: false
+  state:
+    description:
+      - State of the Product
+    default: present
+    choices:
+      - present
+      - absent
+      - present_with_defaults
 '''
 
 EXAMPLES = '''

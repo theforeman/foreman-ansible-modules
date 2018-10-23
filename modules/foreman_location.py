@@ -22,45 +22,46 @@ DOCUMENTATION = '''
 module: foreman_location
 short_description: Manage Foreman Location
 description:
-    - Manage Foreman Location
+  - Manage Foreman Location
 author:
-    - "Matthias M Dellweg (@mdellweg) ATIX AG"
+  - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - ansible >= 2.3
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Foreman Location
-        required: true
-    parent:
-        description:
-            - Name of a parent Location for nesting
-    state:
-        description:
-            - State of the Location
-        default: present
-        choices:
-            - present
-            - absent
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Foreman Location
+    required: true
+  parent:
+    description:
+      - Name of a parent Location for nesting
+  state:
+    description:
+      - State of the Location
+    default: present
+    choices:
+      - present
+      - absent
 '''
 
 EXAMPLES = '''

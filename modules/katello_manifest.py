@@ -27,43 +27,44 @@ author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.29.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: True
-        type: bool
-    organization:
-        description:
-            - Organization that the manifest is in
-        required: true
-    manifest_path:
-        description:
-            - Path to the manifest zip file
-    state:
-        description:
-            - The state of the manifest
-        default: present
-        choices:
-            - absent
-            - present
-            - refreshed
-    redhat_repository_url:
-        description:
-            - URL to retrieve content from
-        default: https://cdn.redhat.com
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: True
+    type: bool
+  organization:
+    description:
+      - Organization that the manifest is in
+    required: true
+  manifest_path:
+    description:
+      - Path to the manifest zip file
+  state:
+    description:
+      - The state of the manifest
+    default: present
+    choices:
+      - absent
+      - present
+      - refreshed
+  redhat_repository_url:
+    description:
+       - URL to retrieve content from
+    default: https://cdn.redhat.com
 '''
 # HERE
 EXAMPLES = '''

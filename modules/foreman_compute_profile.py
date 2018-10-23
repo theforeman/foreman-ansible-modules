@@ -22,7 +22,13 @@ DOCUMENTATION = '''
 module: foreman_compute_profile
 short_description: Manage Foreman Compute Profiles using Foreman API
 description:
-- Create and delete Foreman Compute Profiles using Foreman API
+  - Create and delete Foreman Compute Profiles using Foreman API
+version_added: "2.0"
+author: "Philipp Joos (@philippj)"
+requirements:
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
   name:
     description: compute profile name
@@ -47,10 +53,6 @@ options:
     description: compute profile presence
     default: present
     choices: ["present", "absent"]
-notes:
-- Requires nailgun
-version_added: "2.0"
-author: "Philipp Joos (@philippj)"
 '''
 
 EXAMPLES = '''

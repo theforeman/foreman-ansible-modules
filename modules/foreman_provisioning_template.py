@@ -34,98 +34,99 @@ author:
 - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun >= 0.29.0
+    - "nailgun >= 0.29.0"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-        - URL of Foreman server
-        required: true
-    username:
-        description:
-        - Username on Foreman server
-        required: true
-    password:
-        description:
-        - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-        - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    audit_comment:
-        description:
-        - Content of the audit comment field
-        required: false
-    kind:
-        description:
-        - The provisioning template kind
-        required: false
-        choices:
-        - finish
-        - iPXE
-        - job_template
-        - POAP
-        - provision
-        - ptable
-        - PXELinux
-        - PXEGrub
-        - PXEGrub2
-        - script
-        - snippet
-        - user_data
-        - ZTP
-    template:
-        description:
-        - |
-            The content of the provisioning template, either this or file_name
-            is required as a source for the Provisioning Template "content".
-        required: false
-    file_name:
-        description:
-        - |
-            The path of a template file, that shall be imported.
-            Either this or template is required as a source for
-            the Provisioning Template "content".
-        required: false
-        type: path
-    locations:
-        description:
-        - The locations the template should be assigend to
-        required: false
-        type: list
-    locked:
-        description:
-        - Determines whether the template shall be locked
-        required: false
-        choices:
-        - true
-        - false
-        type: bool
-    name:
-        description:
-        - |
-            The name a template should be assigned with in Foreman.
-            A name must be provided.
-            Possible sources are, ordererd by preference:
-            The "name" parameter, config header (inline or in a file), basename of a file.
-            The special name "*" (only possible as parameter) is used
-            to perform bulk actions (modify, delete) on all existing templates.
-        required: false
-    organizations:
-        description:
-        - The organizations the template shall be assigned to
-        required: false
-        type: list
-    operatingsystems:
-        description: The Operatingsystems the template shall be assigned to
-        required: false
-        type: list
-    state:
-        description: The state the template should be in.
-        default: present
-        choices:
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  audit_comment:
+    description:
+      - Content of the audit comment field
+    required: false
+  kind:
+    description:
+      - The provisioning template kind
+    required: false
+    choices:
+      - finish
+      - iPXE
+      - job_template
+      - POAP
+      - provision
+      - ptable
+      - PXELinux
+      - PXEGrub
+      - PXEGrub2
+      - script
+      - snippet
+      - user_data
+      - ZTP
+  template:
+    description:
+      - |
+        The content of the provisioning template, either this or file_name
+        is required as a source for the Provisioning Template "content".
+    required: false
+  file_name:
+    description:
+      - |
+        The path of a template file, that shall be imported.
+        Either this or template is required as a source for
+        the Provisioning Template "content".
+    required: false
+    type: path
+  locations:
+    description:
+      - The locations the template should be assigend to
+    required: false
+    type: list
+  locked:
+    description:
+      - Determines whether the template shall be locked
+    required: false
+    choices:
+      - true
+      - false
+    type: bool
+  name:
+    description:
+      - |
+        The name a template should be assigned with in Foreman.
+        A name must be provided.
+        Possible sources are, ordererd by preference:
+        The "name" parameter, config header (inline or in a file), basename of a file.
+        The special name "*" (only possible as parameter) is used
+        to perform bulk actions (modify, delete) on all existing templates.
+    required: false
+  organizations:
+    description:
+      - The organizations the template shall be assigned to
+    required: false
+    type: list
+  operatingsystems:
+    description: The Operatingsystems the template shall be assigned to
+    required: false
+    type: list
+  state:
+    description: The state the template should be in.
+      default: present
+      choices:
         - absent
         - present
         - present_with_defaults

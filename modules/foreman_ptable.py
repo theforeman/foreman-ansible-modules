@@ -31,92 +31,92 @@ description:
     - "Uses ansible_nailgun_cement in /module_utils"
 version_added: "2.4"
 author:
-- "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
-- "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
+  - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun > 0.31.0
+  - "nailgun >= 0.31.0"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-        - URL of Foreman server
-        required: true
-    username:
-        description:
-        - Username on Foreman server
-        required: true
-    password:
-        description:
-        - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-        - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    file_name:
-        description:
-        - |
-            The path of a template file, that shall be imported.
-            Either this or layout is required as a source for
-            the Partition Template "content".
-        required: false
-        type: path
-    layout:
-        description:
-        - |
-            The content of the Partitioning Table Template, either this or file_name
-            is required as a source for the Partition Template "content".
-        required: false
-    locations:
-        description:
-        - The locations the template should be assigend to
-        required: false
-        type: list
-    locked:
-        description:
-        - Determines whether the template shall be locked
-        required: false
-        type: bool
-    name:
-        description:
-        - |
-            The name a template should be assigned with in Foreman.
-            A name must be provided.
-            Possible sources are, ordererd by preference:
-            The "name" parameter, config header (inline or in a file),
-            basename of a file.
-            The special name "*" (only possible as parameter) is used
-            to perform bulk actions (modify, delete) on all existing partition tables.
-        required: false
-    organizations:
-        description:
-        - The organizations the template shall be assigned to
-        required: false
-        type: list
-    os_family:
-        description: The OS family the template shall be assigned with.
-        required: false
-        choices:
-        - AIX
-        - Altlinux
-        - Archlinux
-        - Debian
-        - Freebsd
-        - Gentoo
-        - Junos
-        - Redhat
-        - Solaris
-        - Suse
-        - Windows
-    state:
-        description: The state the template should be in.
-        default: present
-        choices:
-        - absent
-        - present
-        - present_with_defaults
-
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  file_name:
+    description:
+      - |
+        The path of a template file, that shall be imported.
+        Either this or layout is required as a source for
+        the Partition Template "content".
+    required: false
+    type: path
+  layout:
+    description:
+      - |
+        The content of the Partitioning Table Template, either this or file_name
+        is required as a source for the Partition Template "content".
+    required: false
+  locations:
+    description:
+      - The locations the template should be assigend to
+    required: false
+    type: list
+  locked:
+    description:
+      - Determines whether the template shall be locked
+    required: false
+    type: bool
+  name:
+    description:
+      - |
+        The name a template should be assigned with in Foreman.
+        A name must be provided.
+        Possible sources are, ordererd by preference:
+        The "name" parameter, config header (inline or in a file),
+        basename of a file.
+        The special name "*" (only possible as parameter) is used
+        to perform bulk actions (modify, delete) on all existing partition tables.
+    required: false
+  organizations:
+    description:
+      - The organizations the template shall be assigned to
+    required: false
+    type: list
+  os_family:
+    description: The OS family the template shall be assigned with.
+    required: false
+    choices:
+      - AIX
+      - Altlinux
+      - Archlinux
+      - Debian
+      - Freebsd
+      - Gentoo
+      - Junos
+      - Redhat
+      - Solaris
+      - Suse
+      - Windows
+  state:
+    description: The state the template should be in.
+    default: present
+    choices:
+      - absent
+      - present
+      - present_with_defaults
 '''
 
 EXAMPLES = '''
@@ -124,74 +124,74 @@ EXAMPLES = '''
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Partition Table inline"
   foreman_ptable:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: A New Partition Template
-      state: present
-      layout: |
-        <%#
-            name: A Partition Template
-        %>
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: A New Partition Template
+    state: present
+    layout: |
+      <%#
+        name: A Partition Template
+      %>
         zerombr
         clearpart --all --initlabel
         autopart
-      locations:
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 - name: "Create a Partition Template from a file"
   foreman_ptable:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: timeywimey_template.erb
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: timeywimey_template.erb
+    state: present
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 - name: "Delete a Partition Template"
   foreman_ptable:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: timeywimey
-      layout: |
-        <%#
-            dummy:
-        %>
-      state: absent
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: timeywimey
+    layout: |
+      <%#
+          dummy:
+      %>
+    state: absent
 
 - name: "Create a Partition Template from a file and modify with parameter(s)"
   foreman_ptable:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: timeywimey_template.erb
-      name: Wibbly Wobbly Template
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: timeywimey_template.erb
+    name: Wibbly Wobbly Template
+    state: present
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of partition templates"
   foreman_ptable:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: "{{ item }}"
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: "{{ item }}"
+    state: present
+    locations:
       - SKARO
-      organizations:
+    organizations:
       - DALEK INC
-      with_fileglob:
+    with_fileglob:
        - "./arsenal_templates/*.erb"
 
 # If the templates are stored locally and the ansible module is executed on a remote host
@@ -209,22 +209,22 @@ EXAMPLES = '''
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* partition tables"
   local_action:
-      module: foreman_ptable
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: absent
+    module: foreman_ptable
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: absent
 
 - name: "Assign all partition tables to the same organization(s)"
   local_action:
-      module: foreman_ptable
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: present
-      organizations:
+    module: foreman_ptable
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: present
+    organizations:
       - DALEK INC
       - sky.net
       - Doc Brown's garage

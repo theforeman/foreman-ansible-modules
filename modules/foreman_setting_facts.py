@@ -31,7 +31,8 @@ description:
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - nailgun >= 0.30.2
+  - "nailgun >= 0.30.2"
+  - "ansible >= 2.3"
 options:
   server_url:
     description:

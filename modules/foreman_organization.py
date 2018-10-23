@@ -30,39 +30,40 @@ author:
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Foreman organization
-        required: true
-    state:
-        description:
-            - State of the Organization
-        default: present
-        choices:
-            - present
-            - absent
-    label:
-        description:
-            - Label of the Foreman organization
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Foreman organization
+    required: true
+  state:
+    description:
+      - State of the Organization
+    default: present
+    choices:
+      - present
+      - absent
+  label:
+    description:
+      - Label of the Foreman organization
 '''
 
 EXAMPLES = '''

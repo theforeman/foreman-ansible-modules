@@ -27,49 +27,50 @@ DOCUMENTATION = '''
 module: foreman_global_parameter
 short_description: Manage Foreman Global Parameters
 description:
-    - "Manage Foreman Global Parameter Entities"
-    - "Uses https://github.com/SatelliteQE/nailgun"
+  - "Manage Foreman Global Parameter Entities"
+  - "Uses https://github.com/SatelliteQE/nailgun"
 version_added: "2.4"
 author:
-- "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
-- "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
+  - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun >= 0.29.0
+  - "nailgun >= 0.29.0"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-        - URL of Foreman server
-        required: true
-    username:
-        description:
-        - Username on Foreman server
-        required: true
-    password:
-        description:
-        - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-        - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    name:
-        description:
-        - Name of the Global Parameter
-        required: true
-    value:
-        description:
-        - Value of the Global Parameter
-        required: false
-    state:
-        description:
-        - State of the Global Parameter
-        default: present
-        choices:
-        - present
-        - present_with_defaults
-        - absent
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Global Parameter
+    required: true
+  value:
+    description:
+      - Value of the Global Parameter
+    required: false
+  state:
+    description:
+      - State of the Global Parameter
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+      - absent
 '''
 
 EXAMPLES = '''

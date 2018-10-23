@@ -22,9 +22,10 @@ DOCUMENTATION = '''
 module: foreman_compute_resource
 short_description: Manage Foreman Compute resources using Foreman API
 description:
-- Create and delete Foreman Compute Resources using Foreman API
+  - Create and delete Foreman Compute Resources using Foreman API
 requirements:
-    - "nailgun >= 0.28.0"
+  - "nailgun >= 0.28.0"
+  - "ansible >= 2.3"
 options:
   name:
     description: compute resource name

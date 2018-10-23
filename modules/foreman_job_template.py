@@ -26,140 +26,141 @@ DOCUMENTATION = '''
 module: foreman_job_template
 short_description: Manage Job Templates in Foreman
 description:
-    - "Manage Foreman Remote Execution Job Templates"
-    - "Uses https://github.com/SatelliteQE/nailgun"
-    - "Uses ansible_nailgun_cement in /module_utils"
+  - "Manage Foreman Remote Execution Job Templates"
+  - "Uses https://github.com/SatelliteQE/nailgun"
+  - "Uses ansible_nailgun_cement in /module_utils"
 author:
-- "Manuel Bonk (@manuelbonk) ATIX AG"
-- "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Manuel Bonk (@manuelbonk) ATIX AG"
+  - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun >= 0.29.0
+  - "nailgun >= 0.29.0"
+  - "ansible >= 2.3"
 options:
-    server_url:
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  audit_comment:
+    description:
+      - Content of the audit comment field
+  description_format:
+    description:
+      - description of the job template. Template inputs can be referenced.
+  file_name:
+    description:
+      - |
+        The path of a template file, that shall be imported.
+        Either this or layout is required as a source for
+        the Job Template "content".
+    type: path
+  job_category:
+    description:
+      - The category the template should be assigend to
+  locations:
+    description:
+      - The locations the template should be assigend to
+    type: list
+  locked:
+    description:
+      - Determines whether the template shall be locked
+    default: false
+    type: bool
+  name:
+    description:
+      - |
+         The name a template should be assigned with in Foreman.
+         name must be provided.
+         Possible sources are, ordererd by preference:
+         The "name" parameter, config header (inline or in a file),
+         basename of a file.
+         The special name "*" (only possible as parameter) is used
+         to perform bulk actions (modify, delete) on all existing Job Templates.
+  organizations:
+    description:
+      - The organizations the template shall be assigned to
+    type: list
+  provider_type:
+    description:
+      - Determines via which provider the template shall be executed
+    required: true
+    choices:
+      - SSH
+    default: SSH
+  snippet:
+    description:
+      - Determines whether the template shall be a snippet
+    default: false
+    type: bool
+  template:
+    description:
+      - |
+        The content of the Job Template, either this or file_name
+        is required as a source for the Job Template "content".
+  template_inputs:
+    description:
+      - The template inputs used in the Job Template
+    type: list
+    suboptions:
+      advanced:
         description:
-        - URL of Foreman server
-        required: true
-    username:
-        description:
-        - Username on Foreman server
-        required: true
-    password:
-        description:
-        - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-        - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    audit_comment:
-        description:
-        - Content of the audit comment field
-    description_format:
-        description:
-        - description of the job template. Template inputs can be referenced.
-    file_name:
-        description:
-        - |
-            The path of a template file, that shall be imported.
-            Either this or layout is required as a source for
-            the Job Template "content".
-        type: path
-    job_category:
-        description:
-        - The category the template should be assigend to
-    locations:
-        description:
-        - The locations the template should be assigend to
-        type: list
-    locked:
-        description:
-        - Determines whether the template shall be locked
+          - Template Input is advanced
         default: false
         type: bool
-    name:
+      description:
         description:
-        - |
-            The name a template should be assigned with in Foreman.
-            A name must be provided.
-            Possible sources are, ordererd by preference:
-            The "name" parameter, config header (inline or in a file),
-            basename of a file.
-            The special name "*" (only possible as parameter) is used
-            to perform bulk actions (modify, delete) on all existing Job Templates.
-    organizations:
+          - description of the Template Input
+      fact_name:
         description:
-        - The organizations the template shall be assigned to
-        type: list
-    provider_type:
+          - description of the Template Input
+      input_type:
         description:
-        - Determines via which provider the template shall be executed
+          - input type
         required: true
         choices:
-        - SSH
-        default: SSH
-    snippet:
+          - user
+          - fact
+          - variable
+          - puppet_parameter
+      name:
         description:
-        - Determines whether the template shall be a snippet
-        default: false
-        type: bool
-    template:
+          - description of the Template Input
+      options:
         description:
-        - |
-            The content of the Job Template, either this or file_name
-            is required as a source for the Job Template "content".
-    template_inputs:
-        description:
-        - The template inputs used in the Job Template
+          - selecTemplate values for user inputs. Must be an array of any type.
         type: list
-        suboptions:
-          advanced:
-              description:
-              - Template Input is advanced
-              default: false
-              type: bool
-          description:
-              description:
-              - description of the Template Input
-          fact_name:
-              description:
-              - description of the Template Input
-          input_type:
-              description:
-              - input type
-              required: true
-              choices:
-              - user
-              - fact
-              - variable
-              - puppet_parameter
-          name:
-              description:
-              - description of the Template Input
-          options:
-              description:
-              - selecTemplate values for user inputs. Must be an array of any type.
-              type: list
-          puppet_parameter_class:
-              description:
-              - Puppet class name, used when input type is puppet_parameter
-          puppet_parameter_name:
-              description:
-              - Puppet parameter name, used when input type is puppet_parameter
-          required:
-              description:
-              - Is the input required
-              type: bool
-          variable_name:
-              description:
-              - Variable name, used when input type is variable
-    state:
-        description: The state the template should be in.
-        default: present
-        choices:
-        - absent
-        - present
-        - present_with_defaults
+      puppet_parameter_class:
+        description:
+          - Puppet class name, used when input type is puppet_parameter
+      puppet_parameter_name:
+        description:
+          - Puppet parameter name, used when input type is puppet_parameter
+      required:
+        description:
+          - Is the input required
+        type: bool
+      variable_name:
+        description:
+          - Variable name, used when input type is variable
+  state:
+    description: The state the template should be in.
+    default: present
+    choices:
+      - absent
+      - present
+      - present_with_defaults
 
 '''
 
