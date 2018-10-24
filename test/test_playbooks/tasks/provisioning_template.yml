@@ -1,5 +1,5 @@
 ---
-- name: "Ensure provisioning template '{{ provisioning_template_name }}' is '{{ provisioning_template_state }}'"
+- name: "Ensure provisioning template '{{ provisioning_template_name }}' and locked state is '{{ locked_state | default('undefined') }}' is '{{ provisioning_template_state }}'"
   vars:
     - provisioning_template_name: "Timetravel finish"
     - provisioning_template_kind: "finish"
@@ -23,10 +23,11 @@
     kind: "{{ provisioning_template_kind }}"
     locations: "{{ provisioning_template_locations }}"
     organizations: "{{ provisioning_template_organizations }}"
+    locked: "{{ locked_state | default(omit) }}"
     template: "{{ provisioning_template_template }}"
     state: "{{ provisioning_template_state }}"
   register: result
 - fail:
-    msg: "Ensuring provisioning template is {{ provisioning_template_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    msg: "Ensuring provisioning template is {{ provisioning_template_state }} and locked state {{ locked_state | default ('undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
 ...

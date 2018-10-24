@@ -99,7 +99,6 @@ options:
         description:
         - Determines whether the template shall be locked
         required: false
-        default: false
         choices:
         - true
         - false
@@ -340,7 +339,7 @@ def main():
             template=dict(),
             file_name=dict(type='path'),
             locations=dict(type='list'),
-            locked=dict(type='bool', default=False),
+            locked=dict(type='bool'),
             name=dict(),
             organizations=dict(type='list'),
             operatingsystems=dict(type='list'),
@@ -407,7 +406,7 @@ def main():
         if state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
-            if entity_dict.keys() != ['name', 'locked']:
+            if entity_dict.keys() != ['name']:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
 
     try:
