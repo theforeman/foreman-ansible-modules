@@ -451,6 +451,10 @@ def find_installation_medium(module, name, failsafe=False):
     return handle_find_response(module, medium, message="No installation medium found for %s" % name, failsafe=failsafe)
 
 
+def find_lifecycle_environments(module, names, organization, failsafe=False):
+    return list(map(lambda name: find_lifecycle_environment(module, name, organization, failsafe=failsafe), names))
+
+
 def find_lifecycle_environment(module, name, organization, failsafe=False):
     response = LifecycleEnvironment(name=name, organization=organization).search()
     return handle_find_response(module, response, message="No lifecycle environment found for %s" % name, failsafe=failsafe)
