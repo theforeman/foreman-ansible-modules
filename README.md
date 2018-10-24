@@ -125,3 +125,6 @@ Server | Nailgun branch
 Katello | master
 Satellite 6.3 | 6.3.z
 Satellite 6.2 | 6.2.z
+
+## Ansible Version
+Please note that you need ansible >= 2.3 to use these modules.
