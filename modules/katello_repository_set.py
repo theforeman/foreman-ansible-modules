@@ -53,10 +53,10 @@ options:
   product:
     description:
       - Name of the parent product
-     required: true
+    required: true
   repositories:
     description:
-       - Release version and base architecture of the repositories to enable
+      - Release version and base architecture of the repositories to enable
     required: true
     type: list
   organization:
