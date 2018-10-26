@@ -27,7 +27,8 @@ version_added: "2.5"
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 requirements:
-  - nailgun >= 0.16.0
+  - "nailgun >= 0.16.0"
+  - "ansible >= 2.3"
 options:
   name:
     description: The full installation medium name
@@ -45,9 +46,9 @@ options:
     required: false
     type: list
   os_family:
-      description: The OS family the template shall be assigned with. If no os_family is set but a operatingsystem, the value will be derived from it.
-      required: false
-      choices:
+    description: The OS family the template shall be assigned with. If no os_family is set but a operatingsystem, the value will be derived from it.
+    required: false
+    choices:
       - AIX
       - Altlinux
       - Archlinux

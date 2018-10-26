@@ -25,55 +25,59 @@ description:
     - Download and modify a Red Hat Satellite Subscription Manifest
 author:
     - "Sean O'Keeffe (@sean797)"
+requirements:
+    - "nailgun >= 0.28.0"
+    - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    name:
-        description:
-           - Manifest Name
-    uuid:
-        description:
-           - Manifest uuid
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    pool_id:
-        description:
-            - Subscription pool_id
-    quantity:
-        description:
-            - quantity of pool_id Subscriptions
-        type: int
-    pool_state:
-        description:
-            - Subscription state
-        default: present
-        choices:
-            - present
-            - absent
-    state:
-        description:
-            - Manifest state
-        default: present
-        choices:
-            - present
-            - absent
-    path:
-        description:
-            - path to export the manifest
-        type: path
-    validate_certs:
-        description:
-            - Validate Portal SSL
-        default: True
-        type: bool
-    portal:
-        description:
-            - Red Hat Portal subscription access address
-        default: https://subscription.rhn.redhat.com
+  name:
+    description:
+      - Manifest Name
+  uuid:
+    description:
+      - Manifest uuid
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  pool_id:
+    description:
+      - Subscription pool_id
+  quantity:
+    description:
+      - quantity of pool_id Subscriptions
+    type: int
+  pool_state:
+    description:
+      - Subscription state
+    default: present
+    choices:
+      - present
+      - absent
+  state:
+    description:
+      - Manifest state
+    default: present
+    choices:
+      - present
+      - absent
+  path:
+    description:
+      - path to export the manifest
+    type: path
+  validate_certs:
+    description:
+     - Validate Portal SSL
+    default: True
+    type: bool
+  portal:
+    description:
+      - Red Hat Portal subscription access address
+    default: https://subscription.rhn.redhat.com
 '''
 
 EXAMPLES = '''

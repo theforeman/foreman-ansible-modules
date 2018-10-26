@@ -26,109 +26,110 @@ DOCUMENTATION = '''
 module: foreman_provisioning_template
 short_description: Manage Provisioning Template in Foreman
 description:
-    - "Manage Foreman Provisioning Template"
-    - "Uses https://github.com/SatelliteQE/nailgun"
-    - "Uses ansible_nailgun_cement in /module_utils"
+  - "Manage Foreman Provisioning Template"
+  - "Uses https://github.com/SatelliteQE/nailgun"
+  - "Uses ansible_nailgun_cement in /module_utils"
 version_added: "2.4"
 author:
-- "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
-- "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
+  - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - nailgun >= 0.29.0
+  - "nailgun >= 0.29.0"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-        - URL of Foreman server
-        required: true
-    username:
-        description:
-        - Username on Foreman server
-        required: true
-    password:
-        description:
-        - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-        - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    audit_comment:
-        description:
-        - Content of the audit comment field
-        required: false
-    kind:
-        description:
-        - The provisioning template kind
-        required: false
-        choices:
-        - finish
-        - iPXE
-        - job_template
-        - POAP
-        - provision
-        - ptable
-        - PXELinux
-        - PXEGrub
-        - PXEGrub2
-        - script
-        - snippet
-        - user_data
-        - ZTP
-    template:
-        description:
-        - |
-            The content of the provisioning template, either this or file_name
-            is required as a source for the Provisioning Template "content".
-        required: false
-    file_name:
-        description:
-        - |
-            The path of a template file, that shall be imported.
-            Either this or template is required as a source for
-            the Provisioning Template "content".
-        required: false
-        type: path
-    locations:
-        description:
-        - The locations the template should be assigend to
-        required: false
-        type: list
-    locked:
-        description:
-        - Determines whether the template shall be locked
-        required: false
-        choices:
-        - true
-        - false
-        type: bool
-    name:
-        description:
-        - |
-            The name a template should be assigned with in Foreman.
-            A name must be provided.
-            Possible sources are, ordererd by preference:
-            The "name" parameter, config header (inline or in a file), basename of a file.
-            The special name "*" (only possible as parameter) is used
-            to perform bulk actions (modify, delete) on all existing templates.
-        required: false
-    organizations:
-        description:
-        - The organizations the template shall be assigned to
-        required: false
-        type: list
-    operatingsystems:
-        description: The Operatingsystems the template shall be assigned to
-        required: false
-        type: list
-    state:
-        description: The state the template should be in.
-        default: present
-        choices:
-        - absent
-        - present
-        - present_with_defaults
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  audit_comment:
+    description:
+      - Content of the audit comment field
+    required: false
+  kind:
+    description:
+      - The provisioning template kind
+    required: false
+    choices:
+      - finish
+      - iPXE
+      - job_template
+      - POAP
+      - provision
+      - ptable
+      - PXELinux
+      - PXEGrub
+      - PXEGrub2
+      - script
+      - snippet
+      - user_data
+      - ZTP
+  template:
+    description:
+      - |
+        The content of the provisioning template, either this or file_name
+        is required as a source for the Provisioning Template "content".
+    required: false
+  file_name:
+    description:
+      - |
+        The path of a template file, that shall be imported.
+        Either this or template is required as a source for
+        the Provisioning Template "content".
+    required: false
+    type: path
+  locations:
+    description:
+      - The locations the template should be assigend to
+    required: false
+    type: list
+  locked:
+    description:
+      - Determines whether the template shall be locked
+    required: false
+    choices:
+      - true
+      - false
+    type: bool
+  name:
+    description:
+      - |
+        The name a template should be assigned with in Foreman.
+        A name must be provided.
+        Possible sources are, ordererd by preference:
+        The "name" parameter, config header (inline or in a file), basename of a file.
+        The special name "*" (only possible as parameter) is used
+        to perform bulk actions (modify, delete) on all existing templates.
+    required: false
+  organizations:
+    description:
+      - The organizations the template shall be assigned to
+    required: false
+    type: list
+  operatingsystems:
+    description: The Operatingsystems the template shall be assigned to
+    required: false
+    type: list
+  state:
+    description: The state the template should be in.
+    default: present
+    choices:
+      - absent
+      - present
+      - present_with_defaults
 
 '''
 
@@ -137,77 +138,77 @@ EXAMPLES = '''
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Provisioning Template inline"
   foreman_provisioning_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: A New Finish Template
-      kind: finish
-      state: present
-      template: |
-        <%#
-            name: Finish timetravel
-            kind: finish
-        %>
-        cd /
-        rm -rf *
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: A New Finish Template
+    kind: finish
+    state: present
+    template: |
+      <%#
+          name: Finish timetravel
+          kind: finish
+      %>
+      cd /
+      rm -rf *
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 - name: "Create a Provisioning Template from a file"
   foreman_provisioning_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: timeywimey_template.erb
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: timeywimey_template.erb
+    state: present
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 # Due to the module logic, deleting requires a template dummy,
 # either inline or from a file.
 - name: "Delete a Provisioning Template"
   foreman_provisioning_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: timeywimey_template
-      template: |
-        <%#
-            dummy:
-        %>
-      state: absent
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: timeywimey_template
+    template: |
+      <%#
+          dummy:
+     %>
+    state: absent
 
 - name: "Create a Provisioning Template from a file and modify with parameter"
   foreman_provisioning_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: timeywimey_template.erb
-      name: Wibbly Wobbly Template
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: timeywimey_template.erb
+    name: Wibbly Wobbly Template
+    state: present
+    locations:
       - Gallifrey
-      organizations:
+    organizations:
       - TARDIS INC
 
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of provisioning templates"
   foreman_provisioning_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: "{{ item }}"
-      state: present
-      locations:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: "{{ item }}"
+    state: present
+    locations:
       - SKARO
-      organizations:
+    organizations:
       - DALEK INC
-      with_fileglob:
+    with_fileglob:
        - "./arsenal_templates/*.erb"
 
 # If the templates are stored locally and the ansible module is executed on a remote host
@@ -225,22 +226,22 @@ EXAMPLES = '''
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* provisioning templates"
   local_action:
-      module: foreman_provisioning_template
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: absent
+    module: foreman_provisioning_template
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: absent
 
 - name: "Assign all provisioning templates to the same organization(s)"
   local_action:
-      module: foreman_provisioning_template
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: present
-      organizations:
+    module: foreman_provisioning_template
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: present
+    organizations:
       - DALEK INC
       - sky.net
       - Doc Brown's garage

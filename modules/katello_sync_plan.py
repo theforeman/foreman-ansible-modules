@@ -27,50 +27,51 @@ author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.29.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Katello sync plan
-        required: true
-    organization:
-        description:
-            - Organization that the sync plan is in
-        required: true
-    interval:
-        description:
-            - How often synchronization should run ('hourly', 'daily', 'weekly')
-        required: true
-    enabled:
-        description:
-            - Whether the sync plan is active
-        required: true
-    sync_date:
-        description:
-            - Start date and time of the first synchronization
-        default: now
-        required: true
-    products:
-        description:
-            - List of products to include in the sync plan
-        required: false
-        type: list
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Katello sync plan
+    required: true
+  organization:
+    description:
+      - Organization that the sync plan is in
+    required: true
+  interval:
+    description:
+      - How often synchronization should run ('hourly', 'daily', 'weekly')
+    required: true
+  enabled:
+    description:
+      - Whether the sync plan is active
+    required: true
+  sync_date:
+    description:
+      - Start date and time of the first synchronization
+    default: now
+    required: true
+  products:
+    description:
+      - List of products to include in the sync plan
+    required: false
+    type: list
 '''
 
 EXAMPLES = '''

@@ -27,50 +27,50 @@ author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: True
-        type: bool
-    name:
-        description:
-            - Name of the lifecycle environment
-        required: true
-    label:
-        description:
-            - Label of the lifecycle environment. This field cannot be updated.
+  server_url:
     description:
-        description:
-            - Description of the lifecycle environment
-    organization:
-        description:
-            - Organization name that the lifecycle environment is in
-        required: true
-    prior:
-        description:
-            - Name of the parent lifecycle environment
-    state:
-        description:
-            - Whether the lifecycle environment should be present or absent on the server
-        default: present
-        choices:
-            - absent
-            - present
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: True
+    type: bool
+  name:
+    description:
+      - Name of the lifecycle environment
+    required: true
+  label:
+    description:
+      - Label of the lifecycle environment. This field cannot be updated.
+  description:
+    description:
+      - Description of the lifecycle environment
+  organization:
+    description:
+      - Organization name that the lifecycle environment is in
+    required: true
+  prior:
+    description:
+      - Name of the parent lifecycle environment
+  state:
+    description:
+      - Whether the lifecycle environment should be present or absent on the server
+    default: present
+    choices:
+      - absent
+      - present
 '''
-
 EXAMPLES = '''
 - name: "Add a production lifecycle environment"
   katello_lifecycle_environment:

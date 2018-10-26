@@ -27,73 +27,74 @@ author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the repository
-        required: true
-    product:
-        description:
-            - Product to which the repository lives in
-        required: true
-    label:
-        description:
-            - label of the repository
-    organization:
-        description:
-            - Organization that the Product is in
-        required: true
-    content_type:
-        description:
-            - The content type of the repository (e.g. yum)
-        required: true
-        choices:
-            - deb
-            - docker
-            - file
-            - ostree
-            - puppet
-            - yum
-    url:
-        description:
-            - Repository URL to sync from
-        required: true
-    docker_upstream_name:
-        description:
-            - name of the upstream docker repository
-    download_policy:
-        description:
-            - download policy for sync from upstream
-        choices:
-            - background
-            - immediate
-            - on_demand
-        required: false
-    state:
-        description:
-            - State of the Repository
-        default: present
-        choices:
-        - present_with_defaults
-        - present
-        - absent
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+     - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the repository
+    required: true
+  product:
+    description:
+      - Product to which the repository lives in
+    required: true
+  label:
+    description:
+      - label of the repository
+  organization:
+    description:
+      - Organization that the Product is in
+    required: true
+  content_type:
+    description:
+      - The content type of the repository (e.g. yum)
+    required: true
+    choices:
+      - deb
+      - docker
+      - file
+      - ostree
+      - puppet
+      - yum
+  url:
+    description:
+      - Repository URL to sync from
+    required: true
+  docker_upstream_name:
+    description:
+      - name of the upstream docker repository
+  download_policy:
+    description:
+      - download policy for sync from upstream
+    choices:
+      - background
+      - immediate
+      - on_demand
+    required: false
+  state:
+    description:
+      - State of the Repository
+    default: present
+    choices:
+      - present_with_defaults
+      - present
+      - absent
 '''
 
 EXAMPLES = '''

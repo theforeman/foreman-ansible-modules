@@ -33,7 +33,8 @@ version_added: "2.4"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - nailgun >= 0.29.0
+  - "nailgun >= 0.29.0"
+  - "ansible >= 2.3"
 options:
   server_url:
     description:

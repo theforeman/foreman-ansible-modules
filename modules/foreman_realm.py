@@ -22,53 +22,53 @@ DOCUMENTATION = '''
 module: foreman_realm
 short_description: Manage Foreman Realms
 description:
-    - Manage Foreman Realms
+  - Manage Foreman Realms
 author:
-    - "Lester R Claudio (@claudiol1)"
+  - "Lester R Claudio (@claudiol1)"
 requirements:
-    - "nailgun >= 0.30.2"
-    - "python >= 2.6"
+  - "nailgun >= 0.30.2"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Foreman realm
-        required: true
-    realm_proxy:
-        description:
-            - Id of Proxy to use for this realm
-        type: int
-        required: true
-    realm_type:
-        description:
-            - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
-        required: true
-    state:
-        description:
-            - State of the Realm
-        default: present
-        choices:
-            - present
-            - absent
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Foreman realm
+    required: true
+  realm_proxy:
+    description:
+      - Id of Proxy to use for this realm
+    type: int
+    required: true
+  realm_type:
+    description:
+      - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
+    required: true
+  state:
+    description:
+      - State of the Realm
+    default: present
+    choices:
+      - present
+      - absent
 '''
-
 EXAMPLES = '''
 - name: "Create EXAMPLE.LOCAL Realm"
   foreman_realm:

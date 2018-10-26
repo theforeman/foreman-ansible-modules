@@ -28,44 +28,45 @@ author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        required: false
-        default: true
-        type: bool
-    src:
-        description:
-            - File to upload
-        required: true
-        type: path
-        aliases:
-          - file
-    repository:
-        description:
-            - Repository to upload file in to
-        required: true
-    product:
-        description:
-            - Product to which the repository lives in
-        required: true
-    organization:
-        description:
-            - Organization that the Product is in
-        required: true
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    required: false
+    default: true
+    type: bool
+  src:
+    description:
+      - File to upload
+    required: true
+    type: path
+    aliases:
+      - file
+  repository:
+    description:
+      - Repository to upload file in to
+    required: true
+  product:
+    description:
+      - Product to which the repository lives in
+    required: true
+  organization:
+    description:
+      - Organization that the Product is in
+    required: true
 notes:
     - Currently only idempotent when uploading a RPM
 '''

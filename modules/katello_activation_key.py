@@ -22,69 +22,69 @@ DOCUMENTATION = '''
 module: katello_activation_key
 short_description: Create and Manage Katello activation keys
 description:
-    - Create and Manage Katello activation keys
+  - Create and Manage Katello activation keys
 author: "Andrew Kofink (@akofink)"
 requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the activation key
-        required: true
-    organization:
-        description:
-            - Organization name that the activation key is in
-        required: true
-    lifecycle_environment:
-        description:
-            - Name of the lifecycle environment
-    content_view:
-        description:
-            - Name of the content view
-    subscriptions:
-        description:
-            - List of subscriptions that include name
-        type: list
-    content_overrides:
-        description:
-            - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
-        type: list
-    auto_attach:
-        description:
-            - Set Auto-Attach on or off
-        default: true
-        type: bool
-    state:
-        description:
-            - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name
-              and all other fields left untouched.
-        default: present
-        choices:
-        - present
-        - present_with_defaults
-        - absent
-        - copied
-    new_name:
-        description:
-            - Name of the new activation key when state == copied
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+     - Username on Foreman server
+    required: true
+  password:
+    description:
+     - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the activation key
+    required: true
+  organization:
+    description:
+      - Organization name that the activation key is in
+    required: true
+  lifecycle_environment:
+    description:
+      - Name of the lifecycle environment
+  content_view:
+    description:
+      - Name of the content view
+  subscriptions:
+    description:
+      - List of subscriptions that include name
+    type: list
+  content_overrides:
+    description:
+      - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
+    type: list
+  auto_attach:
+    description:
+      - Set Auto-Attach on or off
+    default: true
+    type: bool
+  state:
+    description:
+      - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name and all other fields left untouched.
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+      - absent
+      - copied
+  new_name:
+    description:
+      - Name of the new activation key when state == copied
 '''
 
 EXAMPLES = '''

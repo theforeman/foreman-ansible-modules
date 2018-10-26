@@ -27,40 +27,41 @@ author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    repository:
-        description:
-            - Name of the repository to sync
-        required: true
-    product:
-        description:
-            - Product to which the repository lives in
-        required: true
-    synchronous:
-        description:
-            - Wait for the Sync task to complete if True. Immediately return if False.
-        default: true
-    organization:
-        description:
-            - Organization that the Product is in
-        required: true
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  repository:
+    description:
+      - Name of the repository to sync
+    required: true
+  product:
+    description:
+      - Product to which the repository lives in
+    required: true
+  synchronous:
+    description:
+      - Wait for the Sync task to complete if True. Immediately return if False.
+    default: true
+  organization:
+    description:
+      - Organization that the Product is in
+    required: true
 '''
 
 EXAMPLES = '''

@@ -35,51 +35,51 @@ author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.29.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    name:
-        description:
-            - Name of the Katello content view
-        required: true
-    organization:
-        description:
-            - Organization that the content view is in
-        required: true
-    from_environment:
-        description:
-            - The lifecycle environment that is already associated with the content view version
-    version:
-        description:
-            - The content view version number to promote (i.e. 1.0)
-    to_environments:
-        description:
-            - The lifecycle environments to add to the content view version
-        required: true
-    force:
-        description:
-            - Force content view promotion and bypass lifecycle environment restriction
-        default: false
-        type: bool
-    force_yum_metadata_regeneration:
-        description:
-            - Force metadata regeneration on the repositories in the content view version
-
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  name:
+    description:
+      - Name of the Katello content view
+    required: true
+  organization:
+    description:
+      - Organization that the content view is in
+    required: true
+  from_environment:
+    description:
+      - The lifecycle environment that is already associated with the content view version
+  version:
+    description:
+      - The content view version number to promote (i.e. 1.0)
+  to_environments:
+    description:
+      - The lifecycle environments to add to the content view version
+    required: true
+  force:
+    description:
+      - Force content view promotion and bypass lifecycle environment restriction
+    default: false
+    type: bool
+  force_yum_metadata_regeneration:
+    description:
+      - Force metadata regeneration on the repositories in the content view version
 '''
 
 EXAMPLES = '''

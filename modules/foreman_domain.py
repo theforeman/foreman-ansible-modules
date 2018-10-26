@@ -27,7 +27,8 @@ version_added: "2.5"
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 requirements:
-  - nailgun >= 0.16.0
+  - "nailgun >= 0.16.0"
+  - "ansible >= 2.3"
 options:
   name:
     description: The full DNS domain name

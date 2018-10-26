@@ -27,103 +27,104 @@ author: "Sean O'Keeffe (@sean797)"
 requirements:
     - "nailgun >= 0.28.0"
     - "python >= 2.6"
+    - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    content_view:
-        description:
-            - Name of the content view
-        required: true
-    organization:
-        description:
-            - Organization that the Content View is in
-        required: true
-    filter_state:
-        description:
-            - State of the content view filter
-        default: present
-        choices:
-            - present
-            - absent
-    repositories:
-        description:
-            - List of repositories that include name and product
-            - An empty Array means all current and future repositories
-        default: []
-        type: list
-    rule_state:
-        description:
-            - State of the content view filter rule
-        default: present
-        choices:
-            - present
-            - absent
-    filter_type:
-        description:
-            - Content view filter type
-        required: true
-        choices:
-            - rpm
-            - package_group
-            - erratum
-            - docker
-    rule_name:
-        description:
-            - Content view filter rule name or package name
-        alias:
-            - package_name
-            - package_group
-            - tag
-        default: C(name)
-    date_type:
-        description:
-            - Search using the 'Issued On' or 'Updated On'
-            - Valid on C(filter_type) erratum only
-        default: updated
-        choices:
-            - issued
-            - updated
-    end_date:
-        description:
-            - erratum end date (YYYY-MM-DD)
-    start_date:
-        description:
-            - erratum start date (YYYY-MM-DD)
-    errata_id:
-        description:
-            - erratum id
-    max_version:
-        description:
-            - package maximum version
-    min_version:
-        description:
-            - package minimum version
-    types:
-        description:
-            - erratum types (enhancement, bugfix, security)
-        default: ["bugfix", "enhancement", "security"]
-    version:
-        description:
-            - package version
-    inclusion:
-        description:
-            - Create an include filter
-        default: False
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+     - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+    type: bool
+  content_view:
+    description:
+      - Name of the content view
+    required: true
+  organization:
+    description:
+      - Organization that the Content View is in
+    required: true
+  filter_state:
+    description:
+      - State of the content view filter
+    default: present
+    choices:
+      - present
+      - absent
+  repositories:
+    description:
+      - List of repositories that include name and product
+      - An empty Array means all current and future repositories
+    default: []
+    type: list
+  rule_state:
+    description:
+      - State of the content view filter rule
+    default: present
+    choices:
+      - present
+      - absent
+  filter_type:
+    description:
+      - Content view filter type
+    required: true
+    choices:
+      - rpm
+      - package_group
+      - erratum
+      - docker
+  rule_name:
+    description:
+      - Content view filter rule name or package name
+    alias:
+      - package_name
+      - package_group
+      - tag
+    default: C(name)
+  date_type:
+    description:
+      - Search using the 'Issued On' or 'Updated On'
+      - Valid on C(filter_type) erratum only
+    default: updated
+    choices:
+      - issued
+      - updated
+  end_date:
+    description:
+      - erratum end date (YYYY-MM-DD)
+  start_date:
+    description:
+      - erratum start date (YYYY-MM-DD)
+  errata_id:
+    description:
+      - erratum id
+  max_version:
+     description:
+       - package maximum version
+  min_version:
+    description:
+       - package minimum version
+  types:
+     description:
+        - erratum types (enhancement, bugfix, security)
+     default: ["bugfix", "enhancement", "security"]
+  version:
+     description:
+        - package version
+  inclusion:
+    description:
+      - Create an include filter
+    default: False
 '''
 
 EXAMPLES = '''

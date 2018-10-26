@@ -22,53 +22,54 @@ DOCUMENTATION = '''
 module: katello_repository_set
 short_description: Enable/disable repositories in Katello repository sets
 description:
-    - Enable/disable repositories in Katello repository sets
+  - Enable/disable repositories in Katello repository sets
 author: "Andrew Kofink (@akofink)"
 requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
+  - "nailgun >= 0.28.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-    name:
-        description:
-            - Name of the repository set
-        required: true
-        type: bool
-    product:
-        description:
-            - Name of the parent product
-        required: true
-    repositories:
-        description:
-            - Release version and base architecture of the repositories to enable
-        required: true
-        type: list
-    organization:
-        description:
-            - Organization name that the repository set is in
-        required: true
-    state:
-        description:
-            - Whether the repositories are enabled or not
-        required: true
-        choices:
-            - 'enabled'
-            - 'disabled'
+  server_url:
+    description:
+      - URL of Foreman server
+    required: true
+  username:
+    description:
+      - Username on Foreman server
+    required: true
+  password:
+    description:
+      - Password for user accessing Foreman server
+    required: true
+  verify_ssl:
+    description:
+      - Verify SSL of the Foreman server
+    default: true
+  name:
+    description:
+      - Name of the repository set
+    required: true
+    type: bool
+  product:
+    description:
+      - Name of the parent product
+    required: true
+  repositories:
+    description:
+      - Release version and base architecture of the repositories to enable
+    required: true
+    type: list
+  organization:
+    description:
+      - Organization name that the repository set is in
+    required: true
+  state:
+    description:
+      - Whether the repositories are enabled or not
+    required: true
+    choices:
+      - 'enabled'
+      - 'disabled'
 '''
 
 EXAMPLES = '''
