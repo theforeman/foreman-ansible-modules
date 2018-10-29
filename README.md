@@ -102,6 +102,7 @@ This is a list of modules currently in the repository (please add to the list if
  * foreman_domain: create and maintain domains
  * foreman_job_template: create and maintain job templates and associated template inputs
  * foreman_setting: set and reset settings
+ * katello_content_credential: create and maintain content credentials
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
  * katello_content_view: create and maintain content views
