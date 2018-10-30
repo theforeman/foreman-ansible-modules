@@ -1,5 +1,5 @@
 ---
-- name: "Ensure setting '{{ setting_name }}' is {{ setting_value | default(false) | ternary(\"'\" + setting_value | default('') + \"'\", 'undefined') }}"
+- name: "Ensure setting '{{ setting_name }}' is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | string) | default('') + \"'\", 'undefined') }}"
   vars:
     - setting_name: 'login_text'
   foreman_setting:
@@ -11,9 +11,9 @@
     value: "{{ setting_value | default(omit) }}"
   register: result
 - fail:
-    msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + setting_value | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | string) | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
 - fail:
-    msg: "Setting the setting failed! ('{{ result.foreman_setting.value }}' != '{{ setting_value }}')"
-  when: (setting_value is defined) and (result.foreman_setting.value != setting_value)
+    msg: "Setting the setting failed! ('{{ result.foreman_setting.value }}' != '{{ setting_value_override | default(setting_value) }}')"
+  when: (setting_value is defined) and (result.foreman_setting.value != setting_value_override | default(setting_value))
 ...
