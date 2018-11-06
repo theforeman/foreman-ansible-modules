@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2018 Matthias M Dellweg (ATIX AG)
+# (c) 2018, Sean O'Keeffe <seanokeeffe797@gmail.com>
 #
 # This file is part of Ansible
 #
@@ -18,25 +18,20 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 ANSIBLE_METADATA = {'metadata_version': '1.0',
-                    'status': ['deprecated'],
+                    'status': ['preview'],
                     'supported_by': 'community'}
 
 
 DOCUMENTATION = '''
 ---
-module: foreman_setting_facts
-deprecated:
-  removed_in: "2.8"
-  why: This has been replaced with another module.
-  alternative: Use M(foreman_fact) instead.
-short_description: Gather facts about Foreman Settings
+module: foreman_search_facts
+short_description: Gather facts about Foreman resources
 description:
-  - "Gather facts about Foreman Settings"
+  - "Gather facts about Foreman resources"
 author:
-  - "Matthias M Dellweg (@mdellweg) ATIX AG"
+  - "Sean O'Keeffe (@sean797)"
 requirements:
-  - "nailgun >= 0.30.2"
-  - "ansible >= 2.3"
+  - nailgun
 options:
   server_url:
     description:
@@ -53,53 +48,58 @@ options:
   verify_ssl:
     description:
       - Verify SSL of the Foreman server
-    required: false
     default: true
     type: bool
-  name:
+  resource:
     description:
-      - Name of the Setting to fetch
-      - If not given, fetch all settings
-    required: false
+      - Resource to search
+      - Set to an invalid choice like C(foo) see all available options.
+  search:
+    description:
+      - Search query to use
+      - If None, all resources are returned
 '''
 
 EXAMPLES = '''
 - name: "Read a Setting"
-  foreman_setting_facts:
+  foreman_search_facts:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "http_proxy"
+    resource: Setting
+    search: name = http_proxy
   register: result
 - debug:
-    var: result.settings[0].value
+    var: result.response[0].value
 
-- name: "Read all Settings"
-  foreman_setting_facts:
+- name: "Read all Registries"
+  foreman_search_facts:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
+    resource: Registry
   register: result
 - debug:
     var: item.name
-  with_items: result.settings
+  with_items: result.response
 '''
 
 RETURN = '''
-settings:
-  description: List of settings
+resources:
+  description: Search results from Foreman
+  returned: always
+  type: list
 '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         create_server,
         ping_server,
-        find_entities,
+        search_entities_json,
     )
 
-    from nailgun.entities import (
-        Setting,
-    )
+    from nailgun import entities
+    from nailgun.entity_mixins import EntitySearchMixin
 
     has_import_error = False
 except ImportError as e:
@@ -110,25 +110,20 @@ except ImportError as e:
 from ansible.module_utils.basic import AnsibleModule
 
 
-name_map = {
-    'name': 'name',
-    'description': 'description',
-    'value': 'value',
-    'default': 'default',
-    'type': 'settings_type',
-    'created_at': 'created_at',
-    'updated_at': 'updated_at',
-}
+def nailgun_entites():
+    return list(map(lambda entity: entity.__name__, EntitySearchMixin.__subclasses__()))
 
 
 def main():
+
     module = AnsibleModule(
         argument_spec=dict(
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            name=dict(),
+            resource=dict(choices=nailgun_entites(), required=True),
+            search=dict(),
         ),
         supports_check_mode=True,
     )
@@ -136,13 +131,12 @@ def main():
     if has_import_error:
         module.fail_json(msg=import_error_msg)
 
-    params_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
-
-    server_url = params_dict.pop('server_url')
-    username = params_dict.pop('username')
-    password = params_dict.pop('password')
-    verify_ssl = params_dict.pop('verify_ssl')
+    server_url = module.params['server_url']
+    username = module.params['username']
+    password = module.params['password']
+    verify_ssl = module.params['verify_ssl']
+    entity = module.params['resource']
+    search = module.params['search']
 
     try:
         create_server(server_url, (username, password), verify_ssl)
@@ -151,12 +145,10 @@ def main():
 
     ping_server(module)
 
-    search_params = {k: v for (k, v) in params_dict.items() if k == 'name'}
-    entities = find_entities(Setting, **search_params)
-    settings = [{key: getattr(entity, value) for (key, value) in name_map.items()}
-                for entity in entities]
+    entity_class = getattr(entities, entity)
+    response = search_entities_json(entity_class, search)['results']
 
-    module.exit_json(changed=False, settings=settings)
+    module.exit_json(changed=False, resources=response)
 
 
 if __name__ == '__main__':

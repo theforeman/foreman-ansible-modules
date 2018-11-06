@@ -11,6 +11,7 @@ MODULES = [
     'content_view',
     'content_view_filter',
     'domain',
+    'search_facts',
     'global_parameter',
     'installation_medium',
     'job_template',
@@ -44,6 +45,8 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
         record_mode = 'none'
         # Only run the tests (skip fixtures)
         extra_args.extend(['--limit', '!fixtures'])
+
+    extra_args.extend(['-vvvv'])
 
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}

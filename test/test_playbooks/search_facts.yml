@@ -1,0 +1,29 @@
+---
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/search_facts.yml
+    vars:
+      resource: Setting
+      search: name = http_proxy
+      return_length: 1
+  - include: tasks/search_facts.yml
+    vars:
+      resource: Subnet
+      return_length: 0
+  - name: Run with invalid resource
+    foreman_search_facts:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      verify_ssl: "{{ foreman_verify_ssl }}"
+      resource: foo
+    register: result
+    ignore_errors: yes
+  - fail:
+       msg: "{{ result.msg }} should have contained all nailgun resources"
+    when: "'ConfigGroup' not in result.msg"
+...

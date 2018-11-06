@@ -266,6 +266,16 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
     return changed, changed_entity
 
 
+def search_entities_json(entity_class, search):
+    """ Find entities using search """
+    return entity_class().search_json(
+        query={'search': '{0}'.format(search),
+               # This is a hack to work around pagination in API-V2
+               # See Redmine: #21800
+               'per_page': 2 << 31}
+    )
+
+
 def find_entities(entity_class, **kwargs):
     """ Find entities by certain criteria """
     return entity_class().search(
