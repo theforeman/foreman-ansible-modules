@@ -10,13 +10,13 @@
     block:
     - include_tasks: tasks/organization.yml
       vars:
-	organization_state: present
+        organization_state: present
     - include_tasks: tasks/product.yml
       vars:
-	product_state: present
+        product_state: present
     - include_tasks: tasks/repository.yml
       vars:
-	repository_state: present
+        repository_state: present
 
 - hosts: tests
   gather_facts: false
@@ -28,12 +28,12 @@
     block:
     - include_tasks: tasks/content_view.yml
       vars:
-	content_view_state: present
+        content_view_state: present
     always:
     - include_tasks: tasks/content_view.yml
       ignore_errors: yes
       vars:
-	content_view_state: absent
+        content_view_state: absent
 
 - hosts: fixtures
   gather_facts: false
@@ -45,12 +45,12 @@
     block:
     - include_tasks: tasks/content_view.yml
       vars:
-	content_view_state: present
+        content_view_state: present
     always:
     - include_tasks: tasks/content_view.yml
       ignore_errors: yes
       vars:
-	content_view_state: absent
+        content_view_state: absent
 
 - hosts: fixtures
   gather_facts: false
@@ -63,13 +63,13 @@
     - include_tasks: tasks/repository.yml
       ignore_errors: yes
       vars:
-	repository_state: absent
+        repository_state: absent
     - include_tasks: tasks/product.yml
       ignore_errors: yes
       vars:
-	product_state: absent
+        product_state: absent
     - include_tasks: tasks/organization.yml
       ignore_errors: yes
       vars:
-	organization_state: absent
+        organization_state: absent
 
