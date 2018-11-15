@@ -172,7 +172,7 @@ from ansible.module_utils.basic import AnsibleModule
 def promote_content_view_version(module, content_view_version, organization, environments, synchronous, **kwargs):
     changed = False
 
-    current_environment_ids = map(lambda environment: environment.id, content_view_version.environments)
+    current_environment_ids = map(lambda environment: environment.id, content_view_version.environment)
     desired_environment_ids = map(lambda environment: environment.id, environments)
     promote_to_environment_ids = list(set(desired_environment_ids) - set(current_environment_ids))
 
