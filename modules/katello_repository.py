@@ -25,7 +25,7 @@ description:
     - Crate and manage a Katello repository
 author: "Eric D Helms (@ehelms)"
 requirements:
-    - "nailgun >= 0.28.0"
+    - "nailgun >= 0.32.0"
     - "python >= 2.6"
     - "ansible >= 2.3"
 options:
@@ -87,6 +87,10 @@ options:
       - immediate
       - on_demand
     required: false
+  gpg_key:
+    description:
+    - Repository GPG key
+    required: false
   state:
     description:
       - State of the Repository
@@ -108,8 +112,22 @@ EXAMPLES = '''
     content_type: "yum"
     product: "My Product"
     organization: "Default Organization"
+    url: "http://yum.theforeman.org/plugins/latest/el7/x86_64/"
+    download_policy: background
+
+- name: "Create repository with content credentials"
+  katello_repository:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My repository 2"
+    state: present
+    content_type: "yum"
+    product: "My Product"
+    organization: "Default Organization"
     url: "http://yum.theforeman.org/releases/latest/el7/x86_64/"
     download_policy: background
+    gpg_key: RPM-GPG-KEY-my-product2
 '''
 
 RETURN = '''# '''
@@ -124,6 +142,7 @@ try:
         ping_server,
         find_organization,
         find_product,
+        find_content_credential,
         find_repository,
         naildown_entity_state,
         sanitize_entity_dict,
@@ -143,6 +162,7 @@ name_map = {
     'content_type': 'content_type',
     'label': 'label',
     'url': 'url',
+    'gpg_key': 'gpg_key',
     'docker_upstream_name': 'docker_upstream_name',
     'download_policy': 'download_policy',
 }
@@ -161,6 +181,7 @@ def main():
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
+            gpg_key=dict(),
             docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -193,6 +214,9 @@ def main():
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
 
     entity_dict['product'] = find_product(module, name=entity_dict['product'], organization=entity_dict['organization'])
+
+    if 'gpg_key' in entity_dict:
+        entity_dict['gpg_key'] = find_content_credential(module, name=entity_dict['gpg_key'], organization=entity_dict['organization'])
 
     entity = find_repository(module, name=entity_dict['name'], product=entity_dict['product'], failsafe=True)
 

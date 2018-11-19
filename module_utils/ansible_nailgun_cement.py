@@ -25,6 +25,7 @@ from nailgun.entities import (
     PackageGroup,
     Package,
     Ping,
+    ContentCredential,
     Product,
     Realm,
     Repository,
@@ -486,6 +487,11 @@ def find_repositories(module, repositories, organization, failsafe=False):
 def find_repository(module, name, product, failsafe=False):
     repository = Repository(name=name, product=product)
     return handle_find_response(module, repository.search(), message="No Repository found for %s" % name, failsafe=failsafe)
+
+
+def find_content_credential(module, name, organization, failsafe=False):
+    content_credential = ContentCredential(name=name, organization=organization)
+    return handle_find_response(module, content_credential.search(), message="No content credential found for %s" % name, failsafe=failsafe)
 
 
 def find_repository_set(module, name, product, failsafe=False):

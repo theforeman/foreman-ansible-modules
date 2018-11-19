@@ -20,6 +20,7 @@ MODULES = [
     'operating_system',
     'organization',
     'os_default_template',
+    'content_credential',
     'product',
     'provisioning_template',
     'ptable',

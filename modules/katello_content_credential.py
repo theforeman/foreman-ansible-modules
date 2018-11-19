@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2016, Eric D Helms <ericdhelms@gmail.com>
+# (c) 2018, Baptiste Agasse <baptiste.agagsse@gmail.com>
 #
 # This file is part of Ansible
 #
@@ -19,17 +19,15 @@
 
 DOCUMENTATION = '''
 ---
-module: katello_product
-short_description: Create and Manage Katello products
+module: katello_content_credential
+short_description: Create and Manage Katello content credentials
 description:
-    - Create and Manage Katello products
-author:
-    - "Eric D Helms (@ehelms)"
-    - "Matthias Dellweg (@mdellweg) ATIX AG"
+  - Create and Manage Katello content credentials
+author: "Baptiste Agasse (@bagasse)"
 requirements:
-    - "nailgun >= 0.32.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+  - "nailgun >= 0.32.0"
+  - "python >= 2.6"
+  - "ansible >= 2.3"
 options:
   server_url:
     description:
@@ -37,11 +35,11 @@ options:
     required: true
   username:
     description:
-      - Username on Foreman server
+     - Username on Foreman server
     required: true
   password:
     description:
-      - Password for user accessing Foreman server
+     - Password for user accessing Foreman server
     required: true
   verify_ssl:
     description:
@@ -50,60 +48,49 @@ options:
     type: bool
   name:
     description:
-      - Name of the Katello product
+      - Name of the content credential
     required: true
   organization:
     description:
-      - Organization that the Product is in
+      - Organization name that the content credential is in
     required: true
-  label:
+  content_type:
     description:
-      - Label to show the user
-    required: false
-  gpg_key:
+    - Type of credential
+    choices:
+    - gpg_key
+    - cert
+    required: true
+  content:
     description:
-    - Content GPG key name attached to this product
-    required: false
-  description:
-    description:
-      - Possibly long descriptionto show the user in detail view
-    required: false
+    - Content of the content credential
+    required: true
   state:
     description:
-      - State of the Product
+      - State of the content credential.
     default: present
     choices:
       - present
       - absent
-      - present_with_defaults
 '''
 
 EXAMPLES = '''
-- name: "Create Fedora product"
-  katello_product:
+- name: "Create katello client GPG key"
+  katello_content_credential:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "Fedora"
-    organization: "My Cool new Organization"
-    state: present
-
-- name: "Create CentOS 7 product with content credentials"
-  katello_product:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    name: "CentOS 7"
-    gpg_key: "RPM-GPG-KEY-CentOS7"
-    organization: "My Cool new Organization"
-    state: present
+    name: "RPM-GPG-KEY-my-repo"
+    type: gpg_key
+    organization: "Default Organization"
+    content: "{{ lookup('file', 'RPM-GPG-KEY-my-repo') }}"
 '''
 
 RETURN = '''# '''
 
 try:
     from nailgun.entities import (
-        Product,
+        ContentCredential,
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
@@ -111,7 +98,6 @@ try:
         ping_server,
         find_organization,
         find_content_credential,
-        find_product,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -127,10 +113,8 @@ from ansible.module_utils.basic import AnsibleModule
 name_map = {
     'name': 'name',
     'organization': 'organization',
-    'description': 'description',
-    'gpg_key': 'gpg_key',
-    # 'sync_plan': 'sync_plan',  # wait for Nailgun
-    'label': 'label',
+    'content_type': 'content_type',
+    'content': 'content',
 }
 
 
@@ -143,10 +127,9 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
-            label=dict(),
-            gpg_key=dict(),
-            description=dict(),
-            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
+            content_type=dict(required=True, choices=['gpg_key', 'cert']),
+            content=dict(required=True),
+            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )
@@ -171,15 +154,11 @@ def main():
     ping_server(module)
 
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
-
-    if 'gpg_key' in entity_dict:
-        entity_dict['gpg_key'] = find_content_credential(module, name=entity_dict['gpg_key'], organization=entity_dict['organization'])
-
-    entity = find_product(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
+    entity = find_content_credential(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(Product, entity_dict, entity, state, module)
+    changed = naildown_entity_state(ContentCredential, entity_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
