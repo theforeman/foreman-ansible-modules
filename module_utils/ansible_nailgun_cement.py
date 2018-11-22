@@ -16,6 +16,7 @@ from nailgun.entities import (
     ContentViewFilterRule,
     ContentViewVersion,
     Domain,
+    Subnet,
     Errata,
     File,
     LifecycleEnvironment,
@@ -33,6 +34,7 @@ from nailgun.entities import (
     RepositorySet,
     Setting,
     SmartProxy,
+    Subnet,
     Subscription,
     TemplateKind,
     AbstractComputeResource,
@@ -453,9 +455,18 @@ def find_compute_profile(module, name, failsafe=False):
     return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
 
 
+def find_domains(module, names, failsafe=False):
+    return list(map(lambda name: find_domain(module, name, failsafe=failsafe), names))
+
+
 def find_domain(module, name, failsafe=False):
     domain = Domain().search(query={'search': 'name="{}"'.format(name)})
     return handle_find_response(module, domain, message="No domain found for %s" % name, failsafe=failsafe)
+
+
+def find_subnet(module, name, failsafe=False):
+    subnet = Subnet().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, subnet, message="No subnet found for %s" % name, failsafe=failsafe)
 
 
 def find_installation_medium(module, name, failsafe=False):
@@ -503,6 +514,10 @@ def find_repository_set(module, name, product, failsafe=False):
 def find_setting(module, name, failsafe=False):
     setting = Setting(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, setting, message="No setting found for %s" % name, failsafe=failsafe)
+
+
+def find_smart_proxies(module, names, failsafe=False):
+    return list(map(lambda name: find_smart_proxy(module, name, failsafe=failsafe), names))
 
 
 def find_smart_proxy(module, name, failsafe=False):

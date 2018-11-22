@@ -8,7 +8,7 @@
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_verify_ssl }}"
     name: "{{ domain_name }}"
-    dns_proxy: "{{ domain_dns_proxy }}"
+    dns_proxy: "{{ domain_dns_proxy | default(omit) }}"
     locations: "{{ domain_locations }}"
     organizations: "{{ domain_organizations }}"
     state: "{{ domain_state }}"
