@@ -17,6 +17,7 @@ from nailgun.entities import (
     ContentViewVersion,
     Domain,
     Errata,
+    File,
     LifecycleEnvironment,
     Location,
     Media,
@@ -543,6 +544,11 @@ def find_os_default_template(module, operatingsystem, template_kind, failsafe=Fa
 def find_package(module, query, repository, failsafe=False):
     package = Package(repository=repository).search(query={'search': '{}'.format(query)})
     return handle_find_response(module, package, message="No Package found for %s" % query, failsafe=failsafe)
+
+
+def find_file(module, query, repository, failsafe=False):
+    file = File(repository=repository).search(query={'search': '{}'.format(query)})
+    return handle_find_response(module, file, message="No File found for %s" % query, failsafe=failsafe)
 
 
 def handle_find_response(module, response, message=None, failsafe=False):

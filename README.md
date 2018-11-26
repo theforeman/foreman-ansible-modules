@@ -113,7 +113,7 @@ This is a list of modules currently in the repository (please add to the list if
 #### Action Modules
 
  * katello_sync: sync Katello repositories and products
- * katello_upload: upload files, rpms, etc. to repositories. Note, rpms are idempotent.
+ * katello_upload: upload files, rpms, etc. to repositories. Note, rpms & files are idempotent.
  * katello_content_view_publish: publish Katello content views
  * katello_manifest: upload and Manage Katello manifests
 

@@ -68,7 +68,7 @@ options:
       - Organization that the Product is in
     required: true
 notes:
-    - Currently only idempotent when uploading a RPM
+    - Currently only idempotent when uploading to an RPM & file repository
 '''
 
 EXAMPLES = '''
@@ -93,12 +93,15 @@ try:
         find_product,
         find_repository,
         find_package,
+        find_file,
     )
 
     from nailgun.entities import (
         ContentUpload,
     )
     from subprocess import check_output
+    import os
+    import hashlib
     has_import_error = False
 except ImportError as e:
     has_import_error = True
@@ -152,15 +155,24 @@ def main():
     entity_dict['product'] = find_product(module, name=entity_dict['product'], organization=entity_dict['organization'])
     entity_dict['repository'] = find_repository(module, name=entity_dict['repository'], product=entity_dict['product'])
 
-    package = False
+    content_unit = None
     if entity_dict['repository'].content_type == "yum":
         name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
                                                     shell=True).decode('ascii').split()
         query = "name = \"{}\" and version = \"{}\" and release = \"{}\" and arch = \"{}\"".format(name, version, release, arch)
-        package = find_package(module, query, repository=entity_dict['repository'], failsafe=True)
+        content_unit = find_package(module, query, repository=entity_dict['repository'], failsafe=True)
+    elif entity_dict['repository'].content_type == "file":
+        h = hashlib.sha256()
+        with open(entity_dict['src'], "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                h.update(chunk)
+        checksum = h.hexdigest()
+        name = os.path.basename(entity_dict['src'])
+        query = "name = \"{}\" and checksum = \"{}\"".format(name, checksum)
+        content_unit = find_file(module, query, repository=entity_dict['repository'], failsafe=True)
 
     changed = False
-    if package is None or package is False:
+    if not content_unit:
         try:
             changed = upload(module, entity_dict['src'], entity_dict['repository'])
         except Exception as e:
