@@ -49,7 +49,6 @@ options:
   repository:
     description:
       - Name of the repository to sync
-    required: true
   product:
     description:
       - Product to which the repository lives in
