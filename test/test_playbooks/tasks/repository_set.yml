@@ -1,0 +1,30 @@
+---
+- name: "Enable/Disable katello repository set"
+  vars:
+    - name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+    - organization: Default Organization
+    - state: enabled
+    - repositories:
+        - releasever: "7.0"
+          basearch: "x86_64"
+        - releasever: "7.1"
+          basearch: "x86_64"
+        - releasever: "7.2"
+          basearch: "x86_64"
+        - releasever: "7.3"
+          basearch: "x86_64"
+  katello_repository_set:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ name | default(omit) }}"
+    organization: "{{ organization }}"
+    product: "{{ product | default(omit) }}"
+    state: "{{ state }}"
+    repositories: "{{ repositories }}"
+    label: "{{ label | default(omit) }}"
+  register: result
+- fail:
+    msg: "Ensuring Repository Set is {{ state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)

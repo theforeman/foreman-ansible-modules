@@ -26,6 +26,7 @@ MODULES = [
     'ptable',
     'redhat_manifest',
     'repository',
+    'repository_set',
     'repository_sync',
     'search_facts',
     'setting',

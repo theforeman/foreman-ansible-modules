@@ -526,9 +526,14 @@ def find_content_credential(module, name, organization, failsafe=False):
     return handle_find_response(module, content_credential.search(), message="No content credential found for %s" % name, failsafe=failsafe)
 
 
-def find_repository_set(module, name, product, failsafe=False):
-    repo_set = RepositorySet(name=name, product=product)
-    return handle_find_response(module, repo_set.search(), message="No repository set found for %s" % name, failsafe=failsafe)
+def find_repository_set(module, name=None, product=None, organization=None, label=None, failsafe=False):
+    if label and organization:
+        repo_set = RepositorySet(organization=organization).search(query={'search': 'label="{}"'.format(label)})
+    elif name and organization:
+        repo_set = RepositorySet(name=name, organization=organization).search()
+    else:
+        repo_set = RepositorySet(name=name, product=product).search()
+    return handle_find_response(module, repo_set, message="No repository set found for %s" % name or label, failsafe=failsafe)
 
 
 def find_setting(module, name, failsafe=False):

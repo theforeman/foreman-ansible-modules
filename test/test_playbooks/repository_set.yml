@@ -1,44 +1,30 @@
 ---
-- hosts: localhost
+- hosts: tests
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
-  - name: "Enable RHEL 7 RPMs repositories"
-    katello_repository_set:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Red Hat Enterprise Linux 7 Server (RPMs)"
-      organization: "Default Organization"
-      product: "Red Hat Enterprise Linux Server"
-      state: 'enabled'
-      repositories:
-      - releasever: "7.0"
-        basearch: "x86_64"
-      - releasever: "7.1"
-        basearch: "x86_64"
-      - releasever: "7.2"
-        basearch: "x86_64"
-      - releasever: "7.3"
-        basearch: "x86_64"
-  - name: "Disable RHEL 7 RPMs repositories"
-    katello_repository_set:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: "Red Hat Enterprise Linux 7 Server (RPMs)"
-      organization: "Default Organization"
-      product: "Red Hat Enterprise Linux Server"
-      state: 'disabled'
-      repositories:
-      - releasever: "7.0"
-        basearch: "x86_64"
-      - releasever: "7.1"
-        basearch: "x86_64"
-      - releasever: "7.2"
-        basearch: "x86_64"
-      - releasever: "7.3"
-        basearch: "x86_64"
+  - include_tasks: tasks/repository_set.yml
+    vars:
+      name: Red Hat Enterprise Linux 7 Server (RPMs)
+      expected_change: true
+  - include_tasks: tasks/repository_set.yml
+    vars:
+      name: Red Hat Enterprise Linux 7 Server (RPMs)
+      product: Red Hat Enterprise Linux Server
+      expected_change: false
+  - include_tasks: tasks/repository_set.yml
+    vars:
+      label: rhel-7-server-rpms
+      expected_change: false
+  - include_tasks: tasks/repository_set.yml
+    vars:
+      label: rhel-7-server-rpms
+      state: disabled
+      expected_change: true
+  - include_tasks: tasks/repository_set.yml
+    vars:
+      name: Red Hat Enterprise Linux 7 Server (RPMs)
+      product: Red Hat Enterprise Linux Server
+      state: disabled
+      expected_change: false
