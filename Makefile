@@ -8,8 +8,10 @@ MODULE_PATH=modules/$(MODULE).py
 DEBUG_DATA_PATH=test/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 
-PR_MSG=$(shell http --json "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq -r .body | tr -C "[:alnum:]" _)
-NAILGUN_PR_NUMBER=$(shell echo $(PR_MSG) | sed -n 's/.*SatelliteQE_nailgun[^0-9]*\([0-9]*\).*/\1/p')
+ifdef TRAVIS_PULL_REQUEST
+	PR_MSG:=$(shell http --json "https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}" | jq -r .body | tr -C "[:alnum:] \n" _)
+	NAILGUN_PR_NUMBER:=$(shell echo $(PR_MSG) | sed -n 's/.*SatelliteQE_nailgun[^0-9]*\([0-9]*\).*/\1/p')
+endif
 
 default: help
 help:
@@ -58,9 +60,14 @@ test-setup: test/test_playbooks/server_vars.yml
 	pip install -r requirements-dev.txt
 	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt 
 ifdef TRAVIS_PULL_REQUEST
-ifneq ("$(NAILGUN_PR_NUMBER)", "")
-	echo pip install git+https://github.com/SatelliteQE/nailgun@refs/pull/$(NAILGUN_PR_NUMBER)/merge
+	@echo "Handling dependencies for PR #$(TRAVIS_PULL_REQUEST)"
+	@echo "Repository: $(TRAVIS_REPO_SLUG)"
+	@echo "$(PR_MSG)"
+	@echo "$(NAILGUN_PR_NUMBER)"
+	@echo "$(TRAVIS_COMMIT_MESSAGE)"
 endif
+ifneq ("$(NAILGUN_PR_NUMBER)", "")
+	pip install git+https://github.com/SatelliteQE/nailgun@refs/pull/$(NAILGUN_PR_NUMBER)/merge
 endif
 
 test/test_playbooks/server_vars.yml:
