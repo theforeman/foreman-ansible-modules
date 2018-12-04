@@ -28,6 +28,7 @@ MODULES = [
     'repository',
     'repository_sync',
     'setting',
+    'subnet',
     'sync_plan',
     'upload',
 ]
