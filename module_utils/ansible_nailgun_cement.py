@@ -481,8 +481,9 @@ def find_product(module, name, organization, failsafe=False):
 def find_repositories(module, repositories, organization, failsafe=False):
     products = dict()
     for repository in repositories:
-        products[repository['name']] = find_product(module, repository['product'], organization)
-    return list(map(lambda repository: find_repository(module, repository['name'], products[repository['name']], failsafe=failsafe), repositories))
+        if repository['product'] not in products:
+            products[repository['product']] = find_product(module, repository['product'], organization)
+    return list(map(lambda repository: find_repository(module, repository['name'], products[repository['product']], failsafe=failsafe), repositories))
 
 
 def find_repository(module, name, product, failsafe=False):
