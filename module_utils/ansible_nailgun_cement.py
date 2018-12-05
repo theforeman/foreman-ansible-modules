@@ -43,6 +43,8 @@ from nailgun.entities import (
 )
 from nailgun import entity_mixins, entity_fields
 
+from ansible.module_utils.parsing.convert_bool import boolean
+
 
 class TemplateInput(
     Entity,
@@ -240,12 +242,12 @@ def update_fields(new, old, fields):
 
 
 # Common functionality to manipulate entities
-def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=None):
-    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing)
+def naildown_entity_state(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None):
+    changed, _ = naildown_entity(entity_class, entity_dict, entity, state, module, check_missing, check_type)
     return changed
 
 
-def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=None):
+def naildown_entity(entity_class, entity_dict, entity, state, module, check_missing=None, check_type=None):
     """ Ensure that a given entity has a certain state """
     changed, changed_entity = False, entity
     if state == 'present_with_defaults':
@@ -255,7 +257,7 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
         if entity is None:
             changed, changed_entity = create_entity(entity_class, entity_dict, module)
         else:
-            changed, changed_entity = update_entity(entity, entity_dict, module, check_missing)
+            changed, changed_entity = update_entity(entity, entity_dict, module, check_missing, check_type)
     elif state == 'copied':
         new_entity = entity_class(name=entity_dict['new_name'], organization=entity_dict['organization']).search()
         if entity is not None and len(new_entity) == 0:
@@ -342,15 +344,26 @@ def fields_equal(value1, value2):
     return value1 == value2
 
 
-def update_entity(old_entity, entity_dict, module, check_missing):
+def update_entity(old_entity, entity_dict, module, check_missing, check_type):
     try:
         volatile_entity = old_entity.read()
         result = volatile_entity
         fields = []
         for key, value in volatile_entity.get_values().items():
-            if key in entity_dict and not fields_equal(value, entity_dict[key]):
-                volatile_entity.__setattr__(key, entity_dict[key])
-                fields.append(key)
+            if key in entity_dict:
+                if check_type and not isinstance(value, type(entity_dict[key])):
+                    if isinstance(value, bool):
+                        entity_dict[key] = boolean(entity_dict[key])
+                    elif isinstance(value, list):
+                        entity_dict[key] = str(sorted(entity_dict[key].split(',')))
+                        value = str(sorted([str(v) for v in value]))
+                    else:
+                        if value is None:
+                            value = ""
+                        entity_dict[key] = type(value)(entity_dict[key])
+                if not fields_equal(value, entity_dict[key]):
+                    volatile_entity.__setattr__(key, entity_dict[key])
+                    fields.append(key)
             # check_missing is a special case, Foreman sometimes returns different values
             # depending on what 'type' of same object you are requesting. Content View
             # Filters are a prime example. We list these attributes in `check_missing`

@@ -62,6 +62,7 @@ options:
     description:
       - value to set the Setting to
       - if missing, reset to default
+      - use a comma separated list for an array
     required: false
 '''
 
@@ -157,7 +158,7 @@ def main():
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module)
+    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module, check_type=True)
 
     module.exit_json(changed=changed, foreman_setting=entity.to_json_dict())
 

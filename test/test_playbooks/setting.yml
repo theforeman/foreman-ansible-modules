@@ -6,6 +6,7 @@
     include_vars:
       file: server_vars.yml
   - include: tasks/setting.yml
+
 - hosts: tests
   gather_facts: false
   tasks:
@@ -29,5 +30,29 @@
       expected_change: true
   - include: tasks/setting.yml
     vars:
+      expected_change: false
+
+  - include: tasks/setting.yml
+    vars:
+      setting_name: excluded_facts
+      setting_value: foo,bar
+      setting_value_override: ['bar', 'foo']
+      expected_change: true
+  - include: tasks/setting.yml
+    vars:
+      setting_name: excluded_facts
+      setting_value: foo,bar
+      setting_value_override: ['bar', 'foo']
+      expected_change: false
+
+  - include: tasks/setting.yml
+    vars:
+      setting_name: content_action_accept_timeout
+      setting_value: 99
+      expected_change: true
+  - include: tasks/setting.yml
+    vars:
+      setting_name: content_action_accept_timeout
+      setting_value: 99
       expected_change: false
 ...
