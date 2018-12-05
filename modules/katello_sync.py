@@ -72,6 +72,42 @@ EXAMPLES = '''
     repository: "My repository"
     product: "My Product"
     organization: "Default Organization"
+
+# Sync all repositories
+- name: Get all repositories
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    resource: Repository
+  register: repositories
+
+- name: Kick off repository Sync tasks
+  katello_sync:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    product: "{{ item.product.name }}"
+    repository:  "{{ item.name }}"
+    organization: "Default Organization"
+  loop: "{{ repositories.resources }}"
+  when: item.url  # Not all repositories have a URL
+  async: 999999
+  poll: 0
+  register: repo_sync_sleeper
+
+- name: Wait until all Syncs have finished
+  async_status:
+    jid: "{{ repo_sync_sleeper_item.ansible_job_id }}"
+  loop: "{{ repo_sync_sleeper.results }}"
+  loop_control:
+    loop_var: repo_sync_sleeper_item
+  when: sync_sleeper_item.ansible_job_id is defined  # Skip items that were skipped in the previous task
+  register: async_job_result
+  until: async_job_result.finished
+  retries: 999
+  delay: 10
+
 '''
 
 RETURN = '''# '''
