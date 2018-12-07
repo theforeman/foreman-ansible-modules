@@ -123,7 +123,7 @@ def main():
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             resource=dict(choices=nailgun_entites(), required=True),
-            search=dict(),
+            search=dict(default=""),
         ),
         supports_check_mode=True,
     )
