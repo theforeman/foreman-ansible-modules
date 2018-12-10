@@ -17,6 +17,7 @@ from nailgun.entities import (
     ContentViewVersion,
     Domain,
     Subnet,
+    Environment,
     Errata,
     File,
     LifecycleEnvironment,
@@ -475,6 +476,11 @@ def find_domains(module, names, failsafe=False):
 def find_domain(module, name, failsafe=False):
     domain = Domain().search(query={'search': 'name="{}"'.format(name)})
     return handle_find_response(module, domain, message="No domain found for %s" % name, failsafe=failsafe)
+
+
+def find_environment(module, name, failsafe=False):
+    env = Environment().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, env, message="No environment found for %s" % name, failsafe=failsafe)
 
 
 def find_subnet(module, name, failsafe=False):

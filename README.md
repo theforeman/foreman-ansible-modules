@@ -101,6 +101,7 @@ This is a list of modules currently in the repository (please add to the list if
  * foreman_compute_resource: create and maintain compute resources
  * foreman_domain: create and maintain domains
  * foreman_subnet: create and maintain subnets
+ * foreman_environment: create and maintain environments (puppet)
  * foreman_job_template: create and maintain job templates and associated template inputs
  * foreman_setting: set and reset settings
  * katello_content_credential: create and maintain content credentials
