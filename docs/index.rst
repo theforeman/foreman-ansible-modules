@@ -10,11 +10,10 @@ Welcome to Foreman Ansible Modules's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   modules/list_of_all_modules
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
