@@ -12,10 +12,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
 
 # -- Project information -----------------------------------------------------
 
@@ -40,8 +39,13 @@ release = ''
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
+    'sphinx.ext.intersphinx'
 ]
+
+ansible_extensions_path = os.path.abspath('.tmp/ansible/docs/docsite/_extensions')
+if os.path.exists(ansible_extensions_path):
+    sys.path.append(ansible_extensions_path)
+    extensions.append('pygments_lexer')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
