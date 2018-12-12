@@ -202,7 +202,7 @@ EXAMPLES = '''
     password:  "changeme"
     state: present
     layout: '{{ lookup("file", item.src) }}'
-  with_filetree: '{{ /path/to/partition/tables/templates" }}'
+  with_filetree: '/path/to/partition/tables'
   when: item.state == 'file'
 
 
