@@ -471,7 +471,7 @@ Examples
         password:  "changeme"
         state: present
         layout: '{{ lookup("file", item.src) }}'
-      with_filetree: '{{ /path/to/Job/Templates/templates" }}'
+      with_filetree: '/path/to/job/templates'
       when: item.state == 'file'
 
 
