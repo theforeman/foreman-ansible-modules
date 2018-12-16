@@ -9,6 +9,7 @@ from nailgun.config import ServerConfig
 from nailgun.entities import (
     _check_for_value,
     ActivationKey,
+    AuthSourceLDAP,
     Entity,
     AbstractContentViewFilter,
     CommonParameter,
@@ -32,11 +33,13 @@ from nailgun.entities import (
     Realm,
     Repository,
     RepositorySet,
+    Role,
     Setting,
     SmartProxy,
     Subnet,
     Subscription,
     TemplateKind,
+    User,
     AbstractComputeResource,
     OSDefaultTemplate,
     ComputeProfile,
@@ -440,6 +443,20 @@ def find_content_view_filter(module, name, content_view, failsafe=False):
     return handle_find_response(module, content_view_filter.search(), message="No content view filter found for %s" % name, failsafe=failsafe)
 
 
+def find_user(module, login, failsafe=False):
+    user = User(login=login).search(set(), {'search': 'login="{}"'.format(login)})
+    return handle_find_response(module, user, message="No user found for %s" % login, failsafe=failsafe)
+
+
+def find_roles(module, roles):
+    return list(map(lambda role: find_role(module, role), roles))
+
+
+def find_role(module, name, failsafe=False):
+    user = Role(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, user, message="No role found for %s" % name, failsafe=failsafe)
+
+
 def find_organizations(module, organizations):
     return list(map(lambda organization: find_organization(module, organization), organizations))
 
@@ -456,6 +473,11 @@ def find_locations(module, locations):
 def find_location(module, name, failsafe=False):
     loc = Location(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, loc, message="No location found for %s" % name, failsafe=failsafe)
+
+
+def find_auth_source_ldap(module, name, failsafe=False):
+    auth_source = AuthSourceLDAP(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, auth_source, message="No authentication source found for %s" % name, failsafe=failsafe)
 
 
 def find_compute_resource(module, name, failsafe=False):
