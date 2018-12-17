@@ -1,0 +1,37 @@
+---
+- name: "Ensure user '{{ user_login }}' is {{ user_state }}"
+  vars:
+    - user_login: "test_user"
+    - user_firstname: "Test"
+    - user_lastname: "User"
+    - user_is_admin: "true"
+    - user_password: "secret"
+    - user_location: "Default Location"
+    - user_organization: "Default Organization"
+    - user_mail: "testuser@example.com"
+  foreman_user:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    login: "{{ user_login }}"
+    first_name: "{{ user_firstname }}"
+    last_name: "{{ user_lastname }}"
+    admin: "{{ user_is_admin }}"
+    user_password: "{{ user_password }}"
+    default_location: "{{ user_location }}"
+    default_organization: "{{ user_organization }}"
+    auth_source: INTERNAL
+    locations:
+      - "{{ user_location }}"
+    organizations:
+      - "{{ user_organization }}"
+    roles:
+      - View hosts
+    mail: "{{ user_mail }}"
+    state: "{{ user_state }}"
+  register: result
+- fail:
+    msg: "Ensuring user is {{ user_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...

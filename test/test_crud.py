@@ -31,6 +31,7 @@ MODULES = [
     'subnet',
     'sync_plan',
     'upload',
+    'user',
 ]
 
 

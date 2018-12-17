@@ -1,0 +1,20 @@
+---
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/user.yml
+    vars:
+      user_state: present
+      expected_change: true
+  - include: tasks/user.yml
+    vars:
+      user_state: present
+      expected_change: false
+  - include: tasks/user.yml
+    vars:
+      user_state: absent
+      expected_change: true
+...
