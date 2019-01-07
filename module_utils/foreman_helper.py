@@ -31,3 +31,21 @@ def parse_template_from_file(file_name, module):
     except Exception as e:
         module.fail_json(msg='Error while reading template file: ' + str(e))
     return template_dict
+
+
+# Helper for titles
+def split_fqn(title):
+    """ Split fully qualified name (title) in parent title and name """
+    fqn = title.split('/')
+    if len(fqn) > 1:
+        name = fqn.pop()
+        return ('/'.join(fqn), name)
+    else:
+        return (None, title)
+
+
+def build_fqn(name_or_title, parent=None):
+    if '/' not in name_or_title and parent:
+        return "%s/%s" % (parent, name_or_title)
+    else:
+        return name_or_title

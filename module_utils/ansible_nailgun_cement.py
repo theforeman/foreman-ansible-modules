@@ -453,9 +453,9 @@ def find_locations(module, locations):
     return list(map(lambda location: find_location(module, location), locations))
 
 
-def find_location(module, name, failsafe=False):
-    loc = Location(name=name).search(set(), {'search': 'name="{}"'.format(name)})
-    return handle_find_response(module, loc, message="No location found for %s" % name, failsafe=failsafe)
+def find_location(module, title, failsafe=False):
+    loc = Location(name=title.split('/')[-1]).search(set(), {'search': 'title="{}"'.format(title)})
+    return handle_find_response(module, loc, message="No location found for %s" % title, failsafe=failsafe)
 
 
 def find_compute_resource(module, name, failsafe=False):

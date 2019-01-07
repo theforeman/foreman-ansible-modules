@@ -50,11 +50,11 @@ options:
     type: bool
   name:
     description:
-      - Name of the Foreman Location
+      - Name or Title of the Foreman Location
     required: true
   parent:
     description:
-      - Name of a parent Location for nesting
+      - Title of a parent Location for nesting
   state:
     description:
       - State of the Location
@@ -65,12 +65,42 @@ options:
 '''
 
 EXAMPLES = '''
+# Create a simple location
 - name: "Create CI Location"
   foreman_location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My Cool New Location"
+    state: present
+
+# Create a nested location
+- name: "Create Nested CI Location"
+  foreman_location:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Nested location"
+    parent: "My Cool New Location"
+    state: present
+
+# Create a new nested location with parent included in name
+- name: "Create New Nested Location"
+  foreman_location:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Cool New Location/New nested location"
+    state: present
+
+# Move a nested location to another parent
+- name: "Create Nested CI Location"
+  foreman_location:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Cool New Location/New nested location"
+    parent: "My Cool New Location/My Nested location"
     state: present
 '''
 
@@ -84,6 +114,10 @@ try:
         find_location,
         naildown_entity_state,
         sanitize_entity_dict,
+    )
+    from ansible.module_utils.foreman_helper import (
+        split_fqn,
+        build_fqn,
     )
     from nailgun.entities import Location
 
@@ -135,18 +169,23 @@ def main():
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
     ping_server(module)
+    name_or_title = entity_dict.pop('name')
+    parent = entity_dict.pop('parent', None)
+
+    # Get short name and parent from provided name
+    parent_from_title, name = split_fqn(name_or_title)
+
     try:
-        entities = find_entities(Location, name=entity_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
+        # Try to find the Location to work on
+        entity = find_location(module, title=build_fqn(name_or_title, parent), failsafe=True)
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
-    parent = entity_dict.pop('parent', None)
+    entity_dict['name'] = name
     if parent:
         entity_dict['parent'] = find_location(module, parent)
+    elif parent_from_title:
+        entity_dict['parent'] = find_location(module, parent_from_title)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
