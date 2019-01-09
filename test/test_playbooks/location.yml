@@ -1,4 +1,14 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+
 - hosts: tests
   gather_facts: false
   tasks:
@@ -20,12 +30,16 @@
       location_state: present
       location_name: Sub Location 1
       location_parent: Test Location
+      location_organizations:
+        - Test Organization
       expected_change: true
   - include: tasks/location.yml
     vars:
       location_state: present
       location_name: Sub Location 1
       location_parent: Test Location
+      location_organizations:
+        - Test Organization
       expected_change: false
   - include: tasks/location.yml
     vars:
@@ -77,4 +91,15 @@
       location_state: absent
       location_name: Test Location
       expected_change: true
+
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+
 ...
