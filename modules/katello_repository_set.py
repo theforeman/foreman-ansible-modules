@@ -93,6 +93,25 @@ EXAMPLES = '''
       basearch: "x86_64"
     state: enabled
 
+- name: "Enable RHEL 7 RPMs repositories with label"
+  katello_repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    verify_ssl: false
+    organization: "Default Organization"
+    label: rhel-7-server-rpms
+    repositories:
+    - releasever: "7.0"
+      basearch: "x86_64"
+    - releasever: "7.1"
+      basearch: "x86_64"
+    - releasever: "7.2"
+      basearch: "x86_64"
+    - releasever: "7.3"
+      basearch: "x86_64"
+    state: enabled
+
 - name: "Disable RHEL 7 Extras RPMs repository"
   katello_repository_set:
     username: "admin"
@@ -132,11 +151,12 @@ def get_desired_repos(desired_substitutions, available_repos):
     return desired_repos
 
 
-def repository_set(module, name, organization, product, state, repositories=[]):
+def repository_set(module, name, organization, product, label, state, repositories=[]):
     changed = False
     organization = find_organization(module, organization)
-    product = find_product(module, product, organization)
-    repo_set = find_repository_set(module, name=name, product=product)
+    if product:
+        product = find_product(module, product, organization)
+    repo_set = find_repository_set(module, name=name, product=product, organization=organization, label=label)
 
     available_repos = repo_set.available_repositories()['results']
     current_repos = map(lambda repo: repo.read(), repo_set.repositories)
@@ -152,13 +172,15 @@ def repository_set(module, name, organization, product, state, repositories=[]):
 
     if state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
-            repo_to_enable = (r for r in available_repos if r['repo_name'] == repo).next()
+            repo_to_enable = next((r for r in available_repos if r['repo_name'] == repo))
+            repo_to_enable['substitutions']['product_id'] = repo_set.product.id
             if not module.check_mode:
                 repo_set.enable(data=repo_to_enable['substitutions'])
             changed = True
     elif state == 'disabled':
         for repo in current_repo_names & desired_repo_names:
-            repo_to_disable = (r for r in available_repos if r['repo_name'] == repo).next()
+            repo_to_disable = next((r for r in available_repos if r['repo_name'] == repo))
+            repo_to_disable['substitutions']['product_id'] = repo_set.product.id
             if not module.check_mode:
                 repo_set.disable(data=repo_to_disable['substitutions'])
             changed = True
@@ -172,11 +194,12 @@ def main():
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            name=dict(required=True),
-            product=dict(),
+            name=dict(default=None),
+            product=dict(default=None),
             organization=dict(required=True),
+            label=dict(default=None),
             repositories=dict(required=True, type='list'),
-            state=dict(required=True, choices=['disabled', 'enabled']),
+            state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         supports_check_mode=True,
     )
@@ -190,6 +213,7 @@ def main():
     verify_ssl = module.params['verify_ssl']
     name = module.params['name']
     product = module.params['product']
+    label = module.params['label']
     organization = module.params['organization']
     repositories = module.params['repositories']
     state = module.params['state']
@@ -198,7 +222,7 @@ def main():
     ping_server(module)
 
     try:
-        changed = repository_set(module, name, organization, product, state, repositories=repositories)
+        changed = repository_set(module, name, organization, product, label, state, repositories=repositories)
         module.exit_json(changed=changed)
     except Exception as e:
         module.fail_json(msg=e)
