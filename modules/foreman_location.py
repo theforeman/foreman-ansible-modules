@@ -55,6 +55,10 @@ options:
   parent:
     description:
       - Title of a parent Location for nesting
+  organizations:
+    description:
+      - List of organizations the location should be assigned to
+    type: list
   state:
     description:
       - State of the Location
@@ -72,6 +76,8 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "My Cool New Location"
+    organizations:
+      - "Default Organization"
     state: present
 
 # Create a nested location
@@ -112,6 +118,7 @@ try:
         ping_server,
         find_entities,
         find_location,
+        find_organizations,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -134,6 +141,7 @@ from ansible.module_utils.basic import AnsibleModule
 name_map = {
     'name': 'name',
     'parent': 'parent',
+    'organizations': 'organization',
 }
 
 
@@ -146,6 +154,7 @@ def main():
             verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             parent=dict(),
+            organizations=dict(type='list'),
             state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
@@ -175,18 +184,16 @@ def main():
     # Get short name and parent from provided name
     parent_from_title, name = split_fqn(name_or_title)
 
-    try:
-        # Try to find the Location to work on
-        entity = find_location(module, title=build_fqn(name_or_title, parent), failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
-
     entity_dict['name'] = name
     if parent:
         entity_dict['parent'] = find_location(module, parent)
     elif parent_from_title:
         entity_dict['parent'] = find_location(module, parent_from_title)
 
+    if 'organizations' in entity_dict:
+        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
+
+    entity = find_location(module, title=build_fqn(name_or_title, parent), failsafe=True)
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
     changed = naildown_entity_state(Location, entity_dict, entity, state, module)
