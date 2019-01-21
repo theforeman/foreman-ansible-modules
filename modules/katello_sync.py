@@ -102,7 +102,7 @@ EXAMPLES = '''
   loop: "{{ repo_sync_sleeper.results }}"
   loop_control:
     loop_var: repo_sync_sleeper_item
-  when: sync_sleeper_item.ansible_job_id is defined  # Skip items that were skipped in the previous task
+  when: repo_sync_sleeper_item.ansible_job_id is defined  # Skip items that were skipped in the previous task
   register: async_job_result
   until: async_job_result.finished
   retries: 999
