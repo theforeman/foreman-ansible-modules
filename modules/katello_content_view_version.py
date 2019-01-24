@@ -249,8 +249,8 @@ def main():
             if 'force_metadata_regeneration' in params_dict:
                 kwargs['data'].update(force_yum_metadata_regeneration=params_dict['force_metadata_regeneration'])
             if 'version' in params_dict:
-                kwargs['data'].update(major=map(int, str(params_dict['version']).split('.'))[0])
-                kwargs['data'].update(minor=map(int, str(params_dict['version']).split('.'))[1])
+                kwargs['data'].update(major=list(map(int, str(params_dict['version']).split('.')))[0])
+                kwargs['data'].update(minor=list(map(int, str(params_dict['version']).split('.')))[1])
 
             response = content_view.publish(params_dict['synchronous'], **kwargs)
             changed = True
