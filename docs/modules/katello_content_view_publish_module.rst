@@ -5,13 +5,13 @@
 .. _katello_content_view_publish_module:
 
 
-katello_content_view_publish - Publish a Katello content view
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+katello_content_view_publish -- Publish a Katello content view
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 .. contents::
    :local:
-   :depth: 2
+   :depth: 1
 
 DEPRECATED
 ----------
@@ -28,7 +28,7 @@ Synopsis
 
 
 Requirements
-~~~~~~~~~~~~
+------------
 The below requirements are needed on the host that executes this module.
 
 - nailgun >= 0.28.0
@@ -50,7 +50,10 @@ Parameters
                     <tr>
                                                                 <td colspan="1">
                     <b>content_view</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -60,7 +63,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>organization</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -70,7 +76,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>password</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -80,7 +89,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>server_url</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -90,7 +102,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>username</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -100,9 +115,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>verify_ssl</b>
-                    <br/><div style="font-size: small; color: red">bool</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                                                                                                                    <ul><b>Choices:</b>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
                                                                                                                                                                                                 <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
                                                                                     </ul>
@@ -113,6 +131,7 @@ Parameters
             </tr>
                         </table>
     <br/>
+
 
 
 
@@ -137,11 +156,13 @@ Examples
 Status
 ------
 
-This module is flagged as **deprecated** and will be removed in version 2.8. For more information see `DEPRECATED`_.
+
+- This module will be removed in version 2.8. *[deprecated]*
+- For more information see `DEPRECATED`_.
 
 
-Author
-~~~~~~
+Authors
+~~~~~~~
 
 - Eric D Helms (@ehelms)
 

@@ -5,13 +5,13 @@
 .. _katello_content_view_module:
 
 
-katello_content_view - Create and Manage Katello content views
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+katello_content_view -- Create and Manage Katello content views
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 .. contents::
    :local:
-   :depth: 2
+   :depth: 1
 
 
 Synopsis
@@ -21,7 +21,7 @@ Synopsis
 
 
 Requirements
-~~~~~~~~~~~~
+------------
 The below requirements are needed on the host that executes this module.
 
 - nailgun >= 0.28.0
@@ -42,28 +42,86 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
-                    <b>name</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <b>auto_publish</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                            </div>
+                                    </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                                                        <div>Auto publish composite view when a new version of a component content view is created.</div>
+                                                    <div>Also note auto publish will only happen when the component is marked &quot;latest&quot;.</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>components</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>Name of the Katello product</div>
+                                                                        <div>List of content views to includes name and either version or latest.</div>
+                                                    <div>Ignored if <code>composite</code> is False.</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>composite</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                            </div>
+                                    </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                                                        <div>A composite view contains other content views.</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>name</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                                                        <div>Name of the Katello Content View</div>
                                                                                 </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
                     <b>organization</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>Organization that the Product is in</div>
+                                                                        <div>Organization that the Content View is in</div>
                                                                                 </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
                     <b>password</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -73,17 +131,24 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>repositories</b>
-                    <br/><div style="font-size: small; color: red">list</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>List of repositories that include name and product</div>
+                                                                        <div>List of repositories that include name and product.</div>
+                                                    <div>Ignored if <code>composite</code> is True.</div>
                                                                                 </td>
             </tr>
                                 <tr>
                                                                 <td colspan="1">
                     <b>server_url</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -93,9 +158,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>state</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                            <ul><b>Choices:</b>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                                                                                                                                                                                                 <li>present_with_defaults</li>
                                                                                                                                                                                                 <li>absent</li>
@@ -108,7 +176,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>username</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -118,9 +189,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>verify_ssl</b>
-                    <br/><div style="font-size: small; color: red">bool</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                                                                                                                    <ul><b>Choices:</b>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
                                                                                                                                                                                                 <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
                                                                                     </ul>
@@ -131,6 +205,7 @@ Parameters
             </tr>
                         </table>
     <br/>
+
 
 
 
@@ -151,6 +226,21 @@ Examples
           - name: 'Fedora 26'
             product: 'Fedora'
 
+    - name: "Create a composite content view
+      katello_content_view:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Fedora CCV"
+        organization: "My Cool new Organization"
+        composite: true
+        auto_publish: true
+        components:
+          - name: Fedora CV
+            content_view: 1.0
+          - name: Internal CV
+            content_view: true
+
 
 
 
@@ -160,23 +250,18 @@ Status
 
 
 
-This module is flagged as **preview** which means that it is not guaranteed to have a backwards compatible interface.
+
+- This module is not guaranteed to have a backwards compatible interface. *[preview]*
 
 
-
-Maintenance
------------
-
-This module is flagged as **community** which means that it is maintained by the Ansible Community. See :ref:`Module Maintenance & Support <modules_support>` for more info.
-
-For a list of other modules that are also maintained by the Ansible Community, see :ref:`here <community_supported>`.
+- This module is :ref:`maintained by the Ansible Community <modules_support>`. *[community]*
 
 
 
 
 
-Author
-~~~~~~
+Authors
+~~~~~~~
 
 - Eric D Helms (@ehelms)
 

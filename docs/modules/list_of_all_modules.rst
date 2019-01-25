@@ -1,3 +1,5 @@
+:orphan:
+
 .. _all_modules:
 
 All modules
@@ -8,6 +10,7 @@ All modules
   * :ref:`foreman_compute_profile_module` 
   * :ref:`foreman_compute_resource_module` 
   * :ref:`foreman_domain_module` 
+  * :ref:`foreman_environment_module` 
   * :ref:`foreman_global_parameter_module` 
   * :ref:`foreman_installation_medium_module` 
   * :ref:`foreman_job_template_module` 

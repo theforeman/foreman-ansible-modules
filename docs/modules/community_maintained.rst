@@ -2,12 +2,29 @@
 
 :orphan:
 
+*******************************************
 Modules Maintained by the Ansible Community
-```````````````````````````````````````````
+*******************************************
+
+.. contents::
+   :local:
+
+
+.. _community_supported_categories:
+
+
+
+
+
+.. _community_supported_:
+
+
+
 
   * :ref:`foreman_compute_profile_module` 
   * :ref:`foreman_compute_resource_module` 
   * :ref:`foreman_domain_module` 
+  * :ref:`foreman_environment_module` 
   * :ref:`foreman_global_parameter_module` 
   * :ref:`foreman_installation_medium_module` 
   * :ref:`foreman_job_template_module` 
@@ -38,6 +55,8 @@ Modules Maintained by the Ansible Community
   * :ref:`katello_sync_plan_module` 
   * :ref:`katello_upload_module` 
   * :ref:`redhat_manifest_module` 
+
+
 
 .. note::
     - **(D)**: This marks a module as deprecated, which means a module is kept for backwards compatibility but usage is discouraged.

@@ -5,13 +5,13 @@
 .. _foreman_subnet_module:
 
 
-foreman_subnet - Manage Foreman Subnets using Foreman API
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+foreman_subnet -- Manage Foreman Subnets using Foreman API
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 .. contents::
    :local:
-   :depth: 2
+   :depth: 1
 
 
 Synopsis
@@ -21,7 +21,7 @@ Synopsis
 
 
 Requirements
-~~~~~~~~~~~~
+------------
 The below requirements are needed on the host that executes this module.
 
 - nailgun >= 0.32.0
@@ -42,9 +42,12 @@ Parameters
                     <tr>
                                                                 <td colspan="1">
                     <b>boot_mode</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                            <ul><b>Choices:</b>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>DHCP</b>&nbsp;&larr;</div></li>
                                                                                                                                                                                                 <li>Static</li>
                                                                                     </ul>
@@ -56,7 +59,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>cidr</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -66,7 +72,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>dhcp_proxy</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -76,7 +85,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>discovery_proxy</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -86,7 +98,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>dns_primary</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -96,7 +111,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>dns_proxy</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -106,7 +124,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>dns_secondary</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -116,7 +137,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>domains</b>
-                    <br/><div style="font-size: small; color: red">list</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">None</div>
                                     </td>
@@ -127,7 +151,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>from_ip</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -137,7 +164,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>gateway</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -147,9 +177,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>ipam</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                            <ul><b>Choices:</b>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>DHCP</b>&nbsp;&larr;</div></li>
                                                                                                                                                                                                 <li>Internal DB</li>
                                                                                     </ul>
@@ -161,7 +194,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>locations</b>
-                    <br/><div style="font-size: small; color: red">list</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">None</div>
                                     </td>
@@ -172,7 +208,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>mask</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -182,7 +221,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>mtu</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -192,7 +234,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>name</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -202,7 +247,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>network</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -212,9 +260,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>network_type</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                            <ul><b>Choices:</b>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>IPv4</b>&nbsp;&larr;</div></li>
                                                                                                                                                                                                 <li>IPv6</li>
                                                                                     </ul>
@@ -226,7 +277,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>organizations</b>
-                    <br/><div style="font-size: small; color: red">list</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">None</div>
                                     </td>
@@ -237,7 +291,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>password</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -247,7 +304,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>remote_execution_proxies</b>
-                    <br/><div style="font-size: small; color: red">list</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">None</div>
                                     </td>
@@ -258,7 +318,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>server_url</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -268,9 +331,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>state</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                            <ul><b>Choices:</b>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
                                                                                                                                                                                                 <li>absent</li>
                                                                                     </ul>
@@ -282,7 +348,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>tftp_proxy</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -292,7 +361,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>to_ip</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -302,7 +374,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>username</b>
-                                        <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -312,9 +387,12 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>verify_ssl</b>
-                    <br/><div style="font-size: small; color: red">bool</div>                                                        </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                            </div>
+                                    </td>
                                 <td>
-                                                                                                                                                                                                                    <ul><b>Choices:</b>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
                                                                                                                                                                                                 <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
                                                                                     </ul>
@@ -326,7 +404,10 @@ Parameters
                                 <tr>
                                                                 <td colspan="1">
                     <b>vlanid</b>
-                                                                            </td>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
@@ -335,6 +416,7 @@ Parameters
             </tr>
                         </table>
     <br/>
+
 
 
 
@@ -380,23 +462,18 @@ Status
 
 
 
-This module is flagged as **preview** which means that it is not guaranteed to have a backwards compatible interface.
+
+- This module is not guaranteed to have a backwards compatible interface. *[preview]*
 
 
-
-Maintenance
------------
-
-This module is flagged as **community** which means that it is maintained by the Ansible Community. See :ref:`Module Maintenance & Support <modules_support>` for more info.
-
-For a list of other modules that are also maintained by the Ansible Community, see :ref:`here <community_supported>`.
+- This module is :ref:`maintained by the Ansible Community <modules_support>`. *[community]*
 
 
 
 
 
-Author
-~~~~~~
+Authors
+~~~~~~~
 
 - Baptiste Agasse (@bagasse)
 

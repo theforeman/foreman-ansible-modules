@@ -2,8 +2,19 @@
 
 :orphan:
 
+**********************************************
 Modules Maintained by the Ansible Network Team
-``````````````````````````````````````````````
+**********************************************
+
+.. contents::
+   :local:
+
+
+.. _network_supported_categories:
+
+
+
+
 
 
 .. note::

@@ -1,13 +1,14 @@
-:source: foreman_search_facts.py
+:source: foreman_environment.py
 
 :orphan:
 
-.. _foreman_search_facts_module:
+.. _foreman_environment_module:
 
 
-foreman_search_facts -- Gather facts about Foreman resources
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+foreman_environment -- Manage Foreman Environment (Puppet) using Foreman API
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. versionadded:: 2.5
 
 .. contents::
    :local:
@@ -16,7 +17,7 @@ foreman_search_facts -- Gather facts about Foreman resources
 
 Synopsis
 --------
-- Gather facts about Foreman resources
+- Create and Delete Foreman Environment using Foreman API
 
 
 
@@ -24,7 +25,8 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- nailgun
+- nailgun >= 0.30.0
+- ansible >= 2.3
 
 
 Parameters
@@ -40,6 +42,45 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
+                    <b>locations</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                                                        <div>List of locations the environent should be assigned to</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>name</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                         / <span style="color: red">required</span>                    </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                                                        <div>The full environment name</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>organizations</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                                            </div>
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                                                        <div>List of organizations the environment should be assigned to</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <b>password</b>
                     <div style="font-size: small">
                         <span style="color: purple">-</span>
@@ -48,35 +89,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>Password for user accessing Foreman server</div>
-                                                                                </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>resource</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                            </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                                                        <div>Resource to search</div>
-                                                    <div>Set to an invalid choice like <code>foo</code> see all available options.</div>
-                                                                                </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <b>search</b>
-                    <div style="font-size: small">
-                        <span style="color: purple">-</span>
-                                            </div>
-                                    </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                                                        <div>Search query to use</div>
-                                                    <div>If None, all resources are returned</div>
+                                                                        <div>foreman user password</div>
                                                                                 </td>
             </tr>
                                 <tr>
@@ -89,7 +102,24 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>URL of Foreman server</div>
+                                                                        <div>foreman url</div>
+                                                                                </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <b>state</b>
+                    <div style="font-size: small">
+                        <span style="color: purple">-</span>
+                                            </div>
+                                    </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>absent</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                                                        <div>environment presence</div>
                                                                                 </td>
             </tr>
                                 <tr>
@@ -102,7 +132,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>Username on Foreman server</div>
+                                                                        <div>foreman username</div>
                                                                                 </td>
             </tr>
                                 <tr>
@@ -119,7 +149,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                                 <td>
-                                                                        <div>Verify SSL of the Foreman server</div>
+                                                                        <div>verify ssl connection when communicating with foreman</div>
                                                                                 </td>
             </tr>
                         </table>
@@ -134,56 +164,21 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Read a Setting"
-      foreman_search_facts:
-        username: "admin"
-        password: "changeme"
+    - name: create new environment
+      foreman_environment:
+        name: "testing"
+        locations:
+          - "Munich"
+        organizations:
+          - "ATIX"
         server_url: "https://foreman.example.com"
-        resource: Setting
-        search: name = http_proxy
-      register: result
-    - debug:
-        var: result.response[0].value
-
-    - name: "Read all Registries"
-      foreman_search_facts:
         username: "admin"
-        password: "changeme"
-        server_url: "https://foreman.example.com"
-        resource: Registry
-      register: result
-    - debug:
-        var: item.name
-      with_items: result.response
+        password: "secret"
+        verify_ssl: False
+        state: present
 
 
 
-
-Return Values
--------------
-Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
-
-.. raw:: html
-
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-                    <tr>
-                                <td colspan="1">
-                    <b>resources</b>
-                    <div style="font-size: small; color: purple">list</div>
-                                    </td>
-                <td>always</td>
-                <td>
-                                            <div>Search results from Foreman</div>
-                                        <br/>
-                                    </td>
-            </tr>
-                        </table>
-    <br/><br/>
 
 
 Status
@@ -204,8 +199,8 @@ Status
 Authors
 ~~~~~~~
 
-- Sean O'Keeffe (@sean797)
+- Bernhard Suttner(@_sbernhard) ATIX AG
 
 
 .. hint::
-    If you notice any issues in this documentation you can `edit this document <https://github.com/theforeman/foreman-ansible-modules/edit/master/modules/foreman_search_facts.py?description=%3C!---%20Your%20description%20here%20--%3E%0A%0A%2Blabel:%20docsite_pr>`_ to improve it.
+    If you notice any issues in this documentation you can `edit this document <https://github.com/theforeman/foreman-ansible-modules/edit/master/modules/foreman_environment.py?description=%3C!---%20Your%20description%20here%20--%3E%0A%0A%2Blabel:%20docsite_pr>`_ to improve it.
