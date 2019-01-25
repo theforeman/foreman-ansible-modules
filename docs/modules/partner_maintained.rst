@@ -2,8 +2,19 @@
 
 :orphan:
 
+******************************************
 Modules Maintained by the Ansible Partners
-``````````````````````````````````````````
+******************************************
+
+.. contents::
+   :local:
+
+
+.. _certified_supported_categories:
+
+
+
+
 
 
 .. note::

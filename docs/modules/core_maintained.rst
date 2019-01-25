@@ -2,8 +2,19 @@
 
 :orphan:
 
+*******************************************
 Modules Maintained by the Ansible Core Team
-```````````````````````````````````````````
+*******************************************
+
+.. contents::
+   :local:
+
+
+.. _core_supported_categories:
+
+
+
+
 
 
 .. note::
