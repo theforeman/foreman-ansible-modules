@@ -16,7 +16,10 @@ help:
 
 .PHONY: help Makefile generate-docs
 
-generate-docs:
+$(ANSIBLEGIT):
+	git clone --depth=1 http://github.com/ansible/ansible $(ANSIBLEGIT)
+
+generate-docs: $(ANSIBLEGIT)
 	rm -rf ./modules/
 	source $(ANSIBLEGIT)/hacking/env-setup && python $(ANSIBLEGIT)/docs/bin/plugin_formatter.py --module-dir ../modules --template-dir ./_templates --template-dir $(ANSIBLEGIT)/docs/templates --type rst --output-dir ./modules/
 
