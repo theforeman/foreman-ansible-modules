@@ -47,7 +47,7 @@ options:
       - Verify SSL of the Foreman server
     default: true
     type: bool
-  name:
+  description:
     description:
       - Description of the Katello host collection
     required: false
