@@ -53,7 +53,7 @@ options:
     required: false
   organization:
     description:
-      - Organization that the Product is in
+      - Organization that the host collection is in
     required: true
   name:
     description:
@@ -81,7 +81,7 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
 try:
     from nailgun.entities import (
