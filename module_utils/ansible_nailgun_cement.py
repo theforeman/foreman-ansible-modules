@@ -519,12 +519,15 @@ def find_product(module, name, organization, failsafe=False):
     del(product._fields['sync_plan'])
     return handle_find_response(module, product.search(), message="No product found for %s" % name, failsafe=failsafe)
 
+
 def find_host_collection(module, name, organization, failsafe=False):
     host_collection = HostCollection().search(query={'search': 'name="{}"'.format(name)})
     return handle_find_response(module, host_collection, message="No host collection found for %s" % name, failsafe=failsafe)
 
+
 def find_host_collections(module, names, organization, failsafe=False):
     return list(map(lambda name: find_host_collection(module, name, organization, failsafe=failsafe), names))
+
 
 def find_repositories(module, repositories, organization, failsafe=False):
     products = dict()
