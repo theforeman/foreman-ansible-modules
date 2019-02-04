@@ -80,7 +80,7 @@ options:
     type: bool
   components:
     description:
-      - List of content views to includes name and either version or latest.
+      - List of content views to includes content_view and either version or latest.
       - Ignored if C(composite) is False.
     type: list
 '''
@@ -107,10 +107,10 @@ EXAMPLES = '''
     composite: true
     auto_publish: true
     components:
-      - name: Fedora CV
-        content_view: 1.0
-      - name: Internal CV
-        content_view: true
+      - content_view: Fedora CV
+        version: 1.0
+      - content_view: Internal CV
+        latest: true
 '''
 
 RETURN = '''# '''
