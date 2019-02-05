@@ -194,7 +194,7 @@ name_map = {
     'network': 'network',
     'cidr': 'cidr',
     'mask': 'mask',
-    'from_ip': 'from',
+    'from_ip': 'from_',
     'to_ip': 'to',
     'boot_mode': 'boot_mode',
     'ipam': 'ipam',
