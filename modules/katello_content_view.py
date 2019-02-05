@@ -97,7 +97,7 @@ EXAMPLES = '''
       - name: 'Fedora 26'
         product: 'Fedora'
 
-- name: "Create a composite content view
+- name: "Create a composite content view"
   katello_content_view:
     username: "admin"
     password: "changeme"
