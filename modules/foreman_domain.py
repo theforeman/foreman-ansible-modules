@@ -27,8 +27,7 @@ version_added: "2.5"
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 requirements:
-  - "nailgun >= 0.16.0"
-  - "ansible >= 2.3"
+  - "apypie"
 options:
   name:
     description: The full DNS domain name
@@ -88,36 +87,27 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_domain,
-        find_locations,
-        find_organizations,
-        find_smart_proxy,
-        naildown_entity_state,
+    from ansible.module_utils.foreman_helper import (
         sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        Domain,
     )
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
     'description': 'fullname',
-    'dns_proxy': 'dns',
-    'locations': 'location',
-    'organizations': 'organization',
+    'dns_proxy': 'dns_id',
+    'locations': 'locations',
+    'organizations': 'organizations',
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -134,22 +124,22 @@ def main():
 
     try:
         # Try to find the Domain to work on
-        entity = find_domain(module, name=domain_dict['name'], failsafe=True)
+        entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True)
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
 
     if 'dns_proxy' in domain_dict:
-        domain_dict['dns_proxy'] = find_smart_proxy(module, domain_dict['dns_proxy'])
+        domain_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', domain_dict['dns_proxy'], thin=True)
 
     if 'locations' in domain_dict:
-        domain_dict['locations'] = find_locations(module, domain_dict['locations'])
+        domain_dict['locations'] = module.find_resources('locations', domain_dict['locations'], thin=True)
 
     if 'organizations' in domain_dict:
-        domain_dict['organizations'] = find_organizations(module, domain_dict['organizations'])
+        domain_dict['organizations'] = module.find_resources('organizations', domain_dict['organizations'], thin=True)
 
     domain_dict = sanitize_entity_dict(domain_dict, name_map)
 
-    changed = naildown_entity_state(Domain, domain_dict, entity, state, module)
+    changed = module.ensure_resource_state('domains', domain_dict, entity, state)
 
     module.exit_json(changed=changed)
 
