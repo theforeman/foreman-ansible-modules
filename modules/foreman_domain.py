@@ -107,7 +107,7 @@ except ImportError as e:
     has_import_error = True
     import_error_msg = str(e)
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -121,12 +121,8 @@ name_map = {
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             description=dict(),
             dns_proxy=dict(),

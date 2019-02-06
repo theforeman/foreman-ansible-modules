@@ -4,6 +4,23 @@
 import re
 import yaml
 
+from ansible.module_utils.basic import AnsibleModule
+
+
+class ForemanAnsibleModule(AnsibleModule):
+
+    def __init__(self, **kwargs):
+        custom_argument_spec = kwargs.pop('argument_spec', dict())
+        argument_spec = dict(
+            server_url=dict(required=True),
+            username=dict(required=True),
+            password=dict(required=True, no_log=True),
+            verify_ssl=dict(type='bool', default=True),
+        )
+        argument_spec.update(custom_argument_spec)
+        kwargs['argument_spec'] = argument_spec
+        super(ForemanAnsibleModule, self).__init__(**kwargs)
+
 
 # Helper for templates
 def parse_template(template_content, module):
