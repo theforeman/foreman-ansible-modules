@@ -128,7 +128,6 @@ def main():
             dns_proxy=dict(),
             locations=dict(type='list'),
             organizations=dict(type='list'),
-            state=dict(choices=['present', 'absent'], default='present'),
         ),
         supports_check_mode=True,
     )
