@@ -197,10 +197,6 @@ class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
         return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
 
 
-class ComputeProfile(ComputeProfile, entity_mixins.EntitySearchMixin):
-    pass
-
-
 # Connection helper
 def create_server(server_url, auth, verify_ssl):
     entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
