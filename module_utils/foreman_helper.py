@@ -24,7 +24,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
 
 def filter_module_params(module):
-    return dict([(k, v) for (k, v) in module.params.items() if v is not None])
+    return {k: v for (k, v) in module.params.items() if v is not None}
 
 
 def get_server_params(module_params):
