@@ -27,6 +27,14 @@ def filter_module_params(module):
     return dict([(k, v) for (k, v) in module.params.items() if v is not None])
 
 
+def get_server_params(module_params):
+    server_url = module_params.pop('server_url')
+    username = module_params.pop('username')
+    password = module_params.pop('password')
+    verify_ssl = module_params.pop('verify_ssl')
+    return (server_url, username, password, verify_ssl)
+
+
 # Helper for templates
 def parse_template(template_content, module):
     try:
