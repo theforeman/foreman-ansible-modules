@@ -171,7 +171,10 @@ except ImportError as e:
     has_import_error = True
     import_error_msg = str(e)
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
+from ansible.module_utils.foreman_helper import (
+    ForemanAnsibleModule,
+    filter_module_params,
+)
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
@@ -211,8 +214,7 @@ def main():
     if has_import_error:
         module.fail_json(msg=import_error_msg)
 
-    operating_system_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
+    operating_system_dict = filter_module_params(module)
 
     server_url = operating_system_dict.pop('server_url')
     username = operating_system_dict.pop('username')
