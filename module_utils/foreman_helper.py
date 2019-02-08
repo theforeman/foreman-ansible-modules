@@ -16,6 +16,7 @@ class ForemanAnsibleModule(AnsibleModule):
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
+            state=dict(choices=['present', 'absent'], default='present'),
         )
         argument_spec.update(custom_argument_spec)
         kwargs['argument_spec'] = argument_spec
