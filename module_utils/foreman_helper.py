@@ -23,6 +23,10 @@ class ForemanAnsibleModule(AnsibleModule):
         super(ForemanAnsibleModule, self).__init__(**kwargs)
 
 
+def filter_module_params(module):
+    return dict([(k, v) for (k, v) in module.params.items() if v is not None])
+
+
 # Helper for templates
 def parse_template(template_content, module):
     try:
