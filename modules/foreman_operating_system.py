@@ -174,6 +174,7 @@ except ImportError as e:
 from ansible.module_utils.foreman_helper import (
     ForemanAnsibleModule,
     filter_module_params,
+    get_server_params,
 )
 
 # This is the only true source for names (and conversions thereof)
@@ -216,13 +217,10 @@ def main():
 
     operating_system_dict = filter_module_params(module)
 
-    server_url = operating_system_dict.pop('server_url')
-    username = operating_system_dict.pop('username')
-    password = operating_system_dict.pop('password')
-    verify_ssl = operating_system_dict.pop('verify_ssl')
     state = operating_system_dict.pop('state')
 
     try:
+        (server_url, username, password, verify_ssl) = get_server_params(operating_system_dict)
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
