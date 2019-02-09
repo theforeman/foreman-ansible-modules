@@ -3,8 +3,16 @@
 
 import re
 import yaml
+import traceback
 
 from ansible.module_utils.basic import AnsibleModule
+
+try:
+    import ansible.module_utils.ansible_nailgun_cement
+    HAS_NAILGUN = True
+except ImportError:
+    HAS_NAILGUN = False
+    NAILGUN_IMP_ERR = traceback.format_exc()
 
 
 class ForemanAnsibleModule(AnsibleModule):
@@ -19,6 +27,10 @@ class ForemanAnsibleModule(AnsibleModule):
         )
         args.update(argument_spec)
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+
+        if not HAS_NAILGUN:
+            self.fail_json(msg='The nailgun Python module is required',
+                           exception=NAILGUN_IMP_ERR)
 
 
 def filter_module_params(module):
