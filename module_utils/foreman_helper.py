@@ -9,18 +9,16 @@ from ansible.module_utils.basic import AnsibleModule
 
 class ForemanAnsibleModule(AnsibleModule):
 
-    def __init__(self, **kwargs):
-        custom_argument_spec = kwargs.pop('argument_spec', dict())
-        argument_spec = dict(
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
             state=dict(choices=['present', 'absent'], default='present'),
         )
-        argument_spec.update(custom_argument_spec)
-        kwargs['argument_spec'] = argument_spec
-        super(ForemanAnsibleModule, self).__init__(**kwargs)
+        args.update(argument_spec)
+        super(ForemanAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
 
 def filter_module_params(module):
