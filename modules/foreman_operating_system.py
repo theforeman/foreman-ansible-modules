@@ -165,11 +165,8 @@ try:
         PartitionTable,
         ProvisioningTemplate,
     )
-
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
+except ImportError:
+    pass
 
 from ansible.module_utils.foreman_helper import (
     ForemanAnsibleModule,
@@ -211,9 +208,6 @@ def main():
         ),
         supports_check_mode=True,
     )
-
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
 
     operating_system_dict = filter_module_params(module)
 
