@@ -32,17 +32,20 @@ class ForemanAnsibleModule(AnsibleModule):
             self.fail_json(msg='The nailgun Python module is required',
                            exception=NAILGUN_IMP_ERR)
 
+    def parse_params(self):
+        module_params = self.filter_module_params()
+        server_params = self.get_server_params(module_params)
+        return (server_params, module_params)
 
-def filter_module_params(module):
-    return {k: v for (k, v) in module.params.items() if v is not None}
+    def filter_module_params(self):
+        return {k: v for (k, v) in self.params.items() if v is not None}
 
-
-def get_server_params(module_params):
-    server_url = module_params.pop('server_url')
-    username = module_params.pop('username')
-    password = module_params.pop('password')
-    verify_ssl = module_params.pop('verify_ssl')
-    return (server_url, username, password, verify_ssl)
+    def get_server_params(self, module_params):
+        server_url = module_params.pop('server_url')
+        username = module_params.pop('username')
+        password = module_params.pop('password')
+        verify_ssl = module_params.pop('verify_ssl')
+        return (server_url, username, password, verify_ssl)
 
 
 # Helper for templates
