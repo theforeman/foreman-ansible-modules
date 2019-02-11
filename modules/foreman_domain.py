@@ -106,8 +106,6 @@ except ImportError:
 
 from ansible.module_utils.foreman_helper import (
     ForemanAnsibleModule,
-    filter_module_params,
-    get_server_params,
 )
 
 
@@ -133,12 +131,12 @@ def main():
         supports_check_mode=True,
     )
 
-    domain_dict = filter_module_params(module)
+    (server_params, domain_dict) = module.parse_params()
 
     state = domain_dict.pop('state')
 
     try:
-        (server_url, username, password, verify_ssl) = get_server_params(domain_dict)
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
