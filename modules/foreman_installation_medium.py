@@ -116,13 +116,10 @@ try:
     from nailgun.entities import (
         Media,
     )
+except ImportError:
+    pass
 
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -137,38 +134,22 @@ name_map = {
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
-
             name=dict(required=True),
             locations=dict(type='list'),
             organizations=dict(type='list'),
             operatingsystems=dict(type='list'),
             os_family=dict(),
             path=dict(),
-
-            state=dict(choices=['present', 'absent'], default='present'),
         ),
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
-
-    medium_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
-
-    server_url = medium_dict.pop('server_url')
-    username = medium_dict.pop('username')
-    password = medium_dict.pop('password')
-    verify_ssl = medium_dict.pop('verify_ssl')
-    state = medium_dict.pop('state')
+    (server_params, medium_dict, state) = module.parse_params()
 
     try:
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
