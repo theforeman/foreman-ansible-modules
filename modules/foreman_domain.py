@@ -104,9 +104,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
-)
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
