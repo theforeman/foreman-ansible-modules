@@ -173,14 +173,11 @@ try:
     from nailgun.entities import (
         Subnet,
     )
-
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
+except ImportError:
+    pass
 
 from netaddr import IPNetwork
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -211,12 +208,8 @@ name_map = {
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
             dns_primary=dict(),
@@ -239,25 +232,15 @@ def main():
             mtu=dict(type='int'),
             locations=dict(type='list'),
             organizations=dict(type='list'),
-            state=dict(choices=['present', 'absent'], default='present'),
         ),
         required_one_of=[['cidr', 'mask']],
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
-
-    entity_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
-
-    server_url = entity_dict.pop('server_url')
-    username = entity_dict.pop('username')
-    password = entity_dict.pop('password')
-    verify_ssl = entity_dict.pop('verify_ssl')
-    state = entity_dict.pop('state')
+    (server_params, entity_dict, state) = module.parse_params()
 
     try:
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
