@@ -131,9 +131,7 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, domain_dict) = module.parse_params()
-
-    state = domain_dict.pop('state')
+    (server_params, domain_dict, state) = module.parse_params()
 
     try:
         (server_url, username, password, verify_ssl) = server_params

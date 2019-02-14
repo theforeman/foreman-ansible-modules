@@ -34,8 +34,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def parse_params(self):
         module_params = self.filter_module_params()
+        state = module_params.pop('state')
         server_params = self.get_server_params(module_params)
-        return (server_params, module_params)
+        return (server_params, module_params, state)
 
     def filter_module_params(self):
         return {k: v for (k, v) in self.params.items() if v is not None}
