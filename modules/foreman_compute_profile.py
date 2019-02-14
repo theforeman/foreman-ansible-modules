@@ -71,13 +71,10 @@ RETURN = ''' # '''
 try:
     import nailgun.entities
     import ansible.module_utils.ansible_nailgun_cement as cement
-    has_import_error = False
+except ImportError:
+    pass
 
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -87,25 +84,25 @@ name_map = {
 
 
 def main(module):
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
 
-    updated_name = module.params.get('updated_name')
-    state = module.params.get('state')
+    (server_params, module_params, state) = module.parse_params()
+    name = module_params.get('name')
+    updated_name = module_params.get('updated_name')
 
+    (server_url, username, password, verify_ssl) = server_params
     cement.create_server(
-        server_url=module.params.get('server_url'),
-        auth=(module.params.get('username'), module.params.get('password')),
-        verify_ssl=module.params.get('verify_ssl'),
+        server_url=server_url,
+        auth=(username, password),
+        verify_ssl=verify_ssl,
     )
 
     cement.ping_server(module)
 
     data = {
-        'name': module.params.get('name')
+        'name': name
     }
 
-    compute_profile = cement.find_compute_profile(module, name=data.get('name'), failsafe=True)
+    compute_profile = cement.find_compute_profile(module, name=name, failsafe=True)
 
     if state == 'present' and updated_name:
         data['name'] = updated_name
@@ -118,15 +115,10 @@ def main(module):
 
 
 if __name__ == '__main__':
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
-            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )
