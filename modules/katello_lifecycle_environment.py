@@ -99,12 +99,10 @@ try:
         find_lifecycle_environment,
         update_fields,
     )
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
+except ImportError:
+    pass
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def validate_params(module, state, label=None, description=None, prior=None):
@@ -158,36 +156,25 @@ def lifecycle_environment(module, name, organization, state, label=None, descrip
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True, no_log=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             label=dict(),
             description=dict(),
             prior=dict(),
             organization=dict(required=True),
-            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
+    (server_params, module_params, state) = module.parse_params()
+    name = module_params.get('name')
+    label = module_params.get('label') if module_params.get('label') != '' else None
+    description = module_params.get('description')
+    prior = None if module_params.get('prior') == '' else module_params.get('prior')
+    organization = module_params.get('organization')
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    label = module.params['label'] if module.params['label'] != '' else None
-    description = module.params['description']
-    prior = None if module.params['prior'] == '' else module.params['prior']
-    organization = module.params['organization']
-    state = module.params['state']
-
+    (server_url, username, password, verify_ssl) = server_params
     create_server(server_url, (username, password), verify_ssl)
     ping_server(module)
     validate_params(module, state, label=label, description=description, prior=prior)
