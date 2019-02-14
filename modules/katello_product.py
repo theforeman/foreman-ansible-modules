@@ -118,7 +118,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -133,10 +133,9 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
-            organization=dict(required=True),
             label=dict(),
             gpg_key=dict(),
             description=dict(),

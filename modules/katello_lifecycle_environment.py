@@ -102,7 +102,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def validate_params(module, state, label=None, description=None, prior=None):
@@ -156,13 +156,12 @@ def lifecycle_environment(module, name, organization, state, label=None, descrip
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             label=dict(),
             description=dict(),
             prior=dict(),
-            organization=dict(required=True),
         ),
         supports_check_mode=True,
     )

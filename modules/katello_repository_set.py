@@ -139,7 +139,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def get_desired_repos(desired_substitutions, available_repos):
@@ -186,11 +186,10 @@ def repository_set(module, name, organization, product, label, state, repositori
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             name=dict(default=None),
             product=dict(default=None),
-            organization=dict(required=True),
             label=dict(default=None),
             repositories=dict(required=True, type='list'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
