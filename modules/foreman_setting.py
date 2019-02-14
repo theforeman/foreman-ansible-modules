@@ -103,7 +103,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 name_map = {
@@ -113,7 +113,7 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             value=dict(),
@@ -121,7 +121,7 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, entity_dict, state) = module.parse_params()
+    (server_params, entity_dict) = module.parse_params()
 
     try:
         (server_url, username, password, verify_ssl) = server_params
@@ -142,7 +142,7 @@ def main():
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed, entity = naildown_entity(Setting, entity_dict, entity, state, module, check_type=True)
+    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module, check_type=True)
 
     module.exit_json(changed=changed, foreman_setting=entity.to_json_dict())
 
