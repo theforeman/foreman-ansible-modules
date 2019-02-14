@@ -100,14 +100,10 @@ try:
     from nailgun.entities import (
         Setting,
     )
+except ImportError:
+    pass
 
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-    raise
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 name_map = {
@@ -117,30 +113,18 @@ name_map = {
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             value=dict(),
         ),
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
-
-    entity_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
-
-    server_url = entity_dict.pop('server_url')
-    username = entity_dict.pop('username')
-    password = entity_dict.pop('password')
-    verify_ssl = entity_dict.pop('verify_ssl')
+    (server_params, entity_dict, state) = module.parse_params()
 
     try:
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
@@ -158,7 +142,7 @@ def main():
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module, check_type=True)
+    changed, entity = naildown_entity(Setting, entity_dict, entity, state, module, check_type=True)
 
     module.exit_json(changed=changed, foreman_setting=entity.to_json_dict())
 
