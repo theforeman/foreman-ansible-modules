@@ -135,7 +135,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 name_map = {
     'name': 'name',
@@ -154,10 +154,9 @@ cvc_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
-            organization=dict(required=True),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
             components=dict(type='list'),

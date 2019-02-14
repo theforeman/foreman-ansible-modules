@@ -63,6 +63,16 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return (server_params, module_params, state)
 
 
+class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
+
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            organization=dict(required=True),
+        )
+        args.update(argument_spec)
+        super(KatelloEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+
+
 # Helper for templates
 def parse_template(template_content, module):
     try:

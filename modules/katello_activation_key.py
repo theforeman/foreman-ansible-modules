@@ -128,7 +128,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 name_map = {
     'name': 'name',
@@ -156,11 +156,10 @@ def override_to_boolnone(override):
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             new_name=dict(),
-            organization=dict(required=True),
             lifecycle_environment=dict(),
             content_view=dict(),
             subscriptions=dict(type='list'),
