@@ -100,14 +100,10 @@ try:
 
     from nailgun import entities
     from nailgun.entity_mixins import EntitySearchMixin
+except ImportError:
+    pass
 
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-    raise
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 def nailgun_entites():
@@ -116,29 +112,20 @@ def nailgun_entites():
 
 def main():
 
-    module = AnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             resource=dict(choices=nailgun_entites(), required=True),
             search=dict(default=""),
         ),
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
-
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    entity = module.params['resource']
-    search = module.params['search']
+    (server_params, module_params) = module.parse_params()
+    entity = module_params['resource']
+    search = module_params['search']
 
     try:
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
