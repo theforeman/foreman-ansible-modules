@@ -207,9 +207,7 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, operating_system_dict) = module.parse_params()
-
-    state = operating_system_dict.pop('state')
+    (server_params, operating_system_dict, state) = module.parse_params()
 
     try:
         (server_url, username, password, verify_ssl) = server_params
