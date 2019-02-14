@@ -34,9 +34,8 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def parse_params(self):
         module_params = self.filter_module_params()
-        state = module_params.pop('state')
         server_params = self.get_server_params(module_params)
-        return (server_params, module_params, state)
+        return (server_params, module_params)
 
     def filter_module_params(self):
         return {k: v for (k, v) in self.params.items() if v is not None}
@@ -47,6 +46,21 @@ class ForemanAnsibleModule(AnsibleModule):
         password = module_params.pop('password')
         verify_ssl = module_params.pop('verify_ssl')
         return (server_url, username, password, verify_ssl)
+
+
+class ForemanEntityAnsibleModule(ForemanAnsibleModule):
+
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            state=dict(choices=['present', 'absent'], default='present'),
+        )
+        args.update(argument_spec)
+        super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+
+    def parse_params(self):
+        (server_params, module_params) = super(ForemanEntityAnsibleModule, self).parse_params()
+        state = module_params.pop('state')
+        return (server_params, module_params, state)
 
 
 # Helper for templates

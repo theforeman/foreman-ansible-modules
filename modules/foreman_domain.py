@@ -105,7 +105,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.foreman_helper import (
-    ForemanAnsibleModule,
+    ForemanEntityAnsibleModule,
 )
 
 
@@ -120,7 +120,7 @@ name_map = {
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             description=dict(),

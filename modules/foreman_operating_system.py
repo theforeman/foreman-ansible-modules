@@ -169,7 +169,7 @@ except ImportError:
     pass
 
 from ansible.module_utils.foreman_helper import (
-    ForemanAnsibleModule,
+    ForemanEntityAnsibleModule,
 )
 
 # This is the only true source for names (and conversions thereof)
@@ -189,7 +189,7 @@ name_map = {
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             release_name=dict(),
