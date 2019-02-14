@@ -97,12 +97,10 @@ try:
     from datetime import datetime
     from nailgun import entities
     from nailgun.config import ServerConfig
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
+except ImportError:
+    pass
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 # Workaround for python2 which does not understand "%z"
@@ -192,12 +190,8 @@ class NailGun(object):
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True, no_log=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             organization=dict(required=True),
             interval=dict(required=True),
@@ -208,20 +202,16 @@ def main():
         supports_check_mode=True
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
+    (server_params, module_params) = module.parse_params()
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    organization = module.params['organization']
-    interval = module.params['interval']
-    enabled = module.params['enabled']
-    sync_date = datetime.strptime(module.params['sync_date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.UTC)
-    products = module.params['products']
+    name = module_params['name']
+    organization = module_params['organization']
+    interval = module_params['interval']
+    enabled = module_params['enabled']
+    sync_date = datetime.strptime(module_params['sync_date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.UTC)
+    products = module_params['products']
 
+    (server_url, username, password, verify_ssl) = server_params
     server = ServerConfig(
         url=server_url,
         auth=(username, password),
