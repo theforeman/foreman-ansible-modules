@@ -115,13 +115,10 @@ try:
         naildown_entity_state,
         sanitize_entity_dict,
     )
+except ImportError:
+    pass
 
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -132,12 +129,8 @@ name_map = {
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(required=True),
             value=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -149,19 +142,10 @@ def main():
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
-
-    global_parameter_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
-
-    server_url = global_parameter_dict.pop('server_url')
-    username = global_parameter_dict.pop('username')
-    password = global_parameter_dict.pop('password')
-    verify_ssl = global_parameter_dict.pop('verify_ssl')
-    state = global_parameter_dict.pop('state')
+    (server_params, global_parameter_dict, state) = module.parse_params()
 
     try:
+        (server_url, username, password, verify_ssl) = server_params
         create_server(server_url, (username, password), verify_ssl)
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
