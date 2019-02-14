@@ -136,12 +136,10 @@ try:
         find_repository_set,
         ping_server,
     )
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
+except ImportError:
+    pass
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def get_desired_repos(desired_substitutions, available_repos):
@@ -188,12 +186,8 @@ def repository_set(module, name, organization, product, label, state, repositori
 
 
 def main():
-    module = AnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True, no_log=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
             name=dict(default=None),
             product=dict(default=None),
             organization=dict(required=True),
@@ -204,20 +198,14 @@ def main():
         supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
+    (server_params, module_params, state) = module.parse_params()
+    name = module_params.get('name')
+    product = module_params.get('product')
+    label = module_params.get('label')
+    organization = module_params.get('organization')
+    repositories = module_params.get('repositories')
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    name = module.params['name']
-    product = module.params['product']
-    label = module.params['label']
-    organization = module.params['organization']
-    repositories = module.params['repositories']
-    state = module.params['state']
-
+    (server_url, username, password, verify_ssl) = server_params
     create_server(server_url, (username, password), verify_ssl)
     ping_server(module)
 
