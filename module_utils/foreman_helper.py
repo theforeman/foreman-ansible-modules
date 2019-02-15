@@ -23,7 +23,6 @@ class ForemanAnsibleModule(AnsibleModule):
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             verify_ssl=dict(type='bool', default=True),
-            state=dict(choices=['present', 'absent'], default='present'),
         )
         args.update(argument_spec)
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, **kwargs)
