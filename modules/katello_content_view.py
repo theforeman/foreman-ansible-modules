@@ -57,7 +57,7 @@ options:
   repositories:
     description:
       - List of repositories that include name and product.
-      - Ignored if C(composite) is True.
+      - Ignored if I(composite=True).
     type: list
   state:
     description:
@@ -81,7 +81,7 @@ options:
   components:
     description:
       - List of content views to includes content_view and either version or latest.
-      - Ignored if C(composite) is False.
+      - Ignored if I(composite=False).
     type: list
 '''
 

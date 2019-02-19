@@ -90,11 +90,11 @@ options:
       - package_name
       - package_group
       - tag
-    default: C(name)
+    default: I(name)
   date_type:
     description:
       - Search using the 'Issued On' or 'Updated On'
-      - Valid on C(filter_type) erratum only
+      - Only valid on I(filter_type=erratum).
     default: updated
     choices:
       - issued
