@@ -79,6 +79,12 @@ options:
   docker_upstream_name:
     description:
       - name of the upstream docker repository
+  mirror_on_sync:
+    description:
+      - toggle "mirror on sync" where the state of the repository mirrors that of the upstream repository at sync time
+    default: true
+    type: bool
+    required: false
   download_policy:
     description:
       - download policy for sync from upstream
@@ -113,6 +119,7 @@ EXAMPLES = '''
     product: "My Product"
     organization: "Default Organization"
     url: "http://yum.theforeman.org/plugins/latest/el7/x86_64/"
+    mirror_on_sync: true
     download_policy: background
 
 - name: "Create repository with content credentials"
@@ -127,6 +134,7 @@ EXAMPLES = '''
     organization: "Default Organization"
     url: "http://yum.theforeman.org/releases/latest/el7/x86_64/"
     download_policy: background
+    mirror_on_sync: true
     gpg_key: RPM-GPG-KEY-my-product2
 '''
 
@@ -163,6 +171,7 @@ name_map = {
     'gpg_key': 'gpg_key',
     'docker_upstream_name': 'docker_upstream_name',
     'download_policy': 'download_policy',
+    'mirror_on_sync': 'mirror_on_sync',
 }
 
 
@@ -177,6 +186,7 @@ def main():
             gpg_key=dict(),
             docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
+            mirror_on_sync=dict(type='bool', default=True),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         supports_check_mode=True,
