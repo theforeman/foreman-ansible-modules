@@ -23,8 +23,8 @@ def body_json_l2_matcher(r1, r2):
     elif r1.headers.get('content-type') == 'multipart/form-data' and r2.headers.get('content-type') == 'multipart/form-data':
         if r1.body is None or r2.body is None:
             return r1.body == r2.body
-        body1 = sorted(r1.body.split(b'&'))
-        body2 = sorted(r2.body.split(b'&'))
+        body1 = sorted(r1.body.replace(b'~', b'%7E').split(b'&'))
+        body2 = sorted(r2.body.replace(b'~', b'%7E').split(b'&'))
         if len(body1) != len(body2):
             return False
         for i, v in enumerate(body1):
