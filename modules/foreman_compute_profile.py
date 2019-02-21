@@ -85,18 +85,11 @@ name_map = {
 
 def main(module):
 
-    (server_params, module_params, state) = module.parse_params()
+    (module_params, state) = module.parse_params()
     name = module_params.get('name')
     updated_name = module_params.get('updated_name')
 
-    (server_url, username, password, verify_ssl) = server_params
-    cement.create_server(
-        server_url=server_url,
-        auth=(username, password),
-        verify_ssl=verify_ssl,
-    )
-
-    cement.ping_server(module)
+    module.connect()
 
     data = {
         'name': name

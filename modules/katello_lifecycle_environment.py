@@ -166,16 +166,15 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, module_params, state) = module.parse_params()
+    (module_params, state) = module.parse_params()
     name = module_params.get('name')
     label = module_params.get('label') if module_params.get('label') != '' else None
     description = module_params.get('description')
     prior = None if module_params.get('prior') == '' else module_params.get('prior')
     organization = module_params.get('organization')
 
-    (server_url, username, password, verify_ssl) = server_params
-    create_server(server_url, (username, password), verify_ssl)
-    ping_server(module)
+    module.connect()
+
     validate_params(module, state, label=label, description=description, prior=prior)
 
     try:

@@ -205,15 +205,10 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, operating_system_dict, state) = module.parse_params()
+    (operating_system_dict, state) = module.parse_params()
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+    module.connect()
 
-    ping_server(module)
     try:
         # Try to find the Operating System to work on
         # name is however not unique, but description is, as well as "<name> <major>[.<minor>]"

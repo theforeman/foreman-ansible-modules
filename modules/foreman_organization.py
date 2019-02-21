@@ -110,15 +110,10 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, entity_dict, state) = module.parse_params()
+    (entity_dict, state) = module.parse_params()
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+    module.connect()
 
-    ping_server(module)
     entity = find_organization(module, name=entity_dict['name'], failsafe=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)

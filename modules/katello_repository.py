@@ -192,18 +192,12 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, entity_dict, state) = module.parse_params()
+    (entity_dict, state) = module.parse_params()
 
     if entity_dict['content_type'] != 'docker' and 'docker_upstream_name' in entity_dict:
         module.fail_json(msg="docker_upstream_name should not be set unless content_type: docker")
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
-
-    ping_server(module)
+    module.connect()
 
     entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
 
