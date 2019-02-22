@@ -300,8 +300,6 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         JobTemplate,
         TemplateInput,
-        create_server,
-        ping_server,
         find_entities,
         find_entities_by_name,
         find_template_input,

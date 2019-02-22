@@ -122,8 +122,6 @@ try:
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_organization,
         find_content_view,
         find_content_view_version,
