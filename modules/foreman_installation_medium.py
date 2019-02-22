@@ -31,7 +31,10 @@ requirements:
   - "ansible >= 2.3"
 options:
   name:
-    description: The full installation medium name
+    description:
+      - |
+        The full installation medium name.
+        The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
     required: true
   locations:
     description: List of locations the installation medium should be assigned to
@@ -103,6 +106,7 @@ RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
+        find_entities,
         find_installation_medium,
         find_locations,
         find_organizations,
@@ -147,12 +151,28 @@ def main():
     (medium_dict, state) = module.parse_params()
 
     module.connect()
+    name = medium_dict['name']
 
-    entity = find_installation_medium(module, name=medium_dict['name'], failsafe=True)
+    affects_multiple = name == '*'
+    # sanitize user input, filter unuseful configuration combinations with 'name: *'
+    if affects_multiple:
+        if state == 'present_with_defaults':
+            module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
+        if state == 'absent':
+            if list(medium_dict.keys()) != ['name']:
+                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters %s ' % medium_dict.keys())
+
+    try:
+        if affects_multiple:
+            entities = find_entities(Media)
+        else:
+            entities = find_installation_medium(module, name=medium_dict['name'], failsafe=True)
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
 
     if 'operatingsystems' in medium_dict:
         medium_dict['operatingsystems'] = find_operating_systems_by_title(module, medium_dict['operatingsystems'])
-        if len(medium_dict['operatingsystems']) == 1 and 'os_family' not in medium_dict and entity is None:
+        if len(medium_dict['operatingsystems']) == 1 and 'os_family' not in medium_dict and entities is None:
             medium_dict['os_family'] = medium_dict['operatingsystems'][0].family
 
     if 'locations' in medium_dict:
@@ -163,7 +183,15 @@ def main():
 
     medium_dict = sanitize_entity_dict(medium_dict, name_map)
 
-    changed = naildown_entity_state(Media, medium_dict, entity, state, module)
+    changed = False
+    if not affects_multiple:
+        changed = naildown_entity_state(
+            Media, medium_dict, entities, state, module)
+    else:
+        medium_dict.pop('name')
+        for entity in entities:
+            changed |= naildown_entity_state(
+                Media, medium_dict, entity, state, module)
 
     module.exit_json(changed=changed)
 
