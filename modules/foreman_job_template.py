@@ -411,7 +411,7 @@ def main():
         if state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if state == 'absent':
-            if list(entity_dict.keys()) != ['name']:
+            if len(entity_dict.keys()) != 1:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
     module.connect()
