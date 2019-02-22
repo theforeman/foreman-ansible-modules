@@ -158,8 +158,6 @@ RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_subnet,
         find_domains,
         find_locations,

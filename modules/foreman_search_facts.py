@@ -93,8 +93,6 @@ resources:
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         search_entities_json,
     )
 

@@ -101,8 +101,6 @@ RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_entities_by_name,
         find_os_default_template,
         find_operating_system_by_title,

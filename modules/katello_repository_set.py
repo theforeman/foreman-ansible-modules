@@ -130,11 +130,9 @@ RETURN = '''# '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
         find_organization,
         find_product,
         find_repository_set,
-        ping_server,
     )
 except ImportError:
     pass

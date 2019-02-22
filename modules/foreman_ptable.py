@@ -247,8 +247,6 @@ try:
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_entities,
         find_entities_by_name,
         naildown_entity_state,

@@ -90,8 +90,6 @@ foreman_setting:
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_setting,
         naildown_entity,
         sanitize_entity_dict,

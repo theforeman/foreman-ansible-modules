@@ -146,8 +146,6 @@ try:
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_organization,
         find_product,
         find_content_credential,

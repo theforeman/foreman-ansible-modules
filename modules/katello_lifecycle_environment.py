@@ -93,8 +93,6 @@ try:
         LifecycleEnvironment
     )
     from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
         find_organization,
         find_lifecycle_environment,
         update_fields,
