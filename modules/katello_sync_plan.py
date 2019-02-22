@@ -202,7 +202,8 @@ def main():
         supports_check_mode=True
     )
 
-    (server_params, module_params) = module.parse_params()
+    module_params = module.parse_params()
+    server_params = module.get_server_params()
 
     name = module_params['name']
     organization = module_params['organization']

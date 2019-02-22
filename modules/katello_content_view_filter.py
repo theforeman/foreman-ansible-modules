@@ -251,17 +251,11 @@ def main():
         supports_check_mode=False,
     )
 
-    (server_params, entity_dict) = module.parse_params()
+    entity_dict = module.parse_params()
     filter_state = entity_dict.pop('filter_state')
     rule_state = entity_dict.pop('rule_state')
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
-
-    ping_server(module)
+    module.connect()
 
     organization = find_organization(module, name=entity_dict.pop('organization'))
     entity_dict['content_view'] = find_content_view(module, name=entity_dict['content_view'], organization=organization)

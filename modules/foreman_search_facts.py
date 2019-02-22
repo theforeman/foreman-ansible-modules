@@ -120,17 +120,11 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, module_params) = module.parse_params()
+    module_params = module.parse_params()
     entity = module_params['resource']
     search = module_params['search']
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
-
-    ping_server(module)
+    module.connect()
 
     entity_class = getattr(entities, entity)
     response = search_entities_json(entity_class, search)['results']

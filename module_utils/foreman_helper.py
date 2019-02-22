@@ -9,6 +9,9 @@ from ansible.module_utils.basic import AnsibleModule
 
 try:
     import ansible.module_utils.ansible_nailgun_cement
+    from nailgun import entity_mixins
+    from nailgun.config import ServerConfig
+    from nailgun.entities import Ping
     HAS_NAILGUN = True
 except ImportError:
     HAS_NAILGUN = False
@@ -27,24 +30,42 @@ class ForemanAnsibleModule(AnsibleModule):
         args.update(argument_spec)
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.check_requirements()
+
+        self._foremanapi_server_url = self.params.pop('server_url')
+        self._foremanapi_username = self.params.pop('username')
+        self._foremanapi_password = self.params.pop('password')
+        self._foremanapi_verify_ssl = self.params.pop('verify_ssl')
+
+    def check_requirements(self):
         if not HAS_NAILGUN:
             self.fail_json(msg='The nailgun Python module is required',
                            exception=NAILGUN_IMP_ERR)
 
     def parse_params(self):
-        module_params = self.filter_module_params()
-        server_params = self.get_server_params(module_params)
-        return (server_params, module_params)
+        return self.filter_module_params()
 
     def filter_module_params(self):
         return {k: v for (k, v) in self.params.items() if v is not None}
 
-    def get_server_params(self, module_params):
-        server_url = module_params.pop('server_url')
-        username = module_params.pop('username')
-        password = module_params.pop('password')
-        verify_ssl = module_params.pop('verify_ssl')
-        return (server_url, username, password, verify_ssl)
+    def get_server_params(self):
+        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_verify_ssl)
+
+    def connect(self, ping=True):
+        entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
+            url=self._foremanapi_server_url,
+            auth=(self._foremanapi_username, self._foremanapi_password),
+            verify=self._foremanapi_verify_ssl,
+        )
+
+        if ping:
+            self.ping()
+
+    def ping(self):
+        try:
+            return Ping().search_json()
+        except Exception as e:
+            self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
@@ -57,9 +78,9 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
     def parse_params(self):
-        (server_params, module_params) = super(ForemanEntityAnsibleModule, self).parse_params()
+        module_params = super(ForemanEntityAnsibleModule, self).parse_params()
         state = module_params.pop('state')
-        return (server_params, module_params, state)
+        return (module_params, state)
 
 
 class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):

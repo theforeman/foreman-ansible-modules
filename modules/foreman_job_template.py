@@ -376,7 +376,7 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor template allowed if 'name: *'!")
 
-    (server_params, entity_dict, state) = module.parse_params()
+    (entity_dict, state) = module.parse_params()
     file_name = entity_dict.pop('file_name', None)
 
     if file_name or 'template' in entity_dict:
@@ -416,13 +416,7 @@ def main():
             if list(entity_dict.keys()) != ['name']:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
-    try:
-        (server_url, username, password, verify_ssl) = server_params
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg='Failed to connect to Foreman server: %s ' % e)
-
-    ping_server(module)
+    module.connect()
 
     try:
         if affects_multiple:

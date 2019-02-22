@@ -197,16 +197,14 @@ def main():
         supports_check_mode=True,
     )
 
-    (server_params, module_params, state) = module.parse_params()
+    (module_params, state) = module.parse_params()
     name = module_params.get('name')
     product = module_params.get('product')
     label = module_params.get('label')
     organization = module_params.get('organization')
     repositories = module_params.get('repositories')
 
-    (server_url, username, password, verify_ssl) = server_params
-    create_server(server_url, (username, password), verify_ssl)
-    ping_server(module)
+    module.connect()
 
     try:
         changed = repository_set(module, name, organization, product, label, state, repositories=repositories)
