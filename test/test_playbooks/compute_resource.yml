@@ -1,24 +1,152 @@
 ---
-- hosts: localhost
+- hosts: fixtures
+  gather_facts: false
   tasks:
-  - name: Load server config
+  - name: 'Load server config'
     include_vars:
       file: server_vars.yml
-  - name: vmware compute resource
-    foreman_compute_resource:
-      server_url: "{{ foreman_server_url }}"
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      verify_ssl: "{{ foreman_verify_ssl }}"
-      name: example_compute_resource
-      datacenter: ax01
-      locations:
-      - Munich
-      organizations:
-      - ATIX
-      provider: vmware
-      provider_auth:
-        url: https://vsphere.example.com
-        user: admin
-        password: "secret"
-      state: present
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - name: 'Libvirt compute resource'
+    block:
+    - name: Create libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr01"
+        compute_resource_description: 'Libvirt compute resource'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+        compute_resource_state: present
+        expected_change: true
+    - name: Update libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr01"
+        compute_resource_description: 'Libvirt compute resource'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+        compute_resource_state: present
+        expected_change: false
+    - name: Update libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr01"
+        compute_resource_updated_name: "libvirt-cr"
+        compute_resource_description: 'A compute_resource with an updated description'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+        compute_resource_state: present
+        expected_change: true
+    - name: Update libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr"
+        compute_resource_description: 'A compute_resource with an updated description'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+        compute_resource_state: present
+        expected_change: false
+    - name: Delete libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr"
+        compute_resource_state: absent
+        expected_change: true
+    - name: Delete libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr"
+        compute_resource_state: absent
+        expected_change: false
+  - name: 'oVirt compute resource'
+    block:
+    - name: Create ovirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "ovirt-cr01"
+        compute_resource_description: 'oVirt compute resource'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'ovirt'
+        compute_resource_provider_params:
+          url: "https://ovirt.example.com/ovirt-engine/api"
+          user: compute-user@internal
+          password: ovirtcompute123
+          use_v4: true
+          datacenter: c1479626-99a2-44eb-8401-14b5630f417f
+          ovirt_quota: 502a76bb-a3fe-42f1-aed6-2a7c892a6786
+        compute_resource_state: present
+        expected_change: true
+    - name: Update ovirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "ovirt-cr01"
+        compute_resource_description: 'oVirt compute resource'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'ovirt'
+        compute_resource_provider_params:
+          url: "https://ovirt.example.com/ovirt-engine/api"
+          user: compute-user@internal
+          password: ovirtcompute123
+          use_v4: true
+          datacenter: c1479626-99a2-44eb-8401-14b5630f417f
+          ovirt_quota: 502a76bb-a3fe-42f1-aed6-2a7c892a6786
+        compute_resource_state: present
+        expected_change: false
+    - name: Delete ovirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "ovirt-cr01"
+        compute_resource_state: absent
+        expected_change: true
+    - name: Delete ovirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "ovirt-cr01"
+        compute_resource_state: absent
+        expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
+...

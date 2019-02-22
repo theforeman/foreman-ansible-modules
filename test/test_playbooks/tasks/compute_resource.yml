@@ -1,0 +1,24 @@
+---
+- name: Create/update compute resource
+  foreman_compute_resource:
+    server_url: "{{ foreman_server_url }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    name: "{{ compute_resource_name }}"
+    description: "{{ compute_resource_description | default(omit) }}"
+    updated_name: "{{ compute_resource_updated_name | default(omit) }}"
+    locations: "{{ compute_resource_locations | default(omit) }}"
+    organizations: "{{ compute_resource_organizations | default(omit) }}"
+    provider: "{{ compute_resource_provider | default(omit) }}"
+    provider_params: "{{ compute_resource_provider_params | default(omit) }}"
+    state: "{{ compute_resource_state }}"
+
+    # Deprecated params
+    datacenter: "{{ compute_resource_datacenter | default(omit) }}"
+    provider_auth: "{{ compute_resource_provider_auth | default(omit) }}"
+  register: result
+- fail:
+    msg: "Ensuring compute resource is {{ compute_resource_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
