@@ -41,6 +41,7 @@ from nailgun.entities import (
     AbstractComputeResource,
     OSDefaultTemplate,
     ComputeProfile,
+    ComputeAttribute,
 )
 from nailgun import entity_mixins, entity_fields
 
@@ -474,6 +475,13 @@ def find_compute_resource(module, name, failsafe=False):
 def find_compute_profile(module, name, failsafe=False):
     compute_profile = ComputeProfile(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, compute_profile, message="No compute profile found for %s" % name, failsafe=failsafe)
+
+
+def find_compute_attribute(module, compute_profile_name, compute_resource_name, failsafe=False):
+    search = {'search': 'compute_profile="{}" and compute_resource="{}"'.format(compute_profile_name, compute_resource_name)}
+    compute_attribute = ComputeAttribute().search(set(), search)
+    return handle_find_response(module, compute_attribute, message="No compute attribute found for %s %s" % (compute_profile_name, compute_resource_name),
+                                failsafe=failsafe)
 
 
 def find_domains(module, names, failsafe=False):

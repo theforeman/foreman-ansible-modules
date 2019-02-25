@@ -1,10 +1,44 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - name: Load compute profile vars
+    include_vars:
+      file: compute_profile_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+  - include: tasks/compute_resource.yml
+    vars:
+      compute_resource_name: "{{ libvirt.compute_resource.name }}"
+      compute_resource_organizations: "{{ libvirt.compute_resource.organizations }}"
+      compute_resource_locations: "{{ libvirt.compute_resource.locations }}"
+      compute_resource_provider: 'libvirt'
+      compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
+      compute_resource_state: present
+  - include: tasks/compute_resource.yml
+    vars:
+      compute_resource_name: "{{ ovirt.compute_resource.name }}"
+      compute_resource_organizations: "{{ ovirt.compute_resource.organizations }}"
+      compute_resource_locations: "{{ ovirt.compute_resource.locations }}"
+      compute_resource_provider: 'ovirt'
+      compute_resource_provider_params: "{{ ovirt.compute_resource.params }}"
+      compute_resource_state: present
 - hosts: tests
   gather_facts: false
   tasks:
   - name: Load server config
     include_vars:
       file: server_vars.yml
+  - name: Load compute profile vars
+    include_vars:
+      file: compute_profile_vars.yml
   - include: tasks/compute_profile.yml
     vars:
       compute_profile_state: present
@@ -21,4 +55,52 @@
     vars:
       compute_profile_state: absent
       expected_change: false
+  - include: tasks/compute_profile.yml
+    vars:
+      compute_profile_name: app-small
+      compute_profile_attributes:
+        - compute_resource: "{{ libvirt.compute_resource.name }}"
+          vm_attrs: "{{ libvirt.compute_profile.attrs }}"
+        - compute_resource: "{{ ovirt.compute_resource.name }}"
+          vm_attrs: "{{ ovirt.compute_profile.attrs }}"
+      compute_profile_state: present
+      expected_change: true
+  - include: tasks/compute_profile.yml
+    vars:
+      compute_profile_name: app-small
+      compute_profile_attributes:
+        - compute_resource: "{{ libvirt.compute_resource.name }}"
+          vm_attrs: "{{ libvirt.compute_profile.attrs }}"
+        - compute_resource: "{{ ovirt.compute_resource.name }}"
+          vm_attrs: "{{ ovirt.compute_profile.attrs }}"
+      compute_profile_state: present
+      expected_change: false
+  - include: tasks/compute_profile.yml
+    vars:
+      compute_profile_name: app-small
+      compute_profile_state: absent
+      expected_change: true
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: 'Load server config'
+    include_vars:
+      file: server_vars.yml
+  - name: Load compute profile vars
+    include_vars:
+      file: compute_profile_vars.yml
+  - include: tasks/compute_resource.yml
+    vars:
+      compute_resource_name: "{{ libvirt.compute_resource.name }}"
+      compute_resource_state: absent
+  - include: tasks/compute_resource.yml
+    vars:
+      compute_resource_name: "{{ ovirt.compute_resource.name }}"
+      compute_resource_state: absent
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
 ...
