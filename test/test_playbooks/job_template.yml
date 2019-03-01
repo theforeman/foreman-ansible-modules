@@ -99,8 +99,6 @@
       job_template_file_name: "ansible_hello.erb"
       job_template_locations:
         - "Test Location"
-      job_template_organizations:
-        - "Test Organization"
       expected_change: true
 
   - name: Add the same template input via direct input with explicit provider_type
@@ -110,6 +108,7 @@
       job_template_job_category: Ansible Playbook
       job_template_description_format: "Test Ansible Roles"
       job_template_provider_type: Ansible
+      job_template_organizations: "{{ omit }}"
       template_inputs:
       job_template_template: |
         <%#
@@ -130,6 +129,26 @@
               debug:
                 msg: Hello World
         ...
+      job_template_state: present
+      expected_change: false
+  - name: assign all job templates the same organization
+    include: tasks/job_template.yml
+    vars:
+      job_template_name: '*'
+      job_template_locations: "{{ omit }}"
+      job_template_provider_type: "{{ omit }}"
+      job_template_template: "{{ omit }}"
+      template_inputs: "{{ omit }}"
+      job_template_state: present
+      expected_change: true
+  - name: assign all job templates the same organization
+    include: tasks/job_template.yml
+    vars:
+      job_template_name: '*'
+      job_template_locations: "{{ omit }}"
+      job_template_provider_type: "{{ omit }}"
+      job_template_template: "{{ omit }}"
+      template_inputs: "{{ omit }}"
       job_template_state: present
       expected_change: false
 
