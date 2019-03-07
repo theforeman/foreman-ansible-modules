@@ -7,29 +7,33 @@ import sys
 
 from nailgun.config import ServerConfig
 from nailgun.entities import (
-    _check_for_value,
+    AbstractComputeResource,
+    AbstractContentViewFilter,
     ActivationKey,
     Bookmark,
-    Entity,
-    AbstractContentViewFilter,
     CommonParameter,
+    ComputeAttribute,
+    ComputeProfile,
+    ContentCredential,
     ContentView,
     ContentViewFilterRule,
     ContentViewVersion,
     Domain,
-    Subnet,
+    Entity,
     Environment,
     Errata,
     File,
+    JobTemplate,
     LifecycleEnvironment,
     Location,
     Media,
     OperatingSystem,
     Organization,
-    PackageGroup,
+    OSDefaultTemplate,
+    OVirtComputeResource,
     Package,
+    PackageGroup,
     Ping,
-    ContentCredential,
     Product,
     Realm,
     Repository,
@@ -37,166 +41,15 @@ from nailgun.entities import (
     Setting,
     SmartProxy,
     Subnet,
+    Subnet,
     Subscription,
+    TemplateInput,
     TemplateKind,
-    AbstractComputeResource,
-    OSDefaultTemplate,
-    ComputeProfile,
-    ComputeAttribute,
+    VMWareComputeResource,
 )
-from nailgun import entity_mixins, entity_fields
+from nailgun import entity_mixins
 
 from ansible.module_utils.parsing.convert_bool import boolean
-
-
-class TemplateInput(
-    Entity,
-    entity_mixins.EntityCreateMixin,
-    entity_mixins.EntityDeleteMixin,
-    entity_mixins.EntityReadMixin,
-    entity_mixins.EntitySearchMixin,
-    entity_mixins.EntityUpdateMixin
-):
-    """A representation of a Template Input entity."""
-
-    def __init__(self, server_config=None, **kwargs):
-        _check_for_value('template', kwargs)
-        self._fields = {
-            'advanced': entity_fields.BooleanField(),
-            'description': entity_fields.StringField(),
-            'fact_name': entity_fields.StringField(),
-            'input_type': entity_fields.StringField(),
-            'name': entity_fields.StringField(),
-            'options': entity_fields.StringField(),
-            'puppet_class_name': entity_fields.StringField(),
-            'puppet_parameter_name': entity_fields.StringField(),
-            'required': entity_fields.BooleanField(),
-            # There is no Template base class yet
-            'template': entity_fields.OneToOneField(JobTemplate, required=True),
-            'variable_name': entity_fields.StringField(),
-        }
-        super(TemplateInput, self).__init__(server_config, **kwargs)
-        self._meta = {
-            'api_path': '/api/v2/templates/{0}/template_inputs'.format(self.template.id),
-            'server_modes': ('sat')
-        }
-
-    def read(self, entity=None, attrs=None, ignore=None, params=None):
-        if entity is None:
-            entity = TemplateInput(template=self.template)
-        if ignore is None:
-            ignore = set()
-        ignore.add('advanced')
-        return super(TemplateInput, self).read(entity=entity, attrs=attrs, ignore=ignore, params=params)
-
-
-class JobTemplate(
-    Entity,
-    entity_mixins.EntityCreateMixin,
-    entity_mixins.EntityDeleteMixin,
-    entity_mixins.EntityReadMixin,
-    entity_mixins.EntitySearchMixin,
-    entity_mixins.EntityUpdateMixin
-):
-    """A representation of a Job Template entity."""
-
-    def __init__(self, server_config=None, **kwargs):
-        self._fields = {
-            'audit_comment': entity_fields.StringField(),
-            'description_format': entity_fields.StringField(),
-            'effective_user': entity_fields.DictField(),
-            'job_category': entity_fields.StringField(),
-            'location': entity_fields.OneToManyField(Location),
-            'locked': entity_fields.BooleanField(),
-            'name': entity_fields.StringField(),
-            'organization': entity_fields.OneToManyField(Organization),
-            'provider_type': entity_fields.StringField(),
-            'snippet': entity_fields.BooleanField(),
-            'template': entity_fields.StringField(),
-            'template_inputs': entity_fields.OneToManyField(TemplateInput),
-        }
-        self._meta = {
-            'api_path': 'api/v2/job_templates',
-            'server_modes': ('sat')}
-        super(JobTemplate, self).__init__(server_config, **kwargs)
-
-    def create_payload(self):
-        payload = super(JobTemplate, self).create_payload()
-        effective_user = payload.pop(u'effective_user', None)
-        if effective_user:
-            payload[u'ssh'] = {u'effective_user': effective_user}
-        return {u'job_template': payload}
-
-    def update_payload(self, fields=None):
-        payload = super(JobTemplate, self).update_payload(fields)
-        effective_user = payload.pop(u'effective_user', None)
-        if effective_user:
-            payload[u'ssh'] = {u'effective_user': effective_user}
-        return {u'job_template': payload}
-
-    def read(self, entity=None, attrs=None, ignore=None, params=None):
-        if attrs is None:
-            attrs = self.read_json(params=params)
-        if ignore is None:
-            ignore = set()
-        ignore.add('template_inputs')
-        entity = super(JobTemplate, self).read(entity=entity, attrs=attrs, ignore=ignore, params=params)
-        referenced_entities = [
-            TemplateInput(entity._server_config, id=entity_id, template=JobTemplate(id=entity.id))
-            for entity_id
-            in entity_mixins._get_entity_ids('template_inputs', attrs)
-        ]
-        setattr(entity, 'template_inputs', referenced_entities)
-        return entity
-
-
-class VMWareComputeResource(AbstractComputeResource):  # pylint:disable=R0901
-    def __init__(self, server_config=None, **kwargs):
-        self._fields = {
-            'set_console_password': entity_fields.BooleanField(),
-            'user': entity_fields.StringField(),
-            'password': entity_fields.StringField(),
-            'datacenter': entity_fields.StringField()
-        }
-        super(VMWareComputeResource, self).__init__(server_config, **kwargs)
-        self._fields['provider'].default = 'Vmware'
-        self._fields['provider'].required = True
-        self._fields['provider_friendly_name'].default = 'VMware'
-
-    def read(self, entity=None, attrs=None, ignore=None, params=None):
-        if attrs is None:
-            attrs = self.read_json()
-
-        if ignore is None:
-            ignore = set()
-
-        ignore.add('password')
-
-        return super(VMWareComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
-
-
-class OVirtComputeResource(AbstractComputeResource):  # pylint:disable=R0901
-    def __init__(self, server_config=None, **kwargs):
-        self._fields = {
-            'set_console_password': entity_fields.BooleanField(),
-            'user': entity_fields.StringField(),
-            'password': entity_fields.StringField()
-        }
-        super(OVirtComputeResource, self).__init__(server_config, **kwargs)
-        self._fields['provider'].default = 'Ovirt'
-        self._fields['provider'].required = True
-        self._fields['provider_friendly_name'].default = 'OVirt'
-
-    def read(self, entity=None, attrs=None, ignore=None, params=None):
-        if attrs is None:
-            attrs = self.read_json()
-
-        if ignore is None:
-            ignore = set()
-
-        ignore.add('password')
-
-        return super(OVirtComputeResource, self).read(entity=entity, attrs=attrs, ignore=ignore)
 
 
 # Connection helper
