@@ -45,6 +45,7 @@ from nailgun.entities import (
     Subnet,
     Subnet,
     Subscription,
+    SyncPlan,
     TemplateInput,
     TemplateKind,
     VMWareComputeResource,
@@ -403,8 +404,16 @@ def find_lifecycle_environment(module, name, organization, failsafe=False):
 
 def find_product(module, name, organization, failsafe=False):
     product = Product(name=name, organization=organization)
-    del(product._fields['sync_plan'])
     return handle_find_response(module, product.search(), message="No product found for %s" % name, failsafe=failsafe)
+
+
+def find_products(module, names, organization, failsafe=False):
+    return list(map(lambda name: find_product(module, name, organization, failsafe=failsafe), names))
+
+
+def find_sync_plan(module, name, organization, failsafe=False):
+    response = SyncPlan(name=name, organization=organization).search()
+    return handle_find_response(module, response, message="No sync plan found for %s" % name, failsafe=failsafe)
 
 
 def find_repositories(module, repositories, organization, failsafe=False):
