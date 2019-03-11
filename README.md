@@ -34,32 +34,32 @@ needs to be in your current directory when you run `ansible` or
 current ansible configuration; make sure to update the relative paths to the
 foreman-ansible-module `modules` and `module_utils` if you do so.
 
-Now your playbooks and roles should have access to the modules and module_utils
+Now your playbooks and roles should have access to the `modules` and `module_utils`
 contained in the repository for use, testing, or development of new modules.
 
 ## How to test modules in this repository
 
 To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to run test-setup and update test/test_playbooks/server_vars.yml:
+Also you need to run `make test-setup` and update `test/test_playbooks/server_vars.yml`:
 
 ```sh
 make test-setup
 vi test/test_playbooks/server_vars.yml # point to your Foreman instance
 ```
 
-To run the tests:
+To run the tests using the `foreman_global_parameter` module as an example:
 
 ```sh
 make test # all tests
-make test_product  # single test
-make test TEST="-k 'organzation or product'"  # select tests by expression (see `pytest -h`)
+make test_global_parameter  # single test
+make test TEST="-k 'organzation or global_parameter'"  # select tests by expression (see `pytest -h`)
 ```
 
 The tests are run against prerecorded server-responses.
 You can (re-)record the cassettes for a specific test with
 
 ```sh
-make record_<test name>
+make record_global_parameter
 ```
 
 See also [Guidedeline to writing tests](test/README.md).
