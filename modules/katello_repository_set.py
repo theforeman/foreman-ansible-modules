@@ -48,12 +48,16 @@ options:
   name:
     description:
       - Name of the repository set
-    required: true
+    required: false
     type: bool
   product:
     description:
       - Name of the parent product
-    required: true
+    required: false
+  label:
+    description:
+      - Label of the repository set, can be used in place of I(name) & I(product)
+    required: false
   repositories:
     description:
       - Release version and base architecture of the repositories to enable
@@ -193,6 +197,7 @@ def main():
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         supports_check_mode=True,
+        required_one_of=[['label', 'name']],
     )
 
     (module_params, state) = module.parse_params()
