@@ -123,8 +123,10 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "TheAnswer"
-    value: "42"
+    name: Debian 9
+    release_name: stretch
+    family: Debian
+    major: 9
     state: present
 
 - name: "Ensure existence of an Operating System (provide default values)"
@@ -132,8 +134,10 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "TheAnswer"
-    value: "43"
+    name: Centos 7
+    family: Red Hat
+    major: 7
+    password_hash: SHA256
     state: present_with_defaults
 
 - name: "Delete an Operating System"
@@ -141,7 +145,9 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "TheAnswer"
+    name: Debian 9
+    family: Debian
+    major: 9
     state: absent
 '''
 
@@ -190,8 +196,8 @@ def main():
             name=dict(required=True),
             release_name=dict(),
             description=dict(),
-            family=dict(),
-            major=dict(),
+            family=dict(required=True),
+            major=dict(required=True),
             minor=dict(),
             architectures=dict(type='list'),
             media=dict(type='list'),
