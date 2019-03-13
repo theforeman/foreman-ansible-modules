@@ -2,6 +2,9 @@ import pytest
 import os
 import tempfile
 import json
+from ansible.utils.display import Display
+import __main__
+__main__.display = Display()
 from ansible.cli.playbook import PlaybookCLI
 
 
@@ -51,8 +54,6 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
         # Only run the tests (skip fixtures)
         extra_args.extend(['--limit', '!fixtures'])
 
-    extra_args.extend(['-vvvv'])
-
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}
     with tempfile.NamedTemporaryFile('w', suffix='json', prefix='fam-vcr-') as params_file:
@@ -65,7 +66,7 @@ def run_playbook_vcr(module, extra_vars=None, extra_args=None, record=False):
 def run_playbook(module, extra_vars=None, extra_args=None):
     # Assemble parameters for playbook call
     path = 'test/test_playbooks/{}.yml'.format(module)
-    playbook_opts = ['ansible-playbook', path]
+    playbook_opts = ['ansible-playbook', '-vvvv', path]
     if extra_vars:
         playbook_opts.extend(['--extra-vars', extra_vars])
     if extra_args:
