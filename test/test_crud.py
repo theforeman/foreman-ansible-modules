@@ -19,6 +19,7 @@ MODULES = [
     'domain',
     'environment',
     'global_parameter',
+    'host',
     'installation_medium',
     'job_template',
     'lifecycle_environment',

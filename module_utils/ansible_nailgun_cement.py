@@ -24,6 +24,8 @@ from nailgun.entities import (
     Errata,
     File,
     JobTemplate,
+    Host,
+    HostGroup,
     LifecycleEnvironment,
     Location,
     Media,
@@ -306,6 +308,10 @@ def find_content_view_filter_rule(module, content_view_filter, name=False, errat
 def find_content_view_filter(module, name, content_view, failsafe=False):
     content_view_filter = AbstractContentViewFilter(name=name, content_view=content_view)
     return handle_find_response(module, content_view_filter.search(), message="No content view filter found for %s" % name, failsafe=failsafe)
+
+def find_host(module, name, failsafe=False):
+    org = Host(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, org, message="No host found for %s" % name, failsafe=failsafe)
 
 
 def find_organizations(module, organizations):
