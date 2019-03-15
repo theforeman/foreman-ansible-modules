@@ -315,6 +315,10 @@ def find_host(module, name, failsafe=False):
     return handle_find_response(module, host, message="No host found for %s" % name, failsafe=failsafe)
 
 
+def find_parameter_from_hostgroup(module, hostgroup, parameter, failsafe=False):
+    return hostgroup.read_json()[parameter]
+
+
 def find_hostgroup(module, name, failsafe=False):
     hostgroup = HostGroup(name=name).search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, hostgroup, message="No hostgroup found for %s" % name, failsafe=failsafe)

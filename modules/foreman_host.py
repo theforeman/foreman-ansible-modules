@@ -103,6 +103,8 @@ try:
         find_hostgroup,
         find_location,
         find_organization,
+        find_parameter_from_hostgroup,
+        # set_power_state,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -113,7 +115,7 @@ except ImportError:
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
-    #'mac': 'mac',
+    # 'mac': 'mac',
     'enabled': 'enabled',
     'hostgroup': 'hostgroup',
     'location': 'location',
@@ -127,8 +129,9 @@ def main():
             name=dict(required=True),
             hostgroup=dict(),
             location=dict(),
-            #mac=dict(default='00-00-00-00-00-00'),
+            # mac=dict(default='00-00-00-00-00-00'),
             organization=dict(),
+            # power_state=dict(default='on'),
             enabled=dict(default='true', type='bool'),
             state=dict(default='present', choices=[
                        'present_with_defaults', 'present', 'absent']),
@@ -143,16 +146,20 @@ def main():
     (host_dict, state) = module.parse_params()
 
     module.connect()
+    host_dict['hostgroup'] = find_hostgroup(
+        module, host_dict['hostgroup'], failsafe=True)
+    host_dict['name'] = host_dict['name'] + '.' + \
+        find_parameter_from_hostgroup(
+            module, host_dict['hostgroup'], 'domain_name')
 
     entity = find_host(module, host_dict['name'], failsafe=True)
-
-    host_dict['hostgroup'] = find_hostgroup(module, host_dict['hostgroup'], failsafe=True)
 
     if 'location' in host_dict:
         host_dict['location'] = find_location(module, host_dict['location'])
 
     if 'organization' in host_dict:
-        host_dict['organization'] = find_organization(module, host_dict['organization'])
+        host_dict['organization'] = find_organization(
+            module, host_dict['organization'])
 
     host_dict = sanitize_entity_dict(host_dict, name_map)
 

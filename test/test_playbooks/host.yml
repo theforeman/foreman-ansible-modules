@@ -8,4 +8,15 @@
   - include: tasks/host.yml
     vars:
       expected_change: true
+  - include: tasks/host.yml
+    vars:
+      expected_change: false
+  - include: tasks/host.yml
+    vars:
+      host_state: absent
+      expected_change: true
+  - include: tasks/host.yml
+    vars:
+      host_state: absent
+      expected_change: false
 ...
