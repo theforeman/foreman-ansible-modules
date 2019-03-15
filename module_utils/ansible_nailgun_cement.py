@@ -309,9 +309,15 @@ def find_content_view_filter(module, name, content_view, failsafe=False):
     content_view_filter = AbstractContentViewFilter(name=name, content_view=content_view)
     return handle_find_response(module, content_view_filter.search(), message="No content view filter found for %s" % name, failsafe=failsafe)
 
+
 def find_host(module, name, failsafe=False):
-    org = Host(name=name).search(set(), {'search': 'name="{}"'.format(name)})
-    return handle_find_response(module, org, message="No host found for %s" % name, failsafe=failsafe)
+    host = Host(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, host, message="No host found for %s" % name, failsafe=failsafe)
+
+
+def find_hostgroup(module, name, failsafe=False):
+    hostgroup = HostGroup(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, hostgroup, message="No hostgroup found for %s" % name, failsafe=failsafe)
 
 
 def find_organizations(module, organizations):

@@ -56,24 +56,10 @@ options:
     required: false
     default: true
     type: bool
-  name:
-    description:
-      - Name of the host
-    required: true
-  enabled:
-    description:
-      - Power state of host
-    required: false
-    type: bool
-    default: true
-  state:
-    description:
-      - State of the host
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
+
+# NEEDS REWORK
+
+
 '''
 
 EXAMPLES = '''
@@ -113,7 +99,10 @@ try:
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
+        find_host,
+        find_hostgroup,
+        find_location,
+        find_organization,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -124,8 +113,11 @@ except ImportError:
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
+    #'mac': 'mac',
     'enabled': 'enabled',
     'hostgroup': 'hostgroup',
+    'location': 'location',
+    'organization': 'organization',
 }
 
 
@@ -134,6 +126,9 @@ def main():
         argument_spec=dict(
             name=dict(required=True),
             hostgroup=dict(),
+            location=dict(),
+            #mac=dict(default='00-00-00-00-00-00'),
+            organization=dict(),
             enabled=dict(default='true', type='bool'),
             state=dict(default='present', choices=[
                        'present_with_defaults', 'present', 'absent']),
@@ -149,24 +144,15 @@ def main():
 
     module.connect()
 
-    try:
-        entities = find_host(Host, name=host_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = find_host(module, host_dict['name'], failsafe=True)
 
-    if 'hostgroup' in host_dict:
-        try:
-            entities = find_entities(HostGroup, name=host_dict['name'])
-            if len(entities) > 0:
-                entity = entities[0]
-            else:
-                entity = None
-        except Exception as e:
-            module.fail_json(msg='Failed to find entity: %s ' % e)
+    host_dict['hostgroup'] = find_hostgroup(module, host_dict['hostgroup'], failsafe=True)
+
+    if 'location' in host_dict:
+        host_dict['location'] = find_location(module, host_dict['location'])
+
+    if 'organization' in host_dict:
+        host_dict['organization'] = find_organization(module, host_dict['organization'])
 
     host_dict = sanitize_entity_dict(host_dict, name_map)
 
