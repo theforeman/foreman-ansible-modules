@@ -7,6 +7,7 @@ from ansible.cli.playbook import PlaybookCLI
 
 MODULES = [
     'activation_key',
+    'bookmark',
     'compute_resource',
     'compute_profile',
     'content_credential',
