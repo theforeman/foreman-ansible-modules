@@ -28,8 +28,8 @@ DOCUMENTATION = '''
 module: foreman_host_power
 short_description: Manage Foreman hosts power state
 description:
-  - "Manage Foreman host Entities"
-  - "This beta version can start, stop, reboot, reset an existing foreman host"
+  - "Manage power state of Foreman host"
+  - "This beta version can start and stop an existing foreman host and question the current power state."
   - "Uses https://github.com/SatelliteQE/nailgun"
 version_added: "2.7"
 author:
