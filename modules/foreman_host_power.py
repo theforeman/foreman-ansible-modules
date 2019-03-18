@@ -25,11 +25,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: foreman_host
-short_description: Manage Foreman hosts
+module: foreman_host_power
+short_description: Manage Foreman hosts power state
 description:
   - "Manage Foreman host Entities"
-  - "This beta version can create and delete hosts from preexisting host groups"
+  - "This beta version can start, stop, reboot, reset an existing foreman host"
+  - "Uses https://github.com/SatelliteQE/nailgun"
 version_added: "2.7"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
@@ -57,58 +58,71 @@ options:
     type: bool
   name:
     description:
-      - Name of host (without the related domain!)
+      - name of host
     required: true
-  hostgroup:
+  domain_name:
     description:
-      - Name of related hostgroup
+      - name of host's domain
     required: true
-  location:
-    description:
-      - Name of related location
-    required: false
-  organization:
-    description:
-      - Name of related organization
-    required: false
-
+  power_state:
+    description: Desired power state
+    type: list
+    choices:
+      - on
+      - off
+      - state
 '''
 
 EXAMPLES = '''
-- name: "Create a host"
-  foreman_host:
+- name: "Switch a host on"
+  foreman_host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "new_host"
-    hostgroup: my_hostgroup
-    state: present
+    name: "test-host"
+    domain_name: "domain.test"
+    state: on
 
-- name: "Delete a host"
-  foreman_host:
+- name: "Switch a host off"
+  foreman_host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "new_host"
-    state: absent
+    name: "test-host"
+    domain_name: "domain.test"
+    state: off
+
+- name: "Query host power state"
+  foreman_host_power:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "test-host"
+    domain_name: "domain.test"
+    state: state
+    register: result
+- debug:
+    msg: "Host power state is {{ result.power_state }}"
+
+
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+power_state:
+    description: current power state of host
+    returned: always
+    type: string
+    sample: "off"
+ '''
 
 try:
     from nailgun.entities import (
         Host,
-        HostGroup,
     )
 
     from ansible.module_utils.ansible_nailgun_cement import (
         find_host,
-        find_hostgroup,
-        find_location,
-        find_organization,
-        find_parameter_from_hostgroup,
-        naildown_entity_state,
-        sanitize_entity_dict,
+        naildown_power_state,
     )
 except ImportError:
     pass
@@ -117,10 +131,7 @@ except ImportError:
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
-    'enabled': 'enabled',
-    'hostgroup': 'hostgroup',
-    'location': 'location',
-    'organization': 'organization',
+    'domain_name': 'domain_name',
 }
 
 
@@ -128,16 +139,8 @@ def main():
     module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
-            hostgroup=dict(),
-            location=dict(),
-            organization=dict(),
-            enabled=dict(default='true', type='bool'),
-            state=dict(default='present', choices=[
-                       'present_with_defaults', 'present', 'absent']),
-        ),
-        required_if=(
-            ['state', 'present_with_defaults', ['hostgroup']],
-            ['state', 'present', ['hostgroup']],
+            domain_name=dict(required=True),
+            state=dict(default='present', choices=['on', 'off', 'state']),
         ),
         supports_check_mode=True,
     )
@@ -146,25 +149,13 @@ def main():
 
     module.connect()
 
-    host_dict['hostgroup'] = find_hostgroup(
-        module, host_dict['hostgroup'], failsafe=True)
-    host_dict['name'] = host_dict['name'] + '.' + \
-        find_parameter_from_hostgroup(
-            module, host_dict['hostgroup'], 'domain_name')
+    host_dict['name'] = host_dict['name'] + '.' + host_dict['domain_name']
 
     entity = find_host(module, host_dict['name'], failsafe=True)
 
-    if 'location' in host_dict:
-        host_dict['location'] = find_location(module, host_dict['location'])
+    changed, power_state = naildown_power_state(module, entity, state)
 
-    if 'organization' in host_dict:
-        host_dict['organization'] = find_organization(
-            module, host_dict['organization'])
-
-    host_dict = sanitize_entity_dict(host_dict, name_map)
-    changed = naildown_entity_state(Host, host_dict, entity, state, module)
-
-    module.exit_json(changed=changed)
+    module.exit_json(changed=changed, power_state=power_state)
 
 
 if __name__ == '__main__':

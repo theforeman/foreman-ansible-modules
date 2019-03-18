@@ -126,6 +126,15 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
     return changed, changed_entity
 
 
+def naildown_power_state(module, host, state):
+    changed = False
+    curr_state = host.power(data={'power_action': 'state'})['power']
+    if state != 'status' and state != curr_state:
+        curr_state = host.power(data={'power_action': state})['power']
+        changed = True
+    return changed, curr_state
+
+
 def search_entities_json(entity_class, search):
     """ Find entities using search """
     return entity_class().search_json(

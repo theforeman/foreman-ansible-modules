@@ -11,6 +11,37 @@
   - include: tasks/host.yml
     vars:
       expected_change: false
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "state"
+      expected_change: false
+      expected_power_state: off
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: true
+      expected_power_state: on
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: false
+      expected_power_state: on
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: true
+      expected_power_state: off
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: false
+      expected_power_state: off
+
   - include: tasks/host.yml
     vars:
       host_state: absent
