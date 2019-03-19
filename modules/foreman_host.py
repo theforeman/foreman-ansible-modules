@@ -106,7 +106,6 @@ try:
         find_hostgroup,
         find_location,
         find_organization,
-        find_parameter_from_hostgroup,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -148,9 +147,9 @@ def main():
 
     host_dict['hostgroup'] = find_hostgroup(
         module, host_dict['hostgroup'], failsafe=True)
+
     host_dict['name'] = host_dict['name'] + '.' + \
-        find_parameter_from_hostgroup(
-            module, host_dict['hostgroup'], 'domain_name')
+        host_dict['hostgroup'].domain.read().fullname
 
     entity = find_host(module, host_dict['name'], failsafe=True)
 
