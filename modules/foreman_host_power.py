@@ -123,6 +123,7 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         find_host,
         naildown_power_state,
+        query_power_state,
     )
 except ImportError:
     pass
@@ -153,9 +154,13 @@ def main():
 
     entity = find_host(module, host_dict['name'], failsafe=True)
 
-    changed, power_state = naildown_power_state(module, entity, state)
+    if state == 'state':
+        power_state = query_power_state(module, entity)
+        module.exit_json(changed=False, power_state=power_state)
 
-    module.exit_json(changed=changed, power_state=power_state)
+    else:
+        changed = naildown_power_state(module, entity, state)
+        module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':

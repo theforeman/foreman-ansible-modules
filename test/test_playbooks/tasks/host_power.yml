@@ -3,7 +3,6 @@
   vars:
     host_power_name: "test-host"
     host_power_domain: "deploy1.dev.atix"
-    host_power_state: 'on'
   foreman_host_power:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -15,5 +14,5 @@
   register: result
 - fail:
     msg: "Ensuring host is {{ host_power_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change) and (expected_state is defined) and (result.power_state != expected_power_state)
+  when: ((expected_change is defined) and (result.changed != expected_change)) or ((expected_power_state is defined) and (result.power_state != expected_power_state))
 ...

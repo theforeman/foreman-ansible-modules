@@ -126,13 +126,17 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
     return changed, changed_entity
 
 
+def query_power_state(module, host):
+    return host.power(data={'power_action': 'state'})['power']
+
+
 def naildown_power_state(module, host, state):
     changed = False
-    curr_state = host.power(data={'power_action': 'state'})['power']
-    if state != 'status' and state != curr_state:
-        curr_state = host.power(data={'power_action': state})['power']
+    curr_state = query_power_state(module, host)
+    if curr_state != state:
+        host.power(data={'power_action': state})['power']
         changed = True
-    return changed, curr_state
+    return changed
 
 
 def search_entities_json(entity_class, search):
