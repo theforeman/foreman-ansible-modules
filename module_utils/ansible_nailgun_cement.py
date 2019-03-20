@@ -329,7 +329,7 @@ def find_host(module, name, failsafe=False):
 
 
 def find_hostgroup(module, name, failsafe=False):
-    hostgroup = HostGroup(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    hostgroup = HostGroup().search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, hostgroup, message="No hostgroup found for %s" % name, failsafe=failsafe)
 
 
