@@ -1,0 +1,16 @@
+---
+- name: "Ensure host '{{ host_power_name }}' is {{ host_power_state }}"
+  vars:
+    host_power_name: "test-host.deploy1.dev.atix"
+  foreman_host_power:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    verify_ssl: "{{ foreman_verify_ssl }}"
+    hostname: "{{ host_power_name }}"
+    state: "{{ host_power_state }}"
+  register: result
+- fail:
+    msg: "Ensuring host is {{ host_power_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: ((expected_change is defined) and (result.changed != expected_change)) or ((expected_power_state is defined) and (result.power_state != expected_power_state))
+...

@@ -1,0 +1,49 @@
+---
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/host.yml
+    vars:
+      expected_change: true
+  - include: tasks/host.yml
+    vars:
+      expected_change: false
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "state"
+      expected_change: false
+      expected_power_state: "off"
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: true
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: false
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: true
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: false
+
+  - include: tasks/host.yml
+    vars:
+      host_state: absent
+      expected_change: true
+  - include: tasks/host.yml
+    vars:
+      host_state: absent
+      expected_change: false
+...

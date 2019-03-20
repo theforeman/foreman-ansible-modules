@@ -24,6 +24,8 @@ from nailgun.entities import (
     Errata,
     File,
     JobTemplate,
+    Host,
+    HostGroup,
     LifecycleEnvironment,
     Location,
     Media,
@@ -122,6 +124,19 @@ def naildown_entity(entity_class, entity_dict, entity, state, module, check_miss
     else:
         module.fail_json(msg='Not a valid state: {}'.format(state))
     return changed, changed_entity
+
+
+def query_power_state(module, host):
+    return host.power(data={'power_action': 'state'})['power']
+
+
+def naildown_power_state(module, host, state):
+    changed = False
+    curr_state = query_power_state(module, host)
+    if curr_state != state:
+        host.power(data={'power_action': state})['power']
+        changed = True
+    return changed
 
 
 def search_entities_json(entity_class, search):
@@ -306,6 +321,16 @@ def find_content_view_filter_rule(module, content_view_filter, name=False, errat
 def find_content_view_filter(module, name, content_view, failsafe=False):
     content_view_filter = AbstractContentViewFilter(name=name, content_view=content_view)
     return handle_find_response(module, content_view_filter.search(), message="No content view filter found for %s" % name, failsafe=failsafe)
+
+
+def find_host(module, name, failsafe=False):
+    host = Host().search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, host, message="No host found for %s" % name, failsafe=failsafe)
+
+
+def find_hostgroup(module, name, failsafe=False):
+    hostgroup = HostGroup().search(set(), {'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, hostgroup, message="No hostgroup found for %s" % name, failsafe=failsafe)
 
 
 def find_organizations(module, organizations):
