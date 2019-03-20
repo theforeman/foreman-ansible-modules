@@ -30,7 +30,6 @@ short_description: Manage Foreman hosts power state
 description:
   - "Manage power state of Foreman host"
   - "This beta version can start and stop an existing foreman host and question the current power state."
-  - "Uses https://github.com/SatelliteQE/nailgun"
 version_added: "2.7"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
@@ -56,13 +55,9 @@ options:
     required: false
     default: true
     type: bool
-  name:
+  hostname:
     description:
-      - name of host
-    required: true
-  domain_name:
-    description:
-      - name of host's domain
+      - fqdn of host
     required: true
   power_state:
     description: Desired power state
@@ -79,8 +74,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "test-host"
-    domain_name: "domain.test"
+    hostname: "test-host.domain.test"
     state: on
 
 - name: "Switch a host off"
@@ -88,8 +82,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "test-host"
-    domain_name: "domain.test"
+    hostname: "test-host.domain.test"
     state: off
 
 - name: "Query host power state"
@@ -97,8 +90,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "test-host"
-    domain_name: "domain.test"
+    hostname: "test-host.domain.test"
     state: state
     register: result
 - debug:
@@ -129,18 +121,10 @@ except ImportError:
     pass
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'domain_name': 'domain_name',
-}
-
-
 def main():
     module = ForemanEntityAnsibleModule(
         argument_spec=dict(
-            name=dict(required=True),
-            domain_name=dict(required=True),
+            hostname=dict(required=True),
             state=dict(default='present', choices=['on', 'off', 'state']),
         ),
         supports_check_mode=True,
@@ -150,9 +134,7 @@ def main():
 
     module.connect()
 
-    host_dict['name'] = host_dict['name'] + '.' + host_dict['domain_name']
-
-    entity = find_host(module, host_dict['name'], failsafe=True)
+    entity = find_host(module, host_dict['hostname'], failsafe=True)
 
     if state == 'state':
         power_state = query_power_state(module, entity)

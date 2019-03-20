@@ -1,15 +1,13 @@
 ---
 - name: "Ensure host '{{ host_power_name }}' is {{ host_power_state }}"
   vars:
-    host_power_name: "test-host"
-    host_power_domain: "deploy1.dev.atix"
+    host_power_name: "test-host.deploy1.dev.atix"
   foreman_host_power:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_verify_ssl }}"
-    name: "{{ host_power_name }}"
-    domain_name: "{{ host_power_domain }}"
+    hostname: "{{ host_power_name }}"
     state: "{{ host_power_state }}"
   register: result
 - fail:

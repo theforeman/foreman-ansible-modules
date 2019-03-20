@@ -324,7 +324,7 @@ def find_content_view_filter(module, name, content_view, failsafe=False):
 
 
 def find_host(module, name, failsafe=False):
-    host = Host(name=name).search(set(), {'search': 'name="{}"'.format(name)})
+    host = Host().search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, host, message="No host found for %s" % name, failsafe=failsafe)
 
 
