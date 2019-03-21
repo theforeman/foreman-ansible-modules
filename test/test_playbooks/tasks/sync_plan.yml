@@ -5,20 +5,22 @@
     sync_plan_organization: "Test Organization"
     sync_plan_interval: "weekly"
     sync_plan_enabled: false
-    sync_plan_sync_date: "2017-01-01 00:00:00"
-    sync_plan_products:
-      - name: "Test Product"
+    sync_plan_sync_date: "2017/01/01 00:00:00 +0000"
+    sync_plan_state: present
   katello_sync_plan:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_verify_ssl }}"
-    name: "{{sync_plan_name }}"
+    name: "{{ sync_plan_name }}"
+    description: "{{ sync_plan_description|default(omit) }}"
     organization: "{{ sync_plan_organization }}"
-    interval: "{{sync_plan_interval }}"
-    enabled: "{{sync_plan_enabled }}"
-    sync_date: "{{sync_plan_sync_date }}"
-    products: "{{ sync_plan_products }}"
+    interval: "{{ sync_plan_interval }}"
+    enabled: "{{ sync_plan_enabled }}"
+    sync_date: "{{ sync_plan_sync_date }}"
+    cron_expression: "{{ sync_plan_cron_expression|default(omit) }}"
+    products: "{{ sync_plan_products|default(omit) }}"
+    state: "{{ sync_plan_state }}"
   register: result
 - fail:
     msg: "Creating/updating sync plan failed! (expected_change: {{ expected_change | default('unknown') }})"

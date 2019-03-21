@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2017, Andrew Kofink <ajkofink@gmail.com>
+# (c) 2019, Matthias Dellweg <dellweg@atix.de>
 #
 # This file is part of Ansible
 #
@@ -20,14 +21,14 @@
 DOCUMENTATION = '''
 ---
 module: katello_sync_plan
-short_description: Create and Manage Katello sync plans
+short_description: Manage Katello sync plans
 description:
-    - Create and Manage Katello sync plans
-author: "Andrew Kofink (@akofink)"
+    - Manage Katello sync plans
+author:
+    - "Andrew Kofink (@akofink)"
+    - "Matthis Dellweg (@mdellweg) ATIX-AG"
 requirements:
-    - "nailgun >= 0.29.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+    - "nailgun >= 0.32.0"
 options:
   server_url:
     description:
@@ -50,13 +51,21 @@ options:
     description:
       - Name of the Katello sync plan
     required: true
+  description:
+    description:
+      - Description of the Katello sync plan
   organization:
     description:
       - Organization that the sync plan is in
     required: true
   interval:
     description:
-      - How often synchronization should run ('hourly', 'daily', 'weekly')
+      - How often synchronization should run
+    choices:
+      - hourly
+      - daily
+      - weekly
+      - custom cron
     required: true
   enabled:
     description:
@@ -65,8 +74,11 @@ options:
   sync_date:
     description:
       - Start date and time of the first synchronization
-    default: now
     required: true
+  cron_expression:
+    description:
+      - A cron expression as found in crontab files
+      - This must be provided together with I(interval='custom cron').
   products:
     description:
       - List of products to include in the sync plan
@@ -84,154 +96,89 @@ EXAMPLES = '''
     organization: "Default Organization"
     interval: "weekly"
     enabled: false
-    sync_date: "2017-01-01 00:00:00"
+    sync_date: "2017/01/01 00:00:00 +0000"
     products:
       - name: 'Red Hat Enterprise Linux Server'
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    import six
-    import pytz
-    from datetime import datetime
-    from nailgun import entities
-    from nailgun.config import ServerConfig
-except ImportError:
-    pass
+from ansible.module_utils.ansible_nailgun_cement import (
+    SyncPlan,
+    find_organization,
+    find_products,
+    find_sync_plan,
+    naildown_entity,
+    sanitize_entity_dict,
+)
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
-
-
-# Workaround for python2 which does not understand "%z"
-if six.PY2:
-    def parse_time(sync_date):
-        return datetime.strptime(sync_date, '%Y/%m/%d %H:%M:%S +0000').replace(tzinfo=pytz.UTC)
-else:
-    def parse_time(sync_date):
-        return datetime.strptime(sync_date, '%Y/%m/%d %H:%M:%S %z')
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
-class NailGun(object):
-    def __init__(self, server, entities, module):
-        self._server = server
-        self._entities = entities
-        self._module = module
-
-    def find_organization(self, name):
-        org = self._entities.Organization(self._server, name=name)
-        response = org.search(set(), {'search': 'name="{}"'.format(name)})
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No organization found for %s" % name)
-
-    def find_product(self, name, organization):
-        product = self._entities.Product(self._server, name=name, organization=organization)
-        del(product._fields['sync_plan'])
-        response = product.search()
-
-        if len(response) == 1:
-            return response[0]
-        else:
-            self._module.fail_json(msg="No Product found for %s" % name)
-
-    def find_products(self, products, organization):
-        return map(lambda product: self.find_product(product['name'], organization), products)
-
-    def update_fields(self, new, old, fields):
-        needs_update = False
-        for field in fields:
-            if hasattr(new, field) and hasattr(old, field):
-                new_attr = getattr(new, field)
-                old_attr = getattr(old, field)
-                if old_attr is None or (hasattr(new_attr, 'id') and hasattr(old_attr, 'id') and new_attr.id != old_attr.id) or new_attr != old_attr:
-                    setattr(old, field, new_attr)
-                    needs_update = True
-            elif hasattr(old, field) and getattr(old, field) is not None and not hasattr(new, field):
-                setattr(old, field, None)
-                needs_update = True
-        return needs_update, old
-
-    def sync_plan(self, name, organization, interval=None, enabled=None, sync_date=None, products=[]):
-        updated = False
-        organization = self.find_organization(organization)
-
-        enabled = enabled.lower() == "true"
-
-        sync_plan = self._entities.SyncPlan(self._server, name=name, organization=organization, interval=interval, enabled=enabled, sync_date=sync_date)
-        response = sync_plan.search({'name', 'organization'})
-
-        if len(response) == 1:
-            response[0].sync_date = parse_time(response[0].sync_date)
-            updated, sync_plan = self.update_fields(sync_plan, response[0], ['interval', 'enabled', 'sync_date'])
-            if updated and not self._module.check_mode:
-                sync_plan.update()
-        elif len(response) == 0:
-            if not self._module.check_mode:
-                sync_plan = sync_plan.create()
-            updated = True
-
-        desired_product_ids = list(map(lambda p: p.id, self.find_products(products, organization)))
-        current_product_ids = list(map(lambda p: p.id, sync_plan.product))
-
-        if set(desired_product_ids) != set(current_product_ids):
-            if not self._module.check_mode:
-                product_ids_to_add = set(desired_product_ids) - set(current_product_ids)
-                if len(product_ids_to_add) > 0:
-                    sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
-                product_ids_to_remove = set(current_product_ids) - set(desired_product_ids)
-                if len(product_ids_to_remove) > 0:
-                    sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
-            updated = True
-
-        return updated
+# This is the only true source for names (and conversions thereof)
+name_map = {
+    'name': 'name',
+    'description': 'description',
+    'organization': 'organization',
+    'interval': 'interval',
+    'enabled': 'enabled',
+    'sync_date': 'sync_date',
+    'cron_expression': 'cron_expression',
+    'products': 'product',
+}
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
+            description=dict(),
             organization=dict(required=True),
-            interval=dict(required=True),
-            enabled=dict(required=True),
+            interval=dict(choices=['hourly', 'daily', 'weekly', 'custom cron'], required=True),
+            enabled=dict(type='bool', required=True),
             sync_date=dict(required=True),
-            products=dict(type='list', default=[]),
+            cron_expression=dict(),
+            products=dict(type='list'),
         ),
-        supports_check_mode=True
+        required_if=[
+            ['interval', 'custom cron', ['cron_expression']],
+        ],
+        supports_check_mode=True,
     )
 
-    module_params = module.parse_params()
-    server_params = module.get_server_params()
+    (entity_dict, state) = module.parse_params()
 
-    name = module_params['name']
-    organization = module_params['organization']
-    interval = module_params['interval']
-    enabled = module_params['enabled']
-    sync_date = datetime.strptime(module_params['sync_date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.UTC)
-    products = module_params['products']
+    if entity_dict['interval'] != 'custom cron':
+        if 'cron_expression' in entity_dict:
+            module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
-    (server_url, username, password, verify_ssl) = server_params
-    server = ServerConfig(
-        url=server_url,
-        auth=(username, password),
-        verify=verify_ssl
-    )
-    ng = NailGun(server, entities, module)
+    module.connect()
 
-    # Lets make an connection to the server with username and password
-    try:
-        org = entities.Organization(server)
-        org.search()
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+    entity_dict['organization'] = find_organization(module, entity_dict['organization'])
+    products = entity_dict.pop('products', None)
 
-    try:
-        changed = ng.sync_plan(name, organization, interval=interval, enabled=enabled, sync_date=sync_date, products=products)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    sync_plan = find_sync_plan(module, entity_dict['name'], entity_dict['organization'], failsafe=True)
+
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
+
+    changed, sync_plan = naildown_entity(SyncPlan, entity_dict, sync_plan, state, module)
+
+    if products is not None:
+        products = find_products(module, products, entity_dict['organization'])
+        desired_product_ids = set(p.id for p in products)
+        current_product_ids = set(p.id for p in sync_plan.product)
+
+        if desired_product_ids != current_product_ids:
+            if not module.check_mode:
+                product_ids_to_add = desired_product_ids - current_product_ids
+                if product_ids_to_add:
+                    sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
+                product_ids_to_remove = current_product_ids - desired_product_ids
+                if product_ids_to_remove:
+                    sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
+            changed = True
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':
