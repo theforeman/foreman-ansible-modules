@@ -11,8 +11,8 @@ from ansible.cli.playbook import PlaybookCLI
 MODULES = [
     'activation_key',
     'bookmark',
-    'compute_resource',
     'compute_profile',
+    'compute_resource',
     'content_credential',
     'content_view',
     'content_view_filter',

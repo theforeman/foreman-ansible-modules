@@ -1,5 +1,7 @@
 ---
 - hosts: fixtures
+  tags:
+    - setup
   gather_facts: false
   tasks:
   - name: Load server config
@@ -16,6 +18,8 @@
       repository_state: present
 
 - hosts: tests
+  tags:
+    - test
   gather_facts: false
   tasks:
   - name: Load server config
@@ -59,6 +63,8 @@
       expected_change: false
 
 - hosts: fixtures
+  tags:
+    - teardown
   gather_facts: false
   tasks:
   - name: Load server config

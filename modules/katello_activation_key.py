@@ -26,8 +26,6 @@ description:
 author: "Andrew Kofink (@akofink)"
 requirements:
   - "nailgun >= 0.28.0"
-  - "python >= 2.6"
-  - "ansible >= 2.3"
 options:
   server_url:
     description:
@@ -105,7 +103,7 @@ EXAMPLES = '''
     auto_attach: False
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
@@ -182,9 +180,10 @@ def main():
     if 'content_view' in entity_dict:
         entity_dict['content_view'] = find_content_view(module, entity_dict['content_view'], entity_dict['organization'])
 
-    activation_key_dict = sanitize_entity_dict(entity_dict, name_map)
     activation_key_entity = find_activation_key(module, name=entity_dict['name'], organization=entity_dict['organization'],
                                                 failsafe=True)
+
+    activation_key_dict = sanitize_entity_dict(entity_dict, name_map)
 
     try:
         changed, activation_key_entity = naildown_entity(ActivationKey, activation_key_dict, activation_key_entity, state, module)
@@ -195,29 +194,30 @@ def main():
         if state == 'present' or (state == 'present_with_defaults' and changed):
             if 'subscriptions' in entity_dict:
                 subscriptions = entity_dict['subscriptions']
-                desired_subscription_ids = map(lambda s: s.id, find_subscriptions(module, subscriptions, entity_dict['organization']))
+                desired_subscription_ids = set(s.id for s in find_subscriptions(module, subscriptions, entity_dict['organization']))
                 current_subscriptions = [Subscription(**result)
                                          for result in Subscription().search_normalize(activation_key_entity.subscriptions()['results'])]
-                current_subscription_ids = map(lambda s: s.id, current_subscriptions)
+                current_subscription_ids = set(s.id for s in current_subscriptions)
 
-                if set(desired_subscription_ids) != set(current_subscription_ids):
+                if desired_subscription_ids != current_subscription_ids:
                     if not module.check_mode:
-                        for subscription_id in set(desired_subscription_ids) - set(current_subscription_ids):
+                        for subscription_id in (desired_subscription_ids - current_subscription_ids):
                             activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-                        for subscription_id in set(current_subscription_ids) - set(desired_subscription_ids):
+                        for subscription_id in (current_subscription_ids - desired_subscription_ids):
                             activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
                     changed = True
 
             if 'content_overrides' in entity_dict:
                 content_overrides = entity_dict['content_overrides']
                 product_content = activation_key_entity.product_content()
-                current_content_overrides = set()
-                for product in product_content['results']:
-                    if product['enabled_content_override'] is not None:
-                        current_content_overrides.add((product['content']['label'], product['enabled_content_override']))
-                desired_content_overrides = set()
-                for product in content_overrides:
-                    desired_content_overrides.add((product['label'], override_to_boolnone(product['override'])))
+                current_content_overrides = set(
+                    (product['content']['label'], product['enabled_content_override'])
+                    for product in product_content['results']
+                    if product['enabled_content_override'] is not None
+                )
+                desired_content_overrides = set(
+                    (product['label'], override_to_boolnone(product['override'])) for product in content_overrides
+                )
 
                 if desired_content_overrides != current_content_overrides:
                     if not module.check_mode:
@@ -225,7 +225,7 @@ def main():
                             activation_key_entity.content_override(data={'content_override': {'content_label': label, 'value': 'default'}})
                         for (label, override) in desired_content_overrides - current_content_overrides:
                             activation_key_entity.content_override(data={'content_override': {'content_label': label,
-                                                                         'value': str(override_to_boolnone(override)).lower()}})
+                                                                         'value': str(override).lower()}})
                     changed = True
 
         module.exit_json(changed=changed)
