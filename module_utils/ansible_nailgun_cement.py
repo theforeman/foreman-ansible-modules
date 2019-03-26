@@ -73,11 +73,7 @@ def ping_server(module):
 
 
 def sanitize_entity_dict(entity_dict, name_map):
-    result = {}
-    for key, value in name_map.items():
-        if key in entity_dict:
-            result[value] = entity_dict[key]
-    return result
+    return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
 
 
 def update_fields(new, old, fields):
