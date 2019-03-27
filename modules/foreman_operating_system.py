@@ -107,6 +107,11 @@ options:
       - MD5
       - SHA256
       - SHA512
+  parameters:
+    description:
+      - Operating System specific host parameters
+    required: false
+    type: dict
   state:
     description:
       - State of the Operating System
@@ -158,14 +163,16 @@ try:
         find_entities,
         find_entities_by_name,
         find_operating_system_by_title,
+        naildown_entity,
         naildown_entity_state,
         sanitize_entity_dict,
+        OperatingSystemParameter,
     )
 
     from nailgun.entities import (
-        OperatingSystem,
         Architecture,
         Media,
+        OperatingSystem,
         PartitionTable,
         ProvisioningTemplate,
     )
@@ -204,6 +211,7 @@ def main():
             ptables=dict(type='list'),
             provisioning_templates=dict(type='list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
+            parameters=dict(type='dict'),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         supports_check_mode=True,
@@ -259,9 +267,26 @@ def main():
         operating_system_dict['provisioning_templates'] = find_entities_by_name(
             ProvisioningTemplate, operating_system_dict['provisioning_templates'], module)
 
+    desired_parameters = operating_system_dict.get('parameters')
+
     operating_system_dict = sanitize_entity_dict(operating_system_dict, name_map)
 
-    changed = naildown_entity_state(OperatingSystem, operating_system_dict, entity, state, module)
+    changed, operating_system = naildown_entity(OperatingSystem, operating_system_dict, entity, state, module)
+
+    if desired_parameters is not None:
+        if state == "present" or (state == "present_with_defaults" and entity is None):
+            if entity:
+                current_parameters = OperatingSystemParameter(operatingsystem=operating_system).search()
+                current_parameters = {p.name: p for p in current_parameters}
+            else:
+                current_parameters = {}
+            desired_parameters = {name: {'name': name, 'value': value, 'operatingsystem': operating_system} for name, value in desired_parameters.items()}
+
+            for name in desired_parameters:
+                current_parameter = current_parameters.pop(name, None)
+                changed |= naildown_entity_state(OperatingSystemParameter, desired_parameters[name], current_parameter, "present", module)
+            for current_parameter in current_parameters.values():
+                changed |= naildown_entity_state(OperatingSystemParameter, {}, current_parameter, "absent", module)
 
     module.exit_json(changed=changed)
 

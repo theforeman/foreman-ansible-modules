@@ -5,6 +5,8 @@
   - name: Load server config
     include_vars:
       file: server_vars.yml
+    tags:
+      - always
   - include: tasks/operating_system.yml
     vars:
       operating_system_state: present
@@ -15,10 +17,23 @@
       expected_change: false
   - include: tasks/operating_system.yml
     vars:
+      operating_system_state: present
+      operating_system_parameters:
+        param1: value1
+        param2: value2
+      expected_change: true
+  - include: tasks/operating_system.yml
+    vars:
       operating_system_state: absent
       expected_change: true
   - include: tasks/operating_system.yml
     vars:
       operating_system_state: absent
       expected_change: false
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_state: absent
+    tags:
+      - never
+      - cleanup
 ...

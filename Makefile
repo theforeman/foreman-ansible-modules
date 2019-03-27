@@ -36,7 +36,7 @@ record_%: FORCE
 	pytest 'test/test_crud.py::test_crud[$*]' --record
 
 clean_%: FORCE
-	ansible-playbook --tags teardown -i test/inventory/hosts 'test/test_playbooks/$*.yml'
+	ansible-playbook --tags teardown,cleanup -i test/inventory/hosts 'test/test_playbooks/$*.yml'
 
 sanity:
 	ansible-playbook test/extras/sanity.yml
