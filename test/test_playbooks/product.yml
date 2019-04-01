@@ -11,6 +11,9 @@
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: present
+  - include: tasks/sync_plan.yml
+    vars:
+      sync_plan_state: present
 - hosts: tests
   gather_facts: false
   tasks:
@@ -65,12 +68,40 @@
         product_name: "Test Product 2"
         product_state: absent
         expected_change: false
+
+  - name: 'Test product with sync plan'
+    block:
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 3"
+        product_sync_plan: "Test Sync Plan"
+        product_state: present
+        expected_change: true
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 3"
+        product_sync_plan: "Test Sync Plan"
+        product_state: present
+        expected_change: false
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 3"
+        product_state: absent
+        expected_change: true
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 3"
+        product_state: absent
+        expected_change: false
 - hosts: fixtures
   gather_facts: false
   tasks:
   - name: 'Load server config'
     include_vars:
       file: server_vars.yml
+  - include: tasks/sync_plan.yml
+    vars:
+      sync_plan_state: absent
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: absent
