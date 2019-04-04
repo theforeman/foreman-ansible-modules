@@ -64,6 +64,10 @@ options:
     description:
     - Content GPG key name attached to this product
     required: false
+  sync_plan:
+    description:
+      - Sync plan name attached to this product
+    required: false
   description:
     description:
       - Possibly long descriptionto show the user in detail view
@@ -79,13 +83,14 @@ options:
 '''
 
 EXAMPLES = '''
-- name: "Create Fedora product"
+- name: "Create Fedora product with a sync plan"
   katello_product:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "Fedora"
     organization: "My Cool new Organization"
+    sync_plan: "Fedora repos sync"
     state: present
 
 - name: "Create CentOS 7 product with content credentials"
@@ -109,6 +114,7 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         find_organization,
         find_content_credential,
+        find_sync_plan,
         find_product,
         naildown_entity_state,
         sanitize_entity_dict,
@@ -125,7 +131,7 @@ name_map = {
     'organization': 'organization',
     'description': 'description',
     'gpg_key': 'gpg_key',
-    # 'sync_plan': 'sync_plan',  # wait for Nailgun
+    'sync_plan': 'sync_plan',
     'label': 'label',
 }
 
@@ -136,6 +142,7 @@ def main():
             name=dict(required=True),
             label=dict(),
             gpg_key=dict(),
+            sync_plan=dict(),
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
@@ -150,6 +157,9 @@ def main():
 
     if 'gpg_key' in entity_dict:
         entity_dict['gpg_key'] = find_content_credential(module, name=entity_dict['gpg_key'], organization=entity_dict['organization'])
+
+    if 'sync_plan' in entity_dict:
+        entity_dict['sync_plan'] = find_sync_plan(module, name=entity_dict['sync_plan'], organization=entity_dict['organization'])
 
     entity = find_product(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
 
