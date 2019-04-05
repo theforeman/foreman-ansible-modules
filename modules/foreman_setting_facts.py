@@ -28,7 +28,7 @@ module: foreman_setting_facts
 deprecated:
   removed_in: "2.8"
   why: This has been replaced with another module.
-  alternative: Use M(foreman_fact) instead.
+  alternative: Use M(foreman_search_facts) instead.
 short_description: Gather facts about Foreman Settings
 description:
   - "Gather facts about Foreman Settings"
