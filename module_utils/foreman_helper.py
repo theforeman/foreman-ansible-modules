@@ -124,12 +124,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 result = self.show_resource(resource, result['id'])
         return result
 
-    def find_resource_by_name(self, resource, name, organization_id=None, failsafe=False, thin=False):
+    def find_resource_by_name(self, resource, name, params=None, failsafe=False, thin=False):
         search = 'name="{}"'.format(name)
-        if organization_id is not None:
-            params = {'organization_id': organization_id}
-        else:
-            params = {}
         return self.find_resource(resource, search, params, failsafe, thin)
 
     def find_resources(self, resource, search_list, failsafe=False, thin=False):
@@ -284,6 +280,16 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         module_params = super(ForemanEntityApypieAnsibleModule, self).parse_params()
         state = module_params.pop('state')
         return (module_params, state)
+
+
+class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
+
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            organization=dict(required=True),
+        )
+        args.update(argument_spec)
+        super(KatelloEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
 
 def sanitize_entity_dict(entity_dict, name_map):

@@ -90,33 +90,26 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 try:
-    from nailgun.entities import (
-        ContentCredential,
-    )
-
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_content_credential,
-        naildown_entity_state,
+    from ansible.module_utils.foreman_helper import (
         sanitize_entity_dict,
     )
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
-    'organization': 'organization',
+    'organization': 'organization_id',
     'content_type': 'content_type',
     'content': 'content',
 }
 
 
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             content_type=dict(required=True, choices=['gpg_key', 'cert']),
@@ -129,12 +122,13 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
-    entity = find_content_credential(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    search_params = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=search_params, failsafe=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(ContentCredential, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, state)
 
     module.exit_json(changed=changed)
 
