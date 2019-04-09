@@ -81,7 +81,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "RPM-GPG-KEY-my-repo"
-    type: gpg_key
+    content_type: gpg_key
     organization: "Default Organization"
     content: "{{ lookup('file', 'RPM-GPG-KEY-my-repo') }}"
 '''
