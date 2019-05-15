@@ -70,7 +70,7 @@ EXAMPLES = '''
     search: name = http_proxy
   register: result
 - debug:
-    var: result.response[0].value
+    var: result.resources[0].value
 
 - name: "Read all Registries"
   foreman_search_facts:
@@ -81,7 +81,7 @@ EXAMPLES = '''
   register: result
 - debug:
     var: item.name
-  with_items: result.response
+  with_items: result.resources
 '''
 
 RETURN = '''
