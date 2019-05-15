@@ -54,7 +54,6 @@ options:
   resource:
     description:
       - Resource to search
-      - Set to an invalid choice like I(foo) see all available options.
   search:
     description:
       - Search query to use
@@ -67,7 +66,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    resource: Setting
+    resource: settings
     search: name = http_proxy
   register: result
 - debug:
@@ -78,7 +77,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    resource: Registry
+    resource: registries
   register: result
 - debug:
     var: item.name
@@ -92,28 +91,14 @@ resources:
   type: list
 '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        search_entities_json,
-    )
-
-    from nailgun import entities
-    from nailgun.entity_mixins import EntitySearchMixin
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
-
-
-def nailgun_entites():
-    return list(map(lambda entity: entity.__name__, EntitySearchMixin.__subclasses__()))
+from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule
 
 
 def main():
 
-    module = ForemanAnsibleModule(
+    module = ForemanApypieAnsibleModule(
         argument_spec=dict(
-            resource=dict(choices=nailgun_entites(), required=True),
+            resource=dict(type='str', required=True),
             search=dict(default=""),
         ),
         supports_check_mode=True,
@@ -125,8 +110,7 @@ def main():
 
     module.connect()
 
-    entity_class = getattr(entities, entity)
-    response = search_entities_json(entity_class, search)['results']
+    response = module.list_resource(entity, search)
 
     module.exit_json(changed=False, resources=response)
 

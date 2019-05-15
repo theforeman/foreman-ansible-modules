@@ -104,13 +104,18 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
     def show_resource(self, resource, resource_id):
         return self.foremanapi.resource(resource).call('show', {'id': resource_id})
 
-    def find_resource(self, resource, search, params=None, failsafe=False, thin=False):
+    def list_resource(self, resource, search, params=None):
         if params is None:
             params = {}
         params['search'] = search
+        params['per_page'] = 2 << 31
+        return self.foremanapi.resource(resource).call('index', params)['results']
+
+    def find_resource(self, resource, search, params=None, failsafe=False, thin=False):
+        if params is None:
+            params = {}
         params['thin'] = thin
-        response = self.foremanapi.resource(resource).call('index', params)
-        results = response['results']
+        results = self.list_resource(resource, search, params)
         if len(results) == 1:
             result = results[0]
         elif failsafe:

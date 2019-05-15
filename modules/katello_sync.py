@@ -76,7 +76,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    resource: Repository
+    resource: repositories
   register: repositories
 
 - name: Kick off repository Sync tasks
