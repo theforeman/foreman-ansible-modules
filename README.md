@@ -11,6 +11,11 @@ The intent of this repository is to be a place that community members can develo
   * an intermediate landing place for modules before pushing them to Ansible community
   * repository maintainers will be working to push the modules into Ansible proper [https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman](https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman)
 
+## Branches
+
+* `master` - current development branch, using both `nailgun` and `apypie` libraries
+* `nailgun` - the state of the repository before the switch to the `apypie` library started, `nailgun` is the only dependency
+
 ## How To Use The Repository
 
 The following is an example of how you could use this repository in your own environment. Let's assume you have a directory of playbooks and roles in a git repository for your infrastructure named `infra`:
