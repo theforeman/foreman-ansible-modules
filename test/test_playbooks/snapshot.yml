@@ -1,0 +1,48 @@
+---
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+
+  - include: tasks/snapshot.yml
+    vars:
+      expected_change: true
+      snapshot_state: present    
+
+  - include: tasks/snapshot.yml
+    vars:  
+      expected_change: false
+      snapshot_state: present
+  
+
+  - include: tasks/snapshot.yml
+    vars:
+      snapshot_description: "alpha"
+      snapshot_state: present
+      expected_change: true
+
+  - include: tasks/snapshot.yml
+    vars:
+      snapshot_description: "alpha"
+      expected_change: false
+      snapshot_state: present
+
+  - include: tasks/snapshot.yml
+    vars:
+      snapshot_description: "alpha"
+      expected_change: true
+      snapshot_state: reverted
+    
+
+  - include: tasks/snapshot.yml
+    vars:
+      snapshot_state: absent
+      expected_change: true
+
+  - include: tasks/snapshot.yml
+    vars:
+      snapshot_state: absent
+      expected_change: false
+...
