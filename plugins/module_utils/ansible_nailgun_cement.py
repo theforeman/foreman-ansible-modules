@@ -44,6 +44,7 @@ from nailgun.entities import (
     RepositorySet,
     Setting,
     SmartProxy,
+    Snapshot,
     Subnet,
     Subnet,
     Subscription,
@@ -329,6 +330,16 @@ def find_content_view_filter(module, name, content_view, failsafe=False):
 def find_host(module, name, failsafe=False):
     host = Host().search(set(), {'search': 'name="{}"'.format(name)})
     return handle_find_response(module, host, message="No host found for %s" % name, failsafe=failsafe)
+
+
+def find_snapshot(module, host, name, failsafe=False):
+    search_list = Snapshot(host=host).search(set())
+    snapshots = []
+    for item in search_list:
+        if item.name == name:
+            snapshots.append(item)
+            break
+    return handle_find_response(module, snapshots, message="No snapshot found for %s" % host, failsafe=failsafe)
 
 
 def find_hostgroup(module, name, failsafe=False):
