@@ -51,7 +51,8 @@ options:
   password:
     description: foreman user password
     required: true
-  verify_ssl:
+  validate_certs:
+    aliases: [ verify_ssl ]
     description: verify ssl connection when communicating with foreman
     default: true
     type: bool
@@ -68,7 +69,7 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    verify_ssl: false
+    validate_certs: false
     state: present
 
 - name: another compute profile
@@ -83,7 +84,7 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    verify_ssl: false
+    validate_certs: false
     state: present
 
 - name: compute profile2
@@ -128,7 +129,7 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    verify_ssl: false
+    validate_certs: false
     state: present
 
 - name: Remove compute profile

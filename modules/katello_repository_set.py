@@ -41,7 +41,8 @@ options:
     description:
       - Password for user accessing Foreman server
     required: true
-  verify_ssl:
+  validate_certs:
+    aliases: [ verify_ssl ]
     description:
       - Verify SSL of the Foreman server
     default: true
@@ -82,7 +83,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    verify_ssl: false
+    validate_certs: false
     name: "Red Hat Enterprise Linux 7 Server (RPMs)"
     organization: "Default Organization"
     product: "Red Hat Enterprise Linux Server"
@@ -102,7 +103,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    verify_ssl: false
+    validate_certs: false
     organization: "Default Organization"
     label: rhel-7-server-rpms
     repositories:
@@ -121,7 +122,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    verify_ssl: false
+    validate_certs: false
     name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
     organization: "Default Organization"
     product: Red Hat Enterprise Linux Server

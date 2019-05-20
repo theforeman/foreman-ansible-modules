@@ -25,7 +25,7 @@ class ForemanAnsibleModule(AnsibleModule):
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
+            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
         )
         args.update(argument_spec)
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, **kwargs)
@@ -35,7 +35,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._foremanapi_server_url = self.params.pop('server_url')
         self._foremanapi_username = self.params.pop('username')
         self._foremanapi_password = self.params.pop('password')
-        self._foremanapi_verify_ssl = self.params.pop('verify_ssl')
+        self._foremanapi_validate_certs = self.params.pop('validate_certs')
 
     def check_requirements(self):
         if not HAS_NAILGUN:
@@ -49,13 +49,13 @@ class ForemanAnsibleModule(AnsibleModule):
         return {k: v for (k, v) in self.params.items() if v is not None}
 
     def get_server_params(self):
-        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_verify_ssl)
+        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
 
     def connect(self, ping=True):
         entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
             url=self._foremanapi_server_url,
             auth=(self._foremanapi_username, self._foremanapi_password),
-            verify=self._foremanapi_verify_ssl,
+            verify=self._foremanapi_validate_certs,
         )
 
         if ping:
