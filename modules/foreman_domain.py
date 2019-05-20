@@ -58,7 +58,8 @@ options:
   password:
     description: foreman user password
     required: true
-  verify_ssl:
+  validate_certs:
+    aliases: [ verify_ssl ]
     description: verify ssl connection when communicating with foreman
     default: true
     type: bool
@@ -80,7 +81,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
-    verify_ssl: False
+    validate_certs: False
     state: present
 '''
 

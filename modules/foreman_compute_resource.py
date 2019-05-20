@@ -72,7 +72,8 @@ options:
   password:
     description: foreman user password
     required: true
-  verify_ssl:
+  validate_certs:
+    aliases: [ verify_ssl ]
     description: verify ssl connection when communicating with foreman
     required: false
     default: true
