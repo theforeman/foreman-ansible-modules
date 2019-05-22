@@ -89,6 +89,13 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                                          password=self._foremanapi_password,
                                          api_version=2,
                                          verify_ssl=self._foremanapi_validate_certs)
+            # patch the APIdoc for https://projects.theforeman.org/issues/26855
+            for method in self.foremanapi.apidoc['docs']['resources']['organizations']['methods']:
+                if method['name'] == 'create':
+                    for param in method['params']:
+                        if param['name'] == 'name':
+                            param['required'] = False
+
         except Exception as e:
             self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
