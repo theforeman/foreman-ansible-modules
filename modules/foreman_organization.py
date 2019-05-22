@@ -28,7 +28,6 @@ author:
     - "Eric D Helms (@ehelms)"
     - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - "nailgun >= 0.28.0"
     - "python >= 2.6"
     - "ansible >= 2.3"
 options:
@@ -77,20 +76,13 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = '''# '''
-
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-    from nailgun.entities import Organization
-except ImportError:
-    pass
+RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityApypieAnsibleModule,
+    sanitize_entity_dict,
+)
 
 
 # This is the only true source for names (and conversions thereof)
@@ -101,7 +93,7 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             label=dict(),
@@ -113,11 +105,14 @@ def main():
 
     module.connect()
 
-    entity = find_organization(module, name=entity_dict['name'], failsafe=True)
+    try:
+        entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(Organization, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('organizations', entity_dict, entity, state)
 
     module.exit_json(changed=changed)
 

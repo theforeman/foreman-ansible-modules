@@ -1,4 +1,13 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
 - hosts: tests
   gather_facts: false
   tasks:
