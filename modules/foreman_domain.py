@@ -122,11 +122,8 @@ def main():
 
     module.connect()
 
-    try:
-        # Try to find the Domain to work on
-        entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    # Try to find the Domain to work on
+    entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True)
 
     if 'dns_proxy' in domain_dict:
         domain_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', domain_dict['dns_proxy'], thin=True)

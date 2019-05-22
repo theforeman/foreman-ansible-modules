@@ -54,6 +54,17 @@ class ForemanBaseAnsibleModule(AnsibleModule):
         return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
 
 
+def _exception2fail_json(msg='Generic failure: %s'):
+    def decor(f):
+        def inner(self, *args, **kwargs):
+            try:
+                return f(self, *args, **kwargs)
+            except Exception as e:
+                self.fail_json(msg=msg % e)
+        return inner
+    return decor
+
+
 class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
     def check_requirements(self):
@@ -68,11 +79,9 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             verify=self._foremanapi_validate_certs,
         )
 
+    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def ping(self):
-        try:
-            return Ping().search_json()
-        except Exception as e:
-            self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+        return Ping().search_json()
 
 
 class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
@@ -82,24 +91,22 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='The apypie Python module is required',
                            exception=APYPIE_IMP_ERR)
 
+    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def connect(self, ping=True):
-        try:
-            self.foremanapi = apypie.Api(uri=self._foremanapi_server_url,
-                                         username=self._foremanapi_username,
-                                         password=self._foremanapi_password,
-                                         api_version=2,
-                                         verify_ssl=self._foremanapi_validate_certs)
-        except Exception as e:
-            self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+        self.foremanapi = apypie.Api(
+            uri=self._foremanapi_server_url,
+            username=self._foremanapi_username,
+            password=self._foremanapi_password,
+            api_version=2,
+            verify_ssl=self._foremanapi_validate_certs,
+        )
 
         if ping:
             self.ping()
 
+    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def ping(self):
-        try:
-            return self.foremanapi.resource('home').call('status')
-        except Exception as e:
-            self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+        return self.foremanapi.resource('home').call('status')
 
     def show_resource(self, resource, resource_id):
         return self.foremanapi.resource(resource).call('show', {'id': resource_id})
@@ -111,6 +118,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         params['per_page'] = 2 << 31
         return self.foremanapi.resource(resource).call('index', params)['results']
 
+    @_exception2fail_json('Failed to find entity: %s')
     def find_resource(self, resource, search, params=None, failsafe=False, thin=False):
         if params is None:
             params = {}
@@ -205,6 +213,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         changed, _ = self.ensure_resource(resource, entity_dict, entity, state, check_missing, check_type, force_update)
         return changed
 
+    @_exception2fail_json('Failed to ensure entity state: %s')
     def ensure_resource(self, resource, entity_dict, entity, state, check_missing=None, check_type=None, force_update=None):
         """ Ensure that a given entity has a certain state """
         changed, changed_entity = False, entity
