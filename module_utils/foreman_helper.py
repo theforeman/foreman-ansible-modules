@@ -145,11 +145,10 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
                 value = [item['id'] for item in value]
             new_entity[key] = value
-        create_dict = self._generate_resource_params(resource, 'create', params=new_entity)
-        return self._resource_action(resource, 'create', create_dict)
+        return self._resource_action(resource, 'create', new_entity)
 
     def delete_resource(self, resource, resource_id):
-        return self._resource_action(resource, 'destroy', self._generate_resource_params(resource, 'destroy', resource_id=resource_id))
+        return self._resource_action(resource, 'destroy', {'id': resource_id})
 
     def update_resource(self, resource, old_entity, entity_dict, check_missing, check_type, force_update):
         # FIXME: I am not sure this *whole* method is required as-is. It's mostly copied from the nailgun lib.
@@ -195,11 +194,11 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                     volatile_entity[key] = new_value
                     fields.append(key)
         if len(fields) > 0:
-            new_data = {}
+            new_data = {'id': entity_id}
             for key, value in volatile_entity.items():
                 if key in fields:
                     new_data[key] = value
-            return self._resource_action(resource, 'update', self._generate_resource_params(resource, 'update', resource_id=entity_id, params=new_data))
+            return self._resource_action(resource, 'update', params=new_data)
         return False, result
 
     def ensure_resource_state(self, resource, entity_dict, entity, state, check_missing=None, check_type=None, force_update=None):
@@ -223,6 +222,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return changed, changed_entity
 
     def _resource_action(self, resource, action, params):
+        action_params = self.foremanapi.resource(resource).action(action).params
+        params = self._generate_resource_params(action_params, params)
         try:
             result = None
             if not self.check_mode:
@@ -232,27 +233,18 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 action, resource, str(e)))
         return True, result
 
-    def _generate_resource_params(self, resource, action, resource_id=None, params=None):
+    def _generate_resource_params(self, action_params, params):
         resource_params = {}
-        if resource_id is not None:
-            resource_params['id'] = resource_id
-        if params is not None:
-            action_params = self.foremanapi.resource(resource).action(action).params
-            resource_params.update(self._method_options_for_params(action_params, params))
-        return resource_params
 
-    def _method_options_for_params(self, params, options):
-        opts = {}
-
-        for param in params:
+        for param in action_params:
             if param.expected_type == 'hash':
-                opts[param.name] = self._method_options_for_params(param.params, options)
+                resource_params[param.name] = self._generate_resource_params(param.params, params)
             else:
                 p_name = param.name
-                if p_name in options:
-                    opts[p_name] = options[p_name]
+                if p_name in params:
+                    resource_params[p_name] = params[p_name]
 
-        return opts
+        return resource_params
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
