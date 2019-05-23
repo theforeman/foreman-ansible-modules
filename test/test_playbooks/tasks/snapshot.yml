@@ -3,7 +3,7 @@
   vars:
     snapshot_name: "ansible"
     snapshot_state: present
-    host: "centos7.deploy6.dev.atix"
+    host_name: "centos7.deploy6.dev.atix"
   foreman_snapshot:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -11,7 +11,7 @@
     verify_ssl: "{{ foreman_verify_ssl }}"
     name: "{{ snapshot_name }}"
     description: "{{ snapshot_description | default(omit) }}"
-    host: "{{ host }}"
+    host: "{{ host_name }}"
     state: "{{ snapshot_state }}"
   register: result
 - fail:
