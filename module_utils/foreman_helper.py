@@ -239,10 +239,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         for param in action_params:
             if param.expected_type == 'hash':
                 resource_params[param.name] = self._generate_resource_params(param.params, params)
-            else:
-                p_name = param.name
-                if p_name in params:
-                    resource_params[p_name] = params[p_name]
+            elif param.name in params:
+                resource_params[param.name] = params[param.name]
 
         return resource_params
 
