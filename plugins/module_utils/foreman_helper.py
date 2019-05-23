@@ -347,17 +347,17 @@ def parse_template_from_file(file_name, module):
 
 # Helper for titles
 def split_fqn(title):
-    """ Split fully qualified name (title) in parent title and name """
+    """ Split fully qualified name (title) in name and parent title """
     fqn = title.split('/')
     if len(fqn) > 1:
         name = fqn.pop()
-        return ('/'.join(fqn), name)
+        return (name, '/'.join(fqn))
     else:
-        return (None, title)
+        return (title, None)
 
 
-def build_fqn(name_or_title, parent=None):
-    if '/' not in name_or_title and parent:
-        return "%s/%s" % (parent, name_or_title)
+def build_fqn(name, parent=None):
+    if parent:
+        return "%s/%s" % (parent, name)
     else:
-        return name_or_title
+        return name

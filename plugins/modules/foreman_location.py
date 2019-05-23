@@ -26,7 +26,7 @@ description:
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "nailgun >= 0.28.0"
+  - "apypie >= 0.0.2"
 options:
   name:
     description:
@@ -93,36 +93,23 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
-        find_location,
-        find_organizations,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-    from ansible.module_utils.foreman_helper import (
-        split_fqn,
-        build_fqn,
-    )
-    from nailgun.entities import Location
-except ImportError:
-    pass
-
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import (
+    build_fqn,
+    ForemanEntityApypieAnsibleModule,
+    split_fqn,
+)
 
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
-    'parent': 'parent',
-    'organizations': 'organization',
+    'parent': 'parent_id',
+    'organizations': 'organization_ids',
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             parent=dict(),
@@ -131,29 +118,49 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    name_or_title = entity_dict.pop('name')
-    parent = entity_dict.pop('parent', None)
+    # Hack for broken foreman api
+    _location_create = next(x for x in module.foremanapi.apidoc['docs']['resources']['locations']['methods'] if x['name'] == 'create')
+    _location_create_params_location = next(x for x in _location_create['params'] if x['name'] == 'location')
+    _location_create_params_location['params'].append({
+        u'validations': [],
+        u'name': u'organization_ids',
+        u'show': True,
+        u'description': u'\n<p>Organization IDs</p>\n',
+        u'required': False,
+        u'allow_nil': True,
+        u'allow_blank': False,
+        u'full_name': u'location[organization_ids]',
+        u'expected_type': u'array',
+        u'metadata': None,
+        u'validator': u'',
+    })
 
     # Get short name and parent from provided name
-    parent_from_title, name = split_fqn(name_or_title)
-
+    name, parent = split_fqn(entity_dict['name'])
     entity_dict['name'] = name
+
+    if 'parent' in entity_dict:
+        if parent:
+            module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
+        parent = entity_dict['parent']
     if parent:
-        entity_dict['parent'] = find_location(module, parent)
-    elif parent_from_title:
-        entity_dict['parent'] = find_location(module, parent_from_title)
+        entity_dict['parent'] = module.find_resource('locations', search='title="{}"'.format(parent), thin=True, failsafe=module.desired_absent)
 
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
+        if module.desired_absent and entity_dict['parent'] is None:
+            # Parent location does not exist so just exit here
+            module.exit_json(changed=False)
 
-    entity = find_location(module, title=build_fqn(name_or_title, parent), failsafe=True)
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
+    if not module.desired_absent:
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    changed = naildown_entity_state(Location, entity_dict, entity, state, module)
+    entity = module.find_resource('locations', search='title="{}"'.format(build_fqn(name, parent)), failsafe=True)
+
+    changed = module.ensure_resource_state('locations', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 
