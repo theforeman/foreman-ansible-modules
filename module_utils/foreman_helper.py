@@ -223,26 +223,26 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
     def _resource_action(self, resource, action, params):
         action_params = self.foremanapi.resource(resource).action(action).params
-        params = self._generate_resource_params(action_params, params)
+        resource_payload = self._generate_resource_payload(action_params, params)
         try:
             result = None
             if not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, params)
+                result = self.foremanapi.resource(resource).call(action, resource_payload)
         except Exception as e:
             self.fail_json(msg='Error while {}ing {}: {}'.format(
                 action, resource, str(e)))
         return True, result
 
-    def _generate_resource_params(self, action_params, params):
-        resource_params = {}
+    def _generate_resource_payload(self, action_params, data):
+        resource_payload = {}
 
         for param in action_params:
             if param.expected_type == 'hash':
-                resource_params[param.name] = self._generate_resource_params(param.params, params)
-            elif param.name in params:
-                resource_params[param.name] = params[param.name]
+                resource_payload[param.name] = self._generate_resource_payload(param.params, data)
+            elif param.name in data:
+                resource_payload[param.name] = data[param.name]
 
-        return resource_params
+        return resource_payload
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
