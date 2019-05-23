@@ -101,8 +101,8 @@ name_map = {
     'name': 'name',
     'description': 'fullname',
     'dns_proxy': 'dns_id',
-    'locations': 'locations',
-    'organizations': 'organizations',
+    'locations': 'location_ids',
+    'organizations': 'organization_ids',
 }
 
 
