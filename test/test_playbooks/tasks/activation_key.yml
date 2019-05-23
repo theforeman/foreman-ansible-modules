@@ -12,6 +12,7 @@
       - label: "Test_Organization_Test_Product_Test_Repository"
         override: disabled
     activation_key_auto_attach: False
+    activation_key_host_collections: "TheAnswer"
   katello_activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -24,6 +25,8 @@
     subscriptions: "{{ activation_key_subscriptions }}"
     content_overrides: "{{ activation_key_content_overrides }}"
     auto_attach: "{{ activation_key_auto_attach }}"
+    host_collections:
+      - "{{activation_key_host_collections}}"
     state: "{{ activation_key_state }}"
   register: result
 - fail:

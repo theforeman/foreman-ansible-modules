@@ -23,6 +23,7 @@ from nailgun.entities import (
     Environment,
     Errata,
     File,
+    HostCollection,
     JobTemplate,
     Host,
     HostGroup,
@@ -410,6 +411,15 @@ def find_products(module, names, organization, failsafe=False):
 def find_sync_plan(module, name, organization, failsafe=False):
     response = SyncPlan(name=name, organization=organization).search()
     return handle_find_response(module, response, message="No sync plan found for %s" % name, failsafe=failsafe)
+
+
+def find_host_collection(module, name, organization, failsafe=False):
+    host_collection = HostCollection().search(query={'search': 'name="{}"'.format(name)})
+    return handle_find_response(module, host_collection, message="No host collection found for %s" % name, failsafe=failsafe)
+
+
+def find_host_collections(module, names, organization, failsafe=False):
+    return list(map(lambda name: find_host_collection(module, name, organization, failsafe=failsafe), names))
 
 
 def find_repositories(module, repositories, organization, failsafe=False):
