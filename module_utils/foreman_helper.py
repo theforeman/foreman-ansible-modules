@@ -142,12 +142,13 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         for key, value in entity_dict.items():
             if isinstance(value, dict) and 'id' in value:
                 value = value['id']
+            elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
+                value = [item['id'] for item in value]
             new_entity[key] = value
-        create_dict = self._generate_resource_params(resource, 'create', params=new_entity)
-        return self._resource_action(resource, 'create', create_dict)
+        return self._resource_action(resource, 'create', new_entity)
 
     def delete_resource(self, resource, resource_id):
-        return self._resource_action(resource, 'destroy', self._generate_resource_params(resource, 'destroy', resource_id=resource_id))
+        return self._resource_action(resource, 'destroy', {'id': resource_id})
 
     def update_resource(self, resource, old_entity, entity_dict, check_missing, check_type, force_update):
         # FIXME: I am not sure this *whole* method is required as-is. It's mostly copied from the nailgun lib.
@@ -169,7 +170,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                             value = ""
                         new_value = type(value)(new_value)
                 if isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-                    value = [{'id': item['id']} for item in value]
+                    value = [item['id'] for item in value]
                 elif isinstance(value, dict) and 'id' in value:
                     value = value['id']
                 if isinstance(new_value, dict) and 'id' in new_value:
@@ -193,11 +194,11 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                     volatile_entity[key] = new_value
                     fields.append(key)
         if len(fields) > 0:
-            new_data = {}
+            new_data = {'id': entity_id}
             for key, value in volatile_entity.items():
                 if key in fields:
                     new_data[key] = value
-            return self._resource_action(resource, 'update', self._generate_resource_params(resource, 'update', resource_id=entity_id, params=new_data))
+            return self._resource_action(resource, 'update', params=new_data)
         return False, result
 
     def ensure_resource_state(self, resource, entity_dict, entity, state, check_missing=None, check_type=None, force_update=None):
@@ -221,30 +222,27 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return changed, changed_entity
 
     def _resource_action(self, resource, action, params):
+        action_params = self.foremanapi.resource(resource).action(action).params
+        resource_payload = self._generate_resource_payload(action_params, params)
         try:
             result = None
             if not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, params)
+                result = self.foremanapi.resource(resource).call(action, resource_payload)
         except Exception as e:
             self.fail_json(msg='Error while {}ing {}: {}'.format(
                 action, resource, str(e)))
         return True, result
 
-    def _generate_resource_params(self, resource, action, resource_id=None, params=None):
-        resource_params = {}
-        if resource_id is not None:
-            resource_params['id'] = resource_id
-        if params is not None:
-            action_params = self.foremanapi.resource(resource).action(action).params
-            hash_params = [p.name for p in action_params if p.expected_type == 'hash']
-            if len(hash_params) > 1:
-                raise KeyError('Could not find the right parameter name.')
-            elif len(hash_params) == 1:
-                hash_entry_name = hash_params[0]
-                resource_params[hash_entry_name] = params
-            else:
-                resource_params.update(params)
-        return resource_params
+    def _generate_resource_payload(self, action_params, data):
+        resource_payload = {}
+
+        for param in action_params:
+            if param.expected_type == 'hash':
+                resource_payload[param.name] = self._generate_resource_payload(param.params, data)
+            elif param.name in data:
+                resource_payload[param.name] = data[param.name]
+
+        return resource_payload
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
