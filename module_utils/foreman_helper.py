@@ -142,6 +142,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         for key, value in entity_dict.items():
             if isinstance(value, dict) and 'id' in value:
                 value = value['id']
+            elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
+                value = [item['id'] for item in value]
             new_entity[key] = value
         create_dict = self._generate_resource_params(resource, 'create', params=new_entity)
         return self._resource_action(resource, 'create', create_dict)
@@ -169,7 +171,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                             value = ""
                         new_value = type(value)(new_value)
                 if isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-                    value = [{'id': item['id']} for item in value]
+                    value = [item['id'] for item in value]
                 elif isinstance(value, dict) and 'id' in value:
                     value = value['id']
                 if isinstance(new_value, dict) and 'id' in new_value:
@@ -236,15 +238,21 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             resource_params['id'] = resource_id
         if params is not None:
             action_params = self.foremanapi.resource(resource).action(action).params
-            hash_params = [p.name for p in action_params if p.expected_type == 'hash']
-            if len(hash_params) > 1:
-                raise KeyError('Could not find the right parameter name.')
-            elif len(hash_params) == 1:
-                hash_entry_name = hash_params[0]
-                resource_params[hash_entry_name] = params
-            else:
-                resource_params.update(params)
+            resource_params.update(self._method_options_for_params(action_params, params))
         return resource_params
+
+    def _method_options_for_params(self, params, options):
+        opts = {}
+
+        for param in params:
+            if param.expected_type == 'hash':
+                opts[param.name] = self._method_options_for_params(param.params, options)
+            else:
+                p_name = param.name
+                if p_name in options:
+                    opts[p_name] = options[p_name]
+
+        return opts
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
