@@ -87,16 +87,12 @@ EXAMPLES = '''
     content: "{{ lookup('file', 'RPM-GPG-KEY-my-repo') }}"
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.foreman_helper import (
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import (
+    KatelloEntityApypieAnsibleModule,
+    sanitize_entity_dict,
+)
 
 
 # This is the only true source for names (and conversions thereof)

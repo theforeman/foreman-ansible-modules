@@ -86,14 +86,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.foreman_helper import (
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityApypieAnsibleModule,
+    sanitize_entity_dict,
+)
 
 
 # This is the only true source for names (and conversions thereof)
