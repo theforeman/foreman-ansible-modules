@@ -1,0 +1,25 @@
+---
+- hosts: tests
+  gather_facts: false
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: server_vars.yml
+  - include: tasks/auth_source_ldap.yml
+    vars:
+      auth_source_ldap_state: present
+      expected_change: true
+  - include: tasks/auth_source_ldap.yml
+    vars:
+      auth_source_ldap_state: present
+      expected_change: false
+  - include: tasks/auth_source_ldap.yml
+    vars:
+      auth_source_ldap_state: absent
+      expected_change: true
+  - include: tasks/auth_source_ldap.yml
+    vars:
+      auth_source_ldap_state: absent
+      expected_change: false
+
+...
