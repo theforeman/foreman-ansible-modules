@@ -30,6 +30,7 @@ from nailgun.entities import (
     Location,
     Media,
     OperatingSystem,
+    OperatingSystemParameter,
     Organization,
     OSDefaultTemplate,
     OVirtComputeResource,
@@ -53,6 +54,10 @@ from nailgun.entities import (
 from nailgun import entity_mixins
 
 from ansible.module_utils.parsing.convert_bool import boolean
+
+
+class OperatingSystemParameter(OperatingSystemParameter, entity_mixins.EntitySearchMixin):
+    pass
 
 
 # Connection helper
