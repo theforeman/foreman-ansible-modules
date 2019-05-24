@@ -34,6 +34,14 @@ def body_json_l2_matcher(r1, r2):
     else:
         return r1.body == r2.body
 
+def body_json_host_matcher(r1, r2):
+    if r1.headers.get('content-type') == 'application/json' and r2.headers.get('content-type') == 'application/json':
+        body1 = json.loads(r1.body.decode('utf8'))
+        body2 = json.loads(r2.body.decode('utf8'))
+        if 'host_id' in body1:
+            if "centos7.deploy6.dev.atix" not in body2:
+                r2.body = r1.body
+        return r1.body == r2.body
 
 def domain_query_matcher(r1, r2):
     if r1.path == '/api/smart_proxies' and r2.path == '/api/smart_proxies':
@@ -75,6 +83,7 @@ else:
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
                               match_on=['method', 'scheme', 'port', 'path', query_matcher, 'body_json_l2'],
+
                               filter_headers=['Authorization'],
                               ):
         with open(sys.argv[0]) as f:
