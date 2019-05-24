@@ -25,6 +25,7 @@ description:
     - Create and Manage host collections
 author:
     - "Maxim Burgerhout (@wzzrd)"
+    - "Christoffer Reijer (@ephracis)"
 requirements:
     - "nailgun >= 0.32.0"
     - "python >= 2.6"
