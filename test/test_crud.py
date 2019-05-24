@@ -36,6 +36,7 @@ MODULES = [
     'subnet',
     'sync_plan',
     'upload',
+    'host_collection',
 ]
 
 

@@ -16,6 +16,9 @@
   - include: tasks/repository.yml
     vars:
       repository_state: present
+  - include: tasks/host_collection.yml
+    vars:
+      host_collection_state: present
 
 - hosts: tests
   tags:
@@ -27,6 +30,8 @@
       file: server_vars.yml
   - include: tasks/activation_key.yml
     vars:
+      activation_key_host_collections:
+        - "TheAnswer"
       expected_change: true
   - include: tasks/activation_key_minimal.yml
     vars:
@@ -53,6 +58,10 @@
   - include: tasks/activation_key_copy.yml
     vars:
       expected_change: false
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_host_collections: []
+      expected_change: true
   - include: tasks/activation_key.yml
     vars:
       activation_key_state: absent

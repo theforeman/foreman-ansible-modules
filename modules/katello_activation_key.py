@@ -63,6 +63,10 @@ options:
     description:
       - List of subscriptions that include name
     type: list
+  host_collections:
+    description:
+      - List of host collections to add to activation key
+    type: list
   content_overrides:
     description:
       - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
@@ -96,6 +100,9 @@ EXAMPLES = '''
     organization: "Default Organization"
     lifecycle_environment: "Library"
     content_view: 'client content view'
+    host_collections:
+        - rhel7-servers
+        - rhel7-production
     subscriptions:
         - name: "Red Hat Enterprise Linux"
     content_overrides:
@@ -114,6 +121,7 @@ try:
         find_lifecycle_environment,
         find_content_view,
         find_subscriptions,
+        find_host_collections,
         naildown_entity,
         sanitize_entity_dict,
     )
@@ -133,6 +141,7 @@ name_map = {
     'auto_attach': 'auto_attach',
     'content_view': 'content_view',
     'organization': 'organization',
+    'host_collections': 'host_collection',
     'lifecycle_environment': 'environment',
 }
 
@@ -160,6 +169,7 @@ def main():
             lifecycle_environment=dict(),
             content_view=dict(),
             subscriptions=dict(type='list'),
+            host_collections=dict(type='list'),
             content_overrides=dict(type='list'),
             auto_attach=dict(type='bool', default=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
@@ -180,6 +190,9 @@ def main():
 
     if 'content_view' in entity_dict:
         entity_dict['content_view'] = find_content_view(module, entity_dict['content_view'], entity_dict['organization'])
+
+    if 'host_collections' in entity_dict:
+        entity_dict['host_collections'] = find_host_collections(module, entity_dict['host_collections'], entity_dict['organization'])
 
     activation_key_entity = find_activation_key(module, name=entity_dict['name'], organization=entity_dict['organization'],
                                                 failsafe=True)
