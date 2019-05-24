@@ -1,5 +1,6 @@
 import pytest
 import os
+import sys
 import tempfile
 import json
 import ansible_runner
@@ -36,6 +37,14 @@ MODULES = [
     'sync_plan',
     'upload',
 ]
+
+
+if sys.version_info[0] == 2:
+    for envvar in os.environ.keys():
+        try:
+            os.environ[envvar] = os.environ[envvar].decode('utf-8').encode('ascii', 'ignore')
+        except UnicodeError:
+            os.environ.pop(envvar)
 
 
 def run_playbook_vcr(module, extra_vars=None, record=False):
