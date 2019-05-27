@@ -88,7 +88,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                                          username=self._foremanapi_username,
                                          password=self._foremanapi_password,
                                          api_version=2,
-                                         verify_ssl=self._foremanapi_validate_certs)
+                                         verify_ssl=self._foremanapi_validate_certs,
+                                         apidoc_cache_base_dir=self.tmpdir)
         except Exception as e:
             self.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
