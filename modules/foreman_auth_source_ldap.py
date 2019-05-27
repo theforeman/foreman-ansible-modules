@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2018 Markus Bucher (ATIX AG)
+# (c) 2019 Christoffer Reijer (Basalt AB)
 #
 # This file is part of Ansible
 #
