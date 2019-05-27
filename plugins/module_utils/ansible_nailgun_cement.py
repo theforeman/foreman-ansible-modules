@@ -10,7 +10,6 @@ from nailgun.entities import (
     AbstractComputeResource,
     AbstractContentViewFilter,
     ActivationKey,
-    AuthSourceLDAP,
     Bookmark,
     CommonParameter,
     ComputeAttribute,
@@ -273,11 +272,6 @@ def delete_entity(entity, module):
 def find_activation_key(module, name, organization, failsafe=False):
     activation_key = ActivationKey(name=name, organization=organization)
     return handle_find_response(module, activation_key.search(), message="No activation key found for %s" % name, failsafe=failsafe)
-
-
-def find_auth_source_ldap(module, name, failsafe=False):
-    auth_source_ldap = AuthSourceLDAP().search(query={'search': 'name="{}"'.format(name)})
-    return handle_find_response(module, auth_source_ldap, message="No LDAP authentication source for %s" % name, failsafe=failsafe)
 
 
 def find_bookmark(module, name, controller, failsafe=False):
