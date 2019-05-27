@@ -2,6 +2,10 @@
 - hosts: tests
   gather_facts: false
   tasks:
+  - name: Clear API cache
+    file:
+      name: ~/.cache/apypie
+      state: absent
   - name: Load server config
     include_vars:
       file: server_vars.yml

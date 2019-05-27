@@ -9,8 +9,8 @@ from nailgun.config import ServerConfig
 from nailgun.entities import (
     AbstractComputeResource,
     AbstractContentViewFilter,
-    AuthSourceLDAP,
     ActivationKey,
+    AuthSourceLDAP,
     Bookmark,
     CommonParameter,
     ComputeAttribute,

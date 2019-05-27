@@ -5,8 +5,8 @@ import json
 import ansible_runner
 
 MODULES = [
-    'auth_source_ldap',
     'activation_key',
+    'auth_source_ldap',
     'bookmark',
     'compute_profile',
     'compute_resource',
