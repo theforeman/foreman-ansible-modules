@@ -32,8 +32,8 @@ description:
 version_added: "2.4"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
+  - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
-  - "nailgun >= 0.29.0"
   - "ansible >= 2.3"
 options:
   server_url:
@@ -115,20 +115,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
-try:
-    from nailgun.entities import (
-        Bookmark,
-    )
-
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_bookmark,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
+from ansible.module_utils.foreman_helper import (
+    sanitize_entity_dict,
+    ForemanEntityApypieAnsibleModule,
+)
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
@@ -140,7 +130,7 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
@@ -156,17 +146,19 @@ def main():
         supports_check_mode=True,
     )
 
-    (bookmark_dict, state) = module.parse_params()
+    (entity_dict, state) = module.parse_params()
 
     module.connect()
 
-    entity = find_bookmark(
-        module, bookmark_dict['name'], bookmark_dict['controller'], failsafe=True)
+    try:
+        search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
+        entity = module.find_resource('bookmarks', search, failsafe=True)
+    except Exception as e:
+        module.fail_json(msg='Failed to find entity: %s ' % e)
 
-    bookmark_dict = sanitize_entity_dict(bookmark_dict, name_map)
+    entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-    changed = naildown_entity_state(
-        Bookmark, bookmark_dict, entity, state, module)
+    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, state)
 
     module.exit_json(changed=changed)
 
