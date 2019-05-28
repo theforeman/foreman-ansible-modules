@@ -105,10 +105,7 @@ def main():
 
     module.connect()
 
-    try:
-        entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
