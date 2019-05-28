@@ -149,11 +149,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         new_entity = {}
         # FIXME: (?) entity_dict can contain other resources, when it does, translate these entries to only list their IDs
         for key, value in entity_dict.items():
-            if isinstance(value, dict) and 'id' in value:
-                value = value['id']
-            elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-                value = [item['id'] for item in value]
-            new_entity[key] = value
+            new_entity[key] = self._flatten_value(value)
         return self._resource_action(resource, 'create', new_entity)
 
     def delete_resource(self, resource, resource_id):
@@ -178,12 +174,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                         if value is None:
                             value = ""
                         new_value = type(value)(new_value)
-                if isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-                    value = [item['id'] for item in value]
-                elif isinstance(value, dict) and 'id' in value:
-                    value = value['id']
-                if isinstance(new_value, dict) and 'id' in new_value:
-                    new_value = new_value['id']
+                value = self._flatten_value(value)
+                new_value = self._flatten_value(new_value)
                 if not value == new_value:
                     volatile_entity[key] = new_value
                     fields.append(key)
@@ -256,6 +248,13 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 resource_payload[param.name] = data[param.name]
 
         return resource_payload
+
+    def _flatten_value(self, value):
+        if isinstance(value, dict) and 'id' in value:
+            value = value['id']
+        elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
+            value = sorted([item['id'] for item in value])
+        return value
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
