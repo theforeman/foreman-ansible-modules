@@ -18,6 +18,10 @@
     auth_source_ldap_groups_base: cn=groups,cn=accounts,dc=example,dc=com
     auth_source_ldap_server_type: free_ipa
     auth_source_ldap_ldap_filter: "(uid=%s)"
+    auth_source_ldap_locations:
+      - 'Test Location'
+    auth_source_ldap_organizations:
+      - 'Test Organization'
   foreman_auth_source_ldap:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -40,9 +44,11 @@
     groups_base: "{{ auth_source_ldap_groups_base }}"
     server_type: "{{ auth_source_ldap_server_type }}"
     ldap_filter: "{{ auth_source_ldap_ldap_filter }}"
+    organizations: "{{ auth_source_ldap_organizations }}"
+    locations: "{{ auth_source_ldap_locations }}"
     state: "{{ auth_source_ldap_state }}"
   register: result
 - fail:
-    msg: "Ensuring LDAP auth source is {{ domain_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    msg: "Ensuring LDAP auth source is {{ auth_source_ldap_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
   when: (expected_change is defined) and (result.changed != expected_change)
 ...

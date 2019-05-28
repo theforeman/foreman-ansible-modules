@@ -102,6 +102,12 @@ options:
     description: Whether or not to verify the TLS certificates of Foreman server
     default: true
     type: bool
+  organizations:
+    description: List of organizations the authentication source should be assigned to
+    type: list
+  locations:
+    description: List of locations the authentication source should be assigned to
+    type: list
   state:
     description: State ot the LDAP authentication source
     default: present
@@ -114,6 +120,10 @@ EXAMPLES = '''
     name: "Example LDAP"
     host: "ldap.example.org"
     server_url: "https://foreman.example.com"
+    locations:
+      - "Uppsala"
+    organizations:
+      - "Sweden"
     username: "admin"
     password: "secret"
     validate_certs: False
@@ -124,12 +134,16 @@ EXAMPLES = '''
     name: "Example LDAP"
     host: "ldap.example.org"
     onthefly_register: True
-    account: ansible@example.com
+    account: uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com
     account_password: secret
+    base_dn: dc=example,dc=com
+    groups_base: cn=groups,cn=accounts, dc=example,dc=com
+    server_type: free_ipa
     attr_login: uid
     attr_firstname: givenName
     attr_lastname: sn
     attr_mail: mail
+    attr_photo: jpegPhoto
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
@@ -163,6 +177,8 @@ name_map = {
     'groups_base': 'groups_base',
     'server_type': 'server_type',
     'ldap_filter': 'ldap_filter',
+    'locations': 'location_ids',
+    'organizations': 'organization_ids',
 }
 
 
@@ -186,6 +202,8 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
+            locations=dict(type='list'),
+            organizations=dict(type='list'),
         ),
         supports_check_mode=True,
     )
@@ -198,6 +216,12 @@ def main():
         entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
     except Exception as e:
         module.fail_json(msg='Failed to find entity: %s ' % e)
+
+    if 'locations' in entity_dict:
+        entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
+
+    if 'organizations' in entity_dict:
+        entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
