@@ -150,11 +150,8 @@ def main():
 
     module.connect()
 
-    try:
-        search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
-        entity = module.find_resource('bookmarks', search, failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
+    entity = module.find_resource('bookmarks', search, failsafe=True)
 
     entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
