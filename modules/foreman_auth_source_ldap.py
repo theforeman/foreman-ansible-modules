@@ -25,7 +25,7 @@ description:
   - Create and Delete Foreman LDAP authentication sources using Foreman API
 version_added: "2.5"
 author:
-  - "Christoffer Reijer (@ephracis)"
+  - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
   - "apypie"
 options:
@@ -212,10 +212,7 @@ def main():
 
     module.connect()
 
-    try:
-        entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
 
     if 'locations' in entity_dict:
         entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
