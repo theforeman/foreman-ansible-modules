@@ -35,6 +35,7 @@ author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
   - "ansible >= 2.3"
+  - "apypie"
 options:
   server_url:
     description:
