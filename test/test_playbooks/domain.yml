@@ -30,6 +30,12 @@
       file: domain_vars.yml
   - include_tasks: tasks/domain.yml
     vars:
+      domain_locations: []
+      domain_organizations: []
+      domain_state: "present"
+      expected_change: true
+  - include_tasks: tasks/domain.yml
+    vars:
       domain_state: "present"
       expected_change: true
   - include_tasks: tasks/domain.yml

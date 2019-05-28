@@ -202,14 +202,16 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             return self._resource_action(resource, 'update', params=new_data)
         return False, result
 
-    def ensure_resource_state(self, resource, entity_dict, entity, state, check_missing=None, check_type=None, force_update=None):
-        changed, _ = self.ensure_resource(resource, entity_dict, entity, state, check_missing, check_type, force_update)
+    def ensure_resource_state(self, resource, entity_dict, entity, state, name_map, check_missing=None, check_type=None, force_update=None):
+        changed, _ = self.ensure_resource(resource, entity_dict, entity, state, name_map, check_missing, check_type, force_update)
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
-    def ensure_resource(self, resource, entity_dict, entity, state, check_missing=None, check_type=None, force_update=None):
+    def ensure_resource(self, resource, entity_dict, entity, state, name_map, check_missing=None, check_type=None, force_update=None):
         """ Ensure that a given entity has a certain state """
         changed, changed_entity = False, entity
+
+        entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
         if state == 'present_with_defaults':
             if entity is None:
@@ -218,6 +220,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             if entity is None:
                 changed, changed_entity = self.create_resource(resource, entity_dict)
             else:
+                entity = sanitize_entity_dict(entity, name_map)
                 changed, changed_entity = self.update_resource(resource, entity, entity_dict, check_missing, check_type, force_update)
         elif state == 'absent':
             if entity is not None:
@@ -253,7 +256,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         if isinstance(value, dict) and 'id' in value:
             value = value['id']
         elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-            value = sorted([item['id'] for item in value])
+            value = sorted(item['id'] for item in value)
         return value
 
 
@@ -308,6 +311,7 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 
 
 def sanitize_entity_dict(entity_dict, name_map):
+    name_map['id'] = 'id'
     return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
 
 

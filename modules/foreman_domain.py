@@ -86,10 +86,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
-    ForemanEntityApypieAnsibleModule,
-    sanitize_entity_dict,
-)
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -130,9 +127,7 @@ def main():
     if 'organizations' in domain_dict:
         domain_dict['organizations'] = module.find_resources('organizations', domain_dict['organizations'], thin=True)
 
-    domain_dict = sanitize_entity_dict(domain_dict, name_map)
-
-    changed = module.ensure_resource_state('domains', domain_dict, entity, state)
+    changed = module.ensure_resource_state('domains', domain_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
