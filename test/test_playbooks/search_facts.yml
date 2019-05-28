@@ -14,4 +14,16 @@
     vars:
       resource: subnets
       return_length: 0
+  - name: Run with invalid resource
+    foreman_search_facts:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      validate_certs: "{{ foreman_validate_certs }}"
+      resource: foo
+    register: result
+    ignore_errors: yes
+  - fail:
+       msg: "{{ result.msg }} should have contained all available resources"
+    when: "'config_groups' not in result.msg"
 ...

@@ -54,6 +54,7 @@ options:
   resource:
     description:
       - Resource to search
+      - Set to an invalid choice like I(foo) see all available options.
   search:
     description:
       - Search query to use

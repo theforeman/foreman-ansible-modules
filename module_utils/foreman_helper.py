@@ -108,9 +108,11 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
     def ping(self):
         return self.foremanapi.resource('home').call('status')
 
+    @_exception2fail_json('Failed to show resource: %s')
     def show_resource(self, resource, resource_id):
         return self.foremanapi.resource(resource).call('show', {'id': resource_id})
 
+    @_exception2fail_json(msg='Failed to list resource: %s')
     def list_resource(self, resource, search, params=None):
         if params is None:
             params = {}
@@ -118,7 +120,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         params['per_page'] = 2 << 31
         return self.foremanapi.resource(resource).call('index', params)['results']
 
-    @_exception2fail_json('Failed to find entity: %s')
     def find_resource(self, resource, search, params=None, failsafe=False, thin=False):
         if params is None:
             params = {}
