@@ -89,10 +89,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
-    KatelloEntityApypieAnsibleModule,
-    sanitize_entity_dict,
-)
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -122,9 +119,7 @@ def main():
     search_params = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=search_params, failsafe=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, state)
+    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 

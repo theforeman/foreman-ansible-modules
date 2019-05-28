@@ -83,10 +83,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import (
-    ForemanEntityApypieAnsibleModule,
-    sanitize_entity_dict,
-)
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -113,9 +110,7 @@ def main():
 
     entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = module.ensure_resource_state('organizations', entity_dict, entity, state)
+    changed = module.ensure_resource_state('organizations', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
