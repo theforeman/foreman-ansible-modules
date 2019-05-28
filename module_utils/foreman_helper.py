@@ -218,7 +218,10 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         """ Ensure that a given entity has a certain state """
         changed, changed_entity = False, entity
 
-        if state == 'present':
+        if state == 'present_with_defaults':
+            if entity is None:
+                changed, changed_entity = self.create_resource(resource, entity_dict)
+        elif state == 'present':
             if entity is None:
                 changed, changed_entity = self.create_resource(resource, entity_dict)
             else:
