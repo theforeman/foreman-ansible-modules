@@ -34,14 +34,21 @@ def body_json_l2_matcher(r1, r2):
     else:
         return r1.body == r2.body
 
-def body_json_host_matcher(r1, r2):
+
+def body_json_snapshot_matcher(r1, r2):
     if r1.headers.get('content-type') == 'application/json' and r2.headers.get('content-type') == 'application/json':
-        body1 = json.loads(r1.body.decode('utf8'))
-        body2 = json.loads(r2.body.decode('utf8'))
-        if 'host_id' in body1:
-            if "centos7.deploy6.dev.atix" not in body2:
-                r2.body = r1.body
-        return r1.body == r2.body
+        if r1.body is None or r2.body is None:
+            return r1.body == r2.body
+        r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
+        r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
+        body1 = json.loads(r1_copy.body.decode('utf8'))
+        body2 = json.loads(r2_copy.body.decode('utf8'))
+        body1['search'] = "name=\"test_host\""
+        body2['search'] = "name=\"test_host\""
+        r1_copy.body = json.dumps(body1)
+        r2_copy.body = json.dumps(body2)
+    return body_json_l2_matcher(r1_copy, r2_copy)
+
 
 def domain_query_matcher(r1, r2):
     if r1.path == '/api/smart_proxies' and r2.path == '/api/smart_proxies':
@@ -73,6 +80,7 @@ else:
 
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
+
     fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
 
     query_matcher = 'query'
@@ -83,6 +91,7 @@ else:
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
                               match_on=['method', 'scheme', 'port', 'path', query_matcher, 'body_json_l2'],
+
 
                               filter_headers=['Authorization'],
                               ):
