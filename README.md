@@ -38,8 +38,6 @@ needs to be in your current directory when you run `ansible` or
 `ansible-playbook`. You can copy it to another location or add it to your
 current ansible configuration; make sure to update the relative paths to the
 foreman-ansible-module `modules` and `module_utils` if you do so.
-
-Also make sure to update `ansible_nailgun_cement.py` in `module_utils` with the nailgun module name when developing new module.
  
 Now your playbooks and roles should have access to the `modules` and `module_utils`
 contained in the repository for use, testing, or development of new modules.
