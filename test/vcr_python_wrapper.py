@@ -37,17 +37,17 @@ def body_json_l2_matcher(r1, r2):
 
 def body_json_snapshot_matcher(r1, r2):
     if r1.headers.get('content-type') == 'application/json' and r2.headers.get('content-type') == 'application/json':
-        if r1.body is None or r2.body is None:
-            return r1.body == r2.body
-        r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
-        r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
-        body1 = json.loads(r1_copy.body.decode('utf8'))
-        body2 = json.loads(r2_copy.body.decode('utf8'))
-        body1['search'] = "name=\"test_host\""
-        body2['search'] = "name=\"test_host\""
-        r1_copy.body = json.dumps(body1)
-        r2_copy.body = json.dumps(body2)
-    return body_json_l2_matcher(r1_copy, r2_copy)
+        if r1.path == '/api/v2/hosts' and r2.path == '/api/v2/hosts':
+            r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
+            r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
+            body1 = json.loads(r1_copy.body.decode('utf8'))
+            body2 = json.loads(r2_copy.body.decode('utf8'))
+            body1['search'] = "name=\"test_host\""
+            body2['search'] = "name=\"test_host\""
+            r1_copy.body = json.dumps(body1)
+            r2_copy.body = json.dumps(body2)
+            return body_json_l2_matcher(r1_copy, r2_copy)
+    return body_json_l2_matcher(r1, r2)
 
 
 def domain_query_matcher(r1, r2):
