@@ -192,7 +192,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         if check_missing is not None:
             for key in check_missing:
                 if key in entity_dict and key not in volatile_entity.keys():
-                    volatile_entity[key] = new_value
+                    volatile_entity[key] = entity_dict[key]
                     fields.append(key)
         if len(fields) > 0:
             new_data = {'id': entity_id}
