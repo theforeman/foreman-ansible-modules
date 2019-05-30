@@ -2,12 +2,14 @@
 - name: "Ensure organization '{{ organization_name }}' is {{ organization_state }}"
   vars:
     - organization_name: "Test Organization"
+    - organization_description: "A test organization"
   foreman_organization:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ organization_name }}"
+    description: "{{ organization_description }}"
     label: "{{ organization_label | default(omit) }}"
     state: "{{ organization_state }}"
   register: result

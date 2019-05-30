@@ -54,6 +54,10 @@ options:
     description:
       - Name of the Foreman organization
     required: true
+  description:
+    description:
+      - Description of the Foreman organization
+    required: false
   state:
     description:
       - State of the Organization
@@ -88,6 +92,7 @@ from ansible.module_utils.foreman_helper import (
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
+    'description': 'description',
     'label': 'label',
 }
 
@@ -96,6 +101,7 @@ def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
+            description=dict(),
             label=dict(),
         ),
         supports_check_mode=True,
