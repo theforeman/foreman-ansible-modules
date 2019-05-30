@@ -31,6 +31,7 @@ MODULES = [
     'repository',
     'repository_set',
     'repository_sync',
+    'role',
     'search_facts',
     'setting',
     'subnet',

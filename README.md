@@ -96,25 +96,26 @@ This is a list of modules currently in the repository (please add to the list if
 
 #### Entity Modules
 
- * foreman_global_parameter: create and maintain global parameters
- * foreman_operating_system: create and maintain operating systems
- * foreman_os_default_template: create and maintain the association of default templates to operating systems
- * foreman_organization: create and maintain organizations
- * foreman_location: create and maintain locations
- * foreman_ptable: create and maintain partition templates
- * foreman_provisioning_template: create and maintain provisioning templates
  * foreman_compute_resource: create and maintain compute resources
  * foreman_domain: create and maintain domains
- * foreman_subnet: create and maintain subnets
  * foreman_environment: create and maintain environments (puppet)
+ * foreman_global_parameter: create and maintain global parameters
  * foreman_job_template: create and maintain job templates and associated template inputs
+ * foreman_location: create and maintain locations
+ * foreman_operating_system: create and maintain operating systems
+ * foreman_organization: create and maintain organizations
+ * foreman_os_default_template: create and maintain the association of default templates to operating systems
+ * foreman_provisioning_template: create and maintain provisioning templates
+ * foreman_ptable: create and maintain partition templates
+ * foreman_role: create and maintain user roles
  * foreman_setting: set and reset settings
+ * foreman_subnet: create and maintain subnets
+ * katello_activation_key: create and maintain activation keys
  * katello_content_credential: create and maintain content credentials
+ * katello_content_view: create and maintain content views
  * katello_product: create and maintain products
  * katello_repository: create and maintain repositories
- * katello_content_view: create and maintain content views
  * katello_sync_plan: create and maintain sync plans
- * katello_activation_key: create and maintain activation keys
  * redhat_manifest: create and maintain manifests
 
 #### Action Modules
