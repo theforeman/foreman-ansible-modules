@@ -60,7 +60,7 @@ options:
     default: true
     type: bool
   state:
-    description: domain presence
+    description: role presence
     default: present
     choices: ["present", "absent"]
 '''
@@ -68,8 +68,8 @@ options:
 EXAMPLES = '''
 - name: role
   foreman_role:
-    name: "test"
-    description: "test role"
+    name: "Provisioner"
+    description: "Only provision on libvirt"
     locations:
       - "Uppsala"
     organizations:
