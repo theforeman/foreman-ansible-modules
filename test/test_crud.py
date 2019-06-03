@@ -1,7 +1,6 @@
 import pytest
 import os
 import sys
-import tempfile
 import json
 import ansible_runner
 
@@ -49,7 +48,7 @@ if sys.version_info[0] == 2:
             os.environ.pop(envvar)
 
 
-def run_playbook_vcr(module, extra_vars=None, record=False):
+def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
     if extra_vars is None:
         extra_vars = {}
     limit = None
@@ -65,11 +64,15 @@ def run_playbook_vcr(module, extra_vars=None, record=False):
 
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}
-    with tempfile.NamedTemporaryFile('w', suffix='json', prefix='fam-vcr-') as params_file:
-        json.dump(test_params, params_file.file)
-        params_file.file.close()
-        os.environ['FAM_TEST_VCR_PARAMS_FILE'] = params_file.name
-        return run_playbook(module, extra_vars=extra_vars, limit=limit)
+    params_file = tmpdir.join('{}_test_params.json'.format(module))
+    params_file.write(json.dumps(test_params), ensure=True)
+    os.environ['FAM_TEST_VCR_PARAMS_FILE'] = params_file.strpath
+
+    cache_dir = tmpdir.join('cache')
+    cache_dir.ensure(dir=True)
+    os.environ['FAM_TEST_APYPIE_CACHE_DIR'] = cache_dir.strpath
+
+    return run_playbook(module, extra_vars=extra_vars, limit=limit)
 
 
 def run_playbook(module, extra_vars=None, limit=None):
@@ -82,7 +85,7 @@ def run_playbook(module, extra_vars=None, limit=None):
 
 
 @pytest.mark.parametrize('module', MODULES)
-def test_crud(module, record):
-    run = run_playbook_vcr(module, record=record)
+def test_crud(tmpdir, module, record):
+    run = run_playbook_vcr(tmpdir, module, record=record)
     print(run.stdout.read())
     assert run.rc == 0
