@@ -1,13 +1,10 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/subnet.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-  - name: 'Load subnet test-config'
-    include_vars:
-      file: subnet_vars.yml
   - include_tasks: tasks/location.yml
     vars:
       location_name: "{{ item }}"
@@ -27,13 +24,10 @@
     with_items: "{{ subnet_doms }}"
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/subnet.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-  - name: 'Load subnet test-config'
-    include_vars:
-      file: subnet_vars.yml
   - name: 'Test Subnet with minimal params'
     block:
     - include: tasks/subnet.yml
@@ -123,13 +117,10 @@
         expected_change: false
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/subnet.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-  - name: Load subnet test-config
-    include_vars:
-      file: subnet_vars.yml
   - include: tasks/domain.yml
     vars:
       domain_organizations: "{{ subnet_orgs }}"

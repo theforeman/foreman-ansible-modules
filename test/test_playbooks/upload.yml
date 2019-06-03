@@ -1,10 +1,9 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -22,10 +21,9 @@
 
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/upload.yml
     vars:
       expected_change: True
@@ -45,10 +43,9 @@
 
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/repository.yml
     vars:
       repository_state: absent

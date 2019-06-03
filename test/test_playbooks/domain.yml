@@ -1,13 +1,10 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/domain.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
-  - name: Load domain test-config
-    include_vars:
-      file: domain_vars.yml
   - include_tasks: tasks/location.yml
     vars:
       location_name: "{{ item }}"
@@ -21,15 +18,12 @@
   #TODO create smart_proxy, when ansible-module exists
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/domain.yml
   environment:
     XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
-  - name: Load domain test-config
-    include_vars:
-      file: domain_vars.yml
   - include_tasks: tasks/domain.yml
     vars:
       domain_locations: []
@@ -54,13 +48,10 @@
       expected_change: false
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/domain.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
-  - name: Load domain test-config
-    include_vars:
-      file: domain_vars.yml
   - include_tasks: tasks/location.yml
     vars:
       location_name: "{{ item }}"

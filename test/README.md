@@ -17,5 +17,5 @@ The ansible inventory contains two hosts:
 - tests: This host should run the actual tests. It is used to record the vcr-yaml-files, or to run isolated against those files.
 
 In order to run these tests, the API responses of a running Foreman or Katello server must be recorded.
-For this last step, `test/test_playbooks/server_vars.yml` must be configured to point to a running Foreman or Katello server.
+For this last step, `test/test_playbooks/vars/server.yml` must be configured to point to a running Foreman or Katello server.
 Then, `make record_<playbook name>` must be called, and the resulting vcr files (`test_playbook/fixtures/<playbook_name>-*.yml`) must be checked into git.

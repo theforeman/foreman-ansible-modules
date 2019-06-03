@@ -45,11 +45,11 @@ contained in the repository for use, testing, or development of new modules.
 ## How to test modules in this repository
 
 To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to run `make test-setup` and update `test/test_playbooks/server_vars.yml`:
+Also you need to run `make test-setup` and update `test/test_playbooks/vars/server.yml`:
 
 ```sh
 make test-setup
-vi test/test_playbooks/server_vars.yml # point to your Foreman instance
+vi test/test_playbooks/vars/server.yml # point to your Foreman instance
 ```
 
 To run the tests using the `foreman_global_parameter` module as an example:

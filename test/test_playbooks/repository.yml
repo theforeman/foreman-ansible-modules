@@ -1,10 +1,9 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -17,11 +16,9 @@
 
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-
   - name: Test Yum Repository
     block:
       - include: tasks/repository.yml
@@ -129,10 +126,9 @@
 
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: absent
