@@ -114,9 +114,7 @@ def main():
     if 'organizations' in entity_dict:
         entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = module.ensure_resource_state('environments', entity_dict, entity, state)
+    changed = module.ensure_resource_state('environments', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
