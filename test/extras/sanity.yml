@@ -16,12 +16,12 @@
         src: "{{ playbook_dir }}/../../{{ item.src }}"
         dest: "{{ playbook_dir }}/../../.tmp/ansible/{{ item.dest }}"
       with_items:
-        - { src: "modules/", dest: "lib/ansible/modules/foreman-test" }
-        - { src: "module_utils/", dest: "lib/ansible/module_utils/foreman-test" }
+        - { src: "plugins/modules/", dest: "lib/ansible/modules/foreman-test" }
+        - { src: "plugins/module_utils/", dest: "lib/ansible/module_utils/foreman-test" }
 
     - name: Build test options
       set_fact:
         test_targets: "lib/ansible/modules/foreman-test/ lib/ansible/module_utils/foreman-test/"
-    
+
     - name: Run ansible-test
-      command: "{{ playbook_dir }}/../../.tmp/ansible/test/runner/ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --test ansible-doc --test compile {{ test_targets }}" 
+      command: "{{ playbook_dir }}/../../.tmp/ansible/test/runner/ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --test ansible-doc --test compile {{ test_targets }}"
