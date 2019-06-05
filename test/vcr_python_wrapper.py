@@ -35,6 +35,12 @@ def body_json_l2_matcher(r1, r2):
         return r1.body == r2.body
 
 
+def domain_query_matcher(r1, r2):
+    if r1.path == '/api/smart_proxies' and r2.path == '/api/smart_proxies':
+        return [q for q in r1.query if q[0] != 'search'] == [q for q in r2.query if q[0] != 'search']
+    return r1.query == r2.query
+
+
 VCR_PARAMS_FILE = os.environ.get('FAM_TEST_VCR_PARAMS_FILE')
 
 # Remove the name of the wrapper from argv
@@ -60,9 +66,15 @@ else:
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
     fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
+
+    query_matcher = 'query'
+    if test_params['test_name'] == 'domain':
+        fam_vcr.register_matcher('domain_query', domain_query_matcher)
+        query_matcher = 'domain_query'
+
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
-                              match_on=['method', 'scheme', 'port', 'path', 'query', 'body_json_l2'],
+                              match_on=['method', 'scheme', 'port', 'path', query_matcher, 'body_json_l2'],
                               filter_headers=['Authorization'],
                               ):
         with open(sys.argv[0]) as f:
