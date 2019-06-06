@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2018 Bernhard Suttner (ATIX AG)
+# (c) 2019 Christoffer Reijer (Basalt AB)
 #
 # This file is part of Ansible
 #
@@ -25,10 +26,10 @@ description:
   - Create and Delete Foreman Environment using Foreman API
 version_added: "2.5"
 author:
-  - "Bernhard Suttner(@_sbernhard) ATIX AG"
+  - "Bernhard Suttner (@_sbernhard) ATIX AG"
+  - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
-  - "nailgun >= 0.30.0"
-  - "ansible >= 2.3"
+  - "apypie"
 options:
   name:
     description: The full environment name
@@ -78,36 +79,20 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_environment,
-        find_locations,
-        find_organizations,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        Environment,
-        Location,
-        Organization,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
-
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityApypieAnsibleModule,
+)
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
-    'locations': 'location',
     'name': 'name',
-    'organizations': 'organization',
+    'organizations': 'organization_ids',
+    'locations': 'location_ids',
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             locations=dict(type='list'),
@@ -120,22 +105,15 @@ def main():
 
     module.connect()
 
-    try:
-        entity = find_environment(module, name=entity_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('environments', name=entity_dict['name'], failsafe=True)
 
-    # Set Locations of partition table
     if 'locations' in entity_dict:
-        entity_dict['locations'] = find_locations(module, entity_dict['locations'])
+        entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
 
-    # Set Organizations of partition table
     if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
+        entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = naildown_entity_state(Environment, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('environments', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
