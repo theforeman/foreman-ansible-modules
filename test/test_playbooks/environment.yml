@@ -14,6 +14,8 @@
 
 - hosts: tests
   gather_facts: false
+  environment:
+    XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
   - name: 'Load server config'
     include_vars:
