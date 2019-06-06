@@ -27,9 +27,7 @@ author:
     - "Maxim Burgerhout (@wzzrd)"
     - "Christoffer Reijer (@ephracis)"
 requirements:
-    - "nailgun >= 0.32.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+    - apypie
 options:
   server_url:
     description:
@@ -103,15 +101,15 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
     search_params = {'organization_id': entity_dict['organization']['id']}
-    entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=search_params, failsafe=True)
+    entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=search_params, failsafe=True, thin=module.absent)
 
-    changed = module.ensure_resource_state('host_collections', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('host_collections', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 
