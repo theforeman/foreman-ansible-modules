@@ -419,13 +419,11 @@ def main():
     if 'organizations' in entity_dict:
         entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
     check_missing = None
-    if 'password' in entity_dict:
-        check_missing = ['password']
+    if 'user_password' in entity_dict:
+        check_missing = [name_map['user_password']]
 
-    changed = module.ensure_resource_state('users', entity_dict, entity, state, check_missing=check_missing)
+    changed = module.ensure_resource_state('users', entity_dict, entity, state, name_map, check_missing=check_missing)
 
     module.exit_json(changed=changed, entity_dict=entity_dict)
 
