@@ -169,7 +169,6 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    sanitize_entity_dict,
     ForemanEntityApypieAnsibleModule,
 )
 
