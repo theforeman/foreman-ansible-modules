@@ -81,12 +81,15 @@ else:
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
 
-    fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
-
     query_matcher = 'query'
     if test_params['test_name'] == 'domain':
         fam_vcr.register_matcher('domain_query', domain_query_matcher)
         query_matcher = 'domain_query'
+
+    if test_params['test_name'] == 'snapshot':
+        fam_vcr.register_matcher('body_json_l2', body_json_snapshot_matcher)
+    else:
+        fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
 
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
