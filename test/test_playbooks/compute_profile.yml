@@ -1,13 +1,10 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-  - name: Load compute profile vars
-    include_vars:
-      file: compute_profile_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -32,13 +29,10 @@
       compute_resource_state: present
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
-  - name: Load compute profile vars
-    include_vars:
-      file: compute_profile_vars.yml
   - include: tasks/compute_profile.yml
     vars:
       compute_profile_state: present
@@ -82,13 +76,10 @@
       expected_change: true
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
-  - name: Load compute profile vars
-    include_vars:
-      file: compute_profile_vars.yml
   - include: tasks/compute_resource.yml
     vars:
       compute_resource_name: "{{ libvirt.compute_resource.name }}"

@@ -1,10 +1,9 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -13,10 +12,9 @@
       location_state: present
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - name: 'Libvirt compute resource'
     block:
     - name: Create libvirt compute resource
@@ -142,10 +140,9 @@
         expected_change: false
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: absent

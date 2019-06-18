@@ -1,9 +1,9 @@
 ---
 - hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include_tasks: tasks/repository_set.yml
     vars:
       name: Red Hat Enterprise Linux 7 Server (RPMs)

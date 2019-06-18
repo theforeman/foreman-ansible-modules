@@ -3,10 +3,9 @@
   tags:
     - setup
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -24,10 +23,9 @@
   tags:
     - test
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/activation_key.yml
     vars:
       activation_key_host_collections:
@@ -75,10 +73,9 @@
   tags:
     - teardown
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/repository.yml
     vars:
       repository_state: absent

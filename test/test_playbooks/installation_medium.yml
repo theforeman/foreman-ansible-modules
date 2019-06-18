@@ -1,10 +1,9 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -19,10 +18,9 @@
 
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_state: present
@@ -89,10 +87,9 @@
 
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/operating_system.yml
     vars:
       operating_system_state: absent

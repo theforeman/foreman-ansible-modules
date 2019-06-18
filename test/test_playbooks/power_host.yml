@@ -1,10 +1,9 @@
 ---
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/host_power.yml
     vars:
       expected_change: true

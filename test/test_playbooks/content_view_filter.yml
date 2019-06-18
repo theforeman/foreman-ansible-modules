@@ -1,9 +1,9 @@
 ---
 - hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -31,11 +31,9 @@
 
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
-
   - name: Test Content View Filter Package
     block:
       - include: tasks/content_view_filter_package.yml
@@ -44,7 +42,7 @@
       - include: tasks/content_view_filter_package.yml
         vars:
           expected_change: false
-    
+
       - include: tasks/content_view_filter_package.yml
         vars:
           version: 1
@@ -53,7 +51,7 @@
         vars:
           version: 1
           expected_change: false
-    
+
       - include: tasks/content_view_filter_package.yml
         vars:
           max_version: 1
@@ -62,7 +60,7 @@
         vars:
           max_version: 1
           expected_change: false
-    
+
       - include: tasks/content_view_filter_package.yml
         vars:
           min_version: 1
@@ -131,7 +129,7 @@
           filter_state: absent
           rule_state: absent
           expected_change: true
- 
+
   - name: Test Content View Filter Docker
     block:
       - include: tasks/content_view_filter_docker.yml
@@ -148,10 +146,9 @@
 
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: 'Load server config'
-    include_vars:
-      file: server_vars.yml
   - include: tasks/repository.yml
     vars:
       repository_name: Test Docker Repository

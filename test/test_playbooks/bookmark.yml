@@ -1,12 +1,11 @@
 ---
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   environment:
     XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/bookmark.yml
     vars:
       bookmark_state: present_with_defaults

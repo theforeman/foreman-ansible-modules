@@ -1,9 +1,9 @@
 ---
 - hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - name: "Promote the 1.0 content view version to Library"
     katello_content_view_version_promote:
       username: "{{ foreman_username }}"

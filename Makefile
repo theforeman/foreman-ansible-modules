@@ -53,12 +53,12 @@ debug-setup: .tmp/ansible
 .tmp/ansible:
 	ansible-playbook debug-setup.yml
 
-test-setup: test/test_playbooks/server_vars.yml
+test-setup: test/test_playbooks/vars/server.yml
 	pip install --upgrade pip
 	pip install -r requirements-dev.txt
 	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt
-test/test_playbooks/server_vars.yml:
-	cp test/test_playbooks/server_vars.yml.example test/test_playbooks/server_vars.yml
+test/test_playbooks/vars/server.yml:
+	cp test/test_playbooks/vars/server.yml.example test/test_playbooks/vars/server.yml
 
 dist:
 	mazer build
