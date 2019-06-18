@@ -1,10 +1,11 @@
 ---
 - hosts: fixtures
+  tags:
+    - setup
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include_tasks: tasks/location.yml
     vars:
       location_state: "present"
@@ -13,13 +14,14 @@
       organization_state: "present"
 
 - hosts: tests
+  tags:
+    - test
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   environment:
     XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
 
   # create user
   - include: tasks/user.yml
@@ -82,11 +84,12 @@
       expected_change: false
 
 - hosts: fixtures
+  tags:
+    - teardown
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include_tasks: tasks/location.yml
     vars:
       location_state: "absent"
