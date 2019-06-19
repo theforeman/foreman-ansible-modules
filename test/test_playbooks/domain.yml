@@ -21,6 +21,12 @@
   vars_files:
     - vars/server.yml
     - vars/domain.yml
+  module_defaults:
+    group/foreman:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      validate_certs: "{{ foreman_validate_certs }}"
   environment:
     XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
