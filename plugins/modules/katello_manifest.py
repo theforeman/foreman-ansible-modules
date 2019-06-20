@@ -53,6 +53,7 @@ options:
   manifest_path:
     description:
       - Path to the manifest zip file
+      - This parameter will be ignored if I(state=absent) or I(state=refreshed)
   state:
     description:
       - The state of the manifest
@@ -103,14 +104,6 @@ except ImportError as e:
     import_error_msg = str(e)
 
 from ansible.module_utils.basic import AnsibleModule
-
-
-def validate_params(module, state=None, manifest_path=None):
-    if manifest_path is not None or len(manifest_path) == 0:
-        if state == 'absent':
-            module.fail_json(msg="manifest_path is prohibited when state is absent.")
-        elif state == 'refreshed':
-            module.fail_json(msg="manifest_path is prohibited when state is refreshed.")
 
 
 def manifest(module, organization, state, manifest_path=None, redhat_repository_url="https://cdn.redhat.com"):
@@ -188,8 +181,6 @@ def main():
     manifest_path = module.params['manifest_path']
     redhat_repository_url = module.params['redhat_repository_url']
     state = module.params['state']
-
-    validate_params(module, state=state, manifest_path=manifest_path)
 
     create_server(server_url, (username, password), verify_ssl)
     ping_server(module)
