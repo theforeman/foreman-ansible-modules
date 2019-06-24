@@ -23,7 +23,6 @@ module: foreman_domain
 short_description: Manage Foreman Domains using Foreman API
 description:
   - Create and Delete Foreman Domains using Foreman API
-version_added: "2.5"
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 requirements:

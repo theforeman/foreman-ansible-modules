@@ -29,7 +29,6 @@ short_description: Manage Foreman Global Parameters
 description:
   - "Manage Foreman Global Parameter Entities"
   - "Uses https://github.com/SatelliteQE/nailgun"
-version_added: "2.4"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

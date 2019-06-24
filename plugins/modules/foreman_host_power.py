@@ -30,7 +30,6 @@ short_description: Manage Foreman hosts power state
 description:
   - "Manage power state of Foreman host"
   - "This beta version can start and stop an existing foreman host and question the current power state."
-version_added: "2.7"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 requirements:

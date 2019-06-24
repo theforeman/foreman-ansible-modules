@@ -29,7 +29,6 @@ description:
   - "Manage Foreman Provisioning Template"
   - "Uses https://github.com/SatelliteQE/nailgun"
   - "Uses ansible_nailgun_cement in /module_utils"
-version_added: "2.4"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

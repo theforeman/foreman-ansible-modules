@@ -24,7 +24,6 @@ module: foreman_compute_profile
 short_description: Manage Foreman Compute Profiles using Foreman API
 description:
   - Create and delete Foreman Compute Profiles using Foreman API
-version_added: "2.0"
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"

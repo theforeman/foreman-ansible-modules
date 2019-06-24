@@ -83,7 +83,6 @@ options:
     required: false
     default: present
     choices: ["present", "absent", "present_with_defaults"]
-version_added: "2.0"
 '''
 
 EXAMPLES = '''

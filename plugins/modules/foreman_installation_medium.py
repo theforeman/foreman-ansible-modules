@@ -23,7 +23,6 @@ module: foreman_installation_medium
 short_description: Manage Foreman Installation Medium using Foreman API
 description:
   - Create and Delete Foreman Installation Medium using Foreman API
-version_added: "2.5"
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 requirements:

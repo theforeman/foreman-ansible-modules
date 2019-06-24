@@ -29,7 +29,6 @@ short_description: Manage Foreman Settings
 description:
   - "Manage Foreman Setting Entities"
   - "Uses https://github.com/SatelliteQE/nailgun"
-version_added: "2.4"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:

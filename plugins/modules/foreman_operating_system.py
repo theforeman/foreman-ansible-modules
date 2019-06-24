@@ -30,7 +30,6 @@ short_description: Manage Foreman Operating Systems
 description:
   - "Manage Foreman Operating System Entities"
   - "Uses https://github.com/SatelliteQE/nailgun"
-version_added: "2.4"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"

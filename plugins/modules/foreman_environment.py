@@ -24,7 +24,6 @@ module: foreman_environment
 short_description: Manage Foreman Environment (Puppet) using Foreman API
 description:
   - Create and Delete Foreman Environment using Foreman API
-version_added: "2.5"
 author:
   - "Bernhard Suttner (@_sbernhard) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"
