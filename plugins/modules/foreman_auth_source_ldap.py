@@ -23,7 +23,7 @@ module: foreman_auth_source_ldap
 short_description: Manage Foreman LDAP authentication sources using Foreman API
 description:
   - Create and Delete Foreman LDAP authentication sources using Foreman API
-version_added: "2.5"
+version_added: "2.9"
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
@@ -38,13 +38,13 @@ options:
   port:
     description: The port number of the LDAP server
     required: false
-    tyoe: int
+    type: int
     default: 389
   account:
     description: Account name to use when accessing the LDAP server.
     required: false
   account_password:
-    description: Account password to use when accessing the LDAP esrver. Required when using `onthefly_register`
+    description: Account password to use when accessing the LDAP server. Required when using `onthefly_register`
     required: false
   base_dn:
     description: The base DN to use when searching.
@@ -126,7 +126,7 @@ EXAMPLES = '''
       - "Sweden"
     username: "admin"
     password: "secret"
-    validate_certs: False
+    validate_certs: True
     state: present
 
 - name: LDAP Authentication with automatic registration
@@ -147,7 +147,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
-    validate_certs: False
+    validate_certs: True
     state: present
 '''
 
@@ -187,7 +187,7 @@ def main():
         argument_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
-            port=dict(type='int'),
+            port=dict(type='int', default=389),
             account=dict(),
             account_password=dict(no_log=True),
             base_dn=dict(),

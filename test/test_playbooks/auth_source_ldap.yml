@@ -1,10 +1,9 @@
 ---
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - name: Load domain test-config
     include_vars:
       file: domain_vars.yml
@@ -18,12 +17,12 @@
       organization_name: "{{ item }}"
       organization_state: "present"
     with_items: "{{ domain_organizations }}"
+
 - hosts: tests
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - include: tasks/auth_source_ldap.yml
     vars:
       auth_source_ldap_state: present
@@ -34,18 +33,23 @@
       expected_change: false
   - include: tasks/auth_source_ldap.yml
     vars:
+      auth_source_ldap_state: present
+      auth_source_ldap_account: test
+      expected_change: true
+  - include: tasks/auth_source_ldap.yml
+    vars:
       auth_source_ldap_state: absent
       expected_change: true
   - include: tasks/auth_source_ldap.yml
     vars:
       auth_source_ldap_state: absent
       expected_change: false
+
 - hosts: fixtures
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
-  - name: Load server config
-    include_vars:
-      file: server_vars.yml
   - name: Load domain test-config
     include_vars:
       file: domain_vars.yml
