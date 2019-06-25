@@ -47,8 +47,7 @@ options:
     description:
       - Password for user accessing Foreman server
     required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
+  verify_ssl:
     description:
       - Verify SSL of the Foreman server
     required: false
