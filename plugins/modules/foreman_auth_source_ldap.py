@@ -153,10 +153,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
-    sanitize_entity_dict,
-    ForemanEntityApypieAnsibleModule,
-)
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
@@ -220,9 +217,7 @@ def main():
     if 'organizations' in entity_dict:
         entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = module.ensure_resource_state('auth_source_ldaps', entity_dict, entity, state)
+    changed = module.ensure_resource_state('auth_source_ldaps', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
