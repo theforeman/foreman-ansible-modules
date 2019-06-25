@@ -109,6 +109,7 @@ This is a list of modules currently in the repository (please add to the list if
  * foreman_ptable: create and maintain partition templates
  * foreman_role: create and maintain user roles
  * foreman_setting: set and reset settings
+ * foreman_snapshot: create and maintain snapshots
  * foreman_subnet: create and maintain subnets
  * katello_activation_key: create and maintain activation keys
  * katello_content_credential: create and maintain content credentials
