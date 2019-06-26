@@ -41,6 +41,21 @@ def domain_query_matcher(r1, r2):
     return r1.query == r2.query
 
 
+def host_body_matcher(r1, r2):
+    if r1.headers.get('content-type') == r2.headers.get('content-type') == 'application/json':
+        if r1.path == r2.path == '/api/v2/hostgroups':
+            r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
+            r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
+            body1 = json.loads(r1_copy.body.decode('utf8'))
+            body2 = json.loads(r2_copy.body.decode('utf8'))
+            body1['search'] = "name='test_group'"
+            body2['search'] = "name='test_group'"
+            r1_copy.body = json.dumps(body1)
+            r2_copy.body = json.dumps(body2)
+            return body_json_l2_matcher(r1_copy, r2_copy)
+    return body_json_l2_matcher(r1, r2)
+
+
 VCR_PARAMS_FILE = os.environ.get('FAM_TEST_VCR_PARAMS_FILE')
 
 # Remove the name of the wrapper from argv
@@ -65,16 +80,22 @@ else:
 
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
-    fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
 
     query_matcher = 'query'
     if test_params['test_name'] == 'domain':
         fam_vcr.register_matcher('domain_query', domain_query_matcher)
         query_matcher = 'domain_query'
 
+    fam_vcr.register_matcher('body_json_l2', body_json_l2_matcher)
+
+    body_matcher = 'body_json_l2'
+    if test_params['test_name'] == 'host':
+        fam_vcr.register_matcher('host_body', host_body_matcher)
+        body_matcher = 'host_body'
+
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
-                              match_on=['method', 'scheme', 'port', 'path', query_matcher, 'body_json_l2'],
+                              match_on=['method', 'scheme', 'port', 'path', query_matcher, body_matcher],
                               filter_headers=['Authorization'],
                               ):
         with open(sys.argv[0]) as f:
