@@ -28,7 +28,6 @@ module: foreman_user
 short_description: Manage Foreman Users
 description:
   - Create and delete users in Foreman
-version_added: "2.8"
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:

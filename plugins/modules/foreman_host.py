@@ -30,7 +30,6 @@ short_description: Manage Foreman hosts
 description:
   - "Manage Foreman host Entities"
   - "This beta version can create and delete hosts from preexisting host groups"
-version_added: "2.7"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 requirements:

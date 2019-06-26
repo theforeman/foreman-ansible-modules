@@ -23,7 +23,6 @@ module: foreman_role
 short_description: Manage Foreman Roles using Foreman API
 description:
   - Create and Delete Foreman Roles using Foreman API
-version_added: "2.9"
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
