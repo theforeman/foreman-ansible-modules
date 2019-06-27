@@ -230,8 +230,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return changed, changed_entity
 
     def _resource_action(self, resource, action, params):
-        action_params = self.foremanapi.resource(resource).action(action).params
-        resource_payload = self._generate_resource_payload(action_params, params)
+        resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         try:
             result = None
             if not self.check_mode:
@@ -240,17 +239,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='Error while {}ing {}: {}'.format(
                 action, resource, str(e)))
         return True, result
-
-    def _generate_resource_payload(self, action_params, data):
-        resource_payload = {}
-
-        for param in action_params:
-            if param.expected_type == 'hash':
-                resource_payload[param.name] = self._generate_resource_payload(param.params, data)
-            elif param.name in data:
-                resource_payload[param.name] = data[param.name]
-
-        return resource_payload
 
     def _flatten_value(self, value):
         if isinstance(value, dict) and 'id' in value:
