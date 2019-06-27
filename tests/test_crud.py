@@ -42,6 +42,7 @@ MODULES = [
     'role',
     'search_facts',
     'setting',
+    'snapshot',
     'subnet',
     'sync_plan',
     'upload',

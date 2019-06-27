@@ -164,7 +164,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         params['per_page'] = 2 << 31
         return self.foremanapi.resource(resource).call('index', params)['results']
 
-    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
+    def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
         list_params = {}
         if params is not None:
             list_params.update(params)
@@ -172,6 +172,14 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             thin = self._thin_default
         list_params['thin'] = thin
         results = self.list_resource(resource, search, list_params)
+        if resource == 'snapshots':
+            # Snapshots API does not do search
+            snapshot = []
+            for result in results:
+                if result['name'] == name:
+                    snapshot.append(result)
+                    break
+            results = snapshot
         if len(results) == 1:
             result = results[0]
         elif failsafe:
@@ -187,6 +195,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
     def find_resource_by_name(self, resource, name, **kwargs):
         search = 'name="{}"'.format(name)
+        kwargs['name'] = name
         return self.find_resource(resource, search, **kwargs)
 
     def find_resource_by_title(self, resource, title, **kwargs):
@@ -325,6 +334,9 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
             else:
                 changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+        elif state == 'reverted':
+            if current_entity is not None:
+                changed, updated_entity = self._revert_entity(resource, current_entity, params)
         elif state == 'absent':
             if current_entity is not None:
                 changed, updated_entity = self._delete_entity(resource, current_entity, params)
@@ -374,6 +386,21 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             return self._resource_action(resource, 'update', payload)
         else:
             return False, current_entity
+
+    def _revert_entity(self, resource, current_entity, params):
+        """Revert a given entity
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                current_entity (dict): Current properties of the entity
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state of the entity
+        """
+        payload = {'id': current_entity['id']}
+        if params:
+            payload.update(params)
+        return self._resource_action(resource, 'revert', payload)
 
     def _delete_entity(self, resource, current_entity, params):
         """Delete a given entity
