@@ -156,7 +156,9 @@ def main():
     if 'ptable' in entity_dict:
         entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
 
-    entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True)
+    # TODO: Remove 'thin=False' before rerecording the fixtures.
+    # Also the 'module.desired_absent' logic should be added.
+    entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True, thin=False)
     if entity:
         entity['root_pass'] = None
 

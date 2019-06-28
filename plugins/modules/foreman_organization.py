@@ -107,7 +107,7 @@ def main():
 
     module.connect()
 
-    entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True, thin=module.absent)
+    entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
 
     changed = module.ensure_resource_state('organizations', entity_dict, entity, module.state, name_map)
 

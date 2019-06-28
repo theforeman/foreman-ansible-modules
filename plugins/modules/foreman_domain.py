@@ -115,9 +115,9 @@ def main():
     module.connect()
 
     # Try to find the Domain to work on
-    entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True, thin=module.absent)
+    entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True)
 
-    if not module.absent:
+    if not module.desired_absent:
         if 'dns_proxy' in domain_dict:
             domain_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', domain_dict['dns_proxy'], thin=True)
 

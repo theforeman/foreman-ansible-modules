@@ -209,7 +209,9 @@ def main():
 
     module.connect()
 
-    entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
+    # TODO: Remove 'thin=False' before rerecording the fixtures.
+    # Also the 'module.desired_absent' logic should be added.
+    entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True, thin=False)
 
     if 'locations' in entity_dict:
         entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)

@@ -109,9 +109,9 @@ def main():
 
     module.connect()
 
-    entity = module.find_resource_by_name('roles', name=entity_dict['name'], failsafe=True, thin=module.absent)
+    entity = module.find_resource_by_name('roles', name=entity_dict['name'], failsafe=True)
 
-    if not module.absent:
+    if not module.desired_absent:
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
 

@@ -259,7 +259,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.state = self.params.pop('state')
-        self.absent = self.state == 'absent'
+        self.desired_absent = self.state == 'absent'
 
     def parse_params(self):
         return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
@@ -285,10 +285,21 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.state = self.params.pop('state')
-        self.absent = self.state == 'absent'
+        self.desired_absent = self.state == 'absent'
 
     def parse_params(self):
         return (super(ForemanEntityApypieAnsibleModule, self).parse_params(), self.state)
+
+    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
+        if thin is None:
+            thin = self.desired_absent
+        return super(ForemanEntityApypieAnsibleModule, self).find_resource(resource, search, params, failsafe, thin)
+
+    def find_resource_by_name(self, resource, name, params=None, failsafe=False, thin=None):
+        return super(ForemanEntityApypieAnsibleModule, self).find_resource_by_name(resource, name, params, failsafe, thin)
+
+    def find_resources(self, resource, search_list, failsafe=False, thin=None):
+        return super(ForemanEntityApypieAnsibleModule, self).find_resources(resource, search_list, failsafe, thin)
 
 
 class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):

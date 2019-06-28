@@ -107,7 +107,7 @@ def main():
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
     search_params = {'organization_id': entity_dict['organization']['id']}
-    entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=search_params, failsafe=True, thin=module.absent)
+    entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=search_params, failsafe=True)
 
     changed = module.ensure_resource_state('host_collections', entity_dict, entity, module.state, name_map)
 
