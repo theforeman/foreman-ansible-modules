@@ -6,49 +6,44 @@ import ansible_runner
 
 import py.path
 
-FOREMAN_MODULES = [
+MODULES = [
+    'activation_key',
     'auth_source_ldap',
     'bookmark',
     'compute_attribute',
     'compute_profile',
     'compute_resource',
+    'content_credential',
+    'content_view',
+    'content_view_filter',
     'domain',
     'environment',
     'global_parameter',
     'host',
     'hostgroup',
+    'host_collection',
     'installation_medium',
     'job_template',
+    'lifecycle_environment',
     'location',
     'operating_system',
     'organization',
     'os_default_template',
+    'product',
     'provisioning_template',
     'ptable',
-    'role',
-    'search_facts',
-    'setting',
-    'subnet',
-    'user',
-]
-
-KATELLO_MODULES = [
-    'activation_key',
-    'content_credential',
-    'content_view',
-    'content_view_filter',
-    'host_collection',
-    'lifecycle_environment',
-    'product',
     'redhat_manifest',
     'repository',
     'repository_set',
     'repository_sync',
+    'role',
+    'search_facts',
+    'setting',
+    'subnet',
     'sync_plan',
     'upload',
+    'user',
 ]
-
-MODULES = FOREMAN_MODULES + KATELLO_MODULES
 
 if sys.version_info[0] == 2:
     for envvar in os.environ.keys():
@@ -72,11 +67,6 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
         # Only run the tests (skip fixtures)
         limit = '!fixtures'
 
-    if module in KATELLO_MODULES:
-        apidoc = 'katello.json'
-    else:
-        apidoc = 'foreman.json'
-
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}
     params_file = tmpdir.join('{}_test_params.json'.format(module))
@@ -88,6 +78,7 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
     os.environ['XDG_CACHE_HOME'] = cache_dir.strpath
     json_cache = cache_dir / 'apypie/https___foreman.example.com/v2/default.json'
     json_cache.ensure()
+    apidoc = 'apidoc/{}.json'.format(module)
     fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
     fixture_dir.join(apidoc).copy(json_cache)
 
