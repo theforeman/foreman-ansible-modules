@@ -138,4 +138,6 @@ Satellite 6.3 | 6.3.z
 Satellite 6.2 | 6.2.z
 
 ## Ansible Version
-Please note that you need ansible >= 2.3 to use these modules.
+
+Please note that you need Ansible >= 2.3 to use these modules.
+As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
