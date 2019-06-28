@@ -1,0 +1,34 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: absent
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  environment:
+    XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
+  tasks:
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: present
+      smart_proxy_download_policy: background
+      expected_change: true
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: present
+      expected_change: true
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: present
+      expected_change: false
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: absent
+      expected_change: true
+...
