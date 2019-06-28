@@ -1,0 +1,62 @@
+---
+# To run recording for this test, you need to:
+#   - configure your primary smart proxy to listen to http on 8000
+#   - configure your primary smart proxy to trust localhost
+#   - restart your primary smart proxy
+#   - disable selinux enforcing
+#   - record before puppet takes back those changes
+#
+# Do not do this on a production machine!
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "{}"
+        expected_diff_after: "localhost"
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        expected_change: false
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: absent
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "localhost"
+        expected_diff_after: "{}"
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: absent
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: absent
+...

@@ -1,0 +1,24 @@
+---
+- name: "Ensure Smart Proxy '{{ smart_proxy_name }}' is {{ smart_proxy_state }}"
+  vars:
+    - smart_proxy_name: "Smart Proxy"
+    - smart_proxy_url: "http://localhost:8000"
+  smart_proxy:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ smart_proxy_name }}"
+    url: "{{ smart_proxy_url }}"
+    download_policy: "{{ smart_proxy_download_policy | default(omit) }}"
+    state: "{{ smart_proxy_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring Smart Proxy is {{ smart_proxy_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- include_tasks: _assert_diff.yml
+  vars:
+    module: smart_proxy
+...
