@@ -34,8 +34,6 @@ description:
 author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
   server_url:
     description:

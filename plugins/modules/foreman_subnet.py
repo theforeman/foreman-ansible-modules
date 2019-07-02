@@ -27,7 +27,6 @@ author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
   - "nailgun >= 0.32.0"
-  - "ansible >= 2.3"
 options:
   name:
     description: Subnet name

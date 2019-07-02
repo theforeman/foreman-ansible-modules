@@ -27,7 +27,6 @@ author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 requirements:
   - "nailgun >= 0.16.0"
-  - "ansible >= 2.3"
 options:
   name:
     description:

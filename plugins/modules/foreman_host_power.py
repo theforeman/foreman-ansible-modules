@@ -34,7 +34,6 @@ author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 requirements:
   - "nailgun >= 0.29.0"
-  - "ansible >= 2.3"
 options:
   hostname:
     description:

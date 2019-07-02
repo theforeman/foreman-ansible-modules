@@ -29,8 +29,6 @@ author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
   - "nailgun >= 0.28.0"
-  - "python >= 2.6"
-  - "ansible >= 2.3"
 options:
   name:
     description: compute profile name

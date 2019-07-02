@@ -28,8 +28,6 @@ author:
     - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
     - "nailgun >= 0.32.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
   name:
     description:

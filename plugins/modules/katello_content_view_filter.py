@@ -26,8 +26,6 @@ description:
 author: "Sean O'Keeffe (@sean797)"
 requirements:
     - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
   content_view:
     description:
