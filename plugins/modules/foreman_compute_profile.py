@@ -41,24 +41,11 @@ options:
   compute_attributes:
     description: Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type
     required: false
-  server_url:
-    description: foreman url
-    required: true
-  username:
-    description: foreman username
-    required: true
-  password:
-    description: foreman user password
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description: verify ssl connection when communicating with foreman
-    default: true
-    type: bool
   state:
     description: compute profile presence
     default: present
     choices: ["present", "absent"]
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

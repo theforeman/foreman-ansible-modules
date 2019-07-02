@@ -29,23 +29,6 @@ requirements:
   - "python >= 2.6"
   - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: true
   name:
     description:
       - Name of the repository set
@@ -75,6 +58,7 @@ options:
     choices:
       - 'enabled'
       - 'disabled'
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

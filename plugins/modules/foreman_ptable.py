@@ -36,25 +36,6 @@ requirements:
   - "nailgun > 0.31.0"
   - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    required: false
-    default: true
-    type: bool
   file_name:
     description:
       - |
@@ -117,6 +98,7 @@ options:
       - absent
       - present
       - present_with_defaults
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

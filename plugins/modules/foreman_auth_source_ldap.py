@@ -88,20 +88,6 @@ options:
   ldap_filter:
     description: Filter to apply to LDAP searches
     required: false
-  server_url:
-    description: URL of Foreman server
-    required: true
-  username:
-    description: Username accessing Foreman server
-    required: true
-  password:
-    description: Password of user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description: Whether or not to verify the TLS certificates of Foreman server
-    default: true
-    type: bool
   organizations:
     description: List of organizations the authentication source should be assigned to
     type: list
@@ -112,6 +98,7 @@ options:
     description: State ot the LDAP authentication source
     default: present
     choices: ["present", "absent"]
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

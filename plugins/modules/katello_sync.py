@@ -43,20 +43,7 @@ options:
   synchronous:
     description: Wait for the Sync task to complete if True. Immediately return if False.
     default: true
-  server_url:
-    description: foreman url
-    required: true
-  username:
-    description: foreman username
-    required: true
-  password:
-    description: foreman user password
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description: verify ssl connection when communicating with foreman
-    default: true
-    type: bool
+extends_documentation_fragment: foreman
 ...
 '''
 
