@@ -23,9 +23,7 @@ short_description: Manage Foreman Smart Proxy
 description:
   - Manage Foreman Smart Proxy
 requirements:
-  - "nailgun >= 0.28.0"
-  - "python >= 2.6"
-  - "ansible >= 2.3"
+  - "apypie"
 options:
   server_url:
     description:
@@ -101,21 +99,8 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
-        find_locations,
-        find_organizations,
-        find_smart_proxy,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-    from nailgun.entities import SmartProxy
-except ImportError:
-    pass
 
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and versions thereof)
@@ -129,7 +114,7 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             url=dict(required=True),
@@ -137,26 +122,26 @@ def main():
             locations=dict(type='list'),
             organizations=dict(type='list'),
         ),
-        supports_check_mode=True
+        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()
 
     module.connect()
 
+    # Find and entity, if one exists
+    entity = module.find_resource_by_name('smart_proxies', name=entity_dict['name'], failsafe=True)
+
+    # Lookup locations
     if 'locations' in entity_dict:
-        entity_dict['locations'] = find_locations(module, entity_dict['locations'])
+        entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
 
+    # Lookup organizations
     if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
-
-    # Try to find the Smart Proxy to work on
-    entity = find_smart_proxy(module, name=entity_dict['name'], failsafe=True)
-    # Re-map names
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
+        entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
     # Make the changes
-    changed = naildown_entity_state(SmartProxy, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('smart_proxies', entity_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
