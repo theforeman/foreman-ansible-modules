@@ -34,6 +34,7 @@ MODULES = [
     'role',
     'search_facts',
     'setting',
+    'smart_proxy',
     'subnet',
     'sync_plan',
     'upload',

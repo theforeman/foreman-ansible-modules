@@ -4,6 +4,9 @@
   vars_files:
     - vars/server.yml
   tasks:
+  - include: tasks/smart_proxy_puppet_host.yml
+    vars:
+      puppet_host_state: present
   - include: tasks/smart_proxy.yml
     vars:
       smart_proxy_state: absent
@@ -22,13 +25,20 @@
   - include: tasks/smart_proxy.yml
     vars:
       smart_proxy_state: present
-      expected_change: true
-  - include: tasks/smart_proxy.yml
-    vars:
-      smart_proxy_state: present
       expected_change: false
   - include: tasks/smart_proxy.yml
     vars:
       smart_proxy_state: absent
       expected_change: true
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/smart_proxy.yml
+    vars:
+      smart_proxy_state: absent
+  - include: tasks/smart_proxy_puppet_host.yml
+    vars:
+      puppet_host_state: absent
 ...
