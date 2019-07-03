@@ -8,6 +8,7 @@ MODULES = [
     'activation_key',
     'auth_source_ldap',
     'bookmark',
+    'compute_attribute',
     'compute_profile',
     'compute_resource',
     'content_credential',

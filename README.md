@@ -96,6 +96,7 @@ This is a list of modules currently in the repository (please add to the list if
 
 #### Entity Modules
 
+ * foreman_compute_attribute: create and maintain compute attributes
  * foreman_compute_resource: create and maintain compute resources
  * foreman_domain: create and maintain domains
  * foreman_environment: create and maintain environments (puppet)
