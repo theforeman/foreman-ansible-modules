@@ -45,9 +45,10 @@ class ForemanBaseAnsibleModule(AnsibleModule):
         self._foremanapi_validate_certs = self.params.pop('validate_certs')
 
     def parse_params(self):
-        return self.filter_module_params()
+        self.warn("Use of deprecated method parse_params")
+        return {k: v for (k, v) in self.params.items() if v is not None}
 
-    def filter_module_params(self):
+    def clean_params(self):
         return {k: v for (k, v) in self.params.items() if v is not None}
 
     def get_server_params(self):
@@ -257,10 +258,11 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         args.update(argument_spec)
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.state = self.params.pop('state')
+        self.desired_absent = self.state == 'absent'
+
     def parse_params(self):
-        module_params = super(ForemanEntityAnsibleModule, self).parse_params()
-        state = module_params.pop('state')
-        return (module_params, state)
+        return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
 
 
 class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
@@ -282,10 +284,22 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         args.update(argument_spec)
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.state = self.params.pop('state')
+        self.desired_absent = self.state == 'absent'
+
     def parse_params(self):
-        module_params = super(ForemanEntityApypieAnsibleModule, self).parse_params()
-        state = module_params.pop('state')
-        return (module_params, state)
+        return (super(ForemanEntityApypieAnsibleModule, self).parse_params(), self.state)
+
+    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
+        if thin is None:
+            thin = self.desired_absent
+        return super(ForemanEntityApypieAnsibleModule, self).find_resource(resource, search, params, failsafe, thin)
+
+    def find_resource_by_name(self, resource, name, params=None, failsafe=False, thin=None):
+        return super(ForemanEntityApypieAnsibleModule, self).find_resource_by_name(resource, name, params, failsafe, thin)
+
+    def find_resources(self, resource, search_list, failsafe=False, thin=None):
+        return super(ForemanEntityApypieAnsibleModule, self).find_resources(resource, search_list, failsafe, thin)
 
 
 class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):

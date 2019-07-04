@@ -393,8 +393,10 @@ def main():
 
     module.connect()
 
+    # TODO: Remove 'thin=False' before rerecording the fixtures.
+    # Also the 'module.desired_absent' logic should be added.
     search = 'login="{}"'.format(entity_dict['name'])
-    entity = module.find_resource('users', search, failsafe=True)
+    entity = module.find_resource('users', search, failsafe=True, thin=False)
 
     if 'mail' not in entity_dict:
         entity_dict['mail'] = entity['mail']

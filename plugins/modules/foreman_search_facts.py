@@ -31,7 +31,7 @@ description:
 author:
   - "Sean O'Keeffe (@sean797)"
 requirements:
-  - nailgun
+  - apypie
 options:
   server_url:
     description:
@@ -105,7 +105,7 @@ def main():
         supports_check_mode=True,
     )
 
-    module_params = module.parse_params()
+    module_params = module.clean_params()
     entity = module_params['resource']
     search = module_params['search']
 

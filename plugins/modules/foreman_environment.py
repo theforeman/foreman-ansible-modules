@@ -100,19 +100,20 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
     entity = module.find_resource_by_name('environments', name=entity_dict['name'], failsafe=True)
 
-    if 'locations' in entity_dict:
-        entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
+    if not module.desired_absent:
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
 
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('environments', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('environments', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 

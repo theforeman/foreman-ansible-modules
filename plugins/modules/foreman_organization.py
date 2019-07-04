@@ -28,8 +28,7 @@ author:
     - "Eric D Helms (@ehelms)"
     - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - "python >= 2.6"
-    - "ansible >= 2.3"
+    - "apypie"
 options:
   server_url:
     description:
@@ -104,13 +103,13 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
     entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
 
-    changed = module.ensure_resource_state('organizations', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('organizations', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 

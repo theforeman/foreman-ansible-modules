@@ -143,14 +143,14 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
     search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
     entity = module.find_resource('bookmarks', search, failsafe=True)
 
-    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 

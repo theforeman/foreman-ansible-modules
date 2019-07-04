@@ -25,9 +25,7 @@ description:
   - Create and Manage Katello content credentials
 author: "Baptiste Agasse (@bagasse)"
 requirements:
-  - "nailgun >= 0.32.0"
-  - "python >= 2.6"
-  - "ansible >= 2.3"
+  - apypie
 options:
   server_url:
     description:
@@ -111,7 +109,7 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
@@ -119,7 +117,7 @@ def main():
     search_params = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=search_params, failsafe=True)
 
-    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 
