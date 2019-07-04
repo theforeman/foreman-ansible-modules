@@ -1,0 +1,87 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS"
+      operating_system_state: present
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: present
+  - include: tasks/installation_medium.yml
+    vars:
+      installation_medium_operating_systems:
+        - "TestOS"
+      installation_medium_state: present
+- hosts: tests
+  gather_facts: false
+  environment:
+    XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
+  tasks:
+  - name: Load server config
+    include_vars:
+      file: vars/server.yml
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "New host group"
+      architecture_name: "x86_64"
+      operating_system_name: "TestOS"
+      installation_medium_name: "Temple OS 1.0"
+      ptable_name: "Timetravel finish"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "New host group"
+      architecture_name: "x86_64"
+      operating_system_name: "TestOS"
+      installation_medium_name: "Temple OS 1.0"
+      ptable_name: "Timetravel finish"
+      hostgroup_state: present
+      expected_change: false
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "Test host group"
+      root_pass: "changeme"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "Test host group"
+      root_pass: "changeme"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_state: absent
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_state: absent
+      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_state: absent
+  - include: tasks/ptable.yml
+    vars:
+      ptable_state: absent
+  - include: tasks/installation_medium.yml
+    vars:
+      installation_medium_operating_systems:
+        - "TestOS"
+      installation_medium_state: absent
+...
