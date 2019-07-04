@@ -42,6 +42,24 @@ foreman-ansible-module `modules` and `module_utils` if you do so.
 Now your playbooks and roles should have access to the `modules` and `module_utils`
 contained in the repository for use, testing, or development of new modules.
 
+## How to write modules in this repository
+
+First of all, please have a look at the [Ansible module development](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html) guide and get familiar with the general Ansible module layout.
+
+When looking at actual modules in this repository ([`foreman_domain`](plugins/modules/foreman_domain.py) is a nice short example), you will notice a few differences to a "regular" Ansible module:
+
+* Instead of `AnsibleModule`, we use `ForemanEntityApypieAnsibleModule` (and a few others, see [`plugins/module_utils/foreman_helper.py`](plugins/module_utils/foreman_helper.py)) which provides an abstraction layer for talking with the Foreman API
+* We provide a `name_map` that translates between Ansible module parameters and Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
+
+The rest of the module is usually very minimalistic:
+
+* Connect to the API (`module.connect()`)
+* Find the entity if it already exists (`entity = module.find_resource_by_name(…)`)
+* Adjust the data of the entity if desired
+* Ensure the entity state and details (`changed = module.ensure_resource_state(…)`)
+
+Please note: we currently have modules that use `apypie` and `nailgun` as the backend libraries to talk to the API, but we would prefer not to add any new modules using `nailgun` and focus on migrating everything to `apypie`.
+
 ## How to test modules in this repository
 
 To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
