@@ -29,25 +29,6 @@ author:
 requirements:
     - "apypie >= 0.0.1"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    required: false
-    default: true
-    type: bool
   compute_resource:
     description:
       - Name of compute resource
@@ -60,7 +41,7 @@ options:
     description:
       - Hash containing the data of vm_attrs
     required: true
-
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''
