@@ -32,9 +32,9 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Manisha Singhal (@manisha15) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
-  - "ansible >= 2.3"
+  - "apypie >= 0.0.1"
 options:
   server_url:
     description:
@@ -116,7 +116,7 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -127,7 +127,7 @@ name_map = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             value=dict(),
@@ -144,18 +144,9 @@ def main():
 
     module.connect()
 
-    try:
-        entities = find_entities(CommonParameter, name=global_parameter_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('common_parameters', name=global_parameter_dict['name'], failsafe=True)
 
-    global_parameter_dict = sanitize_entity_dict(global_parameter_dict, name_map)
-
-    changed = naildown_entity_state(CommonParameter, global_parameter_dict, entity, state, module)
+    changed = module.ensure_resource_state('common_parameters', global_parameter_dict, entity, state, name_map)
 
     module.exit_json(changed=changed)
 
