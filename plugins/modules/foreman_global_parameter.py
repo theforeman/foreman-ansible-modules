@@ -32,8 +32,9 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Manisha Singhal (@manisha15) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - "apypie"
 options:
   name:
     description:
@@ -43,6 +44,20 @@ options:
     description:
       - Value of the Global Parameter
     required: false
+  parameter_type:
+    description:
+      - Type of value
+    default: string
+    choices:
+      - string
+      - boolean
+      - integer
+      - real
+      - array
+      - hash
+      - yaml
+      - json
+    note: This parameter has an effect only on foreman >= 1.22
   state:
     description:
       - State of the Global Parameter
@@ -84,58 +99,49 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        CommonParameter,
-    )
 
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
-
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_value_to_str
 
 # This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'value': 'value',
+entity_spec = {
+    'id': {},
+    'name': {},
+    'value': {},
+    'parameter_type': {},
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
-            value=dict(),
+            value=dict(type='raw'),
+            parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=(
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
         ),
+        entity_spec=entity_spec,
     )
 
-    (global_parameter_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    try:
-        entities = find_entities(CommonParameter, name=global_parameter_dict['name'])
-        if len(entities) > 0:
-            entity = entities[0]
-        else:
-            entity = None
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
 
-    global_parameter_dict = sanitize_entity_dict(global_parameter_dict, name_map)
+    if not module.desired_absent:
+        # Fix values according to their corresponding parameter_type
+        if entity:
+            if 'parameter_type' not in entity:
+                entity['parameter_type'] = 'string'
+        entity_dict['value'] = parameter_value_to_str(entity_dict['value'], entity_dict['parameter_type'])
+        if entity and 'value' in entity:
+            entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-    changed = naildown_entity_state(CommonParameter, global_parameter_dict, entity, state, module)
+    changed = module.ensure_entity_state('common_parameters', entity_dict, entity, entity_spec=entity_spec)
 
     module.exit_json(changed=changed)
 
