@@ -113,7 +113,7 @@ You can set a number of environment variables besides `MODULE` to configure make
 This is a list of modules currently in the repository (please add to the list if adding a module).
 
 #### Entity Modules
-
+ * foreman_architecture: create and maintain architectures
  * foreman_compute_attribute: create and maintain compute attributes
  * foreman_compute_resource: create and maintain compute resources
  * foreman_domain: create and maintain domains

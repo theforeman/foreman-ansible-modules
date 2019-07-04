@@ -1,0 +1,70 @@
+---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS1"
+      operating_system_state: present
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS2"
+      operating_system_state: present
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS1"
+      architecture_state: present
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS1"
+      architecture_state: present
+      expected_change: false
+
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS2"
+      architecture_state: present
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS2"
+      architecture_state: present
+      expected_change: false
+
+  - include: tasks/architecture.yml
+    vars:
+      architecture_state: absent
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      architecture_state: absent
+      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS1"
+      operating_system_state: absent
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS2"
+      operating_system_state: absent
+...

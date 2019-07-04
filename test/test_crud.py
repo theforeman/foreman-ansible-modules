@@ -9,6 +9,7 @@ import yaml
 
 MODULES = [
     'activation_key',
+    'architecture',
     'auth_source_ldap',
     'bookmark',
     'compute_attribute',
