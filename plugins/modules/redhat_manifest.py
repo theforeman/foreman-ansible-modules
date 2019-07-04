@@ -25,10 +25,6 @@ description:
     - Download and modify a Red Hat Satellite Subscription Manifest
 author:
     - "Sean O'Keeffe (@sean797)"
-requirements:
-    - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
   name:
     description:

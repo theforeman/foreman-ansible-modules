@@ -33,24 +33,6 @@ author:
 requirements:
   - apypie
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: true
-    type: bool
   resource:
     description:
       - Resource to search
@@ -59,6 +41,7 @@ options:
     description:
       - Search query to use
       - If None, all resources are returned
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

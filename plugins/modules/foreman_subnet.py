@@ -27,7 +27,6 @@ author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
   - "nailgun >= 0.32.0"
-  - "ansible >= 2.3"
 options:
   name:
     description: Subnet name
@@ -106,24 +105,11 @@ options:
     required: false
     default: None
     type: list
-  server_url:
-    description: foreman url
-    required: true
-  username:
-    description: foreman username
-    required: true
-  password:
-    description: foreman user password
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description: verify ssl connection when communicating with foreman
-    default: true
-    type: bool
   state:
     description: subnet presence
     default: present
     choices: ["present", "absent"]
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

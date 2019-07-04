@@ -27,28 +27,7 @@ description:
 author: "Eric D Helms (@ehelms)"
 requirements:
     - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    required: false
-    default: true
-    type: bool
   src:
     description:
       - File to upload
@@ -70,6 +49,7 @@ options:
     required: true
 notes:
     - Currently only idempotent when uploading to an RPM & file repository
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

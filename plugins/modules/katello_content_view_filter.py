@@ -26,27 +26,7 @@ description:
 author: "Sean O'Keeffe (@sean797)"
 requirements:
     - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-     - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: true
-    type: bool
   content_view:
     description:
       - Name of the content view
@@ -126,6 +106,7 @@ options:
     description:
       - Create an include filter
     default: False
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

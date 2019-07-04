@@ -27,8 +27,6 @@ author:
   - "Lester R Claudio (@claudiol1)"
 requirements:
   - "nailgun >= 0.30.2"
-  - "python >= 2.6"
-  - "ansible >= 2.3"
 options:
   server_url:
     description:

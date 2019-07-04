@@ -30,24 +30,6 @@ author:
 requirements:
     - "nailgun >= 0.32.0"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: true
-    type: bool
   name:
     description:
       - Name of the Katello sync plan
@@ -85,6 +67,7 @@ options:
       - List of products to include in the sync plan
     required: false
     type: list
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''

@@ -26,27 +26,7 @@ description:
 author: "Andrew Kofink (@akofink)"
 requirements:
     - "nailgun >= 0.28.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: True
-    type: bool
   name:
     description:
       - Name of the lifecycle environment
@@ -71,7 +51,9 @@ options:
     choices:
       - absent
       - present
+extends_documentation_fragment: foreman
 '''
+
 EXAMPLES = '''
 - name: "Add a production lifecycle environment"
   katello_lifecycle_environment:

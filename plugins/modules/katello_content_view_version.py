@@ -26,7 +26,6 @@ description:
 author: Sean O'Keeffe (@sean797)
 requirements:
     - "nailgun"
-    - "python >= 2.6"
 notes:
     - You cannot use this to remove a Contnet View Version from a Lifecycle environment, you should promote another version first.
     - For idempotency you must specify either C(version) or C(current_lifecycle_environment).

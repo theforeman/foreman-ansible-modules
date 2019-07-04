@@ -28,27 +28,7 @@ author:
     - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
     - "nailgun >= 0.32.0"
-    - "python >= 2.6"
-    - "ansible >= 2.3"
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  validate_certs:
-    aliases: [ verify_ssl ]
-    description:
-      - Verify SSL of the Foreman server
-    default: true
-    type: bool
   name:
     description:
       - Name of the Katello product
@@ -81,6 +61,7 @@ options:
       - present
       - absent
       - present_with_defaults
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''
