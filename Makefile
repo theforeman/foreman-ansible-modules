@@ -63,6 +63,9 @@ test/test_playbooks/vars/server.yml:
 dist:
 	mazer build
 
+doc:
+	make -C docs html
+
 FORCE:
 
 .PHONY: help debug lint test setup debug-setup test-setup FORCE
