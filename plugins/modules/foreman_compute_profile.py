@@ -53,7 +53,6 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    validate_certs: false
     state: present
 
 - name: another compute profile
@@ -68,7 +67,6 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    validate_certs: false
     state: present
 
 - name: compute profile2
@@ -113,7 +111,6 @@ EXAMPLES = '''
     server_url: foreman.example.com
     username: admin
     password: secret
-    validate_certs: false
     state: present
 
 - name: Remove compute profile

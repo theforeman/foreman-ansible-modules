@@ -72,7 +72,6 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    verify_ssl: false
     organization: "Default Organization"
     state: present
     manifest_path: "/tmp/manifest.zip"
