@@ -23,17 +23,17 @@ class ModuleDocFragment(object):
     DOCUMENTATION = '''
 options:
   server_url:
-    description: foreman url
+    description: URL of the Foreman server
     required: true
   username:
-    description: foreman username
+    description: Username accessing the Foreman server
     required: true
   password:
-    description: foreman user password
+    description: Password of the user accessing the Foreman server
     required: true
   validate_certs:
     aliases: [ verify_ssl ]
-    description: verify ssl connection when communicating with foreman
+    description: Whether or not to verify the TLS certificates of the Foreman server
     default: true
     type: bool
 '''
