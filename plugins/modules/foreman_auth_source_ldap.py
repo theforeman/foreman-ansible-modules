@@ -113,7 +113,6 @@ EXAMPLES = '''
       - "Sweden"
     username: "admin"
     password: "secret"
-    validate_certs: True
     state: present
 
 - name: LDAP Authentication with automatic registration
@@ -134,7 +133,6 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
-    validate_certs: True
     state: present
 '''
 

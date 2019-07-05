@@ -60,7 +60,6 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    validate_certs: false
     name: "Production"
     label: "production"
     organization: "Default Organization"
