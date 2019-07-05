@@ -371,41 +371,40 @@ def main():
         supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    # TODO: Remove 'thin=False' before rerecording the fixtures.
-    # Also the 'module.desired_absent' logic should be added.
     search = 'login="{}"'.format(entity_dict['name'])
-    entity = module.find_resource('users', search, failsafe=True, thin=False)
+    entity = module.find_resource('users', search, failsafe=True)
 
-    if 'mail' not in entity_dict:
-        entity_dict['mail'] = entity['mail']
+    if not module.desired_absent:
+        if 'mail' not in entity_dict:
+            entity_dict['mail'] = entity['mail']
 
-    if 'default_location' in entity_dict:
-        entity_dict['default_location'] = module.find_resource_by_name('locations', entity_dict['default_location'], thin=True)['id']
+        if 'default_location' in entity_dict:
+            entity_dict['default_location'] = module.find_resource_by_name('locations', entity_dict['default_location'], thin=True)['id']
 
-    if 'default_organization' in entity_dict:
-        entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)['id']
+        if 'default_organization' in entity_dict:
+            entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)['id']
 
-    if 'auth_source' in entity_dict:
-        entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)['id']
+        if 'auth_source' in entity_dict:
+            entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)['id']
 
-    if 'roles' in entity_dict:
-        entity_dict['roles'] = module.find_resources('roles', entity_dict['roles'], thin=True)
+        if 'roles' in entity_dict:
+            entity_dict['roles'] = module.find_resources('roles', entity_dict['roles'], thin=True)
 
-    if 'locations' in entity_dict:
-        entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
 
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
 
     check_missing = None
     if 'user_password' in entity_dict:
         check_missing = [name_map['user_password']]
 
-    changed = module.ensure_resource_state('users', entity_dict, entity, state, name_map, check_missing=check_missing)
+    changed = module.ensure_resource_state('users', entity_dict, entity, module.state, name_map, check_missing=check_missing)
 
     module.exit_json(changed=changed, entity_dict=entity_dict)
 

@@ -4,6 +4,12 @@
   vars_files:
     - vars/server.yml
   tasks:
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
   - include: tasks/operating_system.yml
     vars:
       operating_system_name: "TestOS"
@@ -84,4 +90,10 @@
       installation_medium_operating_systems:
         - "TestOS"
       installation_medium_state: absent
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
 ...

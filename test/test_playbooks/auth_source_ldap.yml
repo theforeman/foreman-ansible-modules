@@ -20,6 +20,8 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+  environment:
+    XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
   - include: tasks/auth_source_ldap.yml
     vars:
