@@ -17,11 +17,11 @@ help:
 .PHONY: help Makefile generate-docs
 
 $(ANSIBLEGIT):
-	git clone --depth=1 http://github.com/ansible/ansible $(ANSIBLEGIT)
+	git clone --depth=1 https://github.com/ansible/ansible/ $(ANSIBLEGIT)
 
 generate-docs: $(ANSIBLEGIT)
 	rm -rf ./modules/
-	source $(ANSIBLEGIT)/hacking/env-setup && python $(ANSIBLEGIT)/docs/bin/plugin_formatter.py --module-dir ../plugins/modules --template-dir ./_templates --template-dir $(ANSIBLEGIT)/docs/templates --type rst --output-dir ./modules/
+	. $(ANSIBLEGIT)/hacking/env-setup && ANSIBLE_DOC_FRAGMENT_PLUGINS=../plugins/doc_fragments python $(ANSIBLEGIT)/docs/bin/plugin_formatter.py --module-dir ../plugins/modules --template-dir ./_templates --template-dir $(ANSIBLEGIT)/docs/templates --type rst --output-dir ./modules/
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
