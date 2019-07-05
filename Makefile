@@ -63,6 +63,8 @@ test/test_playbooks/vars/server.yml:
 dist:
 	mazer build
 
+doc-setup:
+	pip install -r docs/requirements.txt
 doc:
 	make -C docs html
 
