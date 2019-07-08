@@ -123,33 +123,31 @@ def main():
             media=dict(),
             ptable=dict(),
             root_pass=dict(no_log=True),
-            state=dict(default='present', choices=['present', 'absent']),
         ),
         supports_check_mode=True,
     )
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    if 'architecture' in entity_dict:
-        entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
+    if not module.desired_absent:
+        if 'architecture' in entity_dict:
+            entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
 
-    if 'operatingsystem' in entity_dict:
-        entity_dict['operatingsystem'] = module.find_resource_by_name('operatingsystems', name=entity_dict['operatingsystem'], failsafe=False, thin=True)
+        if 'operatingsystem' in entity_dict:
+            entity_dict['operatingsystem'] = module.find_resource_by_name('operatingsystems', name=entity_dict['operatingsystem'], failsafe=False, thin=True)
 
-    if 'media' in entity_dict:
-        entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)
+        if 'media' in entity_dict:
+            entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)
 
-    if 'ptable' in entity_dict:
-        entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
+        if 'ptable' in entity_dict:
+            entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
 
-    # TODO: Remove 'thin=False' before rerecording the fixtures.
-    # Also the 'module.desired_absent' logic should be added.
-    entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True, thin=False)
+    entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True)
     if entity:
         entity['root_pass'] = None
 
-    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, module.state, name_map)
 
     module.exit_json(changed=changed)
 
