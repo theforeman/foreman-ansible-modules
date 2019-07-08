@@ -109,7 +109,7 @@ def main():
     search_params = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=search_params, failsafe=True)
 
-    changed = module.ensure_resource_state('host_collections', entity_dict, entity, module.state, name_map)
+    changed = module.ensure_resource_state('host_collections', entity_dict, entity, name_map)
 
     module.exit_json(changed=changed)
 

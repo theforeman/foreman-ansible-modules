@@ -88,7 +88,7 @@ def main():
         ),
         supports_check_mode=True,
     )
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
@@ -105,7 +105,7 @@ def main():
     else:
         entity = None
 
-    changed = module.ensure_resource_state('compute_attributes', entity_dict, entity, state, name_map)
+    changed = module.ensure_resource_state('compute_attributes', entity_dict, entity, name_map)
 
     module.exit_json(changed=changed)
 

@@ -113,7 +113,7 @@ def main():
         if 'organizations' in domain_dict:
             domain_dict['organizations'] = module.find_resources('organizations', domain_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('domains', domain_dict, entity, module.state, name_map)
+    changed = module.ensure_resource_state('domains', domain_dict, entity, name_map)
 
     module.exit_json(changed=changed)
 
