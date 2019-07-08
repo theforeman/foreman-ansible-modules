@@ -22,7 +22,10 @@
     products: "{{ sync_plan_products|default(omit) }}"
     state: "{{ sync_plan_state }}"
   register: result
-- fail:
-    msg: "Creating/updating sync plan failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Creating/updating sync plan failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...

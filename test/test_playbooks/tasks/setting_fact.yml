@@ -7,7 +7,10 @@
     verify_ssl: "{{ foreman_validate_certs }}"
     name: "{{ setting_name | default(omit) }}"
   register: result
-- fail:
-    msg: "Verification that setting is '{{ setting_value }}' failed!"
-  when: (setting_name is defined) and (setting_value is defined) and (result.settings[0].value != setting_value)
+- assert:
+    fail_msg: "Verification that setting is '{{ setting_value }}' failed!"
+    quiet:
+    that:
+      - result.settings[0].value == setting_value)
+  when: (setting_name is defined) and (setting_value is defined)
 ...

@@ -10,10 +10,16 @@
     name: "{{ setting_name }}"
     value: "{{ setting_value | default(omit) }}"
   register: result
-- fail:
-    msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | string) | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
-- fail:
-    msg: "Setting the setting failed! ('{{ result.foreman_setting.value }}' != '{{ setting_value_override | default(setting_value) }}')"
-  when: (setting_value is defined) and (result.foreman_setting.value != setting_value_override | default(setting_value))
+- assert:
+    fail_msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | string) | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- assert:
+    fail_msg: "Setting the setting failed! ('{{ result.foreman_setting.value }}' != '{{ setting_value_override | default(setting_value) }}')"
+    quiet: yes
+    that:
+      - result.foreman_setting.value == setting_value_override | default(setting_value)
+  when: (setting_value is defined) or (setting_value_override is defined)
 ...

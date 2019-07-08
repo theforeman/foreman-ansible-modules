@@ -1,5 +1,5 @@
 ---
-- name: "Find '{{ resource }}' resources" 
+- name: "Find '{{ resource }}' resources"
   foreman_search_facts:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -8,7 +8,9 @@
     resource: "{{ resource }}"
     search: "{{ search | default(omit) }}"
   register: result
-- fail:
-    msg: "Verification that '{{ return_length }}' '{{ resource }}' resources are found"
-  when: result.resources | length != return_length
+- assert:
+    fail_msg: "Verification that '{{ return_length }}' '{{ resource }}' resources are found"
+    quiet: true
+    that: result.resources | length == return_length
+  when: return_length is defined
 ...

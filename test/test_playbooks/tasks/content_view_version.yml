@@ -15,8 +15,10 @@
     lifecycle_environments: "{{ lifecycle_environments }}"
     state: "{{ state | default(omit) }}"
   register: result
-
-- fail:
-    msg: "Creating/publishing/promoting content view version failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Creating/publishing/promoting content view version failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...

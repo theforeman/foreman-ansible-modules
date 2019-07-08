@@ -1,12 +1,12 @@
 ---
 - name: "Create katello repository"
   vars:
-    - organization_name: "Test Organization"
-    - product_name: "Test Product"
-    - repository_name: "Test Repository"
-    - repository_content_type: "yum"
-    - repository_state: present
-    - repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+    organization_name: "Test Organization"
+    product_name: "Test Product"
+    repository_name: "Test Repository"
+    repository_content_type: "yum"
+    repository_state: present
+    repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
   katello_repository:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -23,3 +23,11 @@
     docker_upstream_name: "{{ repository_docker_upstream_name | default(omit) }}"
     download_policy: "{{ repository_download_policy | default(omit) }}"
     gpg_key: "{{ repository_gpg_key | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring repositroy is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
