@@ -5,7 +5,7 @@ import re
 import yaml
 import traceback
 
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 
 try:
     import ansible.module_utils.ansible_nailgun_cement
@@ -70,8 +70,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
     def check_requirements(self):
         if not HAS_NAILGUN:
-            self.fail_json(msg='The nailgun Python module is required',
-                           exception=NAILGUN_IMP_ERR)
+            self.fail_json(missing_required_lib("nailgun"), exception=NAILGUN_IMP_ERR)
 
     def connect(self, ping=True):
         entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
@@ -89,8 +88,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
     def check_requirements(self):
         if not HAS_APYPIE:
-            self.fail_json(msg='The apypie Python module is required',
-                           exception=APYPIE_IMP_ERR)
+            self.fail_json(missing_required_lib("apypie"), exception=APYPIE_IMP_ERR)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def connect(self, ping=True):
