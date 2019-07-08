@@ -26,7 +26,7 @@ description:
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "apypie >= 0.0.2"
+  - apypie
 options:
   name:
     description:

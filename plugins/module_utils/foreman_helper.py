@@ -88,7 +88,9 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
     def _patch_location_api(self):
-        """This is a workaround for the broken taxonomies apidoc in foreman."""
+        """This is a workaround for the broken taxonomies apidoc in foreman.
+            see https://projects.theforeman.org/issues/10359
+        """
 
         _location_organizations_parameter = {
             u'validations': [],
