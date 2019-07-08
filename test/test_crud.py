@@ -1,10 +1,11 @@
-import pytest
+import json
 import os
 import sys
-import json
-import ansible_runner
 
+import ansible_runner
 import py.path
+import pytest
+import yaml
 
 MODULES = [
     'activation_key',
@@ -53,6 +54,14 @@ if sys.version_info[0] == 2:
             os.environ.pop(envvar)
 
 
+def get_foreman_url():
+    server_yml = py.path.local(__file__).realpath() / '..' / 'test_playbooks/vars/server.yml'
+    with open(server_yml.strpath) as server_yml_file:
+        server_yml_content = yaml.safe_load(server_yml_file)
+
+    return server_yml_content['foreman_server_url']
+
+
 def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
     if extra_vars is None:
         extra_vars = {}
@@ -76,7 +85,8 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
     cache_dir = tmpdir.join('cache')
     cache_dir.ensure(dir=True)
     os.environ['XDG_CACHE_HOME'] = cache_dir.strpath
-    json_cache = cache_dir / 'apypie/https___foreman.example.com/v2/default.json'
+    apypie_cache_folder = get_foreman_url().replace(':', '_').replace('/', '_')
+    json_cache = cache_dir / 'apypie' / apypie_cache_folder / 'v2/default.json'
     json_cache.ensure()
     apidoc = 'apidoc/{}.json'.format(module)
     fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
