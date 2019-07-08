@@ -122,23 +122,6 @@ def main():
 
     module.connect()
 
-    # Hack for broken foreman api
-    _location_create = next(x for x in module.foremanapi.apidoc['docs']['resources']['locations']['methods'] if x['name'] == 'create')
-    _location_create_params_location = next(x for x in _location_create['params'] if x['name'] == 'location')
-    _location_create_params_location['params'].append({
-        u'validations': [],
-        u'name': u'organization_ids',
-        u'show': True,
-        u'description': u'\n<p>Organization IDs</p>\n',
-        u'required': False,
-        u'allow_nil': True,
-        u'allow_blank': False,
-        u'full_name': u'location[organization_ids]',
-        u'expected_type': u'array',
-        u'metadata': None,
-        u'validator': u'',
-    })
-
     # Get short name and parent from provided name
     name, parent = split_fqn(entity_dict['name'])
     entity_dict['name'] = name
@@ -148,7 +131,8 @@ def main():
             module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
         parent = entity_dict['parent']
     if parent:
-        entity_dict['parent'] = module.find_resource('locations', search='title="{}"'.format(parent), thin=True, failsafe=module.desired_absent)
+        search_string = 'title="{}"'.format(parent)
+        entity_dict['parent'] = module.find_resource('locations', search=search_string, thin=True, failsafe=module.desired_absent)
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent location does not exist so just exit here
