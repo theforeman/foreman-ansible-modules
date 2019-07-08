@@ -87,6 +87,34 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
 class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
+    def _patch_location_api(self):
+        """This is a workaround for the broken taxonomies apidoc in foreman.
+            see https://projects.theforeman.org/issues/10359
+        """
+
+        _location_organizations_parameter = {
+            u'validations': [],
+            u'name': u'organization_ids',
+            u'show': True,
+            u'description': u'\n<p>Organization IDs</p>\n',
+            u'required': False,
+            u'allow_nil': True,
+            u'allow_blank': False,
+            u'full_name': u'location[organization_ids]',
+            u'expected_type': u'array',
+            u'metadata': None,
+            u'validator': u'',
+        }
+        _location_methods = self.foremanapi.apidoc['docs']['resources']['locations']['methods']
+
+        _location_create = next(x for x in _location_methods if x['name'] == 'create')
+        _location_create_params_location = next(x for x in _location_create['params'] if x['name'] == 'location')
+        _location_create_params_location['params'].append(_location_organizations_parameter)
+
+        _location_update = next(x for x in _location_methods if x['name'] == 'update')
+        _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
+        _location_update_params_location['params'].append(_location_organizations_parameter)
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required',
@@ -101,6 +129,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             api_version=2,
             verify_ssl=self._foremanapi_validate_certs,
         )
+
+        self._patch_location_api()
 
         if ping:
             self.ping()
@@ -347,17 +377,17 @@ def parse_template_from_file(file_name, module):
 
 # Helper for titles
 def split_fqn(title):
-    """ Split fully qualified name (title) in parent title and name """
+    """ Split fully qualified name (title) in name and parent title """
     fqn = title.split('/')
     if len(fqn) > 1:
         name = fqn.pop()
-        return ('/'.join(fqn), name)
+        return (name, '/'.join(fqn))
     else:
-        return (None, title)
+        return (title, None)
 
 
-def build_fqn(name_or_title, parent=None):
-    if '/' not in name_or_title and parent:
-        return "%s/%s" % (parent, name_or_title)
+def build_fqn(name, parent=None):
+    if parent:
+        return "%s/%s" % (parent, name)
     else:
-        return name_or_title
+        return name

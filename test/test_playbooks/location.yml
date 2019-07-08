@@ -4,6 +4,15 @@
   vars_files:
     - vars/server.yml
   tasks:
+  - include: tasks/location.yml
+    vars:
+      location_name: "{{ item }}"
+      location_state: absent
+    with_items:
+      - Test Location/Sub Location 1/Sub Location 2
+      - Test Location/Sub Location 1
+      - Test Location/Sub Location 2
+      - Test Location
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -12,6 +21,8 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+  environment:
+    XDG_CACHE_HOME: "{{ lookup('env', 'FAM_TEST_APYPIE_CACHE_DIR') }}"
   tasks:
   - include: tasks/location.yml
     vars:
@@ -55,13 +66,24 @@
     vars:
       location_state: present
       location_name: Test Location/Sub Location 1/Sub Location 2
-      location_parent: Test Location
+      expected_change: false
+  - include: tasks/location.yml
+    vars:
+      location_state: present
+      location_name: Test Location/Sub Location 1/Sub Location 2
+      location_organizations:
+        - Test Organization
       expected_change: true
   - include: tasks/location.yml
     vars:
       location_state: present
       location_name: Test Location/Sub Location 2
-      expected_change: false
+      expected_change: true
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+      location_name: Test Location/Sub Location 1/Sub Location 2
+      expected_change: true
   - include: tasks/location.yml
     vars:
       location_state: absent
