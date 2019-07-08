@@ -19,3 +19,11 @@ The ansible inventory contains two hosts:
 In order to run these tests, the API responses of a running Foreman or Katello server must be recorded.
 For this last step, `test/test_playbooks/vars/server.yml` must be configured to point to a running Foreman or Katello server.
 Then, `make record_<playbook name>` must be called, and the resulting vcr files (`test_playbook/fixtures/<playbook_name>-*.yml`) must be checked into git.
+
+Recording/storing apidoc.json for tests
+---
+
+Modules that use the `apypie` library depend on a valid `apidoc.json` being available during test execution.
+The easiest way to do so is to provide a `<module>.json` in the `test/fixtures/apidoc` folder.
+Most modules can just use a symlink to either `foreman.json` or `katello.json`, depending on whether they need a plain Foreman or Foreman+Katello to function properly.
+If you need a setup with different plugins enabled, just get `https://foreman.example.com/apidoc/v2.json` from your install and place it in `test/fixtures/apidoc`.
