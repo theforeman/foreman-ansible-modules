@@ -185,7 +185,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin, missing_required_lib
 try:
     import ipaddress
     HAS_IPADDRESS = True
@@ -233,7 +233,7 @@ def main():
     )
 
     if not HAS_IPADDRESS:
-        module.fail_json(msg='The ipaddress Python module is required', exception=IPADDRESS_IMP_ERR)
+        module.fail_json(msg=missing_required_lib("ipaddress"), exception=IPADDRESS_IMP_ERR)
 
     module_params = module.foreman_params
 

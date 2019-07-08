@@ -78,7 +78,7 @@ import os
 import traceback
 
 from ansible.module_utils._text import to_bytes
-from ansible.module_utils.foreman_helper import KatelloAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule, missing_required_lib
 
 try:
     from debian import debfile
@@ -145,14 +145,14 @@ def main():
         content_unit = None
         if module.foreman_params['repository']['content_type'] == 'deb':
             if not HAS_DEBFILE:
-                module.fail_json(msg='The python-debian module is required', exception=DEBFILE_IMP_ERR)
+                module.fail_json(msg=missing_required_lib("python-debian"), exception=DEBFILE_IMP_ERR)
 
             name, version, architecture = get_deb_info(b_src)
             query = 'name = "{0}" and version = "{1}" and architecture = "{2}"'.format(name, version, architecture)
             content_unit = module.find_resource('debs', query, params=repository_scope, failsafe=True)
         elif module.foreman_params['repository']['content_type'] == 'yum':
             if not HAS_RPM:
-                module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
+                module.fail_json(msg=missing_required_lib("rpm"), exception=RPM_IMP_ERR)
 
             name, epoch, version, release, arch = get_rpm_info(b_src)
             query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
