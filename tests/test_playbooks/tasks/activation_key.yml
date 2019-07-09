@@ -11,7 +11,6 @@
     activation_key_content_overrides:
       - label: "Test_Organization_Test_Product_Test_Repository"
         override: disabled
-    activation_key_auto_attach: False
   katello_activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -23,7 +22,7 @@
     content_view: "{{  activation_key_content_view }}"
     subscriptions: "{{ activation_key_subscriptions }}"
     content_overrides: "{{ activation_key_content_overrides }}"
-    auto_attach: "{{ activation_key_auto_attach }}"
+    auto_attach: "{{ activation_key_auto_attach | default(omit) }}"
     host_collections: "{{ activation_key_host_collections | default(omit) }}"
     state: "{{ activation_key_state }}"
   register: result

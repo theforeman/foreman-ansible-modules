@@ -106,8 +106,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
     def check_requirements(self):
         if not HAS_APYPIE:
-            self.fail_json(msg='The apypie Python module is required',
-                           exception=APYPIE_IMP_ERR)
+            self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def connect(self, ping=True):
@@ -237,6 +236,9 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
             else:
                 changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+        elif state == 'copied':
+            if current_entity is not None:
+                changed, updated_entity = self._copy_entity(resource, desired_entity, current_entity, params)
         elif state == 'reverted':
             if current_entity is not None:
                 changed, updated_entity = self._revert_entity(resource, current_entity, params)
@@ -300,6 +302,24 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         else:
             # Nothing needs changing
             return False, current_entity
+
+    def _copy_entity(self, resource, desired_entity, current_entity, params):
+        """Copy a given entity
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                current_entity (dict): Current properties of the entity
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state of the entity
+        """
+        payload = {
+            'id': current_entity['id'],
+            'new_name': desired_entity['new_name'],
+        }
+        if params:
+            payload.update(params)
+        return self.resource_action(resource, 'copy', payload)
 
     def _revert_entity(self, resource, current_entity, params):
         """Revert a given entity
@@ -415,20 +435,10 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 
     def connect(self, ping=True):
         super(KatelloEntityApypieAnsibleModule, self).connect(ping)
-        self._patch_subscription_upload_api()
         self._patch_organization_update_api()
+        self._patch_subscription_index_api()
+        self._patch_subscription_upload_api()
         self._patch_sync_plan_api()
-
-    def _patch_subscription_upload_api(self):
-        """This is a workaround for the broken subscription upload apidoc in katello.
-            see https://projects.theforeman.org/issues/27527
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
-        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
-        _subscription_upload_params_content['expected_type'] = 'any_type'
 
     def _patch_organization_update_api(self):
         """This is a workaround for the broken organization update apidoc in katello.
@@ -440,6 +450,28 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
         _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
         _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
         _organization_update_params_organization['required'] = False
+
+    def _patch_subscription_index_api(self):
+        """This is a workaround for the broken subscriptions apidoc in katello.
+        https://projects.theforeman.org/issues/27575
+        """
+
+        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
+
+        _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
+        _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
+        _subscription_index_params_organization_id['required'] = False
+
+    def _patch_subscription_upload_api(self):
+        """This is a workaround for the broken subscription upload apidoc in katello.
+            see https://projects.theforeman.org/issues/27527
+        """
+
+        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
+
+        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
+        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
+        _subscription_upload_params_content['expected_type'] = 'any_type'
 
     def _patch_sync_plan_api(self):
         """This is a workaround for the broken sync_plan apidoc in katello.

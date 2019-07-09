@@ -18,6 +18,13 @@
   - include: tasks/host_collection.yml
     vars:
       host_collection_state: present
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_state: absent
+  - include: tasks/activation_key.yml
+    vars:
+      activation_key_state: absent
+      activation_key_name: Test Activation Key Copy
 
 - hosts: tests
   tags:
@@ -39,15 +46,14 @@
       expected_change: false
   - include: tasks/activation_key.yml
     vars:
-      activation_key_auto_attach: True
+      activation_key_auto_attach: False
       expected_change: true
   - include: tasks/activation_key.yml
     vars:
-      activation_key_auto_attach: True
+      activation_key_auto_attach: False
       expected_change: false
   - include: tasks/activation_key.yml
     vars:
-      activation_key_auto_attach: False
       activation_key_state: present_with_defaults
       expected_change: false
   - include: tasks/activation_key_copy.yml

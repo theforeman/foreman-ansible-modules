@@ -25,7 +25,7 @@ description:
   - Create and Manage Katello activation keys
 author: "Andrew Kofink (@akofink)"
 requirements:
-  - "nailgun >= 0.28.0"
+  - apypie
 options:
   name:
     description:
@@ -56,7 +56,6 @@ options:
   auto_attach:
     description:
       - Set Auto-Attach on or off
-    default: true
     type: bool
   state:
     description:
@@ -96,36 +95,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_location,
-        find_activation_key,
-        find_lifecycle_environment,
-        find_content_view,
-        find_subscriptions,
-        find_host_collections,
-        KatelloEntityAnsibleModule,
-        naildown_entity,
-        sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        ActivationKey,
-        Subscription,
-    )
-except ImportError:
-    pass
-
-name_map = {
-    'name': 'name',
-    'new_name': 'new_name',
-    'auto_attach': 'auto_attach',
-    'content_view': 'content_view',
-    'organization': 'organization',
-    'host_collections': 'host_collection',
-    'lifecycle_environment': 'environment',
-}
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule, _entity_spec_helper
 
 
 def override_to_boolnone(override):
@@ -144,16 +114,23 @@ def override_to_boolnone(override):
 
 
 def main():
-    module = KatelloEntityAnsibleModule(
-        argument_spec=dict(
+    module = KatelloEntityApypieAnsibleModule(
+        entity_spec=dict(
             name=dict(required=True),
             new_name=dict(),
-            lifecycle_environment=dict(),
-            content_view=dict(),
-            subscriptions=dict(type='list'),
-            host_collections=dict(type='list'),
-            content_overrides=dict(type='list'),
-            auto_attach=dict(type='bool', default=True),
+            lifecycle_environment=dict(type='entity', flat_name='environment_id'),
+            content_view=dict(type='entity', flat_name='content_view_id'),
+            host_collections=dict(type='entity_list', flat_name='host_collection_ids'),
+            auto_attach=dict(type='bool'),
+        ),
+        argument_spec=dict(
+            subscriptions=dict(type='list', elements='dict', options=dict(
+                name=dict(required=True),
+            )),
+            content_overrides=dict(type='list', elements='dict', options=dict(
+                label=dict(required=True),
+                override=dict(choises=['enabled', 'disabled']),
+            )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
         required_if=[
@@ -161,71 +138,116 @@ def main():
         ],
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
-    if 'lifecycle_environment' in entity_dict:
-        entity_dict['lifecycle_environment'] = find_lifecycle_environment(module, entity_dict['lifecycle_environment'], entity_dict['organization'])
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    if not module.desired_absent:
+        if 'lifecycle_environment' in entity_dict:
+            entity_dict['lifecycle_environment'] = module.find_resource_by_name(
+                'lifecycle_environments', entity_dict['lifecycle_environment'], params=scope, thin=True)
 
-    if 'content_view' in entity_dict:
-        entity_dict['content_view'] = find_content_view(module, entity_dict['content_view'], entity_dict['organization'])
+        if 'content_view' in entity_dict:
+            entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
 
-    if 'host_collections' in entity_dict:
-        entity_dict['host_collections'] = find_host_collections(module, entity_dict['host_collections'], entity_dict['organization'])
+    entity = module.find_resource_by_name('activation_keys', name=entity_dict['name'], params=scope, failsafe=True)
 
-    activation_key_entity = find_activation_key(module, name=entity_dict['name'], organization=entity_dict['organization'],
-                                                failsafe=True)
+    if module.state == 'copied':
+        new_entity = module.find_resource_by_name('activation_keys', name=entity_dict['new_name'], params=scope, failsafe=True)
+        if new_entity is not None:
+            module.warn("Activation Key '{}' already exists.".format(entity_dict['new_name']))
+            module.exit_json(changed=False)
 
-    activation_key_dict = sanitize_entity_dict(entity_dict, name_map)
+    subscriptions = entity_dict.pop('subscriptions', None)
+    content_overrides = entity_dict.pop('content_overrides', None)
+    host_collections = entity_dict.pop('host_collections', None)
+    changed, activation_key = module.ensure_entity('activation_keys', entity_dict, entity, params=scope)
 
-    try:
-        changed, activation_key_entity = naildown_entity(ActivationKey, activation_key_dict, activation_key_entity, state, module)
+    # only update subscriptions of newly created or updated AKs
+    # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
+    # deleted keys don't need subscriptions anymore either
+    if module.state == 'present' or (module.state == 'present_with_defaults' and changed):
+        ak_scope = {'activation_key_id': activation_key['id']}
+        if subscriptions is not None:
+            subscription_names = [subscription['name'] for subscription in subscriptions]
+            desired_subscriptions = module.find_resources_by_name('subscriptions', subscription_names, params=scope, thin=True)
+            desired_subscription_ids = set(item['id'] for item in desired_subscriptions)
+            current_subscriptions = module.list_resource('subscriptions', params=ak_scope)
+            current_subscription_ids = set(item['id'] for item in current_subscriptions)
 
-        # only update subscriptions of newly created or updated AKs
-        # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
-        # deleted keys don't need subscriptions anymore either
-        if state == 'present' or (state == 'present_with_defaults' and changed):
-            if 'subscriptions' in entity_dict:
-                subscriptions = entity_dict['subscriptions']
-                desired_subscription_ids = set(s.id for s in find_subscriptions(module, subscriptions, entity_dict['organization']))
-                current_subscriptions = [Subscription(**result)
-                                         for result in Subscription().search_normalize(activation_key_entity.subscriptions()['results'])]
-                current_subscription_ids = set(s.id for s in current_subscriptions)
+            if desired_subscription_ids != current_subscription_ids:
+                ids_to_remove = current_subscription_ids - desired_subscription_ids
+                if ids_to_remove:
+                    payload = {
+                        'id': activation_key['id'],
+                        'subscriptions': [{'id': item} for item in ids_to_remove],
+                    }
+                    payload.update(scope)
+                    module.resource_action('activation_keys', 'remove_subscriptions', payload)
+                ids_to_add = desired_subscription_ids - current_subscription_ids
+                if ids_to_add:
+                    payload = {
+                        'id': activation_key['id'],
+                        'subscriptions': [{'id': item, 'quantity': 1} for item in ids_to_add],
+                    }
+                    payload.update(scope)
+                    module.resource_action('activation_keys', 'add_subscriptions', payload)
+                changed = True
 
-                if desired_subscription_ids != current_subscription_ids:
-                    if not module.check_mode:
-                        for subscription_id in (desired_subscription_ids - current_subscription_ids):
-                            activation_key_entity.add_subscriptions(data={'quantity': 1, 'subscription_id': subscription_id})
-                        for subscription_id in (current_subscription_ids - desired_subscription_ids):
-                            activation_key_entity.remove_subscriptions(data={'subscription_id': subscription_id})
-                    changed = True
+        if content_overrides is not None:
+            _, product_content = module.resource_action('activation_keys', 'product_content', params={'id': activation_key['id']})
+            current_content_overrides = {
+                product['content']['label']: product['enabled_content_override']
+                for product in product_content['results']
+                if product['enabled_content_override'] is not None
+            }
+            desired_content_overrides = {
+                product['label']: override_to_boolnone(product['override']) for product in content_overrides
+            }
+            changed_content_overrides = []
 
-            if 'content_overrides' in entity_dict:
-                content_overrides = entity_dict['content_overrides']
-                product_content = activation_key_entity.product_content()
-                current_content_overrides = set(
-                    (product['content']['label'], product['enabled_content_override'])
-                    for product in product_content['results']
-                    if product['enabled_content_override'] is not None
-                )
-                desired_content_overrides = set(
-                    (product['label'], override_to_boolnone(product['override'])) for product in content_overrides
-                )
+            for label, override in desired_content_overrides.items():
+                if override != current_content_overrides.pop(label, None):
+                    changed_content_overrides.append({'content_label': label, 'value': override})
+            for label in current_content_overrides.keys():
+                changed_content_overrides.append({'content_label': label, 'reset': True})
 
-                if desired_content_overrides != current_content_overrides:
-                    if not module.check_mode:
-                        for (label, override) in current_content_overrides - desired_content_overrides:
-                            activation_key_entity.content_override(data={'content_override': {'content_label': label, 'value': 'default'}})
-                        for (label, override) in desired_content_overrides - current_content_overrides:
-                            activation_key_entity.content_override(data={'content_override': {'content_label': label,
-                                                                         'value': str(override).lower()}})
-                    changed = True
+            if changed_content_overrides:
+                payload = {
+                    'id': activation_key['id'],
+                    'content_overrides': changed_content_overrides,
+                }
+                module.resource_action('activation_keys', 'content_override', payload)
+                changed = True
 
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+        if host_collections is not None:
+            if 'host_collection_ids' in activation_key:
+                current_host_collection_ids = set(activation_key['host_collection_ids'])
+            else:
+                current_host_collection_ids = set(item['id'] for item in activation_key['host_collections'])
+            desired_host_collections = module.find_resources_by_name('host_collections', host_collections, params=scope, thin=True)
+            desired_host_collection_ids = set(item['id'] for item in desired_host_collections)
+
+            if desired_host_collection_ids != current_host_collection_ids:
+                ids_to_remove = current_host_collection_ids - desired_host_collection_ids
+                if ids_to_remove:
+                    payload = {
+                        'id': activation_key['id'],
+                        'host_collection_ids': list(ids_to_remove),
+                    }
+                    module.resource_action('activation_keys', 'remove_host_collections', payload)
+                ids_to_add = desired_host_collection_ids - current_host_collection_ids
+                if ids_to_add:
+                    payload = {
+                        'id': activation_key['id'],
+                        'host_collection_ids': list(ids_to_add),
+                    }
+                    module.resource_action('activation_keys', 'add_host_collections', payload)
+                changed = True
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':
