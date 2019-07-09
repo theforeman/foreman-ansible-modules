@@ -132,7 +132,7 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
             elif "older than existing data" in e.message:
                 module.fail_json(msg="Manifest is older than existing data: %s" % e)
             else:
-                module.fail_json(msg="Upload of the mainfest failed: %s" % e)
+                module.fail_json(msg="Upload of the manifest failed: %s" % e)
     elif state == 'absent' and manifest_present:
         if not module.check_mode:
             Subscription().delete_manifest(data={'organization_id': organization.id})
