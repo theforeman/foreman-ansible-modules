@@ -11,7 +11,7 @@
     value: "{{ setting_value | default(omit) }}"
   register: result
 - assert:
-    fail_msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | string) | default('') + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring setting is {{ setting_value | default(false) | ternary(\"'\" + (setting_value | default('') | string) + \"'\", 'undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     quiet: yes
     that:
       - result.changed == expected_change
