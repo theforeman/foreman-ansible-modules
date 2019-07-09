@@ -1,8 +1,11 @@
-import pytest
+import json
 import os
 import sys
-import json
+
 import ansible_runner
+import py.path
+import pytest
+import yaml
 
 MODULES = [
     'activation_key',
@@ -19,6 +22,7 @@ MODULES = [
     'global_parameter',
     'host',
     'hostgroup',
+    'host_collection',
     'installation_medium',
     'job_template',
     'lifecycle_environment',
@@ -40,9 +44,7 @@ MODULES = [
     'sync_plan',
     'upload',
     'user',
-    'host_collection',
 ]
-
 
 if sys.version_info[0] == 2:
     for envvar in os.environ.keys():
@@ -50,6 +52,14 @@ if sys.version_info[0] == 2:
             os.environ[envvar] = os.environ[envvar].decode('utf-8').encode('ascii', 'ignore')
         except UnicodeError:
             os.environ.pop(envvar)
+
+
+def get_foreman_url():
+    server_yml = py.path.local(__file__).realpath() / '..' / 'test_playbooks/vars/server.yml'
+    with open(server_yml.strpath) as server_yml_file:
+        server_yml_content = yaml.safe_load(server_yml_file)
+
+    return server_yml_content['foreman_server_url']
 
 
 def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
@@ -74,7 +84,13 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
 
     cache_dir = tmpdir.join('cache')
     cache_dir.ensure(dir=True)
-    os.environ['FAM_TEST_APYPIE_CACHE_DIR'] = cache_dir.strpath
+    os.environ['XDG_CACHE_HOME'] = cache_dir.strpath
+    apypie_cache_folder = get_foreman_url().replace(':', '_').replace('/', '_')
+    json_cache = cache_dir / 'apypie' / apypie_cache_folder / 'v2/default.json'
+    json_cache.ensure()
+    apidoc = 'apidoc/{}.json'.format(module)
+    fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
+    fixture_dir.join(apidoc).copy(json_cache)
 
     return run_playbook(module, extra_vars=extra_vars, limit=limit)
 
