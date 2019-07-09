@@ -132,7 +132,7 @@ def main():
     search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
     entity = module.find_resource('bookmarks', search, failsafe=True)
 
-    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, module.state, name_map)
+    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, name_map)
 
     module.exit_json(changed=changed)
 
