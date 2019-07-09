@@ -27,7 +27,10 @@
     template: "{{ provisioning_template_template }}"
     state: "{{ provisioning_template_state }}"
   register: result
-- fail:
-    msg: "Ensuring provisioning template is {{ provisioning_template_state }} and locked state {{ locked_state | default ('undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Ensuring provisioning template is {{ provisioning_template_state }} and locked state {{ locked_state | default ('undefined') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...

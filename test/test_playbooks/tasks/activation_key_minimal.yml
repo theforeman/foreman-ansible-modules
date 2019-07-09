@@ -13,8 +13,11 @@
     organization: "{{ activation_key_organization }}"
     auto_attach: "{{ activation_key_auto_attach }}"
   register: result
-- fail:
-    msg: "Creating/updating activation key failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Creating/updating activation key failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...
 

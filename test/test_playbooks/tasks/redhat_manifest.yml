@@ -14,7 +14,10 @@
     validate_certs: "{{ rhsm_validate_certs }}"
     path: "{{ manifest_export_path | default(omit) }}"
   register: result
-- fail:
-    msg: "Ensuring Manifest is {{ manifest_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Ensuring Manifest is {{ manifest_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...

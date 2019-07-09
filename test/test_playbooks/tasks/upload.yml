@@ -15,7 +15,10 @@
      repository: "{{ upload_repository }}"
      product: "{{ upload_product }}"
   register: result
-- fail:
-    msg: "Uploading Content unit failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Uploading Content unit failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...

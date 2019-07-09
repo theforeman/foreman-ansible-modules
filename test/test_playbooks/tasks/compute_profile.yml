@@ -12,7 +12,10 @@
     compute_attributes: "{{ compute_profile_attributes | default(omit) }}"
     state: "{{ compute_profile_state }}"
   register: result
-- fail:
-    msg: "Ensuring compute profile is {{ compute_profile_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Ensuring compute profile is {{ compute_profile_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...
