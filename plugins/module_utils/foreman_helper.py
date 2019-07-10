@@ -87,6 +87,10 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
 class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
+    def __init__(self, *args, **kwargs):
+        super(ForemanApypieAnsibleModule, self).__init__(*args, **kwargs)
+        self._thin_default = False
+
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
             see https://projects.theforeman.org/issues/10359
@@ -144,16 +148,19 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return self.foremanapi.resource(resource).call('show', {'id': resource_id})
 
     @_exception2fail_json(msg='Failed to list resource: %s')
-    def list_resource(self, resource, search, params=None):
+    def list_resource(self, resource, search=None, params=None):
         if params is None:
             params = {}
-        params['search'] = search
+        if search is not None:
+            params['search'] = search
         params['per_page'] = 2 << 31
         return self.foremanapi.resource(resource).call('index', params)['results']
 
-    def find_resource(self, resource, search, params=None, failsafe=False, thin=False):
+    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
         if params is None:
             params = {}
+        if thin is None:
+            thin = self._thin_default
         params['thin'] = thin
         results = self.list_resource(resource, search, params)
         if len(results) == 1:
@@ -169,12 +176,15 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 result = self.show_resource(resource, result['id'])
         return result
 
-    def find_resource_by_name(self, resource, name, params=None, failsafe=False, thin=False):
+    def find_resource_by_name(self, resource, name, **kwargs):
         search = 'name="{}"'.format(name)
-        return self.find_resource(resource, search, params, failsafe, thin)
+        return self.find_resource(resource, search, **kwargs)
 
-    def find_resources(self, resource, search_list, failsafe=False, thin=False):
-        return [self.find_resource_by_name(resource, search_item, failsafe=failsafe, thin=thin) for search_item in search_list]
+    def find_resources(self, resource, search_list, **kwargs):
+        return [self.find_resource(resource, search_item, **kwargs) for search_item in search_list]
+
+    def find_resources_by_name(self, resource, names, **kwargs):
+        return [self.find_resource_by_name(resource, name, **kwargs) for name in names]
 
     def create_resource(self, resource, entity_dict):
         new_entity = {}
@@ -316,20 +326,10 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
         self.state = self.params.pop('state')
         self.desired_absent = self.state == 'absent'
+        self._thin_default = self.desired_absent
 
     def parse_params(self):
         return (super(ForemanEntityApypieAnsibleModule, self).parse_params(), self.state)
-
-    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
-        if thin is None:
-            thin = self.desired_absent
-        return super(ForemanEntityApypieAnsibleModule, self).find_resource(resource, search, params, failsafe, thin)
-
-    def find_resource_by_name(self, resource, name, params=None, failsafe=False, thin=None):
-        return super(ForemanEntityApypieAnsibleModule, self).find_resource_by_name(resource, name, params, failsafe, thin)
-
-    def find_resources(self, resource, search_list, failsafe=False, thin=None):
-        return super(ForemanEntityApypieAnsibleModule, self).find_resources(resource, search_list, failsafe, thin)
 
 
 class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
