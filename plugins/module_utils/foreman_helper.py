@@ -493,7 +493,7 @@ def _flatten_entity(entity, entity_spec):
 # Helper for (global, operatingsystem, ...) parameters
 def parameter_value_to_str(value, parameter_type):
     """Helper to convert the value of parameters to string according to their parameter_type."""
-    if parameter_type in ['real']:
+    if parameter_type in ['real', 'integer']:
         parameter_string = str(value)
     elif parameter_type in ['array', 'hash', 'yaml', 'json']:
         parameter_string = json.dumps(value, sort_keys=True)

@@ -5,6 +5,12 @@
     - vars/server.yml
   tasks:
   - include: tasks/setting.yml
+  - include: tasks/setting.yml
+    vars:
+      setting_name: excluded_facts
+  - include: tasks/setting.yml
+    vars:
+      setting_name: token_duration
 
 - hosts: tests
   gather_facts: false
@@ -33,24 +39,28 @@
   - include: tasks/setting.yml
     vars:
       setting_name: excluded_facts
-      setting_value: foo,bar
-      setting_value_override: ['bar', 'foo']
+      setting_value: ['foo', 'bar']
       expected_change: true
   - include: tasks/setting.yml
     vars:
       setting_name: excluded_facts
-      setting_value: foo,bar
-      setting_value_override: ['bar', 'foo']
+      setting_value: ['foo', 'bar']
       expected_change: false
 
   - include: tasks/setting.yml
     vars:
-      setting_name: content_action_accept_timeout
+      setting_name: token_duration
       setting_value: 99
+      setting_value_override: "99"
       expected_change: true
   - include: tasks/setting.yml
     vars:
-      setting_name: content_action_accept_timeout
+      setting_name: token_duration
       setting_value: 99
+      setting_value_override: "99"
       expected_change: false
+  - include: tasks/setting.yml
+    vars:
+      setting_name: token_duration
+      expected_change: true
 ...
