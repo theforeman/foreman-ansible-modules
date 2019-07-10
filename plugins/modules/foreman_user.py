@@ -403,7 +403,7 @@ def main():
     if 'user_password' in entity_dict:
         check_missing = [name_map['user_password']]
 
-    changed = module.ensure_resource_state('users', entity_dict, entity, name_map, check_missing=check_missing)
+    changed = module.ensure_resource_state('users', entity_dict, entity, name_map=name_map, check_missing=check_missing)
 
     module.exit_json(changed=changed, entity_dict=entity_dict)
 

@@ -143,7 +143,7 @@ def main():
 
     entity = module.find_resource('locations', search='title="{}"'.format(build_fqn(name, parent)), failsafe=True)
 
-    changed = module.ensure_resource_state('locations', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('locations', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 

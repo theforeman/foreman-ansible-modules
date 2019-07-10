@@ -93,6 +93,7 @@ def main():
             locations=dict(type='list'),
             organizations=dict(type='list'),
         ),
+        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -112,7 +113,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('domains', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('domains', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

@@ -91,6 +91,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
     def __init__(self, *args, **kwargs):
         super(ForemanApypieAnsibleModule, self).__init__(*args, **kwargs)
         self._thin_default = False
+        self.state = 'undefined'
+        self.name_map = {}
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -251,31 +253,36 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             return self._resource_action(resource, 'update', params=new_data)
         return False, result
 
-    def ensure_resource_state(self, resource, entity_dict, entity, name_map, check_missing=None, check_type=None, force_update=None):
-        changed, _ = self.ensure_resource(resource, entity_dict, entity, name_map, check_missing, check_type, force_update)
+    def ensure_resource_state(self, *args, **kwargs):
+        changed, _ = self.ensure_resource(*args, **kwargs)
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
-    def ensure_resource(self, resource, entity_dict, entity, name_map, check_missing=None, check_type=None, force_update=None):
+    def ensure_resource(self, resource, entity_dict, entity, state=None, name_map=None, check_missing=None, check_type=None, force_update=None):
         """ Ensure that a given entity has a certain state """
+        if state is None:
+            state = self.state
+        if name_map is None:
+            name_map = self.name_map
+
         changed, changed_entity = False, entity
 
         entity_dict = sanitize_entity_dict(entity_dict, name_map)
 
-        if self.state == 'present_with_defaults':
+        if state == 'present_with_defaults':
             if entity is None:
                 changed, changed_entity = self.create_resource(resource, entity_dict)
-        elif self.state == 'present':
+        elif state == 'present':
             if entity is None:
                 changed, changed_entity = self.create_resource(resource, entity_dict)
             else:
                 entity = sanitize_entity_dict(entity, name_map)
                 changed, changed_entity = self.update_resource(resource, entity, entity_dict, check_missing, check_type, force_update)
-        elif self.state == 'absent':
+        elif state == 'absent':
             if entity is not None:
                 changed, changed_entity = self.delete_resource(resource, entity['id'])
         else:
-            self.fail_json(msg='Not a valid state: {}'.format(self.state))
+            self.fail_json(msg='Not a valid state: {}'.format(state))
         return changed, changed_entity
 
     def _resource_action(self, resource, action, params):
@@ -330,8 +337,10 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
             state=dict(choices=['present', 'absent'], default='present'),
         )
         args.update(argument_spec)
+        name_map = kwargs.pop('name_map', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.name_map = name_map
         self.state = self.params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent

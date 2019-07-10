@@ -86,6 +86,7 @@ def main():
             compute_resource=dict(required=True),
             vm_attrs=dict(type='dict'),
         ),
+        name_map=name_map,
     )
     entity_dict = module.clean_params()
 
@@ -104,7 +105,7 @@ def main():
     else:
         entity = None
 
-    changed = module.ensure_resource_state('compute_attributes', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('compute_attributes', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
