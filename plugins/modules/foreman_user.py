@@ -382,7 +382,7 @@ def main():
             entity_dict['mail'] = entity['mail']
 
         if 'default_location' in entity_dict:
-            entity_dict['default_location'] = module.find_resource_by_name('locations', entity_dict['default_location'], thin=True)['id']
+            entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)['id']
 
         if 'default_organization' in entity_dict:
             entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)['id']
@@ -394,7 +394,7 @@ def main():
             entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
 
         if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_name('locations', entity_dict['locations'], thin=True)
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)

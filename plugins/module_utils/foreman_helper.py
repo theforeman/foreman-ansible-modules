@@ -181,11 +181,18 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         search = 'name="{}"'.format(name)
         return self.find_resource(resource, search, **kwargs)
 
+    def find_resource_by_title(self, resource, title, **kwargs):
+        search = 'title="{}"'.format(title)
+        return self.find_resource(resource, search, **kwargs)
+
     def find_resources(self, resource, search_list, **kwargs):
         return [self.find_resource(resource, search_item, **kwargs) for search_item in search_list]
 
     def find_resources_by_name(self, resource, names, **kwargs):
         return [self.find_resource_by_name(resource, name, **kwargs) for name in names]
+
+    def find_resources_by_title(self, resource, titles, **kwargs):
+        return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
 
     def create_resource(self, resource, entity_dict):
         new_entity = {}
