@@ -109,7 +109,7 @@ EXAMPLES = '''
     repositories:
       - basearch: x86_64
 
-- name: "Enable RHEL 8 BaseOS RPMs repositoryi with label"
+- name: "Enable RHEL 8 BaseOS RPMs repository with label"
   katello_repository_set:
     username: "admin"
     password: "changeme"
