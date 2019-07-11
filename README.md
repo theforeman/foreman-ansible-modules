@@ -63,11 +63,11 @@ Please note: we currently have modules that use `apypie` and `nailgun` as the ba
 ## How to test modules in this repository
 
 To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to run `make test-setup` and update `test/test_playbooks/vars/server.yml`:
+Also you need to run `make test-setup` and update `tests/test_playbooks/vars/server.yml`:
 
 ```sh
 make test-setup
-vi test/test_playbooks/vars/server.yml # point to your Foreman instance
+vi tests/test_playbooks/vars/server.yml # point to your Foreman instance
 ```
 
 To run the tests using the `foreman_global_parameter` module as an example:
@@ -85,7 +85,7 @@ You can (re-)record the cassettes for a specific test with
 make record_global_parameter
 ```
 
-See also [Guidedeline to writing tests](test/README.md).
+See also [Guidedeline to writing tests](tests/README.md).
 
 ## How to debug modules in this repository
 
@@ -102,7 +102,7 @@ make debug MODULE=<module name>
 
 # Example: debug the katello_content_view module
 $ make debug MODULE=katello_content_view
-./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @test/data/content-view.json -D /usr/lib64/python2.7/pdb.py
+./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @tests/data/content-view.json -D /usr/lib64/python2.7/pdb.py
 ...
 ```
 

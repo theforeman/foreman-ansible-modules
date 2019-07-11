@@ -99,8 +99,8 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
 def run_playbook(module, extra_vars=None, limit=None):
     # Assemble parameters for playbook call
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
-    playbook_path = os.path.join(os.getcwd(), 'test', 'test_playbooks', '{}.yml'.format(module))
-    inventory_path = os.path.join(os.getcwd(), 'test', 'inventory', 'hosts')
+    playbook_path = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
+    inventory_path = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
     run = ansible_runner.run(extravars=extra_vars, playbook=playbook_path, limit=limit, verbosity=4, inventory=inventory_path)
     return run
 

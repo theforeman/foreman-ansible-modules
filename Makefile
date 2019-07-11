@@ -5,7 +5,7 @@ ifeq ($(PDB_PATH),)
 	PDB_PATH=$(shell which pdb)
 endif
 MODULE_PATH=plugins/modules/$(MODULE).py
-DEBUG_DATA_PATH=test/debug_data/$(DATA).json
+DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 
 default: help
@@ -23,23 +23,23 @@ help:
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
 
 lint:
-	pycodestyle --ignore=E402,E722 --max-line-length=160 plugins/modules plugins/module_utils test
+	pycodestyle --ignore=E402,E722 --max-line-length=160 plugins/modules plugins/module_utils tests/
 
 test:
 	pytest $(TEST)
 
 test_%: FORCE
-	pytest 'test/test_crud.py::test_crud[$*]'
+	pytest 'tests/test_crud.py::test_crud[$*]'
 
 record_%: FORCE
-	$(RM) test/test_playbooks/fixtures/$*-*.yml
-	pytest 'test/test_crud.py::test_crud[$*]' --record
+	$(RM) tests/test_playbooks/fixtures/$*-*.yml
+	pytest 'tests/test_crud.py::test_crud[$*]' --record
 
 clean_%: FORCE
-	ansible-playbook --tags teardown,cleanup -i test/inventory/hosts 'test/test_playbooks/$*.yml'
+	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
 
 sanity:
-	ansible-playbook test/extras/sanity.yml
+	ansible-playbook tests/extras/sanity.yml
 
 debug:
 ifndef MODULE
@@ -53,12 +53,12 @@ debug-setup: .tmp/ansible
 .tmp/ansible:
 	ansible-playbook debug-setup.yml
 
-test-setup: test/test_playbooks/vars/server.yml
+test-setup: tests/test_playbooks/vars/server.yml
 	pip install --upgrade pip
 	pip install -r requirements-dev.txt
 	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt
-test/test_playbooks/vars/server.yml:
-	cp test/test_playbooks/vars/server.yml.example test/test_playbooks/vars/server.yml
+tests/test_playbooks/vars/server.yml:
+	cp tests/test_playbooks/vars/server.yml.example tests/test_playbooks/vars/server.yml
 
 dist:
 	mazer build
