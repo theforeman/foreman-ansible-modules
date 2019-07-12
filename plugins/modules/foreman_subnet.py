@@ -217,7 +217,7 @@ def main():
         if 'mask' in entity_dict and 'cidr' not in entity_dict:
             entity_dict['cidr'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
         elif 'mask' not in entity_dict and 'cidr' in entity_dict:
-            entity_dict['mask'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask
+            entity_dict['mask'] = str(IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
 
         if 'domains' in entity_dict:
             entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
