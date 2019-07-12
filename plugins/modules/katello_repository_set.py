@@ -108,6 +108,16 @@ EXAMPLES = '''
     state: disabled
     repositories:
       - basearch: x86_64
+
+- name: "Enable RHEL 8 BaseOS RPMs repository with label"
+  katello_repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    label: rhel-8-for-x86_64-baseos-rpms
+    repositories:
+      - releasever: 8
 '''
 
 RETURN = '''# '''
