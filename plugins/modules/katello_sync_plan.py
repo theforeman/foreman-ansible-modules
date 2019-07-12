@@ -127,7 +127,6 @@ def main():
         required_if=[
             ['interval', 'custom cron', ['cron_expression']],
         ],
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

@@ -195,7 +195,6 @@ def main():
             parameters=dict(type='dict'),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
-        supports_check_mode=True,
     )
 
     (operating_system_dict, state) = module.parse_params()

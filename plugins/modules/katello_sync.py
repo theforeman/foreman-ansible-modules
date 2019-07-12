@@ -118,7 +118,6 @@ def main():
             repository=dict(),
             synchronous=dict(type='bool', default=True),
         ),
-        supports_check_mode=False,
     )
 
     params = module.parse_params()

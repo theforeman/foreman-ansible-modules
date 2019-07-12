@@ -126,7 +126,6 @@ def main():
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

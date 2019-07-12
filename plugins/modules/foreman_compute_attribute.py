@@ -86,7 +86,6 @@ def main():
             compute_resource=dict(required=True),
             vm_attrs=dict(type='dict'),
         ),
-        supports_check_mode=True,
     )
     entity_dict = module.clean_params()
 

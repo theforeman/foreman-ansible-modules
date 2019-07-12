@@ -368,7 +368,6 @@ def main():
             locations=dict(required=False, type='list'),
             organizations=dict(required=False, type='list')
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.clean_params()

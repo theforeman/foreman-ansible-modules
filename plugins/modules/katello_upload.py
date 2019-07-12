@@ -103,7 +103,6 @@ def main():
             product=dict(required=True),
             organization=dict(required=True),
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.parse_params()

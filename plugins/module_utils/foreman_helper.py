@@ -35,7 +35,8 @@ class ForemanBaseAnsibleModule(AnsibleModule):
             validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
         )
         args.update(argument_spec)
-        super(ForemanBaseAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+        supports_check_mode = kwargs.pop('supports_check_mode', True)
+        super(ForemanBaseAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
 
         self.check_requirements()
 

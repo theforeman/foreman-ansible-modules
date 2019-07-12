@@ -108,7 +108,6 @@ def main():
             hostname=dict(required=True),
             state=dict(default='present', choices=['on', 'off', 'state']),
         ),
-        supports_check_mode=True,
     )
 
     (host_dict, state) = module.parse_params()

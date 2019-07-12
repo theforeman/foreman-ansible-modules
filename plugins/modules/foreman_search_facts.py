@@ -85,7 +85,6 @@ def main():
             resource=dict(type='str', required=True),
             search=dict(default=""),
         ),
-        supports_check_mode=True,
     )
 
     module_params = module.clean_params()

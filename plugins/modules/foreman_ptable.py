@@ -269,7 +269,6 @@ def main():
             os_family=dict(choices=list(_OPERATING_SYSTEMS)),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
-        supports_check_mode=True,
         mutually_exclusive=[
             ['file_name', 'layout'],
         ],
