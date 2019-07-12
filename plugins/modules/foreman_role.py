@@ -98,7 +98,7 @@ def main():
 
     if not module.desired_absent:
         if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_name('locations', entity_dict['locations'], thin=True)
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)

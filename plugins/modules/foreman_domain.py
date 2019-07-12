@@ -95,24 +95,24 @@ def main():
         ),
     )
 
-    domain_dict = module.clean_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
     # Try to find the Domain to work on
-    entity = module.find_resource_by_name('domains', name=domain_dict['name'], failsafe=True)
+    entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        if 'dns_proxy' in domain_dict:
-            domain_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', domain_dict['dns_proxy'], thin=True)
+        if 'dns_proxy' in entity_dict:
+            entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
 
-        if 'locations' in domain_dict:
-            domain_dict['locations'] = module.find_resources_by_name('locations', domain_dict['locations'], thin=True)
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-        if 'organizations' in domain_dict:
-            domain_dict['organizations'] = module.find_resources_by_name('organizations', domain_dict['organizations'], thin=True)
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('domains', domain_dict, entity, name_map)
+    changed = module.ensure_resource_state('domains', entity_dict, entity, name_map)
 
     module.exit_json(changed=changed)
 
