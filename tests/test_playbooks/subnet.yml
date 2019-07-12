@@ -28,23 +28,49 @@
     - vars/server.yml
     - vars/subnet.yml
   tasks:
-  - name: 'Test Subnet with minimal params'
+  - name: 'Test Subnet with minimal params (netmask)'
     block:
     - include: tasks/subnet.yml
       vars:
+        subnet_mask: '255.255.255.224'
         subnet_state: present
         expected_change: true
     - include: tasks/subnet.yml
       vars:
+        subnet_mask: '255.255.255.224'
         subnet_state: present
         expected_change: false
     - include: tasks/subnet.yml
       vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: absent
+        expected_change: true
+    - include: tasks/subnet.yml
+      vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: absent
+        expected_change: false
+  - name: 'Test Subnet with minimal params (cidr)'
+    block:
+    - include: tasks/subnet.yml
+      vars:
+        subnet_state: present
+        subnet_cidr: 27
+        expected_change: true
+    - include: tasks/subnet.yml
+      vars:
+        subnet_state: present
+        subnet_cidr: 27
+        expected_change: false
+    - include: tasks/subnet.yml
+      vars:
+        subnet_cidr: 27
         subnet_state: absent
         expected_change: true
     - include: tasks/subnet.yml
       vars:
         subnet_state: absent
+        subnet_cidr: 27
         expected_change: false
   - name: 'Test Subnet with full params except smart proxies and cidr'
     block:
@@ -109,10 +135,12 @@
       vars:
         subnet_name: Test Subnet 2
         subnet_state: absent
+        subnet_mask: '255.255.255.224'
         expected_change: true
     - include: tasks/subnet.yml
       vars:
         subnet_name: Test Subnet 2
+        subnet_mask: '255.255.255.224'
         subnet_state: absent
         expected_change: false
 - hosts: fixtures
