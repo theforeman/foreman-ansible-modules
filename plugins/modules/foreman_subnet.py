@@ -211,7 +211,6 @@ def main():
 
     module.connect()
 
-    # Try to find the Subnet to work on
     entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
