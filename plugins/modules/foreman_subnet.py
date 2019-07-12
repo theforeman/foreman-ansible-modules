@@ -26,7 +26,7 @@ description:
 author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
-  - "nailgun >= 0.32.0"
+  - apypie
 options:
   name:
     description: Subnet name
@@ -79,13 +79,17 @@ options:
     description: TFTP Smart proxy for this subnet
     required: false
   discovery_proxy:
-    description: Discovery Smart proxy for this subnet
+    description:
+      - Discovery Smart proxy for this subnet
+      - This option is only available, if the discovery plugin is installed.
     required: false
   dns_proxy:
     description: DNS Smart proxy for this subnet
     required: false
   remote_execution_proxies:
-    description: Remote execution Smart proxies for this subnet
+    description:
+      - Remote execution Smart proxies for this subnet
+      - This option is only available, if the remote_execution plugin is installed.
     required: false
     default: None
     type: list
@@ -142,26 +146,9 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_subnet,
-        find_domains,
-        find_locations,
-        find_organizations,
-        find_smart_proxy,
-        find_smart_proxies,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        Subnet,
-    )
-except ImportError:
-    pass
 
 from netaddr import IPNetwork
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
@@ -170,12 +157,12 @@ name_map = {
     'network_type': 'network_type',
     'dns_primary': 'dns_primary',
     'dns_secondary': 'dns_secondary',
-    'domains': 'domain',
+    'domains': 'domain_ids',
     'gateway': 'gateway',
     'network': 'network',
     'cidr': 'cidr',
     'mask': 'mask',
-    'from_ip': 'from_',
+    'from_ip': 'from',
     'to_ip': 'to',
     'boot_mode': 'boot_mode',
     'ipam': 'ipam',
@@ -186,13 +173,13 @@ name_map = {
     'remote_execution_proxies': 'remote_execution_proxy',
     'vlanid': 'vlanid',
     'mtu': 'mtu',
-    'organizations': 'organization',
-    'locations': 'location',
+    'organizations': 'organization_ids',
+    'locations': 'location_ids',
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
@@ -220,37 +207,33 @@ def main():
         required_one_of=[['cidr', 'mask']],
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    try:
-        # Try to find the Subnet to work on
-        entity = find_subnet(module, name=entity_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
 
-    if 'mask' in entity_dict and 'cidr' not in entity_dict:
-        entity_dict['cidr'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
-    elif 'mask' not in entity_dict and 'cidr' in entity_dict:
-        entity_dict['mask'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask
+    if not module.desired_absent:
+        if 'mask' in entity_dict and 'cidr' not in entity_dict:
+            entity_dict['cidr'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
+        elif 'mask' not in entity_dict and 'cidr' in entity_dict:
+            entity_dict['mask'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask
 
-    if 'domains' in entity_dict:
-        entity_dict['domains'] = find_domains(module, entity_dict['domains'])
+        if 'domains' in entity_dict:
+            entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
 
-    for feature in ('dhcp_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'remote_execution_proxies'):
-        if feature in entity_dict:
-            entity_dict[feature] = find_smart_proxy(module, entity_dict[feature])
+        # TODO should remote_execution seach for a list?
+        for feature in ('dhcp_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'remote_execution_proxies'):
+            if feature in entity_dict:
+                entity_dict[feature] = module.find_resource_by_name('smart_proxies', entity_dict[feature], thin=True)
 
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    if 'locations' in entity_dict:
-        entity_dict['locations'] = find_locations(module, entity_dict['locations'])
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = naildown_entity_state(Subnet, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('subnets', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 
