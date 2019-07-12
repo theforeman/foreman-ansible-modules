@@ -391,13 +391,13 @@ def main():
             entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)['id']
 
         if 'roles' in entity_dict:
-            entity_dict['roles'] = module.find_resources('roles', entity_dict['roles'], thin=True)
+            entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
 
         if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources('locations', entity_dict['locations'], thin=True)
+            entity_dict['locations'] = module.find_resources_by_name('locations', entity_dict['locations'], thin=True)
 
         if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     check_missing = None
     if 'user_password' in entity_dict:

@@ -107,10 +107,10 @@ def main():
             domain_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', domain_dict['dns_proxy'], thin=True)
 
         if 'locations' in domain_dict:
-            domain_dict['locations'] = module.find_resources('locations', domain_dict['locations'], thin=True)
+            domain_dict['locations'] = module.find_resources_by_name('locations', domain_dict['locations'], thin=True)
 
         if 'organizations' in domain_dict:
-            domain_dict['organizations'] = module.find_resources('organizations', domain_dict['organizations'], thin=True)
+            domain_dict['organizations'] = module.find_resources_by_name('organizations', domain_dict['organizations'], thin=True)
 
     changed = module.ensure_resource_state('domains', domain_dict, entity, name_map)
 

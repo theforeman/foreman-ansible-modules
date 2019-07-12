@@ -26,7 +26,7 @@ lint:
 	pycodestyle --ignore=E402,E722 --max-line-length=160 plugins/modules plugins/module_utils tests/
 
 test:
-	pytest $(TEST)
+	pytest -v $(TEST)
 
 test_%: FORCE
 	pytest 'tests/test_crud.py::test_crud[$*]'

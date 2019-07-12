@@ -139,7 +139,7 @@ def main():
 
     if not module.desired_absent:
         if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources('organizations', entity_dict['organizations'], thin=True)
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     entity = module.find_resource('locations', search='title="{}"'.format(build_fqn(name, parent)), failsafe=True)
 
