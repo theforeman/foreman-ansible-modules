@@ -118,7 +118,6 @@ def main():
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
         ),
-        supports_check_mode=True,
     )
 
     (global_parameter_dict, state) = module.parse_params()

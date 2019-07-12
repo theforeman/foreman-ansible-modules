@@ -122,7 +122,6 @@ def main():
             ['state', 'present', ['query']],
             ['state', 'present_with_defaults', ['query']],
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.clean_params()

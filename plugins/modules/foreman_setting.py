@@ -97,7 +97,6 @@ def main():
             name=dict(required=True),
             value=dict(),
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.parse_params()

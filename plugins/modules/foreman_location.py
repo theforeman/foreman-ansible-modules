@@ -115,7 +115,6 @@ def main():
             parent=dict(),
             organizations=dict(type='list'),
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.clean_params()

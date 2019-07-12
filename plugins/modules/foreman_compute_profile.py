@@ -183,7 +183,6 @@ def main():
             updated_name=dict(),
             compute_attributes=dict(type='list'),
         ),
-        supports_check_mode=True,
     )
 
     (compute_profile_dict, state) = module.parse_params()

@@ -92,7 +92,6 @@ def main():
             name=dict(required=True),
             operatingsystems=dict(type='list'),
         ),
-        supports_check_mode=True,
     )
     entity_dict = module.clean_params()
 

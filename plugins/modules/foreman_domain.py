@@ -93,7 +93,6 @@ def main():
             locations=dict(type='list'),
             organizations=dict(type='list'),
         ),
-        supports_check_mode=True,
     )
 
     domain_dict = module.clean_params()

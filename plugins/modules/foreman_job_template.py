@@ -341,7 +341,6 @@ def main():
             # Control parameter
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
-        supports_check_mode=True,
         mutually_exclusive=[
             ['file_name', 'template'],
         ],

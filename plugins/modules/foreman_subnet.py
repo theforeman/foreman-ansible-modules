@@ -218,7 +218,6 @@ def main():
             organizations=dict(type='list'),
         ),
         required_one_of=[['cidr', 'mask']],
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

@@ -195,7 +195,6 @@ def main():
         required_if=(
             ['state', 'present', ['provider']],
         ),
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

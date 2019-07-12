@@ -124,7 +124,6 @@ def main():
             ptable=dict(),
             root_pass=dict(no_log=True),
         ),
-        supports_check_mode=True,
     )
     entity_dict = module.clean_params()
 

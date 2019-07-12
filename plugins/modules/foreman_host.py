@@ -118,7 +118,6 @@ def main():
             ['state', 'present_with_defaults', ['hostgroup']],
             ['state', 'present', ['hostgroup']],
         ),
-        supports_check_mode=True,
     )
 
     (host_dict, state) = module.parse_params()

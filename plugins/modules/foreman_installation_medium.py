@@ -130,7 +130,6 @@ def main():
             os_family=dict(),
             path=dict(),
         ),
-        supports_check_mode=True,
     )
 
     (medium_dict, state) = module.parse_params()

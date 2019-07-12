@@ -228,7 +228,6 @@ def main():
             types=dict(default=["bugfix", "enhancement", "security"], type='list'),
             version=dict(),
         ),
-        supports_check_mode=False,
     )
 
     entity_dict = module.parse_params()
