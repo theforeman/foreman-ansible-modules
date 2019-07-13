@@ -27,7 +27,7 @@ author:
     - "Eric D Helms (@ehelms)"
     - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-    - "nailgun >= 0.32.0"
+    - apypie
 options:
   name:
     description:
@@ -86,40 +86,25 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        Product,
-    )
 
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_content_credential,
-        find_sync_plan,
-        find_product,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
     'name': 'name',
-    'organization': 'organization',
+    'organization': 'organization_id',
     'description': 'description',
-    'gpg_key': 'gpg_key',
-    'sync_plan': 'sync_plan',
+    'gpg_key': 'gpg_key_id',
+    'sync_plan': 'sync_plan_id',
     'label': 'label',
 }
 
 
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             label=dict(),
@@ -128,26 +113,24 @@ def main():
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        supports_check_mode=True,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
+    entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+    search_params = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('products', name=entity_dict['name'], params=search_params, failsafe=True)
 
-    if 'gpg_key' in entity_dict:
-        entity_dict['gpg_key'] = find_content_credential(module, name=entity_dict['gpg_key'], organization=entity_dict['organization'])
+    if not module.desired_absent:
+        if 'gpg_key' in entity_dict:
+            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=search_params, thin=True)
 
-    if 'sync_plan' in entity_dict:
-        entity_dict['sync_plan'] = find_sync_plan(module, name=entity_dict['sync_plan'], organization=entity_dict['organization'])
+        if 'sync_plan' in entity_dict:
+            entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=search_params, thin=True)
 
-    entity = find_product(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
-
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed = naildown_entity_state(Product, entity_dict, entity, state, module)
+    changed = module.ensure_resource_state('products', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 
