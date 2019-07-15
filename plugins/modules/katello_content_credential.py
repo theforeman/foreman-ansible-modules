@@ -89,6 +89,7 @@ def main():
             content_type=dict(required=True, choices=['gpg_key', 'cert']),
             content=dict(required=True),
         ),
+        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -99,7 +100,7 @@ def main():
     search_params = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=search_params, failsafe=True)
 
-    changed = module.ensure_resource_state('content_credentials', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('content_credentials', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

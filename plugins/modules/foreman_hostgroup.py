@@ -146,7 +146,7 @@ def main():
     if entity:
         entity['root_pass'] = None
 
-    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 

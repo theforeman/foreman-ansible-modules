@@ -118,6 +118,7 @@ def main():
             state=dict(default='present', choices=[
                        'present_with_defaults', 'present', 'absent']),
         ),
+        name_map=name_map,
         required_if=(
             ['state', 'present', ['query']],
             ['state', 'present_with_defaults', ['query']],
@@ -131,7 +132,7 @@ def main():
     search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
     entity = module.find_resource('bookmarks', search, failsafe=True)
 
-    changed = module.ensure_resource_state('bookmarks', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('bookmarks', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

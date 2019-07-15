@@ -202,7 +202,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('auth_source_ldaps', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('auth_source_ldaps', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 

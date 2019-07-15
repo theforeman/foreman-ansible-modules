@@ -92,6 +92,7 @@ def main():
             name=dict(required=True),
             operatingsystems=dict(type='list'),
         ),
+        name_map=name_map,
     )
     entity_dict = module.clean_params()
 
@@ -99,11 +100,12 @@ def main():
 
     if not module.desired_absent:
         if 'operatingsystems' in entity_dict:
-            entity_dict['operatingsystems'] = module.find_resources_by_name('operatingsystems', entity_dict['operatingsystems'], thin=True)
+            search_list = ["title~{}".format(title) for title in entity_dict['operatingsystems']]
+            entity_dict['operatingsystems'] = module.find_resources('operatingsystems', search_list, thin=True)
 
     entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
 
-    changed = module.ensure_resource_state('architectures', entity_dict, entity, name_map)
+    changed = module.ensure_resource_state('architectures', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
