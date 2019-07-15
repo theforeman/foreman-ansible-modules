@@ -1,143 +1,112 @@
 interactions:
 - request:
-    body: !!python/unicode '{}'
+    body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      User-Agent: [python-requests/2.21.0]
-      content-type: [application/json]
+      Accept: [application/json;version=2]
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/ping
+    uri: https://centos7-katello-3-12/api/status
   response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA43PPQqAMAwF4N1TSGaXioh4mRK0YtH+0KQu0rtr3TrVKeTxhUfa9gZi5Egwgzug
-        A1Lh0ot69xt8PH2epVhjQNbOSpOjfoLUfVJi5L3GxZD5gnY9lde2ykXB/1WM+WZzQRm0kpEOqj4B
-        KaXmAXc+wHsNAQAA
+    body: {string: !!python/unicode '{"result":"ok","status":200,"version":"1.22.0","api_version":2}'}
     headers:
-      apipie-checksum: [52daff41cb9441cf8d36e84de0d02f3a66c0923c]
+      apipie-checksum: [5adea7a94ce02bd4ebd4e9df5046899d962d1188]
       cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['126']
+      content-length: ['63']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Mon, 01 Apr 2019 09:55:41 GMT']
-      etag: [W/"1abed53de705c1bc1f1c7673e9e50307-gzip"]
+      date: ['Sat, 13 Jul 2019 14:04:09 GMT']
+      etag: [W/"674e9dbc2140c688b559566b581c5c09"]
       foreman_api_version: ['2']
-      foreman_version: [1.20.1]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=4cfd85c02086e32f08e92ecd8b7ba18a; path=/; secure; HttpOnly;
+      foreman_version: [1.22.0]
+      server: [Apache]
+      set-cookie: [_session_id=80f43d52ba00c756fa21bc64f8730e23; path=/; secure; HttpOnly;
           SameSite=Lax]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
       x-content-type-options: [nosniff]
       x-download-options: [noopen]
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [7fdfb694-ac83-442e-aab2-9e8d61fbcb29]
-      x-runtime: ['0.094496']
+      x-request-id: [78b7da45-efaf-4118-b281-96ed064801d2]
+      x-runtime: ['0.081797']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"search": "name=\"Test Organization\""}'
+    body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['40']
-      User-Agent: [python-requests/2.21.0]
-      content-type: [application/json]
+      Accept: [application/json;version=2]
+      Cookie: [_session_id=80f43d52ba00c756fa21bc64f8730e23]
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/organizations
+    uri: https://centos7-katello-3-12/katello/api/organizations?per_page=4294967296&search=name%3D%22Test+Organization%22&thin=True
   response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA42PwWrDMAyG73kKo3MKTmgHNey0B9ilO60jKLHoDF4SZOXQhrz7VCdjYzDYTd/n
-        3/zSXBgDMghGcKYu75Sm9ktUWYx4oW8gbjZR2zVPyN27MvT4QY9nOFES88wX7MMNJQz9GWBNDiya
-        m3VWaq8691OM5coDe+JNqVnyF6Y0RUmqX2eI2JKulQuanwVQQseEQr5BbYDaVsed3e9sZezRHazb
-        P5iX05PGptH/JxY8uOpQ5ou2QvOrUILEv948pY7DmMnd71neiqX4BNTSuY1sAQAA
+    body: {string: !!python/unicode "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\":
+        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"label\":\"Test_Organization\",\"created_at\":\"2019-07-13 14:03:21 UTC\",\"updated_at\":\"2019-07-13
+        14:03:21 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\":\"Test Organization\",\"description\":\"A
+        test organization\"}]\n}\n"}
     headers:
-      apipie-checksum: [52daff41cb9441cf8d36e84de0d02f3a66c0923c]
+      apipie-checksum: [5adea7a94ce02bd4ebd4e9df5046899d962d1188]
       cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['219']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Mon, 01 Apr 2019 09:55:41 GMT']
-      etag: [W/"325a48edc2f1d9a2939dcf79e7405490-gzip"]
+      date: ['Sat, 13 Jul 2019 14:04:09 GMT']
+      etag: [W/"062b5c4e4962ac7f8b7431b1dc221be3"]
       foreman_api_version: ['2']
-      foreman_version: [1.20.1]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=435320a43f47b266b4ec3ca623278f27; path=/; secure; HttpOnly;
-          SameSite=Lax]
+      foreman_version: [1.22.0]
+      server: [Apache]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
+      transfer-encoding: [chunked]
       vary: [Accept-Encoding]
       x-content-type-options: [nosniff]
       x-download-options: [noopen]
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [f8851402-7825-4431-a3ed-8e86421f8c78]
-      x-runtime: ['0.028910']
+      x-request-id: [f58b24e8-391e-4d7f-9688-1949fa7d2916]
+      x-runtime: ['0.017501']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"organization_id": 15, "name": "Test Product 2"}'
+    body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['49']
-      User-Agent: [python-requests/2.21.0]
-      content-type: [application/json]
+      Accept: [application/json;version=2]
+      Cookie: [_session_id=80f43d52ba00c756fa21bc64f8730e23]
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/products
+    uri: https://centos7-katello-3-12/katello/api/products?organization_id=3&per_page=4294967296&search=name%3D%22Test+Product+2%22&thin=True
   response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA0XLsQqAMBAD0N3PyNxBHe9XRORaDx1qK9d2kOK/WxB0ywtJRY6ZPag3SMX+OHkT
-        0NCC6PJibLWoRgWF4n07CKvbP0XNoAp7gRD4EBhEXaXNwcnhNlBJxecEmua7ewAzgtzWewAAAA==
+    body: {string: !!python/unicode '{"total":0,"subtotal":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Product 2\"","sort":{"by":"name","order":"asc"},"results":[]}
+
+'}
     headers:
-      apipie-checksum: [52daff41cb9441cf8d36e84de0d02f3a66c0923c]
+      apipie-checksum: [5adea7a94ce02bd4ebd4e9df5046899d962d1188]
       cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['112']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Mon, 01 Apr 2019 09:55:41 GMT']
-      etag: [W/"956e0fd5b832fbda8d01b01a5b7de844-gzip"]
+      date: ['Sat, 13 Jul 2019 14:04:09 GMT']
+      etag: [W/"f98cc61f147a2c519efcf84e03870751"]
       foreman_api_version: ['2']
-      foreman_version: [1.20.1]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=a7d2267c6694864e66b5af9a23d850a9; path=/; secure; HttpOnly;
-          SameSite=Lax]
+      foreman_version: [1.22.0]
+      server: [Apache]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
+      transfer-encoding: [chunked]
       vary: [Accept-Encoding]
       x-content-type-options: [nosniff]
       x-download-options: [noopen]
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [96281389-f4d1-4dfb-a7fb-bf86d56e6ee8]
-      x-runtime: ['0.028875']
+      x-request-id: [ccfafdb5-b5c6-4325-a81c-6acfa70b644a]
+      x-runtime: ['0.014399']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1
