@@ -169,7 +169,6 @@ def main():
             mirror_on_sync=dict(type='bool', default=True),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

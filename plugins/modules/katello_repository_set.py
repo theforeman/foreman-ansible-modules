@@ -186,7 +186,6 @@ def main():
             repositories=dict(required=True, type='list'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
-        supports_check_mode=True,
         required_one_of=[['label', 'name']],
     )
 

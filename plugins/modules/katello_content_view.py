@@ -143,7 +143,6 @@ def main():
             repositories=dict(type='list'),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        supports_check_mode=True,
         mutually_exclusive=[['repositories', 'components']],
     )
 
