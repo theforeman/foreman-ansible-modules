@@ -89,7 +89,6 @@ def main():
             content_type=dict(required=True, choices=['gpg_key', 'cert']),
             content=dict(required=True),
         ),
-        supports_check_mode=True,
     )
 
     entity_dict = module.clean_params()

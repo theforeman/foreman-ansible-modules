@@ -157,7 +157,6 @@ def main():
             auto_attach=dict(type='bool', default=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
-        supports_check_mode=True,
         required_if=[
             ['state', 'copied', ['new_name']],
         ],

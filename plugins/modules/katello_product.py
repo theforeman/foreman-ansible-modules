@@ -128,7 +128,6 @@ def main():
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        supports_check_mode=True,
     )
 
     (entity_dict, state) = module.parse_params()

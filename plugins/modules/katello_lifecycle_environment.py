@@ -143,7 +143,6 @@ def main():
             description=dict(),
             prior=dict(),
         ),
-        supports_check_mode=True,
     )
 
     (module_params, state) = module.parse_params()
