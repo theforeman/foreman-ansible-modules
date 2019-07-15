@@ -26,7 +26,7 @@ description:
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 requirements:
-  - "nailgun >= 0.16.0"
+  - apypie
 options:
   name:
     description:
@@ -89,39 +89,22 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
-        find_installation_medium,
-        find_locations,
-        find_organizations,
-        find_operating_systems_by_title,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        Media,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
 name_map = {
-    'locations': 'location',
+    'locations': 'location_ids',
     'name': 'name',
-    'operatingsystems': 'operatingsystem',
-    'organizations': 'organization',
+    'operatingsystems': 'operatingsystem_ids',
+    'organizations': 'organization_ids',
     'os_family': 'os_family',
-    'path': 'path_',
+    'path': 'path',
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             locations=dict(type='list'),
@@ -132,50 +115,50 @@ def main():
         ),
     )
 
-    (medium_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
-    name = medium_dict['name']
+    name = entity_dict['name']
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if state == 'present_with_defaults':
+        if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
-        if state == 'absent':
-            if list(medium_dict.keys()) != ['name']:
-                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters %s ' % medium_dict.keys())
+        if module.desired_absent:
+            if list(entity_dict.keys()) != ['name']:
+                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters %s ' % entity_dict.keys())
 
-    try:
-        if affects_multiple:
-            entities = find_entities(Media)
-        else:
-            entities = find_installation_medium(module, name=medium_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    if affects_multiple:
+        entities = module.list_resource('media')
+        if not module.desired_absent:  # not 'thin'
+            entities = [module.show_resource('media', entity['id']) for entity in entities]
+        if not entities:
+            # Nothing to do shortcut to exit
+            module.exit_json(changed=False)
+    else:
+        entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
-    if 'operatingsystems' in medium_dict:
-        medium_dict['operatingsystems'] = find_operating_systems_by_title(module, medium_dict['operatingsystems'])
-        if len(medium_dict['operatingsystems']) == 1 and 'os_family' not in medium_dict and entities is None:
-            medium_dict['os_family'] = medium_dict['operatingsystems'][0].family
+    if not module.desired_absent:
+        if 'operatingsystems' in entity_dict:
+            search_list = ['title~"{}"'.format(title) for title in entity_dict['operatingsystems']]
+            entity_dict['operatingsystems'] = module.find_resources('operatingsystems', search_list=search_list, thin=True)
+            if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
+                entity_dict['os_family'] = module.show_resource('operatingsystems', entity_dict['operatingsystems'][0]['id'])['family']
 
-    if 'locations' in medium_dict:
-        medium_dict['locations'] = find_locations(module, medium_dict['locations'])
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-    if 'organizations' in medium_dict:
-        medium_dict['organizations'] = find_organizations(module, medium_dict['organizations'])
-
-    medium_dict = sanitize_entity_dict(medium_dict, name_map)
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     changed = False
     if not affects_multiple:
-        changed = naildown_entity_state(
-            Media, medium_dict, entities, state, module)
+        changed = module.ensure_resource_state('media', entity_dict, entity, name_map=name_map)
     else:
-        medium_dict.pop('name')
+        entity_dict.pop('name')
         for entity in entities:
-            changed |= naildown_entity_state(
-                Media, medium_dict, entity, state, module)
+            changed |= module.ensure_resource_state('media', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 
