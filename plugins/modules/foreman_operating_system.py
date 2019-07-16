@@ -167,48 +167,25 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_value_to_str
-
-
-# This is the only true source for names (and conversions thereof)
-entity_spec = {
-    'id': {},
-    'name': {},
-    'description': {},
-    'family': {},
-    'major': {},
-    'minor': {},
-    'release_name': {},
-    'architectures': {'type': 'entity_list', 'flat_name': 'architecture_ids'},
-    'media': {'type': 'entity_list', 'flat_name': 'medium_ids'},
-    'ptables': {'type': 'entity_list', 'flat_name': 'ptable_ids'},
-    'provisioning_templates': {'type': 'entity_list', 'flat_name': 'provisioning_template_ids'},
-    'password_hash': {},
-}
-
-
-parameter_entity_spec = {
-    'id': {},
-    'name': {},
-    'value': {},
-    'parameter_type': {},
-}
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(),
             release_name=dict(),
             description=dict(),
             family=dict(),
             major=dict(),
             minor=dict(),
-            architectures=dict(type='list'),
-            media=dict(type='list'),
-            ptables=dict(type='list'),
-            provisioning_templates=dict(type='list'),
+            architectures=dict(type='entity_list', flat_name='architecture_ids'),
+            media=dict(type='entity_list', flat_name='medium_ids'),
+            ptables=dict(type='entity_list', flat_name='ptable_ids'),
+            provisioning_templates=dict(type='entity_list', flat_name='provisioning_template_ids'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
+        ),
+        argument_spec=dict(
             parameters=dict(type='list', elements='dict', options=dict(
                 name=dict(required=True),
                 value=dict(type='raw', required=True),
@@ -224,7 +201,6 @@ def main():
             ['description', 'name'],
             ['description', 'major'],
         ],
-        entity_spec=entity_spec,
     )
 
     entity_dict = module.clean_params()
@@ -267,28 +243,9 @@ def main():
 
     changed, operating_system = module.ensure_entity('operatingsystems', entity_dict, entity)
 
-    if parameters is not None:
-        if module.state == 'present' or (module.state == 'present_with_defaults' and entity is None):
-            search_params = {'operatingsystem_id': operating_system['id']}
-            if entity:
-                current_parameters = {parameter['name']: parameter for parameter in module.list_resource('parameters', params=search_params)}
-            else:
-                current_parameters = {}
-            desired_parameters = {parameter['name']: parameter for parameter in parameters}
-
-            for name in desired_parameters:
-                desired_parameter = desired_parameters[name]
-                desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
-                current_parameter = current_parameters.pop(name, None)
-                if current_parameter:
-                    if 'parameter_type' not in current_parameter:
-                        current_parameter['parameter_type'] = 'string'
-                    current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
-                changed |= module.ensure_entity(
-                    'parameters', desired_parameter, current_parameter, state="present", entity_spec=parameter_entity_spec, params=search_params)[0]
-            for current_parameter in current_parameters.values():
-                changed |= module.ensure_entity(
-                    'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=search_params)[0]
+    if operating_system:
+        scope = {'operatingsystem_id': operating_system['id']}
+        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 

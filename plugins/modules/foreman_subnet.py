@@ -109,6 +109,35 @@ options:
     required: false
     default: None
     type: list
+  parameters:
+    description:
+      - Operating System specific host parameters
+    required: false
+    type: list
+    elements: dict
+    options:
+      name:
+        description:
+          - Name of the parameter
+        required: true
+      value:
+        description:
+          - Value of the parameter
+        required: true
+        type: raw
+      parameter_type:
+        description:
+          - Type of the parameter
+        default: 'string'
+        choices:
+          - 'string'
+          - 'boolean'
+          - 'integer'
+          - 'real'
+          - 'array'
+          - 'hash'
+          - 'yaml'
+          - 'json'
   state:
     description: subnet presence
     default: present
@@ -203,8 +232,14 @@ def main():
             mtu=dict(type='int'),
             locations=dict(type='list'),
             organizations=dict(type='list'),
+            parameters=dict(type='list', elements='dict', options=dict(
+                name=dict(required=True),
+                value=dict(type='raw', required=True),
+                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+            )),
         ),
         required_one_of=[['cidr', 'mask']],
+        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -233,7 +268,12 @@ def main():
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-    changed = module.ensure_resource_state('subnets', entity_dict, entity, name_map=name_map)
+    parameters = entity_dict.get('parameters')
+
+    changed, subnet = module.ensure_resource('subnets', entity_dict, entity)
+
+    scope = {'subnet': subnet}
+    changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 

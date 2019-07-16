@@ -34,12 +34,53 @@
       vars:
         subnet_mask: '255.255.255.224'
         subnet_state: present
+        subnet_parameters:
+          - name: subnet_param1
+            value: value1
+          - name: subnet_param2
+            value: value2
         expected_change: true
     - include: tasks/subnet.yml
       vars:
         subnet_mask: '255.255.255.224'
         subnet_state: present
+        subnet_parameters:
+          - name: subnet_param1
+            value: value1
+          - name: subnet_param2
+            value: value2
         expected_change: false
+    - include: tasks/subnet.yml
+      vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        expected_change: false
+    - include: tasks/subnet.yml
+      vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        subnet_parameters:
+          - name: subnet_param1
+            value: new_value1
+          - name: subnet_param3
+            value: value3
+        expected_change: true
+    - include: tasks/subnet.yml
+      vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        subnet_parameters:
+          - name: subnet_param1
+            value: new_value1
+          - name: subnet_param3
+            value: value3
+        expected_change: false
+    - include: tasks/subnet.yml
+      vars:
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        subnet_parameters: []
+        expected_change: true
     - include: tasks/subnet.yml
       vars:
         subnet_mask: '255.255.255.224'

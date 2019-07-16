@@ -26,6 +26,13 @@ except ImportError:
     APYPIE_IMP_ERR = traceback.format_exc()
 
 
+parameter_entity_spec = {
+    'name': {},
+    'value': {},
+    'parameter_type': {},
+}
+
+
 class ForemanBaseAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
@@ -368,9 +375,14 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 Pair of boolean indicating whether something changed and the new current state if the entity
         """
         payload = _flatten_entity(desired_entity, entity_spec)
-        if params:
-            payload.update(params)
-        return self._resource_action(resource, 'create', payload)
+        if not self.check_mode:
+            if params:
+                payload.update(params)
+            return self._resource_action(resource, 'create', payload)
+        else:
+            fake_entity = desired_entity.copy()
+            fake_entity['id'] = -1
+            return True, fake_entity
 
     def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec):
         """Update a given entity with given properties if any diverge
@@ -388,15 +400,21 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         desired_entity = _flatten_entity(desired_entity, entity_spec)
         current_entity = _flatten_entity(current_entity, entity_spec)
         for key, value in desired_entity.items():
-            if current_entity.get(key) == value:
-                continue
-            payload[key] = value
+            if current_entity.get(key) != value:
+                payload[key] = value
         if payload:
             payload['id'] = current_entity['id']
-            if params:
-                payload.update(params)
-            return self._resource_action(resource, 'update', payload)
+            if not self.check_mode:
+                if params:
+                    payload.update(params)
+                return self._resource_action(resource, 'update', payload)
+            else:
+                # In check_mode we emulate the server updating the entity
+                fake_entity = current_entity.copy()
+                fake_entity.update(payload)
+                return True, fake_entity
         else:
+            # Nothing needs changing
             return False, current_entity
 
     def _revert_entity(self, resource, current_entity, params):
@@ -427,7 +445,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        return self._resource_action(resource, 'destroy', payload)
+        self._resource_action(resource, 'destroy', payload)
+        return True, None
 
     def _resource_action(self, resource, action, params):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
@@ -495,6 +514,31 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
     def parse_params(self):
         return (super(ForemanEntityApypieAnsibleModule, self).parse_params(), self.state)
+
+    def ensure_scoped_parameters(self, scope, entity, parameters):
+        changed = False
+        if parameters is not None:
+            if self.state == 'present' or (self.state == 'present_with_defaults' and entity is None):
+                if entity:
+                    current_parameters = {parameter['name']: parameter for parameter in self.list_resource('parameters', params=scope)}
+                else:
+                    current_parameters = {}
+                desired_parameters = {parameter['name']: parameter for parameter in parameters}
+
+                for name in desired_parameters:
+                    desired_parameter = desired_parameters[name]
+                    desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
+                    current_parameter = current_parameters.pop(name, None)
+                    if current_parameter:
+                        if 'parameter_type' not in current_parameter:
+                            current_parameter['parameter_type'] = 'string'
+                        current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
+                    changed |= self.ensure_entity_state(
+                        'parameters', desired_parameter, current_parameter, state="present", entity_spec=parameter_entity_spec, params=scope)
+                for current_parameter in current_parameters.values():
+                    changed |= self.ensure_entity_state(
+                        'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
+        return changed
 
 
 class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
