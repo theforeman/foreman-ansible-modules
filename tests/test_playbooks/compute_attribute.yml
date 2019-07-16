@@ -5,6 +5,12 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/location.yml
+    vars:
+      location_state: present
   - include: tasks/compute_profile.yml
     vars:
       compute_profile_state: present
@@ -65,4 +71,10 @@
   - include: tasks/compute_resource.yml
     vars:
       compute_resource_state: absent
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: absent
 ...
