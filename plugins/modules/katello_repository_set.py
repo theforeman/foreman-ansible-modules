@@ -136,6 +136,8 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 def get_desired_repos(desired_substitutions, available_repos):
     desired_repos = []
+    if not desired_substitutions and len(available_repos) == 1:
+        desired_repos.append(available_repos[0])
     for sub in desired_substitutions:
         desired_repos += filter(lambda available: available['substitutions'] == sub, available_repos)
     return desired_repos
@@ -183,7 +185,7 @@ def main():
             name=dict(default=None),
             product=dict(default=None),
             label=dict(default=None),
-            repositories=dict(required=True, type='list'),
+            repositories=dict(type='list'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         required_one_of=[['label', 'name']],
