@@ -110,6 +110,7 @@ name_map = {
     'media': 'medium_id',
     'ptable': 'ptable_id',
     'root_pass': 'root_pass',
+    'parent': 'parent_id'
 }
 
 
@@ -123,12 +124,15 @@ def main():
             media=dict(),
             ptable=dict(),
             root_pass=dict(no_log=True),
+            parent=dict()
         ),
     )
     entity_dict = module.clean_params()
 
     module.connect()
-
+    
+    check_missing = None 
+      
     if not module.desired_absent:
         if 'architecture' in entity_dict:
             entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
@@ -141,12 +145,16 @@ def main():
 
         if 'ptable' in entity_dict:
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
-
+   
+        if 'parent' in entity_dict:
+           check_missing = [name_map['parent']]
+           entity_dict['parent'] = module.find_resource_by_name('hostgroups', name=entity_dict['parent'], failsafe=False, thin=True)
+          
     entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True)
     if entity:
         entity['root_pass'] = None
 
-    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map, check_missing=check_missing)
 
     module.exit_json(changed=changed)
 
