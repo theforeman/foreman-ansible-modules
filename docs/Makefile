@@ -17,7 +17,7 @@ help:
 .PHONY: help Makefile generate-docs
 
 $(ANSIBLEGIT):
-	git clone --depth=1 https://github.com/ansible/ansible/ $(ANSIBLEGIT)
+	git clone --depth=1 --branch=stable-2.8 https://github.com/ansible/ansible/ $(ANSIBLEGIT)
 
 generate-docs: $(ANSIBLEGIT)
 	rm -rf ./modules/
