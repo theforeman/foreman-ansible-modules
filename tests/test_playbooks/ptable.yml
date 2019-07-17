@@ -88,7 +88,28 @@
       ptable_layout: "{{ omit }}"
       ptable_state: present
       expected_change: false
-  - include: tasks/ptable.yml
+  - name: unlock all ptables
+    include: tasks/ptable.yml
+    vars:
+      ptable_name: '*'
+      locked_state: false
+      ptable_location: "{{ omit }}"
+      ptable_organizations: "{{ omit }}"
+      ptable_layout: "{{ omit }}"
+      ptable_state: present
+      expected_change: true
+  - name: unlock all ptables
+    include: tasks/ptable.yml
+    vars:
+      ptable_name: '*'
+      locked_state: false
+      ptable_location: "{{ omit }}"
+      ptable_organizations: "{{ omit }}"
+      ptable_layout: "{{ omit }}"
+      ptable_state: present
+      expected_change: false
+  - name: delete all ptables
+    include: tasks/ptable.yml
     vars:
       ptable_name: '*'
       ptable_locations: "{{ omit }}"
@@ -96,7 +117,8 @@
       ptable_layout: "{{ omit }}"
       ptable_state: absent
       expected_change: true
-  - include: tasks/ptable.yml
+  - name: delete all ptables
+    include: tasks/ptable.yml
     vars:
       ptable_name: '*'
       ptable_locations: "{{ omit }}"
