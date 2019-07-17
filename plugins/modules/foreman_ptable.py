@@ -213,15 +213,7 @@ EXAMPLES = '''
 '''
 
 RETURN = ''' # '''
-try:
-    from nailgun.entities import (
-        PartitionTable,
-        _OPERATING_SYSTEMS as OPERATING_SYSTEMS,
-        Organization,
-        Location,
-    )
-except ImportError:
-    pass
+
 
 import os
 
@@ -259,7 +251,19 @@ def main():
             locked=dict(type='bool'),
             name=dict(),
             organizations=dict(type='list'),
-            os_family=dict(choices=list(OPERATING_SYSTEMS)),
+            os_family=dict(choices=[
+                'AIX',
+                'Altlinux',
+                'Archlinux',
+                'Debian',
+                'Freebsd',
+                'Gentoo',
+                'Junos',
+                'Redhat',
+                'Solaris',
+                'Suse',
+                'Windows',
+            ]),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
         mutually_exclusive=[
