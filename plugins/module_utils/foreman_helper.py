@@ -249,7 +249,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             new_data = {'id': entity_id}
             for key, value in volatile_entity.items():
                 if key in fields:
-                    new_data[key] = value
+                    new_data[key] = self._flatten_value(value)
             return self._resource_action(resource, 'update', params=new_data)
         return False, result
 
