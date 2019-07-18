@@ -361,7 +361,7 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 
 def sanitize_entity_dict(entity_dict, name_map):
     name_map['id'] = 'id'
-    return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
+    return {key: entity_dict[value] for key, value in name_map.items() if value in entity_dict}
 
 
 # Helper for templates
