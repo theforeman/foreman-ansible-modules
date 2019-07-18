@@ -111,7 +111,7 @@ options:
     type: list
   parameters:
     description:
-      - Operating System specific host parameters
+      - Subnet specific host parameters
     required: false
     type: list
     elements: dict
@@ -180,58 +180,33 @@ from netaddr import IPNetwork
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'network_type': 'network_type',
-    'dns_primary': 'dns_primary',
-    'dns_secondary': 'dns_secondary',
-    'domains': 'domain_ids',
-    'gateway': 'gateway',
-    'network': 'network',
-    'cidr': 'cidr',
-    'mask': 'mask',
-    'from_ip': 'from',
-    'to_ip': 'to',
-    'boot_mode': 'boot_mode',
-    'ipam': 'ipam',
-    'dhcp_proxy': 'dhcp',
-    'tftp_proxy': 'tftp',
-    'discovery_proxy': 'discovery',
-    'dns_proxy': 'dns',
-    'remote_execution_proxies': 'remote_execution_proxy',
-    'vlanid': 'vlanid',
-    'mtu': 'mtu',
-    'organizations': 'organization_ids',
-    'locations': 'location_ids',
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
             dns_primary=dict(),
             dns_secondary=dict(),
-            domains=dict(type='list'),
+            domains=dict(type='entity_list', flat_name='domain_ids'),
             gateway=dict(),
             network=dict(required=True),
             cidr=dict(type='int'),
             mask=dict(),
-            from_ip=dict(),
-            to_ip=dict(),
+            from_ip=dict(flat_name='from'),
+            to_ip=dict(flat_name='to'),
             boot_mode=dict(choices=['DHCP', 'Static'], default='DHCP'),
             ipam=dict(choices=['DHCP', 'Internal DB'], default='DHCP'),
-            dhcp_proxy=dict(),
-            tftp_proxy=dict(),
-            discovery_proxy=dict(),
-            dns_proxy=dict(),
-            remote_execution_proxies=dict(type='list'),
+            dhcp_proxy=dict(type='entity', flat_name='dhcp_id'),
+            tftp_proxy=dict(type='entity', flat_name='tftp_id'),
+            discovery_proxy=dict(type='entity', flat_name='discovery_id'),
+            dns_proxy=dict(type='entity', flat_name='dns_id'),
+            remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
-            locations=dict(type='list'),
-            organizations=dict(type='list'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+        ),
+        argument_spec=dict(
             parameters=dict(type='list', elements='dict', options=dict(
                 name=dict(required=True),
                 value=dict(type='raw', required=True),
@@ -239,7 +214,6 @@ def main():
             )),
         ),
         required_one_of=[['cidr', 'mask']],
-        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -257,10 +231,12 @@ def main():
         if 'domains' in entity_dict:
             entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
 
-        # TODO should remote_execution seach for a list?
-        for feature in ('dhcp_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'remote_execution_proxies'):
+        for feature in ('dhcp_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy'):
             if feature in entity_dict:
                 entity_dict[feature] = module.find_resource_by_name('smart_proxies', entity_dict[feature], thin=True)
+
+        if 'remote_execution_proxies' in entity_dict:
+            entity_dict['remote_execution_proxies'] = module.find_resources_by_name('smart_proxies', entity_dict['remote_execution_proxies'], thin=True)
 
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
@@ -270,10 +246,11 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, subnet = module.ensure_resource('subnets', entity_dict, entity)
+    changed, subnet = module.ensure_entity('subnets', entity_dict, entity)
 
-    scope = {'subnet': subnet}
-    changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+    if subnet:
+        scope = {'subnet_id': subnet['id']}
+        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 
