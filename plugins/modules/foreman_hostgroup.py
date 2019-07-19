@@ -130,27 +130,37 @@ def main():
     entity_dict = module.clean_params()
 
     module.connect()
-    
-    check_missing = None 
-      
+
+    check_missing = []
+
+    title = entity_dict['name']
+
+    if 'parent' in entity_dict:
+        title = entity_dict['parent'] + '/' + title
+
     if not module.desired_absent:
         if 'architecture' in entity_dict:
+            check_missing.append(name_map['architecture'])
             entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
 
         if 'operatingsystem' in entity_dict:
-            entity_dict['operatingsystem'] = module.find_resource_by_name('operatingsystems', name=entity_dict['operatingsystem'], failsafe=False, thin=True)
+            check_missing.append(name_map['operatingsystem'])
+            entity_dict['operatingsystem'] = module.find_resource_by_title('operatingsystems', title=entity_dict['operatingsystem'], failsafe=False, thin=True)
 
         if 'media' in entity_dict:
+            check_missing.append(name_map['media'])
             entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)
 
         if 'ptable' in entity_dict:
+            check_missing.append(name_map['ptable'])
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
-   
+
         if 'parent' in entity_dict:
-           check_missing = [name_map['parent']]
-           entity_dict['parent'] = module.find_resource_by_name('hostgroups', name=entity_dict['parent'], failsafe=False, thin=True)
-          
-    entity = module.find_resource_by_name('hostgroups', name=entity_dict['name'], failsafe=True)
+            check_missing.append(name_map['parent'])
+            entity_dict['parent'] = module.find_resource_by_title('hostgroups', title=entity_dict['parent'], failsafe=False, thin=True)
+
+    entity = module.find_resource_by_title('hostgroups', title=title, failsafe=True)
+
     if entity:
         entity['root_pass'] = None
 
