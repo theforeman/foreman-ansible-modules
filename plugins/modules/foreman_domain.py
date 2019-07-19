@@ -51,6 +51,35 @@ options:
     required: false
     default: None
     type: list
+  parameters:
+    description:
+      - Domain specific host parameters
+    required: false
+    type: list
+    elements: dict
+    options:
+      name:
+        description:
+          - Name of the parameter
+        required: true
+      value:
+        description:
+          - Value of the parameter
+        required: true
+        type: raw
+      parameter_type:
+        description:
+          - Type of the parameter
+        default: 'string'
+        choices:
+          - 'string'
+          - 'boolean'
+          - 'integer'
+          - 'real'
+          - 'array'
+          - 'hash'
+          - 'yaml'
+          - 'json'
   state:
     description: domain presence
     default: present
@@ -87,6 +116,13 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
+        argument_spec=dict(
+            parameters=dict(type='list', elements='dict', options=dict(
+                name=dict(required=True),
+                value=dict(type='raw', required=True),
+                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+            )),
+        ),
     )
 
     entity_dict = module.clean_params()
@@ -106,7 +142,13 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_entity_state('domains', entity_dict, entity)
+    parameters = entity_dict.get('parameters')
+
+    changed, domain = module.ensure_entity('domains', entity_dict, entity)
+
+    if domain:
+        scope = {'domain_id': domain['id']}
+        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 
