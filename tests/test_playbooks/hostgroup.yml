@@ -31,6 +31,41 @@
 
   - include: tasks/hostgroup.yml
     vars:
+      hostgroup_description: "New parent host group"
+      hostgroup_name: "parent_hostgroup"
+      architecture_name: "x86_64"
+      operating_system_title: "TestOS 1.2"
+      installation_medium_name: "Temple OS 1.0"
+      ptable_name: "Timetravel finish"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "New child host group"
+      hostgroup_name: "child_hostgroup"
+      architecture_name: "x86_64"
+      operating_system_title: "TestOS 1.2"
+      installation_medium_name: "Temple OS 1.0"
+      ptable_name: "Timetravel finish"
+      parent_title: "parent_hostgroup"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_description: "New child host group"
+      hostgroup_name: "child_hostgroup"
+      architecture_name: "x86_64"
+      operating_system_title: "TestOS 1.2"
+      installation_medium_name: "Temple OS 1.0"
+      ptable_name: "Timetravel finish"
+      parent_title: "parent_hostgroup"
+      hostgroup_state: present
+      expected_change: false
+
+  - include: tasks/hostgroup.yml
+    vars:
       hostgroup_description: "New host group"
       architecture_name: "x86_64"
       operating_system_title: "TestOS 1.2"
@@ -61,6 +96,19 @@
       hostgroup_description: "Test host group"
       root_pass: "changeme"
       hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "child_hostgroup"
+      parent_title: "parent_hostgroup"
+      hostgroup_state: absent
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "parent_hostgroup"
+      hostgroup_state: absent
       expected_change: true
 
   - include: tasks/hostgroup.yml
