@@ -131,8 +131,6 @@ def main():
 
     module.connect()
 
-    check_missing = []
-
     title = entity_dict['name']
 
     if 'parent' in entity_dict:
@@ -140,23 +138,18 @@ def main():
 
     if not module.desired_absent:
         if 'architecture' in entity_dict:
-            check_missing.append(name_map['architecture'])
             entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
 
         if 'operatingsystem' in entity_dict:
-            check_missing.append(name_map['operatingsystem'])
             entity_dict['operatingsystem'] = module.find_resource_by_title('operatingsystems', title=entity_dict['operatingsystem'], failsafe=False, thin=True)
 
         if 'media' in entity_dict:
-            check_missing.append(name_map['media'])
             entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)
 
         if 'ptable' in entity_dict:
-            check_missing.append(name_map['ptable'])
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
 
         if 'parent' in entity_dict:
-            check_missing.append(name_map['parent'])
             entity_dict['parent'] = module.find_resource_by_title('hostgroups', title=entity_dict['parent'], failsafe=False, thin=True)
 
     entity = module.find_resource_by_title('hostgroups', title=title, failsafe=True)
@@ -164,7 +157,7 @@ def main():
     if entity:
         entity['root_pass'] = None
 
-    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map, check_missing=check_missing)
+    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map)
 
     module.exit_json(changed=changed)
 
