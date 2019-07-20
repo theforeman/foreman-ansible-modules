@@ -27,7 +27,7 @@ author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
   - "Baptiste Agasse (@bagasse)"
 requirements:
-  - "apypie >= 0.0.1"
+  - "apypie >= 0.0.3"
 options:
   name:
     description: Name of hostgroup
@@ -78,6 +78,7 @@ options:
     required: False
     default: None
   medium:
+    aliases: [ media ]
     description: Medium name
     required: False
     default: None
@@ -129,6 +130,35 @@ options:
     description: Puppet CA proxy name
     required: false
     default: None
+  parameters:
+    description:
+      - Subnet specific host parameters
+    required: false
+    type: list
+    elements: dict
+    options:
+      name:
+        description:
+          - Name of the parameter
+        required: true
+      value:
+        description:
+          - Value of the parameter
+        required: true
+        type: raw
+      parameter_type:
+        description:
+          - Type of the parameter
+        default: 'string'
+        choices:
+          - 'string'
+          - 'boolean'
+          - 'integer'
+          - 'real'
+          - 'array'
+          - 'hash'
+          - 'yaml'
+          - 'json'
   state:
     description: Hostgroup presence
     default: present
@@ -180,58 +210,39 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'description': 'description',
-    'parent': 'parent_id',
-    'locations': 'location_ids',
-    'organizations': 'organization_ids',
-    'compute_resource': 'compute_resource_id',
-    'compute_profile': 'compute_profile_id',
-    'domain': 'domain_id',
-    'subnet': 'subnet_id',
-    'subnet6': 'subnet6_id',
-    'realm': 'realm_id',
-    'architecture': 'architecture_id',
-    'operatingsystem': 'operatingsystem_id',
-    'media': 'medium_id',
-    'ptable': 'ptable_id',
-    'pxe_loader': 'pxe_loader',
-    'environment': 'environment_id',
-    'config_groups': 'config_group_ids',
-    'puppet_proxy': 'puppet_proxy_id',
-    'puppet_ca_proxy': 'puppet_ca_proxy_id',
-    'root_pass': 'root_pass',
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             description=dict(),
-            parent=dict(),
-            organizations=dict(type='list'),
-            locations=dict(type='list'),
-            compute_resource=dict(),
-            compute_profile=dict(),
-            domain=dict(),
-            subnet=dict(),
-            subnet6=dict(),
-            realm=dict(),
-            architecture=dict(),
-            operatingsystem=dict(),
-            media=dict(),
-            ptable=dict(),
+            parent=dict(type='entity', flat_name='parent_id'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
+            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
+            domain=dict(type='entity', flat_name='domain_id'),
+            subnet=dict(type='entity', flat_name='subnet_id'),
+            subnet6=dict(type='entity', flat_name='subnet6_id'),
+            realm=dict(type='entity', flat_name='realm_id'),
+            architecture=dict(type='entity', flat_name='architecture_id'),
+            operatingsystem=dict(type='entity', flat_name='operatingsystem_id'),
+            medium=dict(aliases=['media'], type='entity', flat_name='medium_id'),
+            ptable=dict(type='entity', flat_name='ptable_id'),
             pxe_loader=dict(choices=['PXELinux BIOS', 'PXELinux UEFI', 'Grub UEFI', 'Grub2 BIOS', 'Grub2 ELF',
                                      'Grub2 UEFI', 'Grub2 UEFI SecureBoot', 'Grub2 UEFI HTTP', 'Grub2 UEFI HTTPS',
                                      'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
             root_pass=dict(no_log=True),
-            environment=dict(),
-            config_groups=dict(type='list'),
-            puppet_proxy=dict(),
-            puppet_ca_proxy=dict(),
+            environment=dict(type='entity', flat_name='environment_id'),
+            config_groups=dict(type='entity_list', flat_name='config_group_ids'),
+            puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
+            puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
+        ),
+        argument_spec=dict(
+            parameters=dict(type='list', elements='dict', options=dict(
+                name=dict(required=True),
+                value=dict(type='raw', required=True),
+                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+            )),
         ),
     )
     entity_dict = module.clean_params()
@@ -247,8 +258,7 @@ def main():
             module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
         parent = entity_dict['parent']
     if parent:
-        search_string = 'title="{}"'.format(parent)
-        entity_dict['parent'] = module.find_resource('hostgroups', search=search_string, thin=True, failsafe=module.desired_absent)
+        entity_dict['parent'] = module.find_resource_by_title('hostgroups', title=parent, thin=True, failsafe=module.desired_absent)
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent hostgroup does not exist so just exit here
@@ -285,8 +295,8 @@ def main():
         if 'operatingsystem' in entity_dict:
             entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
 
-        if 'media' in entity_dict:
-            entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)
+        if 'medium' in entity_dict:
+            entity_dict['medium'] = module.find_resource_by_name('media', name=entity_dict['medium'], failsafe=False, thin=True)
 
         if 'ptable' in entity_dict:
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
@@ -307,7 +317,13 @@ def main():
     if entity:
         entity['root_pass'] = None
 
-    changed = module.ensure_resource_state('hostgroups', entity_dict, entity, name_map=name_map)
+    parameters = entity_dict.get('parameters')
+
+    changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
+
+    if hostgroup:
+        scope = {'hostgroup_id': hostgroup['id']}
+        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 
