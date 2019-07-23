@@ -307,21 +307,22 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             entity_spec = self.entity_spec
 
         changed = False
+        updated_entity = None
 
         if state == 'present_with_defaults':
             if current_entity is None:
-                changed, current_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
         elif state == 'present':
             if current_entity is None:
-                changed, current_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
             else:
-                changed, current_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+                changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
         elif state == 'absent':
             if current_entity is not None:
-                changed, current_entity = self._delete_entity(resource, current_entity, params)
+                changed, updated_entity = self._delete_entity(resource, current_entity, params)
         else:
             self.fail_json(msg='Not a valid state: {}'.format(state))
-        return changed, current_entity
+        return changed, updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec):
         """Create entity with given properties
@@ -374,7 +375,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 current_entity (dict): Current properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
             Return value:
-                Pair of boolean indicating whether something changed and the new current state if the entity
+                Pair of boolean indicating whether something changed and the new current state of the entity
         """
         payload = {'id': current_entity['id']}
         if params:
@@ -469,10 +470,10 @@ def _flatten_entity(entity, entity_spec):
         if key in entity_spec:
             spec = entity_spec[key]
             flat_name = spec.get('flat_name', key)
-            _type = spec.get('type', 'str')
-            if _type == 'entity':
+            property_type = spec.get('type', 'str')
+            if property_type == 'entity':
                 result[flat_name] = value['id']
-            elif _type == 'entity_list':
+            elif property_type == 'entity_list':
                 result[flat_name] = sorted(val['id'] for val in value)
             else:
                 result[flat_name] = value
