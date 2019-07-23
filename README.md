@@ -118,6 +118,7 @@ This is a list of modules currently in the repository (please add to the list if
  * foreman_compute_resource: create and maintain compute resources
  * foreman_domain: create and maintain domains
  * foreman_environment: create and maintain environments (puppet)
+ * foreman_config_group: create and maintain config groups (puppet)
  * foreman_global_parameter: create and maintain global parameters
  * foreman_hostgroup: create and maintain hostgroups
  * foreman_job_template: create and maintain job templates and associated template inputs
