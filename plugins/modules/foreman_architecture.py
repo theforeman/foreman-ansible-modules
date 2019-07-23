@@ -107,7 +107,7 @@ def main():
 
     entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
 
-    changed, _ = module.ensure_entity('architectures', entity_dict, entity)
+    changed = module.ensure_entity_state('architectures', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

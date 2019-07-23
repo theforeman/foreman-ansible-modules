@@ -287,6 +287,10 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='Not a valid state: {}'.format(state))
         return changed, changed_entity
 
+    def ensure_entity_state(self, *args, **kwargs):
+        changed, _ = self.ensure_entity(*args, **kwargs)
+        return changed
+
     @_exception2fail_json('Failed to ensure entity state: %s')
     def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None):
         """Ensure that a given entity has a certain state
