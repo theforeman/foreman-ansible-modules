@@ -355,7 +355,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         desired_entity = _flatten_entity(desired_entity, entity_spec)
         current_entity = _flatten_entity(current_entity, entity_spec)
         for key, value in desired_entity.items():
-            if key in current_entity and current_entity[key] == value:
+            if current_entity.get(key) == value:
                 continue
             payload[key] = value
         if payload:
