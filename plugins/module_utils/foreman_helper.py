@@ -26,6 +26,34 @@ except ImportError:
     APYPIE_IMP_ERR = traceback.format_exc()
 
 
+def _entity_spec_helper(spec):
+    """Extend an entity spec by adding entries for all alt_ and flat_names.
+    Extract ansible compatible argument_spec on the way.
+    """
+    entity_spec = {'id': {}}
+    argument_spec = {}
+    for key, value in spec.items():
+        if 'alt_names' in value:
+            value = value.copy()
+            alt_names = value.pop('alt_names')
+            for alt_name in alt_names:
+                entity_spec[alt_name] = value
+        entity_spec[key] = value
+        if 'flat_name' in value:
+            value = value.copy()
+            flat_name = value.pop('flat_name')
+            entity_spec[flat_name] = {}
+        if value.get('type') == 'entity':
+            value = value.copy()
+            value.pop('type')
+        elif value.get('type') == 'entity_list':
+            value = value.copy()
+            value['type'] = 'list'
+        argument_spec[key] = value
+
+    return entity_spec, argument_spec
+
+
 class ForemanBaseAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
@@ -309,6 +337,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             state = self.state
         if entity_spec is None:
             entity_spec = self.entity_spec
+        else:
+            entity_spec, _ = _entity_spec_helper(entity_spec)
 
         changed = False
         updated_entity = None
@@ -433,13 +463,16 @@ class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
 
 class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
-    def __init__(self, argument_spec, **kwargs):
+    def __init__(self, argument_spec=None, **kwargs):
+        entity_spec, gen_args = _entity_spec_helper(kwargs.pop('entity_spec', {}))
+        if argument_spec is None:
+            argument_spec = {}
         args = dict(
             state=dict(choices=['present', 'absent'], default='present'),
         )
+        args.update(gen_args)
         args.update(argument_spec)
         name_map = kwargs.pop('name_map', {})
-        entity_spec = kwargs.pop('entity_spec', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.entity_spec = entity_spec
