@@ -20,6 +20,7 @@ MODULES = [
     'content_view_filter',
     'domain',
     'environment',
+    'config_group',
     'global_parameter',
     'host',
     'hostgroup',
