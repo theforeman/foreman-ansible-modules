@@ -80,9 +80,10 @@ from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'operatingsystems': 'operatingsystem_ids',
+entity_spec = {
+    'id': {},
+    'name': {},
+    'operatingsystems': {'type': 'entity_list', 'flat_name': 'operatingsystem_ids'},
 }
 
 
@@ -92,8 +93,9 @@ def main():
             name=dict(required=True),
             operatingsystems=dict(type='list'),
         ),
-        name_map=name_map,
+        entity_spec=entity_spec,
     )
+
     entity_dict = module.clean_params()
 
     module.connect()
@@ -105,7 +107,7 @@ def main():
 
     entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
 
-    changed = module.ensure_resource_state('architectures', entity_dict, entity)
+    changed, _ = module.ensure_entity('architectures', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
