@@ -32,7 +32,7 @@ description:
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - apypie
 options:
   operatingsystem:
     description:
@@ -80,42 +80,21 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities_by_name,
-        find_os_default_template,
-        find_operating_system_by_title,
-        naildown_entity_state,
-    )
 
-    from nailgun.entities import (
-        OperatingSystem,
-        OSDefaultTemplate,
-        ProvisioningTemplate,
-        TemplateKind,
-    )
-except ImportError:
-    pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-def sanitize_os_default_template_dict(entity_dict):
-    # This is the only true source for names (and conversions thereof)
-    name_map = {
-        'operatingsystem': 'operatingsystem',
-        'template_kind': 'template_kind',
-        'provisioning_template': 'provisioning_template',
-    }
-    result = {}
-    for key, value in name_map.items():
-        if key in entity_dict:
-            result[value] = entity_dict[key]
-    return result
+entity_spec = {
+    'id': {},
+    'template_kind': {'type': 'entity', 'flat_name': 'template_kind_id'},
+    'template_kind_id': {},
+    'provisioning_template': {'type': 'entity', 'flat_name': 'provisioning_template_id'},
+    'provisioning_template_id': {},
+}
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             operatingsystem=dict(required=True),
             template_kind=dict(required=True),
@@ -126,35 +105,30 @@ def main():
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
+        entity_spec=entity_spec,
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity_dict['operatingsystem'] = find_operating_system_by_title(module, entity_dict['operatingsystem'])
-    entity_dict['template_kind'] = find_entities_by_name(
-        TemplateKind, [entity_dict['template_kind']], module)[0]
+    search = 'title~"{}"'.format(entity_dict['operatingsystem'])
+    entity_dict['operatingsystem'] = module.find_resource('operatingsystems', search, thin=True)
+    entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
 
-    entity = find_os_default_template(
-        module,
-        operatingsystem=entity_dict['operatingsystem'],
-        template_kind=entity_dict['template_kind'],
-        failsafe=True,
-    )
+    scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}
+    search = 'template_kind_id={}'.format(entity_dict['template_kind']['id'])
+    entity = module.find_resource('os_default_templates', search, params=scope, failsafe=True)
 
     # Find Provisioning Template
     if 'provisioning_template' in entity_dict:
-        if state == 'absent':
+        if module.desired_absent:
             module.fail_json(msg='Provisioning template must not be specified for deletion.')
-        entity_dict['provisioning_template'] = find_entities_by_name(
-            ProvisioningTemplate, [entity_dict['provisioning_template']], module)[0]
-        if entity_dict['provisioning_template'].template_kind.id != entity_dict['template_kind'].id:
+        entity_dict['provisioning_template'] = module.find_resource_by_name('provisioning_templates', entity_dict['provisioning_template'])
+        if entity_dict['provisioning_template']['template_kind_id'] != entity_dict['template_kind']['id']:
             module.fail_json(msg='Provisioning template kind mismatching.')
 
-    entity_dict = sanitize_os_default_template_dict(entity_dict)
-
-    changed = naildown_entity_state(OSDefaultTemplate, entity_dict, entity, state, module)
+    changed = module.ensure_entity_state('os_default_templates', entity_dict, entity, params=scope)
 
     module.exit_json(changed=changed)
 
