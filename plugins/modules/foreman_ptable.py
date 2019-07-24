@@ -274,6 +274,7 @@ def main():
         ],
         name_map=name_map,
     )
+
     # We do not want a layout text for bulk operations
     if module.params['name'] == '*':
         if module.params['file_name'] or module.params['layout']:
@@ -320,11 +321,11 @@ def main():
 
     if affects_multiple:
         entities = module.list_resource('ptables')
-        if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('ptables', entity['id']) for entity in entities]
         if not entities:
             # Nothing to do; shortcut to exit
             module.exit_json(changed=False)
+        if not module.desired_absent:  # not 'thin'
+            entities = [module.show_resource('ptables', entity['id']) for entity in entities]
     else:
         entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
 
