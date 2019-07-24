@@ -15,6 +15,7 @@
       copy:
         src: "{{ playbook_dir }}/../../{{ item.src }}"
         dest: "{{ playbook_dir }}/../../.tmp/ansible/{{ item.dest }}"
+        mode: preserve
       with_items:
         - { src: "plugins/modules/", dest: "lib/ansible/modules/foreman-test" }
         - { src: "plugins/module_utils/", dest: "lib/ansible/module_utils/foreman-test" }
