@@ -34,7 +34,7 @@ author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - apypie
 options:
   name:
     description:
@@ -91,7 +91,31 @@ options:
     description:
       - Operating System specific host parameters
     required: false
-    type: dict
+    type: list
+    elements: dict
+    options:
+      name:
+        description:
+          - Name of the parameter
+        required: true
+      value:
+        description:
+          - Value of the parameter
+        required: true
+        type: raw
+      parameter_type:
+        description:
+          - Type of the parameter
+        default: 'string'
+        choices:
+          - 'string'
+          - 'boolean'
+          - 'integer'
+          - 'real'
+          - 'array'
+          - 'hash'
+          - 'yaml'
+          - 'json'
   state:
     description:
       - State of the Operating System
@@ -113,6 +137,9 @@ EXAMPLES = '''
     release_name: stretch
     family: Debian
     major: 9
+    parameters:
+      - name: additional-packages
+        value: python vim
     state: present
 
 - name: "Ensure existence of an Operating System (provide default values)"
@@ -139,47 +166,37 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_entities,
-        find_entities_by_name,
-        find_operating_system_by_title,
-        naildown_entity,
-        naildown_entity_state,
-        sanitize_entity_dict,
-        OperatingSystemParameter,
-    )
 
-    from nailgun.entities import (
-        Architecture,
-        Media,
-        OperatingSystem,
-        PartitionTable,
-        ProvisioningTemplate,
-    )
-except ImportError:
-    pass
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_value_to_str
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 # This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'description': 'description',
-    'family': 'family',
-    'major': 'major',
-    'minor': 'minor',
-    'release_name': 'release_name',
-    'architectures': 'architecture',
-    'media': 'medium',
-    'ptables': 'ptable',
-    'provisioning_templates': 'provisioning_template',
-    'password_hash': 'password_hash',
+entity_spec = {
+    'id': {},
+    'name': {},
+    'description': {},
+    'family': {},
+    'major': {},
+    'minor': {},
+    'release_name': {},
+    'architectures': {'type': 'entity_list', 'flat_name': 'architecture_ids'},
+    'media': {'type': 'entity_list', 'flat_name': 'medium_ids'},
+    'ptables': {'type': 'entity_list', 'flat_name': 'ptable_ids'},
+    'provisioning_templates': {'type': 'entity_list', 'flat_name': 'provisioning_template_ids'},
+    'password_hash': {},
+}
+
+
+parameter_entity_spec = {
+    'id': {},
+    'name': {},
+    'value': {},
+    'parameter_type': {},
 }
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             release_name=dict(),
@@ -192,81 +209,76 @@ def main():
             ptables=dict(type='list'),
             provisioning_templates=dict(type='list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
-            parameters=dict(type='dict'),
+            parameters=dict(type='list', elements='dict', options=dict(
+                name=dict(required=True),
+                value=dict(type='raw', required=True),
+                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+            )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
+        entity_spec=entity_spec,
     )
 
-    (operating_system_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    try:
-        # Try to find the Operating System to work on
-        # name is however not unique, but description is, as well as "<name> <major>[.<minor>]"
-        entity = None
-        # If we have a description, search for it
-        if 'description' in operating_system_dict and operating_system_dict['description'] != '':
-            entity = find_operating_system_by_title(module, title=operating_system_dict['description'], failsafe=True)
-        # If we did not yet find a unique OS, search by name & version
-        if entity is None:
-            search_dict = {'name': operating_system_dict['name']}
-            if 'major' in operating_system_dict:
-                search_dict['major'] = operating_system_dict['major']
-            if 'minor' in operating_system_dict:
-                search_dict['minor'] = operating_system_dict['minor']
-            entities = find_entities(OperatingSystem, **search_dict)
-            if len(entities) == 1:
-                entity = entities[0]
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    # Try to find the Operating System to work on
+    # name is however not unique, but description is, as well as "<name> <major>[.<minor>]"
+    entity = None
+    # If we have a description, search for it
+    if 'description' in entity_dict and entity_dict['description'] != '':
+        entity = module.find_resource_by_title('operatingsystems', entity_dict['description'], failsafe=True)
+    # If we did not yet find a unique OS, search by name & version
+    if entity is None:
+        search_string = ','.join('{}="{}"'.format(key, entity_dict[key]) for key in ('name', 'major', 'minor') if key in entity_dict)
+        entity = module.find_resource('operatingsystems', search_string, failsafe=True)
 
-    if not entity and (state == 'present' or state == 'present_with_defaults'):
+    if not entity and (module.state == 'present' or module.state == 'present_with_defaults'):
         # we actually attempt to create a new one...
         for param_name in ['major', 'family', 'password_hash']:
-            if param_name not in operating_system_dict.keys():
+            if param_name not in entity_dict.keys():
                 module.fail_json(msg='{} is a required parameter to create a new operating system.'.format(param_name))
 
-    # Set Architectures of Operating System
-    if 'architectures' in operating_system_dict:
-        operating_system_dict['architectures'] = find_entities_by_name(
-            Architecture, operating_system_dict['architectures'], module)
+    if not module.desired_absent:
+        if 'architectures' in entity_dict:
+            entity_dict['architectures'] = module.find_resources_by_name('architectures', entity_dict['architectures'], thin=True)
 
-    # Set Installation Media of Operating System
-    if 'media' in operating_system_dict:
-        operating_system_dict['media'] = find_entities_by_name(
-            Media, operating_system_dict['media'], module)
+        if 'media' in entity_dict:
+            entity_dict['media'] = module.find_resources_by_name('media', entity_dict['media'], thin=True)
 
-    # Set Partition Tables of Operating System
-    if 'ptables' in operating_system_dict:
-        operating_system_dict['ptables'] = find_entities_by_name(
-            PartitionTable, operating_system_dict['ptables'], module)
+        if 'ptables' in entity_dict:
+            entity_dict['ptables'] = module.find_resources_by_name('ptables', entity_dict['ptables'], thin=True)
 
-    # Set Provisioning Templates of Operating System
-    if 'provisioning_templates' in operating_system_dict:
-        operating_system_dict['provisioning_templates'] = find_entities_by_name(
-            ProvisioningTemplate, operating_system_dict['provisioning_templates'], module)
+        if 'provisioning_templates' in entity_dict:
+            entity_dict['provisioning_templates'] = module.find_resources_by_name('provisioning_templates', entity_dict['provisioning_templates'], thin=True)
 
-    desired_parameters = operating_system_dict.get('parameters')
+    parameters = entity_dict.get('parameters')
 
-    operating_system_dict = sanitize_entity_dict(operating_system_dict, name_map)
+    changed, operating_system = module.ensure_entity('operatingsystems', entity_dict, entity)
 
-    changed, operating_system = naildown_entity(OperatingSystem, operating_system_dict, entity, state, module)
-
-    if desired_parameters is not None:
-        if state == "present" or (state == "present_with_defaults" and entity is None):
+    if parameters is not None:
+        if module.state == 'present' or (module.state == 'present_with_defaults' and entity is None):
+            search_params = {'operatingsystem_id': operating_system['id']}
             if entity:
-                current_parameters = OperatingSystemParameter(operatingsystem=operating_system).search()
-                current_parameters = {p.name: p for p in current_parameters}
+                current_parameters = {parameter['name']: parameter for parameter in module.list_resource('parameters', params=search_params)}
             else:
                 current_parameters = {}
-            desired_parameters = {name: {'name': name, 'value': value, 'operatingsystem': operating_system} for name, value in desired_parameters.items()}
+            desired_parameters = {parameter['name']: parameter for parameter in parameters}
 
             for name in desired_parameters:
+                desired_parameter = desired_parameters[name]
+                desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
                 current_parameter = current_parameters.pop(name, None)
-                changed |= naildown_entity_state(OperatingSystemParameter, desired_parameters[name], current_parameter, "present", module)
+                if current_parameter:
+                    if 'parameter_type' not in current_parameter:
+                        current_parameter['parameter_type'] = 'string'
+                    current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
+                changed |= module.ensure_entity(
+                    'parameters', desired_parameter, current_parameter, state="present", entity_spec=parameter_entity_spec, params=search_params)[0]
             for current_parameter in current_parameters.values():
-                changed |= naildown_entity_state(OperatingSystemParameter, {}, current_parameter, "absent", module)
+                changed |= module.ensure_entity(
+                    'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=search_params)[0]
 
     module.exit_json(changed=changed)
 

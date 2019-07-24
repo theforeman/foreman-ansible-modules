@@ -2,6 +2,7 @@
 # (c) Matthias Dellweg (ATIX AG) 2017
 
 import re
+import json
 import yaml
 import traceback
 
@@ -93,6 +94,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         self._thin_default = False
         self.state = 'undefined'
         self.name_map = {}
+        self.entity_spec = {}
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -285,6 +287,105 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='Not a valid state: {}'.format(state))
         return changed, changed_entity
 
+    def ensure_entity_state(self, *args, **kwargs):
+        changed, _ = self.ensure_entity(*args, **kwargs)
+        return changed
+
+    @_exception2fail_json('Failed to ensure entity state: %s')
+    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None):
+        """Ensure that a given entity has a certain state
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                desired_entity (dict): Desired properties of the entity
+                current_entity (dict, None): Current properties of the entity or None if nonexistent
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+                state (dict): Desired state of the entity (optionally taken from the module)
+                entity_spec (dict): Description of the entity structure (optionally taken from module)
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state if the entity
+        """
+        if state is None:
+            state = self.state
+        if entity_spec is None:
+            entity_spec = self.entity_spec
+
+        changed = False
+        updated_entity = None
+
+        if state == 'present_with_defaults':
+            if current_entity is None:
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+        elif state == 'present':
+            if current_entity is None:
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+            else:
+                changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+        elif state == 'absent':
+            if current_entity is not None:
+                changed, updated_entity = self._delete_entity(resource, current_entity, params)
+        else:
+            self.fail_json(msg='Not a valid state: {}'.format(state))
+        return changed, updated_entity
+
+    def _create_entity(self, resource, desired_entity, params, entity_spec):
+        """Create entity with given properties
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                desired_entity (dict): Desired properties of the entity
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+                entity_spec (dict): Description of the entity structure
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state if the entity
+        """
+        payload = _flatten_entity(desired_entity, entity_spec)
+        if params:
+            payload.update(params)
+        return self._resource_action(resource, 'create', payload)
+
+    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec):
+        """Update a given entity with given properties if any diverge
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                desired_entity (dict): Desired properties of the entity
+                current_entity (dict): Current properties of the entity
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+                entity_spec (dict): Description of the entity structure
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state if the entity
+        """
+        payload = {}
+        desired_entity = _flatten_entity(desired_entity, entity_spec)
+        current_entity = _flatten_entity(current_entity, entity_spec)
+        for key, value in desired_entity.items():
+            if current_entity.get(key) == value:
+                continue
+            payload[key] = value
+        if payload:
+            payload['id'] = current_entity['id']
+            if params:
+                payload.update(params)
+            return self._resource_action(resource, 'update', payload)
+        else:
+            return False, current_entity
+
+    def _delete_entity(self, resource, current_entity, params):
+        """Delete a given entity
+
+            Parameters:
+                resource (string): Plural name of the api resource to manipulate
+                current_entity (dict): Current properties of the entity
+                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+            Return value:
+                Pair of boolean indicating whether something changed and the new current state of the entity
+        """
+        payload = {'id': current_entity['id']}
+        if params:
+            payload.update(params)
+        return self._resource_action(resource, 'destroy', payload)
+
     def _resource_action(self, resource, action, params):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         try:
@@ -292,7 +393,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             if not self.check_mode:
                 result = self.foremanapi.resource(resource).call(action, resource_payload)
         except Exception as e:
-            self.fail_json(msg='Error while {}ing {}: {}'.format(
+            self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
         return True, result
 
@@ -338,8 +439,10 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         )
         args.update(argument_spec)
         name_map = kwargs.pop('name_map', {})
+        entity_spec = kwargs.pop('entity_spec', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.entity_spec = entity_spec
         self.name_map = name_map
         self.state = self.params.pop('state')
         self.desired_absent = self.state == 'absent'
@@ -362,6 +465,35 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 def sanitize_entity_dict(entity_dict, name_map):
     name_map['id'] = 'id'
     return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
+
+
+def _flatten_entity(entity, entity_spec):
+    """Flatten entity according to spec"""
+    result = {}
+    for key, value in entity.items():
+        if key in entity_spec:
+            spec = entity_spec[key]
+            flat_name = spec.get('flat_name', key)
+            property_type = spec.get('type', 'str')
+            if property_type == 'entity':
+                result[flat_name] = value['id']
+            elif property_type == 'entity_list':
+                result[flat_name] = sorted(val['id'] for val in value)
+            else:
+                result[flat_name] = value
+    return result
+
+
+# Helper for (global, operatingsystem, ...) parameters
+def parameter_value_to_str(value, parameter_type):
+    """Helper to convert the value of parameters to string according to their parameter_type."""
+    if parameter_type in ['real']:
+        parameter_string = str(value)
+    elif parameter_type in ['array', 'hash', 'yaml', 'json']:
+        parameter_string = json.dumps(value)
+    else:
+        parameter_string = value
+    return parameter_string
 
 
 # Helper for templates
