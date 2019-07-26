@@ -23,12 +23,13 @@ DOCUMENTATION = '''
 module: foreman_compute_resource
 short_description: Manage Foreman Compute resources using Foreman API
 description:
-  - Create and delete Foreman Compute Resources using Foreman API
+  - Create, update and delete Foreman Compute Resources using Foreman API
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
+  - "Manisha Singhal (@Manisha15) ATIX AG"
 requirements:
-  - "nailgun >= 0.32.0"
+  - "apypie"
 options:
   name:
     description: compute resource name
@@ -44,10 +45,6 @@ options:
     required: false
     default: None
     choices: ["vmware", "libvirt", "ovirt"]
-  provider_auth:
-    description: Deprecated, use I(provider_params) instead. Provider authentication
-    required: false
-    default: None
   provider_params:
     description: Parameter specific to compute resource provider
     required: false
@@ -71,7 +68,48 @@ extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''
-- name: vmware compute resource
+- name: Create livirt compute resource
+  foreman_compute_resource:
+    name: example_compute_resource
+    locations:
+      - Munich
+    organizations:
+      - ATIX
+    provider: libvirt
+    provider_params:
+      url: libvirt.example.com
+      display_type: vnc
+    server_url: foreman.example.com
+    username: admin
+    password: secret
+    state: present
+
+- name: Update livirt compute resource
+  foreman_compute_resource:
+    name: example_compute_resource
+    description: updated compute resource
+    locations:
+      - Munich
+    organizations:
+      - ATIX
+    provider: libvirt
+    provider_params:
+      url: libvirt.example.com
+      display_type: vnc
+    server_url: foreman.example.com
+    username: admin
+    password: secret
+    state: present
+
+- name: Delete livirt compute resource
+  foreman_compute_resource:
+    name: example_compute_resource
+    server_url: foreman.example.com
+    username: admin
+    password: secret
+    state: absent
+
+- name: Create vmware compute resource
   foreman_compute_resource:
     name: example_compute_resource
     locations:
@@ -89,7 +127,7 @@ EXAMPLES = '''
     password: secret
     state: present
 
-- name: ovirt compute resource
+- name: Create ovirt compute resource
   foreman_compute_resource:
     name: ovirt_compute_resource
     locations:
@@ -112,133 +150,83 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_compute_resource,
-        find_organizations,
-        find_locations,
-        ForemanEntityAnsibleModule,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
 
-    from nailgun.entities import (
-        AbstractComputeResource,
-        LibvirtComputeResource,
-        OVirtComputeResource,
-        VMWareComputeResource,
-    )
-
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-
-
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'description': 'description',
-    'provider': 'provider',
-    'organizations': 'organization',
-    'locations': 'location',
-    'datacenter': 'datacenter',
-}
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
 def get_provider_infos(provider):
     provider_name = provider.lower()
 
     if provider_name == 'libvirt':
-        return {
-            'params': ['url', 'display_type'],
-            'class': LibvirtComputeResource
-        }
+        return {'params': ['url', 'display_type']}
 
     elif provider_name == 'ovirt':
-        return {
-            'params': ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota'],
-            'class': OVirtComputeResource
-        }
+        return {'params': ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']}
 
     elif provider_name == 'vmware':
-        return {
-            'params': ['url', 'user', 'password', 'datacenter'],
-            'class': VMWareComputeResource
-        }
+        return {'params': ['url', 'user', 'password', 'datacenter']}
 
     else:
-        return {
-            'params': [],
-            'class': AbstractComputeResource
-        }
+        return {'params': []}
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanEntityApypieAnsibleModule(
+        entity_spec=dict(
+            name=dict(required=True),
+            updated_name=dict(),
+            description=dict(),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt']),
+            display_type=dict(),
+            datacenter=dict(),
+            url=dict(),
+            user=dict(),
+            password=dict(),
+            use_v4=dict(),
+            ovirt_quota=dict(),
+        ),
         argument_spec=dict(
-            name=dict(type='str', required=True),
-            updated_name=dict(type='str'),
-            description=dict(type='str'),
-            provider=dict(type='str', choices=['vmware', 'libvirt', 'ovirt']),
             provider_params=dict(type='dict'),
-            locations=dict(type='list'),
-            organizations=dict(type='list'),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
-
-            # Deprecated provider's specific params, use nested keys in provider_params param instead
-            provider_auth=dict(type='dict'),
-            url=dict(type='str'),
-            display_type=dict(type='str'),
-            datacenter=dict(type='str'),
         ),
         required_if=(
             ['state', 'present', ['provider']],
         ),
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     if 'provider' in entity_dict:
         entity_dict['provider'] = entity_dict['provider'].title()
 
     provider_infos = get_provider_infos(provider=entity_dict.get('provider', ''))
     provider_params = entity_dict.pop('provider_params', dict())
-    provider_auth = entity_dict.pop('provider_auth', dict())
 
     module.connect()
 
-    try:
-        # Try to find the compute_resource to work on
-        entity = find_compute_resource(module, name=entity_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('compute_resources', name=entity_dict['name'], failsafe=True)
 
-    if 'updated_name' in entity_dict and state == 'present':
-        entity_dict['name'] = entity_dict['updated_name']
+    if not module.desired_absent:
+        if 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict['updated_name']
 
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_organizations(module, entity_dict['organizations'])
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    if 'locations' in entity_dict:
-        entity_dict['locations'] = find_locations(module, entity_dict['locations'])
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    # Add provider specific params
-    if state in ['present', 'present_with_defaults']:
+        # Add provider specific params
         if not provider_infos and not entity:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
         for key in provider_infos['params']:
-            # Manage deprecated params
-            if key in provider_auth:
-                entity_dict[key] = provider_auth[key]
-
             if key in provider_params:
                 entity_dict[key] = provider_params[key]
 
-    changed = naildown_entity_state(provider_infos['class'], entity_dict, entity, state, module)
+    changed = module.ensure_entity_state('compute_resources', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
