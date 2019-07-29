@@ -35,7 +35,6 @@ def _entity_spec_helper(spec):
     for key, value in spec.items():
         entity_value = {}
         argument_value = value.copy()
-        alt_names = argument_value.pop('alt_names', [])
         if 'flat_name' in argument_value:
             flat_name = argument_value.pop('flat_name')
             entity_value['flat_name'] = flat_name
@@ -46,8 +45,6 @@ def _entity_spec_helper(spec):
         elif value.get('type') == 'entity_list':
             argument_value['type'] = 'list'
             entity_value['type'] = 'entity_list'
-        for alt_name in alt_names:
-            entity_spec[alt_name] = entity_value
         entity_spec[key] = entity_value
         argument_spec[key] = argument_value
 

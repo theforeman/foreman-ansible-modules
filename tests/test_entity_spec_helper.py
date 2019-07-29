@@ -12,14 +12,14 @@ def test_empty_entity():
 def test_full_entity():
     spec = {
         'name': {},
-        'count': {'type': 'int', 'aliases': ['number'], 'alt_names': ['how_many']},
+        'count': {'type': 'int', 'aliases': ['number']},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
     }
     entity_spec, argument_spec = _entity_spec_helper(spec)
     assert spec == {
         'name': {},
-        'count': {'type': 'int', 'aliases': ['number'], 'alt_names': ['how_many']},
+        'count': {'type': 'int', 'aliases': ['number']},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
     }
@@ -27,7 +27,6 @@ def test_full_entity():
         'id': {},
         'name': {},
         'count': {},
-        'how_many': {},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'street_id': {},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
@@ -39,4 +38,3 @@ def test_full_entity():
         'street': {},
         'houses': {'type': 'list'},
     }
-
