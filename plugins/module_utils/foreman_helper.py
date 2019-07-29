@@ -39,6 +39,7 @@ def _entity_spec_helper(spec):
             flat_name = argument_value.pop('flat_name')
             entity_value['flat_name'] = flat_name
             entity_spec[flat_name] = {}
+
         if argument_value.get('type') == 'entity':
             argument_value.pop('type')
             entity_value['type'] = 'entity'
