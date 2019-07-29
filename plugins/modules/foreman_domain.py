@@ -31,10 +31,14 @@ options:
   name:
     description: The full DNS domain name
     required: true
-  dns_proxy:
+  dns:
+    aliases:
+      - dns_proxy
     description: DNS proxy to use within this domain for managing A records
     required: false
-  description:
+  fullname:
+    aliases:
+      - description
     description: Full name describing the domain
     required: false
   locations:
@@ -74,26 +78,15 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'description': 'fullname',
-    'dns_proxy': 'dns_id',
-    'locations': 'location_ids',
-    'organizations': 'organization_ids',
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
-            description=dict(),
-            dns_proxy=dict(),
-            locations=dict(type='list'),
-            organizations=dict(type='list'),
+            fullname=dict(aliases=['description']),
+            dns=dict(type='entity', flat_name='dns_id', aliases=['dns_proxy']),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
-        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -104,8 +97,8 @@ def main():
     entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        if 'dns_proxy' in entity_dict:
-            entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
+        if 'dns' in entity_dict:
+            entity_dict['dns'] = module.find_resource_by_name('smart_proxies', entity_dict['dns'], thin=True)
 
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
@@ -113,7 +106,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('domains', entity_dict, entity)
+    changed = module.ensure_entity_state('domains', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
