@@ -437,13 +437,12 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
     def __init__(self, argument_spec=None, **kwargs):
         entity_spec, gen_args = _entity_spec_helper(kwargs.pop('entity_spec', {}))
-        if argument_spec is None:
-            argument_spec = {}
         args = dict(
             state=dict(choices=['present', 'absent'], default='present'),
         )
         args.update(gen_args)
-        args.update(argument_spec)
+        if argument_spec is not None:
+            args.update(argument_spec)
         name_map = kwargs.pop('name_map', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
