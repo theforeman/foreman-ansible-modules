@@ -12,7 +12,7 @@
     validate_certs: "{{ foreman_validate_certs }}"
     operatingsystem: "{{ operating_system_name }}"
     template_kind: "{{ os_default_template_kind }}"
-    provisioning_template: "{{ provisioning_template_name }}"
+    provisioning_template: "{{ (os_default_template_state == 'absent') | ternary(omit, provisioning_template_name) }}"
     state: "{{ os_default_template_state }}"
   register: result
 - assert:

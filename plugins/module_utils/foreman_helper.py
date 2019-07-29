@@ -149,8 +149,11 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return self.foremanapi.resource('home').call('status')
 
     @_exception2fail_json('Failed to show resource: %s')
-    def show_resource(self, resource, resource_id):
-        return self.foremanapi.resource(resource).call('show', {'id': resource_id})
+    def show_resource(self, resource, resource_id, params=None):
+        if params is None:
+            params = {}
+        params['id'] = resource_id
+        return self.foremanapi.resource(resource).call('show', params)
 
     @_exception2fail_json(msg='Failed to list resource: %s')
     def list_resource(self, resource, search=None, params=None):
@@ -162,12 +165,13 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return self.foremanapi.resource(resource).call('index', params)['results']
 
     def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
-        if params is None:
-            params = {}
+        list_params = {}
+        if params is not None:
+            list_params.update(params)
         if thin is None:
             thin = self._thin_default
-        params['thin'] = thin
-        results = self.list_resource(resource, search, params)
+        list_params['thin'] = thin
+        results = self.list_resource(resource, search, list_params)
         if len(results) == 1:
             result = results[0]
         elif failsafe:
@@ -178,7 +182,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             if thin:
                 result = {'id': result['id']}
             else:
-                result = self.show_resource(resource, result['id'])
+                result = self.show_resource(resource, result['id'], params=params)
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):

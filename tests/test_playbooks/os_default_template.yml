@@ -16,6 +16,9 @@
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: present
+  - include: tasks/os_default_template.yml
+    vars:
+      os_default_template_state: absent
 
 - hosts: tests
   gather_facts: false
@@ -32,12 +35,10 @@
       expected_change: false
   - include: tasks/os_default_template.yml
     vars:
-      provisioning_template_name:
       os_default_template_state: absent
       expected_change: true
   - include: tasks/os_default_template.yml
     vars:
-      provisioning_template_name:
       os_default_template_state: absent
       expected_change: false
 
