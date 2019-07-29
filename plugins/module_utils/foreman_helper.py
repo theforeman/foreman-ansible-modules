@@ -27,7 +27,7 @@ except ImportError:
 
 
 def _entity_spec_helper(spec):
-    """Extend an entity spec by adding entries for all alt_ and flat_names.
+    """Extend an entity spec by adding entries for all flat_names.
     Extract ansible compatible argument_spec on the way.
     """
     entity_spec = {'id': {}}
