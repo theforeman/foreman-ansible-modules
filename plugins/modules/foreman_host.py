@@ -128,7 +128,7 @@ def main():
         module, host_dict['hostgroup'], failsafe=True)
 
     host_dict['name'] = host_dict['name'] + '.' + \
-        host_dict['hostgroup'].domain.read().fullname
+        host_dict['hostgroup'].domain.read().name
 
     entity = find_host(module, host_dict['name'], failsafe=True)
 
