@@ -26,32 +26,6 @@ except ImportError:
     APYPIE_IMP_ERR = traceback.format_exc()
 
 
-def _entity_spec_helper(spec):
-    """Extend an entity spec by adding entries for all flat_names.
-    Extract ansible compatible argument_spec on the way.
-    """
-    entity_spec = {'id': {}}
-    argument_spec = {}
-    for key, value in spec.items():
-        entity_value = {}
-        argument_value = value.copy()
-        if 'flat_name' in argument_value:
-            flat_name = argument_value.pop('flat_name')
-            entity_value['flat_name'] = flat_name
-            entity_spec[flat_name] = {}
-
-        if argument_value.get('type') == 'entity':
-            argument_value.pop('type')
-            entity_value['type'] = 'entity'
-        elif value.get('type') == 'entity_list':
-            argument_value['type'] = 'list'
-            entity_value['type'] = 'entity_list'
-        entity_spec[key] = entity_value
-        argument_spec[key] = argument_value
-
-    return entity_spec, argument_spec
-
-
 class ForemanBaseAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
@@ -496,6 +470,32 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 def sanitize_entity_dict(entity_dict, name_map):
     name_map['id'] = 'id'
     return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
+
+
+def _entity_spec_helper(spec):
+    """Extend an entity spec by adding entries for all flat_names.
+    Extract ansible compatible argument_spec on the way.
+    """
+    entity_spec = {'id': {}}
+    argument_spec = {}
+    for key, value in spec.items():
+        entity_value = {}
+        argument_value = value.copy()
+        if 'flat_name' in argument_value:
+            flat_name = argument_value.pop('flat_name')
+            entity_value['flat_name'] = flat_name
+            entity_spec[flat_name] = {}
+
+        if argument_value.get('type') == 'entity':
+            argument_value.pop('type')
+            entity_value['type'] = 'entity'
+        elif value.get('type') == 'entity_list':
+            argument_value['type'] = 'list'
+            entity_value['type'] = 'entity_list'
+        entity_spec[key] = entity_value
+        argument_spec[key] = argument_value
+
+    return entity_spec, argument_spec
 
 
 def _flatten_entity(entity, entity_spec):
