@@ -41,7 +41,7 @@ def snapshot_query_matcher(r1, r2):
     return r1.query == r2.query
 
 
-def domain_query_matcher(r1, r2):
+def query_matcher_ignore_proxy(r1, r2):
     if r1.path == '/api/smart_proxies' and r2.path == '/api/smart_proxies':
         return [q for q in r1.query if q[0] != 'search'] == [q for q in r2.query if q[0] != 'search']
     return r1.query == r2.query
@@ -87,9 +87,9 @@ else:
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
 
-    if test_params['test_name'] == 'domain':
-        fam_vcr.register_matcher('domain_query', domain_query_matcher)
-        query_matcher = 'domain_query'
+    if test_params['test_name'] in ['domain', 'hostgroup']:
+        fam_vcr.register_matcher('query_ignore_proxy', query_matcher_ignore_proxy)
+        query_matcher = 'query_ignore_proxy'
     elif test_params['test_name'] == 'snapshot':
         fam_vcr.register_matcher('snapshot_query', snapshot_query_matcher)
         query_matcher = 'snapshot_query'

@@ -367,8 +367,7 @@ def main():
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
         if 'operatingsystems' in entity_dict:
-            search_list = ["title~{}".format(title) for title in entity_dict['operatingsystems']]
-            entity_dict['operatingsystems'] = module.find_resources('operatingsystems', search_list, thin=True)
+            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
 
     if not affects_multiple:
         entity_dict = find_template_kind(module, entity_dict)

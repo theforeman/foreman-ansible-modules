@@ -141,8 +141,7 @@ def main():
 
     if not module.desired_absent:
         if 'operatingsystems' in entity_dict:
-            search_list = ['title~"{}"'.format(title) for title in entity_dict['operatingsystems']]
-            entity_dict['operatingsystems'] = module.find_resources('operatingsystems', search_list=search_list, thin=True)
+            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
             if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
                 entity_dict['os_family'] = module.show_resource('operatingsystems', entity_dict['operatingsystems'][0]['id'])['family']
 

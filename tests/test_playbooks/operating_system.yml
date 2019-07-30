@@ -7,11 +7,22 @@
     - include: tasks/operating_system.yml
       vars:
         operating_system_state: absent
+    - include: tasks/operating_system.yml
+      vars:
+        operating_system_description: "{{ operating_system_name}} SP1"
+        operating_system_minor: 1
+        operating_system_state: absent
 - hosts: tests
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
+    - include: tasks/operating_system.yml
+      vars:
+        operating_system_description: "{{ operating_system_name}} SP1"
+        operating_system_minor: 1
+        operating_system_state: present
+        expected_change: true
     - include: tasks/operating_system.yml
       vars:
         operating_system_state: present
@@ -73,4 +84,10 @@
       vars:
         operating_system_state: absent
         expected_change: false
+    - include: tasks/operating_system.yml
+      vars:
+        operating_system_description: "{{ operating_system_name}} SP1"
+        operating_system_minor: 1
+        operating_system_state: absent
+        expected_change: true
 ...
