@@ -84,10 +84,13 @@
   tasks:
   - include: tasks/operating_system.yml
     vars:
-      operating_system_name: "{{ item }}"
+      operating_system_description: "{{ item }}"
       operating_system_state: absent
     loop:
       - "TestOS1"
       - "TestOS1 SP1"
-      - "TestOS2"
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS2"
+      operating_system_state: absent
 ...
