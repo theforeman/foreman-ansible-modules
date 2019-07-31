@@ -521,7 +521,7 @@ def parameter_value_to_str(value, parameter_type):
     if parameter_type in ['real']:
         parameter_string = str(value)
     elif parameter_type in ['array', 'hash', 'yaml', 'json']:
-        parameter_string = json.dumps(value)
+        parameter_string = json.dumps(value, sort_keys=True)
     else:
         parameter_string = value
     return parameter_string

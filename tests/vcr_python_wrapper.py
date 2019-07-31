@@ -16,7 +16,7 @@ def body_json_l2_matcher(r1, r2):
         body1 = json.loads(r1.body.decode('utf8'))
         body2 = json.loads(r2.body.decode('utf8'))
         if 'common_parameter' in body1 and 'common_parameter' in body2:
-            if body1['common_parameter'].get('parameter_type') == body2['common_parameter'].get('parameter_type') in ['json', 'yaml']:
+            if body1['common_parameter'].get('parameter_type') == body2['common_parameter'].get('parameter_type') in ['hash', 'json', 'yaml']:
                 body1['common_parameter']['value'] = json.loads(body1['common_parameter'].get('value'))
                 body2['common_parameter']['value'] = json.loads(body2['common_parameter'].get('value'))
         return body1 == body2
