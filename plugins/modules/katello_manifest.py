@@ -63,7 +63,6 @@ options:
   redhat_repository_url:
     description:
        - URL to retrieve content from
-    default: https://cdn.redhat.com
 '''
 # HERE
 EXAMPLES = '''
@@ -103,13 +102,13 @@ except ImportError as e:
 from ansible.module_utils.basic import AnsibleModule
 
 
-def manifest(module, organization, state, manifest_path=None, redhat_repository_url="https://cdn.redhat.com"):
+def manifest(module, organization, state, manifest_path=None, redhat_repository_url=None):
     changed = False
     organization = find_organization(module, organization).read()
     current_manifest = current_subscription_manifest(module, organization)
     manifest_present = current_manifest is not None
 
-    if organization.redhat_repository_url != redhat_repository_url:
+    if redhat_repository_url is not None and organization.redhat_repository_url != redhat_repository_url:
         if not module.check_mode:
             organization.redhat_repository_url = redhat_repository_url
             organization.update({'redhat_repository_url'})
