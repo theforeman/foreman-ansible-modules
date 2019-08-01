@@ -1,43 +1,64 @@
 ---
-- hosts: localhost
+- hosts: fixtures
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-  - name: "Remove the Katello manifest"
-    katello_manifest:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      organization: "Default Organization"
-      state: 'absent'
-  - name: "Upload a Katello manifest"
-    katello_manifest:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      organization: "Default Organization"
-      repository_url: "https://cdn.redhat.com"
-      manifest_path: "/tmp/manifest.zip"
-      state: 'present'
-  - name: "Try to upload the same Katello manifest"
-    katello_manifest:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      organization: "Default Organization"
-      repository_url: "https://cdn.redhat.com"
-      manifest_path: "/tmp/manifest.zip"
-      state: 'present'
-  - name: "Refresh the manifest"
-    katello_manifest:
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      server_url: "{{ foreman_server_url }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      organization: "Default Organization"
-      repository_url: "https://cdn.redhat.com"
-      state: 'refreshed'
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/katello_manifest.yml
+      vars:
+        manifest_state: absent
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - name: "import manifest"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_path: "{{ katello_manifest_path }}"
+      manifest_state: "present"
+      expected_change: true
+  - name: "import manifest again, no change"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_path: "{{ katello_manifest_path }}"
+      manifest_state: "present"
+      expected_change: false
+  - name: "update url"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_path: "{{ katello_manifest_path }}"
+      manifest_state: "present"
+      manifest_repository_url: "http://cdn.example.com"
+      expected_change: true
+  - name: "update url again, no change"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_path: "{{ katello_manifest_path }}"
+      manifest_state: "present"
+      manifest_repository_url: "http://cdn.example.com"
+      expected_change: false
+  - name: "refresh manifest"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_state: "refreshed"
+      expected_change: true
+  - name: "drop manifest"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_state: "absent"
+      expected_change: true
+
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
