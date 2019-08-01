@@ -27,6 +27,7 @@ MODULES = [
     'host_collection',
     'installation_medium',
     'job_template',
+    'katello_manifest',
     'lifecycle_environment',
     'location',
     'operating_system',
