@@ -36,9 +36,9 @@ options:
       - dns
     description: DNS proxy to use within this domain for managing A records
     required: false
-  fullname:
+  description:
     aliases:
-      - description
+      - fullname
     description: Full name describing the domain
     required: false
   locations:
@@ -82,7 +82,7 @@ def main():
     module = ForemanEntityApypieAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
-            fullname=dict(aliases=['description']),
+            description=dict(aliases=['fullname'], flat_name='fullname'),
             dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns']),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
