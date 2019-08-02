@@ -79,21 +79,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-entity_spec = {
-    'id': {},
-    'name': {},
-    'operatingsystems': {'type': 'entity_list', 'flat_name': 'operatingsystem_ids'},
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
-            operatingsystems=dict(type='list'),
+            operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
         ),
-        entity_spec=entity_spec,
     )
 
     entity_dict = module.clean_params()

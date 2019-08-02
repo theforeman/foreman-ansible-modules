@@ -332,6 +332,8 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             state = self.state
         if entity_spec is None:
             entity_spec = self.entity_spec
+        else:
+            entity_spec, _ = _entity_spec_helper(entity_spec)
 
         changed = False
         updated_entity = None
@@ -474,13 +476,15 @@ class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
 
 class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
-    def __init__(self, argument_spec, **kwargs):
+    def __init__(self, argument_spec=None, **kwargs):
+        entity_spec, gen_args = _entity_spec_helper(kwargs.pop('entity_spec', {}))
         args = dict(
             state=dict(choices=['present', 'absent'], default='present'),
         )
-        args.update(argument_spec)
+        args.update(gen_args)
+        if argument_spec is not None:
+            args.update(argument_spec)
         name_map = kwargs.pop('name_map', {})
-        entity_spec = kwargs.pop('entity_spec', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.entity_spec = entity_spec
@@ -506,6 +510,31 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 def sanitize_entity_dict(entity_dict, name_map):
     name_map['id'] = 'id'
     return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
+
+
+def _entity_spec_helper(spec):
+    """Extend an entity spec by adding entries for all flat_names.
+    Extract ansible compatible argument_spec on the way.
+    """
+    entity_spec = {'id': {}}
+    argument_spec = {}
+    for key, value in spec.items():
+        entity_value = {}
+        argument_value = value.copy()
+        if 'flat_name' in argument_value:
+            flat_name = argument_value.pop('flat_name')
+            entity_value['flat_name'] = flat_name
+            entity_spec[flat_name] = {}
+
+        if argument_value.get('type') == 'entity':
+            entity_value['type'] = argument_value.pop('type')
+        elif argument_value.get('type') == 'entity_list':
+            argument_value['type'] = 'list'
+            entity_value['type'] = 'entity_list'
+        entity_spec[key] = entity_value
+        argument_spec[key] = argument_value
+
+    return entity_spec, argument_spec
 
 
 def _flatten_entity(entity, entity_spec):
