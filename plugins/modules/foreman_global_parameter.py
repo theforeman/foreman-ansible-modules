@@ -134,8 +134,7 @@ def main():
 
     if not module.desired_absent:
         # Convert values according to their corresponding parameter_type
-        if entity:
-            if 'parameter_type' not in entity:
+        if entity and 'parameter_type' not in entity:
                 entity['parameter_type'] = 'string'
         entity_dict['value'] = parameter_value_to_str(entity_dict['value'], entity_dict['parameter_type'])
         if entity and 'value' in entity:
