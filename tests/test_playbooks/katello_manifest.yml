@@ -42,11 +42,14 @@
       manifest_state: "present"
       manifest_repository_url: "http://cdn.example.com"
       expected_change: false
-  - name: "refresh manifest"
-    include_tasks: tasks/katello_manifest.yml
-    vars:
-      manifest_state: "refreshed"
-      expected_change: true
+# the manifest we provide in fixtures cannot be refreshed because it's been deleted from the portal
+# if you want to test manifest_state: "refreshed", you will have to provide an own manifest
+# please don't record/commit the result, as the manifest allows access to your portal account
+#  - name: "refresh manifest"
+#    include_tasks: tasks/katello_manifest.yml
+#    vars:
+#      manifest_state: "refreshed"
+#      expected_change: true
   - name: "drop manifest"
     include_tasks: tasks/katello_manifest.yml
     vars:
