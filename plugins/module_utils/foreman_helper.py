@@ -212,29 +212,10 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
 
     def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
-        search = 'title~"{}"'.format(name)
-        list_params = {}
-        if params is not None:
-            list_params.update(params)
-        if thin is None:
-            thin = self._thin_default
-        list_params['thin'] = thin
-        results = self.list_resource('operatingsystems', search, list_params)
-        result = None
-        unique_str = ''
-        if len(results) == 1:
-            result = results[0]
-        elif len(results) >= 1:
-            # return the exact match (if available)
-            result = next((result for result in results if result['title'] == name), None)
-            unique_str = 'unique '
-        if not failsafe and not result:
-            self.fail_json(msg="No {}operatingsystem found for '{}'".format(unique_str, name))
-        if result:
-            if thin:
-                result = {'id': result['id']}
-            else:
-                result = self.show_resource(resource, result['id'], params=params)
+        result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
+        if not result:
+            search = 'title~"{}"'.format(name)
+            result = self.find_resource('operatingsystems', search, params=params, failsafe=failsafe, thin=thin)
         return result
 
     def find_operatingsystems(self, names, **kwargs):
