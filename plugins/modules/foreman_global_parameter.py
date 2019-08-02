@@ -133,7 +133,7 @@ def main():
     entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        # Fix values according to their corresponding parameter_type
+        # Convert values according to their corresponding parameter_type
         if entity:
             if 'parameter_type' not in entity:
                 entity['parameter_type'] = 'string'
