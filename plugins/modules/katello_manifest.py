@@ -126,9 +126,9 @@ def manifest(module, organization, state, manifest_path=None, redhat_repository_
         except IOError as e:
             module.fail_json(msg="Unable to open the manifest file: %s" % e)
         except TaskFailedError as e:
-            if "same as existing data" in e.message:
+            if "same as existing data" in e.args[0]:
                 pass
-            elif "older than existing data" in e.message:
+            elif "older than existing data" in e.args[0]:
                 module.fail_json(msg="Manifest is older than existing data: %s" % e)
             else:
                 module.fail_json(msg="Upload of the manifest failed: %s" % e)
