@@ -47,6 +47,19 @@ def query_matcher_ignore_proxy(r1, r2):
     return r1.query == r2.query
 
 
+def katello_manifest_body_matcher(r1, r2):
+    if r1.headers.get('content-type').startswith('multipart/form-data') and r2.headers.get('content-type').startswith('multipart/form-data'):
+        if r1.path.endswith('/subscriptions/upload') and r2.path.endswith('/subscriptions/upload'):
+            r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
+            r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
+            # the body is a huge binary blob, which seems to differ on every run, so we just ignore it
+            body1 = body2 = {}
+            r1_copy.body = json.dumps(body1)
+            r2_copy.body = json.dumps(body2)
+            return body_json_l2_matcher(r1_copy, r2_copy)
+    return body_json_l2_matcher(r1, r2)
+
+
 def host_body_matcher(r1, r2):
     if r1.headers.get('content-type') == r2.headers.get('content-type') == 'application/json':
         if r1.path == r2.path == '/api/v2/hostgroups':
@@ -102,6 +115,9 @@ else:
     if test_params['test_name'] == 'host':
         fam_vcr.register_matcher('host_body', host_body_matcher)
         body_matcher = 'host_body'
+    elif test_params['test_name'] == 'katello_manifest':
+        fam_vcr.register_matcher('katello_manifest_body', katello_manifest_body_matcher)
+        body_matcher = 'katello_manifest_body'
 
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
