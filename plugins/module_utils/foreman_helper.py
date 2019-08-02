@@ -488,7 +488,7 @@ def _entity_spec_helper(spec):
         if argument_value.get('type') == 'entity':
             argument_value.pop('type')
             entity_value['type'] = 'entity'
-        elif value.get('type') == 'entity_list':
+        elif argument_value.get('type') == 'entity_list':
             argument_value['type'] = 'list'
             entity_value['type'] = 'entity_list'
         entity_spec[key] = entity_value
