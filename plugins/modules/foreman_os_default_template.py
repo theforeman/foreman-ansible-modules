@@ -112,8 +112,7 @@ def main():
 
     module.connect()
 
-    search = 'title~"{}"'.format(entity_dict['operatingsystem'])
-    entity_dict['operatingsystem'] = module.find_resource('operatingsystems', search, thin=True)
+    entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
     entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
 
     scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}

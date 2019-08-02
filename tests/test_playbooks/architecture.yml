@@ -7,6 +7,14 @@
   - include: tasks/operating_system.yml
     vars:
       operating_system_name: "TestOS1"
+      operating_system_minor: 0
+      operating_system_description: "TestOS1"
+      operating_system_state: present
+  - include: tasks/operating_system.yml
+    vars:
+      operating_system_name: "TestOS1"
+      operating_system_minor: 1
+      operating_system_description: "TestOS1 SP1"
       operating_system_state: present
   - include: tasks/operating_system.yml
     vars:
@@ -30,6 +38,21 @@
        - "TestOS1"
       architecture_state: present
       expected_change: false
+
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS1"
+       - "TestOS1 SP1"
+      architecture_state: present
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      operatingsystems:
+       - "TestOS1"
+      architecture_state: present
+      expected_change: true
 
   - include: tasks/architecture.yml
     vars:
@@ -61,8 +84,11 @@
   tasks:
   - include: tasks/operating_system.yml
     vars:
-      operating_system_name: "TestOS1"
+      operating_system_description: "{{ item }}"
       operating_system_state: absent
+    loop:
+      - "TestOS1"
+      - "TestOS1 SP1"
   - include: tasks/operating_system.yml
     vars:
       operating_system_name: "TestOS2"

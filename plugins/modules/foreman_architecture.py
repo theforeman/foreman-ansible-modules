@@ -102,8 +102,7 @@ def main():
 
     if not module.desired_absent:
         if 'operatingsystems' in entity_dict:
-            search_list = ["title~{}".format(title) for title in entity_dict['operatingsystems']]
-            entity_dict['operatingsystems'] = module.find_resources('operatingsystems', search_list, thin=True)
+            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
 
     entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
 

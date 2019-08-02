@@ -39,7 +39,7 @@ options:
   name:
     description:
       - Name of the Operating System
-    required: true
+    required: false
   release_name:
     description:
       - Release name of the operating system (recommended for debian)
@@ -50,11 +50,11 @@ options:
   family:
     description:
       - distribution family of the Operating System
-    required: true
+    required: false
   major:
     description:
       - major version of the Operating System
-    required: true
+    required: false
   minor:
     description:
       - minor version of the Operating System
@@ -198,11 +198,11 @@ parameter_entity_spec = {
 def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
-            name=dict(required=True),
+            name=dict(),
             release_name=dict(),
             description=dict(),
-            family=dict(required=True),
-            major=dict(required=True),
+            family=dict(),
+            major=dict(),
             minor=dict(),
             architectures=dict(type='list'),
             media=dict(type='list'),
@@ -216,6 +216,14 @@ def main():
             )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
+        required_if=[
+            ['state', 'present', ['name', 'major', 'family']],
+            ['state', 'present_with_defaults', ['name', 'major', 'family']],
+        ],
+        required_one_of=[
+            ['description', 'name'],
+            ['description', 'major'],
+        ],
         entity_spec=entity_spec,
     )
 
@@ -228,9 +236,11 @@ def main():
     entity = None
     # If we have a description, search for it
     if 'description' in entity_dict and entity_dict['description'] != '':
-        entity = module.find_resource_by_title('operatingsystems', entity_dict['description'], failsafe=True)
+        search_string = 'description="{}"'.format(entity_dict['description'])
+        entity = module.find_resource('operatingsystems', search_string, failsafe=True)
     # If we did not yet find a unique OS, search by name & version
-    if entity is None:
+    # In case of state == absent, those information might be missing, we assume that we did not find an operatingsytem to delete then
+    if entity is None and 'name' in entity_dict and 'major' in entity_dict:
         search_string = ','.join('{}="{}"'.format(key, entity_dict[key]) for key in ('name', 'major', 'minor') if key in entity_dict)
         entity = module.find_resource('operatingsystems', search_string, failsafe=True)
 

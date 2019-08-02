@@ -283,7 +283,7 @@ def main():
             entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
 
         if 'operatingsystem' in entity_dict:
-            entity_dict['operatingsystem'] = module.find_resource_by_title('operatingsystems', title=entity_dict['operatingsystem'], failsafe=False, thin=True)
+            entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
 
         if 'media' in entity_dict:
             entity_dict['media'] = module.find_resource_by_name('media', name=entity_dict['media'], failsafe=False, thin=True)

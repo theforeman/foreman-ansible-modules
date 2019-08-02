@@ -211,6 +211,16 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
     def find_resources_by_title(self, resource, titles, **kwargs):
         return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
 
+    def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
+        result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
+        if not result:
+            search = 'title~"{}"'.format(name)
+            result = self.find_resource('operatingsystems', search, params=params, failsafe=failsafe, thin=thin)
+        return result
+
+    def find_operatingsystems(self, names, **kwargs):
+        return [self.find_operatingsystem(name, **kwargs) for name in names]
+
     def create_resource(self, resource, entity_dict):
         new_entity = {}
         # FIXME: (?) entity_dict can contain other resources, when it does, translate these entries to only list their IDs
