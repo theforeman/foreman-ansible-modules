@@ -55,6 +55,11 @@
     vars:
       manifest_state: "absent"
       expected_change: true
+  - name: "drop manifest again, no change"
+    include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_state: "absent"
+      expected_change: false
 
 - hosts: fixtures
   gather_facts: false
