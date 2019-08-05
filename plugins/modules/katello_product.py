@@ -92,24 +92,13 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'organization': 'organization_id',
-    'description': 'description',
-    'gpg_key': 'gpg_key_id',
-    'sync_plan': 'sync_plan_id',
-    'label': 'label',
-}
-
-
 def main():
     module = KatelloEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             label=dict(),
-            gpg_key=dict(),
-            sync_plan=dict(),
+            gpg_key=dict(type='entity', flat_name='gpg_key_id'),
+            sync_plan=dict(type='entity', flat_name='sync_plan_id'),
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
@@ -120,17 +109,17 @@ def main():
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-    search_params = {'organization_id': entity_dict['organization']['id']}
-    entity = module.find_resource_by_name('products', name=entity_dict['name'], params=search_params, failsafe=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('products', name=entity_dict['name'], params=scope, failsafe=True)
 
     if not module.desired_absent:
         if 'gpg_key' in entity_dict:
-            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=search_params, thin=True)
+            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
 
         if 'sync_plan' in entity_dict:
-            entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=search_params, thin=True)
+            entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
 
-    changed = module.ensure_resource_state('products', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_entity_state('products', entity_dict, entity, params=scope)
 
     module.exit_json(changed=changed)
 

@@ -140,33 +140,10 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'host': 'host',
-    'port': 'port',
-    'account': 'account',
-    'account_password': 'account_password',
-    'base_dn': 'base_dn',
-    'attr_login': 'attr_login',
-    'attr_firstname': 'attr_firstname',
-    'attr_lastname': 'attr_lastname',
-    'attr_mail': 'attr_mail',
-    'attr_photo': 'attr_photo',
-    'onthefly_register': 'onthefly_register',
-    'usergroup_sync': 'usergroup_sync',
-    'tls': 'tls',
-    'groups_base': 'groups_base',
-    'server_type': 'server_type',
-    'ldap_filter': 'ldap_filter',
-    'locations': 'location_ids',
-    'organizations': 'organization_ids',
-}
-
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
             port=dict(type='int', default=389),
@@ -184,8 +161,8 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
-            locations=dict(type='list'),
-            organizations=dict(type='list'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
     )
 
@@ -202,7 +179,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_resource_state('auth_source_ldaps', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_entity_state('auth_source_ldaps', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

@@ -96,32 +96,27 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-entity_spec = {
-    'id': {},
-    'name': {},
-    'description': {},
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
-            name=dict(required=True),
-            description=dict(),
             host=dict(required=True),
             state=dict(default='present', choices=['present', 'absent', 'reverted']),
         ),
-        entity_spec=entity_spec,
+        entity_spec=dict(
+            name=dict(required=True),
+            description=dict(),
+        ),
     )
     snapshot_dict = module.clean_params()
 
     module.connect()
 
     host = module.find_resource_by_name('hosts', name=snapshot_dict['host'], failsafe=False, thin=True)
+    scope = {'host_id': host['id']}
 
-    entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params={'host_id': host['id']}, failsafe=True)
+    entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_entity_state('snapshots', snapshot_dict, entity, params={'host_id': host['id']})
+    changed = module.ensure_entity_state('snapshots', snapshot_dict, entity, params=scope)
 
     module.exit_json(changed=changed)
 

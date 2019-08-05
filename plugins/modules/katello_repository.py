@@ -126,29 +126,17 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'product': 'product_id',
-    'content_type': 'content_type',
-    'label': 'label',
-    'url': 'url',
-    'gpg_key': 'gpg_key_id',
-    'docker_upstream_name': 'docker_upstream_name',
-    'download_policy': 'download_policy',
-    'mirror_on_sync': 'mirror_on_sync',
-}
-
-
 def main():
     module = KatelloEntityApypieAnsibleModule(
         argument_spec=dict(
             product=dict(required=True),
+        ),
+        entity_spec=dict(
             label=dict(),
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
-            gpg_key=dict(),
+            gpg_key=dict(type='entity', flat_name='gpg_key_id'),
             docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
@@ -164,17 +152,17 @@ def main():
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-    search_params = {'organization_id': entity_dict['organization']['id']}
-    entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=search_params, thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=scope, thin=True)
 
     if not module.desired_absent:
         if 'gpg_key' in entity_dict:
-            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=search_params, thin=True)
+            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
 
-    search_params['product_id'] = entity_dict['product']['id']
-    entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=search_params, failsafe=True)
+    scope['product_id'] = entity_dict['product']['id']
+    entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_resource_state('repositories', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_entity_state('repositories', entity_dict, entity, params=scope)
 
     module.exit_json(changed=changed)
 

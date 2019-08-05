@@ -71,22 +71,13 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'vm_attrs': 'vm_attrs',
-    'compute_profile': 'compute_profile_id',
-    'compute_resource': 'compute_resource_id',
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
-            compute_profile=dict(required=True),
-            compute_resource=dict(required=True),
+        entity_spec=dict(
+            compute_profile=dict(required=True, type='entity', flat_name='compute_profile_id'),
+            compute_resource=dict(required=True, type='entity', flat_name='compute_resource_id'),
             vm_attrs=dict(type='dict'),
         ),
-        name_map=name_map,
     )
     entity_dict = module.clean_params()
 
@@ -105,7 +96,7 @@ def main():
     else:
         entity = None
 
-    changed = module.ensure_resource_state('compute_attributes', entity_dict, entity)
+    changed = module.ensure_entity_state('compute_attributes', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

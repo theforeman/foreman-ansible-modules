@@ -98,26 +98,19 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'controller': 'controller',
-    'public': 'public',
-    'query': 'query',
-}
-
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
             public=dict(defaut='true', type='bool'),
             query=dict(),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=[
                        'present_with_defaults', 'present', 'absent']),
         ),
-        name_map=name_map,
         required_if=(
             ['state', 'present', ['query']],
             ['state', 'present_with_defaults', ['query']],
@@ -131,7 +124,7 @@ def main():
     search = 'name="{}",controller="{}"'.format(entity_dict['name'], entity_dict['controller'])
     entity = module.find_resource('bookmarks', search, failsafe=True)
 
-    changed = module.ensure_resource_state('bookmarks', entity_dict, entity)
+    changed = module.ensure_entity_state('bookmarks', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

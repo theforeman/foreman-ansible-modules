@@ -59,18 +59,12 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'puppetclasses': 'puppetclass_ids',
-}
-
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
-            puppetclasses=dict(type='list'),
+            puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
         ),
     )
 
@@ -98,7 +92,7 @@ def main():
 
             entity_dict['puppetclasses'] = puppet_classes
 
-    changed = module.ensure_resource_state('config_groups', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_entity_state('config_groups', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
