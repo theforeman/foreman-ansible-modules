@@ -545,11 +545,12 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
 class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
 
-    def __init__(self, argument_spec, **kwargs):
+    def __init__(self, argument_spec=None, **kwargs):
         args = dict(
             organization=dict(required=True),
         )
-        args.update(argument_spec)
+        if argument_spec:
+            args.update(argument_spec)
         super(KatelloEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
 
@@ -578,7 +579,8 @@ def _entity_spec_helper(spec):
             argument_value['type'] = 'list'
             entity_value['type'] = 'entity_list'
         entity_spec[key] = entity_value
-        argument_spec[key] = argument_value
+        if argument_value.get('type') != 'invisible':
+            argument_spec[key] = argument_value
 
     return entity_spec, argument_spec
 
@@ -587,7 +589,7 @@ def _flatten_entity(entity, entity_spec):
     """Flatten entity according to spec"""
     result = {}
     for key, value in entity.items():
-        if key in entity_spec:
+        if key in entity_spec and value is not None:
             spec = entity_spec[key]
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')

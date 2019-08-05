@@ -83,28 +83,20 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-entity_spec = {
-    'id': {},
-    'template_kind': {'type': 'entity', 'flat_name': 'template_kind_id'},
-    'template_kind_id': {},
-    'provisioning_template': {'type': 'entity', 'flat_name': 'provisioning_template_id'},
-    'provisioning_template_id': {},
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
             operatingsystem=dict(required=True),
-            template_kind=dict(required=True),
-            provisioning_template=dict(required=False),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
+        ),
+        entity_spec=dict(
+            template_kind=dict(required=True, type='entity', flat_name='template_kind_id'),
+            provisioning_template=dict(type='entity', flat_name='provisioning_template_id'),
         ),
         required_if=(
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
-        entity_spec=entity_spec,
     )
 
     entity_dict = module.clean_params()

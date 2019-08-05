@@ -250,25 +250,13 @@ def find_template_kind(module, entity_dict):
     return entity_dict
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'audit_comment': 'audit_comment',
-    'kind': 'template_kind_id',
-    'locations': 'location_ids',
-    'locked': 'locked',
-    'name': 'name',
-    'organizations': 'organization_ids',
-    'operatingsystems': 'operatingsystem_ids',
-    'snippet': 'snippet',
-    'template': 'template',
-}
-# Missing parameters:
-# default
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
+            file_name=dict(type='path'),
+            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+        ),
+        entity_spec=dict(
             audit_comment=dict(),
             kind=dict(choices=[
                 'finish',
@@ -284,15 +272,14 @@ def main():
                 'snippet',
                 'user_data',
                 'ZTP',
-            ]),
+            ], type='entity', flat_name='template_kind_id'),
             template=dict(),
-            file_name=dict(type='path'),
-            locations=dict(type='list'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
-            organizations=dict(type='list'),
-            operatingsystems=dict(type='list'),
-            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
+            snippet=dict(type='invisible'),
         ),
         mutually_exclusive=[
             ['file_name', 'template'],
@@ -300,7 +287,6 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'template'],
         ],
-        name_map=name_map,
     )
 
     # We do not want a template text for bulk operations
@@ -372,11 +358,11 @@ def main():
 
     changed = False
     if not affects_multiple:
-        changed = module.ensure_resource_state('provisioning_templates', entity_dict, entity)
+        changed = module.ensure_entity_state('provisioning_templates', entity_dict, entity)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_resource_state('provisioning_templates', entity_dict, entity)
+            changed |= module.ensure_entity_state('provisioning_templates', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

@@ -73,23 +73,13 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'organization': 'organization_id',
-    'content_type': 'content_type',
-    'content': 'content',
-}
-
-
 def main():
     module = KatelloEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             content_type=dict(required=True, choices=['gpg_key', 'cert']),
             content=dict(required=True),
         ),
-        name_map=name_map,
     )
 
     entity_dict = module.clean_params()
@@ -97,10 +87,10 @@ def main():
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    search_params = {'organization_id': entity_dict['organization']['id']}
-    entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=search_params, failsafe=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_resource_state('content_credentials', entity_dict, entity)
+    changed = module.ensure_entity_state('content_credentials', entity_dict, entity, params=scope)
 
     module.exit_json(changed=changed)
 

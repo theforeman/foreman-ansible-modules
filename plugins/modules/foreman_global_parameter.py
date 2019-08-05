@@ -102,28 +102,21 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_value_to_str
 
-# This is the only true source for names (and conversions thereof)
-entity_spec = {
-    'id': {},
-    'name': {},
-    'value': {},
-    'parameter_type': {},
-}
-
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),
             parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=(
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
         ),
-        entity_spec=entity_spec,
     )
 
     entity_dict = module.clean_params()
@@ -140,7 +133,7 @@ def main():
         if entity and 'value' in entity:
             entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-    changed = module.ensure_entity_state('common_parameters', entity_dict, entity, entity_spec=entity_spec)
+    changed = module.ensure_entity_state('common_parameters', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

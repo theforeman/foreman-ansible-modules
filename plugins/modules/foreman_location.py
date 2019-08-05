@@ -100,20 +100,12 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'parent': 'parent_id',
-    'organizations': 'organization_ids',
-}
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
-            parent=dict(),
-            organizations=dict(type='list'),
+            parent=dict(type='entity', flat_name='parent_id'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
     )
 
@@ -143,7 +135,7 @@ def main():
 
     entity = module.find_resource('locations', search='title="{}"'.format(build_fqn(name, parent)), failsafe=True)
 
-    changed = module.ensure_resource_state('locations', entity_dict, entity, name_map=name_map)
+    changed = module.ensure_entity_state('locations', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

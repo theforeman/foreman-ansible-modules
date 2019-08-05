@@ -222,33 +222,18 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'template': 'layout',  # the parse_template_* methods stores the "layout" in "template"
-    'layout': 'layout',
-    'locations': 'location_ids',
-    'locked': 'locked',
-    'name': 'name',
-    'organizations': 'organization_ids',
-    'oses': 'os_family',  # the foreman community templates are using oses instead of os_family (which is wrong?)
-    'os_family': 'os_family',
-}
-# Missing parameters:
-# snippet
-# audit_comment
-# default
-
-
 def main():
     module = ForemanEntityApypieAnsibleModule(
         argument_spec=dict(
-            # audit_comment=dict(),
-            layout=dict(),
             file_name=dict(type='path'),
-            locations=dict(type='list'),
+            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+        ),
+        entity_spec=dict(
+            layout=dict(),
+            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
-            organizations=dict(type='list'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
             os_family=dict(choices=[
                 'AIX',
                 'Altlinux',
@@ -262,7 +247,6 @@ def main():
                 'Suse',
                 'Windows',
             ]),
-            state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
         mutually_exclusive=[
             ['file_name', 'layout'],
@@ -270,7 +254,6 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'layout'],
         ],
-        name_map=name_map,
     )
 
     # We do not want a layout text for bulk operations
@@ -287,6 +270,9 @@ def main():
             parsed_dict = parse_template_from_file(file_name, module)
         else:
             parsed_dict = parse_template(entity_dict['layout'], module)
+        parsed_dict['layout'] = parsed_dict.pop('template')
+        if 'oses' in parsed_dict:
+            parsed_dict['os_family'] = parsed_dict.pop('oses')
         # sanitize name from template data
         # The following condition can actually be hit, when someone is trying to import a
         # template with the name set to '*'.
@@ -336,11 +322,11 @@ def main():
 
     changed = False
     if not affects_multiple:
-        changed = module.ensure_resource_state('ptables', entity_dict, entity)
+        changed = module.ensure_entity_state('ptables', entity_dict, entity)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_resource_state('ptables', entity_dict, entity)
+            changed |= module.ensure_entity_state('ptables', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

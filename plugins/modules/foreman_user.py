@@ -33,7 +33,9 @@ author:
 requirements:
   - "apypie"
 options:
-  name:
+  login:
+    aliases:
+      - name
     description:
       - Name of the user
     required: true
@@ -153,24 +155,6 @@ from ansible.module_utils.foreman_helper import (
     ForemanEntityApypieAnsibleModule,
 )
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'login',
-    'firstname': 'firstname',
-    'lastname': 'lastname',
-    'mail': 'mail',
-    'description': 'description',
-    'admin': 'admin',
-    'user_password': 'password',
-    'default_location': 'default_location_id',
-    'default_organization': 'default_organization_id',
-    'auth_source': 'auth_source_id',
-    'timezone': 'timezone',
-    'locale': 'locale',
-    'roles': 'role_ids',
-    'locations': 'location_ids',
-    'organizations': 'organization_ids',
-}
 
 # List of allowed timezones
 timezone_list = [
@@ -351,22 +335,22 @@ locale_list = [
 
 def main():
     module = ForemanEntityApypieAnsibleModule(
-        argument_spec=dict(
-            name=dict(required=True),
+        entity_spec=dict(
+            login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
             lastname=dict(required=False),
             mail=dict(required=False),
             description=dict(required=False),
             admin=dict(required=False, type='bool', default=False),
-            user_password=dict(required=False, no_log=True),
-            default_location=dict(required=False),
-            default_organization=dict(required=False),
-            auth_source=dict(required=False),
+            user_password=dict(required=False, no_log=True, flat_name='password'),
+            default_location=dict(required=False, type='entity', flat_name='default_location_id'),
+            default_organization=dict(required=False, type='entity', flat_name='default_organization_id'),
+            auth_source=dict(required=False, type='entity', flat_name='auth_source_id'),
             timezone=dict(required=False, choices=timezone_list),
             locale=dict(required=False, choices=locale_list),
-            roles=dict(required=False, type='list'),
-            locations=dict(required=False, type='list'),
-            organizations=dict(required=False, type='list')
+            roles=dict(required=False, type='entity_list', flat_name='role_ids'),
+            locations=dict(required=False, type='entity_list', flat_name='location_ids'),
+            organizations=dict(required=False, type='entity_list', flat_name='organization_ids')
         ),
     )
 
@@ -382,13 +366,13 @@ def main():
             entity_dict['mail'] = entity['mail']
 
         if 'default_location' in entity_dict:
-            entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)['id']
+            entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)
 
         if 'default_organization' in entity_dict:
-            entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)['id']
+            entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)
 
         if 'auth_source' in entity_dict:
-            entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)['id']
+            entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)
 
         if 'roles' in entity_dict:
             entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
@@ -399,11 +383,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    check_missing = None
-    if 'user_password' in entity_dict:
-        check_missing = [name_map['user_password']]
-
-    changed = module.ensure_resource_state('users', entity_dict, entity, name_map=name_map, check_missing=check_missing)
+    changed = module.ensure_entity_state('users', entity_dict, entity)
 
     module.exit_json(changed=changed, entity_dict=entity_dict)
 
