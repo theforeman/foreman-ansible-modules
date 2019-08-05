@@ -41,6 +41,8 @@ options:
       - Password for user accessing Foreman server
     required: true
   validate_certs:
+    aliases:
+      - verify_ssl
     description:
       - Verify SSL of the Foreman server
     required: false
@@ -121,7 +123,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            validate_certs=dict(type='bool', default=True),
+            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
             name=dict(required=True),
             realm_proxy=dict(type='int', required=True),
             realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
