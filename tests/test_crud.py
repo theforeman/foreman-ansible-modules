@@ -7,54 +7,8 @@ import py.path
 import pytest
 import yaml
 
-MODULES = [
-    'activation_key',
-    'architecture',
-    'auth_source_ldap',
-    'bookmark',
-    'compute_attribute',
-    'compute_profile',
-    'compute_resource',
-    'content_credential',
-    'content_view',
-    'content_view_filter',
-    'content_view_version',
-    'domain',
-    'environment',
-    'config_group',
-    'filters',
-    'global_parameter',
-    'host',
-    'host_power',
-    'hostgroup',
-    'katello_hostgroup',
-    'luna_hostgroup',
-    'host_collection',
-    'installation_medium',
-    'job_template',
-    'katello_manifest',
-    'katello_sync',
-    'lifecycle_environment',
-    'location',
-    'operatingsystem',
-    'organization',
-    'os_default_template',
-    'product',
-    'provisioning_template',
-    'ptable',
-    'realm',
-    'redhat_manifest',
-    'repository',
-    'repository_set',
-    'role',
-    'search_facts',
-    'setting',
-    'snapshot',
-    'subnet',
-    'sync_plan',
-    'upload',
-    'user',
-]
+from .conftest import TEST_PLAYBOOKS
+
 
 if sys.version_info[0] == 2:
     for envvar in os.environ.keys():
@@ -114,7 +68,7 @@ def run_playbook(module, extra_vars=None, limit=None):
     return run
 
 
-@pytest.mark.parametrize('module', MODULES)
+@pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_crud(tmpdir, module, record):
     run = run_playbook_vcr(tmpdir, module, record=record)
     assert run.rc == 0
