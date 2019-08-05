@@ -27,8 +27,6 @@ module: foreman_ptable
 short_description: Manage Partition Table Template in Foreman
 description:
     - "Manage Foreman Partition Table"
-    - "Uses https://github.com/SatelliteQE/nailgun"
-    - "Uses ansible_nailgun_cement in /module_utils"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

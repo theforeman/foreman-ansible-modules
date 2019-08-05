@@ -28,7 +28,6 @@ module: foreman_os_default_template
 short_description: Manage Foreman Default Template Associations To Operating Systems
 description:
   - "Manage Foreman OSDefaultTemplate Entities"
-  - "Uses https://github.com/SatelliteQE/nailgun"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:

@@ -27,8 +27,6 @@ module: foreman_provisioning_template
 short_description: Manage Provisioning Template in Foreman
 description:
   - "Manage Foreman Provisioning Template"
-  - "Uses https://github.com/SatelliteQE/nailgun"
-  - "Uses ansible_nailgun_cement in /module_utils"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
