@@ -28,7 +28,6 @@ module: foreman_bookmark
 short_description: Manage Foreman Bookmarks
 description:
   - "Manage Foreman Bookmark Entities"
-  - "Uses https://github.com/SatelliteQE/nailgun"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"
