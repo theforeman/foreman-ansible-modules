@@ -30,7 +30,7 @@ MODULES = [
     'katello_manifest',
     'lifecycle_environment',
     'location',
-    'operating_system',
+    'operatingsystem',
     'organization',
     'os_default_template',
     'product',

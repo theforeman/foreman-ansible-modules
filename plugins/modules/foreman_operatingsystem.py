@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: foreman_operating_system
+module: foreman_operatingsystem
 short_description: Manage Foreman Operating Systems
 description:
   - "Manage Foreman Operating System Entities"
@@ -129,7 +129,7 @@ extends_documentation_fragment: foreman
 
 EXAMPLES = '''
 - name: "Create an Operating System"
-  foreman_operating_system:
+  foreman_operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -143,7 +143,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Ensure existence of an Operating System (provide default values)"
-  foreman_operating_system:
+  foreman_operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -154,7 +154,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Delete an Operating System"
-  foreman_operating_system:
+  foreman_operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
