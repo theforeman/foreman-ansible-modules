@@ -230,95 +230,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
     def find_operatingsystems(self, names, **kwargs):
         return [self.find_operatingsystem(name, **kwargs) for name in names]
 
-    def create_resource(self, resource, entity_dict):
-        new_entity = {}
-        # FIXME: (?) entity_dict can contain other resources, when it does, translate these entries to only list their IDs
-        for key, value in entity_dict.items():
-            new_entity[key] = self._flatten_value(value)
-        return self._resource_action(resource, 'create', new_entity)
-
-    def delete_resource(self, resource, resource_id):
-        return self._resource_action(resource, 'destroy', {'id': resource_id})
-
-    def update_resource(self, resource, old_entity, entity_dict, check_missing, check_type, force_update):
-        # FIXME: I am not sure this *whole* method is required as-is. It's mostly copied from the nailgun lib.
-        entity_id = old_entity.pop('id')
-        volatile_entity = old_entity.copy()
-        result = volatile_entity
-        fields = []
-        for key, value in volatile_entity.items():
-            if key in entity_dict:
-                new_value = entity_dict[key]
-                if check_type and not isinstance(value, type(new_value)):
-                    if isinstance(value, bool):
-                        new_value = boolean(new_value)
-                    elif isinstance(value, list):
-                        new_value = str(sorted(new_value.split(',')))
-                        value = str(sorted([str(v) for v in value]))
-                    else:
-                        if value is None:
-                            value = ""
-                        new_value = type(value)(new_value)
-                value = self._flatten_value(value)
-                new_value = self._flatten_value(new_value)
-                if not value == new_value:
-                    volatile_entity[key] = new_value
-                    fields.append(key)
-            # check_missing is a special case, Foreman sometimes returns different values
-            # depending on what 'type' of same object you are requesting. Content View
-            # Filters are a prime example. We list these attributes in `check_missing`
-            # so we can ensure the entity is as the user specified.
-            if check_missing is not None and key not in entity_dict and key in check_missing:
-                volatile_entity[key] = None
-                fields.append(key)
-        if force_update:
-            for key in force_update:
-                fields.append(key)
-        if check_missing is not None:
-            for key in check_missing:
-                if key in entity_dict and key not in volatile_entity.keys():
-                    volatile_entity[key] = entity_dict[key]
-                    fields.append(key)
-        if len(fields) > 0:
-            new_data = {'id': entity_id}
-            for key, value in volatile_entity.items():
-                if key in fields:
-                    new_data[key] = value
-            return self._resource_action(resource, 'update', params=new_data)
-        return False, result
-
-    def ensure_resource_state(self, *args, **kwargs):
-        changed, _ = self.ensure_resource(*args, **kwargs)
-        return changed
-
-    @_exception2fail_json('Failed to ensure entity state: %s')
-    def ensure_resource(self, resource, entity_dict, entity, state=None, name_map=None, check_missing=None, check_type=None, force_update=None):
-        """ Ensure that a given entity has a certain state """
-        if state is None:
-            state = self.state
-        if name_map is None:
-            name_map = self.name_map
-
-        changed, changed_entity = False, entity
-
-        entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-        if state == 'present_with_defaults':
-            if entity is None:
-                changed, changed_entity = self.create_resource(resource, entity_dict)
-        elif state == 'present':
-            if entity is None:
-                changed, changed_entity = self.create_resource(resource, entity_dict)
-            else:
-                entity = sanitize_entity_dict(entity, name_map)
-                changed, changed_entity = self.update_resource(resource, entity, entity_dict, check_missing, check_type, force_update)
-        elif state == 'absent':
-            if entity is not None:
-                changed, changed_entity = self.delete_resource(resource, entity['id'])
-        else:
-            self.fail_json(msg='Not a valid state: {}'.format(state))
-        return changed, changed_entity
-
     def ensure_entity_state(self, *args, **kwargs):
         changed, _ = self.ensure_entity(*args, **kwargs)
         return changed
@@ -552,11 +463,6 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
         if argument_spec:
             args.update(argument_spec)
         super(KatelloEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
-
-
-def sanitize_entity_dict(entity_dict, name_map):
-    name_map['id'] = 'id'
-    return {value: entity_dict[key] for key, value in name_map.items() if key in entity_dict}
 
 
 def _entity_spec_helper(spec):
