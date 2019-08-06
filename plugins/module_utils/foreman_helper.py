@@ -331,12 +331,15 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         self._resource_action(resource, 'destroy', payload)
         return True, None
 
-    def _resource_action(self, resource, action, params):
+    def resource_action(self, *args, **kwargs):
+        return self._resource_action(*args, **kwargs)
+
+    def _resource_action(self, resource, action, params, **kwargs):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         try:
             result = None
             if not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, resource_payload)
+                result = self.foremanapi.resource(resource).call(action, resource_payload, **kwargs)
         except Exception as e:
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
