@@ -206,6 +206,7 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import (
     build_fqn,
     ForemanEntityApypieAnsibleModule,
+    parameter_entity_spec,
     split_fqn,
 )
 
@@ -236,13 +237,7 @@ def main():
             config_groups=dict(type='entity_list', flat_name='config_group_ids'),
             puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
             puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
-        ),
-        argument_spec=dict(
-            parameters=dict(type='list', elements='dict', options=dict(
-                name=dict(required=True),
-                value=dict(type='raw', required=True),
-                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
-            )),
+            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
     )
     entity_dict = module.clean_params()

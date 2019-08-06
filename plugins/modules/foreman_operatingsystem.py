@@ -166,7 +166,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_entity_spec
 
 
 def main():
@@ -183,13 +183,9 @@ def main():
             ptables=dict(type='entity_list', flat_name='ptable_ids'),
             provisioning_templates=dict(type='entity_list', flat_name='provisioning_template_ids'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
+            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         argument_spec=dict(
-            parameters=dict(type='list', elements='dict', options=dict(
-                name=dict(required=True),
-                value=dict(type='raw', required=True),
-                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
-            )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         required_if=[
