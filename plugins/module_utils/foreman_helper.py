@@ -26,11 +26,11 @@ except ImportError:
     APYPIE_IMP_ERR = traceback.format_exc()
 
 
-parameter_entity_spec = {
-    'name': {},
-    'value': {},
-    'parameter_type': {},
-}
+parameter_entity_spec = dict(
+    name=dict(required=True),
+    value=dict(type='raw', required=True),
+    parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+)
 
 
 class ForemanBaseAnsibleModule(AnsibleModule):
@@ -484,7 +484,13 @@ def _entity_spec_helper(spec):
         elif argument_value.get('type') == 'entity_list':
             argument_value['type'] = 'list'
             entity_value['type'] = 'entity_list'
-        entity_spec[key] = entity_value
+        elif argument_value.get('type') == 'nested_list':
+            argument_value['type'] = 'list'
+            argument_value['elements'] = 'dict'
+            _, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
+            entity_value = None
+        if entity_value is not None:
+            entity_spec[key] = entity_value
         if argument_value.get('type') != 'invisible':
             argument_spec[key] = argument_value
 

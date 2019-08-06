@@ -177,7 +177,7 @@ RETURN = ''' # '''
 
 
 from netaddr import IPNetwork
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_entity_spec
 
 
 def main():
@@ -205,13 +205,7 @@ def main():
             mtu=dict(type='int'),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-        ),
-        argument_spec=dict(
-            parameters=dict(type='list', elements='dict', options=dict(
-                name=dict(required=True),
-                value=dict(type='raw', required=True),
-                parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
-            )),
+            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         required_one_of=[['cidr', 'mask']],
     )
