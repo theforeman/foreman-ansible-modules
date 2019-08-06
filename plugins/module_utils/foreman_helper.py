@@ -132,6 +132,18 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
+    def _patch_subscription_upload_api(self):
+        """This is a workaround for the broken subscription upload apidoc in katello.
+            see https://projects.theforeman.org/issues/27527
+        """
+
+        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
+
+        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
+        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
+        _subscription_upload_params_content['expected_type'] = 'any_type'
+
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required',
@@ -148,6 +160,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         )
 
         self._patch_location_api()
+        self._patch_subscription_upload_api()
 
         if ping:
             self.ping()
