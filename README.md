@@ -49,7 +49,7 @@ First of all, please have a look at the [Ansible module development](https://doc
 When looking at actual modules in this repository ([`foreman_domain`](plugins/modules/foreman_domain.py) is a nice short example), you will notice a few differences to a "regular" Ansible module:
 
 * Instead of `AnsibleModule`, we use `ForemanEntityApypieAnsibleModule` (and a few others, see [`plugins/module_utils/foreman_helper.py`](plugins/module_utils/foreman_helper.py)) which provides an abstraction layer for talking with the Foreman API
-* We provide a `name_map` that translates between Ansible module parameters and Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
+* Instead of `argument_spec`, we provide an enhanced version called `entity_spec`. It handles the translation from module parameters to Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
 
 The rest of the module is usually very minimalistic:
 
@@ -59,6 +59,24 @@ The rest of the module is usually very minimalistic:
 * Ensure the entity state and details (`changed = module.ensure_resource_state(…)`)
 
 Please note: we currently have modules that use `apypie` and `nailgun` as the backend libraries to talk to the API, but we would prefer not to add any new modules using `nailgun` and focus on migrating everything to `apypie`.
+
+### Specification of the `entity_spec`
+
+In addition to Ansible's `argument_spec`, `entity_spec` understands the following types:
+
+* `type='entity'` The referenced value is another foreman entity.
+This is usually combined with `flat_name=<entity>_id`.
+* `type='entity_list'` The referenced value is a list of foreman entities.
+This is usually combined with `flat_name=<entity>_ids`.
+* `type='nested_list'` The referenced value is a list of foreman entities that are not included in the main api call.
+The module must handle the entities separately.
+See domain parameters for an example.
+The sub entities must be described by `entity_spec=<sub_entity>_spec`.
+* `type='invisible'` The parameter is avaliable to the api call, but it will be excluded from ansibles `argument_spec`.
+
+`flat_name` provides a way to translate the name of a parameter as known to Ansible to the name understood by the foreman api.
+
+You can add or override ansible module parameters, by specifying them in `argument_spec` as usual.
 
 ## How to test modules in this repository
 
