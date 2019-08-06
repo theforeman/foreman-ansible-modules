@@ -26,6 +26,6 @@
         test_targets: "lib/ansible/modules/foreman-test/ lib/ansible/module_utils/foreman-test/"
 
     - name: Run ansible-test
-      command: "{{ playbook_dir }}/../../.tmp/ansible/test/runner/ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --test ansible-doc --test compile --test shebang {{ test_targets }}"
+      command: "{{ playbook_dir }}/../../.tmp/ansible/bin/ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --test ansible-doc --test compile --test shebang {{ test_targets }}"
       args:
         chdir: "{{ playbook_dir }}/../../.tmp/ansible"
