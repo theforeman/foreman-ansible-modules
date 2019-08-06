@@ -25,25 +25,8 @@ description:
     - Upload and Manage Katello manifests
 author: "Andrew Kofink (@akofink)"
 requirements:
-    - "nailgun >= 0.29.0"
+    - apypie
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  verify_ssl:
-    description:
-      - Verify SSL of the Foreman server
-    default: True
-    type: bool
   organization:
     description:
       - Organization that the manifest is in
@@ -60,11 +43,13 @@ options:
       - absent
       - present
       - refreshed
-  redhat_repository_url:
+  repository_url:
     description:
        - URL to retrieve content from
+    aliases: [ redhat_repository_url ]
+extends_documentation_fragment: foreman
 '''
-# HERE
+
 EXAMPLES = '''
 - name: "Upload the RHEL developer edition manifest"
   katello_manifest:
@@ -76,116 +61,58 @@ EXAMPLES = '''
     manifest_path: "/tmp/manifest.zip"
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        Subscription
-    )
-
-    from nailgun.entity_mixins import (
-        TaskFailedError
-    )
-    from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        ping_server,
-        find_organization,
-        current_subscription_manifest,
-        set_task_timeout,
-    )
-
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-
-from ansible.module_utils.basic import AnsibleModule
-
-
-def manifest(module, organization, state, manifest_path=None, redhat_repository_url=None):
-    changed = False
-    organization = find_organization(module, organization).read()
-    current_manifest = current_subscription_manifest(module, organization)
-    manifest_present = current_manifest is not None
-
-    if redhat_repository_url is not None and organization.redhat_repository_url != redhat_repository_url:
-        if not module.check_mode:
-            organization.redhat_repository_url = redhat_repository_url
-            organization.update({'redhat_repository_url'})
-        changed = True
-
-    if state == 'present':
-        try:
-            with open(manifest_path, 'rb') as manifest_file:
-                files = {'content': (manifest_path, manifest_file, 'application/zip')}
-                data = {'organization_id': organization.id, 'repository_url': redhat_repository_url}
-                headers = {'content_type': 'multipart/form-data', 'multipart': 'true'}
-                if not module.check_mode:
-                    Subscription().upload(data=data, files=files, headers=headers)
-                changed = True
-        except IOError as e:
-            module.fail_json(msg="Unable to open the manifest file: %s" % e)
-        except TaskFailedError as e:
-            if "same as existing data" in e.args[0]:
-                pass
-            elif "older than existing data" in e.args[0]:
-                module.fail_json(msg="Manifest is older than existing data: %s" % e)
-            else:
-                module.fail_json(msg="Upload of the manifest failed: %s" % e)
-    elif state == 'absent' and manifest_present:
-        if not module.check_mode:
-            Subscription().delete_manifest(data={'organization_id': organization.id})
-        changed = True
-    elif state == 'refreshed':
-        if not manifest_present:
-            module.fail_json(msg="No manifest found to refresh.")
-        else:
-            if not module.check_mode:
-                Subscription().refresh_manifest(data={'organization_id': organization.id})
-            changed = True
-    return changed
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 def main():
-    module = AnsibleModule(
+    module = KatelloEntityApypieAnsibleModule(
         argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True, no_log=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
-            organization=dict(required=True),
             manifest_path=dict(),
             state=dict(default='present', choices=['absent', 'present', 'refreshed']),
-            redhat_repository_url=dict(),
+            repository_url=dict(aliases=['redhat_repository_url']),
         ),
         required_if=[
             ['state', 'present', ['manifest_path']],
         ],
-        supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
+    entity_dict = module.clean_params()
 
-    set_task_timeout(300000)  # 5 minutes
+    module.connect()
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    organization = module.params['organization']
-    manifest_path = module.params['manifest_path']
-    redhat_repository_url = module.params['redhat_repository_url']
-    state = module.params['state']
+    #set_task_timeout(300000)  # 5 minutes
 
-    create_server(server_url, (username, password), verify_ssl)
-    ping_server(module)
+    organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
+    scope = {'organization_id': organization['id']}
 
-    try:
-        changed = manifest(module, organization, state, manifest_path, redhat_repository_url=redhat_repository_url)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    existing_manifest = organization.get('owner_details', {}).get('upstreamConsumer')
+
+    changed = False
+    if module.state == 'present':
+        try:
+            with open(entity_dict['manifest_path'], 'rb') as manifest_file:
+                files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
+                headers = {'content_type': 'multipart/form-data', 'multipart': 'true'}
+                params = scope.copy()
+                if 'repository_url' in entity_dict:
+                    params['repository_url'] = entity_dict['repository_url']
+                module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
+                changed = True
+        except IOError as e:
+            module.fail_json(msg="Unable to open the manifest file: %s" % e)
+    elif module.state == 'absent' and existing_manifest:
+        module.resource_action('subscriptions', 'delete_manifest', scope)
+        changed = True
+    elif module.state == 'refreshed':
+        if existing_manifest:
+            module.resource_action('subscriptions', 'refresh_manifest', scope)
+            changed = True
+        else:
+            module.fail_json(msg="No manifest found to refresh.")
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':
