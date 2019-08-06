@@ -48,8 +48,8 @@ def query_matcher_ignore_proxy(r1, r2):
 
 
 def katello_manifest_body_matcher(r1, r2):
-    if r1.headers.get('content-type').startswith('multipart/form-data') and r2.headers.get('content-type').startswith('multipart/form-data'):
-        if r1.path.endswith('/subscriptions/upload') and r2.path.endswith('/subscriptions/upload'):
+    if r1.path.endswith('/subscriptions/upload') and r2.path.endswith('/subscriptions/upload'):
+        if r1.headers.get('content-type').startswith('multipart/form-data') and r2.headers.get('content-type').startswith('multipart/form-data'):
             r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
             r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
             # the body is a huge binary blob, which seems to differ on every run, so we just ignore it
