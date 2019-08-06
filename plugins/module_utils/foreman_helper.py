@@ -417,6 +417,7 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
         super(KatelloEntityApypieAnsibleModule, self).connect(ping)
         self._patch_subscription_upload_api()
         self._patch_organization_update_api()
+        self._patch_sync_plan_api()
 
     def _patch_subscription_upload_api(self):
         """This is a workaround for the broken subscription upload apidoc in katello.
@@ -439,6 +440,35 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
         _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
         _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
         _organization_update_params_organization['required'] = False
+
+    def _patch_sync_plan_api(self):
+        """This is a workaround for the broken sync_plan apidoc in katello.
+            see https://projects.theforeman.org/issues/27532
+        """
+
+        _organization_parameter = {
+            u'validations': [],
+            u'name': u'organization_id',
+            u'show': True,
+            u'description': u'\n<p>Filter sync plans by organization name or label</p>\n',
+            u'required': False,
+            u'allow_nil': False,
+            u'allow_blank': False,
+            u'full_name': u'organization_id',
+            u'expected_type': u'numeric',
+            u'metadata': None,
+            u'validator': u'Must be a number.',
+        }
+
+        _sync_plan_methods = self.foremanapi.apidoc['docs']['resources']['sync_plans']['methods']
+
+        _sync_plan_add_products = next(x for x in _sync_plan_methods if x['name'] == 'add_products')
+        if next((x for x in _sync_plan_add_products['params'] if x['name'] == 'organization_id'), None) is None:
+            _sync_plan_add_products['params'].append(_organization_parameter)
+
+        _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
+        if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
+            _sync_plan_remove_products['params'].append(_organization_parameter)
 
 
 def _entity_spec_helper(spec):
