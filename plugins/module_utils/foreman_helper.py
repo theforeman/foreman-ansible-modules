@@ -104,28 +104,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
-    def _patch_subscription_upload_api(self):
-        """This is a workaround for the broken subscription upload apidoc in katello.
-            see https://projects.theforeman.org/issues/27527
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
-        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
-        _subscription_upload_params_content['expected_type'] = 'any_type'
-
-    def _patch_organization_update_api(self):
-        """This is a workaround for the broken organization update apidoc in katello.
-            see https://projects.theforeman.org/issues/27538
-        """
-
-        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
-
-        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
-        _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
-        _organization_update_params_organization['required'] = False
-
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required',
@@ -142,8 +120,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         )
 
         self._patch_location_api()
-        self._patch_subscription_upload_api()
-        self._patch_organization_update_api()
 
         if ping:
             self.ping()
@@ -437,6 +413,33 @@ class KatelloEntityApypieAnsibleModule(ForemanEntityApypieAnsibleModule):
         if argument_spec:
             args.update(argument_spec)
         super(KatelloEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+
+    def connect(self, ping=True):
+        super(KatelloEntityApypieAnsibleModule, self).connect(ping)
+        self._patch_subscription_upload_api()
+        self._patch_organization_update_api()
+
+    def _patch_subscription_upload_api(self):
+        """This is a workaround for the broken subscription upload apidoc in katello.
+            see https://projects.theforeman.org/issues/27527
+        """
+
+        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
+
+        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
+        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
+        _subscription_upload_params_content['expected_type'] = 'any_type'
+
+    def _patch_organization_update_api(self):
+        """This is a workaround for the broken organization update apidoc in katello.
+            see https://projects.theforeman.org/issues/27538
+        """
+
+        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
+
+        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
+        _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
+        _organization_update_params_organization['required'] = False
 
 
 def _entity_spec_helper(spec):
