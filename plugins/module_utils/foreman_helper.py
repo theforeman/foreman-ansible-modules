@@ -46,19 +46,21 @@ class ForemanBaseAnsibleModule(AnsibleModule):
         supports_check_mode = kwargs.pop('supports_check_mode', True)
         super(ForemanBaseAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
 
+        self._params = self.params.copy()
+
         self.check_requirements()
 
-        self._foremanapi_server_url = self.params.pop('server_url')
-        self._foremanapi_username = self.params.pop('username')
-        self._foremanapi_password = self.params.pop('password')
-        self._foremanapi_validate_certs = self.params.pop('validate_certs')
+        self._foremanapi_server_url = self._params.pop('server_url')
+        self._foremanapi_username = self._params.pop('username')
+        self._foremanapi_password = self._params.pop('password')
+        self._foremanapi_validate_certs = self._params.pop('validate_certs')
 
     def parse_params(self):
         self.warn("Use of deprecated method parse_params")
-        return {k: v for (k, v) in self.params.items() if v is not None}
+        return {k: v for (k, v) in self._params.items() if v is not None}
 
     def clean_params(self):
-        return {k: v for (k, v) in self.params.items() if v is not None}
+        return {k: v for (k, v) in self._params.items() if v is not None}
 
     def get_server_params(self):
         return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
@@ -476,7 +478,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         args.update(argument_spec)
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
-        self.state = self.params.pop('state')
+        self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
 
     def parse_params(self):
@@ -508,7 +510,7 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
 
         self.entity_spec = entity_spec
         self.name_map = name_map
-        self.state = self.params.pop('state')
+        self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
 
