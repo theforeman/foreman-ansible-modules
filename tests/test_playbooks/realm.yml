@@ -1,27 +1,34 @@
+# To run this playbook, you need to prepare a foreman-proxy with the realm feature.
+# Use e.g. the centos7-freeipa-server in forklift. Due to limitations in Vagrant you
+# might need to run its provisioning playbook by hand.
 ---
-- hosts: localhost
+- hosts: fixtures
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-  - name: Create REALM
-    foreman_realm:
-      server_url: "{{ foreman_server_url }}"
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      name: "EXAMPLE.COM"
-      realm_proxy: 1
-      realm_type: "Red Hat Identity Management"
-      state: present
-  - name:  Delete REALM
-    foreman_realm:
-      server_url: "{{ foreman_server_url }}"
-      username: "{{ foreman_username }}"
-      password: "{{ foreman_password }}"
-      validate_certs: "{{ foreman_validate_certs }}"
-      name: "EXAMPLE.COM"
-      realm_proxy: 1
-      realm_type: "Red Hat Identity Management"
-      state: absent
-
+  - include: tasks/realm.yml
+    vars:
+      realm_state: absent
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/realm.yml
+    vars:
+      realm_state: present
+      expected_change: True
+  # This is nonfunctional
+  # - include: tasks/realm.yml
+  #   vars:
+  #     realm_state: present
+  #     expected_change: False
+  - include: tasks/realm.yml
+    vars:
+      realm_state: absent
+      expected_change: True
+  - include: tasks/realm.yml
+    vars:
+      realm_state: absent
+      expected_change: False

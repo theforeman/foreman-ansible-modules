@@ -40,7 +40,9 @@ options:
     description:
       - Password for user accessing Foreman server
     required: true
-  verify_ssl:
+  validate_certs:
+    aliases:
+      - verify_ssl
     description:
       - Verify SSL of the Foreman server
     required: false
@@ -79,7 +81,7 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
@@ -121,7 +123,7 @@ def main():
             server_url=dict(required=True),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
+            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
             name=dict(required=True),
             realm_proxy=dict(type='int', required=True),
             realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
@@ -139,7 +141,7 @@ def main():
     server_url = realm_dict.pop('server_url')
     username = realm_dict.pop('username')
     password = realm_dict.pop('password')
-    verify_ssl = realm_dict.pop('verify_ssl')
+    verify_ssl = realm_dict.pop('validate_certs')
     state = realm_dict.pop('state')
 
     try:
@@ -147,7 +149,7 @@ def main():
     except Exception as e:
         module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
 
-    ping_server(module)
+    # ping_server(module)
     try:
         entities = find_entities(Realm, name=realm_dict['name'])
         if len(entities) > 0:
