@@ -115,6 +115,16 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
         _subscription_upload_params_content['expected_type'] = 'any_type'
 
+    def _patch_organization_update_api(self):
+        """This is a workaround for the broken organization update apidoc in katello.
+            see https://projects.theforeman.org/issues/27538
+        """
+
+        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
+
+        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
+        _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
+        _organization_update_params_organization['required'] = False
 
     def check_requirements(self):
         if not HAS_APYPIE:
@@ -133,6 +143,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
 
         self._patch_location_api()
         self._patch_subscription_upload_api()
+        self._patch_organization_update_api()
 
         if ping:
             self.ping()
