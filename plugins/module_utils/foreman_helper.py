@@ -102,7 +102,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         super(ForemanApypieAnsibleModule, self).__init__(*args, **kwargs)
         self._thin_default = False
         self.state = 'undefined'
-        self.name_map = {}
         self.entity_spec = {}
 
     def _patch_location_api(self):
@@ -372,13 +371,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 action, resource, str(e)))
         return True, result
 
-    def _flatten_value(self, value):
-        if isinstance(value, dict) and 'id' in value:
-            value = value['id']
-        elif isinstance(value, list) and value and isinstance(value[0], dict) and 'id' in value[0]:
-            value = sorted(item['id'] for item in value)
-        return value
-
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 
@@ -416,11 +408,9 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         args.update(gen_args)
         if argument_spec is not None:
             args.update(argument_spec)
-        name_map = kwargs.pop('name_map', {})
         super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.entity_spec = entity_spec
-        self.name_map = name_map
         self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
