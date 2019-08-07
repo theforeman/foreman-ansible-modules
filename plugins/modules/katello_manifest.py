@@ -100,6 +100,13 @@ def main():
                     params['repository_url'] = entity_dict['repository_url']
                 changed, result = module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
                 task = module.wait_for_task(result)
+                for error in task['humanized']['errors']:
+                    if "same as existing data" in error:
+                        changed = False
+                    elif "older than existing data" in error:
+                        module.fail_json(msg="Manifest is older than existing data.")
+                    else:
+                        module.fail_json(msg="Upload of the manifest failed: %s" % error)
         except IOError as e:
             module.fail_json(msg="Unable to open the manifest file: %s" % e)
     elif module.state == 'absent' and existing_manifest:
