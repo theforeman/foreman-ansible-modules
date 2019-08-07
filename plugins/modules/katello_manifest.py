@@ -82,8 +82,6 @@ def main():
 
     module.connect()
 
-    #set_task_timeout(300000)  # 5 minutes
-
     organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
     scope = {'organization_id': organization['id']}
 
@@ -106,7 +104,7 @@ def main():
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
                 changed, result = module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
-                task = module.wait_for_task(result)
+                task = module.wait_for_task(result, 300)  # 5 minutes
                 for error in task['humanized']['errors']:
                     if "same as existing data" in error:
                         changed = False
