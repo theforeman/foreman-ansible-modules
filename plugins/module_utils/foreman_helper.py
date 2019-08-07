@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # (c) Matthias Dellweg (ATIX AG) 2017
 
-import re
 import json
-import yaml
+import re
+import time
 import traceback
+import yaml
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -386,6 +387,17 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
         return True, result
+
+    def wait_for_task(self, task, duration=60, poll=4):
+        if task['state'] not in ['paused', 'stopped']:
+            if duration > 0:
+                time.sleep(poll)
+                duration -= poll
+                _, task = self._resource_action('foreman_tasks', 'show', {'id': task['id']})
+                self.wait_for_task(task, duration, poll)
+            else:
+                self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
+        return task
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):

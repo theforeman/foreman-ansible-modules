@@ -98,17 +98,17 @@ def main():
                 params = scope.copy()
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
-                module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
-                changed = True
+                changed, result = module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
+                task = module.wait_for_task(result)
         except IOError as e:
             module.fail_json(msg="Unable to open the manifest file: %s" % e)
     elif module.state == 'absent' and existing_manifest:
-        module.resource_action('subscriptions', 'delete_manifest', scope)
-        changed = True
+        changed, result = module.resource_action('subscriptions', 'delete_manifest', scope)
+        task = module.wait_for_task(result)
     elif module.state == 'refreshed':
         if existing_manifest:
-            module.resource_action('subscriptions', 'refresh_manifest', scope)
-            changed = True
+            changed, result = module.resource_action('subscriptions', 'refresh_manifest', scope)
+            task = module.wait_for_task(result)
         else:
             module.fail_json(msg="No manifest found to refresh.")
 
