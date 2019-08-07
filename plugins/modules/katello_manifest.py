@@ -91,6 +91,13 @@ def main():
 
     changed = False
     if module.state == 'present':
+        if 'repository_url' in entity_dict:
+            payload = {'redhat_repository_url': entity_dict['repository_url']}
+            org_spec = dict(redhat_repository_url=dict())
+            changed_url, organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
+        else:
+            changed_url = False
+
         try:
             with open(entity_dict['manifest_path'], 'rb') as manifest_file:
                 files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
@@ -107,6 +114,7 @@ def main():
                         module.fail_json(msg="Manifest is older than existing data.")
                     else:
                         module.fail_json(msg="Upload of the manifest failed: %s" % error)
+                changed |= changed_url
         except IOError as e:
             module.fail_json(msg="Unable to open the manifest file: %s" % e)
     elif module.state == 'absent' and existing_manifest:
