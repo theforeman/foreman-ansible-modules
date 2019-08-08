@@ -28,7 +28,7 @@ author:
     - "Andrew Kofink (@akofink)"
     - "Matthis Dellweg (@mdellweg) ATIX-AG"
 requirements:
-    - "nailgun >= 0.32.0"
+    - apypie
 options:
   name:
     description:
@@ -80,47 +80,29 @@ EXAMPLES = '''
     organization: "Default Organization"
     interval: "weekly"
     enabled: false
-    sync_date: "2017/01/01 00:00:00 +0000"
+    sync_date: "2017-01-01 00:00:00 UTC"
     products:
       - 'Red Hat Enterprise Linux Server'
+    state: present
 '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.ansible_nailgun_cement import (
-    ForemanEntityAnsibleModule,
-    SyncPlan,
-    find_organization,
-    find_products,
-    find_sync_plan,
-    naildown_entity,
-    sanitize_entity_dict,
-)
 
-
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'description': 'description',
-    'organization': 'organization',
-    'interval': 'interval',
-    'enabled': 'enabled',
-    'sync_date': 'sync_date',
-    'cron_expression': 'cron_expression',
-    'products': 'product',
-}
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
-        argument_spec=dict(
+    module = KatelloEntityApypieAnsibleModule(
+        entity_spec=dict(
             name=dict(required=True),
             description=dict(),
-            organization=dict(required=True),
             interval=dict(choices=['hourly', 'daily', 'weekly', 'custom cron'], required=True),
             enabled=dict(type='bool', required=True),
             sync_date=dict(required=True),
             cron_expression=dict(),
+        ),
+        argument_spec=dict(
             products=dict(type='list'),
         ),
         required_if=[
@@ -128,36 +110,44 @@ def main():
         ],
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
-    if entity_dict['interval'] != 'custom cron':
-        if 'cron_expression' in entity_dict:
-            module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
+    if (entity_dict['interval'] != 'custom cron') and ('cron_expression' in entity_dict):
+        module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, entity_dict['organization'])
+    entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
+
     products = entity_dict.pop('products', None)
 
-    sync_plan = find_sync_plan(module, entity_dict['name'], entity_dict['organization'], failsafe=True)
+    changed, sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
-    changed, sync_plan = naildown_entity(SyncPlan, entity_dict, sync_plan, state, module)
-
-    if products is not None:
-        products = find_products(module, products, entity_dict['organization'])
-        desired_product_ids = set(p.id for p in products)
-        current_product_ids = set(p.id for p in sync_plan.product)
+    if not module.desired_absent and products is not None:
+        products = module.find_resources_by_name('products', products, params=scope, thin=True)
+        desired_product_ids = set(product['id'] for product in products)
+        current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
 
         if desired_product_ids != current_product_ids:
             if not module.check_mode:
                 product_ids_to_add = desired_product_ids - current_product_ids
                 if product_ids_to_add:
-                    sync_plan.add_products(data={'product_ids': list(product_ids_to_add)})
+                    payload = {
+                        'id': sync_plan['id'],
+                        'product_ids': list(product_ids_to_add),
+                    }
+                    payload.update(scope)
+                    module.resource_action('sync_plans', 'add_products', payload)
                 product_ids_to_remove = current_product_ids - desired_product_ids
                 if product_ids_to_remove:
-                    sync_plan.remove_products(data={'product_ids': list(product_ids_to_remove)})
+                    payload = {
+                        'id': sync_plan['id'],
+                        'product_ids': list(product_ids_to_remove),
+                    }
+                    payload.update(scope)
+                    module.resource_action('sync_plans', 'remove_products', payload)
             changed = True
 
     module.exit_json(changed=changed)
