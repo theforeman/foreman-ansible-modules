@@ -25,6 +25,7 @@ MODULES = [
     'host',
     'hostgroup',
     'katello_hostgroup',
+    'luna_hostgroup',
     'host_collection',
     'installation_medium',
     'job_template',
