@@ -99,7 +99,6 @@ def main():
         try:
             with open(entity_dict['manifest_path'], 'rb') as manifest_file:
                 files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
-                headers = {'content_type': 'multipart/form-data', 'multipart': 'true'}
                 params = scope.copy()
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
