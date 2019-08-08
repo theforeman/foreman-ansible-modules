@@ -375,14 +375,14 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return True, result
 
     def wait_for_task(self, task, duration=60, poll=4):
-        if task['state'] not in ['paused', 'stopped']:
-            if duration > 0:
-                time.sleep(poll)
-                duration -= poll
-                _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
-                task = self.wait_for_task(task, duration, poll)
-            else:
+        while task['state'] not in ['paused', 'stopped']:
+            duration -= poll
+            if duration <= 0:
                 self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
+            time.sleep(poll)
+
+            _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
+
         return task
 
 
