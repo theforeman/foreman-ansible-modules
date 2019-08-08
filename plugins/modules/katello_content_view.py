@@ -108,14 +108,13 @@ try:
         find_content_view,
         find_content_view_version,
         find_repositories,
+        KatelloEntityAnsibleModule,
         naildown_entity_state,
         naildown_entity,
         sanitize_entity_dict,
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 name_map = {
     'name': 'name',

@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -95,6 +94,7 @@ try:
 
     from ansible.module_utils.ansible_nailgun_cement import (
         find_host,
+        ForemanEntityAnsibleModule,
         naildown_power_state,
         query_power_state,
     )

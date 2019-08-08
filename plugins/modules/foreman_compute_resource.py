@@ -117,6 +117,7 @@ try:
         find_compute_resource,
         find_organizations,
         find_locations,
+        ForemanEntityAnsibleModule,
         naildown_entity_state,
         sanitize_entity_dict,
     )
@@ -133,7 +134,6 @@ except ImportError as e:
     has_import_error = True
     import_error_msg = str(e)
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 # This is the only true source for names (and conversions thereof)
 name_map = {

@@ -77,12 +77,12 @@ try:
     from ansible.module_utils.ansible_nailgun_cement import (
         find_organization,
         find_lifecycle_environment,
+        KatelloEntityAnsibleModule,
         update_fields,
     )
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def validate_params(module, state, label=None, description=None, prior=None):

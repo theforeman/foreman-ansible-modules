@@ -127,11 +127,10 @@ try:
         find_organization,
         find_product,
         find_repository_set,
+        KatelloEntityAnsibleModule,
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def get_desired_repos(desired_substitutions, available_repos):

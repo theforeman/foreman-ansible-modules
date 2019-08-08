@@ -100,14 +100,13 @@ try:
         find_organization,
         find_product,
         find_repository,
+        ForemanAnsibleModule,
     )
 
     from nailgun import entity_mixins
     entity_mixins.TASK_TIMEOUT = 180000  # Publishes can sometimes take a long, long time
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 def main():

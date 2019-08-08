@@ -73,6 +73,7 @@ try:
         find_repository,
         find_package,
         find_file,
+        ForemanAnsibleModule,
     )
 
     from nailgun.entities import (
@@ -84,7 +85,6 @@ try:
 except ImportError:
     pass
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 from ansible.module_utils._text import to_native
 
 

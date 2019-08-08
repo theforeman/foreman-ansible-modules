@@ -285,6 +285,7 @@ try:
         find_entities,
         find_entities_by_name,
         find_template_input,
+        ForemanEntityAnsibleModule,
         naildown_entity,
         naildown_entity_state,
         sanitize_entity_dict,
@@ -297,8 +298,6 @@ try:
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)
