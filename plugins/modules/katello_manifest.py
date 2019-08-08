@@ -115,7 +115,7 @@ def main():
                 changed |= changed_url
         except IOError as e:
             module.fail_json(msg="Unable to read the manifest file: %s" % e)
-    elif module.state == 'absent' and existing_manifest:
+    elif module.desired_absent and existing_manifest:
         changed, result = module.resource_action('subscriptions', 'delete_manifest', scope)
         task = module.wait_for_task(result)
     elif module.state == 'refreshed':
