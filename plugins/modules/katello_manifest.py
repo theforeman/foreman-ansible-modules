@@ -99,9 +99,10 @@ def main():
         try:
             with open(entity_dict['manifest_path'], 'rb') as manifest_file:
                 files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
-                params = scope.copy()
+                params = {}
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
+                params.update(scope)
                 changed, result = module.resource_action('subscriptions', 'upload', params, options={'skip_validation': True}, files=files)
                 task = module.wait_for_task(result, 300)  # 5 minutes
                 for error in task['humanized']['errors']:
