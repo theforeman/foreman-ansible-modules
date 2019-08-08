@@ -84,7 +84,6 @@ except ImportError:
     pass
 
 
-
 def validate_params(module, state, label=None, description=None, prior=None):
     message = ""
     if state != 'present':
