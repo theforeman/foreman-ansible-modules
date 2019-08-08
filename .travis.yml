@@ -9,8 +9,7 @@ addons:
   apt:
     packages:
       - rpm
-  pip:
-    packages:
-      - pytest-travis-fold
-install: make test-setup doc-setup
+install:
+  - pip install pytest-travis-fold
+  - make test-setup doc-setup
 script: make lint sanity test dist doc
