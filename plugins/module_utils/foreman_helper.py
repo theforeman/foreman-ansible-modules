@@ -291,7 +291,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         if not self.check_mode:
             if params:
                 payload.update(params)
-            return self._resource_action(resource, 'create', payload)
+            return self.resource_action(resource, 'create', payload)
         else:
             fake_entity = desired_entity.copy()
             fake_entity['id'] = -1
@@ -320,7 +320,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             if not self.check_mode:
                 if params:
                     payload.update(params)
-                return self._resource_action(resource, 'update', payload)
+                return self.resource_action(resource, 'update', payload)
             else:
                 # In check_mode we emulate the server updating the entity
                 fake_entity = current_entity.copy()
@@ -343,7 +343,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        return self._resource_action(resource, 'revert', payload)
+        return self.resource_action(resource, 'revert', payload)
 
     def _delete_entity(self, resource, current_entity, params):
         """Delete a given entity
@@ -358,13 +358,10 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        self._resource_action(resource, 'destroy', payload)
+        self.resource_action(resource, 'destroy', payload)
         return True, None
 
-    def resource_action(self, *args, **kwargs):
-        return self._resource_action(*args, **kwargs)
-
-    def _resource_action(self, resource, action, params, **kwargs):
+    def resource_action(self, resource, action, params, **kwargs):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         try:
             result = None
@@ -380,7 +377,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             if duration > 0:
                 time.sleep(poll)
                 duration -= poll
-                _, task = self._resource_action('foreman_tasks', 'show', {'id': task['id']})
+                _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
                 self.wait_for_task(task, duration, poll)
             else:
                 self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
