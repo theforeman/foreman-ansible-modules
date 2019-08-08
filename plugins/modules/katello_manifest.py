@@ -85,7 +85,10 @@ def main():
     organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
     scope = {'organization_id': organization['id']}
 
-    existing_manifest = organization.get('owner_details', {}).get('upstreamConsumer')
+    try:
+        existing_manifest = organization['owner_details']['upstreamConsumer']
+    except KeyError:
+        existing_manifest = None
 
     changed = False
     if module.state == 'present':
