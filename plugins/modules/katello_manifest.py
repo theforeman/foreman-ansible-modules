@@ -114,7 +114,7 @@ def main():
                         module.fail_json(msg="Upload of the manifest failed: %s" % error)
                 changed |= changed_url
         except IOError as e:
-            module.fail_json(msg="Unable to open the manifest file: %s" % e)
+            module.fail_json(msg="Unable to read the manifest file: %s" % e)
     elif module.state == 'absent' and existing_manifest:
         changed, result = module.resource_action('subscriptions', 'delete_manifest', scope)
         task = module.wait_for_task(result)
