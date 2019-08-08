@@ -88,6 +88,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.ansible_nailgun_cement import (
+    ForemanEntityAnsibleModule,
     SyncPlan,
     find_organization,
     find_products,
@@ -95,8 +96,6 @@ from ansible.module_utils.ansible_nailgun_cement import (
     naildown_entity,
     sanitize_entity_dict,
 )
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)

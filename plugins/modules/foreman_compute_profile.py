@@ -126,6 +126,7 @@ try:
         find_compute_resource,
         find_compute_profile,
         find_compute_attribute,
+        ForemanEntityAnsibleModule,
         naildown_entity,
         naildown_entity_state,
         sanitize_entity_dict,
@@ -138,8 +139,6 @@ try:
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 # This is the only true source for names (and conversions thereof)

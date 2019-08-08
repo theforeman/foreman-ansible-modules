@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 ANSIBLE_METADATA = {'metadata_version': '1.0',
                     'status': ['preview'],
                     'supported_by': 'community'}
@@ -86,6 +85,7 @@ try:
         find_hostgroup,
         find_location,
         find_organization,
+        ForemanEntityAnsibleModule,
         naildown_entity_state,
         sanitize_entity_dict,
     )

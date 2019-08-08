@@ -72,6 +72,7 @@ foreman_setting:
 try:
     from ansible.module_utils.ansible_nailgun_cement import (
         find_setting,
+        ForemanAnsibleModule,
         naildown_entity,
         sanitize_entity_dict,
     )
@@ -81,8 +82,6 @@ try:
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 name_map = {

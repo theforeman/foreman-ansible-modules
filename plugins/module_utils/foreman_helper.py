@@ -9,16 +9,6 @@ import traceback
 from ansible.module_utils.basic import AnsibleModule
 
 try:
-    import ansible.module_utils.ansible_nailgun_cement
-    from nailgun import entity_mixins
-    from nailgun.config import ServerConfig
-    from nailgun.entities import Ping
-    HAS_NAILGUN = True
-except ImportError:
-    HAS_NAILGUN = False
-    NAILGUN_IMP_ERR = traceback.format_exc()
-
-try:
     import apypie
     HAS_APYPIE = True
 except ImportError:
@@ -75,25 +65,6 @@ def _exception2fail_json(msg='Generic failure: %s'):
                 self.fail_json(msg=msg % e)
         return inner
     return decor
-
-
-class ForemanAnsibleModule(ForemanBaseAnsibleModule):
-
-    def check_requirements(self):
-        if not HAS_NAILGUN:
-            self.fail_json(msg='The nailgun Python module is required',
-                           exception=NAILGUN_IMP_ERR)
-
-    def connect(self, ping=True):
-        entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
-            url=self._foremanapi_server_url,
-            auth=(self._foremanapi_username, self._foremanapi_password),
-            verify=self._foremanapi_validate_certs,
-        )
-
-    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
-    def ping(self):
-        return Ping().search_json()
 
 
 class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
@@ -370,32 +341,6 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
         return True, result
-
-
-class ForemanEntityAnsibleModule(ForemanAnsibleModule):
-
-    def __init__(self, argument_spec, **kwargs):
-        args = dict(
-            state=dict(choices=['present', 'absent'], default='present'),
-        )
-        args.update(argument_spec)
-        super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
-
-        self.state = self._params.pop('state')
-        self.desired_absent = self.state == 'absent'
-
-    def parse_params(self):
-        return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
-
-
-class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
-
-    def __init__(self, argument_spec, **kwargs):
-        args = dict(
-            organization=dict(required=True),
-        )
-        args.update(argument_spec)
-        super(KatelloEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
 
 class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):

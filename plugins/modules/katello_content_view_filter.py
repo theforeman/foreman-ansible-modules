@@ -151,13 +151,12 @@ try:
         find_content_view_filter_rule,
         find_errata,
         find_package_group,
+        ForemanAnsibleModule,
         naildown_entity_state,
         sanitize_entity_dict,
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 content_filter_map = {
     'name': 'name',

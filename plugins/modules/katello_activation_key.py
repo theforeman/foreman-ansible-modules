@@ -105,6 +105,7 @@ try:
         find_content_view,
         find_subscriptions,
         find_host_collections,
+        KatelloEntityAnsibleModule,
         naildown_entity,
         sanitize_entity_dict,
     )
@@ -115,8 +116,6 @@ try:
     )
 except ImportError:
     pass
-
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 name_map = {
     'name': 'name',

@@ -5,56 +5,110 @@
 
 import sys
 
-from nailgun.config import ServerConfig
-from nailgun.entities import (
-    AbstractComputeResource,
-    AbstractContentViewFilter,
-    ActivationKey,
-    Bookmark,
-    CommonParameter,
-    ComputeAttribute,
-    ComputeProfile,
-    ContentCredential,
-    ContentView,
-    ContentViewFilterRule,
-    ContentViewVersion,
-    Domain,
-    Entity,
-    Environment,
-    Errata,
-    File,
-    HostCollection,
-    JobTemplate,
-    Host,
-    HostGroup,
-    LifecycleEnvironment,
-    Location,
-    Media,
-    OperatingSystem,
-    OperatingSystemParameter,
-    Organization,
-    OSDefaultTemplate,
-    OVirtComputeResource,
-    Package,
-    PackageGroup,
-    Ping,
-    Product,
-    Realm,
-    Repository,
-    RepositorySet,
-    Setting,
-    SmartProxy,
-    Subnet,
-    Subnet,
-    Subscription,
-    SyncPlan,
-    TemplateInput,
-    TemplateKind,
-    VMWareComputeResource,
-)
-from nailgun import entity_mixins
+try:
+    from nailgun.config import ServerConfig
+    from nailgun.entities import (
+        AbstractComputeResource,
+        AbstractContentViewFilter,
+        ActivationKey,
+        Bookmark,
+        CommonParameter,
+        ComputeAttribute,
+        ComputeProfile,
+        ContentCredential,
+        ContentView,
+        ContentViewFilterRule,
+        ContentViewVersion,
+        Domain,
+        Entity,
+        Environment,
+        Errata,
+        File,
+        HostCollection,
+        JobTemplate,
+        Host,
+        HostGroup,
+        LifecycleEnvironment,
+        Location,
+        Media,
+        OperatingSystem,
+        OperatingSystemParameter,
+        Organization,
+        OSDefaultTemplate,
+        OVirtComputeResource,
+        Package,
+        PackageGroup,
+        Ping,
+        Product,
+        Realm,
+        Repository,
+        RepositorySet,
+        Setting,
+        SmartProxy,
+        Subnet,
+        Subnet,
+        Subscription,
+        SyncPlan,
+        TemplateInput,
+        TemplateKind,
+        VMWareComputeResource,
+    )
+    from nailgun import entity_mixins
+    HAS_NAILGUN = True
+except ImportError:
+    HAS_NAILGUN = False
+    NAILGUN_IMP_ERR = traceback.format_exc()
 
 from ansible.module_utils.parsing.convert_bool import boolean
+from ansible.module_utils.foreman_helper import (
+    _exception2fail_json,
+    ForemanBaseAnsibleModule,
+)
+
+
+class ForemanAnsibleModule(ForemanBaseAnsibleModule):
+
+    def check_requirements(self):
+        if not HAS_NAILGUN:
+            self.fail_json(msg='The nailgun Python module is required',
+                           exception=NAILGUN_IMP_ERR)
+
+    def connect(self, ping=True):
+        entity_mixins.DEFAULT_SERVER_CONFIG = ServerConfig(
+            url=self._foremanapi_server_url,
+            auth=(self._foremanapi_username, self._foremanapi_password),
+            verify=self._foremanapi_validate_certs,
+        )
+
+    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
+    def ping(self):
+        return Ping().search_json()
+
+
+class ForemanEntityAnsibleModule(ForemanAnsibleModule):
+
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            state=dict(choices=['present', 'absent'], default='present'),
+        )
+        args.update(argument_spec)
+        super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+
+        self.state = self._params.pop('state')
+        self.desired_absent = self.state == 'absent'
+
+    def parse_params(self):
+        return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
+
+
+class KatelloEntityAnsibleModule(ForemanEntityAnsibleModule):
+
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            organization=dict(required=True),
+        )
+        args.update(argument_spec)
+        super(KatelloEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
 
 class OperatingSystemParameter(OperatingSystemParameter, entity_mixins.EntitySearchMixin):

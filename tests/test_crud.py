@@ -112,5 +112,4 @@ def run_playbook(module, extra_vars=None, limit=None):
 @pytest.mark.parametrize('module', MODULES)
 def test_crud(tmpdir, module, record):
     run = run_playbook_vcr(tmpdir, module, record=record)
-    print(run.stdout.read())
     assert run.rc == 0
