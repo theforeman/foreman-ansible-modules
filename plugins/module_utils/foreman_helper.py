@@ -378,7 +378,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
                 time.sleep(poll)
                 duration -= poll
                 _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
-                self.wait_for_task(task, duration, poll)
+                task = self.wait_for_task(task, duration, poll)
             else:
                 self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
         return task
