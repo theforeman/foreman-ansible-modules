@@ -130,6 +130,10 @@ options:
     description: Puppet CA proxy name
     required: false
     default: None
+  openscap_proxy:
+    description: OpenSCAP proxy name. Only available when the OpenSCAP plugin is installed.
+    required: false
+    default: None
   organization:
     description:
       - Organization for scoped resources attached to the hostgroup. Only used for katello installations.
@@ -137,15 +141,15 @@ options:
     required: false
     default: None
   content_source:
-    description: Katello Content source. Only available for katello instance.
+    description: Katello Content source. Only available for katello installations.
     required: false
     default: None
   lifecycle_environment:
-    description: Katello Lifecycle environment. Only available for katello instance.
+    description: Katello Lifecycle environment. Only available for katello installations.
     required: false
     default: None
   content_view:
-    description: Katello Content view. Only available for katello instance.
+    description: Katello Content view. Only available for katello installations.
     required: false
     default: None
   parameters:
@@ -283,6 +287,7 @@ def main():
             config_groups=dict(type='entity_list', flat_name='config_group_ids'),
             puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
             puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
+            openscap_proxy=dict(type='entity', flat_name='openscap_proxy_id'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
             content_source=dict(type='entity', flat_name='content_source_id'),
             lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
@@ -354,7 +359,7 @@ def main():
         if 'config_groups' in entity_dict:
             entity_dict['config_groups'] = module.find_resources_by_name('config_groups', entity_dict['config_groups'], failsafe=False, thin=True)
 
-        for proxy in ['puppet_proxy', 'puppet_ca_proxy', 'content_source']:
+        for proxy in ['puppet_proxy', 'puppet_ca_proxy', 'openscap_proxy', 'content_source']:
             if proxy in entity_dict:
                 entity_dict[proxy] = module.find_resource_by_name('smart_proxies', entity_dict[proxy], thin=True)
 
@@ -372,11 +377,11 @@ def main():
 
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
-                                                                                failsafe=False, thin=True, params=scope)
+                                                                                params=scope, failsafe=False, thin=True)
 
         if 'content_view' in entity_dict:
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
-                                                                       failsafe=False, thin=True, params=scope)
+                                                                       params=scope, failsafe=False, thin=True)
 
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
     if entity:
