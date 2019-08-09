@@ -1,6 +1,6 @@
 # Foreman Ansible Modules [![Build Status](https://travis-ci.org/theforeman/foreman-ansible-modules.svg?branch=master)](https://travis-ci.org/theforeman/foreman-ansible-modules)
 
-This repository contains Ansible modules for interacting with a Foreman server API and various plugin APIs such as Katello.
+This repository contains Ansible modules for interacting with the Foreman API and various plugin APIs such as Katello.
 
 ## Goals
 
@@ -8,13 +8,39 @@ The intent of this repository is to be a place that community members can develo
 
   * centralized location for community modules
   * a single repository to clone for interacting with Foreman & plugins
-  * an intermediate landing place for modules before pushing them to Ansible community
-  * repository maintainers will be working to push the modules into Ansible proper [https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman](https://github.com/ansible/ansible/tree/devel/lib/ansible/modules/remote_management/foreman)
+  * source for the official Ansible collection (TBD)
 
 ## Branches
 
-* `master` - current development branch, using both `nailgun` and `apypie` libraries
+* `master` - current development branch, using both `nailgun` and `apypie` libraries. The progress of the `nailgun` to `apypie` migration can be seen in [issue #274](https://github.com/theforeman/foreman-ansible-modules/issues/274)
 * `nailgun` - the state of the repository before the switch to the `apypie` library started, `nailgun` is the only dependency
+
+## Supported Foreman and plugins versions
+
+### `apypie` based modules
+
+Modules that use the `apypie` library should support any currently stable Foreman release and the matching set of plugins.
+Some modules have additional features/arguments that are only applied when the corresponding plugin is installed.
+
+We actively test the modules against the latest stable Foreman release and the matching set of plugins.
+
+### `nailgun` based modules
+
+The `nailgun` library has specific releases for different Satellite (and thus Foreman/Katello) releases.
+Please pick the right `nailgun` release from the table below for your environment.
+
+We actively test the modules against the latest stable Foreman release and the matching set of plugins.
+
+#### `nailgun` versions
+
+Below is listed the correct Nailgun version/branch for your environment
+
+Server                       | Nailgun branch | Nailgun version
+---------------------------- | ------ | ------
+Katello 3.11 and newer       | master | 0.32.x
+Satellite 6.5 / Katello 3.10 | 6.5.z  | 0.32.x
+Satellite 6.4 / Katello 3.7  | 6.4.z  | 0.30.x
+Satellite 6.3 / Katello 3.4  | 6.3.z  | 0.30.x
 
 ## How To Use The Repository
 
@@ -133,6 +159,7 @@ You can set a number of environment variables besides `MODULE` to configure make
 This is a list of modules currently in the repository (please add to the list if adding a module).
 
 #### Entity Modules
+
  * foreman_architecture: create and maintain architectures
  * foreman_compute_attribute: create and maintain compute attributes
  * foreman_compute_resource: create and maintain compute resources
@@ -167,15 +194,7 @@ This is a list of modules currently in the repository (please add to the list if
  * katello_content_view_publish: publish Katello content views
  * katello_manifest: upload and Manage Katello manifests
 
-## Nailgun Versions
 
-Below is listed the correct Nailgun branch for your Server
-
-Server | Nailgun branch
------------- | -------------
-Katello | master
-Satellite 6.3 | 6.3.z
-Satellite 6.2 | 6.2.z
 
 ## Ansible Version
 
