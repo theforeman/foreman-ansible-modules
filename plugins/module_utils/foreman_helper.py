@@ -157,6 +157,37 @@ def _exception2fail_json(msg='Generic failure: %s'):
     return decor
 
 
+class ForemanApiCache:
+
+    def __init__(self):
+        self._entities_cache = {'show': {}, 'index': {}}
+
+    def get_list(self, resource, search=None, params=None):
+        if resource in self._entities_cache['index']:
+            for entry in self._entities_cache['index'][resource]:
+                if entry['search'] == str(search):
+                    return entry['results']
+        return None
+
+    def set_list(self, resource, data, search=None, params=None):
+        if resource not in self._entities_cache['index']:
+            self._entities_cache['index'][resource] = []
+        if not self.get_list(resource, search, params):
+            self._entities_cache['index'][resource].append({'results': list(data), 'search': str(search), 'params': str(params)})
+
+    def get_entity(self, resource, id, params=None):
+        if resource in self._entities_cache['show'] and id in self._entities_cache['show'][resource]:
+            for entry in self._entities_cache['show'][resource][id]:
+                if entry['params'] == str(params):
+                    return entry['result']
+        return None
+
+    def set_entity(self, resource, id, data, params=None):
+        if resource not in self._entities_cache['show']:
+            self._entities_cache['show'][resource] = {}
+        self._entities_cache['show'][resource][id] = data.copy()
+
+
 class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
     def __init__(self, *args, **kwargs):
@@ -164,6 +195,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         self._thin_default = False
         self.state = 'undefined'
         self.entity_spec = {}
+        self.cache = ForemanApiCache()
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -250,29 +282,41 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return self.foremanapi.resource('home').call('status')
 
     @_exception2fail_json('Failed to show resource: %s')
-    def show_resource(self, resource, resource_id, params=None):
+    def show_resource(self, resource, resource_id, params=None, use_cache=True):
+        result = None
         if params is None:
             params = {}
         params['id'] = resource_id
-        return self.foremanapi.resource(resource).call('show', params)
+        if use_cache:
+            result = self.cache.get_entity(resource, resource_id, params)
+        if not result:
+            result = self.foremanapi.resource(resource).call('show', params)
+            self.cache.set_entity(resource, resource_id, result, params)
+        return result
 
     @_exception2fail_json(msg='Failed to list resource: %s')
-    def list_resource(self, resource, search=None, params=None):
+    def list_resource(self, resource, search=None, params=None, use_cache=True):
+        results = None
         if params is None:
             params = {}
         if search is not None:
             params['search'] = search
         params['per_page'] = 2 << 31
-        return self.foremanapi.resource(resource).call('index', params)['results']
+        if use_cache:
+            results = self.cache.get_list(resource, search, params)
+        if not results:
+            results = self.foremanapi.resource(resource).call('index', params)['results']
+            self.cache.set_list(resource, results, search, params)
+        return results
 
-    def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
+    def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None, use_cache=True):
         list_params = {}
         if params is not None:
             list_params.update(params)
         if thin is None:
             thin = self._thin_default
         list_params['thin'] = thin
-        results = self.list_resource(resource, search, list_params)
+        results = self.list_resource(resource, search, list_params, use_cache)
         if resource == 'snapshots':
             # Snapshots API does not do search
             snapshot = []
@@ -291,7 +335,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             if thin:
                 result = {'id': result['id']}
             else:
-                result = self.show_resource(resource, result['id'], params=params)
+                result = self.show_resource(resource, result['id'], params=params, use_cache=use_cache)
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):
