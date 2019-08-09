@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # (c) 2017, Andrew Kofink <ajkofink@gmail.com>
+# (c) 2019, Baptiste Agasse <baptiste.agasse@gmail.com>
 #
 # This file is part of Ansible
 #
@@ -23,9 +24,11 @@ module: katello_lifecycle_environment
 short_description: Create and Manage Katello lifecycle environments
 description:
     - Create and Manage Katello lifecycle environments
-author: "Andrew Kofink (@akofink)"
+author:
+  - "Andrew Kofink (@akofink)"
+  - "Baptiste Agasse (@bagasse)"
 requirements:
-    - "nailgun >= 0.28.0"
+    - "apypie"
 options:
   name:
     description:
@@ -70,96 +73,43 @@ EXAMPLES = '''
 
 RETURN = '''# '''
 
-try:
-    from nailgun.entities import (
-        LifecycleEnvironment
-    )
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_lifecycle_environment,
-        KatelloEntityAnsibleModule,
-        update_fields,
-    )
-except ImportError:
-    pass
-
-
-def validate_params(module, state, label=None, description=None, prior=None):
-    message = ""
-    if state != 'present':
-        if label is not None:
-            message += "Label cannot be specified if state is absent. "
-        if description is not None:
-            message += "Description cannot be specified if state is absent. "
-        if prior is not None:
-            message += "Prior cannot be specified if state is absent. "
-    if len(message) > 0:
-        module.fail_json(msg=message)
-        return False
-
-
-def find_prior(module, prior, organization):
-    if prior is not None:
-        return find_lifecycle_environment(module, prior, organization)
-
-
-def lifecycle_environment(module, name, organization, state, label=None, description=None, prior=None):
-    changed = False
-    organization = find_organization(module, organization)
-    prior = find_prior(module, prior, organization)
-    current_environment = find_lifecycle_environment(module, name, organization, failsafe=True)
-
-    if state == 'present':
-        if label is not None and current_environment is not None and current_environment.label != label:
-            module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
-        if prior is not None and current_environment is not None and current_environment.prior.id != prior.id:
-            module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
-        desired_environment = LifecycleEnvironment(name=name, organization=organization, label=label, description=description, prior=prior)
-        fields = ['description']
-        if current_environment is not None:
-            (needs_update, le) = update_fields(desired_environment, current_environment, fields)
-            if needs_update:
-                if not module.check_mode:
-                    le.update(fields)
-                changed = True
-        else:
-            desired_environment.prior = find_prior(module, "Library", organization) if prior is None else prior
-            if not module.check_mode:
-                desired_environment.create()
-            changed = True
-    elif current_environment is not None:
-        if not module.check_mode:
-            current_environment.delete()
-        changed = True
-    return changed
+from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
 
 
 def main():
-    module = KatelloEntityAnsibleModule(
-        argument_spec=dict(
+    module = KatelloEntityApypieAnsibleModule(
+        entity_spec=dict(
             name=dict(required=True),
             label=dict(),
             description=dict(),
-            prior=dict(),
+            prior=dict(type='entity', flat_name='prior_id'),
         ),
     )
 
-    (module_params, state) = module.parse_params()
-    name = module_params.get('name')
-    label = module_params.get('label') if module_params.get('label') != '' else None
-    description = module_params.get('description')
-    prior = None if module_params.get('prior') == '' else module_params.get('prior')
-    organization = module_params.get('organization')
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    validate_params(module, state, label=label, description=description, prior=prior)
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity = module.find_resource_by_name('lifecycle_environments', name=entity_dict['name'], params=scope, failsafe=True)
+    if not module.desired_absent:
+        if 'prior' in entity_dict:
+            entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', entity_dict['prior'], params=scope, thin=True)
+        # Default to 'Library' for new env with no 'prior' provided
+        elif not entity:
+            entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
 
-    try:
-        changed = lifecycle_environment(module, name, organization, state, label=label, description=description, prior=prior)
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    if entity:
+        if 'label' in entity_dict and entity_dict['label'] and entity['label'] != entity_dict['label']:
+            module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
+
+        if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
+            module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
+
+    changed = module.ensure_entity_state('lifecycle_environments', entity_dict, entity, params=scope)
+
+    module.exit_json(changed=changed)
 
 
 if __name__ == '__main__':
