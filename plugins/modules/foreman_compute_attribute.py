@@ -27,7 +27,7 @@ description:
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
 requirements:
-    - "apypie >= 0.0.1"
+  - "apypie"
 options:
   compute_resource:
     description:

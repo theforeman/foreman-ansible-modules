@@ -27,7 +27,7 @@ author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
   - "Baptiste Agasse (@bagasse)"
 requirements:
-  - "apypie >= 0.0.3"
+  - "apypie"
 options:
   name:
     description: Name of hostgroup
