@@ -130,6 +130,24 @@ options:
     description: Puppet CA proxy name
     required: false
     default: None
+  organization:
+    description:
+      - Organization for scoped resources attached to the hostgroup. Only used for katello installations.
+      - This organization will implicitly be added to the I(organizations) parameter if needed.
+    required: false
+    default: None
+  content_source:
+    description: Katello Content source. Only available for katello instance.
+    required: false
+    default: None
+  lifecycle_environment:
+    description: Katello Lifecycle environment. Only available for katello instance.
+    required: false
+    default: None
+  content_view:
+    description: Katello Content view. Only available for katello instance.
+    required: false
+    default: None
   parameters:
     description:
       - Subnet specific host parameters
@@ -184,6 +202,13 @@ EXAMPLES = '''
     name: "new_hostgroup"
     architecture: "updated_architecture_name"
     operatingsystem: "updated_operatingsystem_name"
+    organizations:
+      - Org One
+      - Org Two
+    locations:
+      - Loc One
+      - Loc Two
+      - Loc One/Nested loc
     medium: "updated_media_name"
     ptable: "updated_Partition_table_name"
     root_pass: "password"
@@ -191,6 +216,27 @@ EXAMPLES = '''
     username: "admin"
     password: "secret"
     state: present
+
+- name: "My nested hostgroup"
+  foreman_hostgroup:
+    parent: "new_hostgroup"
+    name: "my nested hostgroup"
+
+- name: "My hostgroup with ome proxies"
+  foreman_hostgroup:
+    name: "my hostgroup"
+    environment: production
+    puppet_proxy: puppet-proxy.example.com
+    puppet_ca_proxy: puppet-proxy.example.com
+    openscap_proxy: openscap-proxy.example.com
+
+- name: "My katello related hostgroup"
+  foreman_hostgroup:
+    organization: "My Org"
+    name: "kt hostgroup"
+    content_source: capsule.example.com
+    lifecycle_environment: "Production"
+    content_view: "My content view"
 
 - name: "Delete a Hostgroup"
   foreman_hostgroup:
@@ -238,7 +284,11 @@ def main():
             puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
             puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
+            content_source=dict(type='entity', flat_name='content_source_id'),
+            lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
+            content_view=dict(type='entity', flat_name='content_view_id'),
         ),
+        argument_spec=dict(organization=dict()),
     )
     entity_dict = module.clean_params()
 
@@ -247,6 +297,11 @@ def main():
     # Get short name and parent from provided name
     name, parent = split_fqn(entity_dict['name'])
     entity_dict['name'] = name
+
+    katello_params = ['content_source', 'lifecycle_environment', 'content_view']
+
+    if 'organization' not in entity_dict and list(set(katello_params) & set(entity_dict.keys())):
+        module.fail_json(msg="Please specify the organization when using katello parameters.")
 
     if 'parent' in entity_dict:
         if parent:
@@ -260,9 +315,6 @@ def main():
             module.exit_json(changed=False)
 
     if not module.desired_absent:
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
@@ -302,11 +354,29 @@ def main():
         if 'config_groups' in entity_dict:
             entity_dict['config_groups'] = module.find_resources_by_name('config_groups', entity_dict['config_groups'], failsafe=False, thin=True)
 
-        if 'puppet_proxy' in entity_dict:
-            entity_dict['puppet_proxy'] = module.find_resource_by_name('smart_proxies', name=entity_dict['puppet_proxy'], failsafe=False, thin=True)
+        for proxy in ['puppet_proxy', 'puppet_ca_proxy', 'content_source']:
+            if proxy in entity_dict:
+                entity_dict[proxy] = module.find_resource_by_name('smart_proxies', entity_dict[proxy], thin=True)
 
-        if 'puppet_ca_proxy' in entity_dict:
-            entity_dict['puppet_ca_proxy'] = module.find_resource_by_name('smart_proxies', name=entity_dict['puppet_ca_proxy'], failsafe=False, thin=True)
+        if 'organization' in entity_dict:
+            if 'organizations' in entity_dict:
+                if entity_dict['organization'] not in entity_dict['organizations']:
+                    entity_dict['organizations'].append(entity_dict['organization'])
+            else:
+                entity_dict['organizations'] = [entity_dict['organization']]
+            entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], failsafe=False, thin=True)
+            scope = {'organization_id': entity_dict['organization']['id']}
+
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+
+        if 'lifecycle_environment' in entity_dict:
+            entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
+                                                                                failsafe=False, thin=True, params=scope)
+
+        if 'content_view' in entity_dict:
+            entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
+                                                                       failsafe=False, thin=True, params=scope)
 
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
     if entity:
