@@ -12,16 +12,17 @@ The intent of this repository is to be a place that community members can develo
 
 ## Branches
 
-* `master` - current development branch, using both `nailgun` and `apypie` libraries
+* `master` - current development branch, using both `nailgun` and `apypie` libraries. The progress of the `nailgun` to `apypie` migration can be seen in [issue #274](https://github.com/theforeman/foreman-ansible-modules/issues/274)
 * `nailgun` - the state of the repository before the switch to the `apypie` library started, `nailgun` is the only dependency
 
 ## Supported Foreman and plugins versions
 
 ### `apypie` based modules
 
-Modules that use the `apypie` library should support any currently stable Foreman release.
+Modules that use the `apypie` library should support any currently stable Foreman release and the matching set of plugins.
+Some modules have additional features/arguments that are only applied when the corresponding plugin is installed.
 
-We actively test them against the latest stable Foreman release and the matching set of plugins.
+We actively test the modules against the latest stable Foreman release and the matching set of plugins.
 
 ### `nailgun` based modules
 
