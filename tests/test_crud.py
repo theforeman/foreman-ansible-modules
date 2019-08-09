@@ -24,6 +24,7 @@ MODULES = [
     'global_parameter',
     'host',
     'hostgroup',
+    'katello_hostgroup',
     'host_collection',
     'installation_medium',
     'job_template',
