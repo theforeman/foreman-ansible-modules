@@ -17,7 +17,10 @@
     auto_publish: "{{ auto_publish | default(omit) }}"
   register: result
 
-- fail:
-    msg: "Creating/updating content view failed! (expected_change: {{ expected_change | default('unknown') }})"
-  when: (expected_change is defined) and (result.changed != expected_change)
+- assert:
+    fail_msg: "Ensuring content_view is {{ content_view_state | default('present') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    quiet: yes
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
 ...
