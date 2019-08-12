@@ -183,6 +183,21 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
+    def _patch_content_uploads_update_api(self):
+        """This is a workaround for the broken content_uploads update apidoc in katello.
+            see https://projects.theforeman.org/issues/27590
+        """
+
+        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
+
+        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
+        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
+        _content_upload_update_params_id['expected_type'] = 'string'
+
+        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
+        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
+        _content_upload_destroy_params_id['expected_type'] = 'string'
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
@@ -198,6 +213,10 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         )
 
         self._patch_location_api()
+        try:
+            self._patch_content_uploads_update_api()
+        except Exception:
+            pass
 
         if ping:
             self.ping()
@@ -431,14 +450,14 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         self.resource_action(resource, 'destroy', payload)
         return True, None
 
-    def resource_action(self, resource, action, params, options=None, files=None):
+    def resource_action(self, resource, action, params, options=None, headers=None, data=None, files=None):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
         try:
             result = None
             if not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, files=files)
+                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, headers=headers, data=data, files=files)
         except Exception as e:
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
