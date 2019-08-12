@@ -96,6 +96,12 @@ def main():
 
     filename = os.path.basename(entity_dict['src'])
 
+    checksum = hashlib.sha256()
+    with open(entity_dict['src'], 'rb') as contentfile:
+        for chunk in iter(lambda: contentfile.read(4096), b""):
+            checksum.update(chunk)
+    checksum = checksum.hexdigest()
+
     content_unit = None
     if entity_dict['repository']['content_type'] == 'yum':
         name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
@@ -104,11 +110,6 @@ def main():
         query = 'name = "{}" and version = "{}" and release = "{}" and arch = "{}"'.format(name, version, release, arch)
         content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
     elif entity_dict['repository']['content_type'] == 'file':
-        h = hashlib.sha256()
-        with open(entity_dict['src'], "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                h.update(chunk)
-        checksum = h.hexdigest()
         query = 'name = "{}" and checksum = "{}"'.format(filename, checksum)
         content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
     else:
@@ -123,7 +124,6 @@ def main():
 
         offset = 0
         content_chunk_size = 2 * 1024 * 1024
-        checksum = hashlib.sha256()
 
         with open(entity_dict['src'], 'rb') as contentfile:
             chunk = contentfile.read(content_chunk_size)
@@ -132,11 +132,10 @@ def main():
                 module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, data=data)
 
                 offset += len(chunk)
-                checksum.update(chunk)
                 chunk = contentfile.read(content_chunk_size)
 
         uploads = [{'id': content_upload['upload_id'], 'name': filename,
-                    'size': offset, 'checksum': checksum.hexdigest()}]
+                    'size': offset, 'checksum': checksum}]
         import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
         module.resource_action('repositories', 'import_uploads', import_params)
 
