@@ -74,6 +74,7 @@ from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule
 
 CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
 
+
 def main():
     module = ForemanApypieAnsibleModule(
         argument_spec=dict(
