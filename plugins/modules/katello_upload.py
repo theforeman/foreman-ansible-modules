@@ -94,6 +94,8 @@ def main():
     entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
     repository_scope = {'repository_id': entity_dict['repository']['id']}
 
+    filename = os.path.basename(entity_dict['src'])
+
     content_unit = None
     if entity_dict['repository']['content_type'] == 'yum':
         name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
@@ -107,8 +109,7 @@ def main():
             for chunk in iter(lambda: f.read(4096), b""):
                 h.update(chunk)
         checksum = h.hexdigest()
-        name = os.path.basename(entity_dict['src'])
-        query = 'name = "{}" and checksum = "{}"'.format(name, checksum)
+        query = 'name = "{}" and checksum = "{}"'.format(filename, checksum)
         content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
     else:
         # possible types in 3.12: docker, ostree, yum, puppet, file, deb
@@ -119,7 +120,6 @@ def main():
         _, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
         content_upload_scope = {'id': content_upload['upload_id']}
         content_upload_scope.update(repository_scope)
-        filename = os.path.basename(entity_dict['src'])
 
         offset = 0
         content_chunk_size = 2 * 1024 * 1024
