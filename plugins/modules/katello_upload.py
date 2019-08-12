@@ -128,8 +128,7 @@ def main():
             chunk = contentfile.read(content_chunk_size)
             while len(chunk) > 0:
                 data = {'content': chunk, 'offset': offset}
-                headers = {'Content-Type': 'multipart/form-data', 'Accept': '*/*'}
-                module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, headers=headers, data=data)
+                module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, data=data)
 
                 offset += len(chunk)
                 chunk = contentfile.read(content_chunk_size)
