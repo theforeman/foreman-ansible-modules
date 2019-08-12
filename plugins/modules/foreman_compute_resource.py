@@ -194,7 +194,7 @@ def main():
                 user=dict(),
                 password=dict(no_log=True),
                 datacenter=dict(),
-                use_v4=dict(),
+                use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
             )),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
