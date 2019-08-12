@@ -28,7 +28,7 @@ author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
 requirements:
-  - "nailgun >= 0.28.0"
+    apypie
 options:
   name:
     description: compute profile name
@@ -121,97 +121,52 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_compute_resource,
-        find_compute_profile,
-        find_compute_attribute,
-        ForemanEntityAnsibleModule,
-        naildown_entity,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-
-    from nailgun.entities import (
-        AbstractComputeResource,
-        ComputeProfile,
-        ComputeAttribute,
-    )
-except ImportError:
-    pass
+from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
+compute_attribute_entity_spec = {
+    'compute_resource': {'type': 'entity', 'flat_name': 'compute_resource_id'},
+    'vm_attrs': {'type': 'dict'},
 }
-
-compute_attribute_name_map = {
-    'compute_resource': 'compute_resource',
-    'vm_attrs': 'vm_attrs',
-}
-
-
-def compute_attribute(module, compute_profile, attributes):
-    # If we don't work on a copy, we hit a TypeError: Value of unknown type: <class 'nailgun.entities.ComputeProfile'> exception
-    # from module.exit_json(changed=changed) method
-    compute_attribute_dict = attributes.copy()
-    for key in ['compute_resource', 'vm_attrs']:
-        if key not in compute_attribute_dict:
-            module.fail_json(msg='compute_attribute must have %s.' % key)
-
-    try:
-        compute_attribute = find_compute_attribute(module, compute_profile_name=compute_profile.name,
-                                                   compute_resource_name=compute_attribute_dict['compute_resource'], failsafe=True)
-        compute_attribute_dict['compute_resource'] = find_compute_resource(module, name=compute_attribute_dict['compute_resource'])
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
-
-    if 'compute_profile' not in compute_attribute_dict:
-        compute_attribute_dict['compute_profile'] = compute_profile
-
-    changed = naildown_entity_state(ComputeAttribute, compute_attribute_dict, compute_attribute, 'present', module)
-
-    return changed
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
-        argument_spec=dict(
+    module = ForemanEntityApypieAnsibleModule(
+        entity_spec=dict(
             name=dict(required=True),
+            compute_attributes=dict(type='nested_list', entity_spec=compute_attribute_entity_spec),
+        ),
+        argument_spec=dict(
             updated_name=dict(),
-            compute_attributes=dict(type='list'),
         ),
     )
 
-    (compute_profile_dict, state) = module.parse_params()
-    name = compute_profile_dict.get('name')
-    updated_name = compute_profile_dict.get('updated_name')
-    compute_attributes = compute_profile_dict.pop('compute_attributes', list())
+    entity_dict = module.clean_params()
+    updated_name = entity_dict.get('updated_name')
+    compute_attributes = entity_dict.pop('compute_attributes', None)
 
-    if len(compute_attributes) > 0 and state == 'absent':
+    if compute_attributes is not None and module.desired_absent:
         module.fail_json(msg='compute_attributes not allowed when state=absent')
 
     module.connect()
 
-    try:
-        # Try to find the compute_profile to work on
-        compute_profile = find_compute_profile(module, name=compute_profile_dict['name'], failsafe=True)
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    entity = module.find_resource_by_name('compute_profiles', name=entity_dict['name'], failsafe=True)
 
-    if state == 'present' and updated_name:
-        compute_profile_dict['name'] = updated_name
+    if module.state == 'present' and updated_name:
+        entity_dict['name'] = updated_name
 
-    compute_profile_dict = sanitize_entity_dict(compute_profile_dict, name_map)
-
-    (changed, compute_profile) = naildown_entity(ComputeProfile, compute_profile_dict, compute_profile, state, module)
+    changed, compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
 
     # Apply changes on underlying compute attributes only when present
-    if state == 'present':
+    if module.state == 'present' and compute_attributes is not None:
         # Update or create compute attributes
-        for compute_attribute_dict in compute_attributes:
-            changed |= compute_attribute(module, compute_profile, compute_attribute_dict)
+        scope = {'compute_profile_id': compute_profile['id']}
+        for ca_entity_dict in compute_attributes:
+            ca_entity_dict['compute_resource'] = module.find_resource_by_name(
+                'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
+            ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
+            ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == compute_profile['id']), None)
+            changed |= module.ensure_entity_state('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
 
     module.exit_json(changed=changed)
 
