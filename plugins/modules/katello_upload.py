@@ -123,6 +123,7 @@ def main():
 
         offset = 0
         content_chunk_size = 2 * 1024 * 1024
+        checksum = hashlib.sha256()
 
         with open(entity_dict['src'], 'rb') as contentfile:
             chunk = contentfile.read(content_chunk_size)
@@ -131,17 +132,11 @@ def main():
                 module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, data=data)
 
                 offset += len(chunk)
+                checksum.update(chunk)
                 chunk = contentfile.read(content_chunk_size)
 
-        size = 0
-        checksum = hashlib.sha256()
-        with open(entity_dict['src'], 'rb') as contentfile:
-            contents = contentfile.read()
-            size = len(contents)
-            checksum.update(contents)
-
         uploads = [{'id': content_upload['upload_id'], 'name': filename,
-                    'size': size, 'checksum': checksum.hexdigest()}]
+                    'size': offset, 'checksum': checksum.hexdigest()}]
         import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
         module.resource_action('repositories', 'import_uploads', import_params)
 
