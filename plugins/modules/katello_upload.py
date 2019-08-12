@@ -72,6 +72,7 @@ import hashlib
 
 from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule
 
+CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
 
 def main():
     module = ForemanApypieAnsibleModule(
@@ -98,7 +99,7 @@ def main():
 
     checksum = hashlib.sha256()
     with open(entity_dict['src'], 'rb') as contentfile:
-        for chunk in iter(lambda: contentfile.read(4096), b""):
+        for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
             checksum.update(chunk)
     checksum = checksum.hexdigest()
 
@@ -123,16 +124,15 @@ def main():
         content_upload_scope.update(repository_scope)
 
         offset = 0
-        content_chunk_size = 2 * 1024 * 1024
 
         with open(entity_dict['src'], 'rb') as contentfile:
-            chunk = contentfile.read(content_chunk_size)
+            chunk = contentfile.read(CONTENT_CHUNK_SIZE)
             while len(chunk) > 0:
                 data = {'content': chunk, 'offset': offset}
                 module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, data=data)
 
                 offset += len(chunk)
-                chunk = contentfile.read(content_chunk_size)
+                chunk = contentfile.read(CONTENT_CHUNK_SIZE)
 
         uploads = [{'id': content_upload['upload_id'], 'name': filename,
                     'size': offset, 'checksum': checksum}]
