@@ -96,13 +96,17 @@ def main():
 
     settings_type = entity['settings_type']
     new_value = entity_dict['value']
+    # Allow to pass integers as string
+    if settings_type == 'integer':
+        new_value = int(new_value)
     entity_dict['value'] = parameter_value_to_str(new_value, settings_type)
-    entity['value'] = parameter_value_to_str(entity['value'], settings_type)
+    old_value = entity['value']
+    entity['value'] = parameter_value_to_str(old_value, settings_type)
 
     changed, entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
 
     if entity:
-        # Fake the not serialized version as output
+        # Fake the not serialized input value as output
         entity['value'] = new_value
 
     module.exit_json(changed=changed, foreman_setting=entity)
