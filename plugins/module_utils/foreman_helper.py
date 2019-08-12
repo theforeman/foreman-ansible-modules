@@ -488,6 +488,9 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             result = None
             if not self.check_mode:
                 result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
+                if isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result:
+                    # looks like a task
+                    result = self.wait_for_task(result)
         except Exception as e:
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))

@@ -21,6 +21,18 @@
     vars:
       product_name: "Test Product 2"
       repository_state: present
+  - include: tasks/content_view.yml
+    vars:
+      content_view_name: "Test Composite Content View"
+      content_view_state: absent
+  - include: tasks/content_view_version.yml
+    vars:
+      state: absent
+      version: 1.0
+    ignore_errors: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_state: absent
 
 - hosts: tests
   gather_facts: false
@@ -29,11 +41,6 @@
   tasks:
   - include: tasks/content_view.yml
     vars:
-      repositories:
-        - name: "Test Repository"
-          product: "Test Product"
-        - name: "Test Repository"
-          product: "Test Product 2"
       content_view_state: present
       expected_change: true
       repositories:
@@ -41,11 +48,6 @@
           product: "Test Product"
   - include: tasks/content_view.yml
     vars:
-      repositories:
-        - name: "Test Repository"
-          product: "Test Product"
-        - name: "Test Repository"
-          product: "Test Product 2"
       content_view_state: present
       expected_change: false
       repositories:
@@ -75,7 +77,7 @@
 
   - include: tasks/content_view_version.yml
     vars:
-      - version: 1.0
+      version: 1.0
 
   # Composite Content Views
   - include: tasks/content_view.yml
@@ -140,8 +142,24 @@
     vars:
       content_view_name: "Test Composite Content View"
       content_view_state: present
+      expected_change: false
+      composite: true
+      auto_publish: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_name: "Test Composite Content View"
+      content_view_state: present
       expected_change: true
       composite: true
+      components: []
+      auto_publish: true
+  - include: tasks/content_view.yml
+    vars:
+      content_view_name: "Test Composite Content View"
+      content_view_state: present
+      expected_change: false
+      composite: true
+      components: []
       auto_publish: true
   - include: tasks/content_view.yml
     vars:

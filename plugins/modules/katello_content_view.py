@@ -25,12 +25,15 @@ description:
     - Create and Manage Katello content views
 author: "Eric D Helms (@ehelms)"
 requirements:
-    - "nailgun >= 0.28.0"
+    - apypie
 options:
   name:
     description:
       - Name of the Katello Content View
     required: true
+  description:
+    description:
+      - Description of the Content View
   organization:
     description:
       - Organization that the Content View is in
@@ -38,7 +41,7 @@ options:
   repositories:
     description:
       - List of repositories that include name and product.
-      - Ignored if I(composite=True).
+      - Cannot be combined with I(composite=True).
     type: list
   state:
     description:
@@ -95,106 +98,109 @@ EXAMPLES = '''
         latest: true
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        ContentView,
-        ContentViewComponent,
-    )
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_content_view,
-        find_content_view_version,
-        find_repositories,
-        KatelloEntityAnsibleModule,
-        naildown_entity_state,
-        naildown_entity,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
 
-name_map = {
-    'name': 'name',
-    'repositories': 'repository',
-    'organization': 'organization',
-    'composite': 'composite',
-    'auto_publish': 'auto_publish'
-}
-
-cvc_map = {
-    'composite_content_view': 'composite_content_view',
-    'content_view': 'content_view',
-    'latest': 'latest',
-    'version': 'content_view_version',
+cvc_entity_spec = {
+    'content_view': {'type': 'entity', 'flat_name': 'content_view_id', 'required': True},
+    'latest': {'type': 'bool', 'default': False},
+    'content_view_version': {'type': 'entity', 'flat_name': 'content_view_version_id', 'aliases': ['version']},
 }
 
 
 def main():
     module = KatelloEntityAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
+            description=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
-            components=dict(type='list'),
-            repositories=dict(type='list'),
+            components=dict(type='nested_list', entity_spec=cvc_entity_spec),
+            repositories=dict(type='entity_list', flat_name='repository_ids', elements='dict', options=dict(
+                name=dict(required=True),
+                product=dict(required=True),
+            )),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         mutually_exclusive=[['repositories', 'components']],
     )
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
-    if 'repositories' in entity_dict and not entity_dict['composite']:
-        entity_dict['repositories'] = find_repositories(module, entity_dict['repositories'], entity_dict['organization'])
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    if not module.desired_absent:
+        if 'repositories' in entity_dict:
+            if entity_dict['composite']:
+                module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
+            else:
+                repositories = []
+                for repository in entity_dict['repositories']:
+                    product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
+                    repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
+                entity_dict['repositories'] = repositories
 
-    content_view_entity = find_content_view(module, name=entity_dict['name'], organization=entity_dict['organization'], failsafe=True)
-    content_view_dict = sanitize_entity_dict(entity_dict, name_map)
+    entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed, content_view_entity = naildown_entity(ContentView, content_view_dict, content_view_entity, state, module)
+    components = entity_dict.pop('components', None)
+    changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
     # only update CVC's of newly created or updated CCV's
-    if state == 'present' or (state == 'present_with_defaults' and changed):
-        current_cvcs = []
-        if hasattr(content_view_entity, 'content_view_component'):
-            current_cvcs = [cvc.read() for cvc in content_view_entity.content_view_component]
-        if 'components' in entity_dict and content_view_entity.composite:
-            for component in entity_dict['components']:
-                cvc = component.copy()
-                cvc['content_view'] = find_content_view(module, name=component['content_view'], organization=entity_dict['organization'])
-                cvc_matched = None
-                for _cvc in current_cvcs:
-                    if _cvc.content_view.id == cvc['content_view'].id:
-                        cvc_matched = _cvc
-                force_update = list()
-                if 'version' in component:
-                    cvc['version'] = find_content_view_version(module, cvc['content_view'], version=component['version'])
+    # Also only act for composite content views
+    if (module.state == 'present' or (module.state == 'present_with_defaults' and changed)) and content_view_entity['composite'] and components is not None:
+        if not changed:
+            content_view_entity['content_view_components'] = entity['content_view_components']
+        current_cvcs = content_view_entity.get('content_view_components', [])
+        if components:
+            components_to_add = []
+            ccv_scope = {'composite_content_view_id': content_view_entity['id']}
+            for component in components:
+                cvc = {
+                    'content_view': module.find_resource_by_name('content_views', name=component['content_view'], params=scope),
+                    'latest': component['latest'],
+                }
+                cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
+                if not cvc['latest']:
+                    version = component.get('content_view_version')
+                    if version is None:
+                        module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
+                    search = "content_view_id={},version={}".format(cvc['content_view']['id'], component['content_view_version'])
+                    cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
                     cvc['latest'] = False
-                    if cvc_matched and cvc_matched.latest:
+                    if cvc_matched and cvc_matched['latest']:
                         # When changing to latest=False & version is the latest we must send 'content_view_version' to the server
-                        force_update.append('content_view_version')
+                        # Let's fake, it wasn't there...
+                        cvc_matched.pop('content_view_version', None)
+                        cvc_matched.pop('content_view_version_id', None)
                 if cvc_matched:
-                    cvc['composite_content_view'] = content_view_entity
-                    cvc_dict = sanitize_entity_dict(cvc, cvc_map)
-                    cvc_changed = naildown_entity_state(ContentViewComponent, cvc_dict, cvc_matched, 'present', module, force_update=force_update)
+                    changed |= module.ensure_entity_state(
+                        'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
                     current_cvcs.remove(cvc_matched)
-                    if cvc_changed:
-                        changed = cvc_changed
                 else:
-                    for attr in ['latest', 'version']:
-                        if attr not in cvc:
-                            cvc[attr] = None
-                    ContentViewComponent(composite_content_view=content_view_entity, content_view=cvc['content_view'],
-                                         latest=cvc['latest'], content_view_version=cvc['version']).add()
-                    changed = True
-        for cvc in current_cvcs:
+                    cvc['content_view_id'] = cvc.pop('content_view')['id']
+                    if 'content_view_version' in cvc:
+                        cvc['content_view_version_id'] = cvc.pop('content_view_version')['id']
+                    components_to_add.append(cvc)
+            if components_to_add:
+                payload = {
+                    'composite_content_view_id': content_view_entity['id'],
+                    'components': components_to_add,
+                }
+                module.resource_action('content_view_components', 'add_components', payload)
+                changed = True
+        if current_cvcs:
             # desired cvcs have already been updated and removed from `current_cvcs`
-            cvc.remove()
+            payload = {
+                'composite_content_view_id': content_view_entity['id'],
+                'component_ids': [item['id'] for item in current_cvcs],
+            }
+            module.resource_action('content_view_components', 'remove_components', payload)
             changed = True
 
     module.exit_json(changed=changed)

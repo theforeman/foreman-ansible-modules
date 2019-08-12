@@ -240,6 +240,7 @@ def main():
         content_view_version = None
 
     changed = False
+    le_changed = False
     if state == 'present':
         if content_view_version is None:
             kwargs = dict(data=dict())
