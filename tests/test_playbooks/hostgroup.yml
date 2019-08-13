@@ -21,6 +21,7 @@
       domain_organizations: "{{ hostgroup.organizations }}"
       domain_locations: "{{ hostgroup.locations }}"
       domain_name: "{{ item }}"
+      domain_dns_proxy: "{{ hostgroup.dns_proxy }}"
       domain_state: present
     with_items: "{{ hostgroup.domains }}"
   - include: tasks/subnet.yml
@@ -36,17 +37,17 @@
       ptable_locations: "{{ hostgroup.locations }}"
       ptable_organizations: "{{ hostgroup.organizations }}"
       ptable_state: present
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "{{ hostgroup.os.name }}"
-      operating_system_major: "{{ hostgroup.os.major }}"
-      operating_system_minor: "{{ hostgroup.os.minor }}"
-      operating_system_family: "{{ hostgroup.os.family }}"
-      operating_system_architectures:
+      operatingsystem_name: "{{ hostgroup.os.name }}"
+      operatingsystem_major: "{{ hostgroup.os.major }}"
+      operatingsystem_minor: "{{ hostgroup.os.minor }}"
+      operatingsystem_family: "{{ hostgroup.os.family }}"
+      operatingsystem_architectures:
         - "{{ hostgroup.arch }}"
-      operating_system_ptables:
+      operatingsystem_ptables:
         - "{{ hostgroup.ptable }}"
-      operating_system_state: present
+      operatingsystem_state: present
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: "{{ hostgroup.os.name }} Mirror"
@@ -89,7 +90,7 @@
       hostgroup_name: "New host group"
       hostgroup_description: "New host group"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       hostgroup_compute_resource: "{{ hostgroup.compute_resource.name }}"
@@ -116,7 +117,7 @@
       hostgroup_name: "New host group"
       hostgroup_description: "New host group"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       # The foreman api does not report the compute_resource_id/name; we cannot test this
@@ -141,7 +142,7 @@
       hostgroup_description: "Nested group"
       hostgroup_parent: "New host group"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       hostgroup_domain: "{{ hostgroup.domains | first }}"
@@ -160,7 +161,7 @@
       hostgroup_description: "Nested group"
       hostgroup_parent: "New host group"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       hostgroup_domain: "{{ hostgroup.domains | first }}"
@@ -177,7 +178,7 @@
     vars:
       hostgroup_name: "New host group/Nested New host group 2"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       hostgroup_installation_medium: "{{ hostgroup.os.name }} Mirror"
@@ -190,7 +191,7 @@
     vars:
       hostgroup_name: "New host group/Nested New host group 2"
       hostgroup_architecture: "{{ hostgroup.arch }}"
-      hostgroup_operating_system: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
       hostgroup_locations: "{{ hostgroup.locations }}"
       hostgroup_organizations: "{{ hostgroup.organizations }}"
       hostgroup_installation_medium: "{{ hostgroup.os.name }} Mirror"
@@ -312,12 +313,12 @@
       compute_profile_name: "{{ hostgroup.compute_profile.name }}"
       compute_resource_provider: 'libvirt'
       compute_resource_state: absent
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "{{ hostgroup.os.name }}"
-      operating_system_major: "{{ hostgroup.os.major }}"
-      operating_system_minor: "{{ hostgroup.os.minor }}"
-      operating_system_state: absent
+      operatingsystem_name: "{{ hostgroup.os.name }}"
+      operatingsystem_major: "{{ hostgroup.os.major }}"
+      operatingsystem_minor: "{{ hostgroup.os.minor }}"
+      operatingsystem_state: absent
   - include: tasks/ptable.yml
     vars:
       ptable_name: "{{ hostgroup.ptable }}"
