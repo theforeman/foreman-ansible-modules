@@ -1,16 +1,17 @@
 ---
-- name: "Verify setting '{{ setting_name }}' is '{{ setting_value }}'"
-  foreman_setting_facts:
+- name: "Read setting '{{ setting_name }}'"
+  foreman_search_facts:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     verify_ssl: "{{ foreman_validate_certs }}"
-    name: "{{ setting_name | default(omit) }}"
+    resource: 'settings'
+    search: "{{ setting_name | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Verification that setting is '{{ setting_value }}' failed!"
     quiet:
     that:
-      - result.settings[0].value == setting_value
+      - result.resources[0].value == setting_value
   when: (setting_name is defined) and (setting_value is defined)
 ...

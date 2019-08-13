@@ -28,11 +28,10 @@ module: foreman_setting
 short_description: Manage Foreman Settings
 description:
   - "Manage Foreman Setting Entities"
-  - "Uses https://github.com/SatelliteQE/nailgun"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - apypie
 options:
   name:
     description:
@@ -42,7 +41,6 @@ options:
     description:
       - value to set the Setting to
       - if missing, reset to default
-      - use a comma separated list for an array
     required: false
 extends_documentation_fragment: foreman
 '''
@@ -69,53 +67,49 @@ foreman_setting:
   description: Created / Updated state of the setting
 '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_setting,
-        ForemanAnsibleModule,
-        naildown_entity,
-        sanitize_entity_dict,
-    )
 
-    from nailgun.entities import (
-        Setting,
-    )
-except ImportError:
-    pass
+from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule, parameter_value_to_str
 
 
-name_map = {
-    'name': 'name',
-    'value': 'value',
+entity_spec = {
+    'name': {},
+    'value': {},
 }
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanApypieAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
-            value=dict(),
+            value=dict(type='raw'),
         ),
     )
 
-    entity_dict = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity = find_setting(
-        module,
-        name=entity_dict['name'],
-        failsafe=False,
-    )
+    entity = module.find_resource_by_name('settings', entity_dict['name'], failsafe=False)
 
     if 'value' not in entity_dict:
-        entity_dict['value'] = entity.default or ""
+        entity_dict['value'] = entity['default'] or ''
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
+    settings_type = entity['settings_type']
+    new_value = entity_dict['value']
+    # Allow to pass integers as string
+    if settings_type == 'integer':
+        new_value = int(new_value)
+    entity_dict['value'] = parameter_value_to_str(new_value, settings_type)
+    old_value = entity['value']
+    entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-    changed, entity = naildown_entity(Setting, entity_dict, entity, 'present', module, check_type=True)
+    changed, entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
 
-    module.exit_json(changed=changed, foreman_setting=entity.to_json_dict())
+    if entity:
+        # Fake the not serialized input value as output
+        entity['value'] = new_value
+
+    module.exit_json(changed=changed, foreman_setting=entity)
 
 
 if __name__ == '__main__':
