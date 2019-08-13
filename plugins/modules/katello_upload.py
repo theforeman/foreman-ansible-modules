@@ -106,10 +106,9 @@ def main():
 
     content_unit = None
     if entity_dict['repository']['content_type'] == 'yum':
-        name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
+        name, epoch, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{EPOCHNUM} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
                                                     shell=True).decode('ascii').split()
-        # this is missing epoch
-        query = 'name = "{}" and version = "{}" and release = "{}" and arch = "{}"'.format(name, version, release, arch)
+        query = 'name = "{}" and epoch = "{}" and version = "{}" and release = "{}" and arch = "{}"'.format(name, epoch, version, release, arch)
         content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
     elif entity_dict['repository']['content_type'] == 'file':
         query = 'name = "{}" and checksum = "{}"'.format(filename, checksum)
