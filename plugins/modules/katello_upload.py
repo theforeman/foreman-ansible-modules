@@ -128,7 +128,7 @@ def main():
         with open(entity_dict['src'], 'rb') as contentfile:
             for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
                 data = {'content': chunk, 'offset': offset}
-                module.resource_action('content_uploads', 'update', params=content_upload_scope, options={'skip_validation': True}, data=data)
+                module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
 
                 offset += len(chunk)
 
