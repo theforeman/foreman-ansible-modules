@@ -41,12 +41,12 @@ options:
     description: compute resource description
     required: false
   provider:
-    description: Compute resource provider. Required if I(state=present).
+    description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
     default: None
     choices: ["vmware", "libvirt", "ovirt"]
   provider_params:
-    description: Parameter specific to compute resource provider
+    description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
     required: false
     default: None
   locations:
@@ -154,20 +154,20 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-def get_provider_infos(provider):
+def get_provider_param_keys(provider):
     provider_name = provider.lower()
 
     if provider_name == 'libvirt':
-        return {'params': ['url', 'display_type']}
+        return ['url', 'display_type']
 
     elif provider_name == 'ovirt':
-        return {'params': ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']}
+        return ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']
 
     elif provider_name == 'vmware':
-        return {'params': ['url', 'user', 'password', 'datacenter']}
+        return ['url', 'user', 'password', 'datacenter']
 
     else:
-        return {'params': []}
+        return []
 
 
 def main():
@@ -200,17 +200,11 @@ def main():
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
         ),
         required_if=(
-            ['state', 'present', ['provider']],
+            ['state', 'present_with_defaults', ['provider', 'provider_params']],
         ),
     )
 
     entity_dict = module.clean_params()
-
-    if 'provider' in entity_dict:
-        entity_dict['provider'] = entity_dict['provider'].title()
-
-    provider_infos = get_provider_infos(provider=entity_dict.get('provider', ''))
-    provider_params = entity_dict.pop('provider_params', dict())
 
     module.connect()
 
@@ -226,13 +220,22 @@ def main():
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-        # Add provider specific params
-        if not provider_infos and not entity:
-            module.fail_json(msg='To create a compute resource a valid provider must be supplied')
+        if 'provider' in entity_dict:
+            entity_dict['provider'] = entity_dict['provider'].title()
 
-        for key in provider_infos['params']:
-            if key in provider_params:
-                entity_dict[key] = provider_params[key]
+            provider_param_keys = get_provider_param_keys(provider=entity_dict['provider'])
+            provider_params = {k: v for k, v in entity_dict.pop('provider_params', dict()).items() if v is not None}
+
+            for key in provider_param_keys:
+                if key in provider_params:
+                    entity_dict[key] = provider_params.pop(key)
+            if provider_params:
+                module.fail_json(msg="Provider {} does not support the following given parameters: {}".format(
+                    entity_dict['provider'], list(provider_params.keys())))
+
+        # Add provider specific params
+        elif entity is None:
+            module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
     changed = module.ensure_entity_state('compute_resources', entity_dict, entity)
 
