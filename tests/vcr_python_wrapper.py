@@ -20,7 +20,7 @@ def body_json_l2_matcher(r1, r2):
                 body1['common_parameter']['value'] = json.loads(body1['common_parameter'].get('value'))
                 body2['common_parameter']['value'] = json.loads(body2['common_parameter'].get('value'))
         return body1 == body2
-    elif r1.headers.get('content-type') == r2.headers.get('content-type') == 'multipart/form-data':
+    elif r1.headers.get('content-type') == r2.headers.get('content-type') and r1.headers.get('content-type') in ['multipart/form-data', 'application/x-www-form-urlencoded']:
         if r1.body is None or r2.body is None:
             return r1.body == r2.body
         body1 = sorted(r1.body.replace(b'~', b'%7E').split(b'&'))
