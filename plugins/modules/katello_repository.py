@@ -56,7 +56,7 @@ options:
   url:
     description:
       - Repository URL to sync from
-    required: true
+    required: false
   docker_upstream_name:
     description:
       - name of the upstream docker repository
