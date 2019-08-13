@@ -68,10 +68,26 @@ class KatelloMixin(object):
 
     def connect(self, ping=True):
         super(KatelloMixin, self).connect(ping)
+        self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
         self._patch_subscription_upload_api()
         self._patch_sync_plan_api()
+
+    def _patch_content_uploads_update_api(self):
+        """This is a workaround for the broken content_uploads update apidoc in katello.
+            see https://projects.theforeman.org/issues/27590
+        """
+
+        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
+
+        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
+        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
+        _content_upload_update_params_id['expected_type'] = 'string'
+
+        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
+        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
+        _content_upload_destroy_params_id['expected_type'] = 'string'
 
     def _patch_organization_update_api(self):
         """This is a workaround for the broken organization update apidoc in katello.
@@ -183,21 +199,6 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
-    def _patch_content_uploads_update_api(self):
-        """This is a workaround for the broken content_uploads update apidoc in katello.
-            see https://projects.theforeman.org/issues/27590
-        """
-
-        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
-
-        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
-        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
-        _content_upload_update_params_id['expected_type'] = 'string'
-
-        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
-        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
-        _content_upload_destroy_params_id['expected_type'] = 'string'
-
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
@@ -213,10 +214,6 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         )
 
         self._patch_location_api()
-        try:
-            self._patch_content_uploads_update_api()
-        except Exception:
-            pass
 
         if ping:
             self.ping()
@@ -519,6 +516,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                     changed |= self.ensure_entity_state(
                         'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
         return changed
+
+
+class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+    pass
 
 
 class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):

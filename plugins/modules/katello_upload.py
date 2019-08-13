@@ -70,13 +70,13 @@ from subprocess import check_output
 import os
 import hashlib
 
-from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
 
 
 def main():
-    module = ForemanApypieAnsibleModule(
+    module = KatelloAnsibleModule(
         argument_spec=dict(
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
