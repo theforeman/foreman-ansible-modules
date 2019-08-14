@@ -10,6 +10,10 @@ The intent of this repository is to be a place that community members can develo
   * a single repository to clone for interacting with Foreman & plugins
   * source for the official Ansible collection (TBD)
 
+## Documentation
+
+A list of all modules and their documentation can be found at [theforeman.org/plugins/foreman-ansible-modules](https://theforeman.org/plugins/foreman-ansible-modules/).
+
 ## Branches
 
 * `master` - current development branch, using both `nailgun` and `apypie` libraries. The progress of the `nailgun` to `apypie` migration can be seen in [issue #274](https://github.com/theforeman/foreman-ansible-modules/issues/274)
@@ -153,47 +157,6 @@ $ make debug MODULE=katello_content_view
 ```
 
 You can set a number of environment variables besides `MODULE` to configure make. Check the [Makefile](https://github.com/theforeman/foreman-ansible-modules/blob/master/Makefile) for more configuration options.
-
-## Modules List
-
-This is a list of modules currently in the repository (please add to the list if adding a module).
-
-#### Entity Modules
-
- * foreman_architecture: create and maintain architectures
- * foreman_compute_attribute: create and maintain compute attributes
- * foreman_compute_resource: create and maintain compute resources
- * foreman_domain: create and maintain domains
- * foreman_environment: create and maintain environments (puppet)
- * foreman_config_group: create and maintain config groups (puppet)
- * foreman_global_parameter: create and maintain global parameters
- * foreman_hostgroup: create and maintain hostgroups
- * foreman_job_template: create and maintain job templates and associated template inputs
- * foreman_location: create and maintain locations
- * foreman_operating_system: create and maintain operating systems
- * foreman_organization: create and maintain organizations
- * foreman_os_default_template: create and maintain the association of default templates to operating systems
- * foreman_provisioning_template: create and maintain provisioning templates
- * foreman_ptable: create and maintain partition templates
- * foreman_role: create and maintain user roles
- * foreman_snapshot: create, modify, revert and delete snapshots
- * foreman_setting: set and reset settings
- * foreman_subnet: create and maintain subnets
- * katello_activation_key: create and maintain activation keys
- * katello_content_credential: create and maintain content credentials
- * katello_content_view: create and maintain content views
- * katello_product: create and maintain products
- * katello_repository: create and maintain repositories
- * katello_sync_plan: create and maintain sync plans
- * redhat_manifest: create and maintain manifests
-
-#### Action Modules
-
- * katello_sync: sync Katello repositories and products
- * katello_upload: upload files, rpms, etc. to repositories. Note, rpms & files are idempotent.
- * katello_manifest: upload and Manage Katello manifests
-
-
 
 ## Ansible Version
 
