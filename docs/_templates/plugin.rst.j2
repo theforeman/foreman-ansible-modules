@@ -120,6 +120,7 @@ Parameters
                     <b>@{ key }@</b>
                     <div style="font-size: small">
                         <span style="color: purple">@{ value.type | documented_type }@</span>
+                        {% if value.get('elements') %} / <span style="color: purple">elements=@{ value.elements | documented_type }@</span>{% endif %}
                         {% if value.get('required', False) %} / <span style="color: red">required</span>{% endif %}
                     </div>
                     {% if value.version_added %}<div style="font-style: italic; font-size: small; color: darkgreen">added in @{value.version_added}@</div>{% endif %}
@@ -155,7 +156,7 @@ Parameters
                     {% endif %}
                     {# Show default value, when multiple choice or no choices #}
                     {% if value.default is defined and value.default not in value.choices %}
-                        <b>Default:</b><br/><div style="color: blue">@{ value.default | escape }@</div>
+                        <b>Default:</b><br/><div style="color: blue">@{ value.default | tojson | escape }@</div>
                     {% endif %}
                 </td>
                 {# configuration #}
