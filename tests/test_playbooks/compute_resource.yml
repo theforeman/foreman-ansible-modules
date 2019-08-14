@@ -74,6 +74,36 @@
           url: qemu+ssh://root@libvirt.example.com/system
         compute_resource_state: present
         expected_change: false
+    - name: Update libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr"
+        compute_resource_description: 'A compute_resource with an updated description and params'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+          display_type: spice
+        compute_resource_state: present
+        expected_change: true
+    - name: Update libvirt compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt-cr"
+        compute_resource_description: 'A compute_resource with an updated description and params'
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+          display_type: spice
+        compute_resource_state: present
+        expected_change: false
     - name: Delete libvirt compute resource
       include: tasks/compute_resource.yml
       vars:
@@ -84,58 +114,6 @@
       include: tasks/compute_resource.yml
       vars:
         compute_resource_name: "libvirt-cr"
-        compute_resource_state: absent
-        expected_change: false
-  - name: 'oVirt compute resource'
-    block:
-    - name: Create ovirt compute resource
-      include: tasks/compute_resource.yml
-      vars:
-        compute_resource_name: "ovirt-cr01"
-        compute_resource_description: 'oVirt compute resource'
-        compute_resource_organizations:
-          - Test Organization
-        compute_resource_locations:
-          - Test Location
-        compute_resource_provider: 'ovirt'
-        compute_resource_provider_params:
-          url: "https://ovirt.example.com/ovirt-engine/api"
-          user: compute-user@internal
-          password: ovirtcompute123
-          use_v4: true
-          datacenter: c1479626-99a2-44eb-8401-14b5630f417f
-          ovirt_quota: 502a76bb-a3fe-42f1-aed6-2a7c892a6786
-        compute_resource_state: present
-        expected_change: true
-    - name: Update ovirt compute resource
-      include: tasks/compute_resource.yml
-      vars:
-        compute_resource_name: "ovirt-cr01"
-        compute_resource_description: 'oVirt compute resource'
-        compute_resource_organizations:
-          - Test Organization
-        compute_resource_locations:
-          - Test Location
-        compute_resource_provider: 'ovirt'
-        compute_resource_provider_params:
-          url: "https://ovirt.example.com/ovirt-engine/api"
-          user: compute-user@internal
-          password: ovirtcompute123
-          use_v4: true
-          datacenter: c1479626-99a2-44eb-8401-14b5630f417f
-          ovirt_quota: 502a76bb-a3fe-42f1-aed6-2a7c892a6786
-        compute_resource_state: present
-        expected_change: false
-    - name: Delete ovirt compute resource
-      include: tasks/compute_resource.yml
-      vars:
-        compute_resource_name: "ovirt-cr01"
-        compute_resource_state: absent
-        expected_change: true
-    - name: Delete ovirt compute resource
-      include: tasks/compute_resource.yml
-      vars:
-        compute_resource_name: "ovirt-cr01"
         compute_resource_state: absent
         expected_change: false
 - hosts: fixtures
@@ -146,4 +124,7 @@
   - include: tasks/organization.yml
     vars:
       organization_state: absent
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
 ...
