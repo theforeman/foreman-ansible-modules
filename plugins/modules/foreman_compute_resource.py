@@ -154,20 +154,20 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
 
 
-def get_provider_param_keys(provider):
+def get_provider_info(provider):
     provider_name = provider.lower()
 
     if provider_name == 'libvirt':
-        return ['url', 'display_type']
+        return 'Libvirt', ['url', 'display_type']
 
     elif provider_name == 'ovirt':
-        return ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']
+        return 'Ovirt', ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']
 
     elif provider_name == 'vmware':
-        return ['url', 'user', 'password', 'datacenter']
+        return 'Vmware', ['url', 'user', 'password', 'datacenter']
 
     else:
-        return []
+        return '', []
 
 
 def main():
@@ -221,9 +221,7 @@ def main():
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
         if 'provider' in entity_dict:
-            entity_dict['provider'] = entity_dict['provider'].title()
-
-            provider_param_keys = get_provider_param_keys(provider=entity_dict['provider'])
+            entity_dict['provider'], provider_param_keys = get_provider_info(provider=entity_dict['provider'])
             provider_params = {k: v for k, v in entity_dict.pop('provider_params', dict()).items() if v is not None}
 
             for key in provider_param_keys:
