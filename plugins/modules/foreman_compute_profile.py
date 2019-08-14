@@ -131,7 +131,7 @@ compute_attribute_entity_spec = {
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             compute_attributes=dict(type='nested_list', entity_spec=compute_attribute_entity_spec),
