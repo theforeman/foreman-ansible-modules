@@ -13,6 +13,11 @@
     vars:
       resource: subnets
       return_length: 0
+  - include: tasks/search_facts.yml
+    vars:
+      resource: organizations
+      full_details: true
+      return_length: 2
   - name: Run with invalid resource
     foreman_search_facts:
       username: "{{ foreman_username }}"
