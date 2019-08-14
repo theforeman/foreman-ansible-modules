@@ -26,7 +26,7 @@ description:
     - Allows the upload of content to a Katello repository
 author: "Eric D Helms (@ehelms)"
 requirements:
-    - "nailgun >= 0.28.0"
+    - "apypie"
 options:
   src:
     description:
@@ -64,39 +64,19 @@ EXAMPLES = '''
     organization: "Default Organization"
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_product,
-        find_repository,
-        find_package,
-        find_file,
-        ForemanAnsibleModule,
-    )
+from subprocess import check_output
+import os
+import hashlib
 
-    from nailgun.entities import (
-        ContentUpload,
-    )
-    from subprocess import check_output
-    import os
-    import hashlib
-except ImportError:
-    pass
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
-from ansible.module_utils._text import to_native
-
-
-def upload(module, src, repository):
-    content_upload = ContentUpload(repository=repository)
-    if not module.check_mode:
-        content_upload.upload(src)
-    return True
+CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = KatelloAnsibleModule(
         argument_spec=dict(
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
@@ -105,36 +85,61 @@ def main():
         ),
     )
 
-    entity_dict = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    entity_dict['organization'] = find_organization(module, name=entity_dict['organization'])
-    entity_dict['product'] = find_product(module, name=entity_dict['product'], organization=entity_dict['organization'])
-    entity_dict['repository'] = find_repository(module, name=entity_dict['repository'], product=entity_dict['product'])
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict['product'] = module.find_resource_by_name('products', entity_dict['product'], params=scope, thin=True)
+    product_scope = {'product_id': entity_dict['product']['id']}
+    entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
+    repository_scope = {'repository_id': entity_dict['repository']['id']}
+
+    filename = os.path.basename(entity_dict['src'])
+
+    checksum = hashlib.sha256()
+    with open(entity_dict['src'], 'rb') as contentfile:
+        for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
+            checksum.update(chunk)
+    checksum = checksum.hexdigest()
 
     content_unit = None
-    if entity_dict['repository'].content_type == "yum":
-        name, version, release, arch = check_output("rpm --queryformat '%%{NAME} %%{VERSION} %%{RELEASE} %%{ARCH}' -qp %s" % entity_dict['src'],
-                                                    shell=True).decode('ascii').split()
-        query = "name = \"{}\" and version = \"{}\" and release = \"{}\" and arch = \"{}\"".format(name, version, release, arch)
-        content_unit = find_package(module, query, repository=entity_dict['repository'], failsafe=True)
-    elif entity_dict['repository'].content_type == "file":
-        h = hashlib.sha256()
-        with open(entity_dict['src'], "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                h.update(chunk)
-        checksum = h.hexdigest()
-        name = os.path.basename(entity_dict['src'])
-        query = "name = \"{}\" and checksum = \"{}\"".format(name, checksum)
-        content_unit = find_file(module, query, repository=entity_dict['repository'], failsafe=True)
+    if entity_dict['repository']['content_type'] == 'yum':
+        name, epoch, version, release, arch = check_output(['rpm', '--queryformat', '%{NAME} %{EPOCHNUM} %{VERSION} %{RELEASE} %{ARCH}',
+                                                           '-qp', entity_dict['src']]).decode('ascii').split()
+        query = 'name = "{}" and epoch = "{}" and version = "{}" and release = "{}" and arch = "{}"'.format(name, epoch, version, release, arch)
+        content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
+    elif entity_dict['repository']['content_type'] == 'file':
+        query = 'name = "{}" and checksum = "{}"'.format(filename, checksum)
+        content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
+    else:
+        # possible types in 3.12: docker, ostree, yum, puppet, file, deb
+        module.fail_json("Uploading to a {} repository is not supported yet.".format(entity_dict['repository']['content_type']))
 
     changed = False
     if not content_unit:
-        try:
-            changed = upload(module, entity_dict['src'], entity_dict['repository'])
-        except Exception as e:
-            module.fail_json(msg=to_native(e))
+        _, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
+        content_upload_scope = {'id': content_upload['upload_id']}
+        content_upload_scope.update(repository_scope)
+
+        offset = 0
+
+        with open(entity_dict['src'], 'rb') as contentfile:
+            for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
+                data = {'content': chunk, 'offset': offset}
+                module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
+
+                offset += len(chunk)
+
+        uploads = [{'id': content_upload['upload_id'], 'name': filename,
+                    'size': offset, 'checksum': checksum}]
+        import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
+        module.resource_action('repositories', 'import_uploads', import_params)
+
+        module.resource_action('content_uploads', 'destroy', content_upload_scope)
+
+        changed = True
 
     module.exit_json(changed=changed)
 

@@ -12,7 +12,15 @@
       product_state: present
   - include: tasks/repository.yml
     vars:
+      repository_state: absent
+  - include: tasks/repository.yml
+    vars:
       repository_state: present
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+      repository_name: "Test File Repository"
+      repository_content_type: "file"
   - include: tasks/repository.yml
     vars:
       repository_state: present
@@ -24,22 +32,26 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/upload.yml
-    vars:
-      expected_change: True
-  - include: tasks/upload.yml
-    vars:
-      expected_change: False
-  - include: tasks/upload.yml
-    vars:
-      upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
-      upload_repository: "Test File Repository"
-      expected_change: True
-  - include: tasks/upload.yml
-    vars:
-      upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
-      upload_repository: "Test File Repository"
-      expected_change: False
+    - name: upload RPM
+      include: tasks/upload.yml
+      vars:
+        expected_change: True
+    - name: upload RPM again, no change
+      include: tasks/upload.yml
+      vars:
+        expected_change: False
+    - name: upload File
+      include: tasks/upload.yml
+      vars:
+        upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
+        upload_repository: "Test File Repository"
+        expected_change: True
+    - name: upload File again, no change
+      include: tasks/upload.yml
+      vars:
+        upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
+        upload_repository: "Test File Repository"
+        expected_change: False
 
 - hosts: fixtures
   gather_facts: false

@@ -68,10 +68,26 @@ class KatelloMixin(object):
 
     def connect(self, ping=True):
         super(KatelloMixin, self).connect(ping)
+        self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
         self._patch_subscription_upload_api()
         self._patch_sync_plan_api()
+
+    def _patch_content_uploads_update_api(self):
+        """This is a workaround for the broken content_uploads update apidoc in katello.
+            see https://projects.theforeman.org/issues/27590
+        """
+
+        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
+
+        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
+        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
+        _content_upload_update_params_id['expected_type'] = 'string'
+
+        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
+        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
+        _content_upload_destroy_params_id['expected_type'] = 'string'
 
     def _patch_organization_update_api(self):
         """This is a workaround for the broken organization update apidoc in katello.
@@ -431,14 +447,14 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         self.resource_action(resource, 'destroy', payload)
         return True, None
 
-    def resource_action(self, resource, action, params, options=None, files=None):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
         try:
             result = None
             if not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, files=files)
+                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
         except Exception as e:
             self.fail_json(msg='Error while performing {} on {}: {}'.format(
                 action, resource, str(e)))
@@ -500,6 +516,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                     changed |= self.ensure_entity_state(
                         'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
         return changed
+
+
+class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+    pass
 
 
 class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):

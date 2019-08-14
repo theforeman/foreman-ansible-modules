@@ -23,7 +23,7 @@ help:
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
 
 lint:
-	pycodestyle --ignore=E402,E722 --max-line-length=160 plugins/modules plugins/module_utils tests/
+	pycodestyle --ignore=E402,E722,W503 --max-line-length=160 plugins/modules plugins/module_utils tests/
 
 test:
 	pytest -v $(TEST)
