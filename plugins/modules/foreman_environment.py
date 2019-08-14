@@ -65,12 +65,12 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityApypieAnsibleModule,
+    ForemanEntityAnsibleModule,
 )
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             locations=dict(type='entity_list', flat_name='location_ids'),

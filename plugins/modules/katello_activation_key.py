@@ -95,7 +95,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule, _entity_spec_helper
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule, _entity_spec_helper
 
 
 def override_to_boolnone(override):
@@ -114,7 +114,7 @@ def override_to_boolnone(override):
 
 
 def main():
-    module = KatelloEntityApypieAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             new_name=dict(),

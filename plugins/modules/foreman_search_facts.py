@@ -75,12 +75,12 @@ resources:
   type: list
 '''
 
-from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 def main():
 
-    module = ForemanApypieAnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
             resource=dict(type='str', required=True),
             search=dict(default=""),

@@ -68,11 +68,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             compute_profile=dict(required=True, type='entity', flat_name='compute_profile_id'),
             compute_resource=dict(required=True, type='entity', flat_name='compute_resource_id'),

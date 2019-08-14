@@ -147,10 +147,10 @@ def _exception2fail_json(msg='Generic failure: %s'):
     return decor
 
 
-class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
+class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
     def __init__(self, *args, **kwargs):
-        super(ForemanApypieAnsibleModule, self).__init__(*args, **kwargs)
+        super(ForemanAnsibleModule, self).__init__(*args, **kwargs)
         self._thin_default = False
         self.state = 'undefined'
         self.entity_spec = {}
@@ -456,7 +456,7 @@ class ForemanApypieAnsibleModule(ForemanBaseAnsibleModule):
         return task
 
 
-class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
+class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 
     def __init__(self, argument_spec=None, **kwargs):
         entity_spec, gen_args = _entity_spec_helper(kwargs.pop('entity_spec', {}))
@@ -466,7 +466,7 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         args.update(gen_args)
         if argument_spec is not None:
             args.update(argument_spec)
-        super(ForemanEntityApypieAnsibleModule, self).__init__(argument_spec=args, **kwargs)
+        super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.entity_spec = entity_spec
         self.state = self._params.pop('state')
@@ -474,7 +474,7 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         self._thin_default = self.desired_absent
 
     def parse_params(self):
-        return (super(ForemanEntityApypieAnsibleModule, self).parse_params(), self.state)
+        return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
 
     def ensure_scoped_parameters(self, scope, entity, parameters):
         changed = False
@@ -502,7 +502,7 @@ class ForemanEntityApypieAnsibleModule(ForemanApypieAnsibleModule):
         return changed
 
 
-class KatelloEntityApypieAnsibleModule(KatelloMixin, ForemanEntityApypieAnsibleModule):
+class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
     pass
 
 

@@ -70,11 +70,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def main():
-    module = KatelloEntityApypieAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             content_type=dict(required=True, choices=['gpg_key', 'cert']),

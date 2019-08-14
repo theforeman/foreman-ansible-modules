@@ -93,11 +93,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             host=dict(required=True),
             state=dict(default='present', choices=['present', 'absent', 'reverted']),

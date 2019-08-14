@@ -76,11 +76,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),

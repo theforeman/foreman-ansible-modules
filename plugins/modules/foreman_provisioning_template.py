@@ -232,7 +232,7 @@ RETURN = ''' # '''
 import os
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityApypieAnsibleModule,
+    ForemanEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
 )
@@ -251,7 +251,7 @@ def find_template_kind(module, entity_dict):
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         argument_spec=dict(
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),

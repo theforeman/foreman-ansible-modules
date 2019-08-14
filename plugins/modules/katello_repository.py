@@ -123,11 +123,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def main():
-    module = KatelloEntityApypieAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             product=dict(required=True),
         ),
