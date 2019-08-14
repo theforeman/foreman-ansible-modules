@@ -10,14 +10,19 @@
 .. _@{ alias }@_@{ plugin_type }@:
 {% endfor %}
 
+{% if deprecated is defined -%}
+{%   set deprecation_marker = "(D) " -%}
+{% else -%}
+{%   set deprecation_marker = "" -%}
+{% endif -%}
 {% if short_description %}
 {%   set title = module + ' -- ' + short_description | rst_ify %}
 {% else %}
 {%   set title = module %}
 {% endif %}
 
-@{ title }@
-@{ '+' * title|length }@
+@{ deprecation_marker }@@{ title }@
+@{ '+' * (deprecation_marker + title) |length }@
 
 {% if version_added is defined and version_added != '' -%}
 .. versionadded:: @{ version_added | default('') }@
@@ -155,7 +160,7 @@ Parameters
                     {% endif %}
                     {# Show default value, when multiple choice or no choices #}
                     {% if value.default is defined and value.default not in value.choices %}
-                        <b>Default:</b><br/><div style="color: blue">@{ value.default | escape }@</div>
+                        <b>Default:</b><br/><div style="color: blue">@{ value.default | tojson | escape }@</div>
                     {% endif %}
                 </td>
                 {# configuration #}
