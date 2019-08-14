@@ -145,9 +145,6 @@ def main():
     updated_name = entity_dict.get('updated_name')
     compute_attributes = entity_dict.pop('compute_attributes', None)
 
-    if compute_attributes is not None and module.desired_absent:
-        module.fail_json(msg='compute_attributes not allowed when state=absent')
-
     module.connect()
 
     entity = module.find_resource_by_name('compute_profiles', name=entity_dict['name'], failsafe=True)
