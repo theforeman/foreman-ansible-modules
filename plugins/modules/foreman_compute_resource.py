@@ -151,7 +151,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def get_provider_info(provider):
@@ -171,7 +171,7 @@ def get_provider_info(provider):
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
