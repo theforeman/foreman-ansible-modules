@@ -68,7 +68,7 @@ foreman_setting:
 '''
 
 
-from ansible.module_utils.foreman_helper import ForemanApypieAnsibleModule, parameter_value_to_str
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str
 
 
 entity_spec = {
@@ -78,7 +78,7 @@ entity_spec = {
 
 
 def main():
-    module = ForemanApypieAnsibleModule(
+    module = ForemanAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),

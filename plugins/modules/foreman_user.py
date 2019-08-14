@@ -152,7 +152,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityApypieAnsibleModule,
+    ForemanEntityAnsibleModule,
 )
 
 
@@ -334,7 +334,7 @@ locale_list = [
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),

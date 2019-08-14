@@ -166,11 +166,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(),
             release_name=dict(),

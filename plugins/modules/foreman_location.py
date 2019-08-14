@@ -95,13 +95,13 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     build_fqn,
-    ForemanEntityApypieAnsibleModule,
+    ForemanEntityAnsibleModule,
     split_fqn,
 )
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             parent=dict(type='entity', flat_name='parent_id'),

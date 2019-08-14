@@ -63,11 +63,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityApypieAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def main():
-    module = KatelloEntityApypieAnsibleModule(
+    module = KatelloEntityAnsibleModule(
         argument_spec=dict(
             manifest_path=dict(),
             state=dict(default='present', choices=['absent', 'present', 'refreshed']),

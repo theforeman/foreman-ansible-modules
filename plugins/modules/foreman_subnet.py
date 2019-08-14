@@ -177,11 +177,11 @@ RETURN = ''' # '''
 
 
 from netaddr import IPNetwork
-from ansible.module_utils.foreman_helper import ForemanEntityApypieAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
 
 
 def main():
-    module = ForemanEntityApypieAnsibleModule(
+    module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
