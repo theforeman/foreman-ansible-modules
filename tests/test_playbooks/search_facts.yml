@@ -1,4 +1,13 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+
 - hosts: tests
   gather_facts: false
   vars_files:
@@ -16,8 +25,9 @@
   - include: tasks/search_facts.yml
     vars:
       resource: organizations
+      search: name="Test Organization"
       full_details: true
-      return_length: 2
+      return_length: 1
   - name: Run with invalid resource
     foreman_search_facts:
       username: "{{ foreman_username }}"
@@ -30,4 +40,13 @@
   - fail:
        msg: "{{ result.msg }} should have contained all available resources"
     when: "'config_groups' not in result.msg"
+
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
 ...
