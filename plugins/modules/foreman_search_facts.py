@@ -116,8 +116,8 @@ def main():
 
     if module_params['full_details']:
         resources = []
-        for res in response:
-            resources.append(module.show_resource(resource, res['id']))
+        for found_resource in response:
+            resources.append(module.show_resource(resource, found_resource['id']))
     else:
         resources = response
 
