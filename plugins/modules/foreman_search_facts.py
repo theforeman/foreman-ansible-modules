@@ -37,10 +37,17 @@ options:
     description:
       - Resource to search
       - Set to an invalid choice like I(foo) see all available options.
+    required: true
   search:
     description:
       - Search query to use
       - If None, all resources are returned
+  full_details:
+    description:
+      - If C(True) all details about the found resources are returned
+    type: bool
+    default: false
+    aliases: [ info ]
 extends_documentation_fragment: foreman
 '''
 
@@ -66,6 +73,17 @@ EXAMPLES = '''
 - debug:
     var: item.name
   with_items: result.resources
+
+- name: "Read all Organizations with full details"
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    resource: organizations
+    full_details: true
+  register: result
+- debug:
+    var: result.resources
 '''
 
 RETURN = '''
@@ -84,18 +102,26 @@ def main():
         argument_spec=dict(
             resource=dict(type='str', required=True),
             search=dict(default=""),
+            full_details=dict(type='bool', aliases=['info'], default='false'),
         ),
     )
 
     module_params = module.clean_params()
-    entity = module_params['resource']
+    resource = module_params['resource']
     search = module_params['search']
 
     module.connect()
 
-    response = module.list_resource(entity, search)
+    response = module.list_resource(resource, search)
 
-    module.exit_json(changed=False, resources=response)
+    if module_params['full_details']:
+        resources = []
+        for found_resource in response:
+            resources.append(module.show_resource(resource, found_resource['id']))
+    else:
+        resources = response
+
+    module.exit_json(changed=False, resources=resources)
 
 
 if __name__ == '__main__':
