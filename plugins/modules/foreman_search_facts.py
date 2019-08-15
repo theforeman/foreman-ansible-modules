@@ -73,6 +73,17 @@ EXAMPLES = '''
 - debug:
     var: item.name
   with_items: result.resources
+
+- name: "Read all Organizations with full details"
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    resource: organizations
+    full_details: true
+  register: result
+- debug:
+    var: result.resources
 '''
 
 RETURN = '''
