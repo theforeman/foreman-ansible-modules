@@ -169,6 +169,11 @@ def main():
     # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
     # deleted keys don't need subscriptions anymore either
     if module.state == 'present' or (module.state == 'present_with_defaults' and changed):
+        # the auto_attach parameter can only be set on an existing AK with an update, not during create, so let's force an update
+        # see https://projects.theforeman.org/issues/27632 for details
+        if 'auto_attach' in entity_dict and changed:
+            _, activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
+
         ak_scope = {'activation_key_id': activation_key['id']}
         if subscriptions is not None:
             subscription_names = [subscription['name'] for subscription in subscriptions]
