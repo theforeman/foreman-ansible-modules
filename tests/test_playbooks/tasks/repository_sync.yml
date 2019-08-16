@@ -3,17 +3,15 @@
   vars:
     organization_name: "Test Organization"
     product_name: "Test Product"
-    repository: "Test Repository"
-    synchronous: True
   katello_sync:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     organization: "{{ organization_name }}"
-    repository: "{{ repository }}"
     product: "{{ product_name }}"
-    synchronous: "{{ synchronous }}"
+    repository: "{{ repository | default(omit) }}"
+    synchronous: "{{ synchronous | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Syncing repository failed! (expected_change: True)"
