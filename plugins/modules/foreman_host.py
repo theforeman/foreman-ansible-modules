@@ -50,6 +50,18 @@ options:
     description:
       - Name of related organization
     required: false
+  enabled:
+    description:
+      - Include this host within Foreman reporting
+    type: bool
+    required: false
+    default: true
+  managed:
+    description:
+      - whether a host is managed or unmanaged
+    type: bool
+    required: false
+    default: None
 extends_documentation_fragment: foreman
 '''
 
@@ -97,6 +109,7 @@ except ImportError:
 name_map = {
     'name': 'name',
     'enabled': 'enabled',
+    'managed': 'managed',
     'hostgroup': 'hostgroup',
     'location': 'location',
     'organization': 'organization',
@@ -111,6 +124,7 @@ def main():
             location=dict(),
             organization=dict(),
             enabled=dict(default='true', type='bool'),
+            managed=dict(type='bool'),
             state=dict(default='present', choices=[
                        'present_with_defaults', 'present', 'absent']),
         ),
