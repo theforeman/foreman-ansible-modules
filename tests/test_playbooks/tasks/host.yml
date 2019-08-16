@@ -2,20 +2,18 @@
 - name: "Ensure host '{{ host_name }}' is {{ host_state }}"
   vars:
     host_name: "test-host"
-    host_enabled: "true"
     host_state: present
-    host_location: 'muc'
-    host_organization: 'ATIX'
   foreman_host:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ host_name }}"
-    location: "{{ host_location }}"
-    organization: "{{ host_organization }}"
-    hostgroup: "{{ host_hostgroup }}"
-    enabled: "{{ host_enabled }}"
+    location: "{{ host_location | default(omit) }}"
+    organization: "{{ host_organization | default(omit) }}"
+    hostgroup: "{{ host_hostgroup | default(omit) }}"
+    enabled: "{{ host_enabled | default(omit) }}"
+    managed: "{{ host_managed | default(omit) }}"
     state: "{{ host_state }}"
   register: result
 - assert:
