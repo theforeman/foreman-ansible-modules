@@ -89,12 +89,7 @@ def main():
 
     entity_dict['compute_profile'] = module.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
 
-    entities = list(filter(lambda item: item.get('compute_profile_id') == entity_dict['compute_profile']['id'], compute_attributes))
-
-    if entities:
-        entity = entities[0]
-    else:
-        entity = None
+    entity = next((item for item in compute_attributes if item.get('compute_profile_id') == entity_dict['compute_profile']['id']), None)
 
     changed = module.ensure_entity_state('compute_attributes', entity_dict, entity)
 
