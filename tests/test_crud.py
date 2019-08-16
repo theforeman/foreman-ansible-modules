@@ -23,6 +23,7 @@ MODULES = [
     'config_group',
     'global_parameter',
     'host',
+    'host_power',
     'hostgroup',
     'katello_hostgroup',
     'luna_hostgroup',
