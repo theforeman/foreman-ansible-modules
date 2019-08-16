@@ -19,6 +19,12 @@
   vars_files:
     - vars/server.yml
   tasks:
+    - name: sync product, synchronous
+      include_tasks: tasks/repository_sync.yml
+    - name: sync product, async
+      include_tasks: tasks/repository_sync.yml
+      vars:
+        synchronous: false
     - name: sync repository, synchronous
       include_tasks: tasks/repository_sync.yml
       vars:
