@@ -28,7 +28,9 @@
     - synchronous: True
 
 - name: "Wait for asynchronous task to finish"
-  shell: sleep 10
+  wait_for:
+    timeout: 10
+  delegate_to: fixtures
   vars:
     - synchronous: True
   when:
