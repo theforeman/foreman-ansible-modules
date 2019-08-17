@@ -32,7 +32,7 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - "apypie"
 options:
   name:
     description:
