@@ -88,6 +88,7 @@ def main():
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
             enabled=dict(default='true', type='bool'),
+            build=dict(default='false', type='bool'),
         )
     )
 
