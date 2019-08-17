@@ -74,74 +74,42 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        Host,
-        HostGroup,
-    )
-
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_host,
-        find_hostgroup,
-        find_location,
-        find_organization,
-        ForemanEntityAnsibleModule,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'name': 'name',
-    'enabled': 'enabled',
-    'hostgroup': 'hostgroup',
-    'location': 'location',
-    'organization': 'organization',
-}
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityAnsibleModule,
+    parameter_entity_spec
+)
 
 
 def main():
     module = ForemanEntityAnsibleModule(
-        argument_spec=dict(
+        entity_spec=dict(
             name=dict(required=True),
-            hostgroup=dict(),
-            location=dict(),
-            organization=dict(),
+            hostgroup=dict(type='entity', required=True, flat_name='hostgroup_id'),
+            location=dict(type='entity', flat_name='location_id'),
+            organization=dict(type='entity', flat_name='organization_id'),
             enabled=dict(default='true', type='bool'),
-            state=dict(default='present', choices=[
-                       'present_with_defaults', 'present', 'absent']),
-        ),
-        required_if=(
-            ['state', 'present_with_defaults', ['hostgroup']],
-            ['state', 'present', ['hostgroup']],
-        ),
+        )
     )
 
-    (host_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
 
     module.connect()
 
-    host_dict['hostgroup'] = find_hostgroup(
-        module, host_dict['hostgroup'], failsafe=True)
+    hostgroup = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=False)
+    entity_dict['hostgroup'] = { 'id': hostgroup['id'] }
+    entity_dict['name'] = "{name}.{domain}".format(name=entity_dict['name'],
+                                                   domain=hostgroup['domain_name'])
+    
+    entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
+    
+    if not module.desired_absent:    
+        if 'location' in entity_dict:
+            entity_dict['location'] = module.find_resources_by_title('locations', [entity_dict['location']], thin=True)[0]
 
-    host_dict['name'] = host_dict['name'] + '.' + \
-        host_dict['hostgroup'].domain.read().name
+        if 'organization' in entity_dict:
+            entity_dict['organization'] = module.find_resources_by_name('organizations', [entity_dict['organization']], thin=True)[0]
 
-    entity = find_host(module, host_dict['name'], failsafe=True)
-
-    if 'location' in host_dict:
-        host_dict['location'] = find_location(module, host_dict['location'])
-
-    if 'organization' in host_dict:
-        host_dict['organization'] = find_organization(
-            module, host_dict['organization'])
-
-    host_dict = sanitize_entity_dict(host_dict, name_map)
-    changed = naildown_entity_state(Host, host_dict, entity, state, module)
-
+    changed, host = module.ensure_entity('hosts', entity_dict, entity)
     module.exit_json(changed=changed)
 
 
