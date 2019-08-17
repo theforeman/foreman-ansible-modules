@@ -97,13 +97,13 @@ def main():
     module.connect()
 
     hostgroup = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=False)
-    entity_dict['hostgroup'] = { 'id': hostgroup['id'] }
+    entity_dict['hostgroup'] = {'id': hostgroup['id']}
     entity_dict['name'] = "{name}.{domain}".format(name=entity_dict['name'],
                                                    domain=hostgroup['domain_name'])
-    
+  
     entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
-    
-    if not module.desired_absent:    
+  
+    if not module.desired_absent:
         if 'location' in entity_dict:
             entity_dict['location'] = module.find_resources_by_title('locations', [entity_dict['location']], thin=True)[0]
 
