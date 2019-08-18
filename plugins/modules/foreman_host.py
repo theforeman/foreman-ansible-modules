@@ -40,7 +40,7 @@ options:
     required: true
   hostgroup:
     description:
-      - Name of related hostgroup
+      - Name of related hostgroup. Required if I(state=present) and I(managed=true)
     required: true
   location:
     description:
@@ -53,8 +53,21 @@ options:
   build:
     description:
       - Whether or not to setup build context for the host
-    required: false
     type: bool
+    required: false
+    default: None
+  enabled:
+    description:
+      - Include this host within Foreman reporting
+    type: bool
+    required: false
+    default: true
+  managed:
+    description:
+      - Whether a host is managed or unmanaged
+    type: bool
+    required: false
+    default: None
 extends_documentation_fragment: foreman
 '''
 
@@ -86,15 +99,25 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
-            hostgroup=dict(type='entity', required=True, flat_name='hostgroup_id'),
+            hostgroup=dict(type='entity', flat_name='hostgroup_id'),
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
             enabled=dict(default='true', type='bool'),
+            managed=dict(type='bool'),
             build=dict(type='bool'),
-        )
+        ),	
+        required_if=(	
+            ['managed', True, ['hostgroup']],	
+            ['build', True, ['hostgroup']],	
+        ),
     )
 
     entity_dict = module.clean_params()
+
+    # additional param validation
+    if 'managed' in entity_dict and 'build' in entity_dict:
+        if not entity_dict['managed'] and entity_dict['build']:
+            module.fail_json(msg="If 'build' is True, 'managed' has to be either True or omitted")
 
     module.connect()
 
