@@ -50,6 +50,11 @@ options:
     description:
       - Name of related organization
     required: false
+  build:
+    description:
+      - Whether or not to setup build context for the host
+    required: false
+    type: bool
 extends_documentation_fragment: foreman
 '''
 
@@ -85,7 +90,7 @@ def main():
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
             enabled=dict(default='true', type='bool'),
-            build=dict(default='false', type='bool'),
+            build=dict(type='bool'),
         )
     )
 
