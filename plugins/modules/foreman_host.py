@@ -74,10 +74,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
-    parameter_entity_spec
-)
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():
