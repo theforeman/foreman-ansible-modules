@@ -36,7 +36,7 @@ requirements:
 options:
   name:
     description:
-      - Name of host (without the related domain!)
+      - Fully Qualified Name of host
     required: true
   hostgroup:
     description:
@@ -93,19 +93,17 @@ def main():
 
     module.connect()
 
-    hostgroup = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=False)
-    entity_dict['hostgroup'] = {'id': hostgroup['id']}
-    entity_dict['name'] = "{name}.{domain}".format(name=entity_dict['name'],
-                                                   domain=hostgroup['domain_name'])
-
     entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if 'hostgroup' in entity_dict:
+            entity_dict['hostgroup'] = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=True)
+
         if 'location' in entity_dict:
-            entity_dict['location'] = module.find_resources_by_title('locations', [entity_dict['location']], thin=True)[0]
+            entity_dict['location'] = module.find_resource_by_title('locations', entity_dict['location'], thin=True)
 
         if 'organization' in entity_dict:
-            entity_dict['organization'] = module.find_resources_by_name('organizations', [entity_dict['organization']], thin=True)[0]
+            entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
 
     changed, host = module.ensure_entity('hosts', entity_dict, entity)
     module.exit_json(changed=changed)
