@@ -40,7 +40,8 @@ options:
     required: true
   hostgroup:
     description:
-      - Name of related hostgroup. Required if I(state=present) and I(managed=true)
+      - Name of related hostgroup.
+      - Required if I(state=present) and (I(managed=true) or I(build=true))
     required: true
   location:
     description:
@@ -68,6 +69,10 @@ options:
     type: bool
     required: false
     default: None
+  state:
+    description: host presence
+    default: present
+    choices: ["present", "absent"]
 extends_documentation_fragment: foreman
 '''
 
@@ -79,6 +84,25 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "new_host"
     hostgroup: my_hostgroup
+    state: present
+
+- name: "Create a host with build context"
+  foreman_host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    hostgroup: my_hostgroup
+    build: yes
+    state: present
+
+- name: "Create an unmanaged host"
+  foreman_host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    managed: no
     state: present
 
 - name: "Delete a host"
@@ -105,10 +129,10 @@ def main():
             enabled=dict(default='true', type='bool'),
             managed=dict(type='bool'),
             build=dict(type='bool'),
-        ),	
-        required_if=(	
-            ['managed', True, ['hostgroup']],	
-            ['build', True, ['hostgroup']],	
+        ),
+        required_if=(
+            ['managed', True, ['hostgroup']],
+            ['build', True, ['hostgroup']],
         ),
     )
 
