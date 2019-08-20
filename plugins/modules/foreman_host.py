@@ -93,7 +93,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "new_host"
     hostgroup: my_hostgroup
-    build: yes
+    build: true
     state: present
 
 - name: "Create an unmanaged host"
@@ -102,7 +102,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: "new_host"
-    managed: no
+    managed: false
     state: present
 
 - name: "Delete a host"
