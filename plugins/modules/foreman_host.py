@@ -62,7 +62,7 @@ options:
       - Include this host within Foreman reporting
     type: bool
     required: false
-    default: true
+    default: None
   managed:
     description:
       - Whether a host is managed or unmanaged
@@ -126,7 +126,7 @@ def main():
             hostgroup=dict(type='entity', flat_name='hostgroup_id'),
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
-            enabled=dict(default='true', type='bool'),
+            enabled=dict(type='bool'),
             managed=dict(type='bool'),
             build=dict(type='bool'),
         ),
