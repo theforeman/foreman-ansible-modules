@@ -139,15 +139,23 @@ def main():
     entity_dict = module.clean_params()
 
     # additional param validation
-    if 'managed' in entity_dict and 'build' in entity_dict:
-        if not entity_dict['managed'] and entity_dict['build']:
-            module.fail_json(msg="If 'build' is True, 'managed' has to be either True or omitted")
+    if not module.desired_absent and 'managed' in entity_dict and 'build' in entity_dict:
+        if entity_dict['managed'] != entity_dict['build']:
+            module.fail_json(msg='\'managed\' and \'build\' have to be equal when both provided explicitly')
 
     module.connect()
 
     entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity:
+            if not entity['managed'] and not entity_dict.pop('managed', None) and entity_dict.pop('build', None):
+                module.warn('Got build=true, while existing host has managed=false. Forcing managed=true')
+                entity_dict['managed'] = True
+            if entity['build'] and not entity_dict.pop('build', None) and entity_dict.pop('managed', None):
+                module.warn('Got managed=false, while existing host has build=true. Forcing build=false')
+                entity_dict['build'] = False
+
         if 'hostgroup' in entity_dict:
             entity_dict['hostgroup'] = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=True)
 
