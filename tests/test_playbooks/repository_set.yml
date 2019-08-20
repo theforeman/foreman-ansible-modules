@@ -1,4 +1,17 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include_tasks: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include_tasks: tasks/katello_manifest.yml
+    vars:
+      manifest_path: "{{ katello_manifest_path }}"
+      manifest_state: present
+
 - hosts: tests
   gather_facts: false
   vars_files:
@@ -28,3 +41,13 @@
       product: Red Hat Enterprise Linux Server
       state: disabled
       expected_change: false
+
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include_tasks: tasks/organization.yml
+    vars:
+      organization_state: absent
+...
