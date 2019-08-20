@@ -1,48 +1,96 @@
 ---
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_organizations:
+          - "{{ host.organization }}"
+        location_state: present
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "{{ host.domain }}"
+        domain_locations:
+          - "{{ host.location }}"
+        domain_organizations:
+          - "{{ host.organization }}"
+        domain_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}"
+        hostgroup_domain: "{{ host.domain }}"
+        hostgroup_locations:
+          - "{{ host.location }}"
+        hostgroup_organizations:
+          - "{{ host.organization }}"
+        hostgroup_state: present
+    - include_tasks: tasks/host.yml
+      vars:
+        host_hostgroup: "{{ host.hostgroup }}"
+        host_state: absent
+
 - hosts: tests
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/host.yml
   tasks:
-  - include: tasks/host.yml
-    vars:
-      expected_change: true
-  - include: tasks/host.yml
-    vars:
-      expected_change: false
+    - name: create host
+      include_tasks: tasks/host.yml
+      vars:
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}"
+        host_managed: False
+        expected_change: true
 
-  - include: tasks/host_power.yml
-    vars:
-      host_power_state: "state"
-      expected_change: false
-      expected_power_state: "off"
+    - name: create host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}"
+        host_managed: False
+        expected_change: false
 
-  - include: tasks/host_power.yml
-    vars:
-      host_power_state: "on"
-      expected_change: true
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_state: absent
+        host_hostgroup: "{{ host.hostgroup }}"
+        expected_change: true
 
-  - include: tasks/host_power.yml
-    vars:
-      host_power_state: "on"
-      expected_change: false
+    - name: delete host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_state: absent
+        host_hostgroup: "{{ host.hostgroup }}"
+        expected_change: false
 
-  - include: tasks/host_power.yml
-    vars:
-      host_power_state: "off"
-      expected_change: true
-
-  - include: tasks/host_power.yml
-    vars:
-      host_power_state: "off"
-      expected_change: false
-
-  - include: tasks/host.yml
-    vars:
-      host_state: absent
-      expected_change: true
-  - include: tasks/host.yml
-    vars:
-      host_state: absent
-      expected_change: false
+- hosts: fixtures
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}"
+        hostgroup_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: absent
 ...

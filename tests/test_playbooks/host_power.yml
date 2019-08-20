@@ -1,0 +1,32 @@
+---
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "state"
+      expected_change: false
+      expected_power_state: "off"
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: true
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "on"
+      expected_change: false
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: true
+
+  - include: tasks/host_power.yml
+    vars:
+      host_power_state: "off"
+      expected_change: false
+...
