@@ -31,7 +31,6 @@ options:
     description:
       - Name of the repository set
     required: false
-    type: bool
   product:
     description:
       - Name of the parent product
