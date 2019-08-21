@@ -153,7 +153,7 @@ def main():
                 if 'managed' in entity_dict:
                     if not entity_dict['managed']:
                         # Give a warning only when 'managed' is explicitly passed as False
-                        module.warn('when \'build\'=True, \'managed\' is ignored and forced to True')
+                        module.warn("when 'build'=True, 'managed' is ignored and forced to True")
                 entity_dict['managed'] = True
         elif 'managed' in entity_dict:
             # When 'build' is not given and 'managed'=False, have to clear 'build' context
