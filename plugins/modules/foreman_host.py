@@ -40,9 +40,11 @@ options:
     required: true
   hostgroup:
     description:
-      - Name of related hostgroup.
-      - Required if I(state=present) and (I(managed=true) or I(build=true))
-    required: true
+      - |
+        Name of related hostgroup.
+        Required if I(state=present) and (I(managed=true) or I(build=true))
+        and the host is not present or does not have a hostgroup assigned.
+    required: false
   location:
     description:
       - Name of related location
@@ -65,7 +67,8 @@ options:
     default: None
   managed:
     description:
-      - Whether a host is managed or unmanaged
+      - Whether a host is managed or unmanaged.
+      - Forced to true when I(build=true)
     type: bool
     required: false
     default: None
@@ -139,26 +142,32 @@ def main():
     entity_dict = module.clean_params()
 
     # additional param validation
-    if not module.desired_absent and 'managed' in entity_dict and 'build' in entity_dict:
-        if entity_dict['managed'] != entity_dict['build']:
-            module.fail_json(msg='\'managed\' and \'build\' have to be equal when both provided explicitly')
+    if not module.desired_absent:
+        if 'hostgroup' not in entity_dict and entity_dict.get('managed', True):
+            module.fail_json(msg='Hostgroup can be omitted only with managed=False')
+
+        if 'build' in entity_dict:
+            # When 'build'=True, 'managed' has to be True.
+            # Assuming that user's priority is to build
+            if entity_dict['build']:
+                if 'managed' in entity_dict:
+                    if not entity_dict['managed']:
+                        # Give a warning only when 'managed' is explicitly passed as False
+                        module.warn('when \'build\'=True, \'managed\' is ignored and forced to True')
+                entity_dict['managed'] = True
+        elif 'managed' in entity_dict:
+            # When 'build' is not given and 'managed'=False, have to clear 'build' context
+            if not entity_dict['managed']:
+                entity_dict['build'] = False
 
     module.connect()
 
     entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        if entity:
-            if not entity['managed'] and not entity_dict.pop('managed', None) and entity_dict.pop('build', None):
-                module.warn('Got build=true, while existing host has managed=false. Forcing managed=true')
-                entity_dict['managed'] = True
-            if entity['build'] and not entity_dict.pop('build', None) and entity_dict.pop('managed', None):
-                module.warn('Got managed=false, while existing host has build=true. Forcing build=false')
-                entity_dict['build'] = False
-
         if 'hostgroup' in entity_dict:
             entity_dict['hostgroup'] = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=True)
-
+        
         if 'location' in entity_dict:
             entity_dict['location'] = module.find_resource_by_title('locations', entity_dict['location'], thin=True)
 
