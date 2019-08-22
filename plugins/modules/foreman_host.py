@@ -160,7 +160,7 @@ def main():
     if not module.desired_absent:
         if 'hostgroup' in entity_dict:
             entity_dict['hostgroup'] = module.find_resource_by_name('hostgroups', entity_dict['hostgroup'], thin=True)
-        
+
         if 'location' in entity_dict:
             entity_dict['location'] = module.find_resource_by_title('locations', entity_dict['location'], thin=True)
 
