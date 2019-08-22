@@ -61,7 +61,6 @@ options:
       - Include this host within Foreman reporting
     type: bool
     required: false
-    default: None
   managed:
     description:
       - Whether a host is managed or unmanaged.
