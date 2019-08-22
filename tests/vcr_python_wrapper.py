@@ -122,7 +122,7 @@ else:
 
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
-                              match_on=['method', 'scheme', 'port', 'path', query_matcher, body_matcher],
+                              match_on=['method', 'path', query_matcher, body_matcher],
                               filter_headers=['Authorization'],
                               ):
         with open(sys.argv[0]) as f:
