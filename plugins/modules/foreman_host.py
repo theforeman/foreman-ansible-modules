@@ -40,10 +40,8 @@ options:
     required: true
   hostgroup:
     description:
-      - |
-        Name of related hostgroup.
-        Required if I(state=present) and (I(managed=true) or I(build=true))
-        and the host is not present or does not have a hostgroup assigned.
+      - Name of related hostgroup.
+      - Required if I(state=present) and (I(managed=true) or I(build=true))
     required: false
   location:
     description:
@@ -146,19 +144,14 @@ def main():
         if 'hostgroup' not in entity_dict and entity_dict.get('managed', True):
             module.fail_json(msg='Hostgroup can be omitted only with managed=False')
 
-        if 'build' in entity_dict:
-            # When 'build'=True, 'managed' has to be True.
-            # Assuming that user's priority is to build
-            if entity_dict['build']:
-                if 'managed' in entity_dict:
-                    if not entity_dict['managed']:
-                        # Give a warning only when 'managed' is explicitly passed as False
-                        module.warn("when 'build'=True, 'managed' is ignored and forced to True")
-                entity_dict['managed'] = True
-        elif 'managed' in entity_dict:
-            # When 'build' is not given and 'managed'=False, have to clear 'build' context
-            if not entity_dict['managed']:
-                entity_dict['build'] = False
+        if 'build' in entity_dict and entity_dict['build']:
+            # When 'build'=True, 'managed' has to be True. Assuming that user's priority is to build.
+            if 'managed' in entity_dict and not entity_dict['managed']:
+                module.warn("when 'build'=True, 'managed' is ignored and forced to True")
+            entity_dict['managed'] = True
+        elif 'build' not in entity_dict and 'managed' in entity_dict and not entity_dict['managed']:
+            # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
+            entity_dict['build'] = False
 
     module.connect()
 
