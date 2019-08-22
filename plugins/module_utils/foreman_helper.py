@@ -333,7 +333,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
-    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None):
+    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=False):
         """Ensure that a given entity has a certain state
 
             Parameters:
@@ -358,26 +358,26 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
 
         if state == 'present_with_defaults':
             if current_entity is None:
-                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
         elif state == 'present':
             if current_entity is None:
-                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
             else:
-                changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+                changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec, synchronous)
         elif state == 'copied':
             if current_entity is not None:
-                changed, updated_entity = self._copy_entity(resource, desired_entity, current_entity, params)
+                changed, updated_entity = self._copy_entity(resource, desired_entity, current_entity, params, synchronous)
         elif state == 'reverted':
             if current_entity is not None:
-                changed, updated_entity = self._revert_entity(resource, current_entity, params)
+                changed, updated_entity = self._revert_entity(resource, current_entity, params, synchronous)
         elif state == 'absent':
             if current_entity is not None:
-                changed, updated_entity = self._delete_entity(resource, current_entity, params)
+                changed, updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
         else:
             self.fail_json(msg='Not a valid state: {}'.format(state))
         return changed, updated_entity
 
-    def _create_entity(self, resource, desired_entity, params, entity_spec):
+    def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
         """Create entity with given properties
 
             Parameters:
@@ -392,13 +392,13 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         if not self.check_mode:
             if params:
                 payload.update(params)
-            return self.resource_action(resource, 'create', payload)
+            return self.resource_action(resource, 'create', payload, synchronous=synchronous)
         else:
             fake_entity = desired_entity.copy()
             fake_entity['id'] = -1
             return True, fake_entity
 
-    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec):
+    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec, synchronous):
         """Update a given entity with given properties if any diverge
 
             Parameters:
@@ -421,7 +421,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             if not self.check_mode:
                 if params:
                     payload.update(params)
-                return self.resource_action(resource, 'update', payload)
+                return self.resource_action(resource, 'update', payload, synchronous=synchronous)
             else:
                 # In check_mode we emulate the server updating the entity
                 fake_entity = current_entity.copy()
@@ -431,7 +431,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             # Nothing needs changing
             return False, current_entity
 
-    def _copy_entity(self, resource, desired_entity, current_entity, params):
+    def _copy_entity(self, resource, desired_entity, current_entity, params, synchronous):
         """Copy a given entity
 
             Parameters:
@@ -447,9 +447,9 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         }
         if params:
             payload.update(params)
-        return self.resource_action(resource, 'copy', payload)
+        return self.resource_action(resource, 'copy', payload, synchronous=synchronous)
 
-    def _revert_entity(self, resource, current_entity, params):
+    def _revert_entity(self, resource, current_entity, params, synchronous):
         """Revert a given entity
 
             Parameters:
@@ -462,9 +462,9 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        return self.resource_action(resource, 'revert', payload)
+        return self.resource_action(resource, 'revert', payload, synchronous=synchronous)
 
-    def _delete_entity(self, resource, current_entity, params):
+    def _delete_entity(self, resource, current_entity, params, synchronous):
         """Delete a given entity
 
             Parameters:
@@ -477,10 +477,10 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        self.resource_action(resource, 'destroy', payload)
+        self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
         return True, None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=False):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
@@ -488,7 +488,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             result = None
             if not self.check_mode:
                 result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
-                if isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result:
+                if synchronous and isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result:
                     # looks like a task
                     result = self.wait_for_task(result)
         except Exception as e:
