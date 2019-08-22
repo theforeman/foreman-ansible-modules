@@ -157,43 +157,44 @@ def main():
         if not changed:
             content_view_entity['content_view_components'] = entity['content_view_components']
         current_cvcs = content_view_entity.get('content_view_components', [])
-        if components:
-            components_to_add = []
-            ccv_scope = {'composite_content_view_id': content_view_entity['id']}
-            for component in components:
-                cvc = {
-                    'content_view': module.find_resource_by_name('content_views', name=component['content_view'], params=scope),
-                    'latest': component['latest'],
-                }
-                cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
-                if not cvc['latest']:
-                    version = component.get('content_view_version')
-                    if version is None:
-                        module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
-                    search = "content_view_id={},version={}".format(cvc['content_view']['id'], component['content_view_version'])
-                    cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
-                    cvc['latest'] = False
-                    if cvc_matched and cvc_matched['latest']:
-                        # When changing to latest=False & version is the latest we must send 'content_view_version' to the server
-                        # Let's fake, it wasn't there...
-                        cvc_matched.pop('content_view_version', None)
-                        cvc_matched.pop('content_view_version_id', None)
-                if cvc_matched:
-                    changed |= module.ensure_entity_state(
-                        'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
-                    current_cvcs.remove(cvc_matched)
-                else:
-                    cvc['content_view_id'] = cvc.pop('content_view')['id']
-                    if 'content_view_version' in cvc:
-                        cvc['content_view_version_id'] = cvc.pop('content_view_version')['id']
-                    components_to_add.append(cvc)
-            if components_to_add:
-                payload = {
-                    'composite_content_view_id': content_view_entity['id'],
-                    'components': components_to_add,
-                }
-                module.resource_action('content_view_components', 'add_components', payload)
-                changed = True
+
+        components_to_add = []
+        ccv_scope = {'composite_content_view_id': content_view_entity['id']}
+        for component in components:
+            cvc = {
+                'content_view': module.find_resource_by_name('content_views', name=component['content_view'], params=scope),
+                'latest': component['latest'],
+            }
+            cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
+            if not cvc['latest']:
+                version = component.get('content_view_version')
+                if version is None:
+                    module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
+                search = "content_view_id={},version={}".format(cvc['content_view']['id'], component['content_view_version'])
+                cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
+                cvc['latest'] = False
+                if cvc_matched and cvc_matched['latest']:
+                    # When changing to latest=False & version is the latest we must send 'content_view_version' to the server
+                    # Let's fake, it wasn't there...
+                    cvc_matched.pop('content_view_version', None)
+                    cvc_matched.pop('content_view_version_id', None)
+            if cvc_matched:
+                changed |= module.ensure_entity_state(
+                    'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
+                current_cvcs.remove(cvc_matched)
+            else:
+                cvc['content_view_id'] = cvc.pop('content_view')['id']
+                if 'content_view_version' in cvc:
+                    cvc['content_view_version_id'] = cvc.pop('content_view_version')['id']
+                components_to_add.append(cvc)
+        if components_to_add:
+            payload = {
+                'composite_content_view_id': content_view_entity['id'],
+                'components': components_to_add,
+            }
+            module.resource_action('content_view_components', 'add_components', payload)
+            changed = True
+
         if current_cvcs:
             # desired cvcs have already been updated and removed from `current_cvcs`
             payload = {
