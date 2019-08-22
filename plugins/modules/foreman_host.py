@@ -61,7 +61,6 @@ options:
       - whether a host is managed or unmanaged
     type: bool
     required: false
-    default: None
 extends_documentation_fragment: foreman
 '''
 

@@ -44,7 +44,6 @@ options:
   domains:
     description: List of DNS domains the subnet should assigned to
     required: false
-    default: None
     type: list
   gateway:
     description: Subnet gateway IP address
@@ -91,7 +90,6 @@ options:
       - Remote execution Smart proxies for this subnet
       - This option is only available, if the remote_execution plugin is installed.
     required: false
-    default: None
     type: list
   vlanid:
     description: VLAN ID
@@ -102,12 +100,10 @@ options:
   organizations:
     description: List of oganizations the subnet should be assigned to
     required: false
-    default: None
     type: list
   locations:
     description: List of locations the subnet should be assigned to
     required: false
-    default: None
     type: list
   parameters:
     description:
