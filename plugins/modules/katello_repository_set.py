@@ -134,9 +134,9 @@ def get_desired_repos(desired_substitutions, available_repos):
 def main():
     module = KatelloEntityAnsibleModule(
         argument_spec=dict(
-            name=dict(default=None),
-            product=dict(default=None),
-            label=dict(default=None),
+            name=dict(),
+            product=dict(),
+            label=dict(),
             repositories=dict(required=True, type='list', elements='dict'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
