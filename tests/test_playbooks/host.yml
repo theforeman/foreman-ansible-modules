@@ -34,7 +34,6 @@
         hostgroup_state: present
     - include_tasks: tasks/host.yml
       vars:
-        host_hostgroup: "{{ host.hostgroup }}"
         host_state: absent
 
 - hosts: tests
@@ -48,7 +47,6 @@
       vars:
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_hostgroup: "{{ host.hostgroup }}"
         host_managed: False
         expected_change: true
 
@@ -57,7 +55,6 @@
       vars:
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_hostgroup: "{{ host.hostgroup }}"
         host_managed: False
         expected_change: false
 
@@ -65,14 +62,44 @@
       include_tasks: tasks/host.yml
       vars:
         host_state: absent
-        host_hostgroup: "{{ host.hostgroup }}"
         expected_change: true
 
     - name: delete host again, no change
       include_tasks: tasks/host.yml
       vars:
         host_state: absent
+        expected_change: false
+
+    - name: create host with hostgroup
+      include_tasks: tasks/host.yml
+      vars:
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}"
+        host_managed: False
+        host_build: False
+        expected_change: true
+
+    - name: create host again with hostgroup, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}"
+        host_managed: False
+        host_build: False
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_state: absent
+        expected_change: true
+
+    - name: delete host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_state: absent
         expected_change: false
 
 - hosts: fixtures
