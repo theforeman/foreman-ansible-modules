@@ -137,7 +137,7 @@ def main():
             name=dict(default=None),
             product=dict(default=None),
             label=dict(default=None),
-            repositories=dict(required=True, type='list'),
+            repositories=dict(required=True, type='list', elements='dict'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         required_one_of=[['label', 'name']],
