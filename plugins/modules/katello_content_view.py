@@ -131,6 +131,13 @@ def main():
 
     entity_dict = module.clean_params()
 
+    # components is None when we're managing a CCV but don't want to adjust its components
+    components = entity_dict.pop('components', None)
+    if components:
+        for component in components:
+            if not component['latest'] and component.get('content_view_version') is None:
+                module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
+
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
@@ -148,7 +155,6 @@ def main():
 
     entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    components = entity_dict.pop('components', None)
     changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
     # only update CVC's of newly created or updated CCV's
@@ -167,9 +173,6 @@ def main():
             }
             cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
             if not cvc['latest']:
-                version = component.get('content_view_version')
-                if version is None:
-                    module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
                 search = "content_view_id={},version={}".format(cvc['content_view']['id'], component['content_view_version'])
                 cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
                 cvc['latest'] = False
