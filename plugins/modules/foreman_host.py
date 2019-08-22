@@ -56,7 +56,6 @@ options:
       - Whether or not to setup build context for the host
     type: bool
     required: false
-    default: None
   enabled:
     description:
       - Include this host within Foreman reporting
