@@ -37,12 +37,10 @@ options:
   locations:
     description: List of locations the role should be assigned to
     required: false
-    default: None
     type: list
   organizations:
     description: List of organizations the role should be assigned to
     required: false
-    default: None
     type: list
   state:
     description: role presence

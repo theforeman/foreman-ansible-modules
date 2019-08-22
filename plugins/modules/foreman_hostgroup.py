@@ -38,58 +38,45 @@ options:
   parent:
     description: Hostgroup parent name
     required: false
-    default: None
   organizations:
     description: List of organizations names
     required: false
-    default: None
     type: list
   locations:
     description: List of locations names
     required: false
-    default: None
     type: list
   compute_resource:
     description: Compute resource name
     required: false
-    default: None
   compute_profile:
     description: Compute profile name
     required: false
-    default: None
   domain:
     description: Domain name
     required: false
-    default: None
   subnet:
     description: IPv4 Subnet name
     required: false
-    default: None
   subnet6:
     description: IPv6 Subnet name
     required: false
-    default: None
   realm:
     description: Realm name
     required: false
-    default: None
   architecture:
     description: Architecture name
     required: False
-    default: None
   medium:
     aliases: [ media ]
     description: Medium name
     required: False
-    default: None
   operatingsystem:
     description: Operatingsystem title
     required: False
-    default: None
   pxe_loader:
     description: PXE Bootloader
     required: false
-    default: None
     choices:
       - PXELinux BIOS
       - PXELinux UEFI
@@ -108,50 +95,39 @@ options:
   partition_table:
     description: Partition table name
     required: False
-    default: None
   root_pass:
     description: root password
     required: false
-    default: None
   environment:
     description: Puppet environment name
     required: false
-    default: None
   config_groups:
     description: Config groups list
     required: false
-    default: None
     type: list
   puppet_proxy:
     description: Puppet server proxy name
     required: false
-    default: None
   puppet_ca_proxy:
     description: Puppet CA proxy name
     required: false
-    default: None
   openscap_proxy:
     description: OpenSCAP proxy name. Only available when the OpenSCAP plugin is installed.
     required: false
-    default: None
   organization:
     description:
       - Organization for scoped resources attached to the hostgroup. Only used for katello installations.
       - This organization will implicitly be added to the I(organizations) parameter if needed.
     required: false
-    default: None
   content_source:
     description: Katello Content source. Only available for katello installations.
     required: false
-    default: None
   lifecycle_environment:
     description: Katello Lifecycle environment. Only available for katello installations.
     required: false
-    default: None
   content_view:
     description: Katello Content view. Only available for katello installations.
     required: false
-    default: None
   parameters:
     description:
       - Subnet specific host parameters
