@@ -78,6 +78,8 @@ def main():
         ],
     )
 
+    module.task_timeout = 5 * 60
+
     entity_dict = module.clean_params()
 
     module.connect()
@@ -106,9 +108,8 @@ def main():
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
                 params.update(scope)
-                changed, result = module.resource_action('subscriptions', 'upload', params, files=files)
-                task = module.wait_for_task(result, 5 * 60)
-                for error in task['humanized']['errors']:
+                changed, result = module.resource_action('subscriptions', 'upload', params, files=files, synchronous=True)
+                for error in result['humanized']['errors']:
                     if "same as existing data" in error:
                         changed = False
                     elif "older than existing data" in error:
@@ -119,12 +120,10 @@ def main():
         except IOError as e:
             module.fail_json(msg="Unable to read the manifest file: %s" % e)
     elif module.desired_absent and existing_manifest:
-        changed, result = module.resource_action('subscriptions', 'delete_manifest', scope)
-        task = module.wait_for_task(result)
+        changed, result = module.resource_action('subscriptions', 'delete_manifest', scope, synchronous=True)
     elif module.state == 'refreshed':
         if existing_manifest:
-            changed, result = module.resource_action('subscriptions', 'refresh_manifest', scope)
-            task = module.wait_for_task(result)
+            changed, result = module.resource_action('subscriptions', 'refresh_manifest', scope, synchronous=True)
         else:
             module.fail_json(msg="No manifest found to refresh.")
 

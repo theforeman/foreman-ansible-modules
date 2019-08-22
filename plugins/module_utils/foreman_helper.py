@@ -46,6 +46,9 @@ class ForemanBaseAnsibleModule(AnsibleModule):
         self._foremanapi_password = self._params.pop('password')
         self._foremanapi_validate_certs = self._params.pop('validate_certs')
 
+        self.task_timeout = 60
+        self.task_poll = 4
+
     def parse_params(self):
         self.warn("Use of deprecated method parse_params")
         return {k: v for (k, v) in self._params.items() if v is not None}
@@ -496,12 +499,13 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
                 action, resource, str(e)))
         return True, result
 
-    def wait_for_task(self, task, duration=60, poll=4):
+    def wait_for_task(self, task):
+        duration = self.task_timeout
         while task['state'] not in ['paused', 'stopped']:
-            duration -= poll
+            duration -= self.task_poll
             if duration <= 0:
                 self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
-            time.sleep(poll)
+            time.sleep(self.task_poll)
 
             _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
 
