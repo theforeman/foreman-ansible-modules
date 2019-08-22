@@ -204,6 +204,10 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             see https://projects.theforeman.org/issues/19086
         """
 
+        if 'remote_execution_features' not in self.foremanapi.apidoc['docs']['resources']:
+            # the system has no foreman_remote_execution installed, no need to patch
+            return
+
         _subnet_rex_proxies_parameter = {
             u'validations': [],
             u'name': u'remote_execution_proxy_ids',
