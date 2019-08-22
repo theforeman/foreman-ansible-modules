@@ -34,6 +34,7 @@
         hostgroup_state: present
     - include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_state: absent
 
 - hosts: tests
@@ -45,6 +46,7 @@
     - name: create host
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_managed: False
@@ -53,6 +55,7 @@
     - name: create host again, no change
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_managed: False
@@ -61,18 +64,21 @@
     - name: delete host
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_state: absent
         expected_change: true
 
     - name: delete host again, no change
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_state: absent
         expected_change: false
 
     - name: create host with hostgroup
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}"
@@ -83,6 +89,7 @@
     - name: create host again with hostgroup, no change
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}"
@@ -93,12 +100,14 @@
     - name: delete host
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_state: absent
         expected_change: true
 
     - name: delete host again, no change
       include_tasks: tasks/host.yml
       vars:
+        host_name: "test-host.{{ host.domain }}"
         host_state: absent
         expected_change: false
 
