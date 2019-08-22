@@ -44,12 +44,10 @@ options:
   locations:
     description: List of locations the domain should be assigned to
     required: false
-    default: None
     type: list
   organizations:
     description: List of organizations the domain should be assigned to
     required: false
-    default: None
     type: list
   parameters:
     description:

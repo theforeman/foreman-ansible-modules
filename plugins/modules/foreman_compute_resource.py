@@ -43,21 +43,17 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    default: None
     choices: ["vmware", "libvirt", "ovirt"]
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    default: None
   locations:
     description: List of locations the compute resource should be assigned to
     required: false
-    default: None
     type: list
   organizations:
     description: List of organizations the compute resource should be assigned to
     required: false
-    default: None
     type: list
   state:
     description: compute resource presence

@@ -34,7 +34,6 @@ options:
   operatingsystems:
     description: List of operating systems the architecture should be assigned to
     required: false
-    default: None
   state:
     description: Architecture presence
     default: present
