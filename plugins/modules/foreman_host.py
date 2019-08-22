@@ -137,6 +137,9 @@ def main():
     entity_dict = module.clean_params()
 
     # additional param validation
+    if '.' not in entity_dict['name']:
+        module.fail_json(msg="The hostname must be FQDN")
+
     if not module.desired_absent:
         if 'hostgroup' not in entity_dict and entity_dict.get('managed', True):
             module.fail_json(msg='Hostgroup can be omitted only with managed=False')
