@@ -28,7 +28,7 @@ author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
 requirements:
-    apypie
+  - apypie
 options:
   name:
     description: compute profile name
