@@ -36,7 +36,7 @@ requirements:
 options:
   name:
     description:
-      - Fully Qualified Name of host
+      - Fully Qualified Domain Name of host
     required: true
   hostgroup:
     description:
