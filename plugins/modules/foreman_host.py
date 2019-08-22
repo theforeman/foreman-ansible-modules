@@ -67,7 +67,6 @@ options:
       - Forced to true when I(build=true)
     type: bool
     required: false
-    default: None
   state:
     description: host presence
     default: present
