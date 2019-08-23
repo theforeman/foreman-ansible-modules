@@ -122,8 +122,7 @@ def main():
             module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
         parent = entity_dict['parent']
     if parent:
-        search_string = 'title="{}"'.format(parent)
-        entity_dict['parent'] = module.find_resource('locations', search=search_string, thin=True, failsafe=module.desired_absent)
+        entity_dict['parent'] = module.find_resource_by_title('locations', parent, thin=True, failsafe=module.desired_absent)
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent location does not exist so just exit here
@@ -133,7 +132,7 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    entity = module.find_resource('locations', search='title="{}"'.format(build_fqn(name, parent)), failsafe=True)
+    entity = module.find_resource_by_title('locations', build_fqn(name, parent), failsafe=True)
 
     changed = module.ensure_entity_state('locations', entity_dict, entity)
 
