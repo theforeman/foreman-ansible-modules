@@ -11,7 +11,8 @@ addons:
       - rpm
 install:
   - pip install pytest-travis-fold
-  - make test-setup doc-setup
+  - make test-setup
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.* ]]; then make doc-setup; fi
 script:
   - make lint sanity test dist
   - if [[ $TRAVIS_PYTHON_VERSION == 3.* ]]; then make doc; fi
