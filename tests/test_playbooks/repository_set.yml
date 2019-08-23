@@ -4,50 +4,60 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include_tasks: tasks/organization.yml
-    vars:
-      organization_state: present
-  - include_tasks: tasks/katello_manifest.yml
-    vars:
-      manifest_path: "{{ katello_manifest_path }}"
-      manifest_state: present
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/katello_manifest.yml
+      vars:
+        manifest_path: "{{ katello_manifest_path }}"
+        manifest_state: present
+    - include_tasks: tasks/repository_set.yml
+      vars:
+        name: Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Enterprise Linux Server
+        state: disabled
 
 - hosts: tests
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-  - include_tasks: tasks/repository_set.yml
-    vars:
-      name: Red Hat Enterprise Linux 7 Server (RPMs)
-      expected_change: true
-  - include_tasks: tasks/repository_set.yml
-    vars:
-      name: Red Hat Enterprise Linux 7 Server (RPMs)
-      product: Red Hat Enterprise Linux Server
-      expected_change: false
-  - include_tasks: tasks/repository_set.yml
-    vars:
-      label: rhel-7-server-rpms
-      expected_change: false
-  - include_tasks: tasks/repository_set.yml
-    vars:
-      label: rhel-7-server-rpms
-      state: disabled
-      expected_change: true
-  - include_tasks: tasks/repository_set.yml
-    vars:
-      name: Red Hat Enterprise Linux 7 Server (RPMs)
-      product: Red Hat Enterprise Linux Server
-      state: disabled
-      expected_change: false
+    - name: enable repository_set by name
+      include_tasks: tasks/repository_set.yml
+      vars:
+        name: Red Hat Enterprise Linux 7 Server (RPMs)
+        expected_change: true
+    - name: enable repository_set by name again, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        name: Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Enterprise Linux Server
+        expected_change: false
+    - name: enable repository_set by label, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-7-server-rpms
+        expected_change: false
+    - name: disable repository_set by label
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-7-server-rpms
+        state: disabled
+        expected_change: true
+    - name: disable repository_set by name, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        name: Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Enterprise Linux Server
+        state: disabled
+        expected_change: false
 
 - hosts: fixtures
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-  - include_tasks: tasks/organization.yml
-    vars:
-      organization_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
 ...
