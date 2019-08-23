@@ -12,10 +12,17 @@
     organizations: "{{ location_organizations | default(omit) }}"
     state: "{{ location_state }}"
   register: result
+  ignore_errors: true
 - assert:
     fail_msg: "Ensuring location is {{ location_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined
+- assert:
+    fail_msg: "Ensuring location is {{ location_state }} didn't fail! (expected_error: {{ expected_error | default('unknown') }})"
+    quiet: yes
+    that:
+      - result is failed
+  when: expected_error is defined
 ...
