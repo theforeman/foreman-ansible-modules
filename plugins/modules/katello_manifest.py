@@ -108,7 +108,7 @@ def main():
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
                 params.update(scope)
-                changed, result = module.resource_action('subscriptions', 'upload', params, files=files, synchronous=True)
+                changed, result = module.resource_action('subscriptions', 'upload', params, files=files)
                 for error in result['humanized']['errors']:
                     if "same as existing data" in error:
                         changed = False
@@ -120,10 +120,10 @@ def main():
         except IOError as e:
             module.fail_json(msg="Unable to read the manifest file: %s" % e)
     elif module.desired_absent and existing_manifest:
-        changed, result = module.resource_action('subscriptions', 'delete_manifest', scope, synchronous=True)
+        changed, result = module.resource_action('subscriptions', 'delete_manifest', scope)
     elif module.state == 'refreshed':
         if existing_manifest:
-            changed, result = module.resource_action('subscriptions', 'refresh_manifest', scope, synchronous=True)
+            changed, result = module.resource_action('subscriptions', 'refresh_manifest', scope)
         else:
             module.fail_json(msg="No manifest found to refresh.")
 
