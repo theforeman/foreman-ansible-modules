@@ -7,6 +7,7 @@ endif
 MODULE_PATH=plugins/modules/$(MODULE).py
 DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
+COLLECTION_TMP:=$(shell mktemp -du)
 
 default: help
 help:
@@ -61,7 +62,23 @@ tests/test_playbooks/vars/server.yml:
 	cp tests/test_playbooks/vars/server.yml.example tests/test_playbooks/vars/server.yml
 
 dist:
-	mazer build
+	mkdir -p $(COLLECTION_TMP)
+
+	# only copy selected files/folders from our git
+	git archive HEAD LICENSE README.md galaxy.yml plugins | tar -C $(COLLECTION_TMP) -xf -
+
+	# drop nailgun modules, we don't want them shipped
+	rm -f $(COLLECTION_TMP)/plugins/module_utils/ansible_nailgun_cement.py
+	grep -rl ansible_nailgun_cement $(COLLECTION_TMP)/plugins/modules/ | xargs rm -f
+
+	# fix the imports to use the collection namespace
+	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
+	sed -i '/extends_documentation_fragment/ s/foreman/ansible_collections.theforeman.foreman.foreman/g' $(COLLECTION_TMP)/plugins/modules/*.py
+
+	mazer build --collection-path=$(COLLECTION_TMP)
+	mv $(COLLECTION_TMP)/releases/*.tar.gz $(CURDIR)
+
+	rm -rf $(COLLECTION_TMP)
 
 doc-setup:
 	pip install -r docs/requirements.txt
