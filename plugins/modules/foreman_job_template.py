@@ -150,89 +150,89 @@ EXAMPLES = '''
 
 - name: "Create a Job Template inline"
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: A New Job Template
-      state: present
-      template: |
-        <%#
-            name: A Job Template
-        %>
-        rm -rf <%= input("toDelete") %>
-      template_inputs:
-        - name: toDelete
-          input_type: user
-      locations:
-      - Gallifrey
-      organizations:
-      - TARDIS INC
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: A New Job Template
+    state: present
+    template: |
+      <%#
+          name: A Job Template
+      %>
+      rm -rf <%= input("toDelete") %>
+    template_inputs:
+      - name: toDelete
+        input_type: user
+    locations:
+    - Gallifrey
+    organizations:
+    - TARDIS INC
 
 - name: "Create a Job Template from a file"
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: a new job template
-      file_name: timeywimey_template.erb
-      template_inputs:
-        - name: a new template input
-          input_type: user
-      state: present
-      locations:
-      - Gallifrey
-      organizations:
-      - TARDIS INC
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: a new job template
+    file_name: timeywimey_template.erb
+    template_inputs:
+      - name: a new template input
+        input_type: user
+    state: present
+    locations:
+    - Gallifrey
+    organizations:
+    - TARDIS INC
 
 - name: "remove a job template's template inputs"
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: a new job template
-      template_inputs: []
-      state: present
-      locations:
-      - Gallifrey
-      organizations:
-      - TARDIS INC
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: a new job template
+    template_inputs: []
+    state: present
+    locations:
+    - Gallifrey
+    organizations:
+    - TARDIS INC
 
 - name: "Delete a Job Template"
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      name: timeywimey
-      state: absent
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: timeywimey
+    state: absent
 
 - name: "Create a Job Template from a file and modify with parameter(s)"
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: timeywimey_template.erb
-      name: Wibbly Wobbly Template
-      state: present
-      locations:
-      - Gallifrey
-      organizations:
-      - TARDIS INC
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: timeywimey_template.erb
+    name: Wibbly Wobbly Template
+    state: present
+    locations:
+    - Gallifrey
+    organizations:
+    - TARDIS INC
 
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: Parsing a directory of Job templates
   foreman_job_template:
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      file_name: "{{ item }}"
-      state: present
-      locations:
-      - SKARO
-      organizations:
-      - DALEK INC
-      with_fileglob:
-       - "./arsenal_templates/*.erb"
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    file_name: "{{ item }}"
+    state: present
+    locations:
+    - SKARO
+    organizations:
+    - DALEK INC
+    with_fileglob:
+     - "./arsenal_templates/*.erb"
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all your Job Templates
@@ -249,95 +249,88 @@ EXAMPLES = '''
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* Job Templates"
   local_action:
-      module: foreman_job_template
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: absent
+    module: foreman_job_template
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: absent
 
 - name: "Assign all Job Templates to the same organization(s)"
   local_action:
-      module: foreman_job_template
-      username: "admin"
-      password: "admin"
-      server_url: "https://foreman.example.com"
-      name: "*"
-      state: present
-      organizations:
-      - DALEK INC
-      - sky.net
-      - Doc Brown's garage
+    module: foreman_job_template
+    username: "admin"
+    password: "admin"
+    server_url: "https://foreman.example.com"
+    name: "*"
+    state: present
+    organizations:
+    - DALEK INC
+    - sky.net
+    - Doc Brown's garage
 
 '''
 
 RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        Organization,
-        Location,
-    )
+import os
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityAnsibleModule,
+    parse_template,
+    parse_template_from_file,
+)
 
-    from ansible.module_utils.ansible_nailgun_cement import (
-        JobTemplate,
-        TemplateInput,
-        find_entities,
-        find_entities_by_name,
-        find_template_input,
-        ForemanEntityAnsibleModule,
-        naildown_entity,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-
-    import os
-    from ansible.module_utils.foreman_helper import (
-        parse_template,
-        parse_template_from_file,
-    )
-except ImportError:
-    pass
-
-
-# This is the only true source for names (and conversions thereof)
-name_map = {
-    'audit_comment': 'audit_comment',
-    'description_format': 'description_format',
-    'effective_user': 'effective_user',
-    'job_category': 'job_category',
-    'locations': 'location',
-    'locked': 'locked',
-    'name': 'name',
-    'organizations': 'organization',
-    'provider_type': 'provider_type',
-    'snippet': 'snippet',
-    'template': 'template',
-}
 
 template_defaults = {
     'provider_type': 'SSH',
+    'job_category': 'unknown',
+}
+
+
+template_input_entity_spec = {
+    'name': dict(required=True),
+    'description': dict(),
+    'required': dict(type='bool'),
+    'advanced': dict(type='bool'),
+    'input_type': dict(required=True, choices=[
+        'user',
+        'fact',
+        'variable',
+        'puppet_parameter',
+    ]),
+    'fact_name': dict(),
+    'variable_name': dict(),
+    'variable_name': dict(),
+    'puppet_class_name': dict(),
+    'puppet_parameter_name': dict(),
+    'options': dict(type='list'),
+    'value_type': dict(choices=[
+        'plain',
+        'search',
+        'date',
+    ]),
+    'resource_type': dict(),
 }
 
 
 def main():
     module = ForemanEntityAnsibleModule(
-        argument_spec=dict(
-            # Entity parameter
+        entity_spec=dict(
             audit_comment=dict(),
             description_format=dict(),
             # effectice_user=dict(type='dict'),
-            file_name=dict(type='path'),
             job_category=dict(),
-            locations=dict(type='list'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool', default=False),
             name=dict(),
-            organizations=dict(type='list'),
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
             provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),
-            template_inputs=dict(type='list'),
-            # Control parameter
+            template_inputs=dict(type='nested_list', entity_spec=template_input_entity_spec),
+        ),
+        argument_spec=dict(
+            file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
         mutually_exclusive=[
@@ -348,13 +341,14 @@ def main():
         ],
 
     )
+
     # We do not want a layout text for bulk operations
     if module.params['name'] == '*':
         if module.params['file_name'] or module.params['template']:
             module.fail_json(
                 msg="Neither file_name nor template allowed if 'name: *'!")
 
-    (entity_dict, state) = module.parse_params()
+    entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
 
     if file_name or 'template' in entity_dict:
@@ -388,72 +382,64 @@ def main():
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if state == 'present_with_defaults':
+        if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
-        if state == 'absent':
+        if module.state == 'absent':
             if len(entity_dict.keys()) != 1:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
     module.connect()
 
-    try:
-        if affects_multiple:
-            entities = find_entities(JobTemplate)
-        else:
-            entities = find_entities(JobTemplate, name=entity_dict['name'])
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
+    if affects_multiple:
+        entities = module.list_resource('job_templates')
+        if not entities:
+            # Nothing to do; shortcut to exit
+            module.exit_json(changed=False)
+        if not module.desired_absent:  # not 'thin'
+            entities = [module.show_resource('job_templates', entity['id']) for entity in entities]
+    else:
+        entity = module.find_resource_by_name('job_templates', name=entity_dict['name'], failsafe=True)
 
-    # Set Locations of job template
-    if 'locations' in entity_dict:
-        entity_dict['locations'] = find_entities_by_name(
-            Location, entity_dict['locations'], module)
+    if not module.desired_absent:
+        if 'locations' in entity_dict:
+            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-    # Set Organizations of job template
-    if 'organizations' in entity_dict:
-        entity_dict['organizations'] = find_entities_by_name(
-            Organization, entity_dict['organizations'], module)
+        if 'organizations' in entity_dict:
+            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     # TemplateInputs need to be added as separate entities later
     template_input_list = entity_dict.get('template_inputs', [])
 
-    entity_dict = sanitize_entity_dict(entity_dict, name_map)
-
     changed = False
     if not affects_multiple:
-        if entities:
-            entity = entities[0]
-        else:
-            entity = None
-        changed, result = naildown_entity(
-            JobTemplate, entity_dict, entity, state, module)
+        changed, job_template = module.ensure_entity('job_templates', entity_dict, entity)
 
-        if state in ("present", "present_with_defaults"):
+        if module.state == "present" or (module.state == "present_with_defaults" and changed):
 
+            scope = {'template_id': job_template['id']}
             # Manage TemplateInputs here
             for template_input_dict in template_input_list:
-                template_input_dict = template_input_dict.copy()
+                template_input_dict = {key: value for key, value in template_input_dict.items() if value is not None}
 
                 # assign template_input to a template
-                template_input_dict['template'] = result
+                # template_input_dict['template'] = job_template
 
-                ti_entity = find_template_input(module, str(template_input_dict['name']), result)
+                ti_entity = module.find_resource_by_name('template_inputs', name=str(template_input_dict['name']), params=scope, failsafe=True)
 
-                changed |= naildown_entity_state(
-                    TemplateInput, template_input_dict, ti_entity, state, module)
+                changed |= module.ensure_entity_state('template_inputs', template_input_dict, ti_entity, params=scope, entity_spec=template_input_entity_spec)
 
+            # TODO Query this upfront, process what is specified and delete the rest.
             # remove template inputs if they aren't present in template_input_list
-            found_tis = find_entities(entity_class=lambda: TemplateInput(template=result))
+            found_tis = module.list_resource('template_inputs', params=scope)
             template_input_names = set(ti['name'] for ti in template_input_list)
             for ti in found_tis:
-                if ti.name not in template_input_names:
-                    changed |= naildown_entity_state(TemplateInput, None, ti, "absent", module)
+                if ti['name'] not in template_input_names:
+                    changed |= module.ensure_entity_state('template_inputs', None, ti, state="absent", params=scope, entity_spec=template_input_entity_spec)
 
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= naildown_entity_state(
-                JobTemplate, entity_dict, entity, state, module)
+            changed |= module.ensure_entity_state('job_templates', entity_dict, entity)
 
     module.exit_json(changed=changed)
 
