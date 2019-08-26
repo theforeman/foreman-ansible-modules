@@ -480,8 +480,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
-        return True, None
+        return self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)

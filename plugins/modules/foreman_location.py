@@ -134,12 +134,11 @@ def main():
 
     entity = module.find_resource_by_title('locations', build_fqn(name, parent), failsafe=True)
 
-    if entity and module.desired_absent:
-        all_locations = module.list_resource('locations')
-        if any(loc['parent_id'] == entity['id'] for loc in all_locations):
-            module.fail_json(msg="Cannot delete {} because it has nested locations".format(build_fqn(name, parent)))
+    changed, location = module.ensure_entity('locations', entity_dict, entity)
 
-    changed = module.ensure_entity_state('locations', entity_dict, entity)
+    if entity and module.desired_absent:
+        if 'error' in location and 'message' in location['error']:
+            module.fail_json(msg=location['error']['message'])
 
     module.exit_json(changed=changed)
 
