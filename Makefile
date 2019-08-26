@@ -84,7 +84,9 @@ dist-test: dist
 	mkdir -p $(COLLECTION_INSTALL_TMP)
 
 	ansible-galaxy collection install --collections-path $(COLLECTION_INSTALL_TMP) ./theforeman-foreman-*.tar.gz
-	test -r $(COLLECTION_INSTALL_TMP)/ansible_collections/theforeman/foreman/plugins/module_utils/foreman_helper.py
+
+	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible -m theforeman.foreman.foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" fixtures |grep -q "Failed to connect to Foreman server"
+	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible-doc theforeman.foreman.foreman_organization |grep -q "Manage Foreman Organization"
 
 	rm -rf $(COLLECTION_INSTALL_TMP)
 
