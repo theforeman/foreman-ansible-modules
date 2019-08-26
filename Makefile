@@ -8,6 +8,7 @@ MODULE_PATH=plugins/modules/$(MODULE).py
 DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 COLLECTION_TMP:=$(shell mktemp -du)
+COLLECTION_INSTALL_TMP:=$(shell mktemp -du)
 
 default: help
 help:
@@ -78,6 +79,14 @@ dist:
 	ansible-galaxy collection build $(COLLECTION_TMP)
 
 	rm -rf $(COLLECTION_TMP)
+
+dist-test: dist
+	mkdir -p $(COLLECTION_INSTALL_TMP)
+
+	ansible-galaxy collection install --collections-path $(COLLECTION_INSTALL_TMP) ./theforeman-foreman-*.tar.gz
+	test -r $(COLLECTION_INSTALL_TMP)/ansible_collections/theforeman/foreman/plugins/module_utils/foreman_helper.py
+
+	rm -rf $(COLLECTION_INSTALL_TMP)
 
 doc-setup:
 	pip install -r docs/requirements.txt
