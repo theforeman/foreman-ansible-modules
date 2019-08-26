@@ -134,11 +134,7 @@ def main():
 
     entity = module.find_resource_by_title('locations', build_fqn(name, parent), failsafe=True)
 
-    changed, location = module.ensure_entity('locations', entity_dict, entity)
-
-    if entity and module.desired_absent:
-        if 'error' in location and 'message' in location['error']:
-            module.fail_json(msg=location['error']['message'])
+    changed = module.ensure_entity_state('locations', entity_dict, entity)
 
     module.exit_json(changed=changed)
 

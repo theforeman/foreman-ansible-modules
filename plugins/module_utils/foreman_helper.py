@@ -480,7 +480,13 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        return self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
+        changed, entity = self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
+
+        # this is a workaround for https://projects.theforeman.org/issues/26937
+        if entity and 'error' in entity and 'message' in entity['error']:
+            self.fail_json(msg=entity['error']['message'])
+
+        return changed, None
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
