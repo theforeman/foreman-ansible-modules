@@ -155,7 +155,7 @@ def main():
 
     entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope, synchronous=True)
+    changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
     # only update CVC's of newly created or updated CCV's
     # Also only act for composite content views
@@ -183,7 +183,7 @@ def main():
                     cvc_matched.pop('content_view_version_id', None)
             if cvc_matched:
                 changed |= module.ensure_entity_state(
-                    'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope, synchronous=True)
+                    'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
                 current_cvcs.remove(cvc_matched)
             else:
                 cvc['content_view_id'] = cvc.pop('content_view')['id']
@@ -195,7 +195,7 @@ def main():
                 'composite_content_view_id': content_view_entity['id'],
                 'components': components_to_add,
             }
-            module.resource_action('content_view_components', 'add_components', payload, synchronous=True)
+            module.resource_action('content_view_components', 'add_components', payload)
             changed = True
 
         if current_cvcs:
@@ -204,7 +204,7 @@ def main():
                 'composite_content_view_id': content_view_entity['id'],
                 'component_ids': [item['id'] for item in current_cvcs],
             }
-            module.resource_action('content_view_components', 'remove_components', payload, synchronous=True)
+            module.resource_action('content_view_components', 'remove_components', payload)
             changed = True
 
     module.exit_json(changed=changed)

@@ -336,7 +336,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
-    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=False):
+    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=True):
         """Ensure that a given entity has a certain state
 
             Parameters:
@@ -483,7 +483,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
         return True, None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=False):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
