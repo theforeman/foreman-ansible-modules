@@ -75,8 +75,7 @@ dist:
 	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
 	sed -i '/extends_documentation_fragment/ s/foreman/ansible_collections.theforeman.foreman.foreman/g' $(COLLECTION_TMP)/plugins/modules/*.py
 
-	mazer build --collection-path=$(COLLECTION_TMP)
-	mv $(COLLECTION_TMP)/releases/*.tar.gz $(CURDIR)
+	ansible-galaxy collection build $(COLLECTION_TMP)
 
 	rm -rf $(COLLECTION_TMP)
 
