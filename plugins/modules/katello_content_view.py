@@ -157,9 +157,9 @@ def main():
 
     changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
-    # only update CVC's of newly created or updated CCV's
-    # Also only act for composite content views
-    if (module.state == 'present' or (module.state == 'present_with_defaults' and changed)) and content_view_entity['composite'] and components is not None:
+    # only update CVC's of newly created or updated CV's that are composite if components are specified
+    update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and changed))
+    if update_dependent_entities and content_view_entity['composite'] and components is not None:
         if not changed:
             content_view_entity['content_view_components'] = entity['content_view_components']
         current_cvcs = content_view_entity.get('content_view_components', [])
