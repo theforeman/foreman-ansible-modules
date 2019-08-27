@@ -116,7 +116,8 @@ def main():
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
             if list(entity_dict.keys()) != ['name']:
-                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters %s ' % entity_dict.keys())
+                entity_dict.pop('name', None)
+                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters: %s ' % entity_dict.keys())
 
     if affects_multiple:
         entities = module.list_resource('media')

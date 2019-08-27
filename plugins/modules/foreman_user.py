@@ -358,7 +358,7 @@ def main():
 
     module.connect()
 
-    search = 'login="{}"'.format(entity_dict['name'])
+    search = 'login="{}"'.format(entity_dict['login'])
     entity = module.find_resource('users', search, failsafe=True)
 
     if not module.desired_absent:
