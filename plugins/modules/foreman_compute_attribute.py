@@ -50,6 +50,8 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
+    compute_profile: "Test Compute Profile"
+    compute_resource: "Test Compute Resource"
     vm_attrs:
       memory_mb: '2048'
       cpu: '2'
@@ -60,6 +62,8 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
+    compute_profile: "Test Compute Profile"
+    compute_resource: "Test Compute Resource"
     vm_attrs:
       memory_mb: '1024'
       cpu: '1'
