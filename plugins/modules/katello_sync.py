@@ -95,52 +95,34 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-try:
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_product,
-        find_repository,
-        ForemanAnsibleModule,
-    )
-
-    from nailgun import entity_mixins
-    entity_mixins.TASK_TIMEOUT = 180000  # Publishes can sometimes take a long, long time
-except ImportError:
-    pass
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = KatelloAnsibleModule(
         argument_spec=dict(
-            organization=dict(required=True),
             product=dict(required=True),
             repository=dict(),
             synchronous=dict(type='bool', default=True),
         ),
     )
 
-    params = module.parse_params()
+    module.task_timeout = 30 * 60
+
+    params = module.clean_params()
 
     module.connect()
 
-    try:
-        organization = find_organization(module, params['organization'])
-        product = find_product(module, params['product'], organization)
-        if 'repository' in params:
-            repository = find_repository(module, params['repository'], product)
-        else:
-            repository = None
-    except Exception as e:
-        module.fail_json(msg='Failed to find entity: %s ' % e)
-
-    try:
-        if repository is None:
-            changed = product.sync(params['synchronous'])
-        else:
-            changed = repository.sync(params['synchronous'])
-        module.exit_json(changed=changed)
-    except Exception as e:
-        module.fail_json(msg=e)
+    params['organization'] = module.find_resource_by_name('organizations', params['organization'], thin=True)
+    scope = {'organization_id': params['organization']['id']}
+    params['product'] = module.find_resource_by_name('products', params['product'], params=scope, thin=True)
+    if 'repository' in params:
+        product_scope = {'product_id': params['product']['id']}
+        params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
+        changed, task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']}, synchronous=params['synchronous'])
+    else:
+        changed, task = module.resource_action('products', 'sync', {'id': params['product']['id']}, synchronous=params['synchronous'])
+    module.exit_json(changed=changed, task=task)
 
 
 if __name__ == '__main__':
