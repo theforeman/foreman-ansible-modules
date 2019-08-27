@@ -318,7 +318,6 @@ def main():
         entity_spec=dict(
             audit_comment=dict(),
             description_format=dict(),
-            # effectice_user=dict(type='dict'),
             job_category=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool', default=False),
@@ -339,7 +338,6 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'template'],
         ],
-
     )
 
     # We do not want a layout text for bulk operations
