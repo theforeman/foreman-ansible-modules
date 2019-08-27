@@ -236,10 +236,10 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, operating_system = module.ensure_entity('operatingsystems', entity_dict, entity)
+    changed, operatingsystem = module.ensure_entity('operatingsystems', entity_dict, entity)
 
-    if operating_system:
-        scope = {'operatingsystem_id': operating_system['id']}
+    if operatingsystem:
+        scope = {'operatingsystem_id': operatingsystem['id']}
         changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
