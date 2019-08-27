@@ -408,33 +408,35 @@ def main():
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     # TemplateInputs need to be added as separate entities later
-    template_input_list = entity_dict.get('template_inputs', [])
+    template_inputs = entity_dict.get('template_inputs')
 
     changed = False
     if not affects_multiple:
         changed, job_template = module.ensure_entity('job_templates', entity_dict, entity)
 
-        if module.state == "present" or (module.state == "present_with_defaults" and changed):
-
+        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and changed))
+        if update_dependent_entities and template_inputs is not None:
             scope = {'template_id': job_template['id']}
+
             # Manage TemplateInputs here
-            for template_input_dict in template_input_list:
+            current_template_input_list = module.list_resource('template_inputs', params=scope)
+            current_template_inputs = {item['name']: item for item in current_template_input_list}
+            for template_input_dict in template_inputs:
                 template_input_dict = {key: value for key, value in template_input_dict.items() if value is not None}
 
-                # assign template_input to a template
-                # template_input_dict['template'] = job_template
+                template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
 
-                ti_entity = module.find_resource_by_name('template_inputs', name=str(template_input_dict['name']), params=scope, failsafe=True)
+                changed |= module.ensure_entity_state(
+                    'template_inputs', template_input_dict, template_input_entity,
+                    params=scope, entity_spec=template_input_entity_spec,
+                )
 
-                changed |= module.ensure_entity_state('template_inputs', template_input_dict, ti_entity, params=scope, entity_spec=template_input_entity_spec)
-
-            # TODO Query this upfront, process what is specified and delete the rest.
-            # remove template inputs if they aren't present in template_input_list
-            found_tis = module.list_resource('template_inputs', params=scope)
-            template_input_names = set(ti['name'] for ti in template_input_list)
-            for ti in found_tis:
-                if ti['name'] not in template_input_names:
-                    changed |= module.ensure_entity_state('template_inputs', None, ti, state="absent", params=scope, entity_spec=template_input_entity_spec)
+            # At this point, desired template inputs have been removed from the dict.
+            for template_input_entity in current_template_inputs.values():
+                changed |= module.ensure_entity_state(
+                    'template_inputs', None, template_input_entity, state="absent",
+                    params=scope, entity_spec=template_input_entity_spec,
+                )
 
     else:
         entity_dict.pop('name')
