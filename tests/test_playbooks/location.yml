@@ -80,6 +80,12 @@
   - include: tasks/location.yml
     vars:
       location_state: absent
+      location_name: Test Location
+      expected_change: false
+      expected_error: true
+  - include: tasks/location.yml
+    vars:
+      location_state: absent
       location_name: Test Location/Sub Location 1/Sub Location 2
       expected_change: true
   - include: tasks/location.yml
