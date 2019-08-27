@@ -16,6 +16,11 @@
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: present
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: Timetravel provision
+      provisioning_template_kind: provision
+      provisioning_template_state: present
   - include: tasks/os_default_template.yml
     vars:
       os_default_template_state: absent
@@ -27,20 +32,38 @@
   tasks:
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
+      provisioning_template_name: "Timetravel {{ item }}"
       os_default_template_state: present
       expected_change: true
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
+      provisioning_template_name: "Timetravel {{ item }}"
       os_default_template_state: present
       expected_change: false
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
       os_default_template_state: absent
       expected_change: true
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
       os_default_template_state: absent
       expected_change: false
+    loop:
+      - provision
+      - finish
 
 - hosts: fixtures
   gather_facts: false
@@ -50,6 +73,9 @@
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: absent
+    loop:
+      - Timetravel provision
+      - Timetravel finish
   - include: tasks/operatingsystem.yml
     vars:
       operatingsystem_state: absent
