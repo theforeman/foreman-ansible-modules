@@ -57,6 +57,16 @@ options:
     description:
       - Set Auto-Attach on or off
     type: bool
+  release_version:
+    description:
+      - Set the content release version
+  service_level:
+    description:
+      - Set the service level
+    choices:
+      - Self-Support
+      - Standard
+      - Premium
   state:
     description:
       - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name and all other fields left untouched.
@@ -91,6 +101,8 @@ EXAMPLES = '''
         - label: rhel-7-server-optional-rpms
           override: enabled
     auto_attach: False
+    release_version: 7Server
+    service_level: Standard
 '''
 
 RETURN = ''' # '''
@@ -122,6 +134,8 @@ def main():
             content_view=dict(type='entity', flat_name='content_view_id'),
             host_collections=dict(type='entity_list', flat_name='host_collection_ids'),
             auto_attach=dict(type='bool'),
+            release_version=dict(),
+            service_level=dict(choices=['Self-Support', 'Standard', 'Premium']),
         ),
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(
@@ -169,9 +183,9 @@ def main():
     # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
     # deleted keys don't need subscriptions anymore either
     if module.state == 'present' or (module.state == 'present_with_defaults' and changed):
-        # the auto_attach parameter can only be set on an existing AK with an update, not during create, so let's force an update
-        # see https://projects.theforeman.org/issues/27632 for details
-        if 'auto_attach' in entity_dict and changed:
+        # the auto_attach, release_version and service_level parameters can only be set on an existing AK with an update,
+        # not during create, so let's force an update. see https://projects.theforeman.org/issues/27632 for details
+        if any(key in entity_dict for key in ['auto_attach', 'release_version', 'service_level']) and changed:
             _, activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
 
         ak_scope = {'activation_key_id': activation_key['id']}
