@@ -35,7 +35,7 @@ class ForemanBaseAnsibleModule(AnsibleModule):
         )
         args.update(argument_spec)
         supports_check_mode = kwargs.pop('supports_check_mode', True)
-        self._aliases = set(alias for arg in args.values() for alias in arg.get('aliases', []))
+        self._aliases = {alias for arg in args.values() for alias in arg.get('aliases', [])}
         super(ForemanBaseAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
 
         self._params = self.params.copy()
