@@ -21,6 +21,7 @@ MODULES = [
     'domain',
     'environment',
     'config_group',
+    'filters',
     'global_parameter',
     'host',
     'host_power',
