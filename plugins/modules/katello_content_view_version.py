@@ -30,71 +30,56 @@ DOCUMENTATION = '''
 module: katello_content_view_version
 short_description: Create, remove or interact with a Katello Content View Version
 description:
-    - Publish, Promote or Remove a Katello Content View Version
+  - Publish, Promote or Remove a Katello Content View Version
 author: Sean O'Keeffe (@sean797)
 requirements:
-    - "nailgun"
+  - apypie
 notes:
-    - You cannot use this to remove a Contnet View Version from a Lifecycle environment, you should promote another version first.
-    - For idempotency you must specify either C(version) or C(current_lifecycle_environment).
+  - You cannot use this to remove a Content View Version from a Lifecycle environment, you should promote another version first.
+  - For idempotency you must specify either C(version) or C(current_lifecycle_environment).
 options:
-    server_url:
-        description:
-            - URL of Foreman server
-        required: true
-    username:
-        description:
-            - Username on Foreman server
-        required: true
-    password:
-        description:
-            - Password for user accessing Foreman server
-        required: true
-    verify_ssl:
-        description:
-            - Verify SSL of the Foreman server
-        default: true
-        type: bool
-    content_view:
-        description:
-            - Name of the content view
-        required: true
-    organization:
-        description:
-            - Organization that the content view is in
-        required: true
-    state:
-       description:
-            - Content View Version state
-       default: present
-       choices:
-           - absent
-           - present
-    version:
-        description:
-           - The content view version number (i.e. 1.0)
-    lifecycle_environments:
-        description:
-            - The lifecycle environments the Content View Version should be in.
-        default: Library
-    force_promote:
-        description:
-            - Force content view promotion and bypass lifecycle environment restriction
-        default: false
-        type: bool
-        aliases:
-          - force
-    force_yum_metadata_regeneration:
-        description:
-            - Force metadata regeneration when performing Publish and Promote tasks
-    synchronous:
-        description:
-            - Wait for the Publish or Promote task to complete if True. Immediately return if False.
-        default: true
-    current_lifecycle_environment:
-        description:
-            - The lifecycle environment that is already associated with the content view version
-            - Helpful for promoting a content view version
+  content_view:
+    description:
+      - Name of the content view
+    required: true
+  organization:
+    description:
+      - Organization that the content view is in
+    required: true
+  state:
+   description:
+      - Content View Version state
+   default: present
+   choices:
+     - absent
+     - present
+  version:
+    description:
+      - The content view version number (i.e. 1.0)
+  lifecycle_environments:
+    description:
+      - The lifecycle environments the Content View Version should be in.
+    default: Library
+  force_promote:
+    description:
+      - Force content view promotion and bypass lifecycle environment restriction
+    default: false
+    type: bool
+    aliases:
+      - force
+  force_yum_metadata_regeneration:
+    description:
+      - Force metadata regeneration when performing Publish and Promote tasks
+  synchronous:
+    description:
+      - Wait for the Publish or Promote task to complete if True. Immediately return if False.
+    default: true
+    type: bool
+  current_lifecycle_environment:
+    description:
+      - The lifecycle environment that is already associated with the content view version
+      - Helpful for promoting a content view version
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''
@@ -151,126 +136,94 @@ EXAMPLES = '''
     state: absent
 '''
 
-RETURN = '''# '''
-
-try:
-    from nailgun.entities import (
-        ContentViewVersion,
-    )
-
-    from ansible.module_utils.ansible_nailgun_cement import (
-        create_server,
-        find_organization,
-        find_lifecycle_environments,
-        find_lifecycle_environment,
-        find_content_view,
-        find_content_view_version,
-        ping_server,
-        set_task_timeout,
-        naildown_entity_state,
-    )
-    has_import_error = False
-except ImportError as e:
-    has_import_error = True
-    import_error_msg = str(e)
-from ansible.module_utils.basic import AnsibleModule
+RETURN = ''' # '''
 
 
-def promote_content_view_version(module, content_view_version, organization, environments, synchronous, **kwargs):
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+
+
+def promote_content_view_version(module, content_view_version, environments, synchronous, force, force_yum_metadata_regeneration):
     changed = False
 
-    current_environment_ids = map(lambda environment: environment.id, content_view_version.environment)
-    desired_environment_ids = map(lambda environment: environment.id, environments)
-    promote_to_environment_ids = list(set(desired_environment_ids) - set(current_environment_ids))
-
-    request_data = {'environment_ids': promote_to_environment_ids}
-    request_data.update({k: v for k, v in kwargs.items() if v is not None})
+    current_environment_ids = {environment['id'] for environment in content_view_version['environments']}
+    desired_environment_ids = {environment['id'] for environment in environments}
+    promote_to_environment_ids = list(desired_environment_ids - current_environment_ids)
 
     if promote_to_environment_ids:
-        if not module.check_mode:
-            content_view_version.promote(synchronous, data=request_data)
-        changed = True
+        payload = {
+            'environment_ids': promote_to_environment_ids,
+            'force': force,
+            'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
+        }
+
+        changed, _ = module.resource_action('content_view_versions', 'promote', params=payload)
     return changed
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            server_url=dict(required=True),
-            username=dict(required=True, no_log=True),
-            password=dict(required=True, no_log=True),
-            verify_ssl=dict(type='bool', default=True),
-            content_view=dict(required=True),
-            organization=dict(required=True),
-            state=dict(default='present', choices=['present', 'absent']),
+    module = KatelloEntityAnsibleModule(
+        entity_spec=dict(
+            content_view=dict(type='entity', flat_name='content_view_id', required=True),
             version=dict(),
             lifecycle_environments=dict(type='list', default=['Library']),
-            force=dict(type='bool', aliases=['force_promote'], default=False),
+            force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
             synchronous=dict(type='bool', default=True),
             current_lifecycle_environment=dict(),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
-        supports_check_mode=True,
     )
 
-    if has_import_error:
-        module.fail_json(msg=import_error_msg)
+    module.task_timeout = 60 * 60
 
-    set_task_timeout(3600000)  # 60 minutes
+    entity_dict = module.clean_params()
 
-    params_dict = dict(
-        [(k, v) for (k, v) in module.params.items() if v is not None])
+    module.connect()
 
-    server_url = module.params['server_url']
-    username = module.params['username']
-    password = module.params['password']
-    verify_ssl = module.params['verify_ssl']
-    state = module.params['state']
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
 
-    try:
-        create_server(server_url, (username, password), verify_ssl)
-    except Exception as e:
-        module.fail_json(msg="Failed to connect to Foreman server: %s " % e)
+    content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
 
-    ping_server(module)
-
-    organization = find_organization(module, params_dict['organization'])
-    content_view = find_content_view(module, name=params_dict['content_view'], organization=organization)
-
-    if 'current_lifecycle_environment' in params_dict:
-        params_dict['current_lifecycle_environment'] = find_lifecycle_environment(module, name=params_dict['current_lifecycle_environment'],
-                                                                                  organization=organization)
-        content_view_version = find_content_view_version(module, content_view, environment=params_dict['current_lifecycle_environment'])
-    elif 'version' in params_dict:
-        content_view_version = find_content_view_version(module, content_view, version=params_dict['version'], failsafe=True)
+    if 'current_lifecycle_environment' in entity_dict:
+        entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
+            'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
+        search = "content_view_id={},environment_ids=[{}]".format(content_view['id'], entity_dict['current_lifecycle_environment']['id'])
+        content_view_version = module.find_resource('content_view_versions', search=search, thin=True)
+    elif 'version' in entity_dict:
+        search = "content_view_id={},version={}".format(content_view['id'], entity_dict['version'])
+        content_view_version = module.find_resource('content_view_versions', search=search, thin=True, failsafe=True)
     else:
         content_view_version = None
 
     changed = False
     le_changed = False
-    if state == 'present':
+    if module.desired_absent:
+        changed = module.ensure_entity_state('content_view_version', None, content_view_version, params=scope)
+    else:
         if content_view_version is None:
-            kwargs = dict(data=dict())
-            if 'description' in params_dict:
-                kwargs['data'].update(description=params_dict['description'])
-            if 'force_metadata_regeneration' in params_dict:
-                kwargs['data'].update(force_yum_metadata_regeneration=params_dict['force_metadata_regeneration'])
-            if 'version' in params_dict:
-                kwargs['data'].update(major=list(map(int, str(params_dict['version']).split('.')))[0])
-                kwargs['data'].update(minor=list(map(int, str(params_dict['version']).split('.')))[1])
+            payload = {
+                'id': content_view['id'],
+            }
+            if 'description' in entity_dict:
+                payload['description'] = entity_dict['description']
+            if 'force_yum_metadata_regeneration' in entity_dict:
+                payload['force_yum_metadata_regeneration'] = entity_dict['force_yum_metadata_regeneration']
+            if 'version' in entity_dict:
+                split_version = list(map(int, str(entity_dict['version']).split('.')))
+                payload['major'] = split_version[0]
+                payload['minor'] = split_version[1]
 
-            response = content_view.publish(params_dict['synchronous'], **kwargs)
-            changed = True
-            content_view_version = ContentViewVersion(id=response['output']['content_view_version_id']).read()
+            changed, response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
+            content_view_version = module.show_resource('content_view_versions', response['output']['content_view_version_id'])
 
-        if 'lifecycle_environments' in params_dict:
-            lifecycle_environments = find_lifecycle_environments(module, names=params_dict['lifecycle_environments'], organization=organization)
-            le_changed = promote_content_view_version(module, content_view_version, organization, lifecycle_environments, params_dict['synchronous'],
-                                                      force=params_dict['force'],
-                                                      force_yum_metadata_regeneration=params_dict['force_yum_metadata_regeneration'])
-    elif state == 'absent':
-        changed = naildown_entity_state(ContentViewVersion, dict(), content_view_version, state, module)
+        if 'lifecycle_environments' in entity_dict:
+            lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
+            le_changed = promote_content_view_version(
+                module, content_view_version, lifecycle_environments, synchronous=entity_dict['synchronous'],
+                force=entity_dict['force_promote'],
+                force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
+            )
 
     module.exit_json(changed=changed or le_changed)
 
