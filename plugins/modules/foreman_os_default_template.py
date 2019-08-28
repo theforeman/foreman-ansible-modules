@@ -107,6 +107,8 @@ def main():
     entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
 
     scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}
+    # Default templates do not support a scoped search
+    # see: https://projects.theforeman.org/issues/27722
     entities = module.list_resource('os_default_templates', params=scope)
     entity = next((item for item in entities if item['template_kind_id'] == entity_dict['template_kind']['id']), None)
 

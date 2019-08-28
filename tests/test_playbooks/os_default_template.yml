@@ -15,12 +15,12 @@
       operatingsystem_state: present
   - include: tasks/provisioning_template.yml
     vars:
+      provisioning_template_name: "Timetravel {{ item }}"
+      provisioning_template_kind: "{{ item }}"
       provisioning_template_state: present
-  - include: tasks/provisioning_template.yml
-    vars:
-      provisioning_template_name: Timetravel provision
-      provisioning_template_kind: provision
-      provisioning_template_state: present
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
       os_default_template_state: absent
