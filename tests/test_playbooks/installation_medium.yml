@@ -10,10 +10,10 @@
   - include: tasks/location.yml
     vars:
       location_state: present
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_state: present
-      operating_system_name: "TempleOS"
+      operatingsystem_state: present
+      operatingsystem_name: "TempleOS"
 
 
 - hosts: tests
@@ -53,7 +53,7 @@
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'
-      installation_medium_operating_systems: "{{ omit }}"
+      installation_medium_operatingsystems: "{{ omit }}"
       installation_medium_organizations: "{{ omit }}"
       installation_medium_path: "{{ omit }}"
       installation_medium_state: present
@@ -61,7 +61,7 @@
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'
-      installation_medium_operating_systems: "{{ omit }}"
+      installation_medium_operatingsystems: "{{ omit }}"
       installation_medium_organizations: "{{ omit }}"
       installation_medium_path: "{{ omit }}"
       installation_medium_state: present
@@ -69,7 +69,7 @@
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'
-      installation_medium_operating_systems: "{{ omit }}"
+      installation_medium_operatingsystems: "{{ omit }}"
       installation_medium_locations: "{{ omit }}"
       installation_medium_organizations: "{{ omit }}"
       installation_medium_path: "{{ omit }}"
@@ -78,7 +78,7 @@
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'
-      installation_medium_operating_systems: "{{ omit }}"
+      installation_medium_operatingsystems: "{{ omit }}"
       installation_medium_locations: "{{ omit }}"
       installation_medium_organizations: "{{ omit }}"
       installation_medium_path: "{{ omit }}"
@@ -90,9 +90,9 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_state: absent
+      operatingsystem_state: absent
   - include: tasks/location.yml
     vars:
       location_state: absent

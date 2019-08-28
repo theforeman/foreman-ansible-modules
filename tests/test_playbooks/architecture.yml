@@ -4,22 +4,22 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "TestOS1"
-      operating_system_minor: 0
-      operating_system_description: "TestOS1"
-      operating_system_state: present
-  - include: tasks/operating_system.yml
+      operatingsystem_name: "TestOS1"
+      operatingsystem_minor: 0
+      operatingsystem_description: "TestOS1"
+      operatingsystem_state: present
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "TestOS1"
-      operating_system_minor: 1
-      operating_system_description: "TestOS1 SP1"
-      operating_system_state: present
-  - include: tasks/operating_system.yml
+      operatingsystem_name: "TestOS1"
+      operatingsystem_minor: 1
+      operatingsystem_description: "TestOS1 SP1"
+      operatingsystem_state: present
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "TestOS2"
-      operating_system_state: present
+      operatingsystem_name: "TestOS2"
+      operatingsystem_state: present
 - hosts: tests
   gather_facts: false
   vars_files:
@@ -82,15 +82,15 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_description: "{{ item }}"
-      operating_system_state: absent
+      operatingsystem_description: "{{ item }}"
+      operatingsystem_state: absent
     loop:
       - "TestOS1"
       - "TestOS1 SP1"
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_name: "TestOS2"
-      operating_system_state: absent
+      operatingsystem_name: "TestOS2"
+      operatingsystem_state: absent
 ...

@@ -10,12 +10,17 @@
   - include: tasks/location.yml
     vars:
       location_state: present
-  - include: tasks/operating_system.yml
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_state: present
+      operatingsystem_state: present
   - include: tasks/provisioning_template.yml
     vars:
+      provisioning_template_name: "Timetravel {{ item }}"
+      provisioning_template_kind: "{{ item }}"
       provisioning_template_state: present
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
       os_default_template_state: absent
@@ -27,20 +32,38 @@
   tasks:
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
+      provisioning_template_name: "Timetravel {{ item }}"
       os_default_template_state: present
       expected_change: true
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
+      provisioning_template_name: "Timetravel {{ item }}"
       os_default_template_state: present
       expected_change: false
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
       os_default_template_state: absent
       expected_change: true
+    loop:
+      - provision
+      - finish
   - include: tasks/os_default_template.yml
     vars:
+      os_default_template_kind: "{{ item }}"
       os_default_template_state: absent
       expected_change: false
+    loop:
+      - provision
+      - finish
 
 - hosts: fixtures
   gather_facts: false
@@ -50,9 +73,12 @@
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: absent
-  - include: tasks/operating_system.yml
+    loop:
+      - Timetravel provision
+      - Timetravel finish
+  - include: tasks/operatingsystem.yml
     vars:
-      operating_system_state: absent
+      operatingsystem_state: absent
   - include: tasks/location.yml
     vars:
       location_state: absent
