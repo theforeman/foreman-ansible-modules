@@ -37,10 +37,12 @@ options:
     description:
       - Name of compute profile
     required: true
-  vm_attributes:
+  vm_attrs:
     description:
       - Hash containing the data of vm_attrs
     required: true
+    aliases:
+      - vm_attributes
 extends_documentation_fragment: foreman
 '''
 
@@ -80,7 +82,7 @@ def main():
         entity_spec=dict(
             compute_profile=dict(required=True, type='entity', flat_name='compute_profile_id'),
             compute_resource=dict(required=True, type='entity', flat_name='compute_resource_id'),
-            vm_attrs=dict(type='dict'),
+            vm_attrs=dict(type='dict', aliases=['vm_attributes']),
         ),
     )
     entity_dict = module.clean_params()
