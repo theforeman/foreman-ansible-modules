@@ -77,7 +77,6 @@ class KatelloMixin(object):
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
-        self._patch_subscription_upload_api()
         self._patch_sync_plan_api()
 
     def _patch_content_uploads_update_api(self):
@@ -116,17 +115,6 @@ class KatelloMixin(object):
         _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
         _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
         _subscription_index_params_organization_id['required'] = False
-
-    def _patch_subscription_upload_api(self):
-        """This is a workaround for the broken subscription upload apidoc in katello.
-            see https://projects.theforeman.org/issues/27527
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_upload = next(x for x in _subscription_methods if x['name'] == 'upload')
-        _subscription_upload_params_content = next(x for x in _subscription_upload['params'] if x['name'] == 'content')
-        _subscription_upload_params_content['expected_type'] = 'any_type'
 
     def _patch_sync_plan_api(self):
         """This is a workaround for the broken sync_plan apidoc in katello.
