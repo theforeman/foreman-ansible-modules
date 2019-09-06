@@ -40,8 +40,8 @@ record_%: FORCE
 clean_%: FORCE
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
 
-sanity:
-	ansible-playbook tests/extras/sanity.yml
+sanity: dist-install
+	ansible-playbook $(CURDIR)/tests/extras/sanity.yml -e test_collection_path=$(COLLECTION_INSTALL_TMP)/ansible_collections/theforeman/foreman/
 
 debug:
 ifndef MODULE
@@ -80,14 +80,16 @@ dist:
 
 	rm -rf $(COLLECTION_TMP)
 
-dist-test: dist
+dist-install: dist
 	mkdir -p $(COLLECTION_INSTALL_TMP)
 
 	ansible-galaxy collection install --collections-path $(COLLECTION_INSTALL_TMP) ./theforeman-foreman-*.tar.gz
 
+dist-test: dist-install
 	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible -m theforeman.foreman.foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" fixtures |grep -q "Failed to connect to Foreman server"
 	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible-doc theforeman.foreman.foreman_organization |grep -q "Manage Foreman Organization"
 
+dist-clean:
 	rm -rf $(COLLECTION_INSTALL_TMP)
 
 doc-setup:
