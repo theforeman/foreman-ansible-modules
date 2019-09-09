@@ -113,7 +113,6 @@ import json
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
-from ansible.module_utils.pycompat24 import get_exception
 from ansible.module_utils._text import to_text
 
 
@@ -125,7 +124,7 @@ def fetch_portal(module, path, method, data={}, accept_header='application/json'
     if resp is None:
         try:
             error = json.loads(info['body'])['displayMessage']
-        except:
+        except Exception:
             error = info['msg']
         module.fail_json(msg="%s to %s failed, got %s" % (method, url, error))
     return resp, info
@@ -239,8 +238,7 @@ def export_manifest(module, manifest):
                     if not data:
                         break
                     f.write(data)
-    except Exception:
-        e = get_exception()
+    except Exception as e:
         module.fail_json(msg="Failure downloading manifest, %s" % (e))
 
 
