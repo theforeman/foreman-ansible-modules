@@ -3,6 +3,10 @@
 # (c) Matthias Dellweg (ATIX AG) 2017
 # (c) Andrew Kofink (Red Hat) 2017
 
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+
 import sys
 
 try:
