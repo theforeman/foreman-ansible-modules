@@ -116,7 +116,9 @@ from ansible.module_utils.urls import fetch_url
 from ansible.module_utils._text import to_text
 
 
-def fetch_portal(module, path, method, data={}, accept_header='application/json'):
+def fetch_portal(module, path, method, data=None, accept_header='application/json'):
+    if data is None:
+        data = {}
     url = module.params['portal'] + path
     headers = {'accept': accept_header,
                'content-type': 'application/json'}
@@ -145,7 +147,7 @@ def create_manifest(module):
 def delete_manifest(module, uuid):
     path = "/subscription/consumers/%s" % uuid
     resp, info = fetch_portal(module, path, 'DELETE')
-    if not info['status'] == 204:
+    if info['status'] != 204:
         module.fail_json(msg="Got status %s attempting to delete manifest, expected 204" % (info['status']))
 
 
