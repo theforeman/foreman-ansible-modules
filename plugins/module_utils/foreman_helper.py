@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 # (c) Matthias Dellweg (ATIX AG) 2017
 
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+
 import json
 import re
 import time
