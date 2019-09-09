@@ -156,7 +156,7 @@ def promote_content_view_version(module, content_view_version, environments, syn
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
-        changed, _ = module.resource_action('content_view_versions', 'promote', params=payload)
+        changed, _ = module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
     return changed
 
 
@@ -202,6 +202,10 @@ def main():
         changed = module.ensure_entity_state('content_view_version', None, content_view_version, params=scope)
     else:
         if content_view_version is None:
+            # Do a sanity check, whether we can perform this non-synchronous
+            if 'lifecycle_environments' in entity_dict and not entity_dict['synchronous']:
+                module.fail_json("Cannot perform non-blocking publishing and promoting in the same module call.")
+
             payload = {
                 'id': content_view['id'],
             }
