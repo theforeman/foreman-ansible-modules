@@ -157,7 +157,7 @@ EXAMPLES = '''
     template: |
       <%#
           dummy:
-     %>
+      %>
     state: absent
 
 - name: "Create a Provisioning Template from a file and modify with parameter"
