@@ -10,6 +10,17 @@
   - include: tasks/location.yml
     vars:
       location_state: present
+  - include: tasks/job_template.yml
+    vars:
+      job_template_state: absent
+  - include: tasks/job_template.yml
+    vars:
+      job_template_name: "{{ item }}"
+      job_template_state: absent
+    loop:
+      - "configure flux compensator"
+      - "Ansible Roles - Hello World"
+      - "delete file"
 
 - hosts: tests
   gather_facts: false
