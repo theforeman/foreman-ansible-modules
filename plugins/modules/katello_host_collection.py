@@ -37,23 +37,6 @@ author:
 requirements:
     - apypie
 options:
-  server_url:
-    description:
-      - URL of Foreman server
-    required: true
-  username:
-    description:
-      - Username on Foreman server
-    required: true
-  password:
-    description:
-      - Password for user accessing Foreman server
-    required: true
-  verify_ssl:
-    description:
-      - Verify SSL of the Foreman server
-    default: true
-    type: bool
   description:
     description:
       - Description of the host collection
@@ -78,6 +61,7 @@ options:
       - absent
       - present_with_defaults
     type: str
+extends_documentation_fragment: foreman
 '''
 
 EXAMPLES = '''
