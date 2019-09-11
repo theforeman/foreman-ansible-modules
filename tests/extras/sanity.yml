@@ -9,7 +9,7 @@
 - hosts: fixtures
   tasks:
     - name: Run ansible-test
-      command: "ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --skip-test import --skip-test pylint --skip-test validate-modules plugins/"
+      command: "ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --skip-test import --skip-test validate-modules plugins/"
       args:
         chdir: "{{ test_collection_path }}"
 ...
