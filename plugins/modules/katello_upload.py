@@ -123,7 +123,7 @@ def main():
         content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
     else:
         # possible types in 3.12: docker, ostree, yum, puppet, file, deb
-        module.fail_json("Uploading to a {} repository is not supported yet.".format(entity_dict['repository']['content_type']))
+        module.fail_json(msg="Uploading to a {} repository is not supported yet.".format(entity_dict['repository']['content_type']))
 
     changed = False
     if not content_unit:
