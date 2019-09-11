@@ -204,7 +204,7 @@ def main():
         if content_view_version is None:
             # Do a sanity check, whether we can perform this non-synchronous
             if 'lifecycle_environments' in entity_dict and not entity_dict['synchronous']:
-                module.fail_json("Cannot perform non-blocking publishing and promoting in the same module call.")
+                module.fail_json(msg="Cannot perform non-blocking publishing and promoting in the same module call.")
 
             payload = {
                 'id': content_view['id'],
