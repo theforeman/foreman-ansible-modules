@@ -4,12 +4,10 @@
 # it skips the following tests:
 # * import -- seems to be broken for collections at the moment
 #             and also modifies the venv which breaks sphinx later
-# * pylint -- we're not yet there
-# * validate-modules -- also too many errors
 - hosts: fixtures
   tasks:
     - name: Run ansible-test
-      command: "ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --skip-test import --skip-test validate-modules plugins/"
+      command: "ansible-test sanity --local --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} --skip-test import plugins/"
       args:
         chdir: "{{ test_collection_path }}"
 ...
