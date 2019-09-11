@@ -178,6 +178,14 @@ def main():
 
     entity_dict = module.clean_params()
 
+    # Do an early (not exhaustive) sanity check, whether we can perform this non-synchronous
+    if (
+        not module.desired_absent and 'lifecycle_environments' in entity_dict
+        and 'version' not in entity_dict and 'current_lifecycle_environment' not in entity_dict
+        and not entity_dict['synchronous']
+    ):
+        module.fail_json(msg="Cannot perform non-blocking publishing and promoting in the same module call.")
+
     module.connect()
 
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
