@@ -39,13 +39,16 @@ options:
     description:
       - Name of the Katello Content View
     required: true
+    type: str
   description:
     description:
       - Description of the Content View
+    type: str
   organization:
     description:
       - Organization that the Content View is in
     required: true
+    type: str
   repositories:
     description:
       - List of repositories that include name and product.
@@ -59,6 +62,7 @@ options:
       - present
       - present_with_defaults
       - absent
+    type: str
   auto_publish:
     description:
       - Auto publish composite view when a new version of a component content view is created.

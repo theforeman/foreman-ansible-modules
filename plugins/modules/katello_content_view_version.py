@@ -42,20 +42,24 @@ options:
     description:
       - Name of the content view
     required: true
+    type: str
   organization:
     description:
       - Organization that the content view is in
     required: true
+    type: str
   state:
-   description:
+    description:
       - Content View Version state
-   default: present
-   choices:
-     - absent
-     - present
+    default: present
+    choices:
+      - absent
+      - present
+    type: str
   version:
     description:
       - The content view version number (i.e. 1.0)
+    type: str
   lifecycle_environments:
     description:
       - The lifecycle environments the Content View Version should be in.
@@ -70,6 +74,8 @@ options:
   force_yum_metadata_regeneration:
     description:
       - Force metadata regeneration when performing Publish and Promote tasks
+    type: bool
+    default: false
   synchronous:
     description:
       - Wait for the Publish or Promote task to complete if True. Immediately return if False.
@@ -79,6 +85,7 @@ options:
     description:
       - The lifecycle environment that is already associated with the content view version
       - Helpful for promoting a content view version
+    type: str
 extends_documentation_fragment: foreman
 '''
 

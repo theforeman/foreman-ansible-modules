@@ -41,16 +41,20 @@ options:
   organization:
     description: Organization that the I(product) is in
     required: true
+    type: str
   product:
     description: Product to which the I(repository) lives in
     required: true
+    type: str
   repository:
     description: |
       Name of the repository to sync
       If omitted, all repositories in I(product) are synched.
+    type: str
   synchronous:
     description: Wait for the Sync task to complete if True. Immediately return if False.
     default: true
+    type: bool
 extends_documentation_fragment: foreman
 ...
 '''

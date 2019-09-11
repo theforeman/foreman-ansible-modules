@@ -39,14 +39,17 @@ options:
     description:
       - Name of the repository set
     required: false
+    type: str
   product:
     description:
       - Name of the parent product
     required: false
+    type: str
   label:
     description:
       - Label of the repository set, can be used in place of I(name) & I(product)
     required: false
+    type: str
   repositories:
     description:
       - Release version and base architecture of the repositories to enable
@@ -56,6 +59,7 @@ options:
     description:
       - Organization name that the repository set is in
     required: true
+    type: str
   state:
     description:
       - Whether the repositories are enabled or not
@@ -63,6 +67,7 @@ options:
     choices:
       - 'enabled'
       - 'disabled'
+    type: str
 extends_documentation_fragment: foreman
 '''
 

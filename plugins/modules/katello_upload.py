@@ -47,14 +47,17 @@ options:
     description:
       - Repository to upload file in to
     required: true
+    type: str
   product:
     description:
       - Product to which the repository lives in
     required: true
+    type: str
   organization:
     description:
       - Organization that the Product is in
     required: true
+    type: str
 notes:
     - Currently only idempotent when uploading to an RPM & file repository
 extends_documentation_fragment: foreman
