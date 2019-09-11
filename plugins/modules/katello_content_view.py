@@ -181,7 +181,7 @@ def main():
             }
             cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
             if not cvc['latest']:
-                search = "content_view_id={},version={}".format(cvc['content_view']['id'], component['content_view_version'])
+                search = "content_view_id={0},version={1}".format(cvc['content_view']['id'], component['content_view_version'])
                 cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
                 cvc['latest'] = False
                 if cvc_matched and cvc_matched['latest']:

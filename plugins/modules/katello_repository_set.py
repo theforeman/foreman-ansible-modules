@@ -162,7 +162,7 @@ def main():
         scope['product_id'] = module_params['product']['id']
 
     if 'label' in module_params:
-        search = 'label="{}"'.format(module_params['label'])
+        search = 'label="{0}"'.format(module_params['label'])
         repo_set = module.find_resource('repository_sets', search=search, params=scope)
     else:
         repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
@@ -179,7 +179,7 @@ def main():
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
     if len(desired_repo_names - available_repo_names) > 0:
-        module.fail_json(msg="Desired repositories are not available on the repository set {}. Desired: {} Available: {}"
+        module.fail_json(msg="Desired repositories are not available on the repository set {0}. Desired: {1} Available: {2}"
                          .format(module_params['name'], desired_repo_names, available_repo_names))
 
     changed = False

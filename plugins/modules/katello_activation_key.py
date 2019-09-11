@@ -179,7 +179,7 @@ def main():
     if module.state == 'copied':
         new_entity = module.find_resource_by_name('activation_keys', name=entity_dict['new_name'], params=scope, failsafe=True)
         if new_entity is not None:
-            module.warn("Activation Key '{}' already exists.".format(entity_dict['new_name']))
+            module.warn("Activation Key '{0}' already exists.".format(entity_dict['new_name']))
             module.exit_json(changed=False)
 
     subscriptions = entity_dict.pop('subscriptions', None)
