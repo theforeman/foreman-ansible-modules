@@ -43,19 +43,23 @@ options:
     description:
       - Name of Snapshot
     required: true
+    type: str
   description:
     description:
       - Description of Snapshot
     required: false
+    type: str
   host:
     description:
       - Name of related Host
     required: true
+    type: str
   state:
     description:
       - State of Snapshot
     default: present
     choices: ["present", "reverted", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

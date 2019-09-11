@@ -42,25 +42,31 @@ options:
     description:
       - Name of the Operating System
     required: false
+    type: str
   release_name:
     description:
       - Release name of the operating system (recommended for debian)
+    type: str
   description:
     description:
       - Description of the Operating System
     required: false
+    type: str
   family:
     description:
       - distribution family of the Operating System
     required: false
+    type: str
   major:
     description:
       - major version of the Operating System
     required: false
+    type: str
   minor:
     description:
       - minor version of the Operating System
     required: false
+    type: str
   architectures:
     description:
       - architectures, the operating system can be installed on
@@ -89,6 +95,7 @@ options:
       - MD5
       - SHA256
       - SHA512
+    type: str
   parameters:
     description:
       - Operating System specific host parameters
@@ -100,6 +107,7 @@ options:
         description:
           - Name of the parameter
         required: true
+        type: str
       value:
         description:
           - Value of the parameter
@@ -118,6 +126,7 @@ options:
           - 'hash'
           - 'yaml'
           - 'json'
+        type: str
   state:
     description:
       - State of the Operating System
@@ -126,6 +135,7 @@ options:
       - present
       - present_with_defaults
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

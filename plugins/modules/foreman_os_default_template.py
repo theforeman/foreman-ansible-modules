@@ -40,14 +40,17 @@ options:
     description:
       - Name of the Operating System
     required: true
+    type: str
   template_kind:
     description:
       - name of the template kind
     required: true
+    type: str
   provisioning_template:
     description:
       - name of provisioning template
     required: false
+    type: str
   state:
     description:
       - State of the Association
@@ -56,6 +59,7 @@ options:
       - present
       - present_with_defaults
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

@@ -41,6 +41,7 @@ options:
     description:
       - Content of the audit comment field
     required: false
+    type: str
   kind:
     description:
       - The provisioning template kind
@@ -59,12 +60,14 @@ options:
       - snippet
       - user_data
       - ZTP
+    type: str
   template:
     description:
       - |
         The content of the provisioning template, either this or file_name
         is required as a source for the Provisioning Template "content".
     required: false
+    type: str
   file_name:
     description:
       - |
@@ -96,6 +99,7 @@ options:
         The special name "*" (only possible as parameter) is used
         to perform bulk actions (modify, delete) on all existing templates.
     required: false
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -112,6 +116,7 @@ options:
       - absent
       - present
       - present_with_defaults
+    type: str
 extends_documentation_fragment: foreman
 '''
 

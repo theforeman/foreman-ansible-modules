@@ -40,11 +40,13 @@ options:
     description:
       - Name of the Setting
     required: true
+    type: str
   value:
     description:
       - value to set the Setting to
       - if missing, reset to default
     required: false
+    type: raw
 extends_documentation_fragment: foreman
 '''
 

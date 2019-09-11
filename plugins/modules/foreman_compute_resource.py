@@ -42,19 +42,24 @@ options:
   name:
     description: compute resource name
     required: true
+    type: str
   updated_name:
     description: new compute resource name
     required: false
+    type: str
   description:
     description: compute resource description
     required: false
+    type: str
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
     choices: ["vmware", "libvirt", "ovirt"]
+    type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
     required: false
+    type: dict
   locations:
     description: List of locations the compute resource should be assigned to
     required: false
@@ -68,6 +73,7 @@ options:
     required: false
     default: present
     choices: ["present", "absent", "present_with_defaults"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

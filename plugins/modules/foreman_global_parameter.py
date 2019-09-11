@@ -43,10 +43,12 @@ options:
     description:
       - Name of the Global Parameter
     required: true
+    type: str
   value:
     description:
       - Value of the Global Parameter
     required: false
+    type: raw
   parameter_type:
     description:
       - Type of value
@@ -61,6 +63,7 @@ options:
       - yaml
       - json
     note: This parameter has an effect only on foreman >= 1.22
+    type: str
   state:
     description:
       - State of the Global Parameter
@@ -69,6 +72,7 @@ options:
       - present
       - present_with_defaults
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

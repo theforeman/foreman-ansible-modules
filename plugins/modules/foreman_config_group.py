@@ -39,6 +39,7 @@ options:
   name:
     description: The config group name
     required: true
+    type: str
   puppetclasses:
     description: List of puppet classes to include in this group
     required: false
@@ -47,6 +48,7 @@ options:
     description: config group presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

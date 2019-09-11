@@ -42,10 +42,12 @@ options:
     description:
       - Name of the bookmark
     required: true
+    type: str
   controller:
     description:
       - Controller for the bookmark
     required: true
+    type: str
   public:
     description:
       - Make bookmark available for all users
@@ -55,6 +57,7 @@ options:
   query:
     description:
       - Query of the bookmark
+    type: str
   state:
     description:
       - State of the bookmark
@@ -63,6 +66,7 @@ options:
       - present
       - present_with_defaults
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

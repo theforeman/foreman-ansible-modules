@@ -42,6 +42,7 @@ options:
         The full installation medium name.
         The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
     required: true
+    type: str
   locations:
     description: List of locations the installation medium should be assigned to
     required: false
@@ -69,12 +70,15 @@ options:
       - Solaris
       - Suse
       - Windows
+    type: str
   path:
     description: Path to the installation medium
+    type: str
   state:
     description: installation medium presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

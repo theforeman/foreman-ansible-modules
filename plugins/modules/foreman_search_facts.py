@@ -42,10 +42,12 @@ options:
       - Resource to search
       - Set to an invalid choice like I(foo) see all available options.
     required: true
+    type: str
   search:
     description:
       - Search query to use
       - If None, all resources are returned
+    type: str
   full_details:
     description:
       - If C(True) all details about the found resources are returned

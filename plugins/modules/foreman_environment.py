@@ -41,6 +41,7 @@ options:
   name:
     description: The full environment name
     required: true
+    type: str
   locations:
     description: List of locations the environent should be assigned to
     required: false
@@ -53,6 +54,7 @@ options:
     description: environment presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

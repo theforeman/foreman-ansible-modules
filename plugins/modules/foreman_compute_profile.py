@@ -41,16 +41,20 @@ options:
   name:
     description: compute profile name
     required: true
+    type: str
   updated_name:
     description: new compute profile name
     required: false
+    type: str
   compute_attributes:
     description: Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type
     required: false
+    type: list
   state:
     description: compute profile presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

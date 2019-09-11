@@ -41,16 +41,27 @@ options:
     description:
       - Name of compute resource
     required: true
+    type: str
   compute_profile:
     description:
       - Name of compute profile
     required: true
+    type: str
   vm_attrs:
     description:
       - Hash containing the data of vm_attrs
     required: true
     aliases:
       - vm_attributes
+    type: dict
+  state:
+    description:
+      - State of the compute attribute
+    choices:
+      - present
+      - absent
+    default: present
+    type: str
 extends_documentation_fragment: foreman
 '''
 

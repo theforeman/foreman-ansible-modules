@@ -40,9 +40,11 @@ options:
   audit_comment:
     description:
       - Content of the audit comment field
+    type: str
   description_format:
     description:
       - description of the job template. Template inputs can be referenced.
+    type: str
   file_name:
     description:
       - |
@@ -53,6 +55,7 @@ options:
   job_category:
     description:
       - The category the template should be assigend to
+    type: str
   locations:
     description:
       - The locations the template should be assigend to
@@ -72,6 +75,7 @@ options:
          basename of a file.
          The special name "*" (only possible as parameter) is used
          to perform bulk actions (modify, delete) on all existing Job Templates.
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -83,6 +87,7 @@ options:
     choices:
       - SSH
     default: SSH
+    type: str
   snippet:
     description:
       - Determines whether the template shall be a snippet
@@ -93,6 +98,7 @@ options:
       - |
         The content of the Job Template, either this or file_name
         is required as a source for the Job Template "content".
+    type: str
   template_inputs:
     description:
       - The template inputs used in the Job Template
@@ -145,6 +151,7 @@ options:
       - absent
       - present
       - present_with_defaults
+    type: str
 extends_documentation_fragment: foreman
 '''
 
