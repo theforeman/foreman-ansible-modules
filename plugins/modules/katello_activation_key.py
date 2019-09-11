@@ -39,16 +39,20 @@ options:
     description:
       - Name of the activation key
     required: true
+    type: str
   organization:
     description:
       - Organization name that the activation key is in
     required: true
+    type: str
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
+    type: str
   content_view:
     description:
       - Name of the content view
+    type: str
   subscriptions:
     description:
       - List of subscriptions that include name
@@ -68,6 +72,7 @@ options:
   release_version:
     description:
       - Set the content release version
+    type: str
   service_level:
     description:
       - Set the service level
@@ -75,6 +80,7 @@ options:
       - Self-Support
       - Standard
       - Premium
+    type: str
   state:
     description:
       - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name and all other fields left untouched.
@@ -84,9 +90,11 @@ options:
       - present_with_defaults
       - absent
       - copied
+    type: str
   new_name:
     description:
       - Name of the new activation key when state == copied
+    type: str
 extends_documentation_fragment: foreman
 '''
 

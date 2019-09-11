@@ -41,26 +41,32 @@ options:
     description:
       - Name of the Katello product
     required: true
+    type: str
   organization:
     description:
       - Organization that the Product is in
     required: true
+    type: str
   label:
     description:
       - Label to show the user
     required: false
+    type: str
   gpg_key:
     description:
     - Content GPG key name attached to this product
     required: false
+    type: str
   sync_plan:
     description:
       - Sync plan name attached to this product
     required: false
+    type: str
   description:
     description:
       - Possibly long descriptionto show the user in detail view
     required: false
+    type: str
   state:
     description:
       - State of the Product
@@ -69,6 +75,7 @@ options:
       - present
       - absent
       - present_with_defaults
+    type: str
 extends_documentation_fragment: foreman
 '''
 

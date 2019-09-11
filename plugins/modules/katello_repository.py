@@ -39,17 +39,21 @@ options:
     description:
       - Name of the repository
     required: true
+    type: str
   product:
     description:
       - Product to which the repository lives in
     required: true
+    type: str
   label:
     description:
       - label of the repository
+    type: str
   organization:
     description:
       - Organization that the Product is in
     required: true
+    type: str
   content_type:
     description:
       - The content type of the repository (e.g. yum)
@@ -61,13 +65,16 @@ options:
       - ostree
       - puppet
       - yum
+    type: str
   url:
     description:
       - Repository URL to sync from
     required: false
+    type: str
   docker_upstream_name:
     description:
       - name of the upstream docker repository
+    type: str
   mirror_on_sync:
     description:
       - toggle "mirror on sync" where the state of the repository mirrors that of the upstream repository at sync time
@@ -82,10 +89,12 @@ options:
       - immediate
       - on_demand
     required: false
+    type: str
   gpg_key:
     description:
     - Repository GPG key
     required: false
+    type: str
   state:
     description:
       - State of the Repository
@@ -94,6 +103,7 @@ options:
       - present_with_defaults
       - present
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

@@ -39,10 +39,12 @@ options:
     description:
       - Name of the content view
     required: true
+    type: str
   organization:
     description:
       - Organization that the Content View is in
     required: true
+    type: str
   filter_state:
     description:
       - State of the content view filter
@@ -50,6 +52,7 @@ options:
     choices:
       - present
       - absent
+    type: str
   repositories:
     description:
       - List of repositories that include name and product
@@ -63,6 +66,7 @@ options:
     choices:
       - present
       - absent
+    type: str
   filter_type:
     description:
       - Content view filter type
@@ -72,6 +76,7 @@ options:
       - package_group
       - erratum
       - docker
+    type: str
   rule_name:
     description:
       - Content view filter rule name or package name
@@ -80,6 +85,7 @@ options:
       - package_group
       - tag
     default: I(name)
+    type: str
   date_type:
     description:
       - Search using the 'Issued On' or 'Updated On'
@@ -88,32 +94,41 @@ options:
     choices:
       - issued
       - updated
+    type: str
   end_date:
     description:
       - erratum end date (YYYY-MM-DD)
+    type: str
   start_date:
     description:
       - erratum start date (YYYY-MM-DD)
+    type: str
   errata_id:
     description:
       - erratum id
+    type: str
   max_version:
-     description:
-       - package maximum version
+    description:
+      - package maximum version
+    type: str
   min_version:
     description:
-       - package minimum version
+      - package minimum version
+    type: str
   types:
-     description:
-        - erratum types (enhancement, bugfix, security)
-     default: ["bugfix", "enhancement", "security"]
+    description:
+      - erratum types (enhancement, bugfix, security)
+    default: ["bugfix", "enhancement", "security"]
+    type: list
   version:
-     description:
-        - package version
+    description:
+      - package version
+    type: str
   inclusion:
     description:
       - Create an include filter
     default: False
+    type: bool
 extends_documentation_fragment: foreman
 '''
 

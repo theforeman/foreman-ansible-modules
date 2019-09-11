@@ -39,10 +39,12 @@ options:
     description:
       - Organization that the manifest is in
     required: true
+    type: str
   manifest_path:
     description:
       - Path to the manifest zip file
       - This parameter will be ignored if I(state=absent) or I(state=refreshed)
+    type: path
   state:
     description:
       - The state of the manifest
@@ -51,10 +53,12 @@ options:
       - absent
       - present
       - refreshed
+    type: str
   repository_url:
     description:
        - URL to retrieve content from
     aliases: [ redhat_repository_url ]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

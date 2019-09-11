@@ -58,14 +58,17 @@ options:
     description:
       - Description of the host collection
     required: false
+    type: str
   organization:
     description:
       - Organization that the host collection is in
     required: true
+    type: str
   name:
     description:
       - Name of the host collection
     required: true
+    type: str
   state:
     description:
       - State of the host collection
@@ -74,6 +77,7 @@ options:
       - present
       - absent
       - present_with_defaults
+    type: str
 '''
 
 EXAMPLES = '''

@@ -39,10 +39,12 @@ options:
     description:
       - Name of the content credential
     required: true
+    type: str
   organization:
     description:
       - Organization name that the content credential is in
     required: true
+    type: str
   content_type:
     description:
     - Type of credential
@@ -50,10 +52,12 @@ options:
     - gpg_key
     - cert
     required: true
+    type: str
   content:
     description:
     - Content of the content credential
     required: true
+    type: str
   state:
     description:
       - State of the content credential.
@@ -61,6 +65,7 @@ options:
     choices:
       - present
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

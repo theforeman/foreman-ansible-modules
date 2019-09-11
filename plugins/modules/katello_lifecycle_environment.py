@@ -42,19 +42,24 @@ options:
     description:
       - Name of the lifecycle environment
     required: true
+    type: str
   label:
     description:
       - Label of the lifecycle environment. This field cannot be updated.
+    type: str
   description:
     description:
       - Description of the lifecycle environment
+    type: str
   organization:
     description:
       - Organization name that the lifecycle environment is in
     required: true
+    type: str
   prior:
     description:
       - Name of the parent lifecycle environment
+    type: str
   state:
     description:
       - Whether the lifecycle environment should be present or absent on the server
@@ -62,6 +67,7 @@ options:
     choices:
       - absent
       - present
+    type: str
 extends_documentation_fragment: foreman
 '''
 
