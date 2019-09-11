@@ -327,7 +327,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return [self.find_operatingsystem(name, **kwargs) for name in names]
 
     def ensure_entity_state(self, *args, **kwargs):
-        changed, _ = self.ensure_entity(*args, **kwargs)
+        changed, _entity = self.ensure_entity(*args, **kwargs)
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
@@ -349,7 +349,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         if entity_spec is None:
             entity_spec = self.entity_spec
         else:
-            entity_spec, _ = _entity_spec_helper(entity_spec)
+            entity_spec = _entity_spec_helper(entity_spec)[0]
 
         changed = False
         updated_entity = None
@@ -507,7 +507,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
                 self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
             time.sleep(self.task_poll)
 
-            _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
+            _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
 
         return task
 
@@ -588,7 +588,7 @@ def _entity_spec_helper(spec):
         elif argument_value.get('type') == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
-            _, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
+            argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))[1]
             entity_value = None
         if entity_value is not None:
             entity_spec[key] = entity_value

@@ -113,7 +113,7 @@ def main():
     entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=False, thin=True)
 
     params = {'id': entity_dict['name']}
-    _, power_state = module.resource_action('hosts', 'power_status', params=params)
+    _power_state_changed, power_state = module.resource_action('hosts', 'power_status', params=params)
     if module.state in ['state', 'status']:
         module.exit_json(changed=False, power_state=power_state['state'])
     elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')

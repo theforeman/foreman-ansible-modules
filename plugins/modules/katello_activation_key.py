@@ -194,7 +194,7 @@ def main():
         # the auto_attach, release_version and service_level parameters can only be set on an existing AK with an update,
         # not during create, so let's force an update. see https://projects.theforeman.org/issues/27632 for details
         if any(key in entity_dict for key in ['auto_attach', 'release_version', 'service_level']) and changed:
-            _, activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
+            _activation_key_changed, activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
 
         ak_scope = {'activation_key_id': activation_key['id']}
         if subscriptions is not None:
@@ -224,7 +224,7 @@ def main():
                 changed = True
 
         if content_overrides is not None:
-            _, product_content = module.resource_action('activation_keys', 'product_content', params={'id': activation_key['id']})
+            _product_content_changed, product_content = module.resource_action('activation_keys', 'product_content', params={'id': activation_key['id']})
             current_content_overrides = {
                 product['content']['label']: product['enabled_content_override']
                 for product in product_content['results']
