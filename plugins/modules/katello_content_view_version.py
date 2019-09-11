@@ -156,7 +156,7 @@ def promote_content_view_version(module, content_view_version, environments, syn
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
-        changed, _ = module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
+        changed, _dummy = module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
     return changed
 
 
@@ -196,10 +196,10 @@ def main():
     if 'current_lifecycle_environment' in entity_dict:
         entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
             'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
-        search = "content_view_id={},environment_ids=[{}]".format(content_view['id'], entity_dict['current_lifecycle_environment']['id'])
+        search = "content_view_id={0},environment_ids=[{1}]".format(content_view['id'], entity_dict['current_lifecycle_environment']['id'])
         content_view_version = module.find_resource('content_view_versions', search=search, thin=True)
     elif 'version' in entity_dict:
-        search = "content_view_id={},version={}".format(content_view['id'], entity_dict['version'])
+        search = "content_view_id={0},version={1}".format(content_view['id'], entity_dict['version'])
         content_view_version = module.find_resource('content_view_versions', search=search, thin=True, failsafe=True)
     else:
         content_view_version = None
