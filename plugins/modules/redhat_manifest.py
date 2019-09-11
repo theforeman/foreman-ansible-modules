@@ -37,20 +37,25 @@ options:
   name:
     description:
       - Manifest Name
+    type: str
   uuid:
     description:
       - Manifest uuid
+    type: str
   username:
     description:
       - Username on Foreman server
     required: true
+    type: str
   password:
     description:
       - Password for user accessing Foreman server
     required: true
+    type: str
   pool_id:
     description:
       - Subscription pool_id
+    type: str
   quantity:
     description:
       - quantity of pool_id Subscriptions
@@ -62,6 +67,7 @@ options:
     choices:
       - present
       - absent
+    type: str
   state:
     description:
       - Manifest state
@@ -69,6 +75,7 @@ options:
     choices:
       - present
       - absent
+    type: str
   path:
     description:
       - path to export the manifest
@@ -82,6 +89,7 @@ options:
     description:
       - Red Hat Portal subscription access address
     default: https://subscription.rhn.redhat.com
+    type: str
 '''
 
 EXAMPLES = '''
