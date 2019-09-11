@@ -40,9 +40,11 @@ options:
     description:
       - Name or Title of the Foreman Location
     required: true
+    type: str
   parent:
     description:
       - Title of a parent Location for nesting
+    type: str
   organizations:
     description:
       - List of organizations the location should be assigned to
@@ -54,6 +56,7 @@ options:
     choices:
       - present
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

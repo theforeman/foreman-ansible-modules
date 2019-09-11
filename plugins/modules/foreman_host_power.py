@@ -43,16 +43,17 @@ options:
     required: true
     alias:
       - hostname
-  power_state:
+    type: str
+  state:
     description: Desired power state
     default: state
-    type: list
     choices:
       - on/start
       - off/stop
       - soft/reboot
       - cycle/reset
       - state/status
+    type: str
 extends_documentation_fragment: foreman
 '''
 

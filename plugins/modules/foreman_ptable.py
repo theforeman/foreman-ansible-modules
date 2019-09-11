@@ -51,6 +51,7 @@ options:
         The content of the Partitioning Table Template, either this or file_name
         is required as a source for the Partition Template "content".
     required: false
+    type: str
   locations:
     description:
       - The locations the template should be assigend to
@@ -72,6 +73,7 @@ options:
         The special name "*" (only possible as parameter) is used
         to perform bulk actions (modify, delete) on all existing partition tables.
     required: false
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -92,6 +94,7 @@ options:
       - Solaris
       - Suse
       - Windows
+    type: str
   state:
     description: The state the template should be in.
     default: present
@@ -99,6 +102,7 @@ options:
       - absent
       - present
       - present_with_defaults
+    type: str
 extends_documentation_fragment: foreman
 '''
 

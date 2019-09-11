@@ -42,23 +42,28 @@ options:
     description:
       - Name of the user
     required: true
+    type: str
   firstname:
     description:
       - First name of the user
     required: false
+    type: str
   lastname:
     description:
       - Last name of the user
     required: false
+    type: str
   mail:
     description:
       - Email address of the user
       - Required when creating a new user
     required: false
+    type: str
   description:
     description:
       - Description of the user
     required: false
+    type: str
   admin:
     description:
       - Whether or not the user is an administrator
@@ -69,28 +74,34 @@ options:
     description:
       - Password for the user
     required: false
+    type: str
   default_location:
     description:
       - The location that the user uses by default
     required: false
+    type: str
   default_organization:
     description:
       - The organizxation that the user uses by default
     required: false
+    type: str
   auth_source:
     description:
       - Authentication source where the user exists
     required: false
     default: Internal
+    type: str
   timezone:
     description:
       - Timezone for the user
       - If blank it will use the browser timezone.
     required: false
+    type: str
   locale:
     description:
       - The language locale for the user
     required: false
+    type: str
   roles:
     description:
       - List of roles assigned to the user
@@ -113,6 +124,7 @@ options:
     choices:
       - present
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

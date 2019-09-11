@@ -39,13 +39,16 @@ options:
   name:
     description: Name of architecture
     required: true
+    type: str
   operatingsystems:
     description: List of operating systems the architecture should be assigned to
     required: false
+    type: list
   state:
     description: Architecture presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

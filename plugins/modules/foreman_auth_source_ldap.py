@@ -40,9 +40,11 @@ options:
   name:
     description: The name of the LDAP authentication source
     required: true
+    type: str
   host:
     description: The hostname of the LDAP server
     required: true
+    type: str
   port:
     description: The port number of the LDAP server
     required: false
@@ -51,27 +53,35 @@ options:
   account:
     description: Account name to use when accessing the LDAP server.
     required: false
+    type: str
   account_password:
     description: Account password to use when accessing the LDAP server. Required when using `onthefly_register`
     required: false
+    type: str
   base_dn:
     description: The base DN to use when searching.
     required: false
+    type: str
   attr_login:
     description: Attribute containing login ID. Required when using `onthefly_register`
     required: false
+    type: str
   attr_firstname:
     description: Attribute containing first name. Required when using `onthefly_register`
     required: false
+    type: str
   attr_lastname:
     description: Attribute containing last name. Required when using `onthefly_register`
     required: false
+    type: str
   attr_mail:
     description: Attribute containing email address. Required when using `onthefly_register`
     required: false
+    type: str
   attr_photo:
     description: Attribute containing user photo
     required: false
+    type: str
   onthefly_register:
     description: Whether or not to register users on the fly.
     required: false
@@ -87,15 +97,17 @@ options:
   groups_base:
     description: Base DN where groups reside.
     required: false
-    type: bool
+    type: str
   server_type:
     description: Type of the LDAP server
     required: false
     default: posix
     choices: ["free_ipa", "active_directory", "posix"]
+    type: str
   ldap_filter:
     description: Filter to apply to LDAP searches
     required: false
+    type: str
   organizations:
     description: List of organizations the authentication source should be assigned to
     type: list
@@ -106,6 +118,7 @@ options:
     description: State ot the LDAP authentication source
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

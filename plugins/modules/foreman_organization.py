@@ -42,10 +42,12 @@ options:
     description:
       - Name of the Foreman organization
     required: true
+    type: str
   description:
     description:
       - Description of the Foreman organization
     required: false
+    type: str
   state:
     description:
       - State of the Organization
@@ -53,9 +55,11 @@ options:
     choices:
       - present
       - absent
+    type: str
   label:
     description:
       - Label of the Foreman organization
+    type: str
 extends_documentation_fragment: foreman
 '''
 

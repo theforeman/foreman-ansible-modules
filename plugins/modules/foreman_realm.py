@@ -40,14 +40,17 @@ options:
     description:
       - Name of the Foreman realm
     required: true
+    type: str
   realm_proxy:
     description:
       - Proxy to use for this realm
     required: true
+    type: str
   realm_type:
     description:
       - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
     required: true
+    type: str
   state:
     description:
       - State of the Realm
@@ -55,6 +58,7 @@ options:
     choices:
       - present
       - absent
+    type: str
 extends_documentation_fragment: foreman
 '''
 

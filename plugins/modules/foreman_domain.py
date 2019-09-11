@@ -39,16 +39,19 @@ options:
   name:
     description: The full DNS domain name
     required: true
+    type: str
   dns_proxy:
     aliases:
       - dns
     description: DNS proxy to use within this domain for managing A records
     required: false
+    type: str
   description:
     aliases:
       - fullname
     description: Full name describing the domain
     required: false
+    type: str
   locations:
     description: List of locations the domain should be assigned to
     required: false
@@ -68,6 +71,7 @@ options:
         description:
           - Name of the parameter
         required: true
+        type: str
       value:
         description:
           - Value of the parameter
@@ -86,10 +90,12 @@ options:
           - 'hash'
           - 'yaml'
           - 'json'
+        type: str
   state:
     description: domain presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

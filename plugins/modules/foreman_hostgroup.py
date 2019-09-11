@@ -40,12 +40,15 @@ options:
   name:
     description: Name of hostgroup
     required: true
+    type: str
   description:
     description: Description of hostgroup
     required: false
+    type: str
   parent:
     description: Hostgroup parent name
     required: false
+    type: str
   organizations:
     description: List of organizations names
     required: false
@@ -57,31 +60,40 @@ options:
   compute_resource:
     description: Compute resource name
     required: false
+    type: str
   compute_profile:
     description: Compute profile name
     required: false
+    type: str
   domain:
     description: Domain name
     required: false
+    type: str
   subnet:
     description: IPv4 Subnet name
     required: false
+    type: str
   subnet6:
     description: IPv6 Subnet name
     required: false
+    type: str
   realm:
     description: Realm name
     required: false
+    type: str
   architecture:
     description: Architecture name
     required: False
+    type: str
   medium:
     aliases: [ media ]
     description: Medium name
     required: False
+    type: str
   operatingsystem:
     description: Operatingsystem title
     required: False
+    type: str
   pxe_loader:
     description: PXE Bootloader
     required: false
@@ -100,15 +112,19 @@ options:
       - iPXE UEFI HTTP
       - iPXE Chain BIOS
       - iPXE Chain UEFI
+    type: str
   partition_table:
     description: Partition table name
     required: False
+    type: str
   root_pass:
     description: root password
     required: false
+    type: str
   environment:
     description: Puppet environment name
     required: false
+    type: str
   config_groups:
     description: Config groups list
     required: false
@@ -116,29 +132,36 @@ options:
   puppet_proxy:
     description: Puppet server proxy name
     required: false
+    type: str
   puppet_ca_proxy:
     description: Puppet CA proxy name
     required: false
+    type: str
   openscap_proxy:
     description: OpenSCAP proxy name. Only available when the OpenSCAP plugin is installed.
     required: false
+    type: str
   organization:
     description:
       - Organization for scoped resources attached to the hostgroup. Only used for katello installations.
       - This organization will implicitly be added to the I(organizations) parameter if needed.
     required: false
+    type: str
   content_source:
     description: Katello Content source. Only available for katello installations.
     required: false
+    type: str
   lifecycle_environment:
     description: Katello Lifecycle environment. Only available for katello installations.
     required: false
+    type: str
   content_view:
     description: Katello Content view. Only available for katello installations.
     required: false
+    type: str
   parameters:
     description:
-      - Subnet specific host parameters
+      - Hostgroup specific host parameters
     required: false
     type: list
     elements: dict
@@ -147,6 +170,7 @@ options:
         description:
           - Name of the parameter
         required: true
+        type: str
       value:
         description:
           - Value of the parameter
@@ -165,10 +189,12 @@ options:
           - 'hash'
           - 'yaml'
           - 'json'
+        type: str
   state:
     description: Hostgroup presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 

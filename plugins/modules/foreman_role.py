@@ -39,9 +39,11 @@ options:
   name:
     description: The name of the role
     required: true
+    type: str
   description:
     description: Description of the role
     required: false
+    type: str
   locations:
     description: List of locations the role should be assigned to
     required: false
@@ -54,6 +56,7 @@ options:
     description: role presence
     default: present
     choices: ["present", "absent"]
+    type: str
 extends_documentation_fragment: foreman
 '''
 
