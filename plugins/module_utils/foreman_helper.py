@@ -299,12 +299,12 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):
-        search = 'name="{}"'.format(name)
+        search = 'name="{0}"'.format(name)
         kwargs['name'] = name
         return self.find_resource(resource, search, **kwargs)
 
     def find_resource_by_title(self, resource, title, **kwargs):
-        search = 'title="{}"'.format(title)
+        search = 'title="{0}"'.format(title)
         return self.find_resource(resource, search, **kwargs)
 
     def find_resources(self, resource, search_list, **kwargs):
@@ -319,7 +319,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
     def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
         result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
         if not result:
-            search = 'title~"{}"'.format(name)
+            search = 'title~"{0}"'.format(name)
             result = self.find_resource('operatingsystems', search, params=params, failsafe=failsafe, thin=thin)
         return result
 
@@ -327,7 +327,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         return [self.find_operatingsystem(name, **kwargs) for name in names]
 
     def ensure_entity_state(self, *args, **kwargs):
-        changed, _ = self.ensure_entity(*args, **kwargs)
+        changed, _entity = self.ensure_entity(*args, **kwargs)
         return changed
 
     @_exception2fail_json('Failed to ensure entity state: %s')
@@ -349,7 +349,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         if entity_spec is None:
             entity_spec = self.entity_spec
         else:
-            entity_spec, _ = _entity_spec_helper(entity_spec)
+            entity_spec, _dummy = _entity_spec_helper(entity_spec)
 
         changed = False
         updated_entity = None
@@ -372,7 +372,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
             if current_entity is not None:
                 changed, updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
         else:
-            self.fail_json(msg='Not a valid state: {}'.format(state))
+            self.fail_json(msg='Not a valid state: {0}'.format(state))
         return changed, updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
@@ -495,7 +495,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
                 if synchronous and is_foreman_task:
                     result = self.wait_for_task(result)
         except Exception as e:
-            self.fail_json(msg='Error while performing {} on {}: {}'.format(
+            self.fail_json(msg='Error while performing {0} on {1}: {2}'.format(
                 action, resource, str(e)))
         return True, result
 
@@ -504,10 +504,10 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         while task['state'] not in ['paused', 'stopped']:
             duration -= self.task_poll
             if duration <= 0:
-                self.fail_json(msg="Timout waiting for Task {}".format(task['id']))
+                self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
-            _, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
+            _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
 
         return task
 
@@ -588,7 +588,7 @@ def _entity_spec_helper(spec):
         elif argument_value.get('type') == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
-            _, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
+            _dummy, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
             entity_value = None
         if entity_value is not None:
             entity_spec[key] = entity_value

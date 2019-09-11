@@ -162,14 +162,14 @@ def main():
         scope['product_id'] = module_params['product']['id']
 
     if 'label' in module_params:
-        search = 'label="{}"'.format(module_params['label'])
+        search = 'label="{0}"'.format(module_params['label'])
         repo_set = module.find_resource('repository_sets', search=search, params=scope)
     else:
         repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
     repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
     repo_set_scope.update(scope)
 
-    _, available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope)
+    _available_repos_changed, available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope)
     available_repos = available_repos['results']
     current_repos = repo_set['repositories']
     desired_repos = get_desired_repos(module_params['repositories'], available_repos)
@@ -179,7 +179,7 @@ def main():
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
     if len(desired_repo_names - available_repo_names) > 0:
-        module.fail_json(msg="Desired repositories are not available on the repository set {}. Desired: {} Available: {}"
+        module.fail_json(msg="Desired repositories are not available on the repository set {0}. Desired: {1} Available: {2}"
                          .format(module_params['name'], desired_repo_names, available_repo_names))
 
     changed = False

@@ -232,7 +232,7 @@ def main():
                 if key in provider_params:
                     entity_dict[key] = provider_params.pop(key)
             if provider_params:
-                module.fail_json(msg="Provider {} does not support the following given parameters: {}".format(
+                module.fail_json(msg="Provider {0} does not support the following given parameters: {1}".format(
                     entity_dict['provider'], list(provider_params.keys())))
 
         # Add provider specific params

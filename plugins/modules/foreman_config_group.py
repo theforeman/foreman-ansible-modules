@@ -87,7 +87,7 @@ def main():
             # puppet classes API return puppet classes grouped by puppet module name
             puppet_classes = []
             for puppet_class in entity_dict['puppetclasses']:
-                search = 'name="{}"'.format(puppet_class)
+                search = 'name="{0}"'.format(puppet_class)
                 results = module.list_resource('puppetclasses', search)
 
                 # verify that only one puppet module is returned with only one puppet class inside

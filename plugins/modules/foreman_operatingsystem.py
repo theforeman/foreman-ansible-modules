@@ -210,19 +210,19 @@ def main():
     entity = None
     # If we have a description, search for it
     if 'description' in entity_dict and entity_dict['description'] != '':
-        search_string = 'description="{}"'.format(entity_dict['description'])
+        search_string = 'description="{0}"'.format(entity_dict['description'])
         entity = module.find_resource('operatingsystems', search_string, failsafe=True)
     # If we did not yet find a unique OS, search by name & version
     # In case of state == absent, those information might be missing, we assume that we did not find an operatingsytem to delete then
     if entity is None and 'name' in entity_dict and 'major' in entity_dict:
-        search_string = ','.join('{}="{}"'.format(key, entity_dict[key]) for key in ('name', 'major', 'minor') if key in entity_dict)
+        search_string = ','.join('{0}="{1}"'.format(key, entity_dict[key]) for key in ('name', 'major', 'minor') if key in entity_dict)
         entity = module.find_resource('operatingsystems', search_string, failsafe=True)
 
     if not entity and (module.state == 'present' or module.state == 'present_with_defaults'):
         # we actually attempt to create a new one...
         for param_name in ['major', 'family', 'password_hash']:
             if param_name not in entity_dict.keys():
-                module.fail_json(msg='{} is a required parameter to create a new operating system.'.format(param_name))
+                module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
     if not module.desired_absent:
         if 'architectures' in entity_dict:
