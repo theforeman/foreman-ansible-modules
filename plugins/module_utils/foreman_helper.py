@@ -349,7 +349,7 @@ class ForemanAnsibleModule(ForemanBaseAnsibleModule):
         if entity_spec is None:
             entity_spec = self.entity_spec
         else:
-            entity_spec = _entity_spec_helper(entity_spec)[0]
+            entity_spec, _dummy = _entity_spec_helper(entity_spec)
 
         changed = False
         updated_entity = None
@@ -588,7 +588,7 @@ def _entity_spec_helper(spec):
         elif argument_value.get('type') == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
-            argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))[1]
+            _dummy, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
             entity_value = None
         if entity_value is not None:
             entity_spec[key] = entity_value
