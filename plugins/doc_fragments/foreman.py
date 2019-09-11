@@ -28,12 +28,15 @@ options:
   server_url:
     description: URL of the Foreman server
     required: true
+    type: str
   username:
     description: Username accessing the Foreman server
     required: true
+    type: str
   password:
     description: Password of the user accessing the Foreman server
     required: true
+    type: str
   validate_certs:
     aliases: [ verify_ssl ]
     description: Whether or not to verify the TLS certificates of the Foreman server
