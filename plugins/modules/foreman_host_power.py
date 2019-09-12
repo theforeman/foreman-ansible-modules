@@ -41,18 +41,23 @@ options:
   name:
     description: Name (FQDN) of the host
     required: true
-    alias:
+    aliases:
       - hostname
     type: str
   state:
     description: Desired power state
     default: state
     choices:
-      - on/start
-      - off/stop
-      - soft/reboot
-      - cycle/reset
-      - state/status
+      - 'on'
+      - 'start'
+      - 'off'
+      - 'stop'
+      - 'soft'
+      - 'reboot'
+      - 'cycle'
+      - 'reset'
+      - 'state'
+      - 'status'
     type: str
 extends_documentation_fragment: foreman
 '''
@@ -92,7 +97,7 @@ RETURN = '''
 power_state:
     description: current power state of host
     returned: always
-    type: string
+    type: str
     sample: "off"
  '''
 
