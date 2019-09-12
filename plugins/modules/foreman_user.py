@@ -89,7 +89,6 @@ options:
     description:
       - Authentication source where the user exists
     required: false
-    default: Internal
     type: str
   timezone:
     description:
@@ -97,11 +96,181 @@ options:
       - If blank it will use the browser timezone.
     required: false
     type: str
+    choices:
+      - 'International Date Line West'
+      - 'American Samoa'
+      - 'Midway Island'
+      - 'Hawaii'
+      - 'Alaska'
+      - 'Pacific Time (US & Canada)'
+      - 'Tijuana'
+      - 'Arizona'
+      - 'Chihuahua'
+      - 'Mazatlan'
+      - 'Mountain Time (US & Canada)'
+      - 'Central America'
+      - 'Central Time (US & Canada)'
+      - 'Guadalajara'
+      - 'Mexico City'
+      - 'Monterrey'
+      - 'Saskatchewan'
+      - 'Bogota'
+      - 'Eastern Time (US & Canada)'
+      - 'Indiana (East)'
+      - 'Lima'
+      - 'Quito'
+      - 'Atlantic Time (Canada)'
+      - 'Caracas'
+      - 'Georgetown'
+      - 'La Paz'
+      - 'Puerto Rico'
+      - 'Santiago'
+      - 'Newfoundland'
+      - 'Brasilia'
+      - 'Buenos Aires'
+      - 'Greenland'
+      - 'Montevideo'
+      - 'Mid-Atlantic'
+      - 'Azores'
+      - 'Cape Verde Is.'
+      - 'Dublin'
+      - 'Edinburgh'
+      - 'Lisbon'
+      - 'London'
+      - 'Monrovia'
+      - 'UTC'
+      - 'Amsterdam'
+      - 'Belgrade'
+      - 'Berlin'
+      - 'Bern'
+      - 'Bratislava'
+      - 'Brussels'
+      - 'Budapest'
+      - 'Casablanca'
+      - 'Copenhagen'
+      - 'Ljubljana'
+      - 'Madrid'
+      - 'Paris'
+      - 'Prague'
+      - 'Rome'
+      - 'Sarajevo'
+      - 'Skopje'
+      - 'Stockholm'
+      - 'Vienna'
+      - 'Warsaw'
+      - 'West Central Africa'
+      - 'Zagreb'
+      - 'Zurich'
+      - 'Athens'
+      - 'Bucharest'
+      - 'Cairo'
+      - 'Harare'
+      - 'Helsinki'
+      - 'Jerusalem'
+      - 'Kaliningrad'
+      - 'Kyiv'
+      - 'Pretoria'
+      - 'Riga'
+      - 'Sofia'
+      - 'Tallinn'
+      - 'Vilnius'
+      - 'Baghdad'
+      - 'Istanbul'
+      - 'Kuwait'
+      - 'Minsk'
+      - 'Moscow'
+      - 'Nairobi'
+      - 'Riyadh'
+      - 'St. Petersburg'
+      - 'Tehran'
+      - 'Abu Dhabi'
+      - 'Baku'
+      - 'Muscat'
+      - 'Samara'
+      - 'Tbilisi'
+      - 'Volgograd'
+      - 'Yerevan'
+      - 'Kabul'
+      - 'Ekaterinburg'
+      - 'Islamabad'
+      - 'Karachi'
+      - 'Tashkent'
+      - 'Chennai'
+      - 'Kolkata'
+      - 'Mumbai'
+      - 'New Delhi'
+      - 'Sri Jayawardenepura'
+      - 'Kathmandu'
+      - 'Almaty'
+      - 'Astana'
+      - 'Dhaka'
+      - 'Urumqi'
+      - 'Rangoon'
+      - 'Bangkok'
+      - 'Hanoi'
+      - 'Jakarta'
+      - 'Krasnoyarsk'
+      - 'Novosibirsk'
+      - 'Beijing'
+      - 'Chongqing'
+      - 'Hong Kong'
+      - 'Irkutsk'
+      - 'Kuala Lumpur'
+      - 'Perth'
+      - 'Singapore'
+      - 'Taipei'
+      - 'Ulaanbaatar'
+      - 'Osaka'
+      - 'Sapporo'
+      - 'Seoul'
+      - 'Tokyo'
+      - 'Yakutsk'
+      - 'Adelaide'
+      - 'Darwin'
+      - 'Brisbane'
+      - 'Canberra'
+      - 'Guam'
+      - 'Hobart'
+      - 'Melbourne'
+      - 'Port Moresby'
+      - 'Sydney'
+      - 'Vladivostok'
+      - 'Magadan'
+      - 'New Caledonia'
+      - 'Solomon Is.'
+      - 'Srednekolymsk'
+      - 'Auckland'
+      - 'Fiji'
+      - 'Kamchatka'
+      - 'Marshall Is.'
+      - 'Wellington'
+      - 'Chatham Is.'
+      - "Nuku'alofa"
+      - 'Samoa'
+      - 'Tokelau Is.'
   locale:
     description:
       - The language locale for the user
     required: false
     type: str
+    choices:
+      - 'ca'
+      - 'de'
+      - 'en'
+      - 'en_GB'
+      - 'es'
+      - 'fr'
+      - 'gl'
+      - 'it'
+      - 'ja'
+      - 'ko'
+      - 'nl_NL'
+      - 'pl'
+      - 'pt_BR'
+      - 'ru'
+      - 'sv_SE'
+      - 'zh_CN'
+      - 'zh_TW'
   roles:
     description:
       - List of roles assigned to the user
@@ -178,20 +347,20 @@ timezone_list = [
     'Midway Island',
     'Hawaii',
     'Alaska',
-    'Pacific Time (US &amp; Canada)',
+    'Pacific Time (US & Canada)',
     'Tijuana',
     'Arizona',
     'Chihuahua',
     'Mazatlan',
-    'Mountain Time (US &amp; Canada)',
+    'Mountain Time (US & Canada)',
     'Central America',
-    'Central Time (US &amp; Canada)',
+    'Central Time (US & Canada)',
     'Guadalajara',
     'Mexico City',
     'Monterrey',
     'Saskatchewan',
     'Bogota',
-    'Eastern Time (US &amp; Canada)',
+    'Eastern Time (US & Canada)',
     'Indiana (East)',
     'Lima',
     'Quito',
@@ -321,7 +490,7 @@ timezone_list = [
     'Marshall Is.',
     'Wellington',
     'Chatham Is.',
-    'Nuku&#39;alofa',
+    "Nuku'alofa",
     'Samoa',
     'Tokelau Is.',
 ]
