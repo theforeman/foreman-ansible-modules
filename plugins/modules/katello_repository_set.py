@@ -63,10 +63,11 @@ options:
   state:
     description:
       - Whether the repositories are enabled or not
-    required: true
+    required: false
     choices:
       - 'enabled'
       - 'disabled'
+    default: enabled
     type: str
 extends_documentation_fragment: foreman
 '''
