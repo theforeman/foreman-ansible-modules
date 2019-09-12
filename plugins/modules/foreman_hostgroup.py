@@ -113,7 +113,7 @@ options:
       - iPXE Chain BIOS
       - iPXE Chain UEFI
     type: str
-  partition_table:
+  ptable:
     description: Partition table name
     required: False
     type: str
