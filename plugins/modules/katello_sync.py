@@ -36,7 +36,7 @@ author:
   - "Eric D Helms (@ehelms)"
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "nailgun >= 0.28.0"
+  - apypie
 options:
   organization:
     description: Organization that the I(product) is in
