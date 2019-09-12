@@ -84,9 +84,6 @@ options:
     description:
       - Determines via which provider the template shall be executed
     required: true
-    choices:
-      - SSH
-    default: SSH
     type: str
   snippet:
     description:
@@ -112,9 +109,11 @@ options:
       description:
         description:
           - description of the Template Input
+        type: str
       fact_name:
         description:
-          - description of the Template Input
+          - Fact name, used when input type is fact
+        type: str
       input_type:
         description:
           - input type
@@ -124,19 +123,23 @@ options:
           - fact
           - variable
           - puppet_parameter
+        type: str
       name:
         description:
-          - description of the Template Input
+          - name of the Template Input
+        type: str
       options:
         description:
           - Template values for user inputs. Must be an array of any type.
         type: list
-      puppet_parameter_class:
+      puppet_class_name:
         description:
           - Puppet class name, used when input type is puppet_parameter
+        type: str
       puppet_parameter_name:
         description:
           - Puppet parameter name, used when input type is puppet_parameter
+        type: str
       required:
         description:
           - Is the input required
@@ -144,6 +147,19 @@ options:
       variable_name:
         description:
           - Variable name, used when input type is variable
+        type: str
+      value_type:
+        description:
+          - Type of the value
+        choices:
+          - plain
+          - search
+          - date
+        type: str
+      resource_type:
+        description:
+          - Type of the resource
+        type: str
   state:
     description: The state the template should be in.
     default: present
