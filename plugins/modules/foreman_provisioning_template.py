@@ -85,9 +85,6 @@ options:
     description:
       - Determines whether the template shall be locked
     required: false
-    choices:
-      - true
-      - false
     type: bool
   name:
     description:
