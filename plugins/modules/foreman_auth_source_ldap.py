@@ -101,7 +101,6 @@ options:
   server_type:
     description: Type of the LDAP server
     required: false
-    default: posix
     choices: ["free_ipa", "active_directory", "posix"]
     type: str
   ldap_filter:
