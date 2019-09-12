@@ -50,6 +50,17 @@ options:
     description: Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type
     required: false
     type: list
+    suboptions:
+      compute_resource:
+        description:
+          - Name of the compute resource the attribute should be for
+        type: str
+      vm_attrs:
+        description:
+          - Hash containing the data of vm_attrs
+        aliases:
+          - vm_attributes
+        type: dict
   state:
     description: compute profile presence
     default: present
