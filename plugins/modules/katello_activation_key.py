@@ -57,6 +57,12 @@ options:
     description:
       - List of subscriptions that include name
     type: list
+    suboptions:
+      name:
+        description:
+          - Name of the Subscription to be added
+        type: str
+        required: true
   host_collections:
     description:
       - List of host collections to add to activation key
@@ -65,6 +71,20 @@ options:
     description:
       - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
     type: list
+    suboptions:
+      label:
+        description:
+          - Label of the content override
+        type: str
+        required: true
+      override:
+        description:
+          - Override value
+        choices:
+          - enabled
+          - disabled
+        type: str
+        required: true
   auto_attach:
     description:
       - Set Auto-Attach on or off
@@ -159,7 +179,7 @@ def main():
             )),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
-                override=dict(choises=['enabled', 'disabled']),
+                override=dict(required=True, choices=['enabled', 'disabled']),
             )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
