@@ -102,7 +102,7 @@ options:
     required: false
     type: list
     elements: dict
-    options:
+    suboptions:
       name:
         description:
           - Name of the parameter
