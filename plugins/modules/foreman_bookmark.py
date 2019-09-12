@@ -111,7 +111,7 @@ def main():
         entity_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
-            public=dict(defaut='true', type='bool'),
+            public=dict(default='true', type='bool'),
             query=dict(),
         ),
         argument_spec=dict(
