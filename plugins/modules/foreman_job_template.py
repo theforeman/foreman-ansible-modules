@@ -31,13 +31,11 @@ module: foreman_job_template
 short_description: Manage Job Templates in Foreman
 description:
   - "Manage Foreman Remote Execution Job Templates"
-  - "Uses https://github.com/SatelliteQE/nailgun"
-  - "Uses ansible_nailgun_cement in /module_utils"
 author:
   - "Manuel Bonk (@manuelbonk) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
 requirements:
-  - "nailgun >= 0.29.0"
+  - apypie
 options:
   audit_comment:
     description:
