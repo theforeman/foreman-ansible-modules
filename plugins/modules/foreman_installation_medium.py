@@ -62,14 +62,19 @@ options:
       - AIX
       - Altlinux
       - Archlinux
+      - Coreos
       - Debian
       - Freebsd
       - Gentoo
       - Junos
+      - NXOS
+      - Rancheros
       - Redhat
       - Solaris
       - Suse
+      - VRP
       - Windows
+      - Xenserver
     type: str
   path:
     description: Path to the installation medium
@@ -111,7 +116,8 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
-            os_family=dict(),
+            os_family=dict(choices=['AIX', 'Altlinux', 'Archlinux', 'Coreos', 'Debian', 'Freebsd', 'Gentoo', 'Junos', 'NXOS',
+                                    'Rancheros', 'Redhat', 'Solaris', 'Suse', 'VRP', 'Windows', 'Xenserver']),
             path=dict(),
         ),
     )
