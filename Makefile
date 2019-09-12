@@ -66,7 +66,7 @@ dist:
 	mkdir -p $(COLLECTION_TMP)
 
 	# only copy selected files/folders from our git
-	git archive HEAD LICENSE README.md galaxy.yml plugins | tar -C $(COLLECTION_TMP) -xf -
+	git archive HEAD LICENSE README.md galaxy.yml plugins tests/sanity | tar -C $(COLLECTION_TMP) -xf -
 
 	# drop nailgun modules, we don't want them shipped
 	rm -f $(COLLECTION_TMP)/plugins/module_utils/ansible_nailgun_cement.py
