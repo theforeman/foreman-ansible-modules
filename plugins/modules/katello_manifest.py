@@ -81,7 +81,7 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 def main():
     module = KatelloEntityAnsibleModule(
         argument_spec=dict(
-            manifest_path=dict(),
+            manifest_path=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present', 'refreshed']),
             repository_url=dict(aliases=['redhat_repository_url']),
         ),
