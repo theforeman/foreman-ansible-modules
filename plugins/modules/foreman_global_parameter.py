@@ -62,7 +62,6 @@ options:
       - hash
       - yaml
       - json
-    note: This parameter has an effect only on foreman >= 1.22
     type: str
   state:
     description:
@@ -73,6 +72,8 @@ options:
       - present_with_defaults
       - absent
     type: str
+notes:
+  - The I(parameter_type) only has an effect on Foreman >= 1.22
 extends_documentation_fragment: foreman
 '''
 
