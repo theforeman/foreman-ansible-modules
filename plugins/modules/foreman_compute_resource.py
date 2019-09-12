@@ -60,6 +60,35 @@ options:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
     required: false
     type: dict
+    suboptions:
+      url:
+        description:
+          - URL of the compute resource
+        type: str
+      user:
+        description:
+          - Username for the compute resource connection, not valid for I(provider=libvirt)
+        type: str
+      password:
+        description:
+          - Password for the compute resource connection, not valid for I(provider=libvirt)
+        type: str
+      datacenter:
+        description:
+          - Datacenter the compute resource is in, not valid for I(provider=libvirt)
+        type: str
+      display_type:
+        description:
+          - Display type to use for the remote console, only valid for I(provider=libvirt)
+        type: str
+      use_v4:
+        description:
+          - Use oVirt API v4, only valid for I(provider=ovirt)
+        type: bool
+      ovirt_quota:
+        description:
+          - oVirt quota ID, only valid for I(provider=ovirt)
+        type: str
   locations:
     description: List of locations the compute resource should be assigned to
     required: false
