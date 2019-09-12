@@ -70,6 +70,8 @@ EXAMPLES = '''
 RETURN = '''
 foreman_setting:
   description: Created / Updated state of the setting
+  returned: success
+  type: dict
 '''
 
 
