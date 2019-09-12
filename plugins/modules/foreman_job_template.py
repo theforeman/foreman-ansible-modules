@@ -129,7 +129,7 @@ options:
           - description of the Template Input
       options:
         description:
-          - selecTemplate values for user inputs. Must be an array of any type.
+          - Template values for user inputs. Must be an array of any type.
         type: list
       puppet_parameter_class:
         description:
