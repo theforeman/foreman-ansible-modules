@@ -54,6 +54,17 @@ options:
       - List of repositories that include name and product.
       - Cannot be combined with I(composite=True).
     type: list
+    suboptions:
+      name:
+        description:
+          - Name of the Repository to be added
+        type: str
+        required: true
+      product:
+        description:
+          - Product of the Repository to be added
+        type: str
+        required: true
   state:
     description:
       - State of the content view
@@ -79,6 +90,23 @@ options:
       - List of content views to includes content_view and either version or latest.
       - Ignored if I(composite=False).
     type: list
+    suboptions:
+      content_view:
+        description:
+          - Content View name to be added to the Composite Content View
+        type: str
+        required: true
+      latest:
+        description:
+          - Always use the latest Content View Version
+        type: bool
+        default: False
+      content_view_version:
+        description:
+          - Version of the Content View to add
+        type: str
+        aliases:
+          - version
 extends_documentation_fragment: foreman
 '''
 
@@ -105,7 +133,7 @@ EXAMPLES = '''
     auto_publish: true
     components:
       - content_view: Fedora CV
-        version: 1.0
+        content_view_version: 1.0
       - content_view: Internal CV
         latest: true
 '''
