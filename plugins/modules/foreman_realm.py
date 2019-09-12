@@ -48,7 +48,11 @@ options:
     type: str
   realm_type:
     description:
-      - Realm type, e.g. FreeIPA or Active Directory or Red Hat Identity Management
+      - Realm type
+    choices:
+      - Red Hat Identity Management
+      - FreeIPA
+      - Active Directory
     required: true
     type: str
   state:
