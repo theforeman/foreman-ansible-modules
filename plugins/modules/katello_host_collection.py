@@ -59,7 +59,6 @@ options:
     choices:
       - present
       - absent
-      - present_with_defaults
     type: str
 extends_documentation_fragment: foreman
 '''
