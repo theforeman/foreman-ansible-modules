@@ -302,7 +302,6 @@ template_input_entity_spec = {
     ]),
     'fact_name': dict(),
     'variable_name': dict(),
-    'variable_name': dict(),
     'puppet_class_name': dict(),
     'puppet_parameter_name': dict(),
     'options': dict(type='list'),
