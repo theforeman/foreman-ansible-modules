@@ -251,6 +251,4 @@ def main():
 
 
 if __name__ == '__main__':
-    changed = main()
-
-#  vim: set sts=4 ts=8 sw=4 ft=python et noro norl cin si ai :
+    main()
