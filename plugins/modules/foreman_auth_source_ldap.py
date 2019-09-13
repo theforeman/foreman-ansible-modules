@@ -31,7 +31,6 @@ module: foreman_auth_source_ldap
 short_description: Manage Foreman LDAP authentication sources using Foreman API
 description:
   - Create and Delete Foreman LDAP authentication sources using Foreman API
-version_added: "2.9"
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 requirements:
