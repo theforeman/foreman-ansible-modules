@@ -9,7 +9,6 @@ import json
 import re
 import time
 import traceback
-import yaml
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -20,6 +19,12 @@ except ImportError:
     HAS_APYPIE = False
     APYPIE_IMP_ERR = traceback.format_exc()
 
+try:
+    import yaml
+    HAS_PYYAML = True
+except ImportError:
+    HAS_PYYAML = False
+    PYYAML_IMP_ERR = traceback.format_exc()
 
 parameter_entity_spec = dict(
     name=dict(required=True),
@@ -629,6 +634,9 @@ def parameter_value_to_str(value, parameter_type):
 
 # Helper for templates
 def parse_template(template_content, module):
+    if not HAS_PYYAML:
+        module.fail_json(msg='The PyYAML Python module is required', exception=PYYAML_IMP_ERR)
+
     try:
         template_dict = {}
         data = re.search(
