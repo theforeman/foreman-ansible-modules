@@ -23,11 +23,15 @@
       repository_content_type: docker
       repository_url: https://registry.hub.docker.com
       repository_docker_upstream_name: library/busybox
-  - include: tasks/repository_sync.yml
-  - include: tasks/repository_sync.yml
+  - include: tasks/katello_sync.yml
+  - include: tasks/katello_sync.yml
     vars:
       repository: Test Docker Repository
   - include: tasks/content_view.yml
+    vars:
+      repositories:
+        - name: "Test Repository"
+          product: "Test Product"
 
 - hosts: tests
   gather_facts: false

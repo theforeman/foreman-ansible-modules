@@ -32,8 +32,6 @@ short_description: Create and Manage Katello content View filters
 description:
     - Create and Manage Katello content View filters
 author: "Sean O'Keeffe (@sean797)"
-requirements:
-    - "nailgun >= 0.28.0"
 options:
   content_view:
     description:
@@ -158,78 +156,52 @@ EXAMPLES = '''
     inclusion: True
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
-try:
-    from nailgun.entities import (
-        AbstractContentViewFilter,
-        ContentViewFilterRule,
-    )
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
-    from ansible.module_utils.ansible_nailgun_cement import (
-        find_organization,
-        find_content_view,
-        find_content_view_filter,
-        find_repositories,
-        find_content_view_filter_rule,
-        find_errata,
-        find_package_group,
-        ForemanAnsibleModule,
-        naildown_entity_state,
-        sanitize_entity_dict,
-    )
-except ImportError:
-    pass
-
-content_filter_map = {
-    'name': 'name',
-    'description': 'description',
-    'repositories': 'repository',
-    'inclusion': 'inclusion',
-    'content_view': 'content_view',
-    'filter_type': 'type',
+content_filter_spec = {
+    'name': {},
+    'description': {},
+    'repositories': {'type': 'entity_list', 'flat_name': 'repository_ids'},
+    'inclusion': {},
+    'content_view': {'type': 'entity', 'flat_name': 'content_view_id'},
+    'filter_type': {'flat_name': 'type'},
 }
 
-content_filter_rule_erratum_map = {
-    'content_view_filter': 'content_view_filter',
-    'date_type': 'date_type',
-    'end_date': 'end_date',
-    'start_date': 'start_date',
-    'types': 'types',
+content_filter_rule_erratum_spec = {
+    'date_type': {},
+    'end_date': {},
+    'start_date': {},
+    'types': {},
 }
 
-content_filter_rule_erratum_id_map = {
-    'content_view_filter': 'content_view_filter',
-    'errata': 'errata',
-    'date_type': 'date_type',
+content_filter_rule_erratum_id_spec = {
+    'errata_id': {},
+    'date_type': {},
 }
 
-content_filter_rule_rpm_map = {
-    'rule_name': 'name',
-    'content_view_filter': 'content_view_filter',
-    'end_date': 'end_date',
-    'max_version': 'max_version',
-    'min_version': 'min_version',
-    'version': 'version',
-    'architecture': 'architecture',
+content_filter_rule_rpm_spec = {
+    'rule_name': {'flat_name': 'name'},
+    'end_date': {},
+    'max_version': {},
+    'min_version': {},
+    'version': {},
+    'architecture': {},
 }
 
-content_filter_rule_package_group_map = {
-    'rule_name': 'name',
-    'content_view_filter': 'content_view_filter',
-    'uuid': 'uuid',
-
+content_filter_rule_package_group_spec = {
+    'rule_name': {'flat_name': 'name'},
+    'uuid': {},
 }
 
-content_filter_rule_docker_map = {
-    'rule_name': 'name',
-    'content_view_filter': 'content_view_filter',
-
+content_filter_rule_docker_spec = {
+    'rule_name': {'flat_name': 'name'},
 }
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = KatelloAnsibleModule(
         argument_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -237,7 +209,6 @@ def main():
             inclusion=dict(type='bool', default=False),
             content_view=dict(required=True),
             filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker']),
-            organization=dict(required=True),
             filter_state=dict(default='present', choices=['present', 'absent']),
             rule_state=dict(default='present', choices=['present', 'absent']),
             rule_name=dict(aliases=['package_name', 'package_group', 'tag']),
@@ -252,51 +223,62 @@ def main():
         ),
     )
 
-    entity_dict = module.parse_params()
+    entity_dict = module.clean_params()
     filter_state = entity_dict.pop('filter_state')
     rule_state = entity_dict.pop('rule_state')
-
-    module.connect()
-
-    organization = find_organization(module, name=entity_dict.pop('organization'))
-    entity_dict['content_view'] = find_content_view(module, name=entity_dict['content_view'], organization=organization)
-    if len(entity_dict['repositories']) > 0:
-        entity_dict['repositories'] = find_repositories(module, entity_dict['repositories'], organization)
-
-    content_view_filter_entity = find_content_view_filter(module, name=entity_dict['name'], content_view=entity_dict['content_view'], failsafe=True)
-    content_view_filter_dict = sanitize_entity_dict(entity_dict, content_filter_map)
-
-    content_view_filter_changed = naildown_entity_state(AbstractContentViewFilter, content_view_filter_dict, content_view_filter_entity, filter_state, module)
 
     if entity_dict['filter_type'] == 'erratum':
         entity_dict['rule_name'] = None
     elif 'rule_name' not in entity_dict:
         entity_dict['rule_name'] = entity_dict['name']
 
-    # Find content_view_filter again as it may have just been created
-    entity_dict['content_view_filter'] = find_content_view_filter(module, name=entity_dict['name'], content_view=entity_dict['content_view'], failsafe=True)
+    module.connect()
 
-    if entity_dict['content_view_filter'] is not None:
+    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
+    cv_scope = {'content_view_id': entity_dict['content_view']['id']}
+    if entity_dict['repositories']:
+        repositories = []
+        for repo in entity_dict['repositories']:
+            product = module.find_resource_by_name('products', repo['product'], params=scope, thin=True)
+            product_scope = {'product_id': product['id']}
+            repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
+        entity_dict['repositories'] = repositories
+
+    content_view_filter = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
+    changed, content_view_filter = module.ensure_entity('content_view_filters', entity_dict, content_view_filter, params=cv_scope,
+                                                        state=filter_state, entity_spec=content_filter_spec)
+
+    if content_view_filter is not None:
+        cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
         if 'errata_id' in entity_dict:
-            rule_map = content_filter_rule_erratum_id_map
-            entity_dict['errata'] = find_errata(module, id=entity_dict['errata_id'], organization=organization)
-            content_view_filter_rule_entity = find_content_view_filter_rule(module, content_view_filter=entity_dict['content_view_filter'],
-                                                                            errata=entity_dict['errata'], failsafe=True)
+            # should we try to find the errata the user is asking for? or just pass it blindly?
+            # errata = module.find_resource('errata', 'id={0}'.format(entity_dict['errata_id']), params=scope)
+            rule_spec = content_filter_rule_erratum_id_spec
+            search_scope = {'errata_id': entity_dict['errata_id']}
+            search_scope.update(cv_filter_scope)
+            search = None
         else:
-            rule_map = globals()['content_filter_rule_%s_map' % (entity_dict['filter_type'])]
-            content_view_filter_rule_entity = find_content_view_filter_rule(module, content_view_filter=entity_dict['content_view_filter'],
-                                                                            name=entity_dict['rule_name'], failsafe=True)
+            rule_spec = globals()['content_filter_rule_%s_spec' % (entity_dict['filter_type'])]
+            search_scope = cv_filter_scope
+            if entity_dict['rule_name'] is not None:
+                search = 'name="{0}"'.format(entity_dict['rule_name'])
+            else:
+                search = None
+        # not using find_resource_by_name here, because not all filters (errata) have names
+        content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
         if entity_dict['filter_type'] == 'package_group':
-            entity_dict['uuid'] = find_package_group(module, name=entity_dict['rule_name']).uuid
+            package_group = module.find_resource_by_name('package_groups', entity_dict['rule_name'], params=scope)
+            entity_dict['uuid'] = package_group['uuid']
 
-        content_view_filter_rule_dict = sanitize_entity_dict(entity_dict, rule_map)
-        check_missing = ['min_version', 'max_version', 'version', 'start_date', 'end_date', 'architecture', 'date_type']
-        content_view_filter_rule_changed = naildown_entity_state(ContentViewFilterRule, content_view_filter_rule_dict, content_view_filter_rule_entity,
-                                                                 rule_state, module, check_missing)
-        changed = content_view_filter_changed or content_view_filter_rule_changed
-    else:
-        changed = content_view_filter_changed
+        # drop 'name' from the dict, as otherwise it might override 'rule_name'
+        rule_dict = entity_dict.copy()
+        rule_dict.pop('name', None)
+
+        changed |= module.ensure_entity_state('content_view_filter_rules', rule_dict, content_view_filter_rule, params=cv_filter_scope,
+                                              state=rule_state, entity_spec=rule_spec)
 
     module.exit_json(changed=changed)
 
