@@ -35,8 +35,6 @@ description:
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"
-requirements:
-  - apypie
 options:
   name:
     description:

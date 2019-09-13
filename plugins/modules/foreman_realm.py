@@ -33,8 +33,6 @@ description:
   - Manage Foreman Realms
 author:
   - "Lester R Claudio (@claudiol1)"
-requirements:
-  - apypie
 options:
   name:
     description:

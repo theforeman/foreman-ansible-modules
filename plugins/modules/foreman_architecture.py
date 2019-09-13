@@ -33,8 +33,6 @@ description:
   - Create, Update and Delete Foreman Architectures using Foreman API
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
-requirements:
-  - "apypie"
 options:
   name:
     description: Name of architecture

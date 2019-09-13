@@ -34,8 +34,6 @@ description:
   - "This beta version can create, and update compute attributes"
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
-requirements:
-  - "apypie"
 options:
   compute_resource:
     description:

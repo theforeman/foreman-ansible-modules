@@ -34,8 +34,6 @@ description:
   - "This beta version can create and delete hosts from preexisting host groups"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
-requirements:
-  - "apypie"
 options:
   name:
     description:

@@ -35,8 +35,6 @@ description:
 author:
   - "Bernhard Suttner (@_sbernhard) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"
-requirements:
-  - "apypie"
 options:
   name:
     description: The full environment name

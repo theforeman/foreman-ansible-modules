@@ -35,8 +35,6 @@ description:
 author:
   - "Andrew Kofink (@akofink)"
   - "Baptiste Agasse (@bagasse)"
-requirements:
-    - "apypie"
 options:
   name:
     description:

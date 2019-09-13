@@ -32,8 +32,6 @@ short_description: Create and manage Katello repository
 description:
     - Crate and manage a Katello repository
 author: "Eric D Helms (@ehelms)"
-requirements:
-    - apypie
 options:
   name:
     description:

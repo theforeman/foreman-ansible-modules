@@ -33,8 +33,6 @@ description:
   - Create and Delete Foreman LDAP authentication sources using Foreman API
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
-requirements:
-  - "apypie"
 options:
   name:
     description: The name of the LDAP authentication source

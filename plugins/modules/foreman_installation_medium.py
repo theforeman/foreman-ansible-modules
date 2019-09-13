@@ -33,8 +33,6 @@ description:
   - Create and Delete Foreman Installation Medium using Foreman API
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
-requirements:
-  - apypie
 options:
   name:
     description:

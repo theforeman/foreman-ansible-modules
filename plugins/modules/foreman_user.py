@@ -33,8 +33,6 @@ description:
   - Create and delete users in Foreman
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
-requirements:
-  - "apypie"
 options:
   login:
     aliases:

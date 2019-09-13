@@ -35,8 +35,6 @@ description:
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
-requirements:
-  - apypie
 options:
   name:
     description: compute profile name

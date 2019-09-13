@@ -36,8 +36,6 @@ author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
   - "Manisha Singhal (@manisha15) ATIX AG"
-requirements:
-  - "apypie"
 options:
   name:
     description:

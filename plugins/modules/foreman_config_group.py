@@ -33,8 +33,6 @@ description:
   - Create and Delete Foreman (Puppet) config groups using Foreman API
 author:
   - "Baptiste Agasse (@bagasse)"
-requirements:
-  - "apypie"
 options:
   name:
     description: The config group name

@@ -34,8 +34,6 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
-requirements:
-  - apypie
 options:
   audit_comment:
     description:

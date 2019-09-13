@@ -32,8 +32,6 @@ short_description: Enable/disable repositories in Katello repository sets
 description:
   - Enable/disable repositories in Katello repository sets
 author: "Andrew Kofink (@akofink)"
-requirements:
-  - "apypie"
 options:
   name:
     description:

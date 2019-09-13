@@ -32,8 +32,6 @@ short_description: Manage Katello manifests
 description:
     - Upload and Manage Katello manifests
 author: "Andrew Kofink (@akofink)"
-requirements:
-    - apypie
 options:
   organization:
     description:

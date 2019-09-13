@@ -24,6 +24,8 @@ class ModuleDocFragment(object):
 
     # Foreman documentation fragment
     DOCUMENTATION = '''
+requirements:
+  - apypie
 options:
   server_url:
     description: URL of the Foreman server

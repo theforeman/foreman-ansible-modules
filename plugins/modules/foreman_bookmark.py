@@ -34,9 +34,6 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"
-requirements:
-  - "ansible >= 2.3"
-  - "apypie"
 options:
   name:
     description:

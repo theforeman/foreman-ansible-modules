@@ -35,8 +35,6 @@ description:
 author:
     - "Andrew Kofink (@akofink)"
     - "Matthis Dellweg (@mdellweg) ATIX-AG"
-requirements:
-    - apypie
 options:
   name:
     description:

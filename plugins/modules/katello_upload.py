@@ -33,8 +33,6 @@ short_description: Upload content to Katello
 description:
     - Allows the upload of content to a Katello repository
 author: "Eric D Helms (@ehelms)"
-requirements:
-    - "apypie"
 options:
   src:
     description:

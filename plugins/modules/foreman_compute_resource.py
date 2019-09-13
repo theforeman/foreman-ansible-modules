@@ -36,8 +36,6 @@ author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
   - "Manisha Singhal (@Manisha15) ATIX AG"
-requirements:
-  - "apypie"
 options:
   name:
     description: compute resource name
