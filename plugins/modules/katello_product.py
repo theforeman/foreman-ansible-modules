@@ -34,8 +34,6 @@ description:
 author:
     - "Eric D Helms (@ehelms)"
     - "Matthias Dellweg (@mdellweg) ATIX AG"
-requirements:
-    - apypie
 options:
   name:
     description:

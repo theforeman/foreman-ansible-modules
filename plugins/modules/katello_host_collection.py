@@ -34,8 +34,6 @@ description:
 author:
     - "Maxim Burgerhout (@wzzrd)"
     - "Christoffer Reijer (@ephracis)"
-requirements:
-    - apypie
 options:
   description:
     description:

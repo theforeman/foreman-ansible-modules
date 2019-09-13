@@ -36,8 +36,6 @@ description:
   - "See: U(https://github.com/ATIX-AG/foreman_snapshot_management)"
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
-requirements:
-    - "apypie"
 options:
   name:
     description:

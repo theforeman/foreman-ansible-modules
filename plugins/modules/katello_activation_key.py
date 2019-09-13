@@ -32,8 +32,6 @@ short_description: Create and Manage Katello activation keys
 description:
   - Create and Manage Katello activation keys
 author: "Andrew Kofink (@akofink)"
-requirements:
-  - apypie
 options:
   name:
     description:

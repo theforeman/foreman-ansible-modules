@@ -33,8 +33,6 @@ description:
   - Create and Delete Foreman Domains using Foreman API
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
-requirements:
-  - "apypie"
 options:
   name:
     description: The full DNS domain name

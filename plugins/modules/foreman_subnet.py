@@ -34,7 +34,6 @@ description:
 author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
-  - apypie
   - ipaddress
 options:
   name:

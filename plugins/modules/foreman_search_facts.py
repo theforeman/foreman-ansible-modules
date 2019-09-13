@@ -34,8 +34,6 @@ description:
   - "Gather facts about Foreman resources"
 author:
   - "Sean O'Keeffe (@sean797)"
-requirements:
-  - apypie
 options:
   resource:
     description:

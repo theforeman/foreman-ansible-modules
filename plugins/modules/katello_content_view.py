@@ -32,8 +32,6 @@ short_description: Create and Manage Katello content views
 description:
     - Create and Manage Katello content views
 author: "Eric D Helms (@ehelms)"
-requirements:
-    - apypie
 options:
   name:
     description:

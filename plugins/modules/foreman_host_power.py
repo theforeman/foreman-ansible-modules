@@ -35,8 +35,6 @@ description:
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Baptiste Agasse (@bagasse)"
-requirements:
-  - "apypie"
 options:
   name:
     description: Name (FQDN) of the host

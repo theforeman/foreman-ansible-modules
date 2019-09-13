@@ -32,8 +32,6 @@ short_description: Create, remove or interact with a Katello Content View Versio
 description:
   - Publish, Promote or Remove a Katello Content View Version
 author: Sean O'Keeffe (@sean797)
-requirements:
-  - apypie
 notes:
   - You cannot use this to remove a Content View Version from a Lifecycle environment, you should promote another version first.
   - For idempotency you must specify either C(version) or C(current_lifecycle_environment).

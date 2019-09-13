@@ -34,8 +34,6 @@ description:
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
   - "Baptiste Agasse (@bagasse)"
-requirements:
-  - "apypie"
 options:
   name:
     description: Name of hostgroup

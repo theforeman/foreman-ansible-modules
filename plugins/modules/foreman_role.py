@@ -33,8 +33,6 @@ description:
   - Create and Delete Foreman Roles using Foreman API
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
-requirements:
-  - "apypie"
 options:
   name:
     description: The name of the role

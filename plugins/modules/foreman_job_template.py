@@ -34,8 +34,6 @@ description:
 author:
   - "Manuel Bonk (@manuelbonk) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"
-requirements:
-  - apypie
 options:
   audit_comment:
     description:

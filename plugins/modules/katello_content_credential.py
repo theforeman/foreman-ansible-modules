@@ -32,8 +32,6 @@ short_description: Create and Manage Katello content credentials
 description:
   - Create and Manage Katello content credentials
 author: "Baptiste Agasse (@bagasse)"
-requirements:
-  - apypie
 options:
   name:
     description:

@@ -33,8 +33,6 @@ description:
   - "Manage Foreman Setting Entities"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
-requirements:
-  - apypie
 options:
   name:
     description:
