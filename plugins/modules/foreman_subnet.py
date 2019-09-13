@@ -35,6 +35,7 @@ author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
   - apypie
+  - netaddr
 options:
   name:
     description: Subnet name
@@ -200,9 +201,14 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-
-from netaddr import IPNetwork
+import traceback
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+try:
+    from netaddr import IPNetwork
+    HAS_NETADDR = True
+except ImportError:
+    HAS_NETADDR = False
+    NETADDR_IMP_ERR = traceback.format_exc()
 
 
 def main():
@@ -234,6 +240,9 @@ def main():
         ),
         required_one_of=[['cidr', 'mask']],
     )
+
+    if not HAS_NETADDR:
+        module.fail_json(msg='The netaddr Python module is required', exception=NETADDR_IMP_ERR)
 
     entity_dict = module.clean_params()
 
