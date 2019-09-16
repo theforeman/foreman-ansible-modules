@@ -23,13 +23,11 @@ about: Create a report to help us improve
 
 ```
 
-##### NAILGUN VERSION
-<!--- Paste, BELOW THIS COMMENT, verbatim output from "pip show nailgun | grep Version"-->
+##### APYPIE VERSION
+<!--- Paste, BELOW THIS COMMENT, verbatim output from "pip show apypie | grep Version"-->
 ```
 
 ```
-
-<!--- Have you tried Nailgun from the correct branch? https://github.com/theforeman/foreman-ansible-modules#nailgun-versions -->
 
 ##### STEPS TO REPRODUCE
 <!--- For bugs, show exactly how to reproduce the problem, using a minimal test-case. -->

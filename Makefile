@@ -68,10 +68,6 @@ dist:
 	# only copy selected files/folders from our git
 	git archive HEAD LICENSE README.md galaxy.yml plugins tests/sanity | tar -C $(COLLECTION_TMP) -xf -
 
-	# drop nailgun modules, we don't want them shipped
-	rm -f $(COLLECTION_TMP)/plugins/module_utils/ansible_nailgun_cement.py
-	grep -rl ansible_nailgun_cement $(COLLECTION_TMP)/plugins/modules/ | xargs rm -f
-
 	# fix the imports to use the collection namespace
 	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
 	sed -i '/extends_documentation_fragment/ s/foreman/theforeman.foreman.foreman/g' $(COLLECTION_TMP)/plugins/modules/*.py
