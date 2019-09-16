@@ -1,535 +1,602 @@
 interactions:
 - request:
-    body: !!python/unicode '{}'
+    body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['2']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
+      Accept:
+      - application/json;version=2
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/ping
+    uri: https://foreman.example.com/api/status
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA43NOwqAMBAE0N5TyNY2fkDwMmHRiMH8yG5sJHc3sbOK1TLLG6ZtbyBGjgQLuBM6
-        IBkutcqcb/BR+3K/YosBWTkrTHkNM6TulQIjHzXeT4WvaDctvbJVPn74v4m+dHYXpEErGOmkWiWv
-        pNQ8PjytMA0BAAA=
+      string: !!python/unicode '{"result":"ok","status":200,"version":"1.22.0","api_version":2}'
     headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['125']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:31 GMT']
-      etag: [W/"e9f8c95ffbdac233072a23768e1b0074-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=719133b957f37d618bf72d911ec4fd5d; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [f0539988-a9f0-4d1e-b4e8-52841642ac9f]
-      x-runtime: ['0.110163']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"search": "name=\"Test Organization\""}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['52']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/organizations
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA42PzWrDMBCE734KsWcHrPTPCHIofYBc0lNTjGwtiUCVzGp9aI3fvWs7pSm95Lbz
-        McPsjIVSwIltAKMeylnlof0BegG9PeGvQGouYFutfrTUnUVDtB+4O8JzTHxG2ke8UwfMrPZ0stF/
-        WfYpHgHWVCKWzCi3qPZT7jiEUK46kUO6ICHTEiHMQ+As+G2EYFuUF6/LmrmsuS6DEjpCy+gaK22w
-        rXS90dVGPyn9aO5ro2v1engR29C7W2zegdFVuSz9W/5/qdjZc7jF5zB35PtFmXnz9F5MxTdhHSEQ
-        nAEAAA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['232']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:31 GMT']
-      etag: [W/"aa7fb0ec638ec457ee900acb67641b65-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=d279f0359ea607468b58de9fe911cb9d; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [02dc3055-6cdf-4ce0-847b-17acf66ca52d]
-      x-runtime: ['0.035022']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"organization_id": 10, "name": "Test Content View"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['52']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_views
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA41TwW7bMAy97ysMnt3BTrFu8G3oBxQYul6GQlAsphFmiwYlefMC//toW3HcIAN2
-        M/ke+ahH+gSBgm6gKnPwcX8JOv2GyweyWoJdkQMyE0PlYtNIAWquj2tEHKA6wX6ACpxuEXIgNih0
-        0L6GMQdGH5vgofpxgprajrwN0vigG4/5knHogrJm4rzmYPCgpWKlHIhrVF3sOgwKXW+ZXCsVK6FH
-        9pacqilOWZm40QF9UAk4D6tjIOmzb6w/rsWM80TEQ5qgLGQGa8QHMWJ+UgXP0i17JBdENnux+Asm
-        jT02CVMJUwkz6Gu2XdiIE79pZ//oKafm9sX75GRjkvvqKByRnxzeZ7P005Z3kd7w1DzGFW+RkR3U
-        jOKIUVrsgV1Rfrkri7vyc1Y+VJ/KaveQfX9+FH7szP/QNjtIK1tNtLgs+vzArX/fVqev3XuH1MnK
-        MHRT6RBbGEUi7b8lExtMsmm/KVpPaY2XRr3sRF2Dug62X5bxE4eUdPh7czRQfizmSWXCdDVozuuU
-        P6S1PqmfIGlcBCUbOMp9obHhNiJHEpiG22AS/AfI1FJARawYW+rxFm0cX8cPfwFNKVbt6wMAAA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['454']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:31 GMT']
-      etag: [W/"bd79d53685685dba3acea16a50518d27-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=65d3f4fed469e52ffb89b5a1d615bc7f; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [0983ab4b-bb28-4e5b-b8ec-d27e5a0fed1f]
-      x-runtime: ['0.049316']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"organization_id": 10, "name": "Test Product"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['47']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/products
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA31Ry27CMBC89yusPYeKBCiRb4gPoFLpqaosY1bBqmNb9qZVivj32oFCyqG33dnZ
-        x8wegRxJA7wsIHa7W+Jlg+cAgzgn1bQADMEF4LYzJjWgDOpwzVwg4EfY9cDByhahABf2mOggo4JT
-        AQFjZygCfzuC3gOvC1Be5Ajm9WIxr2d1VdVlahz6OWwxEnsObt8pSqiROzQXWNzgPUYVtCftbCqu
-        2EF63zOjiQwyyiP8lZuiT52OGraWy3R2b5XwRtoBuUjJWOzaVoY+S4qdUhjT3VUS0fhGfGA/pkcj
-        lBQKA92jRqOlfyp3g4a9JClrf0mJtg1bu9YbJHwcDEjCMyvVq2lZT8rppFyy8onPaz5fsNfteswS
-        X+kB6WyYsVbbLlkx/KSRVn/LbNfZhelfMCu++L+yjg4YNhZnbPjFZsy7PWTEE8Nz7njnNaeR27+S
-        A3oXNbnQC+U6S9nj99PDD4vKhWqYAgAA
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['366']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:31 GMT']
-      etag: [W/"ca6efb32ed7c049e89166d5a9d632218-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=78bc6c2a151f1b344dc23fc517a7bf29; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [f3efe441-f9a6-4080-b664-b70d94538491]
-      x-runtime: ['0.079751']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"product_id": 8, "name": "Test Repository"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['44']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/repositories
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA3VTTW/bMAy971cEPMe1HTuJ7duw64AOQ3cqCkGW6NSrLQn66JYG+e+jbCdpse2S
-        iOTzI/lInsBrzwdo8jW40N4Mww84P9Cy2dhka0BrtYVGhWGgD5Bb8Xy1tPXQnKA9QgOKjwhr0FYi
-        wYE7Aec1WHRh8A6axxMIrTwqz/zREDccw0j4YCk7PHtvXJOmFo12dx1KbblBbQa80/aQmjCY+Ufi
-        qNmESt+0TiFmGLjvX5FK9lQZfFbaP6O9V1iwB3Se3dsDV/0bgbRKv/at5faYiuC8HtMJ8M1qGYSf
-        je+Ru/faHol7bhaUnh7rawe9JG++Lep9XdZZUWYFBVsuXlBJChKk7/pJBlEXWHDMk7ZueVJ2+23C
-        5bZOhOAVr+u6kxV/RzzwFoeLvCP/eVN+7NXNiHDeK5qTvZbLpgEsgFhgTsObfRA7W33obEkEf/cs
-        0Qnbm6jWhc3MAsVRR+KKCjCzBmW13ZZVUW02VQ4f0y2qktcdlWBm4MT3eFmT91kWhOQ+RnpSwr7S
-        ThId/vYsxuDpHEt2i7XUAVVXbXf5rk543m2Tss3ahO9qTPZiV/G23aHAKG5waJfKuCQdY0LPrUfJ
-        ODUFmyyvkjxL8v0q3zVl1Wyq1Y+HLwSjcf4XVOYLiLh85KaFMgYlXJY+uoIQ6BxMEh5sfDb5XXa+
-        DVzooOJ5nEA7bxEZraeKS0fDk5oWyrKRtrcjRf/lY0P/MeD5YTKtGaEpNlTd9MrieYuX6aijdzHY
-        wepg6M6nM+eeLrIpKRqoEc9GGuCA08ddvzwktvT/fhrsF508dQDFirQNHh2cn86f/gDw6FEMZwQA
-        AA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['628']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"567de8c9d0f4d58ce545952d88903fa0-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=1a7f0a8281942f40ac3e7421b51dfc28; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [f5bb6b8c-021c-4f66-8157-d43f70a26287]
-      x-runtime: ['0.076728']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"content_view_id": 11, "name": "Test Package Content
-      View Filter"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['67']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_view_filters
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA61WTY/bNhC991cYPFsryfKHpFsQoKcCCYq0l2BBUNTIZiKRBEU5dQz/9w4pWpYd
-        LxKgxQJrkTPkG755M+SZWGVZS8p0Sfqhug0028P4AYaOg1WyJGCMMqSUQ9viAmCGH6aRMpaUZ1Kd
-        SEkk64AsiTI1oDthPSeXJTHQD63tSfn5TITk7dALJUnZsLaHJRE1KbPluLQkn6C3i4+Mf0XsxXsl
-        LUi7+FvAt8XvorW465LU0HMjtPWbjEFwA8xCTRmGQlZJmkdpEqW7RbotN2m52i3++vQeVw66/hU3
-        PsLSI8K6o3HVadULC1PMfkY6H1G7c726qBqGp5xcGmU4UD1oDZaCPAqjZIcrJocjGMcD5Wpws8hy
-        i8H1CDsarmdjg1W4T9WK/jAtNuAjUuYUIkiT15HKNL3ncs4hcRgVtMFGg40G2xNildkzKb4zN0f9
-        9sn9pOMnwL2Tyh7AfJCQLTz0h7nfDXrmR30YD34jzOWnWd3+WlavbrMchJRNJAoI4gwHnPP358T0
-        I3t3lqtm7Em7paehIxeECPnvVD20EGBDfsNoktI0vomPPhoZt+I4JuMrnMKkhH9moiHpS+IjxQiD
-        aqC+phOruhN9QD+TgHEDxFlrBtQX1MI+t6BIrFGn58YA+IbRqE5ZoMpQA506wjO3y+VJXp6Qi2k3
-        LhMHa3VfxrFf89JArQzToHQLLyjTWA+tHv/VCEm9V/xdqZg4GCw4gWFoZg8/02X8h6gMM6eYD71V
-        XewdPhrMK7fxj3IYOySRyn/csuoURtJNVuyKdZFk6yRDY4XtDmSNRnQRjfC9kxcZZAzSqCoqFq2b
-        3SZi9aaIOGc5K4qiqXM22zgoc0xzx77c2nUn5G3g3JmQYOisg4xyHx3+Qwk8aR96JMhpzW2cYwB6
-        5GCdbzbrPMtXqzwlD90/LMK75SQ51S3D/T5f75Y5SvBw5e/6BjJhjniRhZJwNvJ6CbXgRyEOkjf5
-        Zptui4ilzSZaV0kVsW0B0Y5vc1ZVW+DgyB16MCEyViOPDtAy80azWeflKp+aTf2m0zoNTriXu1Pw
-        V2GXqMn1pnRTA+fQ98RTuDfus8TCvtwS7q8NX8UKCxKAojylEx0mr1YoKEM7VG+DjD6bo1indwbL
-        9n5odIf38Qqj81+JexP423icDQO6N2rQ+DjwbwNmsSLL9UO784sbET5qqPB3ng36Dd8JeAKSLZDb
-        Ae8+3zJDkTt0jCa0zfN9X2z8W4CGp8Os94XrYzUpqsLHCvmfHgjZmLjLK/799i9Bcw1EQwkAAA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['967']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"76d9def455b4b4241107309217bded24-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=6c2c791288eb753663f42da9564927e4; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [4dedc64a-4f47-400b-abba-6f852905fede]
-      x-runtime: ['0.082748']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-length:
+      - '63'
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:53 GMT
+      etag:
+      - W/"674e9dbc2140c688b559566b581c5c09"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      set-cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a; path=/; secure; HttpOnly; SameSite=Lax
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - d8252ae6-afd8-46e5-a654-b21388e052f8
+      x-runtime:
+      - '0.029564'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_view_filters/3
+    uri: https://foreman.example.com/katello/api/organizations?per_page=4294967296&search=name%3D%22Test+Organization%22&thin=True
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA61WwY7bNhC99ysEnu21ZNleSbciQE4FUhRpLwuDoKiRzaxEEiTl1DH87x1KtCw7
-        3iTA9mKTM4+c0eObIaPoRITkTWeFkqSoWWNhRpQROyFZQzXjr2wHdvSIihTpjEjWAinIZ7Au+nPA
-        RB+UdCBd9I+Ar9FH0TgwZEYqsNwI7frtZdc0M8INMAcVZQ63WMZJNk/iefIcJZtinRTL5+jvzx9w
-        ZaerX4HxISw9YFhSnHDeamWFgzHn3iI9RlT4JS9bn1XNusaNkFoZDlR3WoOjIA/CKNniihFwAOMZ
-        olx13hrPSIPJWQw7OC7fxjqncJ+yEXY/LjbQZ6TMMWSQxNuByiS55XLKIfExSmiCjwYfDb4HxCqz
-        Y1J8Y95G++3jW6PnJ4T7XSq3B/NJQhr1oT9NcdfQExzt07jDDWHOPz3Vza+d6gU2OYNwZCOJwsvx
-        5UQuHzjl76+R6Xv2bjwXzbij9kuPXYtGbVTVcec58ltndyoP3vN1da8F6/HKOgNAS8Mk3/fqqBR/
-        BUNbpKrG5VObY7t+anSLtbTEwEMB3UzozqhOkwItYAxzmGGxQu+g0BZzaXBBfD5v74yBrSDLMBsr
-        YJxfa4beOxl34jBo6BWOwSjh34nWSfIU9wQjsUHsUF1UqMG0woboJxJiXAOi1ZkOywIq4R57UNvO
-        qONjZwj4htOoVjmgylADrTrAI9j5/EBODzXRGS+gvXPaFotFv+aphkoZpkHpBp6wuha6a/TwU2FI
-        2qMW35RaEB8G+4TANDRz+5+V0+IPgRIyxwXvrFPtogcE4S2+VzEzXmxEqn5wPVWvXpKs0/w5X+Vx
-        uopTdJaoK5AVOhEiaoHNuSA8TyFlkMzLvGTzVf28nrNqnc85ZxnL87yuMjbZOBTUcMwt+6LMOBHy
-        OvFwJiQYOml8Qy0NgHdU7oOu933dcj1wsMrW61WWZstllpDH5Twj9ig51Q3D/V4GyG2UgPBdy7c7
-        ZMIcWENCSXgf2Z5DLfSzkAfJ6my9STb5nCX1er4q43LONjnMn/kmY2W5AQ6e3M6CCZmxCnn0AR0z
-        b/TIVVYss7FHVm+CVkkA4V7+KsR/hV2i6iVp+6uP2I5zsHZofTvjhwUW9vs73MVGsU5/3PpsP4rf
-        1QPx9hZhUEHpm+LkNOhXZfyVS9IIue3wyia+ZYYi99Exm9A2T7d9se6fMDS8eCa9L9x6y1FRJTD/
-        1Plf3jXpcHDn7fm3/wCqEYVenAkAAA==
+      string: !!python/unicode "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\":
+        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"label\":\"Test_Organization\",\"created_at\":\"2019-09-13 10:32:44 UTC\",\"updated_at\":\"2019-09-13
+        10:32:44 UTC\",\"id\":65,\"name\":\"Test Organization\",\"title\":\"Test Organization\",\"description\":\"A
+        test organization\"}]\n}\n"
     headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['934']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"081c452613e7c5f710957f578298a58f-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=f9a45108d208565d2a0bfe15214877b3; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [967d3551-8ec2-40bc-97f6-35e423e047ad]
-      x-runtime: ['0.084459']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"content_view_id": 11, "name": "Test Package Content
-      View Filter"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['67']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_view_filters
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA61WTY/bNhC991cYPFsryfKHpFsQoKcCCYq0l2BBUNTIZiKRBEU5dQz/9w4pWpYd
-        LxKgxQJrkTPkG755M+SZWGVZS8p0Sfqhug0028P4AYaOg1WyJGCMMqSUQ9viAmCGH6aRMpaUZ1Kd
-        SEkk64AsiTI1oDthPSeXJTHQD63tSfn5TITk7dALJUnZsLaHJRE1KbPluLQkn6C3i4+Mf0XsxXsl
-        LUi7+FvAt8XvorW465LU0HMjtPWbjEFwA8xCTRmGQlZJmkdpEqW7RbotN2m52i3++vQeVw66/hU3
-        PsLSI8K6o3HVadULC1PMfkY6H1G7c726qBqGp5xcGmU4UD1oDZaCPAqjZIcrJocjGMcD5Wpws8hy
-        i8H1CDsarmdjg1W4T9WK/jAtNuAjUuYUIkiT15HKNL3ncs4hcRgVtMFGg40G2xNildkzKb4zN0f9
-        9sn9pOMnwL2Tyh7AfJCQLTz0h7nfDXrmR30YD34jzOWnWd3+WlavbrMchJRNJAoI4gwHnPP358T0
-        I3t3lqtm7Em7paehIxeECPnvVD20EGBDfsNoktI0vomPPhoZt+I4JuMrnMKkhH9moiHpS+IjxQiD
-        aqC+phOruhN9QD+TgHEDxFlrBtQX1MI+t6BIrFGn58YA+IbRqE5ZoMpQA506wjO3y+VJXp6Qi2k3
-        LhMHa3VfxrFf89JArQzToHQLLyjTWA+tHv/VCEm9V/xdqZg4GCw4gWFoZg8/02X8h6gMM6eYD71V
-        XewdPhrMK7fxj3IYOySRyn/csuoURtJNVuyKdZFk6yRDY4XtDmSNRnQRjfC9kxcZZAzSqCoqFq2b
-        3SZi9aaIOGc5K4qiqXM22zgoc0xzx77c2nUn5G3g3JmQYOisg4xyHx3+Qwk8aR96JMhpzW2cYwB6
-        5GCdbzbrPMtXqzwlD90/LMK75SQ51S3D/T5f75Y5SvBw5e/6BjJhjniRhZJwNvJ6CbXgRyEOkjf5
-        Zptui4ilzSZaV0kVsW0B0Y5vc1ZVW+DgyB16MCEyViOPDtAy80azWeflKp+aTf2m0zoNTriXu1Pw
-        V2GXqMn1pnRTA+fQ98RTuDfus8TCvtwS7q8NX8UKCxKAojylEx0mr1YoKEM7VG+DjD6bo1indwbL
-        9n5odIf38Qqj81+JexP423icDQO6N2rQ+DjwbwNmsSLL9UO784sbET5qqPB3ng36Dd8JeAKSLZDb
-        Ae8+3zJDkTt0jCa0zfN9X2z8W4CGp8Os94XrYzUpqsLHCvmfHgjZmLjLK/799i9Bcw1EQwkAAA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['967']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"76d9def455b4b4241107309217bded24-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=a95d56329213ca0ba1cb41581a92a5aa; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [7f7db090-6f2c-452e-9358-3170a3fcd47f]
-      x-runtime: ['0.080209']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: !!python/unicode '{"content_view_filter_id": 3, "name": "bear"}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['45']
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
-    method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_view_filters/3/rules
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA32OzQrCMBCE7z6FzDlCE/GHXH0FPYmUtF21EJOySStS+u6uCnrztjN8szMjcszO
-        w2qF1Fc/0bkLfQ7i8iNMoUDMkWFD770EyHF9/arIGXZE9YBF20AhckMCw6UakwJT6n1OsMcRdQyZ
-        Qi6Hlu7lufVZWiRjlwoDcWpjkJyWHy/TKAR3kwWopFHMmsllakonhTCF3i50sdCbuV7blbZmMz/s
-        d4L1XfMHW+o3Np2m2RMrRyxKBgEAAA==
-    headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['193']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"12eb176095f30eb620b132687838d20a-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=14284e7b61b4919f5c66142367143424; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [d9139fe1-8e1a-4788-8c1a-3bbc86001607]
-      x-runtime: ['0.037026']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:53 GMT
+      etag:
+      - W/"b8db9adee6fdd75ce8651ab599b6103d"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 6c6be231-8cb9-4964-b5c9-c9afdcd6584f
+      x-runtime:
+      - '0.018036'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-      content-type: [application/json]
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
     method: GET
-    uri: https://foreman.example.com/katello/api/v2/content_view_filters/3/rules/2
+    uri: https://foreman.example.com/katello/api/organizations/65/content_views?per_page=4294967296&search=name%3D%22Test+Content+View%22&thin=True
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA33KQQrDIBAAwHteIXs24CpJitd8oT2LjRsQEi1maw+lf6/pA3odRog3LDkxJXY1
-        0sutcWMqLgawRkKlcsScwAKChBO1hOR3anInXxouhTxTcJ6baYWXHlWPk8DRDmj1JG7XubXnI/xp
-        Bn/t030BuAHlTZAAAAA=
+      string: !!python/unicode '{"total":2,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":0,"latest_version":null,"auto_publish":false,"solve_dependencies":false,"repository_ids":[43],"id":21,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":65,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":65},"created_at":"2019-09-16
+        07:45:49 UTC","updated_at":"2019-09-16 07:45:49 UTC","environments":[],"repositories":[{"id":43,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"puppet_modules":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"1.0","last_published":null,"permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}}]}
+
+'
     headers:
-      apipie-checksum: [0cda03a2441ef7413a269220924a43ec8e6349a7]
-      cache-control: ['max-age=0, private, must-revalidate']
-      connection: [Keep-Alive]
-      content-encoding: [gzip]
-      content-length: ['128']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Wed, 17 Oct 2018 16:51:32 GMT']
-      etag: [W/"93f3ef4574fdf9cb8e8dc9846f172d16-gzip"]
-      foreman_api_version: ['2']
-      foreman_version: [1.19.0]
-      keep-alive: ['timeout=5, max=10000']
-      server: [Apache/2.4.6 (CentOS)]
-      set-cookie: [_session_id=2300dc495b1d11600cbbc39eef8b210a; path=/; secure; HttpOnly;
-          SameSite=Lax]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [0c4e7724-ffe8-4910-83f1-4428c78dbb2e]
-      x-runtime: ['0.034677']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:53 GMT
+      etag:
+      - W/"f5e624eca9489e29f858b5aed7d0edcd"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - b07fc1c2-dabf-4a5b-8de5-0cba3565d002
+      x-runtime:
+      - '0.030968'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/organizations/65/products?per_page=4294967296&search=name%3D%22Test+Product%22&thin=True
+  response:
+    body:
+      string: !!python/unicode '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":487,"cp_id":"352793428555","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":31,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2019-09-16 06:31:45 UTC","last_sync_words":"about
+        1 hour","organization_id":65,"organization":{"name":"Test Organization","label":"Test_Organization","id":65},"sync_plan":null,"repository_count":2}]}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:53 GMT
+      etag:
+      - W/"33bac9f0f5ff7c133936d6cf9d55cca3"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 50c1f2be-c40b-4ef2-b5b7-4cc1e4665795
+      x-runtime:
+      - '0.068084'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/products/487/repositories?per_page=4294967296&search=name%3D%22Test+Repository%22&thin=True
+  response:
+    body:
+      string: !!python/unicode '{"total":2,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"1af4bda3-edc4-4e2c-a192-3813bd5ce2b1","relative_path":"Test_Organization/Library/custom/Test_Product/Test_Repository","container_repository_name":null,"full_path":"http://centos7-katello-3-12.yatsu.example.com/pulp/repos/Test_Organization/Library/custom/Test_Product/Test_Repository/","id":43,"name":"Test
+        Repository","label":"Test_Repository","description":null,"last_sync":{"id":"753b9596-6acf-499b-88f2-dcae3e3c2335","username":"admin","started_at":"2019-09-16
+        06:28:51 UTC","ended_at":"2019-09-16 06:29:01 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":16,"name":"Default
+        Organization View"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","content_id":"1568370773573","major":null,"minor":null,"product":{"id":487,"cp_id":"352793428555","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":32,"srpm":0,"package":32,"package_group":2,"erratum":4,"puppet_module":0,"file":0,"deb":0,"module_stream":0},"last_sync_words":"about
+        1 hour"}]}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:53 GMT
+      etag:
+      - W/"1bd3962645075d3bd7521599569a52ac"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - dcb6de25-3c5e-40db-9261-0d9c9fc73f35
+      x-runtime:
+      - '0.067823'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/content_views/21/filters?per_page=4294967296&search=name%3D%22Test+Package+Content+View+Filter%22&thin=False
+  response:
+    body:
+      string: !!python/unicode '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Package Content View Filter\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":16,"name":"Test
+        Package Content View Filter","description":null,"created_at":"2019-09-16 07:45:50
+        UTC","updated_at":"2019-09-16 07:45:50 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":0,"latest_version":null,"auto_publish":false,"solve_dependencies":false,"repository_ids":[43],"id":21,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":65,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":65},"created_at":"2019-09-16
+        07:45:49 UTC","updated_at":"2019-09-16 07:45:49 UTC","environments":[],"repositories":[{"id":43,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"puppet_modules":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"1.0","last_published":null,"permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}},"repositories":[{"backend_identifier":"1af4bda3-edc4-4e2c-a192-3813bd5ce2b1","relative_path":"Test_Organization/Library/custom/Test_Product/Test_Repository","container_repository_name":null,"full_path":"http://centos7-katello-3-12.yatsu.example.com/pulp/repos/Test_Organization/Library/custom/Test_Product/Test_Repository/","id":43,"name":"Test
+        Repository","label":"Test_Repository","description":null,"last_sync":{"id":"753b9596-6acf-499b-88f2-dcae3e3c2335","username":"admin","started_at":"2019-09-16
+        06:28:51 UTC","ended_at":"2019-09-16 06:29:01 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":16,"name":"Default
+        Organization View"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","content_id":"1568370773573","major":null,"minor":null,"product":{"id":487,"cp_id":"352793428555","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":32,"srpm":0,"package":32,"package_group":2,"erratum":4,"puppet_module":0,"file":0,"deb":0,"module_stream":0},"last_sync_words":"about
+        1 hour"}],"type":"rpm","rules":[{"content_view_filter_id":16,"version":"1","id":6,"name":"bear","created_at":"2019-09-16
+        07:45:50 UTC","updated_at":"2019-09-16 07:45:53 UTC"}]}]}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:54 GMT
+      etag:
+      - W/"ea919d06d8a50cdcc7ba94864e430528"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 6f1ac7eb-c697-451d-bf7b-97b55fb155f1
+      x-runtime:
+      - '0.116053'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/content_views/21/filters/16
+  response:
+    body:
+      string: !!python/unicode '  {"inclusion":false,"original_packages":false,"id":16,"name":"Test
+        Package Content View Filter","description":null,"created_at":"2019-09-16 07:45:50
+        UTC","updated_at":"2019-09-16 07:45:50 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":0,"latest_version":null,"auto_publish":false,"solve_dependencies":false,"repository_ids":[43],"id":21,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":65,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":65},"created_at":"2019-09-16
+        07:45:49 UTC","updated_at":"2019-09-16 07:45:49 UTC","environments":[],"repositories":[{"id":43,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum","product":{"id":487,"name":"Test
+        Product"},"content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_tag":0,"rpm":32,"package":32,"package_group":2,"erratum":4,"puppet_module":0}}],"puppet_modules":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"1.0","last_published":null,"permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}},"repositories":[{"backend_identifier":"1af4bda3-edc4-4e2c-a192-3813bd5ce2b1","relative_path":"Test_Organization/Library/custom/Test_Product/Test_Repository","container_repository_name":null,"full_path":"http://centos7-katello-3-12.yatsu.example.com/pulp/repos/Test_Organization/Library/custom/Test_Product/Test_Repository/","id":43,"name":"Test
+        Repository","label":"Test_Repository","description":null,"last_sync":{"id":"753b9596-6acf-499b-88f2-dcae3e3c2335","username":"admin","started_at":"2019-09-16
+        06:28:51 UTC","ended_at":"2019-09-16 06:29:01 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":16,"name":"Default
+        Organization View"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","content_id":"1568370773573","major":null,"minor":null,"product":{"id":487,"cp_id":"352793428555","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":32,"srpm":0,"package":32,"package_group":2,"erratum":4,"puppet_module":0,"file":0,"deb":0,"module_stream":0},"last_sync_words":"about
+        1 hour"}],"type":"rpm","rules":[{"content_view_filter_id":16,"version":"1","id":6,"name":"bear","created_at":"2019-09-16
+        07:45:50 UTC","updated_at":"2019-09-16 07:45:53 UTC"}]}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:54 GMT
+      etag:
+      - W/"1bd8c8f7f0d0d534dfa6119062b4e804"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 19f6cc6b-8132-4aec-a7c0-1d35e0efa23b
+      x-runtime:
+      - '0.066704'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/content_view_filters/16/rules?per_page=4294967296&search=name%3D%22bear%22&thin=False
+  response:
+    body:
+      string: !!python/unicode '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"bear\"","sort":{"by":"id","order":"asc"},"results":[{"content_view_filter_id":16,"version":"1","id":6,"name":"bear","created_at":"2019-09-16
+        07:45:50 UTC","updated_at":"2019-09-16 07:45:53 UTC"}]}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:54 GMT
+      etag:
+      - W/"34e2d534b1f24cd9b7df5deb0c1ed225"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 236db8c4-03c7-47f0-a59f-a47b80f0a6a2
+      x-runtime:
+      - '0.017985'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=c760f22ae763c0771b039470ede5306a
+    method: GET
+    uri: https://foreman.example.com/katello/api/content_view_filters/16/rules/6
+  response:
+    body:
+      string: !!python/unicode '  {"content_view_filter_id":16,"version":"1","id":6,"name":"bear","created_at":"2019-09-16
+        07:45:50 UTC","updated_at":"2019-09-16 07:45:53 UTC"}
+
+'
+    headers:
+      apipie-checksum:
+      - 57b27c3a1eb004e5a0fe05ef2b2a8b0d9a6baae5
+      cache-control:
+      - max-age=0, private, must-revalidate
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 16 Sep 2019 07:45:54 GMT
+      etag:
+      - W/"1634f65e59f194a48afc07a792c98c4b"
+      foreman_api_version:
+      - '2'
+      foreman_version:
+      - 1.22.0
+      server:
+      - Apache
+      status:
+      - 200 OK
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-powered-by:
+      - Phusion Passenger 4.0.53
+      x-request-id:
+      - 2429ae41-0b80-4e0e-982a-75d6bcf38779
+      x-runtime:
+      - '0.015277'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1
