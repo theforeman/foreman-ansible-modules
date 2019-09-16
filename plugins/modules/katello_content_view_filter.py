@@ -33,6 +33,15 @@ description:
     - Create and Manage Katello content View filters
 author: "Sean O'Keeffe (@sean797)"
 options:
+  name:
+    description:
+      - Name of the Content View Filter
+    type: str
+    required: true
+  description:
+    description:
+      - Description of the Content View Filter
+    type: str
   content_view:
     description:
       - Name of the content view
@@ -78,11 +87,11 @@ options:
   rule_name:
     description:
       - Content view filter rule name or package name
-    alias:
+      - If omitted, the value of I(name) will be used if necessary
+    aliases:
       - package_name
       - package_group
       - tag
-    default: I(name)
     type: str
   date_type:
     description:
