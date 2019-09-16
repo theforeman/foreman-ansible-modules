@@ -16,35 +16,15 @@ A list of all modules and their documentation can be found at [theforeman.org/pl
 
 ## Branches
 
-* `master` - current development branch, using both `nailgun` and `apypie` libraries. The progress of the `nailgun` to `apypie` migration can be seen in [issue #274](https://github.com/theforeman/foreman-ansible-modules/issues/274)
+* `master` - current development branch, using the `apypie` library.
 * `nailgun` - the state of the repository before the switch to the `apypie` library started, `nailgun` is the only dependency
 
 ## Supported Foreman and plugins versions
 
-### `apypie` based modules
-
-Modules that use the `apypie` library should support any currently stable Foreman release and the matching set of plugins.
+Modules should support any currently stable Foreman release and the matching set of plugins.
 Some modules have additional features/arguments that are only applied when the corresponding plugin is installed.
 
 We actively test the modules against the latest stable Foreman release and the matching set of plugins.
-
-### `nailgun` based modules
-
-The `nailgun` library has specific releases for different Satellite (and thus Foreman/Katello) releases.
-Please pick the right `nailgun` release from the table below for your environment.
-
-We actively test the modules against the latest stable Foreman release and the matching set of plugins.
-
-#### `nailgun` versions
-
-Below is listed the correct Nailgun version/branch for your environment
-
-Server                       | Nailgun branch | Nailgun version
----------------------------- | ------ | ------
-Katello 3.11 and newer       | master | 0.32.x
-Satellite 6.5 / Katello 3.10 | 6.5.z  | 0.32.x
-Satellite 6.4 / Katello 3.7  | 6.4.z  | 0.30.x
-Satellite 6.3 / Katello 3.4  | 6.3.z  | 0.30.x
 
 ## How To Use The Repository
 
@@ -87,8 +67,6 @@ The rest of the module is usually very minimalistic:
 * Find the entity if it already exists (`entity = module.find_resource_by_name(…)`)
 * Adjust the data of the entity if desired
 * Ensure the entity state and details (`changed = module.ensure_resource_state(…)`)
-
-Please note: we currently have modules that use `apypie` and `nailgun` as the backend libraries to talk to the API, but we would prefer not to add any new modules using `nailgun` and focus on migrating everything to `apypie`.
 
 ### Specification of the `entity_spec`
 
