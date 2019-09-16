@@ -35,7 +35,7 @@ author:
   - "Baptiste Agasse (@bagasse)"
 requirements:
   - apypie
-  - netaddr
+  - ipaddress
 options:
   name:
     description: Subnet name
@@ -204,11 +204,11 @@ RETURN = ''' # '''
 import traceback
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
 try:
-    from netaddr import IPNetwork
-    HAS_NETADDR = True
+    import ipaddress
+    HAS_IPADDRESS = True
 except ImportError:
-    HAS_NETADDR = False
-    NETADDR_IMP_ERR = traceback.format_exc()
+    HAS_IPADDRESS = False
+    IPADDRESS_IMP_ERR = traceback.format_exc()
 
 
 def main():
@@ -241,8 +241,8 @@ def main():
         required_one_of=[['cidr', 'mask']],
     )
 
-    if not HAS_NETADDR:
-        module.fail_json(msg='The netaddr Python module is required', exception=NETADDR_IMP_ERR)
+    if not HAS_IPADDRESS:
+        module.fail_json(msg='The ipaddress Python module is required', exception=IPADDRESS_IMP_ERR)
 
     entity_dict = module.clean_params()
 
@@ -251,10 +251,14 @@ def main():
     entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity_dict['network_type'] == 'IPv4':
+            IPNetwork = ipaddress.IPv4Network
+        else:
+            IPNetwork = ipaddress.IPv6Network
         if 'mask' in entity_dict and 'cidr' not in entity_dict:
-            entity_dict['cidr'] = IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
+            entity_dict['cidr'] = IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
         elif 'mask' not in entity_dict and 'cidr' in entity_dict:
-            entity_dict['mask'] = str(IPNetwork('%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
+            entity_dict['mask'] = str(IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
 
         if 'domains' in entity_dict:
             entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
