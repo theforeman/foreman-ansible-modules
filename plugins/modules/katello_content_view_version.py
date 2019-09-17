@@ -213,7 +213,7 @@ def main():
     changed = False
     le_changed = False
     if module.desired_absent:
-        changed = module.ensure_entity_state('content_view_version', None, content_view_version, params=scope)
+        changed = module.ensure_entity_state('content_view_versions', None, content_view_version, params=scope)
     else:
         if content_view_version is None:
             # Do a sanity check, whether we can perform this non-synchronous
