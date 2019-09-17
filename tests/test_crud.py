@@ -18,6 +18,7 @@ MODULES = [
     'content_credential',
     'content_view',
     'content_view_filter',
+    'content_view_version',
     'domain',
     'environment',
     'config_group',
