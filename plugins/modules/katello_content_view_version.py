@@ -156,6 +156,7 @@ def promote_content_view_version(module, content_view_version, environments, syn
 
     if promote_to_environment_ids:
         payload = {
+            'id': content_view_version['id'],
             'environment_ids': promote_to_environment_ids,
             'force': force,
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
