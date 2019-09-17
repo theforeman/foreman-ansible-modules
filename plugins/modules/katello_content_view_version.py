@@ -202,11 +202,11 @@ def main():
     if 'current_lifecycle_environment' in entity_dict:
         entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
             'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
-        search = "content_view_id={0},environment_ids=[{1}]".format(content_view['id'], entity_dict['current_lifecycle_environment']['id'])
-        content_view_version = module.find_resource('content_view_versions', search=search, thin=True)
+        search_scope = {'content_view_id': content_view['id'], 'environment_id': entity_dict['current_lifecycle_environment']['id']}
+        content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
     elif 'version' in entity_dict:
         search = "content_view_id={0},version={1}".format(content_view['id'], entity_dict['version'])
-        content_view_version = module.find_resource('content_view_versions', search=search, thin=True, failsafe=True)
+        content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
     else:
         content_view_version = None
 
