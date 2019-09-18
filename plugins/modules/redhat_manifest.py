@@ -275,7 +275,6 @@ def main():
         supports_check_mode=True,
     )
 
-    name = module.params['name']
     username = module.params['username']
     password = module.params['password']
 
