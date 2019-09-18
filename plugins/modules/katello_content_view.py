@@ -66,6 +66,7 @@ options:
   state:
     description:
       - State of the content view
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     default: present
     choices:
       - present

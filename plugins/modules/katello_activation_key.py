@@ -101,7 +101,9 @@ options:
     type: str
   state:
     description:
-      - State of the Activation Key. If "copied" the key will be copied to a new one with "new_name" as the name and all other fields left untouched.
+      - State of the Activation Key
+      - If C(copied) the key will be copied to a new one with I(new_name) as the name and all other fields left untouched
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     default: present
     choices:
       - present

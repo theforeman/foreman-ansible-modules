@@ -105,7 +105,9 @@ options:
     required: false
     type: list
   state:
-    description: The state the template should be in.
+    description:
+      - The state the template should be in
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     default: present
     choices:
       - absent
