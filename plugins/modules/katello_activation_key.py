@@ -143,7 +143,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule, _entity_spec_helper
+from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def override_to_boolnone(override):

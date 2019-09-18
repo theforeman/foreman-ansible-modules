@@ -14,7 +14,6 @@ ANSIBLE_METADATA = {
 
 
 import re
-from ansible.errors import AnsibleFilterError
 
 
 def cp_label(value):

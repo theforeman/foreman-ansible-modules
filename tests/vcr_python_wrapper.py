@@ -4,7 +4,6 @@ import os
 import sys
 import vcr
 import json
-import re
 
 
 # We need our own json level2 matcher, because, python2 and python3 do not save
