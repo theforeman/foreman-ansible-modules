@@ -64,6 +64,7 @@ options:
   state:
     description:
       - State of the Global Parameter
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     default: present
     choices:
       - present

@@ -96,7 +96,9 @@ options:
     required: false
     type: list
   state:
-    description: compute resource presence
+    description:
+      - compute resource presence
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     required: false
     default: present
     choices: ["present", "absent", "present_with_defaults"]
