@@ -25,7 +25,7 @@ help:
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
 
 lint:
-	pycodestyle --ignore=E402,E722,W503 --max-line-length=160 plugins/ tests/
+	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 
 test:
 	pytest -v $(TEST)
