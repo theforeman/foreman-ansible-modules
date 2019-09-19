@@ -10,6 +10,8 @@ import re
 import time
 import traceback
 
+from functools import wraps
+
 from ansible.module_utils.basic import AnsibleModule
 
 try:
@@ -157,6 +159,7 @@ class KatelloMixin(object):
 
 def _exception2fail_json(msg='Generic failure: %s'):
     def decor(f):
+        @wraps(f)
         def inner(self, *args, **kwargs):
             try:
                 return f(self, *args, **kwargs)
