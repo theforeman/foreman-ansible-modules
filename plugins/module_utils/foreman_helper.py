@@ -33,45 +33,6 @@ parameter_entity_spec = dict(
 )
 
 
-class ForemanBaseAnsibleModule(AnsibleModule):
-
-    def __init__(self, argument_spec, **kwargs):
-        args = dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
-        )
-        args.update(argument_spec)
-        supports_check_mode = kwargs.pop('supports_check_mode', True)
-        self._aliases = {alias for arg in args.values() for alias in arg.get('aliases', [])}
-        super(ForemanBaseAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
-
-        self._params = self.params.copy()
-
-        self.check_requirements()
-
-        self._foremanapi_server_url = self._params.pop('server_url')
-        self._foremanapi_username = self._params.pop('username')
-        self._foremanapi_password = self._params.pop('password')
-        self._foremanapi_validate_certs = self._params.pop('validate_certs')
-        if 'verify_ssl' in self._params:
-            self.warn("Please use 'validate_certs' instead of deprecated 'verify_ssl'.")
-
-        self.task_timeout = 60
-        self.task_poll = 4
-
-    def parse_params(self):
-        self.warn("Use of deprecated method parse_params")
-        return {k: v for (k, v) in self._params.items() if v is not None}
-
-    def clean_params(self):
-        return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
-
-    def get_server_params(self):
-        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
-
-
 class KatelloMixin(object):
     def __init__(self, argument_spec=None, **kwargs):
         args = dict(
@@ -166,13 +127,47 @@ def _exception2fail_json(msg='Generic failure: %s'):
     return decor
 
 
-class ForemanAnsibleModule(ForemanBaseAnsibleModule):
+class ForemanAnsibleModule(AnsibleModule):
 
-    def __init__(self, *args, **kwargs):
-        super(ForemanAnsibleModule, self).__init__(*args, **kwargs)
+    def __init__(self, argument_spec, **kwargs):
+        args = dict(
+            server_url=dict(required=True),
+            username=dict(required=True),
+            password=dict(required=True, no_log=True),
+            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
+        )
+        args.update(argument_spec)
+        supports_check_mode = kwargs.pop('supports_check_mode', True)
+        self._aliases = {alias for arg in args.values() for alias in arg.get('aliases', [])}
+        super(ForemanAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
+
+        self._params = self.params.copy()
+
+        self.check_requirements()
+
+        self._foremanapi_server_url = self._params.pop('server_url')
+        self._foremanapi_username = self._params.pop('username')
+        self._foremanapi_password = self._params.pop('password')
+        self._foremanapi_validate_certs = self._params.pop('validate_certs')
+        if 'verify_ssl' in self._params:
+            self.warn("Please use 'validate_certs' instead of deprecated 'verify_ssl'.")
+
+        self.task_timeout = 60
+        self.task_poll = 4
+
         self._thin_default = False
         self.state = 'undefined'
         self.entity_spec = {}
+
+    def parse_params(self):
+        self.warn("Use of deprecated method parse_params")
+        return {k: v for (k, v) in self._params.items() if v is not None}
+
+    def clean_params(self):
+        return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
+
+    def get_server_params(self):
+        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
