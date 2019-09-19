@@ -154,7 +154,7 @@ def main():
         scope = {'domain_id': domain['id']}
         changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed)
+    module.exit_json(changed=changed, diff={'before': entity or '', 'after': domain or ''})
 
 
 if __name__ == '__main__':
