@@ -249,6 +249,9 @@ EXAMPLES = '''
     content_source: capsule.example.com
     lifecycle_environment: "Production"
     content_view: "My content view"
+    parameters:
+      - name: "kt_activation_keys"
+        value: "my_prod_ak"
 
 - name: "Delete a Hostgroup"
   foreman_hostgroup:
