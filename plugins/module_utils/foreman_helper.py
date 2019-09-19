@@ -159,15 +159,8 @@ class ForemanAnsibleModule(AnsibleModule):
         self.state = 'undefined'
         self.entity_spec = {}
 
-    def parse_params(self):
-        self.warn("Use of deprecated method parse_params")
-        return {k: v for (k, v) in self._params.items() if v is not None}
-
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
-
-    def get_server_params(self):
-        return (self._foremanapi_server_url, self._foremanapi_username, self._foremanapi_password, self._foremanapi_validate_certs)
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -528,9 +521,6 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
-
-    def parse_params(self):
-        return (super(ForemanEntityAnsibleModule, self).parse_params(), self.state)
 
     def ensure_scoped_parameters(self, scope, entity, parameters):
         changed = False
