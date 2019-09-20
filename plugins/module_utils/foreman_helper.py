@@ -162,6 +162,9 @@ class ForemanAnsibleModule(AnsibleModule):
         self.state = 'undefined'
         self.entity_spec = {}
 
+        self._before = {}
+        self._after = {}
+
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
 
@@ -292,6 +295,8 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = {'id': result['id']}
             else:
                 result = self.show_resource(resource, result['id'], params=params)
+        if self._before == {}:
+            self._before = result
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):
@@ -369,6 +374,13 @@ class ForemanAnsibleModule(AnsibleModule):
                 changed, updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
+
+        if self._after == {}:
+            self._after = updated_entity
+        else:
+            # ensure_entity was called multiple times, we can't be sure which entity is the real one
+            self._after = {'invalid': True}
+
         return changed, updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
@@ -549,6 +561,15 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                     changed |= self.ensure_entity_state(
                         'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
         return changed
+
+    def exit_json(self, **kwargs):
+        if self._after is None or 'invalid' not in self._after:
+            if 'diff' not in kwargs:
+                kwargs['diff'] = {'before': _flatten_entity(self._before or {}, self.entity_spec),
+                                  'after': _flatten_entity(self._after or {}, self.entity_spec)}
+            if 'entity' not in kwargs:
+                kwargs['entity'] = self._after
+        super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
