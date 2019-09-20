@@ -114,7 +114,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec, _flatten_entity
 
 
 def main():
@@ -154,7 +154,7 @@ def main():
         scope = {'domain_id': domain['id']}
         changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed, diff={'before': entity or '', 'after': domain or ''})
+    module.exit_json(changed=changed, diff={'before': _flatten_entity(entity or {}, module.entity_spec), 'after': _flatten_entity(domain or {}, module.entity_spec)})
 
 
 if __name__ == '__main__':
