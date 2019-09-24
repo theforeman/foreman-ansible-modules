@@ -25,7 +25,6 @@
   register: result
 - assert:
     fail_msg: "copy activation key failed! (expected_change: {{ expected_change | default('unknown') }})"
-    quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined

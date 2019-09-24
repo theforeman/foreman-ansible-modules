@@ -50,7 +50,6 @@
   register: result
 - assert:
     fail_msg: "Ensuring LDAP auth source is {{ auth_source_ldap_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-    quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined

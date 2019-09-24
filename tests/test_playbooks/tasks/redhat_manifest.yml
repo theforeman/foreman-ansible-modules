@@ -16,7 +16,6 @@
   register: result
 - assert:
     fail_msg: "Ensuring Manifest is {{ manifest_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-    quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined
