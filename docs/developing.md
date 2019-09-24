@@ -1,4 +1,4 @@
-# How to write modules in this repository
+# How to write modules
 
 First of all, please have a look at the [Ansible module development](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html) guide and get familiar with the general Ansible module layout.
 

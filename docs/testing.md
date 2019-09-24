@@ -1,4 +1,4 @@
-# How to test modules in this repository
+# How to test modules
 
 To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
 Also you need to run `make test-setup` and update `tests/test_playbooks/vars/server.yml`:
