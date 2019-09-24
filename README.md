@@ -153,7 +153,7 @@ You can (re-)record the cassettes for a specific test with
 make record_global_parameter
 ```
 
-See also [Guidedeline to writing tests](tests/README.md).
+See also [Guidedeline to writing tests](docs/testing.md).
 
 ## How to debug modules in this repository
 
