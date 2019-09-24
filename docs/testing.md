@@ -1,5 +1,29 @@
-Guidedeline to writing tests
-===
+# How to test modules in this repository
+
+To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
+Also you need to run `make test-setup` and update `tests/test_playbooks/vars/server.yml`:
+
+```sh
+make test-setup
+vi tests/test_playbooks/vars/server.yml # point to your Foreman instance
+```
+
+To run the tests using the `foreman_global_parameter` module as an example:
+
+```sh
+make test # all tests
+make test_global_parameter  # single test
+make test TEST="-k 'organzation or global_parameter'"  # select tests by expression (see `pytest -h`)
+```
+
+The tests are run against prerecorded server-responses.
+You can (re-)record the cassettes for a specific test with
+
+```sh
+make record_global_parameter
+```
+
+# Guidedeline to writing tests
 
 The tests in this repository run playbooks that can be found in `tests/test_playbooks`.
 To be run, the name of the corresponding playbook must be listed in `tests/test_crud.py`.
@@ -20,8 +44,7 @@ In order to run these tests, the API responses of a running Foreman or Katello s
 For this last step, `tests/test_playbooks/vars/server.yml` must be configured to point to a running Foreman or Katello server.
 Then, `make record_<playbook name>` must be called, and the resulting vcr files (`test_playbook/fixtures/<playbook_name>-*.yml`) must be checked into git.
 
-Recording/storing apidoc.json for tests
----
+## Recording/storing apidoc.json for tests
 
 Modules that use the `apypie` library depend on a valid `apidoc.json` being available during test execution.
 The easiest way to do so is to provide a `<module>.json` in the `tests/fixtures/apidoc` folder.
