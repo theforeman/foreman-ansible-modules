@@ -1,4 +1,4 @@
-# How to debug modules in this repository
+# How to debug modules
 
 Set up debugging using ansible's test-module
 
