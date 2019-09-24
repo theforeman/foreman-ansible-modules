@@ -2,14 +2,6 @@
 
 Ansible modules for interacting with the Foreman API and various plugin APIs such as Katello.
 
-## Goals
-
-The intent of this repository is to be a place that community members can develop or contribute modules. The goals of this repository are:
-
-  * centralized location for community modules
-  * a single repository to clone for interacting with Foreman & plugins
-  * source for the official Ansible collection
-
 ## Documentation
 
 A list of all modules and their documentation can be found at [theforeman.org/plugins/foreman-ansible-modules](https://theforeman.org/plugins/foreman-ansible-modules/).
