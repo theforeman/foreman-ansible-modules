@@ -14,6 +14,8 @@ The intent of this repository is to be a place that community members can develo
 
 A list of all modules and their documentation can be found at [theforeman.org/plugins/foreman-ansible-modules](https://theforeman.org/plugins/foreman-ansible-modules/).
 
+Documentation how to [write](docs/developing.md), [test](docs/testing.md) and [debug](docs/debugging.md) modules is available in the [`docs`](docs/) folder.
+
 ## Supported Foreman and plugins versions
 
 Modules should support any currently stable Foreman release and the matching set of plugins.
@@ -91,6 +93,3 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 
 * `master` - current development branch, using the `apypie` library
 * `nailgun` - the state of the repository before the switch to the `apypie` library started, `nailgun` is the only dependency
-
-
-
