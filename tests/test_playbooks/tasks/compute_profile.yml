@@ -14,7 +14,6 @@
   register: result
 - assert:
     fail_msg: "Ensuring compute profile is {{ compute_profile_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-    quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined

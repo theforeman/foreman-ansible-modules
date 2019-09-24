@@ -19,7 +19,6 @@
 
 - assert:
     fail_msg: "Ensuring content_view is {{ content_view_state | default('present') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-    quiet: yes
     that:
       - result.changed == expected_change
   when: expected_change is defined
