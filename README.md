@@ -128,32 +128,6 @@ The sub entities must be described by `entity_spec=<sub_entity>_spec`.
 
 You can add new or override generated Ansible module arguments, by specifying them in the `argument_spec` as usual.
 
-## How to test modules in this repository
-
-To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to run `make test-setup` and update `tests/test_playbooks/vars/server.yml`:
-
-```sh
-make test-setup
-vi tests/test_playbooks/vars/server.yml # point to your Foreman instance
-```
-
-To run the tests using the `foreman_global_parameter` module as an example:
-
-```sh
-make test # all tests
-make test_global_parameter  # single test
-make test TEST="-k 'organzation or global_parameter'"  # select tests by expression (see `pytest -h`)
-```
-
-The tests are run against prerecorded server-responses.
-You can (re-)record the cassettes for a specific test with
-
-```sh
-make record_global_parameter
-```
-
-See also [Guidedeline to writing tests](docs/testing.md).
 
 ## How to debug modules in this repository
 
