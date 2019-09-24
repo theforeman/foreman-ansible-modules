@@ -15,12 +15,10 @@
   register: result
 - assert:
     fail_msg: "Syncing repository failed! (expected_change: True)"
-    quiet: yes
     that:
       - result.changed
 - assert:
     fail_msg: "Syncing repository with synchronous: {{ synchronous }} took longer or shorter than expected!"
-    quiet:
     that:
       - not synchronous or ((( result.task.ended_at | replace(' UTC', '') | to_datetime ) - ( result.task.started_at | replace(' UTC', '') | to_datetime )).total_seconds() >= 2)
       - synchronous or not result.task.ended_at  # result.task.ended_at is not set if it matches result.task.started_at

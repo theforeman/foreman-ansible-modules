@@ -10,7 +10,6 @@
   register: result
 - assert:
     fail_msg: "Verification that setting is '{{ setting_value }}' failed!"
-    quiet:
     that:
       - result.resources[0].value == setting_value
   when: (setting_name is defined) and (setting_value is defined)

@@ -17,7 +17,6 @@
     register: result
   - assert:
       fail_msg: "Ensuring global parameter is {{ global_parameter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-      quiet: yes
       that:
         - result.changed == expected_change
     when: expected_change is defined
