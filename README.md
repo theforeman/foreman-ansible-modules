@@ -8,12 +8,24 @@ A list of all modules and their documentation can be found at [theforeman.org/pl
 
 Documentation how to [write](docs/developing.md), [test](docs/testing.md) and [debug](docs/debugging.md) modules is available in the [`docs`](docs/) folder.
 
-## Supported Foreman and plugins versions
+## Support
+
+### Supported Foreman and plugins versions
 
 Modules should support any currently stable Foreman release and the matching set of plugins.
 Some modules have additional features/arguments that are only applied when the corresponding plugin is installed.
 
 We actively test the modules against the latest stable Foreman release and the matching set of plugins.
+
+### Supported Ansible Versions
+
+The modules should work with Ansible >= 2.3.
+
+As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
+
+### Supported Python Versions
+
+Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
 
 ## Installation
 
@@ -70,16 +82,6 @@ As the modules are not installed inside a collection, you will have to refer to 
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `foreman_subnet` module on Python 2.7
-
-## Supported Ansible Versions
-
-The modules should work with Ansible >= 2.3.
-
-As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
-
-## Supported Python Versions
-
-Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
 
 ## Branches
 
