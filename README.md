@@ -129,24 +129,3 @@ The sub entities must be described by `entity_spec=<sub_entity>_spec`.
 You can add new or override generated Ansible module arguments, by specifying them in the `argument_spec` as usual.
 
 
-## How to debug modules in this repository
-
-Set up debugging using ansible's test-module
-
-```sh
-make debug-setup
-```
-
-Debug with ansible's test-module
-
-```sh
-make debug MODULE=<module name>
-
-# Example: debug the katello_content_view module
-$ make debug MODULE=katello_content_view
-./.tmp/ansible/hacking/test-module -m modules/katello_content_view.py -a @tests/data/content-view.json -D /usr/lib64/python2.7/pdb.py
-...
-```
-
-You can set a number of environment variables besides `MODULE` to configure make. Check the [Makefile](https://github.com/theforeman/foreman-ansible-modules/blob/master/Makefile) for more configuration options.
-
