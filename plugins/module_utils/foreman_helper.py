@@ -565,8 +565,8 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
     def exit_json(self, **kwargs):
         if self._after is None or 'invalid' not in self._after:
             if 'diff' not in kwargs:
-                kwargs['diff'] = {'before': _flatten_entity(self._before or {}, self.entity_spec),
-                                  'after': _flatten_entity(self._after or {}, self.entity_spec)}
+                kwargs['diff'] = {'before': _flatten_entity(self._before, self.entity_spec),
+                                  'after': _flatten_entity(self._after, self.entity_spec)}
             if 'entity' not in kwargs:
                 kwargs['entity'] = self._after
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
@@ -615,6 +615,8 @@ def _entity_spec_helper(spec):
 def _flatten_entity(entity, entity_spec):
     """Flatten entity according to spec"""
     result = {}
+    if entity is None:
+        entity = {}
     for key, value in entity.items():
         if key in entity_spec and value is not None:
             spec = entity_spec[key]
