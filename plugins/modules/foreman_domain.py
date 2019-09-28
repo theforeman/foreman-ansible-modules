@@ -38,6 +38,9 @@ options:
     description: The full DNS domain name
     required: true
     type: str
+  updated_name:
+    description: New domain name
+    type: str
   dns_proxy:
     aliases:
       - dns
@@ -121,6 +124,7 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
+            updated_name=dict(),
             description=dict(aliases=['fullname'], flat_name='fullname'),
             dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns']),
             locations=dict(type='entity_list', flat_name='location_ids'),
@@ -137,6 +141,8 @@ def main():
     entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'dns_proxy' in entity_dict:
             entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
 
