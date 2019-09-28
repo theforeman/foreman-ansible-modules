@@ -95,6 +95,9 @@ options:
         to perform bulk actions (modify, delete) on all existing templates.
     required: false
     type: str
+  updated_name:
+    description: New provisioning template name
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -283,6 +286,7 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
+            updated_name=dict(),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
             snippet=dict(type='invisible'),
@@ -350,6 +354,8 @@ def main():
         entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
