@@ -32,6 +32,30 @@
       expected_change: false
   - include: tasks/installation_medium.yml
     vars:
+      installation_medium_name: "SuperOS OS 1.0"
+      installation_medium_path: "https://superos.org/"
+      installation_medium_state: present
+      expected_change: true
+  - include: tasks/installation_medium.yml
+    vars:
+      installation_medium_name: "SuperOS OS 1.0"
+      installation_medium_updated_name: "SuperOS-NG OS 1.0"
+      installation_medium_path: "https://superos.org/"
+      installation_medium_state: present
+      expected_change: true
+  - include: tasks/installation_medium.yml
+    vars:
+      installation_medium_name: "SuperOS-NG OS 1.0"
+      installation_medium_path: "https://superos.org/"
+      installation_medium_state: present
+      expected_change: false
+  - include: tasks/installation_medium.yml
+    vars:
+      installation_medium_name: "SuperOS-NG OS 1.0"
+      installation_medium_state: absent
+      expected_change: true
+  - include: tasks/installation_medium.yml
+    vars:
       installation_medium_name: 'another os'
       installation_medium_path: 'http://example.org/another.iso'
       installation_medium_locations: "{{ omit }}"

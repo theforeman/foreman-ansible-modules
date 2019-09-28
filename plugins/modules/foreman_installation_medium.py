@@ -41,6 +41,9 @@ options:
         The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
     required: true
     type: str
+  updated_name:
+    description: New full installation medium name.
+    type: str
   locations:
     description: List of locations the installation medium should be assigned to
     required: false
@@ -111,6 +114,7 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
+            updated_name=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
@@ -146,6 +150,8 @@ def main():
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
             if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
