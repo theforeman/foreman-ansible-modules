@@ -78,6 +78,31 @@
         expected_change: true
     - include: tasks/operatingsystem.yml
       vars:
+        operatingsystem_name: "SuperOS"
+        operatingsystem_state: present
+        operatingsystem_parameters: []
+        expected_change: true
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "SuperOS"
+        operatingsystem_updated_name: "SuperOS-NG"
+        operatingsystem_state: present
+        operatingsystem_parameters: []
+        expected_change: true
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "SuperOS-NG"
+        operatingsystem_state: present
+        operatingsystem_parameters: []
+        expected_change: false
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "SuperOS-NG"
+        operatingsystem_state: absent
+        operatingsystem_parameters: []
+        expected_change: true
+    - include: tasks/operatingsystem.yml
+      vars:
         operatingsystem_state: absent
         expected_change: true
     - include: tasks/operatingsystem.yml
