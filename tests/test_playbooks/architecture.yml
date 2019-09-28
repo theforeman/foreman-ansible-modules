@@ -70,6 +70,31 @@
 
   - include: tasks/architecture.yml
     vars:
+      architecture_name: "aarch64"
+      architecture_state: present
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      architecture_name: "aarch64"
+      architecture_updated_name: "aarch64-2"
+      architecture_state: present
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
+      architecture_name: "aarch64-2"
+      architecture_state: present
+      expected_change: false
+
+  - include: tasks/architecture.yml
+    vars:
+      architecture_name: "aarch64-2"
+      architecture_state: absent
+      expected_change: true
+
+  - include: tasks/architecture.yml
+    vars:
       architecture_state: absent
       expected_change: true
 

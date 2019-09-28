@@ -38,6 +38,9 @@ options:
     description: Name of architecture
     required: true
     type: str
+  updated_name:
+    description: New architecture name
+    type: str
   operatingsystems:
     description: List of operating systems the architecture should be assigned to
     required: false
@@ -91,6 +94,7 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
+            updated_name=dict(),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
         ),
     )
@@ -99,11 +103,13 @@ def main():
 
     module.connect()
 
+    entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
+
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
-
-    entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
 
     changed = module.ensure_entity_state('architectures', entity_dict, entity)
 
