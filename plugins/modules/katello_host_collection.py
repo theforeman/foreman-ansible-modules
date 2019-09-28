@@ -50,6 +50,10 @@ options:
       - Name of the host collection
     required: true
     type: str
+  updated_name:
+    description:
+      - New name of the host collection
+    type: str
   state:
     description:
       - State of the host collection
@@ -82,6 +86,7 @@ def main():
     module = KatelloEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
+            updated_name=dict(),
             description=dict(),
         ),
     )
@@ -93,6 +98,9 @@ def main():
     entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
     scope = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=scope, failsafe=True)
+
+    if entity and 'updated_name' in entity_dict:
+        entity_dict['name'] = entity_dict.pop('updated_name')
 
     changed = module.ensure_entity_state('host_collections', entity_dict, entity, params=scope)
 
