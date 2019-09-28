@@ -53,6 +53,41 @@
       ptable_layout: 'A partition table with a changed layout'
       ptable_state: present
       expected_change: true
+  - name: add ptable
+    include: tasks/ptable.yml
+    vars:
+      ptable_name: 'A partition table 2'
+      ptable_layout: |
+        zerombr
+        clearpart --all --initlabel
+        autopart
+      ptable_state: present
+      expected_change: true
+  - name: change ptable name
+    include: tasks/ptable.yml
+    vars:
+      ptable_name: 'A partition table 2'
+      ptable_updated_name: 'A partition table 3'
+      ptable_layout: |
+        zerombr
+        clearpart --all --initlabel
+        autopart
+      ptable_state: present
+      expected_change: true
+  - include: tasks/ptable.yml
+    vars:
+      ptable_name: 'A partition table 3'
+      ptable_layout: |
+        zerombr
+        clearpart --all --initlabel
+        autopart
+      ptable_state: present
+      expected_change: false
+  - include: tasks/ptable.yml
+    vars:
+      ptable_name: 'A partition table 3'
+      ptable_state: absent
+      expected_change: true
   - name: add ptable without location
     include: tasks/ptable.yml
     vars:

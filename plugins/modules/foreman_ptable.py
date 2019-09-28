@@ -72,6 +72,10 @@ options:
         to perform bulk actions (modify, delete) on all existing partition tables.
     required: false
     type: str
+  name:
+    description: New name of the template
+    required: false
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -241,6 +245,7 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
+            updated_name=dict(),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             os_family=dict(choices=[
                 'AIX',
@@ -322,6 +327,8 @@ def main():
         entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
