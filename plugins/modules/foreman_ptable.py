@@ -271,9 +271,9 @@ def main():
 
     # We do not want a layout text for bulk operations
     if module.params['name'] == '*':
-        if module.params['file_name'] or module.params['layout']:
+        if module.params['file_name'] or module.params['layout'] or module.params['updated_name']:
             module.fail_json(
-                msg="Neither file_name nor layout allowed if 'name: *'!")
+                msg="Neither file_name nor layout nor updated_name allowed if 'name: *'!")
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
@@ -323,7 +323,7 @@ def main():
             # Nothing to do; shortcut to exit
             module.exit_json(changed=False)
         if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('ptables', entity['id']) for entity in entities]
+            entities = [module.show_resource('ptables', ent['id']) for ent in entities]
     else:
         entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
 

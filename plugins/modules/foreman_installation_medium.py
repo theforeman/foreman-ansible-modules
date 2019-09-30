@@ -137,6 +137,8 @@ def main():
     if affects_multiple:
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
+        if module.params['updated_name']:
+            module.fail_json(msg="updated_name not allowed if 'name: *'!")
         if module.desired_absent:
             if list(entity_dict.keys()) != ['name']:
                 entity_dict.pop('name', None)
@@ -145,7 +147,7 @@ def main():
     if affects_multiple:
         entities = module.list_resource('media')
         if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('media', entity['id']) for entity in entities]
+            entities = [module.show_resource('media', ent['id']) for ent in entities]
         if not entities:
             # Nothing to do shortcut to exit
             module.exit_json(changed=False)

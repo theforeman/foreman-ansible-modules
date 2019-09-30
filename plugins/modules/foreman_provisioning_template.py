@@ -301,9 +301,9 @@ def main():
 
     # We do not want a template text for bulk operations
     if module.params['name'] == '*':
-        if module.params['file_name'] or module.params['template']:
+        if module.params['file_name'] or module.params['template'] or module.params['updated_name']:
             module.fail_json(
-                msg="Neither file_name nor template allowed if 'name: *'!")
+                msg="Neither file_name nor template nor updated_name allowed if 'name: *'!")
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
@@ -350,7 +350,7 @@ def main():
             # Nothing to do; shortcut to exit
             module.exit_json(changed=False)
         if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('provisioning_templates', entity['id']) for entity in entities]
+            entities = [module.show_resource('provisioning_templates', ent['id']) for ent in entities]
     else:
         entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
