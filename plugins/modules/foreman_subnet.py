@@ -95,6 +95,10 @@ options:
     description: DHCP Smart proxy for this subnet
     required: false
     type: str
+  httpboot_proxy:
+    description: HTTP Boot Smart proxy for this subnet
+    required: false
+    type: str
   tftp_proxy:
     description: TFTP Smart proxy for this subnet
     required: false
@@ -227,6 +231,7 @@ def main():
             boot_mode=dict(choices=['DHCP', 'Static'], default='DHCP'),
             ipam=dict(choices=['DHCP', 'Internal DB'], default='DHCP'),
             dhcp_proxy=dict(type='entity', flat_name='dhcp_id'),
+            httpboot_proxy=dict(type='entity', flat_name='httpboot_id'),
             tftp_proxy=dict(type='entity', flat_name='tftp_id'),
             discovery_proxy=dict(type='entity', flat_name='discovery_id'),
             dns_proxy=dict(type='entity', flat_name='dns_id'),
@@ -262,7 +267,7 @@ def main():
         if 'domains' in entity_dict:
             entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
 
-        for feature in ('dhcp_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy'):
+        for feature in ('dhcp_proxy', 'httpboot_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy'):
             if feature in entity_dict:
                 entity_dict[feature] = module.find_resource_by_name('smart_proxies', entity_dict[feature], thin=True)
 
