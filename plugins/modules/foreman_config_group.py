@@ -39,7 +39,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New config group name
+    description: New config group name. When this parameter is set, the module will not be idempotent.
     type: str
   puppetclasses:
     description: List of puppet classes to include in this group

@@ -39,7 +39,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New architecture name
+    description: New architecture name. When this parameter is set, the module will not be idempotent.
     type: str
   operatingsystems:
     description: List of operating systems the architecture should be assigned to

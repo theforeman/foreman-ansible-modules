@@ -41,7 +41,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New subnet name
+    description: New subnet name. When this parameter is set, the module will not be idempotent.
     type: str
   network_type:
     description: Subnet type

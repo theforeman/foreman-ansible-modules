@@ -40,7 +40,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New name of hostgroup
+    description: New name of hostgroup. When this parameter is set, the module will not be idempotent.
     type: str
   description:
     description: Description of hostgroup

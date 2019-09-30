@@ -42,7 +42,7 @@ options:
     required: false
     type: str
   updated_name:
-    description: New operating system name
+    description: New operating system name. When this parameter is set, the module will not be idempotent.
     type: str
   release_name:
     description:

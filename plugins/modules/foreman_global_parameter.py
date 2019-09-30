@@ -44,7 +44,7 @@ options:
     type: str
   updated_name:
     description:
-      - New name of the Global Parameter
+      - New name of the Global Parameter. When this parameter is set, the module will not be idempotent.
     type: str
   value:
     description:

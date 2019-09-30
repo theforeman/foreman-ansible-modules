@@ -52,7 +52,7 @@ options:
     type: str
   updated_name:
     description:
-      - New name of the host collection
+      - New name of the host collection. When this parameter is set, the module will not be idempotent.
     type: str
   state:
     description:

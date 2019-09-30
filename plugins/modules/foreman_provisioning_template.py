@@ -96,7 +96,7 @@ options:
     required: false
     type: str
   updated_name:
-    description: New provisioning template name
+    description: New provisioning template name. When this parameter is set, the module will not be idempotent.
     type: str
   organizations:
     description:

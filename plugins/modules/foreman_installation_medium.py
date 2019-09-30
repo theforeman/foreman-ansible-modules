@@ -42,7 +42,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New full installation medium name.
+    description: New full installation medium name. When this parameter is set, the module will not be idempotent.
     type: str
   locations:
     description: List of locations the installation medium should be assigned to

@@ -39,7 +39,7 @@ options:
     required: true
     type: str
   updated_name:
-    description: New domain name
+    description: New domain name. When this parameter is set, the module will not be idempotent.
     type: str
   dns_proxy:
     aliases:

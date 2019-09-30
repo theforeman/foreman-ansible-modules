@@ -72,8 +72,8 @@ options:
         to perform bulk actions (modify, delete) on all existing partition tables.
     required: false
     type: str
-  name:
-    description: New name of the template
+  updated_name:
+    description: New name of the template. When this parameter is set, the module will not be idempotent.
     required: false
     type: str
   organizations:
