@@ -219,9 +219,11 @@ except ImportError:
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
-            updated_name=dict(),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
             dns_primary=dict(),
             dns_secondary=dict(),

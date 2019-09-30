@@ -118,12 +118,12 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
-            updated_name=dict(),
             value=dict(type='raw'),
             parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
+            updated_name=dict(),
         ),
         required_if=(
             ['state', 'present_with_defaults', ['value']],

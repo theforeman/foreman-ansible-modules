@@ -264,6 +264,7 @@ def main():
         argument_spec=dict(
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+            updated_name=dict(),
         ),
         entity_spec=dict(
             audit_comment=dict(),
@@ -286,7 +287,6 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
-            updated_name=dict(),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
             snippet=dict(type='invisible'),

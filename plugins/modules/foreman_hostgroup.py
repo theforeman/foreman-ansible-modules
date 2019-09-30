@@ -279,7 +279,6 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
-            updated_name=dict(),
             description=dict(),
             parent=dict(type='entity', flat_name='parent_id'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
@@ -308,7 +307,10 @@ def main():
             lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
             content_view=dict(type='entity', flat_name='content_view_id'),
         ),
-        argument_spec=dict(organization=dict()),
+        argument_spec=dict(
+            organization=dict(),
+            updated_name=dict(),
+        ),
     )
     entity_dict = module.clean_params()
 

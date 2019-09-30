@@ -188,7 +188,6 @@ def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
             name=dict(),
-            updated_name=dict(),
             release_name=dict(),
             description=dict(),
             family=dict(),
@@ -203,6 +202,7 @@ def main():
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
+            updated_name=dict(),
         ),
         required_if=[
             ['state', 'present', ['name', 'major', 'family']],

@@ -92,9 +92,11 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
-            updated_name=dict(),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
         ),
     )
