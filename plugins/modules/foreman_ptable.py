@@ -277,6 +277,7 @@ def main():
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
+    entity = None
 
     if file_name or 'layout' in entity_dict:
         if file_name:

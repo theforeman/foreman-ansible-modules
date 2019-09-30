@@ -128,6 +128,7 @@ def main():
 
     module.connect()
     name = entity_dict['name']
+    entity = None
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
