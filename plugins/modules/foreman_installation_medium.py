@@ -130,7 +130,6 @@ def main():
 
     module.connect()
     name = entity_dict['name']
-    entity = None
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
@@ -155,7 +154,7 @@ def main():
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
+        if not affects_multiple and entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)

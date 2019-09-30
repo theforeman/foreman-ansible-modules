@@ -307,7 +307,6 @@ def main():
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
-    entity = None
 
     if file_name or 'template' in entity_dict:
         if file_name:
@@ -355,7 +354,7 @@ def main():
         entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
+        if not affects_multiple and entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
