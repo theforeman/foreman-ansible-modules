@@ -9,16 +9,50 @@ jobs:
       fail-fast: false
       matrix:
         python: ["2.7", "3.5", "3.6", "3.7"]
+        ansible:
+          - stable-2.7
+          - stable-2.8
+          - devel
+        exclude:
+          - python: "2.7"
+            ansible: "stable-2.7"
+          - python: "2.7"
+            ansible: "stable-2.8"
+          - python: "3.5"
+            ansible: "stable-2.7"
+          - python: "3.5"
+            ansible: "stable-2.8"
+          - python: "3.6"
+            ansible: "stable-2.7"
+          - python: "3.6"
+            ansible: "stable-2.8"
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python }}
+    - name: Install Ansible
+      run: pip install git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}#egg=ansible
     - name: Install dependencies
       run: make test-setup
     - name: Run tests
-      run: make lint sanity test dist-test
+      run: make lint test
+
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: "3.7"
+    - name: Install Ansible
+      run: pip install git+https://github.com/ansible/ansible.git@devel#egg=ansible
+    - name: Install dependencies
+      run: make test-setup
+    - name: Run dist-test
+      run: make sanity dist-test
 
   docs:
     runs-on: ubuntu-latest
