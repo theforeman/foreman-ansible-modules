@@ -515,7 +515,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
-            _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']})
+            _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False)
 
         return task
 
