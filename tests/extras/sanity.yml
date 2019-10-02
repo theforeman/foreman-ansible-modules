@@ -3,7 +3,7 @@
 - hosts: fixtures
   tasks:
     - name: Run ansible-test
-      command: "ansible-test sanity --venv --python {{ lookup('env', 'TRAVIS_PYTHON_VERSION') | default(ansible_python_version.split('.')[:2] | join('.'), true) }} plugins/"
+      command: "ansible-test sanity --venv --python {{ ansible_python_version.split('.')[:2] | join('.') }} plugins/"
       args:
         chdir: "{{ test_collection_path }}"
 ...
