@@ -16,6 +16,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 try:
     import apypie
+    import requests.exceptions
     HAS_APYPIE = True
 except ImportError:
     HAS_APYPIE = False
@@ -125,7 +126,7 @@ def _exception2fail_json(msg='Generic failure: %s'):
             try:
                 return f(self, *args, **kwargs)
             except Exception as e:
-                self.fail_json(msg=msg % e)
+                self.fail_from_exception(e, msg % str(e))
         return inner
     return decor
 
@@ -252,7 +253,7 @@ class ForemanAnsibleModule(AnsibleModule):
     def ping(self):
         return self.foremanapi.resource('home').call('status')
 
-    @_exception2fail_json('Failed to show resource: %s')
+    @_exception2fail_json(msg='Failed to show resource: %s')
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
             params = {}
@@ -331,7 +332,7 @@ class ForemanAnsibleModule(AnsibleModule):
         changed, _entity = self.ensure_entity(*args, **kwargs)
         return changed
 
-    @_exception2fail_json('Failed to ensure entity state: %s')
+    @_exception2fail_json(msg='Failed to ensure entity state: %s')
     def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=True):
         """Ensure that a given entity has a certain state
 
@@ -503,8 +504,9 @@ class ForemanAnsibleModule(AnsibleModule):
                 if synchronous and is_foreman_task:
                     result = self.wait_for_task(result)
         except Exception as e:
-            self.fail_json(msg='Error while performing {0} on {1}: {2}'.format(
-                action, resource, str(e)))
+            msg = 'Error while performing {0} on {1}: {2}'.format(
+                action, resource, str(e))
+            self.fail_from_exception(e, msg)
         return True, result
 
     def wait_for_task(self, task):
@@ -518,6 +520,15 @@ class ForemanAnsibleModule(AnsibleModule):
             _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False)
 
         return task
+
+    def fail_from_exception(self, exc, msg):
+        fail = {'msg': msg}
+        if isinstance(exc, requests.exceptions.HTTPError):
+            try:
+                fail['error'] = exc.response.json()['error']
+            except Exception:
+                fail['error'] = exc.response.text
+        self.fail_json(**fail)
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
