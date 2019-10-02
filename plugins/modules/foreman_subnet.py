@@ -40,6 +40,9 @@ options:
     description: Subnet name
     required: true
     type: str
+  updated_name:
+    description: New subnet name. When this parameter is set, the module will not be idempotent.
+    type: str
   network_type:
     description: Subnet type
     default: IPv4
@@ -216,6 +219,9 @@ except ImportError:
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
@@ -255,6 +261,8 @@ def main():
     entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if entity_dict['network_type'] == 'IPv4':
             IPNetwork = ipaddress.IPv4Network
         else:

@@ -38,6 +38,9 @@ options:
     description: The config group name
     required: true
     type: str
+  updated_name:
+    description: New config group name. When this parameter is set, the module will not be idempotent.
+    type: str
   puppetclasses:
     description: List of puppet classes to include in this group
     required: false
@@ -70,6 +73,9 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
             puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
@@ -83,6 +89,8 @@ def main():
     entity = module.find_resource_by_name('config_groups', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'puppetclasses' in entity_dict:
             # puppet classes API return puppet classes grouped by puppet module name
             puppet_classes = []

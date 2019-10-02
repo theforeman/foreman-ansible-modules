@@ -38,6 +38,9 @@ options:
     description: The full DNS domain name
     required: true
     type: str
+  updated_name:
+    description: New domain name. When this parameter is set, the module will not be idempotent.
+    type: str
   dns_proxy:
     aliases:
       - dns
@@ -119,6 +122,9 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, para
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
             description=dict(aliases=['fullname'], flat_name='fullname'),
@@ -137,6 +143,8 @@ def main():
     entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'dns_proxy' in entity_dict:
             entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
 

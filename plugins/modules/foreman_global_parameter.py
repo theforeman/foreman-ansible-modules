@@ -42,6 +42,10 @@ options:
       - Name of the Global Parameter
     required: true
     type: str
+  updated_name:
+    description:
+      - New name of the Global Parameter. When this parameter is set, the module will not be idempotent.
+    type: str
   value:
     description:
       - Value of the Global Parameter
@@ -119,6 +123,7 @@ def main():
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
+            updated_name=dict(),
         ),
         required_if=(
             ['state', 'present_with_defaults', ['value']],
@@ -133,6 +138,8 @@ def main():
     entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         # Convert values according to their corresponding parameter_type
         if entity and 'parameter_type' not in entity:
             entity['parameter_type'] = 'string'

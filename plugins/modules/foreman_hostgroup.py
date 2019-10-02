@@ -39,6 +39,9 @@ options:
     description: Name of hostgroup
     required: true
     type: str
+  updated_name:
+    description: New name of hostgroup. When this parameter is set, the module will not be idempotent.
+    type: str
   description:
     description: Description of hostgroup
     required: false
@@ -304,7 +307,10 @@ def main():
             lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
             content_view=dict(type='entity', flat_name='content_view_id'),
         ),
-        argument_spec=dict(organization=dict()),
+        argument_spec=dict(
+            organization=dict(),
+            updated_name=dict(),
+        ),
     )
     entity_dict = module.clean_params()
 
@@ -397,6 +403,8 @@ def main():
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
     if entity:
         entity['root_pass'] = None
+        if 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
 
     parameters = entity_dict.get('parameters')
 

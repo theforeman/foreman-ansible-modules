@@ -41,6 +41,27 @@
       expected_change: false
   - include: tasks/provisioning_template.yml
     vars:
+      provisioning_template_name: "my template"
+      provisioning_template_state: present
+      expected_change: true
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "my template"
+      provisioning_template_updated_name: "my template 2"
+      provisioning_template_state: present
+      expected_change: true
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "my template 2"
+      provisioning_template_state: present
+      expected_change: false
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "my template 2"
+      provisioning_template_state: absent
+      expected_change: true
+  - include: tasks/provisioning_template.yml
+    vars:
       provisioning_template_state: present
       expected_change: false
   - include: tasks/provisioning_template.yml

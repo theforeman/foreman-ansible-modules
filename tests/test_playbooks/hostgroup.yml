@@ -224,6 +224,50 @@
 
   - include: tasks/hostgroup.yml
     vars:
+      hostgroup_name: "Super New host group"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "Super New host group"
+      hostgroup_updated_name: "Super New host group 2"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "Super New host group 2"
+      hostgroup_state: absent
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group 1"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group 1"
+      hostgroup_updated_name: "Nested New host group 10"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group 10"
+      hostgroup_state: present
+      expected_change: false
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group 10"
+      hostgroup_state: absent
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
       hostgroup_name: "New host group/Nested New host group 2"
       hostgroup_state: absent
       expected_change: true

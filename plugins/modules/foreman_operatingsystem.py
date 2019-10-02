@@ -41,6 +41,9 @@ options:
       - Name of the Operating System
     required: false
     type: str
+  updated_name:
+    description: New operating system name. When this parameter is set, the module will not be idempotent.
+    type: str
   release_name:
     description:
       - Release name of the operating system (recommended for debian)
@@ -199,6 +202,7 @@ def main():
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
+            updated_name=dict(),
         ),
         required_if=[
             ['state', 'present', ['name', 'major', 'family']],
@@ -234,6 +238,8 @@ def main():
                 module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
     if not module.desired_absent:
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'architectures' in entity_dict:
             entity_dict['architectures'] = module.find_resources_by_name('architectures', entity_dict['architectures'], thin=True)
 

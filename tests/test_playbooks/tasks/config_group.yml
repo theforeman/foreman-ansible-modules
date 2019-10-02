@@ -8,6 +8,7 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ config_group_name }}"
+    updated_name: "{{ config_group_updated_name | default(omit) }}"
     puppetclasses: "{{ config_group_puppetclasses | default(omit) }}"
     state: "{{ config_group_state }}"
   register: result

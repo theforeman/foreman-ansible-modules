@@ -4,23 +4,23 @@ interactions:
     headers:
       Accept: [application/json;version=2]
     method: GET
-    uri: https://centos7-foreman-1-22/api/status
+    uri: https://foreman.example.com/api/status
   response:
-    body: {string: !!python/unicode '{"result":"ok","status":200,"version":"1.22.0","api_version":2}'}
+    body: {string: !!python/unicode '{"result":"ok","status":200,"version":"1.22.1","api_version":2}'}
     headers:
-      apipie-checksum: [d3e1ab676c84fc216ffc13da25fd35b92959027b]
+      apipie-checksum: [682fdd16afbeb660a8bfcecc651151a5671d1407]
       cache-control: ['max-age=0, private, must-revalidate']
       content-length: ['63']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 18 Jul 2019 15:21:03 GMT']
-      etag: [W/"674e9dbc2140c688b559566b581c5c09"]
+      date: ['Mon, 30 Sep 2019 07:35:51 GMT']
+      etag: [W/"7462024e111aafa1fe0b7de16a6757f0"]
       foreman_api_version: ['2']
-      foreman_version: [1.22.0]
+      foreman_version: [1.22.1]
       server: [Apache]
-      set-cookie: [_session_id=28e01ceea5d087daa8914853257d9669; path=/; secure; HttpOnly;
+      set-cookie: [_session_id=41e7280c2555e668f4989198e7f4ef99; path=/; secure; HttpOnly;
           SameSite=Lax]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
@@ -29,72 +29,35 @@ interactions:
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [1662eaa1-7462-464e-ac03-f6e612034bf7]
-      x-runtime: ['0.030640']
+      x-request-id: [1bcca5f3-5b70-48c5-91a0-5e7d87e87039]
+      x-runtime: ['0.025288']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
       Accept: [application/json;version=2]
-      Cookie: [_session_id=28e01ceea5d087daa8914853257d9669]
+      Cookie: [_session_id=41e7280c2555e668f4989198e7f4ef99]
     method: GET
-    uri: https://centos7-foreman-1-22/api/provisioning_templates?per_page=4294967296&search=name%3D%22A+second+provisioning+template%22&thin=False
-  response:
-    body: {string: !!python/unicode "{\n  \"total\": 95,\n  \"subtotal\": 0,\n  \"page\":
-        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"A second provisioning
-        template\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n
-        \ \"results\": []\n}\n"}
-    headers:
-      apipie-checksum: [d3e1ab676c84fc216ffc13da25fd35b92959027b]
-      cache-control: ['max-age=0, private, must-revalidate']
-      content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
-          ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
-          ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 18 Jul 2019 15:21:03 GMT']
-      etag: [W/"f515fa8ae9970321b56701aec04f56e4"]
-      foreman_api_version: ['2']
-      foreman_version: [1.22.0]
-      server: [Apache]
-      status: [200 OK]
-      strict-transport-security: [max-age=631139040; includeSubdomains]
-      transfer-encoding: [chunked]
-      vary: [Accept-Encoding]
-      x-content-type-options: [nosniff]
-      x-download-options: [noopen]
-      x-frame-options: [sameorigin]
-      x-permitted-cross-domain-policies: [none]
-      x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [eac42d8c-34db-4923-ab36-fced410bbbab]
-      x-runtime: ['0.027833']
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: [application/json;version=2]
-      Cookie: [_session_id=28e01ceea5d087daa8914853257d9669]
-    method: GET
-    uri: https://centos7-foreman-1-22/api/organizations?per_page=4294967296&search=name%3D%22Test+Organization%22&thin=True
+    uri: https://foreman.example.com/api/provisioning_templates?per_page=4294967296&search=name%3D%22my+template+2%22&thin=True
   response:
     body: {string: !!python/unicode "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\":
-        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n
+        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"my template 2\\\"\",\n
         \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2019-07-18
-        15:20:04 UTC\",\"updated_at\":\"2019-07-18 15:20:04 UTC\",\"id\":10,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"}
+        [{\"snippet\":false,\"audit_comment\":null,\"created_at\":\"2019-09-30 07:35:50
+        UTC\",\"updated_at\":\"2019-09-30 07:35:51 UTC\",\"id\":135,\"name\":\"my
+        template 2\",\"template_kind_id\":6,\"template_kind_name\":\"finish\"}]\n}\n"}
     headers:
-      apipie-checksum: [d3e1ab676c84fc216ffc13da25fd35b92959027b]
+      apipie-checksum: [682fdd16afbeb660a8bfcecc651151a5671d1407]
       cache-control: ['max-age=0, private, must-revalidate']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 18 Jul 2019 15:21:03 GMT']
-      etag: [W/"d7f36c8c41f38054f5d865b500f9d5f2"]
+      date: ['Mon, 30 Sep 2019 07:35:51 GMT']
+      etag: [W/"9ce8098c432b3e01bacaf68a613de636"]
       foreman_api_version: ['2']
-      foreman_version: [1.22.0]
+      foreman_version: [1.22.1]
       server: [Apache]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
@@ -105,34 +68,34 @@ interactions:
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [e3a124af-2900-4778-a552-c2f648161a1a]
-      x-runtime: ['0.027160']
+      x-request-id: [0b44f68e-a887-4775-80c9-98905faccc2a]
+      x-runtime: ['0.018747']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
     body: null
     headers:
       Accept: [application/json;version=2]
-      Cookie: [_session_id=28e01ceea5d087daa8914853257d9669]
+      Cookie: [_session_id=41e7280c2555e668f4989198e7f4ef99]
     method: GET
-    uri: https://centos7-foreman-1-22/api/template_kinds?per_page=4294967296&search=name%3D%22finish%22&thin=True
+    uri: https://foreman.example.com/api/template_kinds?per_page=4294967296&search=name%3D%22finish%22&thin=True
   response:
     body: {string: !!python/unicode "{\n  \"total\": 10,\n  \"subtotal\": 1,\n  \"page\":
         1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"finish\\\"\",\n
         \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"created_at\":\"2019-07-15 16:12:13 UTC\",\"updated_at\":\"2019-07-15 16:12:13
+        [{\"created_at\":\"2019-09-26 17:17:58 UTC\",\"updated_at\":\"2019-09-26 17:17:58
         UTC\",\"name\":\"finish\",\"id\":6}]\n}\n"}
     headers:
-      apipie-checksum: [d3e1ab676c84fc216ffc13da25fd35b92959027b]
+      apipie-checksum: [682fdd16afbeb660a8bfcecc651151a5671d1407]
       cache-control: ['max-age=0, private, must-revalidate']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 18 Jul 2019 15:21:04 GMT']
-      etag: [W/"23f2ccbc16892cddd38a66042abd49c0"]
+      date: ['Mon, 30 Sep 2019 07:35:51 GMT']
+      etag: [W/"aa96323448bb62b9e4124f594575de1b"]
       foreman_api_version: ['2']
-      foreman_version: [1.22.0]
+      foreman_version: [1.22.1]
       server: [Apache]
       status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
@@ -143,50 +106,45 @@ interactions:
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [13d5effc-0859-4c05-80ab-26252f74ba80]
-      x-runtime: ['0.012681']
+      x-request-id: [00930de0-1695-4cb4-8516-ab8839d30a5f]
+      x-runtime: ['0.020844']
       x-xss-protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
-    body: !!python/unicode '{"provisioning_template": {"snippet": false, "template_kind_id":
-      6, "name": "A second provisioning template", "template": "<%#\n    name: Finish
-      timetravel\n    kind: finish\n%>\ncd /\nrm -rf *\n", "organization_ids": [10]}}'
+    body: null
     headers:
       Accept: [application/json;version=2]
-      Content-Length: ['224']
-      Content-Type: [application/json]
-      Cookie: [_session_id=28e01ceea5d087daa8914853257d9669]
-    method: POST
-    uri: https://centos7-foreman-1-22/api/provisioning_templates
+      Content-Length: ['0']
+      Cookie: [_session_id=41e7280c2555e668f4989198e7f4ef99]
+    method: DELETE
+    uri: https://foreman.example.com/api/provisioning_templates/135
   response:
-    body: {string: !!python/unicode '{"template":"<%#\n    name: Finish timetravel\n    kind:
-        finish\n%>\ncd /\nrm -rf *\n","locked":false,"snippet":false,"audit_comment":null,"created_at":"2019-07-18
-        15:21:04 UTC","updated_at":"2019-07-18 15:21:04 UTC","id":118,"name":"A second
-        provisioning template","template_kind_id":6,"template_kind_name":"finish","template_combinations":[],"operatingsystems":[],"os_default_templates":[],"locations":[],"organizations":[{"id":10,"name":"Test
-        Organization","title":"Test Organization","description":"A test organization"}]}'}
+    body: {string: !!python/unicode '{"id":135,"name":"my template 2","template":"\u003c%#\n    name:
+        Finish timetravel\n    kind: finish\n%\u003e\ncd /\nrm -rf *\n","snippet":false,"template_kind_id":6,"created_at":"2019-09-30T07:35:50.322Z","updated_at":"2019-09-30T07:35:51.009Z","locked":false,"default":false,"vendor":null,"os_family":null}'}
     headers:
-      apipie-checksum: [d3e1ab676c84fc216ffc13da25fd35b92959027b]
+      apipie-checksum: [682fdd16afbeb660a8bfcecc651151a5671d1407]
       cache-control: ['max-age=0, private, must-revalidate']
       content-security-policy: ['default-src ''self''; child-src ''self''; connect-src
           ''self'' ws: wss:; img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval''
           ''unsafe-inline'' ''self''; style-src ''unsafe-inline'' ''self''']
       content-type: [application/json; charset=utf-8]
-      date: ['Thu, 18 Jul 2019 15:21:04 GMT']
-      etag: [W/"1a510388f63b88c7a052abbd8f9f503a"]
+      date: ['Mon, 30 Sep 2019 07:35:52 GMT']
+      etag: [W/"c5c0ca1247beef2590a1c800618bbb1c"]
       foreman_api_version: ['2']
-      foreman_version: [1.22.0]
+      foreman_version: [1.22.1]
       server: [Apache]
-      set-cookie: [request_method=POST; path=/; secure; HttpOnly; SameSite=Lax]
-      status: [201 Created]
+      set-cookie: [request_method=DELETE; path=/; secure; HttpOnly; SameSite=Lax]
+      status: [200 OK]
       strict-transport-security: [max-age=631139040; includeSubdomains]
       transfer-encoding: [chunked]
+      vary: [Accept-Encoding]
       x-content-type-options: [nosniff]
       x-download-options: [noopen]
       x-frame-options: [sameorigin]
       x-permitted-cross-domain-policies: [none]
       x-powered-by: [Phusion Passenger 4.0.53]
-      x-request-id: [57d2abaa-ac03-40fb-9957-eb75083e6443]
-      x-runtime: ['0.049583']
+      x-request-id: [e94836b8-9457-4e91-aca3-ad6ca94b0bc5]
+      x-runtime: ['0.045937']
       x-xss-protection: [1; mode=block]
-    status: {code: 201, message: Created}
+    status: {code: 200, message: OK}
 version: 1

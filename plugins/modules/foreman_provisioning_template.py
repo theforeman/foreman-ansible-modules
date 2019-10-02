@@ -95,6 +95,9 @@ options:
         to perform bulk actions (modify, delete) on all existing templates.
     required: false
     type: str
+  updated_name:
+    description: New provisioning template name. When this parameter is set, the module will not be idempotent.
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -261,6 +264,7 @@ def main():
         argument_spec=dict(
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+            updated_name=dict(),
         ),
         entity_spec=dict(
             audit_comment=dict(),
@@ -297,9 +301,9 @@ def main():
 
     # We do not want a template text for bulk operations
     if module.params['name'] == '*':
-        if module.params['file_name'] or module.params['template']:
+        if module.params['file_name'] or module.params['template'] or module.params['updated_name']:
             module.fail_json(
-                msg="Neither file_name nor template allowed if 'name: *'!")
+                msg="Neither file_name nor template nor updated_name allowed if 'name: *'!")
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
@@ -350,6 +354,8 @@ def main():
         entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if not affects_multiple and entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 

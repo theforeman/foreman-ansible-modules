@@ -9,6 +9,7 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ architecture_name }}"
+    updated_name: "{{ architecture_updated_name | default(omit) }}"
     operatingsystems: "{{ operatingsystems | default(omit) }}"
     state: "{{ architecture_state }}"
   register: result

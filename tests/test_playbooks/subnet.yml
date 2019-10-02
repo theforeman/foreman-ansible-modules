@@ -148,6 +148,33 @@
         subnet_state: absent
         subnet_cidr: 27
         expected_change: false
+  - name: 'Test Subnet name change'
+    block:
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "My test subnet"
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        expected_change: true
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "My test subnet"
+        subnet_updated_name: "My new test subnet"
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        expected_change: true
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "My new test subnet"
+        subnet_mask: '255.255.255.224'
+        subnet_state: present
+        expected_change: false
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "My new test subnet"
+        subnet_mask: '255.255.255.224'
+        subnet_state: absent
+        expected_change: true
   - name: 'Test Subnet with full params except smart proxies and cidr'
     block:
     - include: tasks/subnet.yml

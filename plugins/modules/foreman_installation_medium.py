@@ -41,6 +41,9 @@ options:
         The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
     required: true
     type: str
+  updated_name:
+    description: New full installation medium name. When this parameter is set, the module will not be idempotent.
+    type: str
   locations:
     description: List of locations the installation medium should be assigned to
     required: false
@@ -109,6 +112,9 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 def main():
     module = ForemanEntityAnsibleModule(
+        argument_spec=dict(
+            updated_name=dict(),
+        ),
         entity_spec=dict(
             name=dict(required=True),
             locations=dict(type='entity_list', flat_name='location_ids'),
@@ -130,6 +136,8 @@ def main():
     if affects_multiple:
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
+        if module.params['updated_name']:
+            module.fail_json(msg="updated_name not allowed if 'name: *'!")
         if module.desired_absent:
             if list(entity_dict.keys()) != ['name']:
                 entity_dict.pop('name', None)
@@ -146,6 +154,8 @@ def main():
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if not affects_multiple and entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
             if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:

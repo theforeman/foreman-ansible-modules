@@ -72,6 +72,10 @@ options:
         to perform bulk actions (modify, delete) on all existing partition tables.
     required: false
     type: str
+  updated_name:
+    description: New name of the template. When this parameter is set, the module will not be idempotent.
+    required: false
+    type: str
   organizations:
     description:
       - The organizations the template shall be assigned to
@@ -235,6 +239,7 @@ def main():
         argument_spec=dict(
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
+            updated_name=dict(),
         ),
         entity_spec=dict(
             layout=dict(),
@@ -266,9 +271,9 @@ def main():
 
     # We do not want a layout text for bulk operations
     if module.params['name'] == '*':
-        if module.params['file_name'] or module.params['layout']:
+        if module.params['file_name'] or module.params['layout'] or module.params['updated_name']:
             module.fail_json(
-                msg="Neither file_name nor layout allowed if 'name: *'!")
+                msg="Neither file_name nor layout nor updated_name allowed if 'name: *'!")
 
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
@@ -322,6 +327,8 @@ def main():
         entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
 
     if not module.desired_absent:
+        if not affects_multiple and entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
         if 'locations' in entity_dict:
             entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
