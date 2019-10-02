@@ -146,7 +146,7 @@ def main():
     if affects_multiple:
         entities = module.list_resource('media')
         if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('media', ent['id']) for ent in entities]
+            entities = [module.show_resource('media', entity['id']) for entity in entities]
         if not entities:
             # Nothing to do shortcut to exit
             module.exit_json(changed=False)
