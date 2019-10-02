@@ -40,6 +40,9 @@ options:
     description: Subnet name
     required: true
     type: str
+  description:
+    description: Description of the subnet
+    type: str
   updated_name:
     description: New subnet name. When this parameter is set, the module will not be idempotent.
     type: str
@@ -181,6 +184,7 @@ EXAMPLES = '''
 - name: My subnet
   foreman_subnet:
     name: "My subnet"
+    description: "My description"
     network: "192.168.0.0"
     mask: "255.255.255.192"
     gateway: "192.168.0.1"
@@ -224,6 +228,7 @@ def main():
         ),
         entity_spec=dict(
             name=dict(required=True),
+            description=dict(),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
             dns_primary=dict(),
             dns_secondary=dict(),
