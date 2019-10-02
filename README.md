@@ -1,4 +1,4 @@
-# Foreman Ansible Modules [![Build Status](https://travis-ci.org/theforeman/foreman-ansible-modules.svg?branch=master)](https://travis-ci.org/theforeman/foreman-ansible-modules)
+# Foreman Ansible Modules ![Build Status](https://github.com/theforeman/foreman-ansible-modules/workflows/CI/badge.svg)
 
 Ansible modules for interacting with the Foreman API and various plugin APIs such as Katello.
 
