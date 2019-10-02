@@ -6,4 +6,9 @@
       command: "ansible-test sanity --venv --python {{ ansible_python_version.split('.')[:2] | join('.') }} plugins/"
       args:
         chdir: "{{ test_collection_path }}"
+      register: sanity_result
+
+    - name: Print results
+      debug:
+        var: sanity_result
 ...
