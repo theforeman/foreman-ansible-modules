@@ -36,6 +36,18 @@ parameter_entity_spec = dict(
 )
 
 
+def _exception2fail_json(msg='Generic failure: %s'):
+    def decor(f):
+        @wraps(f)
+        def inner(self, *args, **kwargs):
+            try:
+                return f(self, *args, **kwargs)
+            except Exception as e:
+                self.fail_from_exception(e, msg % str(e))
+        return inner
+    return decor
+
+
 class KatelloMixin(object):
     def __init__(self, argument_spec=None, **kwargs):
         args = dict(
@@ -45,6 +57,7 @@ class KatelloMixin(object):
             args.update(argument_spec)
         super(KatelloMixin, self).__init__(argument_spec=args, **kwargs)
 
+    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def connect(self, ping=True):
         super(KatelloMixin, self).connect(ping)
         self._patch_content_uploads_update_api()
@@ -117,18 +130,6 @@ class KatelloMixin(object):
         _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
         if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
             _sync_plan_remove_products['params'].append(_organization_parameter)
-
-
-def _exception2fail_json(msg='Generic failure: %s'):
-    def decor(f):
-        @wraps(f)
-        def inner(self, *args, **kwargs):
-            try:
-                return f(self, *args, **kwargs)
-            except Exception as e:
-                self.fail_from_exception(e, msg % str(e))
-        return inner
-    return decor
 
 
 class ForemanAnsibleModule(AnsibleModule):
