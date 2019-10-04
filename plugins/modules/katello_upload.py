@@ -33,6 +33,8 @@ short_description: Upload content to Katello
 description:
     - Allows the upload of content to a Katello repository
 author: "Eric D Helms (@ehelms)"
+requirements:
+  - rpm
 options:
   src:
     description:
@@ -75,13 +77,43 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from subprocess import check_output
 import os
 import hashlib
+import traceback
 
 from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
+try:
+    import rpm
+    HAS_RPM = True
+except ImportError:
+    HAS_RPM = False
+    RPM_IMP_ERR = traceback.format_exc()
+
 CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
+
+
+def get_rpm_info(path):
+    ts = rpm.TransactionSet()
+
+    # disable signature checks, we might not have the key or the file might be unsigned
+    # pre 4.15 RPM needs to use the old name of the bitmask
+    try:
+        vsflags = rpm.RPMVSF_MASK_NOSIGNATURES
+    except AttributeError:
+        vsflags = rpm._RPMVSF_NOSIGNATURES
+    ts.setVSFlags(vsflags)
+
+    with open(path) as rpmfile:
+        rpmhdr = ts.hdrFromFdno(rpmfile)
+
+    name = rpmhdr[rpm.RPMTAG_NAME].decode('ascii')
+    epoch = rpmhdr[rpm.RPMTAG_EPOCHNUM]
+    version = rpmhdr[rpm.RPMTAG_VERSION].decode('ascii')
+    release = rpmhdr[rpm.RPMTAG_RELEASE].decode('ascii')
+    arch = rpmhdr[rpm.RPMTAG_ARCH].decode('ascii')
+
+    return (name, epoch, version, release, arch)
 
 
 def main():
@@ -115,8 +147,10 @@ def main():
 
     content_unit = None
     if entity_dict['repository']['content_type'] == 'yum':
-        name, epoch, version, release, arch = check_output(['rpm', '--queryformat', '%{NAME} %{EPOCHNUM} %{VERSION} %{RELEASE} %{ARCH}',
-                                                           '-qp', entity_dict['src']]).decode('ascii').split()
+        if not HAS_RPM:
+            module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
+
+        name, epoch, version, release, arch = get_rpm_info(entity_dict['src'])
         query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
         content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
     elif entity_dict['repository']['content_type'] == 'file':
