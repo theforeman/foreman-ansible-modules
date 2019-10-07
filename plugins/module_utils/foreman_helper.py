@@ -58,8 +58,8 @@ class KatelloMixin(object):
         super(KatelloMixin, self).__init__(argument_spec=args, **kwargs)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
-    def connect(self, ping=True):
-        super(KatelloMixin, self).connect(ping)
+    def connect(self):
+        super(KatelloMixin, self).connect()
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
@@ -235,7 +235,7 @@ class ForemanAnsibleModule(AnsibleModule):
             self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
-    def connect(self, ping=True):
+    def connect(self):
         self.foremanapi = apypie.Api(
             uri=self._foremanapi_server_url,
             username=self._foremanapi_username,
@@ -244,11 +244,10 @@ class ForemanAnsibleModule(AnsibleModule):
             verify_ssl=self._foremanapi_validate_certs,
         )
 
+        self.ping()
+
         self._patch_location_api()
         self._patch_subnet_rex_api()
-
-        if ping:
-            self.ping()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def ping(self):
