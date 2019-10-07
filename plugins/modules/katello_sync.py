@@ -117,7 +117,7 @@ def main():
         ),
     )
 
-    module.task_timeout = 30 * 60
+    module.task_timeout = 120 * 60
 
     params = module.clean_params()
 
