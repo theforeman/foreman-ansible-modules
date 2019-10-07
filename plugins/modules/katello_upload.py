@@ -31,10 +31,11 @@ DOCUMENTATION = '''
 module: katello_upload
 short_description: Upload content to Katello
 description:
-    - Allows the upload of content to a Katello repository
+  - Allows the upload of content to a Katello repository
 author: "Eric D Helms (@ehelms)"
 requirements:
-  - rpm
+  - python-debian (For deb Package upload)
+  - rpm (For rpm upload)
 options:
   src:
     description:
@@ -59,7 +60,8 @@ options:
     required: true
     type: str
 notes:
-    - Currently only idempotent when uploading to an RPM & file repository
+  - Currently only uploading to deb, RPM & file repositories is supported
+  - For anything but file repositories, a supporting library must be installed. See Requirements.
 extends_documentation_fragment: foreman
 '''
 
@@ -84,6 +86,13 @@ import traceback
 from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 try:
+    from debian import debfile
+    HAS_DEBFILE = True
+except ImportError:
+    HAS_DEBFILE = False
+    DEBFILE_IMP_ERR = traceback.format_exc()
+
+try:
     import rpm
     HAS_RPM = True
 except ImportError:
@@ -91,6 +100,11 @@ except ImportError:
     RPM_IMP_ERR = traceback.format_exc()
 
 CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
+
+
+def get_deb_info(path):
+    control = debfile.DebFile(path).debcontrol()
+    return control['package'], control['version'], control['architecture']
 
 
 def get_rpm_info(path):
@@ -146,7 +160,14 @@ def main():
     checksum = checksum.hexdigest()
 
     content_unit = None
-    if entity_dict['repository']['content_type'] == 'yum':
+    if entity_dict['repository']['content_type'] == 'deb':
+        if not HAS_DEBFILE:
+            module.fail_json(msg='The python-debian module is required', exception=DEBFILE_IMP_ERR)
+
+        name, version, architecture = get_deb_info(entity_dict['src'])
+        query = 'name = "{0}" and version = "{1}" and architecture = "{2}"'.format(name, version, architecture)
+        content_unit = module.find_resource('debs', query, params=repository_scope, failsafe=True)
+    elif entity_dict['repository']['content_type'] == 'yum':
         if not HAS_RPM:
             module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
 

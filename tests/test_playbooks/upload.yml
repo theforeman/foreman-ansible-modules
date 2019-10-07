@@ -19,6 +19,16 @@
   - include: tasks/repository.yml
     vars:
       repository_state: absent
+      repository_name: "Test Deb Repository"
+      repository_content_type: "deb"
+  - include: tasks/repository.yml
+    vars:
+      repository_state: present
+      repository_name: "Test Deb Repository"
+      repository_content_type: "deb"
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
       repository_name: "Test File Repository"
       repository_content_type: "file"
   - include: tasks/repository.yml
@@ -40,6 +50,7 @@
       include: tasks/upload.yml
       vars:
         expected_change: False
+
     - name: upload File
       include: tasks/upload.yml
       vars:
@@ -53,6 +64,19 @@
         upload_repository: "Test File Repository"
         expected_change: False
 
+    - name: upload deb package
+      include: tasks/upload.yml
+      vars:
+        upload_src: "{{ playbook_dir }}/data/odin_1.0_ppc64.deb"
+        upload_repository: "Test Deb Repository"
+        expected_change: True
+    - name: upload deb package again, no change
+      include: tasks/upload.yml
+      vars:
+        upload_src: "{{ playbook_dir }}/data/odin_1.0_ppc64.deb"
+        upload_repository: "Test Deb Repository"
+        expected_change: False
+
 - hosts: fixtures
   gather_facts: false
   vars_files:
@@ -61,6 +85,16 @@
   - include: tasks/repository.yml
     vars:
       repository_state: absent
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+      repository_name: "Test Deb Repository"
+      repository_content_type: "deb"
+  - include: tasks/repository.yml
+    vars:
+      repository_state: absent
+      repository_name: "Test File Repository"
+      repository_content_type: "file"
   - include: tasks/product.yml
     vars:
       product_state: absent
