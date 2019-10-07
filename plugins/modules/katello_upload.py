@@ -31,9 +31,10 @@ DOCUMENTATION = '''
 module: katello_upload
 short_description: Upload content to Katello
 description:
-    - Allows the upload of content to a Katello repository
+  - Allows the upload of content to a Katello repository
 author: "Eric D Helms (@ehelms)"
 requirements:
+  - python-debian
   - rpm
 options:
   src:
@@ -59,7 +60,9 @@ options:
     required: true
     type: str
 notes:
-    - Currently only uploading to deb, RPM & file repositories is supported
+  - Currently only uploading to deb, RPM & file repositories is supported
+  - python-debian must be installed for Debian package upload
+  - rpm must be installed for RPM package upload
 extends_documentation_fragment: foreman
 '''
 
