@@ -235,7 +235,7 @@ class ForemanAnsibleModule(AnsibleModule):
             self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
-    def connect(self, ping=True):
+    def connect(self):
         self.foremanapi = apypie.Api(
             uri=self._foremanapi_server_url,
             username=self._foremanapi_username,
@@ -244,11 +244,10 @@ class ForemanAnsibleModule(AnsibleModule):
             verify_ssl=self._foremanapi_validate_certs,
         )
 
+        self.ping()
+
         self._patch_location_api()
         self._patch_subnet_rex_api()
-
-        if ping:
-            self.ping()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def ping(self):
