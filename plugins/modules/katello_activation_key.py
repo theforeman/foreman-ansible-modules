@@ -53,14 +53,19 @@ options:
     type: str
   subscriptions:
     description:
-      - List of subscriptions that include name
+      - List of subscriptions that include Name or Pool ID
     type: list
     suboptions:
       name:
         description:
           - Name of the Subscription to be added
         type: str
-        required: true
+        required: false
+      pool_id:
+        description:
+          - Pool ID of the Subscription to be added
+        type: str
+        required: false
   host_collections:
     description:
       - List of host collections to add to activation key
@@ -175,8 +180,11 @@ def main():
         ),
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(
-                name=dict(required=True),
-            )),
+                name=dict(),
+                pool_id=dict(),
+            ),
+                required_one_of=[['name', 'pool_id']]
+            ),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
                 override=dict(required=True, choices=['enabled', 'disabled']),
@@ -226,8 +234,12 @@ def main():
 
         ak_scope = {'activation_key_id': activation_key['id']}
         if subscriptions is not None:
-            subscription_names = [subscription['name'] for subscription in subscriptions]
-            desired_subscriptions = module.find_resources_by_name('subscriptions', subscription_names, params=scope, thin=True)
+            desired_subscriptions = []
+            for subscription in subscriptions:
+                if subscription['name'] is not None and subscription['pool_id'] is None:
+                    desired_subscriptions.append(module.find_resource_by_name('subscriptions', subscription['name'], params=scope, thin=True))
+                if subscription['pool_id'] is not None:
+                    desired_subscriptions.append(module.find_resource_by_id('subscriptions', subscription['pool_id'], params=scope, thin=True))
             desired_subscription_ids = set(item['id'] for item in desired_subscriptions)
             current_subscriptions = module.list_resource('subscriptions', params=ak_scope)
             current_subscription_ids = set(item['id'] for item in current_subscriptions)
