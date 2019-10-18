@@ -98,7 +98,7 @@ def main():
         ),
     )
 
-    filters_entity_spec=dict(
+    filters_entity_spec = dict(
         permissions=dict(type='entity_list', flat_name='permission_ids'),
         resource=dict(),
         search=dict(),
@@ -118,7 +118,6 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-
     filters = entity_dict.pop("filters", None)
 
     changed, entity = module.ensure_entity('roles', entity_dict, entity)
@@ -132,7 +131,7 @@ def main():
                 module.ensure_entity_state('filters', filter, None, None, 'present', filters_entity_spec)
             for old_filter in existing_filters:
                 if not type(old_filter) is dict:
-                    old_filter = { 'id': old_filter }
+                    old_filter = {'id': old_filter}
                 module.ensure_entity('filters', None, old_filter, {}, 'absent')
 
     module.exit_json(changed=changed)
