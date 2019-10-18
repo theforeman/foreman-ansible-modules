@@ -125,10 +125,10 @@ def main():
     if not module.desired_absent:
         if filters is not None:
             existing_filters = entity['filters']
-            for filter in filters:
-                filter['role_id'] = entity['id']
-                filter['permissions'] = module.find_resources_by_name('permissions', filter['permissions'])
-                module.ensure_entity_state('filters', filter, None, None, 'present', filters_entity_spec)
+            for f in filters:
+                f['role_id'] = entity['id']
+                f['permissions'] = module.find_resources_by_name('permissions', f['permissions'])
+                module.ensure_entity_state('filters', f, None, None, 'present', filters_entity_spec)
             for old_filter in existing_filters:
                 if not type(old_filter) is dict:
                     old_filter = {'id': old_filter}
