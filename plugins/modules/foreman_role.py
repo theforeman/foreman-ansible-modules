@@ -94,7 +94,7 @@ def main():
             description=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-            filters=dict(type='entity_list', flat_name='filters'),
+            filters=dict(type='entity_list', flat_name='filter_ids'),
         ),
     )
 
@@ -122,17 +122,16 @@ def main():
 
     changed, entity = module.ensure_entity('roles', entity_dict, entity)
 
-    if not module.desired_absent:
+    if not module.desired_absent and not module.check_mode:
         if filters is not None:
-            existing_filters = entity['filters']
             for f in filters:
                 f['role_id'] = entity['id']
                 f['permissions'] = module.find_resources_by_name('permissions', f['permissions'])
                 module.ensure_entity_state('filters', f, None, None, 'present', filters_entity_spec)
-            for old_filter in existing_filters:
-                if not type(old_filter) is dict:
-                    old_filter = {'id': old_filter}
-                module.ensure_entity('filters', None, old_filter, {}, 'absent')
+            for old_filter in entity['filter_ids']:
+                module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
+            if len(entity['filter_ids']) != len(filters):
+                changed = True
 
     module.exit_json(changed=changed)
 

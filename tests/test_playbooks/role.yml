@@ -29,6 +29,26 @@
   - include: tasks/role.yml
     vars:
       role_state: present
+      expected_change: true
+      role_filters:
+        - resource: 'Host'
+          permissions:
+            - view_hosts
+          search: "owner_type = Usergroup and owner_id = 4"
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
+      expected_change: false
+      role_filters:
+        - resource: 'Host'
+          permissions:
+            - view_hosts
+          search: "owner_type = Usergroup and owner_id = 4"
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
       role_description: new description
       expected_change: true
 
