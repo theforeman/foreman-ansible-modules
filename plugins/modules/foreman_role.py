@@ -124,9 +124,9 @@ def main():
 
     if not module.desired_absent and not module.check_mode:
         if filters is not None:
-            for f in filters:
-                f['role_id'] = entity['id']
-                f['permissions'] = module.find_resources_by_name('permissions', f['permissions'])
+            for role_filter in filters:
+                role_filter['role_id'] = entity['id']
+                role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'])
                 module.ensure_entity_state('filters', f, None, None, 'present', filters_entity_spec)
             for old_filter in entity['filter_ids']:
                 module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
