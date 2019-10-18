@@ -17,6 +17,11 @@
     description: "{{ role_description }}"
     locations: "{{ role_locations }}"
     organizations: "{{ role_organizations }}"
+    filters:
+      - resource: 'Host'
+        permissions:
+          - view_hosts
+        search: "owner_type = Usergroup and owner_id = 4"
     state: "{{ role_state }}"
   register: result
 - assert:
