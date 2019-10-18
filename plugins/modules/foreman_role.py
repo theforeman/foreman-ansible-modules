@@ -127,7 +127,7 @@ def main():
             for role_filter in filters:
                 role_filter['role_id'] = entity['id']
                 role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'])
-                module.ensure_entity_state('filters', f, None, None, 'present', filters_entity_spec)
+                module.ensure_entity_state('filters', role_filter, None, None, 'present', filters_entity_spec)
             for old_filter in entity['filter_ids']:
                 module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
             if len(entity['filter_ids']) != len(filters):
