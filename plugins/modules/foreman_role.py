@@ -100,7 +100,7 @@ def main():
 
     filters_entity_spec=dict(
         permissions=dict(type='entity_list', flat_name='permission_ids'),
-        resource=dict(requried=True),
+        resource=dict(),
         search=dict(),
         role_id=dict(required=True)
     )
