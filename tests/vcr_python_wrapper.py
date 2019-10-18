@@ -75,6 +75,13 @@ def host_body_matcher(r1, r2):
     return body_json_l2_matcher(r1, r2)
 
 
+def filter_apipie_checksum(response):
+    # headers should be case insensitive, but for some reason they weren't for me
+    response['headers'].pop('apipie-checksum', None)
+    response['headers'].pop('Apipie-Checksum', None)
+    return response
+
+
 VCR_PARAMS_FILE = os.environ.get('FAM_TEST_VCR_PARAMS_FILE')
 
 # Remove the name of the wrapper from argv
@@ -122,7 +129,8 @@ else:
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
                               match_on=['method', 'path', query_matcher, body_matcher],
-                              filter_headers=['Authorization', 'Apipie-Checksum'],
+                              filter_headers=['Authorization'],
+                              before_record_response=filter_apipie_checksum,
                               decode_compressed_response=True,
                               ):
         with open(sys.argv[0]) as f:
