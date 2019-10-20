@@ -38,7 +38,7 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
         # Never reach out to the internet
         record_mode = 'none'
         # Only run the tests (skip fixtures)
-        limit = '!fixtures'
+        limit = 'tests'
 
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}
