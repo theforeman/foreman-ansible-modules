@@ -1,5 +1,5 @@
 ---
-- hosts: fixtures
+- hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -41,7 +41,7 @@
        msg: "{{ result.msg }} should have contained all available resources"
     when: "'config_groups' not in result.msg"
 
-- hosts: fixtures
+- hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml

@@ -1,5 +1,5 @@
 ---
-- hosts: fixtures
+- hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -42,7 +42,7 @@
       manifest_state: "present"
       manifest_repository_url: "http://cdn.example.com"
       expected_change: false
-# the manifest we provide in fixtures cannot be refreshed because it's been deleted from the portal
+# the manifest we provide in localhost cannot be refreshed because it's been deleted from the portal
 # if you want to test manifest_state: "refreshed", you will have to provide an own manifest
 # please don't record/commit the result, as the manifest allows access to your portal account
 #  - name: "refresh manifest"
@@ -61,7 +61,7 @@
       manifest_state: "absent"
       expected_change: false
 
-- hosts: fixtures
+- hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml
