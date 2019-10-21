@@ -33,7 +33,7 @@ There are currently three ways to use the modules in your setup: install from An
 
 ### Installation from Ansible Galaxy
 
-You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `mazer install theforeman.foreman` or `ansible-galaxy collection install theforeman.foreman`.
+You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `mazer install theforeman.foreman` (Ansible 2.8) or `ansible-galaxy collection install theforeman.foreman` (Ansible 2.9 and later).
 
 After the installation, the modules are available as `theforeman.foreman.<module_name>`. Please see the [Using Ansible collections documentation](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for further details.
 
