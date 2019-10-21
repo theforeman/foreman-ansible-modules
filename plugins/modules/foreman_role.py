@@ -126,7 +126,7 @@ def main():
         if filters is not None:
             for role_filter in filters:
                 role_filter['role_id'] = entity['id']
-                role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'])
+                role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'], thin=True)
                 module.ensure_entity_state('filters', role_filter, None, None, 'present', filters_entity_spec)
             for old_filter in entity['filter_ids']:
                 module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
