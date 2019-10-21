@@ -15,6 +15,7 @@ TEST_PLAYBOOKS = [
     'content_view_version',
     'domain',
     'environment',
+    'external_usergroup',
     'config_group',
     'filters',
     'global_parameter',
