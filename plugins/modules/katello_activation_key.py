@@ -53,7 +53,7 @@ options:
     type: str
   subscriptions:
     description:
-      - List of subscriptions that include Name or Pool ID
+      - List of subscriptions that include either Name or Pool ID. Pool IDs are preferred since Names will fail when one to many. Mutually exclusive.
     type: list
     suboptions:
       name:
@@ -137,7 +137,8 @@ EXAMPLES = '''
         - rhel7-servers
         - rhel7-production
     subscriptions:
-        - name: "Red Hat Enterprise Linux"
+      - pool_id: "8a88e9826db22df5016dd018abdd029b"
+      - pool_id: "8a88e9826db22df5016dd01a23270344"
     content_overrides:
         - label: rhel-7-server-optional-rpms
           override: enabled
@@ -183,7 +184,8 @@ def main():
                 name=dict(),
                 pool_id=dict(),
             ),
-                required_one_of=[['name', 'pool_id']]
+                required_one_of=[['name', 'pool_id']],
+                mutually_exclusive=[['name', 'pool_id']],
             ),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
