@@ -37,7 +37,8 @@ If the boolean variable `expected_change` is set, such a task fails if the resul
 
 The ansible inventory contains two hosts:
 
-- fixtures: This host runs locally without modification it is meant to setup (and teardown) dependent resources, only when (re-)recording.
+- localhost: This host runs locally without modification it is meant to setup (and teardown) dependent resources, only when (re-)recording.
+  It can also be useful to run ad hoc commands or small playbooks during development.
 - tests: This host should run the actual tests. It is used to record the vcr-yaml-files, or to run isolated against those files.
 
 In order to run these tests, the API responses of a running Foreman or Katello server must be recorded.

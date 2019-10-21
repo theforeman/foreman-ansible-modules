@@ -296,7 +296,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = {'id': result['id']}
             else:
                 result = self.show_resource(resource, result['id'], params=params)
-        if self._before == {}:
+        if self._before == {} and not thin:
             self._before = result
         return result
 

@@ -48,6 +48,7 @@ TEST_PLAYBOOKS = [
     'sync_plan',
     'upload',
     'user',
+    'usergroup',
 ]
 
 

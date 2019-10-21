@@ -41,6 +41,10 @@ options:
       - Name of the content view
     required: true
     type: str
+  description:
+    description:
+      - Description of the Content View Version
+    type: str
   organization:
     description:
       - Organization that the content view is in
@@ -170,6 +174,7 @@ def main():
     module = KatelloEntityAnsibleModule(
         entity_spec=dict(
             content_view=dict(type='entity', flat_name='content_view_id', required=True),
+            description=dict(),
             version=dict(),
             lifecycle_environments=dict(type='list'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
