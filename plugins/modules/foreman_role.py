@@ -50,6 +50,10 @@ options:
     description: List of organizations the role should be assigned to
     required: false
     type: list
+  filters:
+    description: Filters with permissions for this role
+    required: false
+    type: list
   state:
     description: role presence
     default: present
@@ -67,6 +71,11 @@ EXAMPLES = '''
       - "Uppsala"
     organizations:
       - "Basalt"
+    filters:
+      - resource: 'Host'
+        permissions:
+          - view_hosts
+        search: "owner_type = Usergroup and owner_id = 4"
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
@@ -85,7 +94,15 @@ def main():
             description=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
+            filters=dict(type='entity_list', flat_name='filter_ids'),
         ),
+    )
+
+    filters_entity_spec = dict(
+        permissions=dict(type='entity_list', flat_name='permission_ids'),
+        resource=dict(),
+        search=dict(),
+        role_id=dict(required=True)
     )
 
     entity_dict = module.clean_params()
@@ -101,7 +118,20 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_entity_state('roles', entity_dict, entity)
+    filters = entity_dict.pop("filters", None)
+
+    changed, entity = module.ensure_entity('roles', entity_dict, entity)
+
+    if not module.desired_absent and not module.check_mode:
+        if filters is not None:
+            for role_filter in filters:
+                role_filter['role_id'] = entity['id']
+                role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'], thin=True)
+                module.ensure_entity_state('filters', role_filter, None, None, 'present', filters_entity_spec)
+            for old_filter in entity['filter_ids']:
+                module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
+            if len(entity['filter_ids']) != len(filters):
+                changed = True
 
     module.exit_json(changed=changed)
 
