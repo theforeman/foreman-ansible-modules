@@ -49,11 +49,13 @@
     - name: publish CV version 1.0
       include_tasks: tasks/content_view_version.yml
       vars:
+        description: version-1.0
         version: 1.0
         expected_change: true
     - name: publish CV version 1.0 again, no change
       include_tasks: tasks/content_view_version.yml
       vars:
+        description: version-1.0
         version: 1.0
         lifecycle_environments:
           - Library
@@ -61,6 +63,7 @@
     - name: publish CV to Library again, no change
       include_tasks: tasks/content_view_version.yml
       vars:
+        description: version-1.0
         version: 1.0
         lifecycle_environments:
           - Library
@@ -68,6 +71,7 @@
     - name: publish CV version 2.0
       include_tasks: tasks/content_view_version.yml
       vars:
+        description: version-2.0
         version: 2.0
         expected_change: true
     - name: remove cv version 1.0
