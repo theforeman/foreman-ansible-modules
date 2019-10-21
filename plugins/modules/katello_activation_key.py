@@ -53,17 +53,20 @@ options:
     type: str
   subscriptions:
     description:
-      - List of subscriptions that include either Name or Pool ID. Pool IDs are preferred since Names will fail when one to many. Mutually exclusive.
+      - List of subscriptions that include either Name or Pool ID.
+      - Pool IDs are preferred since Names are not unique and the module will fail if it finds more than one subscription with the same name.
     type: list
     suboptions:
       name:
         description:
-          - Name of the Subscription to be added
+          - Name of the Subscription to be added.
+          - Mutually exclusive with I(pool_id).
         type: str
         required: false
       pool_id:
         description:
-          - Pool ID of the Subscription to be added
+          - Pool ID of the Subscription to be added.
+          - Mutually exclusive with I(name).
         type: str
         required: false
   host_collections:
@@ -139,6 +142,7 @@ EXAMPLES = '''
     subscriptions:
       - pool_id: "8a88e9826db22df5016dd018abdd029b"
       - pool_id: "8a88e9826db22df5016dd01a23270344"
+      - name: "Red Hat Enterprise Linux"
     content_overrides:
         - label: rhel-7-server-optional-rpms
           override: enabled
