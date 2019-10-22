@@ -525,7 +525,11 @@ class ForemanAnsibleModule(AnsibleModule):
         fail = {'msg': msg}
         if isinstance(exc, requests.exceptions.HTTPError):
             try:
-                fail['error'] = exc.response.json()['error']
+                response = exc.response.json()
+                if 'error' in response:
+                    fail['error'] = response['error']
+                else:
+                    fail['error'] = response
             except Exception:
                 fail['error'] = exc.response.text
         self.fail_json(**fail)
