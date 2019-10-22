@@ -51,7 +51,7 @@ options:
     type: str
   state:
     description:
-      - State of the user
+      - State of the external user group
     default: present
     choices:
       - present
