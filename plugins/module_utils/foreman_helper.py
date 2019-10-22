@@ -296,8 +296,6 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = {'id': result['id']}
             else:
                 result = self.show_resource(resource, result['id'], params=params)
-        if self._before == {} and not thin:
-            self._before = result
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):
@@ -362,6 +360,12 @@ class ForemanAnsibleModule(AnsibleModule):
 
         changed = False
         updated_entity = None
+
+        if self._before == {}:
+            self._before = current_entity
+        else:
+            # ensure_entity was called multiple times, we can't be sure which entity is the real one
+            self._before = {'invalid': True}
 
         if state == 'present_with_defaults':
             if current_entity is None:
