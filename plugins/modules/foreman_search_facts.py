@@ -100,8 +100,9 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     resource: subscriptions
-    params: "organization_id=1"
-      register: result
+    params:
+      organization_id: 1
+  register: result
 - debug:
     var: result
 '''
@@ -123,14 +124,14 @@ def main():
             resource=dict(type='str', required=True),
             search=dict(default=""),
             full_details=dict(type='bool', aliases=['info'], default='false'),
-            params=dict(type='dict', default=dict()),
+            params=dict(type='dict'),
         ),
     )
 
     module_params = module.clean_params()
     resource = module_params['resource']
     search = module_params['search']
-    params = module_params['params']
+    params = module_params.get('params')
 
     module.connect()
 
