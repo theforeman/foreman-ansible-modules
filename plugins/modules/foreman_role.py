@@ -128,9 +128,10 @@ def main():
                 role_filter['role_id'] = entity['id']
                 role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'], thin=True)
                 module.ensure_entity_state('filters', role_filter, None, None, 'present', filters_entity_spec)
-            for old_filter in entity['filter_ids']:
+            old_filters = entity.get('filter_ids', [])
+            for old_filter in old_filters:
                 module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
-            if len(entity['filter_ids']) != len(filters):
+            if len(old_filters) != len(filters):
                 changed = True
 
     module.exit_json(changed=changed)
