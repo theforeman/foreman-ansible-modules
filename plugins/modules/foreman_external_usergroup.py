@@ -28,7 +28,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_external_usergroup
-short_description: Manage Foreman User groups
+short_description: Manage external user groups in Foreman
 description:
   - Create and delete external user groups in Foreman
 author:
