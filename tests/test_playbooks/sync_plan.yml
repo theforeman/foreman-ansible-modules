@@ -46,6 +46,18 @@
       sync_plan_interval: custom cron
       sync_plan_cron_expression: "* * * * */5"
       expected_change: true
+  - include: tasks/product.yml
+    vars:
+      product_sync_plan: Test Sync Plan
+      product_state: present
+      expected_change: true
+  - include: tasks/sync_plan.yml
+    vars:
+      sync_plan_description: This will not be updated
+      sync_plan_products:
+        - And this too
+      sync_plan_state: present_with_defaults
+      expected_change: false
   - include: tasks/sync_plan.yml
     vars:
       sync_plan_state: absent

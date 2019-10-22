@@ -82,11 +82,13 @@ options:
     type: list
   state:
     description:
-      - State of the sync plan
+      - State of the Sync plan
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
+    default: present
     choices:
       - present
       - absent
-    default: present
+      - present_with_defaults
     type: str
 extends_documentation_fragment: foreman
 '''
@@ -122,6 +124,7 @@ def main():
             enabled=dict(type='bool', required=True),
             sync_date=dict(required=True),
             cron_expression=dict(),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         argument_spec=dict(
             products=dict(type='list'),
@@ -146,7 +149,7 @@ def main():
 
     changed, sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
 
-    if not module.desired_absent and products is not None:
+    if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
         products = module.find_resources_by_name('products', products, params=scope, thin=True)
         desired_product_ids = set(product['id'] for product in products)
         current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
