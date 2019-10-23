@@ -309,6 +309,10 @@ class ForemanAnsibleModule(AnsibleModule):
         search = 'title="{0}"'.format(title)
         return self.find_resource(resource, search, **kwargs)
 
+    def find_resource_by_id(self, resource, obj_id, **kwargs):
+        search = 'id="{0}"'.format(obj_id)
+        return self.find_resource(resource, search, **kwargs)
+
     def find_resources(self, resource, search_list, **kwargs):
         return [self.find_resource(resource, search_item, **kwargs) for search_item in search_list]
 
@@ -317,6 +321,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def find_resources_by_title(self, resource, titles, **kwargs):
         return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
+
+    def find_resources_by_id(self, resource, obj_ids, **kwargs):
+        return [self.find_resource_by_id(resource, obj_id, **kwargs) for obj_id in obj_ids]
 
     def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
         result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
