@@ -1,0 +1,8 @@
+activation_keys:
+{% for ak in satellite_config_dump_aks.resources %}
+  - name: "{{ ak.name }}"
+    label: "{{ ak.label }}"
+{% if ak.description %}    description: "{{ ak.description }}"
+{% endif %}
+    state: present
+{% endfor %}

@@ -1,0 +1,9 @@
+locations:
+{% for loc in satellite_config_dump_locs.resources %}
+  - name: "{{ loc.name }}"
+    organizations:
+{% for org in loc.organizations %}
+      - "{{ org.name }}"
+{% endfor %}
+    state: present
+{% endfor %}

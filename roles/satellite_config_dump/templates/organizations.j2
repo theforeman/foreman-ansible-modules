@@ -1,0 +1,8 @@
+orgs:
+{% for org in satellite_config_dump_orgs.resources %}
+  - name: "{{ org.name }}"
+    label: "{{ org.label }}"
+{% if org.description %}    description: "{{ org.description }}"
+{% endif %}
+    state: present
+{% endfor %}

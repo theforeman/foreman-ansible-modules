@@ -1,0 +1,12 @@
+lifecycle_environments:
+{% for le in satellite_config_dump_les.resources %}
+{% if le.name != 'Library' %}
+  - name: "{{ le.name }}"
+    label: "{{ le.label }}"
+{% if le.description %}    description: "{{ le.description }}"
+{% endif %}
+    prior: "{{ le.prior.name }}"
+    organization: "{{ le.organization.name }}"
+    state: present
+{% endif %}
+{% endfor %}

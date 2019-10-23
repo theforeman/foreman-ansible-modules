@@ -1,0 +1,126 @@
+---
+# tasks file for satellite_config_dump
+
+- name: Ensure we have required variables defined
+  assert:
+    that:
+      - satellite_host is defined
+      - satellite_user is defined
+      - satellite_password is defined
+
+- name: Set the full dump folder path
+  set_fact:
+    config_dump_dir: "{{ satellite_config_dump_path }}/{{satellite_config_dump_folder }}"
+
+- name: Ensure dump path is present
+  file:
+    mode: 0755
+    path: "{{ config_dump_dir }}"
+    state: directory
+
+- name: Pull Organizations from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: organizations
+    full_details: true
+  register: satellite_config_dump_orgs
+
+- name: Write out orgs via template
+  template:
+    src: organizations.j2
+    dest: "{{ config_dump_dir }}/organizations.yml"
+    mode: 0644
+
+- name: Pull Locations from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: locations
+    full_details: true
+  register: satellite_config_dump_locs
+
+- name: Write out locs via template
+  template:
+    src: locations.j2
+    dest: "{{ config_dump_dir }}/locations.yml"
+    mode: 0644
+
+- name: Pull Repositories
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: repositories
+    full_details: true
+  register: satellite_config_dump_repos
+
+- name: Write out repository data via template - only writes out RH repos
+  template:
+    src: cdn_repos.j2
+    dest: "{{ config_dump_dir }}/cdn_repos.yml"
+    mode: 0644
+
+- name: build lookaside table for repos for CV dump
+  set_fact:
+    repo_product_names: "{{ repo_product_names | default ({}) | combine( {item.label: item.product.name }) }}"
+  loop: "{{ satellite_config_dump_repos.resources }}"
+
+- name: Pull Lifecycle Environments
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: lifecycle_environments
+    full_details: true
+  register: satellite_config_dump_les
+
+- name: Write out lifecycle environment data via template
+  template:
+    src: lifecycle_environments.j2
+    dest: "{{ config_dump_dir }}/lifecycle_environments.yml"
+    mode: 0644
+
+- name: Pull Content Views from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: content_views
+    full_details: true
+  register: satellite_config_dump_cvs
+
+- name: Write out content view data via template
+  template:
+    src: content_views.j2
+    dest: "{{ config_dump_dir }}/content_views.yml"
+    mode: 0644
+
+# TODO: This section required a merge of upstream PR #537
+#- name: Pull Activation Keys from Satellite
+#  foreman_search_facts:
+#    username: "{{ satellite_user }}"
+#    password: "{{ satellite_password }}"
+#    server_url: "https://{{ satellite_host }}"
+#    validate_certs: false
+#    resource: activation_keys
+#    full_details: true
+#  register: satellite_config_dump_aks
+#
+#- name: Write out activtion key data via template
+#  template:
+#    src: activation_keys.j2
+#    dest: "{{ config_dump_dir }}/activation_keys.yml"
+#    mode: 0644
+#
+#- name: debug
+#  debug:
+#    var: satellite_config_dump_aks
+#

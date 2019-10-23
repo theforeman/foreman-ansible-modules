@@ -1,0 +1,15 @@
+content_views:
+{% for cv in satellite_config_dump_cvs.resources %}
+{% if cv.name != 'Default Organization View' %}
+  - name: "{{ cv.name }}"
+{% if cv.description %}    description: "{{ cv.description }}"
+{% endif %}
+    organization: "{{ cv.organization.name }}"
+    repositories:
+{% for repo in cv.repositories %}
+      - name: '{{ repo.name }}'
+        product: '{{ repo_product_names[repo.label] }}'
+{% endfor %}
+    state: present
+{% endif %}
+{% endfor %}

@@ -1,0 +1,15 @@
+rh_repos:
+{% for repo in satellite_config_dump_repos.resources %}
+{% if not repo.content_label.startswith(repo.organization.name) %}
+  - label: {{ repo.content_label }}
+    repositories:
+{% if repo.minor %}
+    - releasever: {{ repo.minor }}
+      basearch: {{ repo.arch }}
+{% else %}
+    - basearch: {{ repo.arch }}
+{% endif %}
+    organization: {{ repo.organization.name }}
+    state: enabled
+{% endif %}
+{% endfor %}
