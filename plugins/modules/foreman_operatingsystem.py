@@ -56,6 +56,18 @@ options:
   family:
     description:
       - distribution family of the Operating System
+    choices:
+      - AIX
+      - Altlinux
+      - Archlinux
+      - Debian
+      - Freebsd
+      - Gentoo
+      - Junos
+      - Redhat
+      - Solaris
+      - Suse
+      - Windows
     required: false
     type: str
   major:
@@ -162,7 +174,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: Centos 7
-    family: Red Hat
+    family: Redhat
     major: 7
     password_hash: SHA256
     state: present_with_defaults
@@ -190,7 +202,20 @@ def main():
             name=dict(),
             release_name=dict(),
             description=dict(),
-            family=dict(),
+            family=dict(choices=[
+                'AIX',
+                'Altlinux',
+                'Archlinux',
+                'Debian',
+                'Freebsd',
+                'Gentoo',
+                'Junos',
+                'Redhat',
+                'Solaris',
+                'Suse',
+                'Windows',
+                ],
+            ),
             major=dict(),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
