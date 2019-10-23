@@ -88,14 +88,18 @@ options:
       - AIX
       - Altlinux
       - Archlinux
+      - Coreos
       - Debian
       - Freebsd
       - Gentoo
       - Junos
+      - NXOS
+      - Rancheros
       - Redhat
       - Solaris
       - Suse
       - Windows
+      - Xenserver
     type: str
   state:
     description:
