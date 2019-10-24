@@ -73,7 +73,6 @@ options:
       - Redhat
       - Solaris
       - Suse
-      - VRP
       - Windows
       - Xenserver
     type: str
