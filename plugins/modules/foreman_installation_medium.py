@@ -73,7 +73,6 @@ options:
       - Redhat
       - Solaris
       - Suse
-      - VRP
       - Windows
       - Xenserver
     type: str
@@ -107,7 +106,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, OS_LIST
 
 
 def main():
@@ -120,8 +119,7 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
-            os_family=dict(choices=['AIX', 'Altlinux', 'Archlinux', 'Coreos', 'Debian', 'Freebsd', 'Gentoo', 'Junos', 'NXOS',
-                                    'Rancheros', 'Redhat', 'Solaris', 'Suse', 'VRP', 'Windows', 'Xenserver']),
+            os_family=dict(choices=OS_LIST),
             path=dict(),
         ),
     )

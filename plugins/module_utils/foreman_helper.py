@@ -712,3 +712,22 @@ def build_fqn(name, parent=None):
         return "%s/%s" % (parent, name)
     else:
         return name
+
+
+# Helper constants
+OS_LIST = ['AIX',
+           'Altlinux',
+           'Archlinux',
+           'Coreos',
+           'Debian',
+           'Freebsd',
+           'Gentoo',
+           'Junos',
+           'NXOS',
+           'Rancheros',
+           'Redhat',
+           'Solaris',
+           'Suse',
+           'Windows',
+           'Xenserver',
+           ]
