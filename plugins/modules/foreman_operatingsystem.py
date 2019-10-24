@@ -197,7 +197,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityAnsibleModule,
+    parameter_entity_spec,
+    OS_LIST,
+)
 
 
 def main():
@@ -206,24 +210,7 @@ def main():
             name=dict(),
             release_name=dict(),
             description=dict(),
-            family=dict(choices=[
-                'AIX',
-                'Altlinux',
-                'Archlinux',
-                'Coreos',
-                'Debian',
-                'Freebsd',
-                'Gentoo',
-                'Junos',
-                'NXOS',
-                'Rancheros',
-                'Redhat',
-                'Solaris',
-                'Suse',
-                'Windows',
-                'Xenserver',
-                'Windows',
-            ]),
+            family=dict(choices=OS_LIST),
             major=dict(),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
