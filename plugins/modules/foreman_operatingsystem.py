@@ -56,6 +56,22 @@ options:
   family:
     description:
       - distribution family of the Operating System
+    choices:
+      - AIX
+      - Altlinux
+      - Archlinux
+      - Coreos
+      - Debian
+      - Freebsd
+      - Gentoo
+      - Junos
+      - NXOS
+      - Rancheros
+      - Redhat
+      - Solaris
+      - Suse
+      - Windows
+      - Xenserver
     required: false
     type: str
   major:
@@ -162,7 +178,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     name: Centos 7
-    family: Red Hat
+    family: Redhat
     major: 7
     password_hash: SHA256
     state: present_with_defaults
@@ -181,7 +197,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import (
+    ForemanEntityAnsibleModule,
+    parameter_entity_spec,
+    OS_LIST,
+)
 
 
 def main():
@@ -190,7 +210,7 @@ def main():
             name=dict(),
             release_name=dict(),
             description=dict(),
-            family=dict(),
+            family=dict(choices=OS_LIST),
             major=dict(),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
