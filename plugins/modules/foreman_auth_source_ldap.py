@@ -95,6 +95,11 @@ options:
     description: Base DN where groups reside.
     required: false
     type: str
+  use_netgroups:
+    description: Whether to use NIS netgroups instead of posix groups
+    required: false
+    default: False
+    type: bool
   server_type:
     description: Type of the LDAP server
     required: false
@@ -180,6 +185,7 @@ def main():
             ldap_filter=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
+            use_netgroups=dict(type='bool', default=False),
         ),
     )
 
