@@ -309,6 +309,10 @@ class ForemanAnsibleModule(AnsibleModule):
         search = 'title="{0}"'.format(title)
         return self.find_resource(resource, search, **kwargs)
 
+    def find_resource_by_id(self, resource, obj_id, **kwargs):
+        search = 'id="{0}"'.format(obj_id)
+        return self.find_resource(resource, search, **kwargs)
+
     def find_resources(self, resource, search_list, **kwargs):
         return [self.find_resource(resource, search_item, **kwargs) for search_item in search_list]
 
@@ -317,6 +321,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def find_resources_by_title(self, resource, titles, **kwargs):
         return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
+
+    def find_resources_by_id(self, resource, obj_ids, **kwargs):
+        return [self.find_resource_by_id(resource, obj_id, **kwargs) for obj_id in obj_ids]
 
     def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
         result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
@@ -492,13 +499,13 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return changed, None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
         try:
             result = None
-            if not self.check_mode:
+            if ignore_check_mode or not self.check_mode:
                 result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
                 is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result
                 if synchronous and is_foreman_task:
@@ -525,7 +532,11 @@ class ForemanAnsibleModule(AnsibleModule):
         fail = {'msg': msg}
         if isinstance(exc, requests.exceptions.HTTPError):
             try:
-                fail['error'] = exc.response.json()['error']
+                response = exc.response.json()
+                if 'error' in response:
+                    fail['error'] = response['error']
+                else:
+                    fail['error'] = response
             except Exception:
                 fail['error'] = exc.response.text
         self.fail_json(**fail)
@@ -701,3 +712,22 @@ def build_fqn(name, parent=None):
         return "%s/%s" % (parent, name)
     else:
         return name
+
+
+# Helper constants
+OS_LIST = ['AIX',
+           'Altlinux',
+           'Archlinux',
+           'Coreos',
+           'Debian',
+           'Freebsd',
+           'Gentoo',
+           'Junos',
+           'NXOS',
+           'Rancheros',
+           'Redhat',
+           'Solaris',
+           'Suse',
+           'Windows',
+           'Xenserver',
+           ]

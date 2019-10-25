@@ -88,14 +88,18 @@ options:
       - AIX
       - Altlinux
       - Archlinux
+      - Coreos
       - Debian
       - Freebsd
       - Gentoo
       - Junos
+      - NXOS
+      - Rancheros
       - Redhat
       - Solaris
       - Suse
       - Windows
+      - Xenserver
     type: str
   state:
     description:
@@ -231,6 +235,7 @@ from ansible.module_utils.foreman_helper import (
     ForemanEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
+    OS_LIST,
 )
 
 
@@ -247,19 +252,7 @@ def main():
             locked=dict(type='bool'),
             name=dict(),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-            os_family=dict(choices=[
-                'AIX',
-                'Altlinux',
-                'Archlinux',
-                'Debian',
-                'Freebsd',
-                'Gentoo',
-                'Junos',
-                'Redhat',
-                'Solaris',
-                'Suse',
-                'Windows',
-            ]),
+            os_family=dict(choices=OS_LIST),
         ),
         mutually_exclusive=[
             ['file_name', 'layout'],
