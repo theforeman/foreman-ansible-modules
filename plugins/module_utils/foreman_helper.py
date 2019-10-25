@@ -499,13 +499,13 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return changed, None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, always=False):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
         try:
             result = None
-            if always or not self.check_mode:
+            if ignore_check_mode or not self.check_mode:
                 result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
                 is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result
                 if synchronous and is_foreman_task:
