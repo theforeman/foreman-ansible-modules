@@ -101,11 +101,11 @@ options:
     type: list
   provisioning_templates:
     description:
-      - list of provisioning templates that are associated with the OS object
-      - Specify a full list of the template names you want to associate
-      - with your OS. For example, ["Kickstart default", "Kickstart default finish", "Kickstart default iPXE", "custom"]
-      - After specifying the template associations, you set the default association in
-      - the foreman_os_default_template module.
+      - List of provisioning templates that are associated with the operating system.
+      - Specify a full list of template names you want to associate with your OS.
+      - For example ["Kickstart default", "Kickstart default finish", "Kickstart default iPXE", "custom"].
+      - After specifying the template associations, you can set the default association in
+      - the M(foreman_os_default_template) module.
     required: false
     type: list
   password_hash:
