@@ -95,7 +95,7 @@ options:
     description: IPAM mode for this subnet
     required: false
     default: DHCP
-    choices: ["DHCP","Internal DB"]
+    choices: ["DHCP","Internal DB", "None"]
     type: str
   dhcp_proxy:
     description: DHCP Smart proxy for this subnet
@@ -240,7 +240,7 @@ def main():
             from_ip=dict(flat_name='from'),
             to_ip=dict(flat_name='to'),
             boot_mode=dict(choices=['DHCP', 'Static'], default='DHCP'),
-            ipam=dict(choices=['DHCP', 'Internal DB'], default='DHCP'),
+            ipam=dict(choices=['DHCP', 'Internal DB', 'None'], default='DHCP'),
             dhcp_proxy=dict(type='entity', flat_name='dhcp_id'),
             httpboot_proxy=dict(type='entity', flat_name='httpboot_id'),
             tftp_proxy=dict(type='entity', flat_name='tftp_id'),
