@@ -39,7 +39,7 @@ options:
   name:
     description:
       - Name of the Operating System
-    required: false
+    required: true
     type: str
   updated_name:
     description: New operating system name. When this parameter is set, the module will not be idempotent.
@@ -72,12 +72,12 @@ options:
       - Suse
       - Windows
       - Xenserver
-    required: false
+    required: true
     type: str
   major:
     description:
       - major version of the Operating System
-    required: false
+    required: true
     type: str
   minor:
     description:
@@ -101,13 +101,17 @@ options:
     type: list
   provisioning_templates:
     description:
-      - list of provisioning templates
+      - list of provisioning templates that are associated with the OS object
+      - Specify a full list of the template names you want to associate
+      - with your OS. For example, ["Kickstart default", "Kickstart default finish", "Kickstart default iPXE", "custom"]
+      - After specifying the template associations, you set the default association in
+      - the foreman_os_default_template module.
     required: false
     type: list
   password_hash:
     description:
       - hashing algorithm for passwd
-    required: false
+    required: true
     choices:
       - MD5
       - SHA256
@@ -207,17 +211,17 @@ from ansible.module_utils.foreman_helper import (
 def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
-            name=dict(),
+            name=dict(required=True),
             release_name=dict(),
             description=dict(),
-            family=dict(choices=OS_LIST),
-            major=dict(),
+            family=dict(required=True, choices=OS_LIST),
+            major=dict(required=True),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
             media=dict(type='entity_list', flat_name='medium_ids'),
             ptables=dict(type='entity_list', flat_name='ptable_ids'),
             provisioning_templates=dict(type='entity_list', flat_name='provisioning_template_ids'),
-            password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
+            password_hash=dict(required=True, choices=['MD5', 'SHA256', 'SHA512']),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         argument_spec=dict(
