@@ -238,7 +238,9 @@ def main():
                 payload['minor'] = split_version[1]
 
             changed, response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
-            content_view_version = module.show_resource('content_view_versions', response['output']['content_view_version_id'])
+            # workaround for https://projects.theforeman.org/issues/28138
+            content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')
+            content_view_version = module.show_resource('content_view_versions', content_view_version_id)
 
         if 'lifecycle_environments' in entity_dict:
             lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
