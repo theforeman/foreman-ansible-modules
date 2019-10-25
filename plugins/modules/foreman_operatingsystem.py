@@ -72,12 +72,12 @@ options:
       - Suse
       - Windows
       - Xenserver
-    required: true
+    required: false
     type: str
   major:
     description:
       - major version of the Operating System
-    required: true
+    required: false
     type: str
   minor:
     description:
@@ -111,7 +111,7 @@ options:
   password_hash:
     description:
       - hashing algorithm for passwd
-    required: true
+    required: false
     choices:
       - MD5
       - SHA256
@@ -214,14 +214,14 @@ def main():
             name=dict(required=True),
             release_name=dict(),
             description=dict(),
-            family=dict(required=True, choices=OS_LIST),
-            major=dict(required=True),
+            family=dict(choices=OS_LIST),
+            major=dict(),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
             media=dict(type='entity_list', flat_name='medium_ids'),
             ptables=dict(type='entity_list', flat_name='ptable_ids'),
             provisioning_templates=dict(type='entity_list', flat_name='provisioning_template_ids'),
-            password_hash=dict(required=True, choices=['MD5', 'SHA256', 'SHA512']),
+            password_hash=dict(choices=['MD5', 'SHA256', 'SHA512']),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         argument_spec=dict(
