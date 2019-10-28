@@ -119,6 +119,10 @@ options:
     description: DNS Smart proxy for this subnet
     required: false
     type: str
+  template_proxy:
+    description: Template Smart proxy for this subnet
+    required: false
+    type: str
   remote_execution_proxies:
     description:
       - Remote execution Smart proxies for this subnet
@@ -194,6 +198,7 @@ EXAMPLES = '''
     dhcp_proxy: "smart-proxy1.foo.example.com"
     tftp_proxy: "smart-proxy1.foo.example.com"
     dns_proxy: "smart-proxy2.foo.example.com"
+    template_proxy: "smart-proxy2.foo.example.com"
     vlanid: 452
     mtu: 9000
     domains:
@@ -246,6 +251,7 @@ def main():
             tftp_proxy=dict(type='entity', flat_name='tftp_id'),
             discovery_proxy=dict(type='entity', flat_name='discovery_id'),
             dns_proxy=dict(type='entity', flat_name='dns_id'),
+            template_proxy=dict(type='entity', flat_name='template_id'),
             remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
@@ -280,7 +286,7 @@ def main():
         if 'domains' in entity_dict:
             entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
 
-        for feature in ('dhcp_proxy', 'httpboot_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy'):
+        for feature in ('dhcp_proxy', 'httpboot_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'template_proxy'):
             if feature in entity_dict:
                 entity_dict[feature] = module.find_resource_by_name('smart_proxies', entity_dict[feature], thin=True)
 
