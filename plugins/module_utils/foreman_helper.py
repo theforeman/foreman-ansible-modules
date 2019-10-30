@@ -10,6 +10,7 @@ import re
 import time
 import traceback
 
+from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule
@@ -164,8 +165,8 @@ class ForemanAnsibleModule(AnsibleModule):
         self.state = 'undefined'
         self.entity_spec = {}
 
-        self._before = {}
-        self._after = {}
+        self._before = defaultdict(list)
+        self._after = defaultdict(list)
 
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
@@ -361,11 +362,7 @@ class ForemanAnsibleModule(AnsibleModule):
         changed = False
         updated_entity = None
 
-        if self._before == {}:
-            self._before = current_entity
-        else:
-            # ensure_entity was called multiple times, we can't be sure which entity is the real one
-            self._before = {'invalid': True}
+        self._before[resource].append(current_entity)
 
         if state == 'present_with_defaults':
             if current_entity is None:
@@ -387,11 +384,7 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
-        if self._after == {}:
-            self._after = updated_entity
-        else:
-            # ensure_entity was called multiple times, we can't be sure which entity is the real one
-            self._after = {'invalid': True}
+        self._after[resource].append(updated_entity)
 
         return changed, updated_entity
 
@@ -589,12 +582,13 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return changed
 
     def exit_json(self, **kwargs):
-        if self._after is None or 'invalid' not in self._after:
-            if 'diff' not in kwargs:
-                kwargs['diff'] = {'before': _flatten_entity(self._before, self.entity_spec),
-                                  'after': _flatten_entity(self._after, self.entity_spec)}
-            if 'entity' not in kwargs:
-                kwargs['entity'] = self._after
+        if 'diff' not in kwargs:
+            before = {resource: [_flatten_entity(entity, self.entity_spec) for entity in entities] for (resource, entities) in self._before.items()}
+            after = {resource: [_flatten_entity(entity, self.entity_spec) for entity in entities] for (resource, entities) in self._after.items()}
+            kwargs['diff'] = {'before': before,
+                              'after': after}
+        if 'entity' not in kwargs:
+            kwargs['entity'] = self._after
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
 
