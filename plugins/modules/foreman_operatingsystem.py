@@ -39,7 +39,7 @@ options:
   name:
     description:
       - Name of the Operating System
-    required: false
+    required: true
     type: str
   updated_name:
     description: New operating system name. When this parameter is set, the module will not be idempotent.
@@ -101,7 +101,11 @@ options:
     type: list
   provisioning_templates:
     description:
-      - list of provisioning templates
+      - List of provisioning templates that are associated with the operating system.
+      - Specify the full list of template names you want to associate with your OS.
+      - For example ["Kickstart default", "Kickstart default finish", "Kickstart default iPXE", "custom"].
+      - After specifying the template associations, you can set the default association in
+      - the M(foreman_os_default_template) module.
     required: false
     type: list
   password_hash:
@@ -207,7 +211,7 @@ from ansible.module_utils.foreman_helper import (
 def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
-            name=dict(),
+            name=dict(required=True),
             release_name=dict(),
             description=dict(),
             family=dict(choices=OS_LIST),
