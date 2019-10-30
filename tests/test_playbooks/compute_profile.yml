@@ -57,6 +57,9 @@
           vm_attrs: "{{ libvirt.compute_profile.attrs }}"
       compute_profile_state: present
       expected_change: true
+      expected_diff: true
+      expected_diff_before: "{}"
+      expected_diff_after: "model.*virtio"
   - include: tasks/compute_profile.yml
     vars:
       compute_profile_name: app-small
