@@ -49,6 +49,24 @@
 
       - include: tasks/content_view_filter_package.yml
         vars:
+          original_packages: true
+          expected_change: true
+      - include: tasks/content_view_filter_package.yml
+        vars:
+          original_packages: true
+          expected_change: false
+
+      - include: tasks/content_view_filter_package.yml
+        vars:
+          original_packages: false
+          expected_change: true
+      - include: tasks/content_view_filter_package.yml
+        vars:
+          original_packages: false
+          expected_change: false
+
+      - include: tasks/content_view_filter_package.yml
+        vars:
           version: 1
           expected_change: true
       - include: tasks/content_view_filter_package.yml

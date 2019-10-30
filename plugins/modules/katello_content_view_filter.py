@@ -136,6 +136,10 @@ options:
       - Create an include filter
     default: False
     type: bool
+  original_packages:
+    description:
+      - Include all RPMs with no errata
+    type: bool
 extends_documentation_fragment: foreman
 '''
 
@@ -176,6 +180,7 @@ content_filter_spec = {
     'inclusion': {},
     'content_view': {'type': 'entity', 'flat_name': 'content_view_id'},
     'filter_type': {'flat_name': 'type'},
+    'original_packages': {},
 }
 
 content_filter_rule_erratum_spec = {
@@ -216,6 +221,7 @@ def main():
             description=dict(),
             repositories=dict(type='list', default=[]),
             inclusion=dict(type='bool', default=False),
+            original_packages=dict(type='bool'),
             content_view=dict(required=True),
             filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker']),
             filter_state=dict(default='present', choices=['present', 'absent']),
