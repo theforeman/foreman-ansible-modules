@@ -347,6 +347,15 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_operatingsystems(self, names, **kwargs):
         return [self.find_operatingsystem(name, **kwargs) for name in names]
 
+    def record_before(self, resource, entity):
+        self._before[resource].append(entity)
+
+    def record_after(self, resource, entity):
+        self._after[resource].append(entity)
+
+    def record_after_full(self, resource, entity):
+        self._after_full[resource].append(entity)
+
     def ensure_entity_state(self, *args, **kwargs):
         changed, _entity = self.ensure_entity(*args, **kwargs)
         return changed
@@ -375,7 +384,7 @@ class ForemanAnsibleModule(AnsibleModule):
         changed = False
         updated_entity = None
 
-        self._before[resource].append(_flatten_entity(current_entity, entity_spec))
+        self.record_before(resource, _flatten_entity(current_entity, entity_spec))
 
         if state == 'present_with_defaults':
             if current_entity is None:
@@ -397,8 +406,8 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
-        self._after[resource].append(_flatten_entity(updated_entity, entity_spec))
-        self._after_full[resource].append(updated_entity)
+        self.record_after(resource, _flatten_entity(updated_entity, entity_spec))
+        self.record_after_full(resource, updated_entity)
 
         return changed, updated_entity
 
