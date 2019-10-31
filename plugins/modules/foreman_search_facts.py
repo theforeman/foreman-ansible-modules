@@ -46,6 +46,11 @@ options:
       - Search query to use
       - If None, all resources are returned
     type: str
+  params:
+    description:
+      - Add parameters to the API call if necessary
+      - If not specified, no additional parameters are passed
+    type: dict
   full_details:
     description:
       - If C(True) all details about the found resources are returned
@@ -88,6 +93,18 @@ EXAMPLES = '''
   register: result
 - debug:
     var: result.resources
+
+- name: Get all existing subscriptions
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    resource: subscriptions
+    params:
+      organization_id: 1
+  register: result
+- debug:
+    var: result
 '''
 
 RETURN = '''
@@ -107,16 +124,18 @@ def main():
             resource=dict(type='str', required=True),
             search=dict(default=""),
             full_details=dict(type='bool', aliases=['info'], default='false'),
+            params=dict(type='dict'),
         ),
     )
 
     module_params = module.clean_params()
     resource = module_params['resource']
     search = module_params['search']
+    params = module_params.get('params')
 
     module.connect()
 
-    response = module.list_resource(resource, search)
+    response = module.list_resource(resource, search, params)
 
     if module_params['full_details']:
         resources = []
