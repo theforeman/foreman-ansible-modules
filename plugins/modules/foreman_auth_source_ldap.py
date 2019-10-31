@@ -96,9 +96,8 @@ options:
     required: false
     type: str
   use_netgroups:
-    description: Whether to use NIS netgroups instead of posix groups
+    description: Whether to use NIS netgroups instead of posix groups, not valid for I(server_type=active_directory)
     required: false
-    default: False
     type: bool
   server_type:
     description: Type of the LDAP server
@@ -185,11 +184,15 @@ def main():
             ldap_filter=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-            use_netgroups=dict(type='bool', default=False),
+            use_netgroups=dict(type='bool'),
         ),
     )
 
     entity_dict = module.clean_params()
+
+    # additional parameter checks
+    if 'use_netgroups' in entity_dict and entity_dict['server_type'] == 'active_directory':
+        module.fail_json(msg='use_netgroups cannot be used when server_type=active_directory')
 
     module.connect()
 
