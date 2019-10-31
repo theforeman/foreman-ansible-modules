@@ -1,10 +1,10 @@
 ---
-- name: "Ensure subnet '{{ subnet_name }}' is {{ subnet_state }}"
-  vars:
+- name: "Fake Ensure subnet '{{ subnet_name }}' is {{ subnet_state }}"
+  vars: &vars
     subnet_name: "Test Subnet"
     subnet_network: '192.168.200.0'
     subnet_state: present
-  foreman_subnet:
+  foreman_subnet: &task
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
@@ -36,6 +36,19 @@
     locations: "{{ subnet_locations | default(omit) }}"
     parameters: "{{ subnet_parameters | default(omit) }}"
     state: "{{ subnet_state }}"
+  register: result
+  check_mode: true
+- assert:
+    fail_msg: "Fake Ensuring subnet is {{ subnet_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+
+- name: "Ensure subnet '{{ subnet_name }}' is {{ subnet_state }}"
+  vars:
+    <<: *vars
+  foreman_subnet:
+    <<: *task
   register: result
 - assert:
     fail_msg: "Ensuring subnet is {{ subnet_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
