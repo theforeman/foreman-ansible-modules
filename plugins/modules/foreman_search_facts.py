@@ -51,12 +51,18 @@ options:
       - Add parameters to the API call if necessary
       - If not specified, no additional parameters are passed
     type: dict
+  organization:
+    description:
+      - Scope the searched resource by organization
+    type: str
   full_details:
     description:
       - If C(True) all details about the found resources are returned
     type: bool
     default: false
     aliases: [ info ]
+notes:
+  - Some resources don't support scoping and will return errors when you pass I(organization) or unknown data in I(params).
 extends_documentation_fragment: foreman
 '''
 
@@ -94,7 +100,7 @@ EXAMPLES = '''
 - debug:
     var: result.resources
 
-- name: Get all existing subscriptions
+- name: Get all existing subscriptions for organization with id 1
   foreman_search_facts:
     username: "admin"
     password: "changeme"
@@ -102,6 +108,17 @@ EXAMPLES = '''
     resource: subscriptions
     params:
       organization_id: 1
+  register: result
+- debug:
+    var: result
+
+- name: Get all existing activation keys for organization ACME
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    resource: activation_keys
+    organization: ACME
   register: result
 - debug:
     var: result
@@ -125,15 +142,19 @@ def main():
             search=dict(default=""),
             full_details=dict(type='bool', aliases=['info'], default='false'),
             params=dict(type='dict'),
+            organization=dict(),
         ),
     )
 
     module_params = module.clean_params()
     resource = module_params['resource']
     search = module_params['search']
-    params = module_params.get('params')
+    params = module_params.get('params', {})
 
     module.connect()
+
+    if 'organization' in module_params:
+        params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
 
     response = module.list_resource(resource, search, params)
 
