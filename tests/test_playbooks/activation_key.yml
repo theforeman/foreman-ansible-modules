@@ -37,6 +37,9 @@
       include_tasks: tasks/activation_key.yml
       vars:
         expected_change: true
+        expected_diff: true
+        expected_diff_before: "content_overrides.*{}"
+        expected_diff_after: "Test_Organization_Test_Product_Test_Repository.*false"
     - name: create minimal AK again, no change
       include_tasks: tasks/activation_key.yml
       vars:
@@ -51,6 +54,9 @@
       vars:
         activation_key_auto_attach: True
         expected_change: true
+        expected_diff: true
+        expected_diff_before: "subscriptions.*\\[\\]"
+        expected_diff_after: "subscriptions.*\\[[^\\]]"
     - name: create AK with auto_attach=true again, no change
       include_tasks: tasks/activation_key.yml
       vars:
@@ -81,6 +87,9 @@
         activation_key_host_collections:
           - "TheAnswer"
         expected_change: true
+        expected_diff: true
+        expected_diff_before: ""
+        expected_diff_after: "activation_keys/host_collections"
     - include_tasks: tasks/activation_key_minimal.yml
       vars:
         expected_change: false
