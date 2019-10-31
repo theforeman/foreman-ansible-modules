@@ -18,7 +18,6 @@
     auth_source_ldap_groups_base: cn=groups,cn=accounts,dc=example,dc=com
     auth_source_ldap_server_type: free_ipa
     auth_source_ldap_ldap_filter: "(uid=%s)"
-    auth_source_ldap_netgroups: False
     auth_source_ldap_locations:
       - 'Test Location'
     auth_source_ldap_organizations:
@@ -47,7 +46,7 @@
     ldap_filter: "{{ auth_source_ldap_ldap_filter }}"
     organizations: "{{ auth_source_ldap_organizations }}"
     locations: "{{ auth_source_ldap_locations }}"
-    use_netgroups: "{{ auth_source_ldap_netgroups }}"
+    use_netgroups: "{{ auth_source_ldap_netgroups | default(omit) }}"
     state: "{{ auth_source_ldap_state }}"
   register: result
 - assert:
