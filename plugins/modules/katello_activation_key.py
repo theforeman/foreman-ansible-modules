@@ -251,6 +251,10 @@ def main():
             current_subscription_ids = set(item['id'] for item in current_subscriptions)
 
             if desired_subscription_ids != current_subscription_ids:
+                module.record_before('activation_keys/subscriptions', {'id': activation_key['id'], 'subscriptions': current_subscription_ids})
+                module.record_after('activation_keys/subscriptions', {'id': activation_key['id'], 'subscriptions': desired_subscription_ids})
+                module.record_after_full('activation_keys/subscriptions', {'id': activation_key['id'], 'subscriptions': desired_subscription_ids})
+
                 ids_to_remove = current_subscription_ids - desired_subscription_ids
                 if ids_to_remove:
                     payload = {
@@ -259,6 +263,7 @@ def main():
                     }
                     payload.update(scope)
                     module.resource_action('activation_keys', 'remove_subscriptions', payload)
+
                 ids_to_add = desired_subscription_ids - current_subscription_ids
                 if ids_to_add:
                     payload = {
@@ -267,6 +272,7 @@ def main():
                     }
                     payload.update(scope)
                     module.resource_action('activation_keys', 'add_subscriptions', payload)
+
                 changed = True
 
         if content_overrides is not None:
@@ -281,6 +287,10 @@ def main():
                 product['label']: override_to_boolnone(product['override']) for product in content_overrides
             }
             changed_content_overrides = []
+
+            module.record_before('activation_keys/content_overrides', {'id': activation_key['id'], 'content_overrides': current_content_overrides.copy()})
+            module.record_after('activation_keys/content_overrides', {'id': activation_key['id'], 'content_overrides': desired_content_overrides})
+            module.record_after_full('activation_keys/content_overrides', {'id': activation_key['id'], 'content_overrides': desired_content_overrides})
 
             for label, override in desired_content_overrides.items():
                 if override != current_content_overrides.pop(label, None):
@@ -305,6 +315,10 @@ def main():
             desired_host_collection_ids = set(item['id'] for item in desired_host_collections)
 
             if desired_host_collection_ids != current_host_collection_ids:
+                module.record_before('activation_keys/host_collections', {'id': activation_key['id'], 'host_collections': current_host_collection_ids})
+                module.record_after('activation_keys/host_collections', {'id': activation_key['id'], 'host_collections': desired_host_collection_ids})
+                module.record_after_full('activation_keys/host_collections', {'id': activation_key['id'], 'host_collections': desired_host_collection_ids})
+
                 ids_to_remove = current_host_collection_ids - desired_host_collection_ids
                 if ids_to_remove:
                     payload = {
@@ -312,6 +326,7 @@ def main():
                         'host_collection_ids': list(ids_to_remove),
                     }
                     module.resource_action('activation_keys', 'remove_host_collections', payload)
+
                 ids_to_add = desired_host_collection_ids - current_host_collection_ids
                 if ids_to_add:
                     payload = {
@@ -319,6 +334,7 @@ def main():
                         'host_collection_ids': list(ids_to_add),
                     }
                     module.resource_action('activation_keys', 'add_host_collections', payload)
+
                 changed = True
 
     module.exit_json(changed=changed)
