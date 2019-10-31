@@ -23,7 +23,7 @@ You can (re-)record the cassettes for a specific test with
 make record_global_parameter
 ```
 
-# Guidedeline to writing tests
+# Guideline to writing tests
 
 The tests in this repository run playbooks that can be found in `tests/test_playbooks`.
 To be run, the name of the corresponding playbook must be listed in `tests/test_crud.py`.
