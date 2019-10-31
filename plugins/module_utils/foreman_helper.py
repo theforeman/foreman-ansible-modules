@@ -259,6 +259,8 @@ class ForemanAnsibleModule(AnsibleModule):
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
             params = {}
+        else:
+            params = params.copy()
         params['id'] = resource_id
         return self.foremanapi.resource(resource).call('show', params)
 
@@ -266,6 +268,8 @@ class ForemanAnsibleModule(AnsibleModule):
     def list_resource(self, resource, search=None, params=None):
         if params is None:
             params = {}
+        else:
+            params = params.copy()
         if search is not None:
             params['search'] = search
         params['per_page'] = 2 << 31
