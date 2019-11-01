@@ -261,7 +261,11 @@ class ForemanAnsibleModule(AnsibleModule):
             params = {}
         else:
             params = params.copy()
+
         params['id'] = resource_id
+
+        params = self.foremanapi.resource(resource).action('show').prepare_params(params)
+
         return self.foremanapi.resource(resource).call('show', params)
 
     @_exception2fail_json(msg='Failed to list resource: %s')
@@ -270,9 +274,13 @@ class ForemanAnsibleModule(AnsibleModule):
             params = {}
         else:
             params = params.copy()
+
         if search is not None:
             params['search'] = search
         params['per_page'] = 2 << 31
+
+        params = self.foremanapi.resource(resource).action('index').prepare_params(params)
+
         return self.foremanapi.resource(resource).call('index', params)['results']
 
     def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
