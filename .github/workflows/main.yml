@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: make test-setup
       - name: Run tests
-        run: make lint test
+        run: make test
       - name: Run Ansible devel specific tests
         run: make sanity dist-test
         if: matrix.ansible == 'devel'
@@ -61,3 +61,16 @@ jobs:
         run: make doc-setup
       - name: Run tests
         run: make doc
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+      - name: Install dependencies
+        run: pip install flake8
+      - name: Run lint
+        run: make lint
