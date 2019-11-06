@@ -32,6 +32,15 @@
         hostgroup_organizations:
           - "{{ host.organization }}"
         hostgroup_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}/child_group"
+        hostgroup_domain: "{{ host.domain }}"
+        hostgroup_locations:
+          - "{{ host.location }}"
+        hostgroup_organizations:
+          - "{{ host.organization }}"
+        hostgroup_state: present    
     - include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -97,6 +106,68 @@
         host_build: False
         expected_change: false
 
+    - pause:
+
+    - name: move host to child hostgroup
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}/child_group"
+        host_managed: False
+        host_build: False
+        expected_change: True
+
+    - name: move host again to child hostgroup, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}/child_group"
+        host_managed: False
+        host_build: False
+        expected_change: false
+
+    - pause:
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
+    - name: delete host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: false
+
+    - name: create host with nested hostgroup
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}/child_group"
+        host_managed: False
+        host_build: False
+        expected_change: true
+
+    - name: create host again with nested hostgroup, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_hostgroup: "{{ host.hostgroup }}/child_group"
+        host_managed: False
+        host_build: False
+        expected_change: false
+
     - name: delete host
       include_tasks: tasks/host.yml
       vars:
@@ -117,6 +188,10 @@
     - vars/server.yml
     - vars/host.yml
   tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}/child_group"
+        hostgroup_state: absent
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "{{ host.hostgroup }}"
