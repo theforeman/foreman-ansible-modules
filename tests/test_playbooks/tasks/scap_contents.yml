@@ -1,0 +1,23 @@
+---
+- name: "Create/Update/Delete SCAP content."
+  vars:
+    scap_content_state: "present"
+  foreman_domain:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    title: "{{ title }}"
+    updated_title: "{{ updated_title | default(omit) }}"
+    scap_file: "{{ content_of_scap_file | default(omit) }}"
+    original_filename: "{{ original_filename }}"
+    locations: "{{ locations }}"
+    organizations: "{{ organizations }}"
+    state: "{{ scap_content_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring SCAP content is {{ scap_content_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...

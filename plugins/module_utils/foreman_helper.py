@@ -471,6 +471,16 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_puppetclasses(self, names, **kwargs):
         return [self.find_puppetclass(name, **kwargs) for name in names]
 
+    def find_scapcontent(self, name, params=None, failsafe=False, thin=None):
+        result = self.find_resource_by_title('scap_contents', name, params=params, failsafe=True, thin=thin)
+        if not result:
+            search = 'title~"{0}"'.format(name)
+            result = self.find_resource('scap_contents', search, params=params, failsafe=failsafe, thin=thin)
+        return result
+
+    def find_scapcontents(self, names, **kwargs):
+        return [self.find_scapcontent(name, **kwargs) for name in names]
+
     def record_before(self, resource, entity):
         self._before[resource].append(entity)
 
