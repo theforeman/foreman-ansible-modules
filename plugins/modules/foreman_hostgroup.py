@@ -298,6 +298,7 @@ def main():
                                      'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
             root_pass=dict(no_log=True),
             environment=dict(type='entity', flat_name='environment_id'),
+            puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
             config_groups=dict(type='entity_list', flat_name='config_group_ids'),
             puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
             puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
@@ -312,6 +313,12 @@ def main():
             updated_name=dict(),
         ),
     )
+
+    puppetclass_spec = dict(
+        hostgroup=dict(type='entity', flat_name='hostgroup_id'),
+        puppetclass=dict(type='entity', flat_name='puppetclass_id')
+    )
+
     entity_dict = module.clean_params()
 
     module.connect()
@@ -371,7 +378,9 @@ def main():
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
 
         if 'environment' in entity_dict:
+
             entity_dict['environment'] = module.find_resource_by_name('environments', name=entity_dict['environment'], failsafe=False, thin=True)
+
 
         if 'config_groups' in entity_dict:
             entity_dict['config_groups'] = module.find_resources_by_name('config_groups', entity_dict['config_groups'], failsafe=False, thin=True)
@@ -408,7 +417,26 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
+    puppetclasses = entity_dict.pop('puppetclasses', None)
+
     changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
+
+    if not module.desired_absent and 'environment' in entity_dict:
+        if puppetclasses is not None:
+            current_puppetclasses = [p['id'] for p in hostgroup['puppetclasses']]
+            for puppet_class_name in puppetclasses:
+                results = module.list_resource("puppetclasses", params={'environment_id': hostgroup['environment_id']}, search='name="{0}"'.format(puppet_class_name))
+                if len(results) == 1 and len(list(results.values())[0]) == 1:
+                    puppet_class_id = list(results.values())[0][0]['id']
+                    if puppet_class_id in current_puppetclasses:
+                        current_puppetclasses.remove(puppet_class['id'])
+                    else:
+                        module.ensure_entity_state('hostgroup_classes', {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id }, None, None, 'present', puppetclass_spec)
+                else:
+                    module.fail_json(msg='No data found for name="%s"' % puppet_class)
+            for leftover_puppetclass in current_puppetclasses:
+                module.ensure_entity_state('hostgroup_classes', {'hostgroup_id': hostgroup['id'], 'puppetclass_id': leftover_puppetclass }, None, None, 'absent', leftover_puppetclass)
+
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}
