@@ -46,6 +46,9 @@
       repositories:
         - name: "Test Repository"
           product: "Test Product"
+      expected_diff: true
+      expected_diff_before: "{}"
+      expected_diff_after: "Test Content View"
   - include: tasks/content_view.yml
     vars:
       content_view_state: present
@@ -89,6 +92,9 @@
       components:
         - content_view: Test Content View
           version: 1.0
+      expected_diff: true
+      expected_diff_before: "content_view_components.*\\[\\]"
+      expected_diff_after: "content_view_version_id"
   - include: tasks/content_view.yml
     vars:
       content_view_name: "Test Composite Content View"
@@ -128,6 +134,9 @@
       components:
         - content_view: Test Content View
           latest: true
+      expected_diff: true
+      expected_diff_before: "latest.*false"
+      expected_diff_after: "latest.*true"
   - include: tasks/content_view.yml
     vars:
       content_view_name: "Test Composite Content View"
@@ -153,6 +162,9 @@
       composite: true
       components: []
       auto_publish: true
+      expected_diff: true
+      expected_diff_before: "content_view_version_id"
+      expected_diff_after: "content_view_components.*\\[\\]"
   - include: tasks/content_view.yml
     vars:
       content_view_name: "Test Composite Content View"
