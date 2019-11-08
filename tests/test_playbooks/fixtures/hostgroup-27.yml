@@ -21,7 +21,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 07 Nov 2019 22:41:51 GMT
+      - Thu, 07 Nov 2019 22:52:03 GMT
       ETag:
       - W/"7462024e111aafa1fe0b7de16a6757f0"
       Foreman_api_version:
@@ -31,7 +31,7 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - _session_id=17da4744a3e1e5214783e9ffc0efa1ff; path=/; secure; HttpOnly; SameSite=Lax
+      - _session_id=95ae6325a51b4007dee13f002ec41090; path=/; secure; HttpOnly; SameSite=Lax
       Status:
       - 200 OK
       Strict-Transport-Security:
@@ -47,9 +47,9 @@ interactions:
       X-Powered-By:
       - Phusion Passenger 4.0.53
       X-Request-Id:
-      - a034d3b3-d800-46d0-849f-4f5478cd1c13
+      - 083b6967-2075-43fd-9b10-992a1bfc247c
       X-Runtime:
-      - '0.084913'
+      - '0.078264'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -61,23 +61,23 @@ interactions:
       Accept:
       - application/json;version=2
       Cookie:
-      - _session_id=17da4744a3e1e5214783e9ffc0efa1ff
+      - _session_id=95ae6325a51b4007dee13f002ec41090
     method: GET
-    uri: https://127.0.0.1:4433/api/hostgroups?thin=True&search=title%3D%22New+host+group%22&per_page=4294967296
+    uri: https://127.0.0.1:4433/api/hostgroups?search=title%3D%22New+host+group%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"title=\\\"New host group\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"subnet_id\"\
-        :3,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\":4,\"operatingsystem_name\"\
-        :\"TestOS 7.6\",\"domain_id\":6,\"domain_name\":\"foo.example.com\",\"environment_id\"\
-        :1,\"environment_name\":\"production\",\"compute_profile_id\":6,\"compute_profile_name\"\
+        :4,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\":5,\"operatingsystem_name\"\
+        :\"TestOS 7.6\",\"domain_id\":8,\"domain_name\":\"foo.example.com\",\"environment_id\"\
+        :1,\"environment_name\":\"production\",\"compute_profile_id\":7,\"compute_profile_name\"\
         :\"myprofile\",\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"\
-        ptable_id\":117,\"ptable_name\":\"Part table\",\"medium_id\":12,\"medium_name\"\
+        ptable_id\":118,\"ptable_name\":\"Part table\",\"medium_id\":13,\"medium_name\"\
         :\"TestOS Mirror\",\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\"\
         :null,\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\"\
-        :null,\"realm_name\":null,\"created_at\":\"2019-11-07 22:40:41 UTC\",\"updated_at\"\
-        :\"2019-11-07 22:41:49 UTC\",\"id\":27,\"name\":\"New host group\",\"title\"\
+        :null,\"realm_name\":null,\"created_at\":\"2019-11-07 22:50:53 UTC\",\"updated_at\"\
+        :\"2019-11-07 22:50:53 UTC\",\"id\":33,\"name\":\"New host group\",\"title\"\
         :\"New host group\",\"description\":\"New host group\",\"puppet_proxy_id\"\
         :1,\"puppet_proxy_name\":\"foreman.example.com\",\"puppet_ca_proxy_id\":1,\"\
         puppet_ca_proxy_name\":\"foreman.example.com\",\"puppet_proxy\":{\"name\"\
@@ -94,9 +94,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 07 Nov 2019 22:41:51 GMT
+      - Thu, 07 Nov 2019 22:52:03 GMT
       ETag:
-      - W/"4bcc23603cd0b5d9d4dfea660cc174c6"
+      - W/"de14767dbfdcdc5a0b716d85f2250e2d"
       Foreman_api_version:
       - '2'
       Foreman_version:
@@ -122,9 +122,85 @@ interactions:
       X-Powered-By:
       - Phusion Passenger 4.0.53
       X-Request-Id:
-      - 05cd16ba-a0e7-4bb3-9af9-85630d35ac90
+      - 4f07dd90-0c7a-45f8-b02c-9e635ef83d03
       X-Runtime:
-      - '0.099104'
+      - '0.097396'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Cookie:
+      - _session_id=95ae6325a51b4007dee13f002ec41090
+    method: GET
+    uri: https://127.0.0.1:4433/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group\\\
+        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
+        : [{\"subnet_id\":4,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\"\
+        :5,\"operatingsystem_name\":\"TestOS 7.6\",\"domain_id\":8,\"domain_name\"\
+        :\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\"\
+        ,\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\"\
+        :\"33\",\"parent_id\":33,\"parent_name\":\"New host group\",\"ptable_id\"\
+        :118,\"ptable_name\":\"Part table\",\"medium_id\":13,\"medium_name\":\"TestOS\
+        \ Mirror\",\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\"\
+        :null,\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\"\
+        :null,\"realm_name\":null,\"created_at\":\"2019-11-07 22:51:20 UTC\",\"updated_at\"\
+        :\"2019-11-07 22:51:20 UTC\",\"id\":35,\"name\":\"Nested New host group\"\
+        ,\"title\":\"New host group/Nested New host group\",\"description\":\"Nested\
+        \ group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"foreman.example.com\"\
+        ,\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"foreman.example.com\"\
+        ,\"puppet_proxy\":{\"name\":\"foreman.example.com\",\"id\":1,\"url\":\"https://foreman.example.com:9090\"\
+        },\"puppet_ca_proxy\":{\"name\":\"foreman.example.com\",\"id\":1,\"url\":\"\
+        https://foreman.example.com:9090\"}}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 07 Nov 2019 22:52:03 GMT
+      ETag:
+      - W/"6f2aa252c7a228980602ddf821d30e58"
+      Foreman_api_version:
+      - '2'
+      Foreman_version:
+      - 1.22.1
+      Server:
+      - Apache
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger 4.0.53
+      X-Request-Id:
+      - 816af1fb-9c2f-4491-84bc-86bd1782aabd
+      X-Runtime:
+      - '0.125195'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -138,15 +214,15 @@ interactions:
       Content-Length:
       - '0'
       Cookie:
-      - _session_id=17da4744a3e1e5214783e9ffc0efa1ff
+      - _session_id=95ae6325a51b4007dee13f002ec41090
     method: DELETE
-    uri: https://127.0.0.1:4433/api/hostgroups/27
+    uri: https://127.0.0.1:4433/api/hostgroups/35
   response:
     body:
-      string: '{"id":27,"name":"New host group","created_at":"2019-11-07T22:40:41.880Z","updated_at":"2019-11-07T22:41:49.618Z","environment_id":1,"operatingsystem_id":4,"architecture_id":1,"medium_id":12,"ptable_id":117,"root_pass":"$5$KQknZWqznqS0t49z$eSlBLMRaHAYOOG9KpDdf2XyhsozD.sdvvNN8JMtE7BB","puppet_ca_proxy_id":1,"use_image":null,"image_file":"","ancestry":null,"vm_defaults":null,"subnet_id":3,"domain_id":6,"puppet_proxy_id":1,"title":"New
-        host group","realm_id":null,"compute_profile_id":6,"content_source_id":null,"grub_pass":"$6$zA4Y7Lwmf1hlpMK5$8rz3SBxPkEHReQ2QWTUK59bNGQjry4cPIjnwilcu8IN9WwBo8oLW6fwu1AYyK6I6JTfzBfnMz5omZ3VWVPRuE/","content_view_id":null,"lifecycle_environment_id":null,"lookup_value_matcher":"hostgroup=New
-        host group","kickstart_repository_id":null,"subnet6_id":null,"pxe_loader":"Grub2
-        UEFI","description":"New host group","compute_resource_id":3}'
+      string: '{"id":35,"name":"Nested New host group","created_at":"2019-11-07T22:51:20.676Z","updated_at":"2019-11-07T22:51:20.676Z","environment_id":null,"operatingsystem_id":5,"architecture_id":1,"medium_id":13,"ptable_id":118,"root_pass":null,"puppet_ca_proxy_id":1,"use_image":null,"image_file":"","ancestry":"33","vm_defaults":null,"subnet_id":4,"domain_id":8,"puppet_proxy_id":1,"title":"New
+        host group/Nested New host group","realm_id":null,"compute_profile_id":null,"content_source_id":null,"grub_pass":"","content_view_id":null,"lifecycle_environment_id":null,"lookup_value_matcher":"hostgroup=New
+        host group/Nested New host group","kickstart_repository_id":null,"subnet6_id":null,"pxe_loader":"Grub2
+        UEFI","description":"Nested group","compute_resource_id":null}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -157,9 +233,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 07 Nov 2019 22:41:51 GMT
+      - Thu, 07 Nov 2019 22:52:03 GMT
       ETag:
-      - W/"76a7ff540bdfe3fc884ecd3570751e5d"
+      - W/"3698f4f60b11632a89ebfbc95d01a6cb"
       Foreman_api_version:
       - '2'
       Foreman_version:
@@ -187,9 +263,9 @@ interactions:
       X-Powered-By:
       - Phusion Passenger 4.0.53
       X-Request-Id:
-      - 709508e7-ba04-4d1d-b0b6-1d0038921e08
+      - fc12c5ce-b21f-4188-b3eb-0a93d855670c
       X-Runtime:
-      - '0.321267'
+      - '0.186662'
       X-XSS-Protection:
       - 1; mode=block
     status:

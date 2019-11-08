@@ -346,6 +346,44 @@
 
   - include: tasks/hostgroup.yml
     vars:
+      hostgroup_name: "New host group with nested parent"
+      hostgroup_description: "Nested group"
+      hostgroup_parent: "New host group/Nested New host group"
+      hostgroup_architecture: "{{ hostgroup.arch }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_locations: "{{ hostgroup.locations }}"
+      hostgroup_organizations: "{{ hostgroup.organizations }}"
+      hostgroup_domain: "{{ hostgroup.domains | first }}"
+      hostgroup_subnet: "{{ hostgroup.subnet }}"
+      hostgroup_installation_medium: "{{ hostgroup.os.name }} Mirror"
+      hostgroup_ptable: "{{ hostgroup.ptable }}"
+      hostgroup_pxe_loader: "Grub2 UEFI"
+      hostgroup_puppet_proxy: "{{ hostgroup.puppet_server }}"
+      hostgroup_puppet_ca_proxy: "{{ hostgroup.puppet_ca }}"
+      hostgroup_state: present
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group with nested parent"
+      hostgroup_description: "Nested group"
+      hostgroup_parent: "New host group/Nested New host group"
+      hostgroup_architecture: "{{ hostgroup.arch }}"
+      hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
+      hostgroup_locations: "{{ hostgroup.locations }}"
+      hostgroup_organizations: "{{ hostgroup.organizations }}"
+      hostgroup_domain: "{{ hostgroup.domains | first }}"
+      hostgroup_subnet: "{{ hostgroup.subnet }}"
+      hostgroup_installation_medium: "{{ hostgroup.os.name }} Mirror"
+      hostgroup_ptable: "{{ hostgroup.ptable }}"
+      hostgroup_pxe_loader: "Grub2 UEFI"
+      hostgroup_puppet_proxy: "{{ hostgroup.puppet_server }}"
+      hostgroup_puppet_ca_proxy: "{{ hostgroup.puppet_ca }}"
+      hostgroup_state: present
+      expected_change: false
+
+  - include: tasks/hostgroup.yml
+    vars:
       hostgroup_name: "New host group/Nested New host group 2"
       hostgroup_architecture: "{{ hostgroup.arch }}"
       hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
@@ -445,6 +483,18 @@
   - include: tasks/hostgroup.yml
     vars:
       hostgroup_name: "New host group/Nested New host group 2"
+      hostgroup_state: absent
+      expected_change: false
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group/New host group with nested parent"
+      hostgroup_state: absent
+      expected_change: true
+
+  - include: tasks/hostgroup.yml
+    vars:
+      hostgroup_name: "New host group/Nested New host group/New host group with nested parent"
       hostgroup_state: absent
       expected_change: false
 

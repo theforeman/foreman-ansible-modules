@@ -82,6 +82,9 @@
       installation_medium_path: "{{ omit }}"
       installation_medium_state: present
       expected_change: true
+      expected_diff: true
+      expected_diff_before: ""
+      expected_diff_after: "location_ids"
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'
@@ -99,6 +102,9 @@
       installation_medium_path: "{{ omit }}"
       installation_medium_state: absent
       expected_change: true
+      expected_diff: true
+      expected_diff_before: "name"
+      expected_diff_after: "{}"
   - include: tasks/installation_medium.yml
     vars:
       installation_medium_name: '*'

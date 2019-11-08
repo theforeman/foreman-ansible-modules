@@ -10,6 +10,7 @@ import re
 import time
 import traceback
 
+from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule
@@ -164,8 +165,9 @@ class ForemanAnsibleModule(AnsibleModule):
         self.state = 'undefined'
         self.entity_spec = {}
 
-        self._before = {}
-        self._after = {}
+        self._before = defaultdict(list)
+        self._after = defaultdict(list)
+        self._after_full = defaultdict(list)
 
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
@@ -257,16 +259,28 @@ class ForemanAnsibleModule(AnsibleModule):
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
             params = {}
+        else:
+            params = params.copy()
+
         params['id'] = resource_id
+
+        params = self.foremanapi.resource(resource).action('show').prepare_params(params)
+
         return self.foremanapi.resource(resource).call('show', params)
 
     @_exception2fail_json(msg='Failed to list resource: %s')
     def list_resource(self, resource, search=None, params=None):
         if params is None:
             params = {}
+        else:
+            params = params.copy()
+
         if search is not None:
             params['search'] = search
         params['per_page'] = 2 << 31
+
+        params = self.foremanapi.resource(resource).action('index').prepare_params(params)
+
         return self.foremanapi.resource(resource).call('index', params)['results']
 
     def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
@@ -296,8 +310,6 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = {'id': result['id']}
             else:
                 result = self.show_resource(resource, result['id'], params=params)
-        if self._before == {} and not thin:
-            self._before = result
         return result
 
     def find_resource_by_name(self, resource, name, **kwargs):
@@ -363,6 +375,8 @@ class ForemanAnsibleModule(AnsibleModule):
         changed = False
         updated_entity = None
 
+        self._before[resource].append(_flatten_entity(current_entity, entity_spec))
+
         if state == 'present_with_defaults':
             if current_entity is None:
                 changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
@@ -383,11 +397,8 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
-        if self._after == {}:
-            self._after = updated_entity
-        else:
-            # ensure_entity was called multiple times, we can't be sure which entity is the real one
-            self._after = {'invalid': True}
+        self._after[resource].append(_flatten_entity(updated_entity, entity_spec))
+        self._after_full[resource].append(updated_entity)
 
         return changed, updated_entity
 
@@ -585,12 +596,11 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return changed
 
     def exit_json(self, **kwargs):
-        if self._after is None or 'invalid' not in self._after:
-            if 'diff' not in kwargs:
-                kwargs['diff'] = {'before': _flatten_entity(self._before, self.entity_spec),
-                                  'after': _flatten_entity(self._after, self.entity_spec)}
-            if 'entity' not in kwargs:
-                kwargs['entity'] = self._after
+        if 'diff' not in kwargs:
+            kwargs['diff'] = {'before': self._before,
+                              'after': self._after}
+        if 'entity' not in kwargs:
+            kwargs['entity'] = self._after_full
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
 
