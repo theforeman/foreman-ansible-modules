@@ -143,6 +143,17 @@ def get_desired_repos(desired_substitutions, available_repos):
     return desired_repos
 
 
+def record_repository_set_state(module, record_data, repo, state_before, state_after):
+    repo_change_data = record_data.copy()
+    repo_change_data['repo_name'] = repo
+    repo_change_data['state'] = state_before
+    repo_change_data_after = repo_change_data.copy()
+    repo_change_data_after['state'] = state_after
+    module.record_before('repository_sets', repo_change_data)
+    module.record_after('repository_sets', repo_change_data_after)
+    module.record_after_full('repository_sets', repo_change_data_after)
+
+
 def main():
     module = KatelloEntityAnsibleModule(
         argument_spec=dict(
@@ -161,15 +172,20 @@ def main():
 
     module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
     scope = {'organization_id': module_params['organization']['id']}
+    record_data = {}
     if 'product' in module_params:
         module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
         scope['product_id'] = module_params['product']['id']
+        record_data['product'] = module_params['product']
 
     if 'label' in module_params:
         search = 'label="{0}"'.format(module_params['label'])
         repo_set = module.find_resource('repository_sets', search=search, params=scope)
+        record_data['label'] = module_params['label']
     else:
         repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
+        record_data['name'] = module_params['name']
+
     repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
     repo_set_scope.update(scope)
 
@@ -188,11 +204,15 @@ def main():
                          .format(module_params['name'], desired_repo_names, available_repo_names))
 
     changed = False
+
     if module.state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
             repo_to_enable = next((r for r in available_repos if r['repo_name'] == repo))
             repo_change_params = repo_to_enable['substitutions'].copy()
             repo_change_params.update(repo_set_scope)
+
+            record_repository_set_state(module, record_data, repo, 'disabled', 'enabled')
+
             if not module.check_mode:
                 module.resource_action('repository_sets', 'enable', params=repo_change_params)
             changed = True
@@ -201,6 +221,9 @@ def main():
             repo_to_disable = next((r for r in available_repos if r['repo_name'] == repo))
             repo_change_params = repo_to_disable['substitutions'].copy()
             repo_change_params.update(repo_set_scope)
+
+            record_repository_set_state(module, record_data, repo, 'enabled', 'disabled')
+
             if not module.check_mode:
                 module.resource_action('repository_sets', 'disable', params=repo_change_params)
             changed = True
