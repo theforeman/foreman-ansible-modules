@@ -424,6 +424,10 @@ def main():
 
     changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
+    if hostgroup:
+        scope = {'hostgroup_id': hostgroup['id']}
+        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+
     if not module.desired_absent and 'environment' in entity_dict:
         if puppetclasses is not None:
             current_puppetclasses = [p['id'] for p in current_puppetclasses]
@@ -444,10 +448,6 @@ def main():
                 changed = True
                 for leftover_puppetclass in current_puppetclasses:
                     module.ensure_entity_state('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent')
-
-    if hostgroup:
-        scope = {'hostgroup_id': hostgroup['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
 
     module.exit_json(changed=changed)
 
