@@ -126,6 +126,10 @@ options:
     description: Puppet environment name
     required: false
     type: str
+  puppetclasses:
+    description: List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
+    required: false
+    type: list
   config_groups:
     description: Config groups list
     required: false
