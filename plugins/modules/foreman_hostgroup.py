@@ -418,25 +418,29 @@ def main():
     parameters = entity_dict.get('parameters')
 
     puppetclasses = entity_dict.pop('puppetclasses', None)
+    current_puppetclasses = entity.pop('puppetclasses', None) if entity else []
 
     changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
     if not module.desired_absent and 'environment' in entity_dict:
         if puppetclasses is not None:
-            current_puppetclasses = [p['id'] for p in hostgroup['puppetclasses']]
+            current_puppetclasses = [p['id'] for p in current_puppetclasses]
             for puppet_class_name in puppetclasses:
                 results = module.list_resource("puppetclasses", params={'environment_id': hostgroup['environment_id']}, search='name="{0}"'.format(puppet_class_name))
                 if len(results) == 1 and len(list(results.values())[0]) == 1:
                     puppet_class_id = list(results.values())[0][0]['id']
                     if puppet_class_id in current_puppetclasses:
-                        current_puppetclasses.remove(puppet_class['id'])
+                        current_puppetclasses.remove(puppet_class_id)
                     else:
-                        module.ensure_entity_state('hostgroup_classes', {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id }, None, None, 'present', puppetclass_spec)
+                        payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
+                        module.ensure_entity_state('hostgroup_classes', payload, None, None, 'present', puppetclass_spec)
+                        changed = True
                 else:
                     module.fail_json(msg='No data found for name="%s"' % puppet_class)
-            for leftover_puppetclass in current_puppetclasses:
-                module.ensure_entity_state('hostgroup_classes', {'hostgroup_id': hostgroup['id'], 'puppetclass_id': leftover_puppetclass }, None, None, 'absent', leftover_puppetclass)
-
+            if len(current_puppetclasses) > 0:
+                changed = True
+                for leftover_puppetclass in current_puppetclasses:
+                    module.ensure_entity_state('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent')
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}
