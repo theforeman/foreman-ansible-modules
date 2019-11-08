@@ -154,6 +154,10 @@ def main():
         desired_product_ids = set(product['id'] for product in products)
         current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
 
+        module.record_before('sync_plans/products', {'id': sync_plan['id'], 'product_ids': current_product_ids})
+        module.record_after('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
+        module.record_after_full('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
+
         if desired_product_ids != current_product_ids:
             if not module.check_mode:
                 product_ids_to_add = desired_product_ids - current_product_ids

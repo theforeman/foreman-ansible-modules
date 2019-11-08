@@ -22,11 +22,17 @@
   - include: tasks/sync_plan.yml
     vars:
       expected_change: true
+      expected_diff: true
+      expected_diff_before: "{}"
+      expected_diff_after: "name.*Test Sync Plan"
   - include: tasks/sync_plan.yml
     vars:
       sync_plan_products:
         - Test Product
       expected_change: true
+      expected_diff: true
+      expected_diff_before: "product_ids.*\\[\\]"
+      expected_diff_after: "product_ids.*\\["
   - include: tasks/sync_plan.yml
     vars:
       sync_plan_products:
