@@ -27,6 +27,9 @@
       vars:
         name: Red Hat Enterprise Linux 7 Server (RPMs)
         expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*disabled"
+        expected_diff_after: "state.*enabled"
     - name: enable repository_set by name again, no change
       include_tasks: tasks/repository_set.yml
       vars:
@@ -44,6 +47,9 @@
         label: rhel-7-server-rpms
         state: disabled
         expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*enabled"
+        expected_diff_after: "state.*disabled"
     - name: disable repository_set by name, no change
       include_tasks: tasks/repository_set.yml
       vars:
