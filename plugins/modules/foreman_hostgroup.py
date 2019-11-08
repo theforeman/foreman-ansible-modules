@@ -378,9 +378,7 @@ def main():
             entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
 
         if 'environment' in entity_dict:
-
             entity_dict['environment'] = module.find_resource_by_name('environments', name=entity_dict['environment'], failsafe=False, thin=True)
-
 
         if 'config_groups' in entity_dict:
             entity_dict['config_groups'] = module.find_resources_by_name('config_groups', entity_dict['config_groups'], failsafe=False, thin=True)
@@ -426,7 +424,8 @@ def main():
         if puppetclasses is not None:
             current_puppetclasses = [p['id'] for p in current_puppetclasses]
             for puppet_class_name in puppetclasses:
-                results = module.list_resource("puppetclasses", params={'environment_id': hostgroup['environment_id']}, search='name="{0}"'.format(puppet_class_name))
+                scope = {'environment_id': hostgroup['environment_id']}
+                results = module.list_resource("puppetclasses", params=scope, search='name="{0}"'.format(puppet_class_name))
                 if len(results) == 1 and len(list(results.values())[0]) == 1:
                     puppet_class_id = list(results.values())[0][0]['id']
                     if puppet_class_id in current_puppetclasses:
@@ -436,7 +435,7 @@ def main():
                         module.ensure_entity_state('hostgroup_classes', payload, None, None, 'present', puppetclass_spec)
                         changed = True
                 else:
-                    module.fail_json(msg='No data found for name="%s"' % puppet_class)
+                    module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
             if len(current_puppetclasses) > 0:
                 changed = True
                 for leftover_puppetclass in current_puppetclasses:
