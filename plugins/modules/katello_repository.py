@@ -100,24 +100,27 @@ options:
   docker_upstream_name:
     description:
       - name of the upstream docker repository
-      - only available for I(content_type)==I(docker)
+      - only available for I(content_type=docker)
     type: str
   docker_tags_whitelist:
     description:
       - list of tags to sync for Container Image repository
-      - only available for I(content_type)==I(docker)
+      - only available for I(content_type=docker)
     type: list
   deb_releases:
     description:
-      - comma separated list of releases to be synched from deb-archive
+      - comma separated list of releases to be synced from deb-archive
+      - only available for I(content_type=deb)
     type: str
   deb_components:
     description:
-      - comma separated list of repo components to be synched from deb-archive
+      - comma separated list of repo components to be synced from deb-archive
+      - only available for I(content_type=deb)
     type: str
   deb_architectures:
     description:
-      - comma separated list of architectures to be synched from deb-archive
+      - comma separated list of architectures to be synced from deb-archive
+      - only available for I(content_type=deb)
     type: str
   state:
     description:
