@@ -20,7 +20,13 @@
     product: "{{ product_name }}"
     content_type: "{{ repository_content_type }}"
     url: "{{ repository_url }}"
+    upstream_username: "{{ repository_upstream_username | default(omit) }}"
+    upstream_password: "{{ repository_upstream_password | default(omit) }}"
+    deb_releases: "{{ repository_deb_releases | default(omit) }}"
+    deb_components: "{{ repository_deb_componentes | default(omit) }}"
+    deb_architectures: "{{ repository_deb_architectures | default(omit) }}"
     docker_upstream_name: "{{ repository_docker_upstream_name | default(omit) }}"
+    docker_tags_whitelist: "{{ repository_docker_tags_whitelist | default(omit) }}"
     download_policy: "{{ repository_download_policy | default(omit) }}"
     gpg_key: "{{ repository_gpg_key | default(omit) }}"
   register: result
