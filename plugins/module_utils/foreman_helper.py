@@ -592,7 +592,8 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, ignore_check_mode=False, record_change=True, ignore_task_errors=False):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None,
+                        ignore_check_mode=False, record_change=True, ignore_task_errors=False):
         resource_payload = self._resource_prepare_params(resource, action, params)
         if options is None:
             options = {}
