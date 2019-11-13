@@ -10,6 +10,13 @@
   - include_tasks: tasks/organization.yml
     vars:
       organization_state: "present"
+  - include: tasks/role.yml
+    vars:
+      role_name: "{{ item }}"
+      role_state: absent
+    with_items:
+      - test
+      - role_with_filters
 
 - hosts: tests
   gather_facts: false
@@ -22,10 +29,10 @@
       role_state: present
       expected_change: true
       role_filters:
-        - resource: 'Host'
-          permissions:
+        - permissions:
             - view_hosts
           search: "owner_type = Usergroup and owner_id = 4"
+
   - include: tasks/role.yml
     vars:
       role_state: present
@@ -41,8 +48,7 @@
       role_state: present
       expected_change: true
       role_filters:
-        - resource: 'Host'
-          permissions:
+        - permissions:
             - view_hosts
           search: "owner_type = Usergroup and owner_id = 4"
 
@@ -51,10 +57,47 @@
       role_state: present
       expected_change: false
       role_filters:
-        - resource: 'Host'
-          permissions:
+        - permissions:
             - view_hosts
           search: "owner_type = Usergroup and owner_id = 4"
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
+      expected_change: true
+      role_filters:
+        - permissions:
+            - view_hosts
+            - puppetrun_hosts
+          search: "owner_type = Usergroup and owner_id = 4"
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
+      expected_change: false
+      role_filters:
+        - permissions:
+            - view_hosts
+            - puppetrun_hosts
+          search: "owner_type = Usergroup and owner_id = 4"
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
+      expected_change: true
+      role_filters:
+        - permissions:
+            - view_hosts
+            - puppetrun_hosts
+
+  - include: tasks/role.yml
+    vars:
+      role_state: present
+      expected_change: false
+      role_filters:
+        - permissions:
+            - view_hosts
+            - puppetrun_hosts
 
   - include: tasks/role.yml
     vars:
