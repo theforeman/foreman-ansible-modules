@@ -136,6 +136,8 @@ class KatelloMixin(object):
 class ForemanAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
+        # State recording for changed and diff reporting
+        self._changed = False
         self._before = defaultdict(list)
         self._after = defaultdict(list)
         self._after_full = defaultdict(list)
@@ -168,6 +170,13 @@ class ForemanAnsibleModule(AnsibleModule):
         self._thin_default = False
         self.state = 'undefined'
         self.entity_spec = {}
+
+    @property
+    def changed(self):
+        return self._changed
+
+    def set_changed(self):
+        self._changed = True
 
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
@@ -409,6 +418,10 @@ class ForemanAnsibleModule(AnsibleModule):
         self.record_after(resource, _flatten_entity(updated_entity, entity_spec))
         self.record_after_full(resource, updated_entity)
 
+        # TODO We can have that in more detailed places
+        if changed:
+            self.set_changed()
+
         return changed, updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
@@ -560,6 +573,10 @@ class ForemanAnsibleModule(AnsibleModule):
             except Exception:
                 fail['error'] = exc.response.text
         self.fail_json(**fail)
+
+    def exit_json(self, changed=False, **kwargs):
+        kwargs['changed'] = changed or self.changed
+        super(ForemanAnsibleModule, self).exit_json(**kwargs)
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
