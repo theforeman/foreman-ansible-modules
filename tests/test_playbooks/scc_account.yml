@@ -26,7 +26,7 @@
     vars:
       scc_account_password: 'testpass'
       scc_account_login: 'testuser'
-      scc_account_base_url: 'https://scc.suse.com'
+      scc_account_base_url: 'https://scc.example.com'
       test_connection: false
       scc_account_state: present
       expected_change: true
@@ -35,6 +35,26 @@
     vars:
       scc_account_state: present
       expected_change: false
+
+  - include: tasks/scc_account.yml
+    vars:
+      scc_account_password: 'testpass'
+      scc_account_login: 'testuser'
+      scc_account_base_url: 'https://scc.example.com'
+      test_connection: true
+      scc_account_state: present
+      expected_change: false
+      expected_fail: true
+
+  - include: tasks/scc_account.yml
+    vars:
+      scc_account_name: 'Test'
+      scc_account_updated_name: 'Test2'
+      scc_account_interval: 'monthly'
+      test_connection: true
+      scc_account_state: present
+      expected_change: false
+      expected_fail: true
 
   - include: tasks/scc_account.yml
     vars:

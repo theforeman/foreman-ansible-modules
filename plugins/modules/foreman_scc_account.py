@@ -31,35 +31,35 @@ DOCUMENTATION = '''
 module: foreman_scc_account
 short_description: Manage Foreman SccAccount
 description:
-  - "Manage Foreman SccAccount Entities"
+  - "Manage Foreman Suse Customer Center Account Entities"
   - "This module requires the foreman_scc_manager plugin set up in the server"
   - "See: U(https://github.com/ATIX-AG/foreman_scc_manager)"
 author:
   - "Manisha Singhal (@manisha15) ATIX AG"
 options:
   name:
-    description: Name of the scc_account
+    description: Name of the suse customer center account
     required: true
     type: str
   login:
-    description: Login id of scc_account
+    description: Login id of suse customer center account
     required: false
     type: str
   scc_account_password:
-    description: Password of scc_account
+    description: Password of suse customer center account
     required: false
     type: str
   base_url:
-    description: URL of SUSE for scc_account
+    description: URL of SUSE for suse customer center account
     required: false
     type: str
   interval:
-    description: Interval for syncing scc_account
+    description: Interval for syncing suse customer center account
     required: false
     type: str
     choices: ["never", "daily", "weekly", "monthly"]
   sync_date:
-    description: Last Sync time of scc_account
+    description: Last Sync time of suse customer center account
     required: false
     type: str
   organization:
@@ -67,15 +67,15 @@ options:
     type: str
     required: true
   test_connection:
-    description: Test scc_account credentials that connects to the server
+    description: Test suse customer center account credentials that connects to the server
     required: false
     default: false
     type: bool
   updated_name:
-    description: Name to be updated of scc_account
+    description: Name to be updated of suse customer center account
     type: str
   state:
-    description: State of the scc_account
+    description: State of the suse customer center account
     default: present
     choices: ["present", "absent", "synced"]
     type: str
@@ -85,7 +85,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-- name: "Create an scc_account"
+- name: "Create a suse customer center account"
   foreman_scc_account:
     username: "admin"
     password: "changeme"
@@ -96,7 +96,7 @@ EXAMPLES = '''
     base_url: "https://scc.suse.com"
     state: present
 
-- name: "Update a scc_account"
+- name: "Update a suse customer center account"
   foreman_scc_account:
     username: "admin"
     password: "changeme"
@@ -104,7 +104,7 @@ EXAMPLES = '''
     name: "Test1"
     state: present
 
-- name: "Delete a scc_account"
+- name: "Delete a suse customer center account"
   foreman_scc_account:
     username: "admin"
     password: "changeme"
