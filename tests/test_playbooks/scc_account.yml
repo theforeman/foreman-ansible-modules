@@ -1,19 +1,22 @@
 ---
-- hosts: fixtures
+- hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/scc_account.yml
-      vars:
-        scc_account_name: 'Test'
-        organization_name: 'Default Organization'
-        scc_account_state: absent
-    - include: tasks/scc_account.yml
-      vars:
-        scc_account_name: 'Test2'
-        organization_name: 'Default Organization'
-        scc_account_state: absent
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+  - include: tasks/scc_account.yml
+    vars:
+      scc_account_name: 'Test'
+      organization_name: 'Test Organization'
+      scc_account_state: absent
+  - include: tasks/scc_account.yml
+    vars:
+      scc_account_name: 'Test2'
+      organization_name: 'Test Organization'
+      scc_account_state: absent
 - hosts: tests
   gather_facts: false
   vars_files:
@@ -22,7 +25,9 @@
   - include: tasks/scc_account.yml
     vars:
       scc_account_password: 'testpass'
+      scc_account_login: 'testuser'
       scc_account_base_url: 'https://scc.suse.com'
+      test_connection: false
       scc_account_state: present
       expected_change: true
 
@@ -36,6 +41,7 @@
       scc_account_name: 'Test'
       scc_account_updated_name: 'Test2'
       scc_account_interval: 'monthly'
+      test_connection: false
       scc_account_state: present
       expected_change: true
 
@@ -49,29 +55,30 @@
   - include: tasks/scc_account.yml
     vars:
       scc_account_name: 'Test2'
-      scc_account_state: sync
-      expected_change: true
+      test_connection: false
+      scc_account_state: synced
+      expected_fail: "{{ not ansible_check_mode }}"
+      expected_change: "{{ ansible_check_mode }}"
 
   - include: tasks/scc_account.yml
     vars:
       scc_account_name: 'Test2'
-      scc_account_login: 'testuser'
-      scc_account_password: 'testpass'
-      scc_account_state: test_connection
-      expected_change: true
-  - pause: seconds=5
-
-  - include: tasks/scc_account.yml
-    vars:
-      scc_account_name: 'Test2'
-      organization_name: 'Default Organization'
+      organization_name: 'Test Organization'
       scc_account_state: absent
       expected_change: true
 
   - include: tasks/scc_account.yml
     vars:
       scc_account_name: 'Test2'
-      organization_name: 'Default Organization'
+      organization_name: 'Test Organization'
       scc_account_state: absent
       expected_change: false
-
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
