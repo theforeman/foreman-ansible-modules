@@ -274,9 +274,9 @@ def main():
         elif entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-    changed = module.ensure_entity_state('compute_resources', entity_dict, entity)
+    module.ensure_entity('compute_resources', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

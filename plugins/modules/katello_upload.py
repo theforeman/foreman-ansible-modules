@@ -181,10 +181,9 @@ def main():
         # possible types in 3.12: docker, ostree, yum, puppet, file, deb
         module.fail_json(msg="Uploading to a {0} repository is not supported yet.".format(entity_dict['repository']['content_type']))
 
-    changed = False
     if not content_unit:
         if not module.check_mode:
-            _content_upload_changed, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
+            _changed, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
             content_upload_scope = {'id': content_upload['upload_id']}
             content_upload_scope.update(repository_scope)
 
@@ -203,9 +202,10 @@ def main():
             module.resource_action('repositories', 'import_uploads', import_params)
 
             module.resource_action('content_uploads', 'destroy', content_upload_scope)
-        changed = True
+        else:
+            module.set_changed()
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

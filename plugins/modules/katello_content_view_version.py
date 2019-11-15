@@ -152,8 +152,6 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def promote_content_view_version(module, content_view_version, environments, synchronous, force, force_yum_metadata_regeneration):
-    changed = False
-
     current_environment_ids = {environment['id'] for environment in content_view_version['environments']}
     desired_environment_ids = {environment['id'] for environment in environments}
     promote_to_environment_ids = list(desired_environment_ids - current_environment_ids)
@@ -166,8 +164,7 @@ def promote_content_view_version(module, content_view_version, environments, syn
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
-        changed, _dummy = module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
-    return changed
+        module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
 
 
 def main():
@@ -215,10 +212,8 @@ def main():
     else:
         content_view_version = None
 
-    changed = False
-    le_changed = False
     if module.desired_absent:
-        changed = module.ensure_entity_state('content_view_versions', None, content_view_version, params=scope)
+        module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
     else:
         if content_view_version is None:
             # Do a sanity check, whether we can perform this non-synchronous
@@ -237,7 +232,7 @@ def main():
                 payload['major'] = split_version[0]
                 payload['minor'] = split_version[1]
 
-            changed, response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
+            _changed, response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
             # workaround for https://projects.theforeman.org/issues/28138
             if not module.check_mode:
                 content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')
@@ -247,13 +242,13 @@ def main():
 
         if 'lifecycle_environments' in entity_dict:
             lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
-            le_changed = promote_content_view_version(
+            promote_content_view_version(
                 module, content_view_version, lifecycle_environments, synchronous=entity_dict['synchronous'],
                 force=entity_dict['force_promote'],
                 force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
             )
 
-    module.exit_json(changed=changed or le_changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

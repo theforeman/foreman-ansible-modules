@@ -129,10 +129,10 @@ def main():
     if 'repository' in params:
         product_scope = {'product_id': params['product']['id']}
         params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
-        changed, task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']}, synchronous=params['synchronous'])
+        _changed, task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']}, synchronous=params['synchronous'])
     else:
-        changed, task = module.resource_action('products', 'sync', {'id': params['product']['id']}, synchronous=params['synchronous'])
-    module.exit_json(changed=changed, task=task)
+        _changed, task = module.resource_action('products', 'sync', {'id': params['product']['id']}, synchronous=params['synchronous'])
+    module.exit_json(task=task)
 
 
 if __name__ == '__main__':

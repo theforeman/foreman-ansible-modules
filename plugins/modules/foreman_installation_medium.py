@@ -147,7 +147,7 @@ def main():
             entities = [module.show_resource('media', entity['id']) for entity in entities]
         if not entities:
             # Nothing to do shortcut to exit
-            module.exit_json(changed=False)
+            module.exit_json()
     else:
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
@@ -165,15 +165,14 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = False
     if not affects_multiple:
-        changed = module.ensure_entity_state('media', entity_dict, entity)
+        module.ensure_entity('media', entity_dict, entity)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_entity_state('media', entity_dict, entity)
+            module.ensure_entity('media', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

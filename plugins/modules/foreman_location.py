@@ -135,7 +135,7 @@ def main():
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent location does not exist so just exit here
-            module.exit_json(changed=False)
+            module.exit_json()
 
     if not module.desired_absent:
         if 'organizations' in entity_dict:
@@ -143,9 +143,9 @@ def main():
 
     entity = module.find_resource_by_title('locations', build_fqn(name, parent), failsafe=True)
 
-    changed = module.ensure_entity_state('locations', entity_dict, entity)
+    module.ensure_entity('locations', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

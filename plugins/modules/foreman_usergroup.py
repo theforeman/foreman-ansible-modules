@@ -129,9 +129,9 @@ def main():
         if 'usergroups' in entity_dict:
             entity_dict['usergroups'] = module.find_resources_by_name('usergroups', entity_dict['usergroups'], thin=True)
 
-    changed = module.ensure_entity_state('usergroups', entity_dict, entity)
+    module.ensure_entity('usergroups', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

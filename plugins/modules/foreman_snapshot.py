@@ -126,9 +126,9 @@ def main():
 
     entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_entity_state('snapshots', snapshot_dict, entity, params=scope)
+    module.ensure_entity('snapshots', snapshot_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

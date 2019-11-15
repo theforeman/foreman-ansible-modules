@@ -221,9 +221,9 @@ def main():
     scope['product_id'] = entity_dict['product']['id']
     entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_entity_state('repositories', entity_dict, entity, params=scope)
+    module.ensure_entity('repositories', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

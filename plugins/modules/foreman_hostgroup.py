@@ -334,7 +334,7 @@ def main():
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent hostgroup does not exist so just exit here
-            module.exit_json(changed=False)
+            module.exit_json()
 
     if not module.desired_absent:
         if 'locations' in entity_dict:
@@ -408,13 +408,13 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
+    _chenged, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+        module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

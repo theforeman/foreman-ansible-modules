@@ -99,9 +99,9 @@ def main():
     if not module.desired_absent:
         entity_dict['realm_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['realm_proxy'], thin=True)
 
-    changed = module.ensure_entity_state('realms', entity_dict, entity)
+    module.ensure_entity('realms', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

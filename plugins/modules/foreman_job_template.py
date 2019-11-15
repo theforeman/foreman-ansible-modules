@@ -416,7 +416,7 @@ def main():
         entities = module.list_resource('job_templates')
         if not entities:
             # Nothing to do; shortcut to exit
-            module.exit_json(changed=False)
+            module.exit_json()
         if not module.desired_absent:  # not 'thin'
             entities = [module.show_resource('job_templates', entity['id']) for entity in entities]
     else:
@@ -432,11 +432,10 @@ def main():
     # TemplateInputs need to be added as separate entities later
     template_inputs = entity_dict.get('template_inputs')
 
-    changed = False
     if not affects_multiple:
-        changed, job_template = module.ensure_entity('job_templates', entity_dict, entity)
+        _changed, job_template = module.ensure_entity('job_templates', entity_dict, entity)
 
-        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and changed))
+        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
         if update_dependent_entities and template_inputs is not None:
             scope = {'template_id': job_template['id']}
 
@@ -448,14 +447,14 @@ def main():
 
                 template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
 
-                changed |= module.ensure_entity_state(
+                module.ensure_entity(
                     'template_inputs', template_input_dict, template_input_entity,
                     params=scope, entity_spec=template_input_entity_spec,
                 )
 
             # At this point, desired template inputs have been removed from the dict.
             for template_input_entity in current_template_inputs.values():
-                changed |= module.ensure_entity_state(
+                module.ensure_entity(
                     'template_inputs', None, template_input_entity, state="absent",
                     params=scope, entity_spec=template_input_entity_spec,
                 )
@@ -463,9 +462,9 @@ def main():
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_entity_state('job_templates', entity_dict, entity)
+            module.ensure_entity('job_templates', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

@@ -278,13 +278,13 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, operatingsystem = module.ensure_entity('operatingsystems', entity_dict, entity)
+    _changed, operatingsystem = module.ensure_entity('operatingsystems', entity_dict, entity)
 
     if operatingsystem:
         scope = {'operatingsystem_id': operatingsystem['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+        module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':
