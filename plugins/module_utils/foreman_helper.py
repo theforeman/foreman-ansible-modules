@@ -418,10 +418,6 @@ class ForemanAnsibleModule(AnsibleModule):
         self.record_after(resource, _flatten_entity(updated_entity, entity_spec))
         self.record_after_full(resource, updated_entity)
 
-        # TODO We can have that in more detailed places
-        if changed:
-            self.set_changed()
-
         return changed, updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
@@ -547,6 +543,8 @@ class ForemanAnsibleModule(AnsibleModule):
             msg = 'Error while performing {0} on {1}: {2}'.format(
                 action, resource, str(e))
             self.fail_from_exception(e, msg)
+        if not ignore_check_mode:
+            self.set_changed()
         return True, result
 
     def wait_for_task(self, task):

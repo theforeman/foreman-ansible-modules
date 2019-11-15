@@ -117,14 +117,14 @@ def main():
     params = {'id': entity_dict['name']}
     _power_state_changed, power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
     if module.state in ['state', 'status']:
-        module.exit_json(changed=False, power_state=power_state['state'])
+        module.exit_json(power_state=power_state['state'])
     elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')
           or (module.state in ['off', 'stop'] and power_state['state'] == 'off')):
-        module.exit_json(changed=False)
+        module.exit_json()
     else:
         params['power_action'] = module.state
-        changed, power_state = module.resource_action('hosts', 'power', params=params)
-        module.exit_json(changed=changed)
+        _changed, power_state = module.resource_action('hosts', 'power', params=params)
+        module.exit_json()
 
 
 if __name__ == '__main__':
