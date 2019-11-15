@@ -19,7 +19,7 @@ MODULES_PATH = py.path.local(__file__).realpath() / '..' / '..' / 'plugins' / 'm
 def find_all_modules():
     for module in MODULES_PATH.listdir(sort=True):
         module = module.basename.replace('.py', '')
-        if module != '__init__':
+        if module not in ['__init__', '__pycache__']:
             yield module
 
 
