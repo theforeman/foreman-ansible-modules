@@ -433,7 +433,7 @@ def main():
     template_inputs = entity_dict.get('template_inputs')
 
     if not affects_multiple:
-        _changed, job_template = module.ensure_entity('job_templates', entity_dict, entity)
+        job_template = module.ensure_entity('job_templates', entity_dict, entity)
 
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
         if update_dependent_entities and template_inputs is not None:

@@ -408,7 +408,7 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    _chenged, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
+    hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}

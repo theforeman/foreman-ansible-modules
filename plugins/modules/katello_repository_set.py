@@ -189,8 +189,7 @@ def main():
     repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
     repo_set_scope.update(scope)
 
-    _changed, available_repos = module.resource_action('repository_sets', 'available_repositories',
-                                                       params=repo_set_scope, ignore_check_mode=True)
+    available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
     available_repos = available_repos['results']
     current_repos = repo_set['repositories']
     desired_repos = get_desired_repos(module_params['repositories'], available_repos)

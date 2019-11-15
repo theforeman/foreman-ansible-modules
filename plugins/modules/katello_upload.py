@@ -183,7 +183,7 @@ def main():
 
     if not content_unit:
         if not module.check_mode:
-            _changed, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
+            content_upload = module.resource_action('content_uploads', 'create', repository_scope)
             content_upload_scope = {'id': content_upload['upload_id']}
             content_upload_scope.update(repository_scope)
 

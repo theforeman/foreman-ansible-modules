@@ -107,7 +107,7 @@ def main():
         if 'repository_url' in entity_dict:
             payload = {'redhat_repository_url': entity_dict['repository_url']}
             org_spec = dict(redhat_repository_url=dict())
-            _changed, organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
+            organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
 
         try:
             with open(entity_dict['manifest_path'], 'rb') as manifest_file:
@@ -118,7 +118,7 @@ def main():
                 params.update(scope)
                 # TODO: add a no_change field to resource_action
                 saved_changed = module.changed
-                _changed, result = module.resource_action('subscriptions', 'upload', params, files=files)
+                result = module.resource_action('subscriptions', 'upload', params, files=files)
                 for error in result['humanized']['errors']:
                     if "same as existing data" in error:
                         # We should not do this, but i see no better option

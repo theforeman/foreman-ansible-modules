@@ -156,7 +156,7 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    _changed, domain = module.ensure_entity('domains', entity_dict, entity)
+    domain = module.ensure_entity('domains', entity_dict, entity)
 
     if domain:
         scope = {'domain_id': domain['id']}

@@ -115,7 +115,7 @@ def main():
     module.connect()
 
     params = {'id': entity_dict['name']}
-    _changed, power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
+    power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
     if module.state in ['state', 'status']:
         module.exit_json(power_state=power_state['state'])
     elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')

@@ -176,7 +176,7 @@ def main():
     if module.state == 'present' and updated_name:
         entity_dict['name'] = updated_name
 
-    _changed, compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
+    compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
 
     # Apply changes on underlying compute attributes only when present
     if module.state == 'present' and compute_attributes is not None:

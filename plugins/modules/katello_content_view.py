@@ -195,7 +195,7 @@ def main():
 
     entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    _changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
+    content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
     # only update CVC's of newly created or updated CV's that are composite if components are specified
     update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))

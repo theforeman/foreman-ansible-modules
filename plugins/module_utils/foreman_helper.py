@@ -365,10 +365,6 @@ class ForemanAnsibleModule(AnsibleModule):
     def record_after_full(self, resource, entity):
         self._after_full[resource].append(entity)
 
-    def ensure_entity_state(self, *args, **kwargs):
-        changed, _entity = self.ensure_entity(*args, **kwargs)
-        return changed
-
     @_exception2fail_json(msg='Failed to ensure entity state: %s')
     def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=True):
         """Ensure that a given entity has a certain state
@@ -381,7 +377,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 state (dict): Desired state of the entity (optionally taken from the module)
                 entity_spec (dict): Description of the entity structure (optionally taken from module)
             Return value:
-                Pair of boolean indicating whether something changed and the new current state if the entity
+                The new current state of the entity
         """
         if state is None:
             state = self.state
@@ -390,35 +386,34 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             entity_spec, _dummy = _entity_spec_helper(entity_spec)
 
-        changed = False
         updated_entity = None
 
         self.record_before(resource, _flatten_entity(current_entity, entity_spec))
 
         if state == 'present_with_defaults':
             if current_entity is None:
-                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
+                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
         elif state == 'present':
             if current_entity is None:
-                changed, updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
+                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
             else:
-                changed, updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec, synchronous)
+                updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec, synchronous)
         elif state == 'copied':
             if current_entity is not None:
-                changed, updated_entity = self._copy_entity(resource, desired_entity, current_entity, params, synchronous)
+                updated_entity = self._copy_entity(resource, desired_entity, current_entity, params, synchronous)
         elif state == 'reverted':
             if current_entity is not None:
-                changed, updated_entity = self._revert_entity(resource, current_entity, params, synchronous)
+                updated_entity = self._revert_entity(resource, current_entity, params, synchronous)
         elif state == 'absent':
             if current_entity is not None:
-                changed, updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
+                updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
         self.record_after(resource, _flatten_entity(updated_entity, entity_spec))
         self.record_after_full(resource, updated_entity)
 
-        return changed, updated_entity
+        return updated_entity
 
     def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
         """Create entity with given properties
@@ -429,7 +424,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
                 entity_spec (dict): Description of the entity structure
             Return value:
-                Pair of boolean indicating whether something changed and the new current state if the entity
+                The new current state if the entity
         """
         payload = _flatten_entity(desired_entity, entity_spec)
         if not self.check_mode:
@@ -439,7 +434,8 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             fake_entity = desired_entity.copy()
             fake_entity['id'] = -1
-            return True, fake_entity
+            self.set_changed()
+            return fake_entity
 
     def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec, synchronous):
         """Update a given entity with given properties if any diverge
@@ -451,7 +447,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
                 entity_spec (dict): Description of the entity structure
             Return value:
-                Pair of boolean indicating whether something changed and the new current state if the entity
+                The new current state if the entity
         """
         payload = {}
         desired_entity = _flatten_entity(desired_entity, entity_spec)
@@ -469,10 +465,11 @@ class ForemanAnsibleModule(AnsibleModule):
                 # In check_mode we emulate the server updating the entity
                 fake_entity = current_entity.copy()
                 fake_entity.update(payload)
-                return True, fake_entity
+                self.set_changed()
+                return fake_entity
         else:
             # Nothing needs changing
-            return False, current_entity
+            return current_entity
 
     def _copy_entity(self, resource, desired_entity, current_entity, params, synchronous):
         """Copy a given entity
@@ -482,7 +479,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 current_entity (dict): Current properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
             Return value:
-                Pair of boolean indicating whether something changed and the new current state of the entity
+                The new current state of the entity
         """
         payload = {
             'id': current_entity['id'],
@@ -500,7 +497,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 current_entity (dict): Current properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
             Return value:
-                Pair of boolean indicating whether something changed and the new current state of the entity
+                The new current state of the entity
         """
         payload = {'id': current_entity['id']}
         if params:
@@ -515,18 +512,18 @@ class ForemanAnsibleModule(AnsibleModule):
                 current_entity (dict): Current properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
             Return value:
-                Pair of boolean indicating whether something changed and the new current state of the entity
+                The new current state of the entity
         """
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        changed, entity = self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
+        entity = self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
 
         # this is a workaround for https://projects.theforeman.org/issues/26937
         if entity and 'error' in entity and 'message' in entity['error']:
             self.fail_json(msg=entity['error']['message'])
 
-        return changed, None
+        return None
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
@@ -544,8 +541,9 @@ class ForemanAnsibleModule(AnsibleModule):
                 action, resource, str(e))
             self.fail_from_exception(e, msg)
         if not ignore_check_mode:
+            # If we were supposed to ignore check_mode we can assume this action was not a changing one.
             self.set_changed()
-        return True, result
+        return result
 
     def wait_for_task(self, task):
         duration = self.task_timeout
@@ -555,7 +553,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
-            _task_changed, task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False)
+            task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False)
 
         return task
 
@@ -595,7 +593,6 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         self._thin_default = self.desired_absent
 
     def ensure_scoped_parameters(self, scope, entity, parameters):
-        changed = False
         if parameters is not None:
             if self.state == 'present' or (self.state == 'present_with_defaults' and entity is None):
                 if entity:
@@ -612,12 +609,11 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                         if 'parameter_type' not in current_parameter:
                             current_parameter['parameter_type'] = 'string'
                         current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
-                    changed |= self.ensure_entity_state(
+                    self.ensure_entity(
                         'parameters', desired_parameter, current_parameter, state="present", entity_spec=parameter_entity_spec, params=scope)
                 for current_parameter in current_parameters.values():
-                    changed |= self.ensure_entity_state(
+                    self.ensure_entity(
                         'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
-        return changed
 
     def exit_json(self, **kwargs):
         if 'diff' not in kwargs:

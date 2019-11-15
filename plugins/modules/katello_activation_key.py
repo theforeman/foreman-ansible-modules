@@ -227,7 +227,7 @@ def main():
     subscriptions = entity_dict.pop('subscriptions', None)
     content_overrides = entity_dict.pop('content_overrides', None)
     host_collections = entity_dict.pop('host_collections', None)
-    _changed, activation_key = module.ensure_entity('activation_keys', entity_dict, entity, params=scope)
+    activation_key = module.ensure_entity('activation_keys', entity_dict, entity, params=scope)
 
     # only update subscriptions of newly created or updated AKs
     # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
@@ -236,7 +236,7 @@ def main():
         # the auto_attach, release_version and service_level parameters can only be set on an existing AK with an update,
         # not during create, so let's force an update. see https://projects.theforeman.org/issues/27632 for details
         if any(key in entity_dict for key in ['auto_attach', 'release_version', 'service_level']) and module.changed:
-            _activation_key_changed, activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
+            activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
 
         ak_scope = {'activation_key_id': activation_key['id']}
         if subscriptions is not None:
@@ -275,7 +275,7 @@ def main():
 
         if content_overrides is not None:
             if entity:
-                _product_content_changed, product_content = module.resource_action(
+                product_content = module.resource_action(
                     'activation_keys',
                     'product_content',
                     params={'id': activation_key['id']},

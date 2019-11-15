@@ -306,7 +306,7 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    _changed, subnet = module.ensure_entity('subnets', entity_dict, entity)
+    subnet = module.ensure_entity('subnets', entity_dict, entity)
 
     if subnet:
         scope = {'subnet_id': subnet['id']}

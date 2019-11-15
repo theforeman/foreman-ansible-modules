@@ -232,7 +232,7 @@ def main():
                 payload['major'] = split_version[0]
                 payload['minor'] = split_version[1]
 
-            _changed, response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
+            response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
             # workaround for https://projects.theforeman.org/issues/28138
             if not module.check_mode:
                 content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')

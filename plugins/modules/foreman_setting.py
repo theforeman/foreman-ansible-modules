@@ -108,7 +108,7 @@ def main():
     old_value = entity['value']
     entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-    _changed, entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
+    entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
 
     if entity:
         # Fake the not serialized input value as output

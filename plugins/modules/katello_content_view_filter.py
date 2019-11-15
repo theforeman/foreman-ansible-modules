@@ -262,8 +262,14 @@ def main():
         entity_dict['repositories'] = repositories
 
     entity = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
-    _changed, content_view_filter = module.ensure_entity('content_view_filters', entity_dict, entity, params=cv_scope,
-                                                         state=filter_state, entity_spec=content_filter_spec)
+    content_view_filter = module.ensure_entity(
+        'content_view_filters',
+        entity_dict,
+        entity,
+        params=cv_scope,
+        state=filter_state,
+        entity_spec=content_filter_spec,
+    )
 
     if content_view_filter is not None:
         cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
@@ -292,8 +298,14 @@ def main():
         rule_dict = entity_dict.copy()
         rule_dict.pop('name', None)
 
-        module.ensure_entity('content_view_filter_rules', rule_dict, content_view_filter_rule, params=cv_filter_scope,
-                             state=rule_state, entity_spec=rule_spec)
+        module.ensure_entity(
+            'content_view_filter_rules',
+            rule_dict,
+            content_view_filter_rule,
+            params=cv_filter_scope,
+            state=rule_state,
+            entity_spec=rule_spec,
+        )
 
     module.exit_json()
 

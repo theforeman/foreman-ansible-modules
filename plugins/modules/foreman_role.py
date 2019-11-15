@@ -130,7 +130,7 @@ def main():
 
     filters = entity_dict.pop("filters", None)
 
-    _changed, new_entity = module.ensure_entity('roles', entity_dict, entity)
+    new_entity = module.ensure_entity('roles', entity_dict, entity)
 
     if not module.desired_absent and filters is not None:
         scope = {'role_id': new_entity['id']}

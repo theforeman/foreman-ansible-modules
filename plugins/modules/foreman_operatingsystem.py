@@ -278,7 +278,7 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    _changed, operatingsystem = module.ensure_entity('operatingsystems', entity_dict, entity)
+    operatingsystem = module.ensure_entity('operatingsystems', entity_dict, entity)
 
     if operatingsystem:
         scope = {'operatingsystem_id': operatingsystem['id']}
