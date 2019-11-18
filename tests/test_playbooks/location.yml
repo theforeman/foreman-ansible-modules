@@ -81,8 +81,9 @@
     vars:
       location_state: absent
       location_name: Test Location
-      expected_change: false
-      expected_error: true
+      # TODO checkmode does not realize the impossibility of removing the parent
+      expected_change: "{{ ansible_check_mode }}"
+      expected_error: "{{ not ansible_check_mode }}"
   - include: tasks/location.yml
     vars:
       location_state: absent
