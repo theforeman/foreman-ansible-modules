@@ -183,26 +183,26 @@ def main():
 
     changed = False
     if not content_unit:
-        _content_upload_changed, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
-        content_upload_scope = {'id': content_upload['upload_id']}
-        content_upload_scope.update(repository_scope)
+        if not module.check_mode:
+            _content_upload_changed, content_upload = module.resource_action('content_uploads', 'create', repository_scope)
+            content_upload_scope = {'id': content_upload['upload_id']}
+            content_upload_scope.update(repository_scope)
 
-        offset = 0
+            offset = 0
 
-        with open(entity_dict['src'], 'rb') as contentfile:
-            for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
-                data = {'content': chunk, 'offset': offset}
-                module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
+            with open(entity_dict['src'], 'rb') as contentfile:
+                for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
+                    data = {'content': chunk, 'offset': offset}
+                    module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
 
-                offset += len(chunk)
+                    offset += len(chunk)
 
-        uploads = [{'id': content_upload['upload_id'], 'name': filename,
-                    'size': offset, 'checksum': checksum}]
-        import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
-        module.resource_action('repositories', 'import_uploads', import_params)
+            uploads = [{'id': content_upload['upload_id'], 'name': filename,
+                        'size': offset, 'checksum': checksum}]
+            import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
+            module.resource_action('repositories', 'import_uploads', import_params)
 
-        module.resource_action('content_uploads', 'destroy', content_upload_scope)
-
+            module.resource_action('content_uploads', 'destroy', content_upload_scope)
         changed = True
 
     module.exit_json(changed=changed)
