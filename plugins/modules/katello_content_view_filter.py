@@ -261,8 +261,8 @@ def main():
             repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
         entity_dict['repositories'] = repositories
 
-    content_view_filter = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
-    changed, content_view_filter = module.ensure_entity('content_view_filters', entity_dict, content_view_filter, params=cv_scope,
+    entity = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
+    changed, content_view_filter = module.ensure_entity('content_view_filters', entity_dict, entity, params=cv_scope,
                                                         state=filter_state, entity_spec=content_filter_spec)
 
     if content_view_filter is not None:
@@ -282,7 +282,7 @@ def main():
             else:
                 search = None
         # not using find_resource_by_name here, because not all filters (errata) have names
-        content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+        content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
 
         if entity_dict['filter_type'] == 'package_group':
             package_group = module.find_resource_by_name('package_groups', entity_dict['rule_name'], params=scope)
