@@ -441,7 +441,7 @@ def main():
             scope = {'template_id': job_template['id']}
 
             # Manage TemplateInputs here
-            current_template_input_list = module.list_resource('template_inputs', params=scope)
+            current_template_input_list = module.list_resource('template_inputs', params=scope) if entity else []
             current_template_inputs = {item['name']: item for item in current_template_input_list}
             for template_input_dict in template_inputs:
                 template_input_dict = {key: value for key, value in template_input_dict.items() if value is not None}
