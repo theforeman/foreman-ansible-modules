@@ -27,6 +27,29 @@ As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansib
 
 Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
 
+### Known issues
+
+* `foreman_compute_resource` leak sensible data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over ansible resources can leak sensible data. You can prevent this by using `no_log: yes` on the task.
+  
+  eg:
+   ```yaml
+   - name: Create compute resources
+     foreman_compute_resource:
+       server_url: https://foreman.example.com
+       username: admin
+       password: changeme
+       validate_certs: yes
+       name: "{{ item.name }}"
+       organizations: "{{ item.organizations | default(omit) }}"
+       locations: "{{ item.locations | default(omit) }}"
+       description: "{{ item.description | default(omit) }}"
+       provider: "{{ item.provider }}"
+       provider_params: "{{ item.provider_params | default(omit) }}"
+       state: "{{ item.state | default('present') }}"
+     loop: "{{ compute_resources }}"
+     no_log: yes
+   ```
+
 ## Installation
 
 There are currently three ways to use the modules in your setup: install from Ansible Galaxy, install via RPM and run directly from Git.
