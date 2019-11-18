@@ -178,12 +178,12 @@ def get_manifest(module):
         if module.params['state'] == 'absent':
             if not module.check_mode:
                 return delete_manifest(module, manifest[0]['uuid']), True
-            return False, True
+            return None, True
     elif module.params['state'] == 'present':
         if not module.check_mode:
             return create_manifest(module), True
-        return False, True
-    return False, False
+        return None, True
+    return None, False
 
 
 def get_owner(module):
@@ -210,6 +210,7 @@ def get_remove_or_attach_sub(module, manifest):
                 if not module.check_mode:
                     remove_sub(module, manifest, subs[0])
                 else:
+                    changed = True
                     break
                 changed = True
                 subs = get_subs(module, manifest)
