@@ -247,7 +247,7 @@ def main():
                 if subscription['pool_id'] is not None:
                     desired_subscriptions.append(module.find_resource_by_id('subscriptions', subscription['pool_id'], params=scope, thin=True))
             desired_subscription_ids = set(item['id'] for item in desired_subscriptions)
-            current_subscriptions = module.list_resource('subscriptions', params=ak_scope)
+            current_subscriptions = module.list_resource('subscriptions', params=ak_scope) if entity else []
             current_subscription_ids = set(item['id'] for item in current_subscriptions)
 
             if desired_subscription_ids != current_subscription_ids:
@@ -276,8 +276,15 @@ def main():
                 changed = True
 
         if content_overrides is not None:
-            _product_content_changed, product_content = module.resource_action('activation_keys', 'product_content',
-                                                                               params={'id': activation_key['id']}, ignore_check_mode=True)
+            if entity:
+                _product_content_changed, product_content = module.resource_action(
+                    'activation_keys',
+                    'product_content',
+                    params={'id': activation_key['id']},
+                    ignore_check_mode=True,
+                )
+            else:
+                product_content = {'results': []}
             current_content_overrides = {
                 product['content']['label']: product['enabled_content_override']
                 for product in product_content['results']
@@ -307,7 +314,9 @@ def main():
                 changed = True
 
         if host_collections is not None:
-            if 'host_collection_ids' in activation_key:
+            if not entity:
+                current_host_collection_ids = set()
+            elif 'host_collection_ids' in activation_key:
                 current_host_collection_ids = set(activation_key['host_collection_ids'])
             else:
                 current_host_collection_ids = set(item['id'] for item in activation_key['host_collections'])
