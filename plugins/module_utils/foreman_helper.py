@@ -525,7 +525,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False, record_change=True):
         resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
         if options is None:
             options = {}
@@ -540,7 +540,7 @@ class ForemanAnsibleModule(AnsibleModule):
             msg = 'Error while performing {0} on {1}: {2}'.format(
                 action, resource, str(e))
             self.fail_from_exception(e, msg)
-        if not ignore_check_mode:
+        if record_change and not ignore_check_mode:
             # If we were supposed to ignore check_mode we can assume this action was not a changing one.
             self.set_changed()
         return result
@@ -553,7 +553,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
-            task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False)
+            task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False, record_change=False)
 
         return task
 

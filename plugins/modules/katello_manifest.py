@@ -116,18 +116,17 @@ def main():
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
                 params.update(scope)
-                # TODO: add a no_change field to resource_action
-                saved_changed = module.changed
-                result = module.resource_action('subscriptions', 'upload', params, files=files)
+                result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False)
                 for error in result['humanized']['errors']:
                     if "same as existing data" in error:
-                        # We should not do this, but i see no better option
-                        # "Katello api is a sausage"
-                        module._changed = saved_changed
+                        # Nothing changed, but everything ok
+                        break
                     elif "older than existing data" in error:
                         module.fail_json(msg="Manifest is older than existing data.")
                     else:
                         module.fail_json(msg="Upload of the manifest failed: %s" % error)
+                else:
+                    module.set_changed()
         except IOError as e:
             module.fail_json(msg="Unable to read the manifest file: %s" % e)
     elif module.desired_absent and existing_manifest:
