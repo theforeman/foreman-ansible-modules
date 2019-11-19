@@ -136,6 +136,10 @@ class KatelloMixin(object):
 class ForemanAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
+        self._before = defaultdict(list)
+        self._after = defaultdict(list)
+        self._after_full = defaultdict(list)
+
         args = dict(
             server_url=dict(required=True),
             username=dict(required=True),
@@ -164,10 +168,6 @@ class ForemanAnsibleModule(AnsibleModule):
         self._thin_default = False
         self.state = 'undefined'
         self.entity_spec = {}
-
-        self._before = defaultdict(list)
-        self._after = defaultdict(list)
-        self._after_full = defaultdict(list)
 
     def clean_params(self):
         return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}

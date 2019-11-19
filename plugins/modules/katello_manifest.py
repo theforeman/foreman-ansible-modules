@@ -86,6 +86,7 @@ def main():
         required_if=[
             ['state', 'present', ['manifest_path']],
         ],
+        supports_check_mode=False,
     )
 
     module.task_timeout = 5 * 60
