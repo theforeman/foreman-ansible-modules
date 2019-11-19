@@ -30,6 +30,15 @@ lint:
 test:
 	pytest -v $(TEST)
 
+test-crud:
+	pytest -v 'tests/test_crud.py::test_crud'
+
+test-check-mode:
+	pytest -v 'tests/test_crud.py::test_check_mode'
+
+test-other:
+	pytest -v -k 'not test_crud.py'
+
 test_%: FORCE
 	pytest 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
 
@@ -95,4 +104,4 @@ doc:
 
 FORCE:
 
-.PHONY: help debug lint test setup debug-setup test-setup FORCE
+.PHONY: help debug lint test test-crud test-check-mode test-other setup debug-setup test-setup FORCE
