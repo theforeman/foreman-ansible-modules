@@ -107,7 +107,7 @@ else:
     # Call the original python script with vcr-cassette in place
     fam_vcr = vcr.VCR()
 
-    if test_params['test_name'] in ['domain', 'hostgroup', 'katello_hostgroup', 'luna_hostgroup', 'realm']:
+    if test_params['test_name'] in ['domain', 'hostgroup', 'katello_hostgroup', 'luna_hostgroup', 'realm', 'subnet']:
         fam_vcr.register_matcher('query_ignore_proxy', query_matcher_ignore_proxy)
         query_matcher = 'query_ignore_proxy'
     elif test_params['test_name'] == 'snapshot':
