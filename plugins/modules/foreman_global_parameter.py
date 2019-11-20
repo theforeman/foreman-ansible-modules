@@ -147,9 +147,9 @@ def main():
         if entity and 'value' in entity:
             entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-    changed = module.ensure_entity_state('common_parameters', entity_dict, entity)
+    module.ensure_entity('common_parameters', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

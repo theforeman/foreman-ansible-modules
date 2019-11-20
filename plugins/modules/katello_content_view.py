@@ -195,12 +195,12 @@ def main():
 
     entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed, content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
+    content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
     # only update CVC's of newly created or updated CV's that are composite if components are specified
-    update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and changed))
+    update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
     if update_dependent_entities and content_view_entity['composite'] and components is not None:
-        if not changed:
+        if not module.changed:
             content_view_entity['content_view_components'] = entity['content_view_components']
         current_cvcs = content_view_entity.get('content_view_components', [])
 
@@ -231,7 +231,7 @@ def main():
                     cvc_matched.pop('content_view_version', None)
                     cvc_matched.pop('content_view_version_id', None)
             if cvc_matched:
-                changed |= module.ensure_entity_state(
+                module.ensure_entity(
                     'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
                 current_cvcs.remove(cvc_matched)
             else:
@@ -246,7 +246,6 @@ def main():
                 'components': components_to_add,
             }
             module.resource_action('content_view_components', 'add_components', payload)
-            changed = True
 
             final_cvcs_record.extend(components_to_add)
 
@@ -258,7 +257,6 @@ def main():
                 'component_ids': components_to_remove,
             }
             module.resource_action('content_view_components', 'remove_components', payload)
-            changed = True
 
             final_cvcs_record = [item for item in final_cvcs_record if item['id'] not in components_to_remove]
 
@@ -267,7 +265,7 @@ def main():
         module.record_after_full('content_views/components', {'composite_content_view_id': content_view_entity['id'],
                                                               'content_view_components': final_cvcs_record})
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

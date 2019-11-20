@@ -130,7 +130,7 @@ def main():
 
     filters = entity_dict.pop("filters", None)
 
-    changed, new_entity = module.ensure_entity('roles', entity_dict, entity)
+    new_entity = module.ensure_entity('roles', entity_dict, entity)
 
     if not module.desired_absent and filters is not None:
         scope = {'role_id': new_entity['id']}
@@ -150,11 +150,11 @@ def main():
                         break
             else:
                 desired_filter['permissions'] = module.find_resources_by_name('permissions', desired_filter['permissions'], thin=True)
-                changed |= module.ensure_entity_state('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
+                module.ensure_entity('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
         for current_filter in current_filters:
-            changed |= module.ensure_entity_state('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
+            module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

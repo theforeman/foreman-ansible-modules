@@ -313,7 +313,7 @@ def main():
         entities = module.list_resource('ptables')
         if not entities:
             # Nothing to do; shortcut to exit
-            module.exit_json(changed=False)
+            module.exit_json()
         if not module.desired_absent:  # not 'thin'
             entities = [module.show_resource('ptables', entity['id']) for entity in entities]
     else:
@@ -328,15 +328,14 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = False
     if not affects_multiple:
-        changed = module.ensure_entity_state('ptables', entity_dict, entity)
+        module.ensure_entity('ptables', entity_dict, entity)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_entity_state('ptables', entity_dict, entity)
+            module.ensure_entity('ptables', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

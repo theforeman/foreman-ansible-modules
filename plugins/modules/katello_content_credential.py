@@ -101,9 +101,9 @@ def main():
     scope = {'organization_id': entity_dict['organization']['id']}
     entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_entity_state('content_credentials', entity_dict, entity, params=scope)
+    module.ensure_entity('content_credentials', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

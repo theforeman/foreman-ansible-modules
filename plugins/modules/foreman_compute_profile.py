@@ -176,7 +176,7 @@ def main():
     if module.state == 'present' and updated_name:
         entity_dict['name'] = updated_name
 
-    changed, compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
+    compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
 
     # Apply changes on underlying compute attributes only when present
     if module.state == 'present' and compute_attributes is not None:
@@ -187,9 +187,9 @@ def main():
                 'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
             ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
             ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == compute_profile['id']), None)
-            changed |= module.ensure_entity_state('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
+            module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

@@ -119,9 +119,9 @@ def main():
         if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
             module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-    changed = module.ensure_entity_state('lifecycle_environments', entity_dict, entity, params=scope)
+    module.ensure_entity('lifecycle_environments', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

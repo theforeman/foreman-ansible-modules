@@ -165,7 +165,7 @@ def main():
     else:
         resources = response
 
-    module.exit_json(changed=False, resources=resources)
+    module.exit_json(resources=resources)
 
 
 if __name__ == '__main__':

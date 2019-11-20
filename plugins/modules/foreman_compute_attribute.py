@@ -114,9 +114,9 @@ def main():
 
     entity = next((item for item in compute_attributes if item.get('compute_profile_id') == entity_dict['compute_profile']['id']), None)
 
-    changed = module.ensure_entity_state('compute_attributes', entity_dict, entity)
+    module.ensure_entity('compute_attributes', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

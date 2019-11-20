@@ -108,9 +108,9 @@ def main():
 
             entity_dict['puppetclasses'] = puppet_classes
 
-    changed = module.ensure_entity_state('config_groups', entity_dict, entity)
+    module.ensure_entity('config_groups', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

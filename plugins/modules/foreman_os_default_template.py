@@ -126,9 +126,9 @@ def main():
         if entity_dict['provisioning_template']['template_kind_id'] != entity_dict['template_kind']['id']:
             module.fail_json(msg='Provisioning template kind mismatching.')
 
-    changed = module.ensure_entity_state('os_default_templates', entity_dict, entity, params=scope)
+    module.ensure_entity('os_default_templates', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

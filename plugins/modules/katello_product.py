@@ -133,9 +133,9 @@ def main():
         if 'sync_plan' in entity_dict:
             entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
 
-    changed = module.ensure_entity_state('products', entity_dict, entity, params=scope)
+    module.ensure_entity('products', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

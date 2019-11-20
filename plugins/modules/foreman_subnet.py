@@ -306,13 +306,13 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, subnet = module.ensure_entity('subnets', entity_dict, entity)
+    subnet = module.ensure_entity('subnets', entity_dict, entity)
 
     if subnet:
         scope = {'subnet_id': subnet['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+        module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

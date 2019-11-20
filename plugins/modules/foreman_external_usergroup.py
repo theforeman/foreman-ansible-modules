@@ -99,9 +99,9 @@ def main():
 
     entity_dict['auth_source_ldap'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source_ldap'], thin=True)
 
-    changed = module.ensure_entity_state('external_usergroups', entity_dict, entity, params)
+    module.ensure_entity('external_usergroups', entity_dict, entity, params)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

@@ -347,7 +347,7 @@ def main():
         entities = module.list_resource('provisioning_templates')
         if not entities:
             # Nothing to do; shortcut to exit
-            module.exit_json(changed=False)
+            module.exit_json()
         if not module.desired_absent:  # not 'thin'
             entities = [module.show_resource('provisioning_templates', entity['id']) for entity in entities]
     else:
@@ -368,15 +368,14 @@ def main():
     if not affects_multiple:
         entity_dict = find_template_kind(module, entity_dict)
 
-    changed = False
     if not affects_multiple:
-        changed = module.ensure_entity_state('provisioning_templates', entity_dict, entity)
+        module.ensure_entity('provisioning_templates', entity_dict, entity)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            changed |= module.ensure_entity_state('provisioning_templates', entity_dict, entity)
+            module.ensure_entity('provisioning_templates', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':
