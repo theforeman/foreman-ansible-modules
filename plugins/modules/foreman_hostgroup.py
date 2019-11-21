@@ -318,11 +318,6 @@ def main():
         ),
     )
 
-    puppetclass_spec = dict(
-        hostgroup=dict(type='entity', flat_name='hostgroup_id'),
-        puppetclass=dict(type='entity', flat_name='puppetclass_id')
-    )
-
     entity_dict = module.clean_params()
 
     module.connect()
@@ -448,6 +443,7 @@ def main():
                     module.ensure_entity('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent')
 
     module.exit_json()
+
 
 if __name__ == '__main__':
     main()
