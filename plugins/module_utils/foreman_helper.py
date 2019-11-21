@@ -14,6 +14,7 @@ from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_bytes
 
 try:
     import apypie
@@ -249,8 +250,8 @@ class ForemanAnsibleModule(AnsibleModule):
     def connect(self):
         self.foremanapi = apypie.Api(
             uri=self._foremanapi_server_url,
-            username=self._foremanapi_username,
-            password=self._foremanapi_password,
+            username=to_bytes(self._foremanapi_username),
+            password=to_bytes(self._foremanapi_password),
             api_version=2,
             verify_ssl=self._foremanapi_validate_certs,
         )
