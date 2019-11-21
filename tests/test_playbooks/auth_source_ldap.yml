@@ -5,6 +5,9 @@
     - vars/server.yml
     - vars/domain.yml
   tasks:
+  - include_tasks: tasks/auth_source_ldap.yml
+    vars:
+      auth_source_ldap_state: absent
   - include_tasks: tasks/location.yml
     vars:
       location_name: "{{ item }}"
