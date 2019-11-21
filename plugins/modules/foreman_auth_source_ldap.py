@@ -52,7 +52,10 @@ options:
     required: false
     type: str
   account_password:
-    description: Account password to use when accessing the LDAP server. Required when using `onthefly_register`
+    description:
+      - Account password to use when accessing the LDAP server.
+      - Required when using I(onthefly_register).
+      - When this parameter is set, the module will not be idempotent.
     required: false
     type: str
   base_dn:
@@ -60,19 +63,27 @@ options:
     required: false
     type: str
   attr_login:
-    description: Attribute containing login ID. Required when using `onthefly_register`
+    description:
+      - Attribute containing login ID.
+      - Required when using I(onthefly_register).
     required: false
     type: str
   attr_firstname:
-    description: Attribute containing first name. Required when using `onthefly_register`
+    description:
+      - Attribute containing first name.
+      - Required when using I(onthefly_register).
     required: false
     type: str
   attr_lastname:
-    description: Attribute containing last name. Required when using `onthefly_register`
+    description:
+      - Attribute containing last name.
+      - Required when using I(onthefly_register).
     required: false
     type: str
   attr_mail:
-    description: Attribute containing email address. Required when using `onthefly_register`
+    description:
+      - Attribute containing email address.
+      - Required when using I(onthefly_register).
     required: false
     type: str
   attr_photo:
@@ -186,6 +197,7 @@ def main():
             organizations=dict(type='entity_list', flat_name='organization_ids'),
             use_netgroups=dict(type='bool'),
         ),
+        required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
     )
 
     entity_dict = module.clean_params()
