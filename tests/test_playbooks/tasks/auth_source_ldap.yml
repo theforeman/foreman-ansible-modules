@@ -6,7 +6,6 @@
     auth_source_ldap_host: ldap.example.com
     auth_source_ldap_port: 389
     auth_source_ldap_account: ansible
-    auth_source_ldap_account_password: changeme
     auth_source_ldap_base_dn: dc=example,dc=com
     auth_source_ldap_attr_login: uid
     auth_source_ldap_attr_firstname: givenName
@@ -31,7 +30,7 @@
     host: "{{ auth_source_ldap_host }}"
     port: "{{ auth_source_ldap_port }}"
     account: "{{ auth_source_ldap_account }}"
-    account_password: "{{ auth_source_ldap_account_password }}"
+    account_password: "{{ auth_source_ldap_account_password | default(omit) }}"
     base_dn: "{{ auth_source_ldap_attr_login }}"
     attr_login: "{{ auth_source_ldap_attr_login }}"
     attr_firstname: "{{ auth_source_ldap_attr_firstname }}"
@@ -46,6 +45,7 @@
     ldap_filter: "{{ auth_source_ldap_ldap_filter }}"
     organizations: "{{ auth_source_ldap_organizations }}"
     locations: "{{ auth_source_ldap_locations }}"
+    use_netgroups: "{{ auth_source_ldap_netgroups | default(omit) }}"
     state: "{{ auth_source_ldap_state }}"
   register: result
 - assert:
