@@ -345,7 +345,7 @@ def main():
 
         if module.desired_absent and entity_dict['parent'] is None:
             # Parent hostgroup does not exist so just exit here
-            module.exit_json(changed=False)
+            module.exit_json()
 
     if not module.desired_absent:
         if 'locations' in entity_dict:
@@ -422,11 +422,11 @@ def main():
     puppetclasses = entity_dict.pop('puppetclasses', None)
     current_puppetclasses = entity.pop('puppetclasses', None) if entity else []
 
-    changed, hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
+    hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+        module.ensure_scoped_parameters(scope, entity, parameters)
 
     if not module.desired_absent and 'environment' in entity_dict:
         if puppetclasses is not None:
@@ -440,17 +440,16 @@ def main():
                         current_puppetclasses.remove(puppet_class_id)
                     else:
                         payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
-                        module.ensure_entity_state('hostgroup_classes', payload, None, None, 'present', puppetclass_spec)
+                        module.ensure_entity('hostgroup_classes', payload, None, None, 'present', puppetclass_spec)
                         changed = True
                 else:
                     module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
             if len(current_puppetclasses) > 0:
                 changed = True
                 for leftover_puppetclass in current_puppetclasses:
-                    module.ensure_entity_state('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent')
+                    module.ensure_entity('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent')
 
-    module.exit_json(changed=changed)
-
+    module.exit_json()
 
 if __name__ == '__main__':
     main()

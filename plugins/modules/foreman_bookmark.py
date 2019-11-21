@@ -129,9 +129,9 @@ def main():
     search = 'name="{0}",controller="{1}"'.format(entity_dict['name'], entity_dict['controller'])
     entity = module.find_resource('bookmarks', search, failsafe=True)
 
-    changed = module.ensure_entity_state('bookmarks', entity_dict, entity)
+    module.ensure_entity('bookmarks', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

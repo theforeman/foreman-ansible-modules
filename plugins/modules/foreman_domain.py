@@ -156,13 +156,13 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
-    changed, domain = module.ensure_entity('domains', entity_dict, entity)
+    domain = module.ensure_entity('domains', entity_dict, entity)
 
     if domain:
         scope = {'domain_id': domain['id']}
-        changed |= module.ensure_scoped_parameters(scope, entity, parameters)
+        module.ensure_scoped_parameters(scope, entity, parameters)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

@@ -22,5 +22,7 @@
     fail_msg: "Ensuring location is {{ location_state }} didn't fail! (expected_error: {{ expected_error | default('unknown') }})"
     that:
       - result is failed
-  when: expected_error is defined
+  when:
+    - expected_error is defined
+    - expected_error
 ...

@@ -104,9 +104,9 @@ def main():
     if entity and 'updated_name' in entity_dict:
         entity_dict['name'] = entity_dict.pop('updated_name')
 
-    changed = module.ensure_entity_state('host_collections', entity_dict, entity, params=scope)
+    module.ensure_entity('host_collections', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

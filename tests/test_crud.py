@@ -26,7 +26,7 @@ def get_foreman_url():
     return server_yml_content['foreman_server_url']
 
 
-def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
+def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False, check_mode=False):
     if extra_vars is None:
         extra_vars = {}
     limit = None
@@ -56,19 +56,34 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False):
     fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
     fixture_dir.join(apidoc).copy(json_cache)
 
-    return run_playbook(module, extra_vars=extra_vars, limit=limit)
+    return run_playbook(module, extra_vars=extra_vars, limit=limit, check_mode=check_mode)
 
 
-def run_playbook(module, extra_vars=None, limit=None):
+def run_playbook(module, extra_vars=None, limit=None, check_mode=False):
     # Assemble parameters for playbook call
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
-    playbook_path = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
-    inventory_path = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
-    run = ansible_runner.run(extravars=extra_vars, playbook=playbook_path, limit=limit, verbosity=4, inventory=inventory_path)
-    return run
+    kwargs = {}
+    kwargs['playbook'] = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
+    kwargs['inventory'] = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
+    kwargs['verbosity'] = 4
+    if extra_vars:
+        kwargs['extravars'] = extra_vars
+    if limit:
+        kwargs['limit'] = limit
+    if check_mode:
+        kwargs['cmdline'] = "--check"
+    return ansible_runner.run(**kwargs)
 
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_crud(tmpdir, module, record):
     run = run_playbook_vcr(tmpdir, module, record=record)
+    assert run.rc == 0
+
+
+@pytest.mark.parametrize('module', TEST_PLAYBOOKS)
+def test_check_mode(tmpdir, module):
+    if module == 'katello_manifest':
+        pytest.skip("This module does not support check_mode.")
+    run = run_playbook_vcr(tmpdir, module, check_mode=True)
     assert run.rc == 0

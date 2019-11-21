@@ -92,9 +92,9 @@ def main():
 
     entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
 
-    changed = module.ensure_entity_state('organizations', entity_dict, entity)
+    module.ensure_entity('organizations', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

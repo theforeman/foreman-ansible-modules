@@ -54,6 +54,16 @@ options:
     description: Filters with permissions for this role
     required: false
     type: list
+    elements: dict
+    suboptions:
+      permissions:
+        description: List of permissions
+        required: true
+        type: list
+      search:
+        description: Filter condition for the resources
+        required: false
+        type: str
   state:
     description: role presence
     default: present
@@ -72,8 +82,7 @@ EXAMPLES = '''
     organizations:
       - "Basalt"
     filters:
-      - resource: 'Host'
-        permissions:
+      - permissions:
           - view_hosts
         search: "owner_type = Usergroup and owner_id = 4"
     server_url: "https://foreman.example.com"
@@ -84,7 +93,15 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
+import copy
+
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+
+
+filter_entity_spec = dict(
+    permissions=dict(type='entity_list', flat_name='permission_ids', required=True),
+    search=dict(),
+)
 
 
 def main():
@@ -94,15 +111,8 @@ def main():
             description=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-            filters=dict(type='entity_list', flat_name='filter_ids'),
+            filters=dict(type='nested_list', entity_spec=filter_entity_spec),
         ),
-    )
-
-    filters_entity_spec = dict(
-        permissions=dict(type='entity_list', flat_name='permission_ids'),
-        resource=dict(),
-        search=dict(),
-        role_id=dict(required=True)
     )
 
     entity_dict = module.clean_params()
@@ -120,21 +130,31 @@ def main():
 
     filters = entity_dict.pop("filters", None)
 
-    changed, entity = module.ensure_entity('roles', entity_dict, entity)
+    new_entity = module.ensure_entity('roles', entity_dict, entity)
 
-    if not module.desired_absent and not module.check_mode:
-        if filters is not None:
-            for role_filter in filters:
-                role_filter['role_id'] = entity['id']
-                role_filter['permissions'] = module.find_resources_by_name('permissions', role_filter['permissions'], thin=True)
-                module.ensure_entity_state('filters', role_filter, None, None, 'present', filters_entity_spec)
-            old_filters = entity.get('filter_ids', [])
-            for old_filter in old_filters:
-                module.ensure_entity('filters', None, {'id': old_filter}, {}, 'absent')
-            if len(old_filters) != len(filters):
-                changed = True
+    if not module.desired_absent and filters is not None:
+        scope = {'role_id': new_entity['id']}
 
-    module.exit_json(changed=changed)
+        if entity:
+            current_filters = [module.show_resource('filters', filter['id']) for filter in entity['filters']]
+        else:
+            current_filters = []
+        desired_filters = copy.deepcopy(filters)
+
+        for desired_filter in desired_filters:
+            # search for an existing filter
+            for current_filter in current_filters:
+                if desired_filter['search'] == current_filter['search']:
+                    if set(desired_filter['permissions']) == set(perm['name'] for perm in current_filter['permissions']):
+                        current_filters.remove(current_filter)
+                        break
+            else:
+                desired_filter['permissions'] = module.find_resources_by_name('permissions', desired_filter['permissions'], thin=True)
+                module.ensure_entity('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
+        for current_filter in current_filters:
+            module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
+
+    module.exit_json()
 
 
 if __name__ == '__main__':

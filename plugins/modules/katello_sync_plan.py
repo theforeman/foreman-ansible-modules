@@ -147,12 +147,16 @@ def main():
 
     products = entity_dict.pop('products', None)
 
-    changed, sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
+    sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
 
     if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
         products = module.find_resources_by_name('products', products, params=scope, thin=True)
         desired_product_ids = set(product['id'] for product in products)
         current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
+
+        module.record_before('sync_plans/products', {'id': sync_plan['id'], 'product_ids': current_product_ids})
+        module.record_after('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
+        module.record_after_full('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
 
         if desired_product_ids != current_product_ids:
             if not module.check_mode:
@@ -172,9 +176,10 @@ def main():
                     }
                     payload.update(scope)
                     module.resource_action('sync_plans', 'remove_products', payload)
-            changed = True
+            else:
+                module.set_changed()
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

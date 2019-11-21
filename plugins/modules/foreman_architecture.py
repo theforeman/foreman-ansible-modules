@@ -113,9 +113,9 @@ def main():
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
 
-    changed = module.ensure_entity_state('architectures', entity_dict, entity)
+    module.ensure_entity('architectures', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

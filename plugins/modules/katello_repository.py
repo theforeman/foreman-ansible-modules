@@ -69,16 +69,11 @@ options:
       - Repository URL to sync from
     required: false
     type: str
-  docker_upstream_name:
+  gpg_key:
     description:
-      - name of the upstream docker repository
-    type: str
-  mirror_on_sync:
-    description:
-      - toggle "mirror on sync" where the state of the repository mirrors that of the upstream repository at sync time
-    default: true
-    type: bool
+    - Repository GPG key
     required: false
+    type: str
   download_policy:
     description:
       - download policy for sync from upstream
@@ -88,10 +83,44 @@ options:
       - on_demand
     required: false
     type: str
-  gpg_key:
+  mirror_on_sync:
     description:
-    - Repository GPG key
+      - toggle "mirror on sync" where the state of the repository mirrors that of the upstream repository at sync time
+    default: true
+    type: bool
     required: false
+  upstream_username:
+    description:
+      - username to access upstream repository
+    type: str
+  upstream_password:
+    description:
+      - password to access upstream repository
+    type: str
+  docker_upstream_name:
+    description:
+      - name of the upstream docker repository
+      - only available for I(content_type=docker)
+    type: str
+  docker_tags_whitelist:
+    description:
+      - list of tags to sync for Container Image repository
+      - only available for I(content_type=docker)
+    type: list
+  deb_releases:
+    description:
+      - comma separated list of releases to be synced from deb-archive
+      - only available for I(content_type=deb)
+    type: str
+  deb_components:
+    description:
+      - comma separated list of repo components to be synced from deb-archive
+      - only available for I(content_type=deb)
+    type: str
+  deb_architectures:
+    description:
+      - comma separated list of architectures to be synced from deb-archive
+      - only available for I(content_type=deb)
     type: str
   state:
     description:
@@ -154,17 +183,30 @@ def main():
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
             gpg_key=dict(type='entity', flat_name='gpg_key_id'),
-            docker_upstream_name=dict(),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
+            upstream_username=dict(),
+            upstream_password=dict(nolog=True),
+            docker_upstream_name=dict(),
+            docker_tags_whitelist=dict(type='list'),
+            deb_releases=dict(),
+            deb_components=dict(),
+            deb_architectures=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
     )
 
     entity_dict = module.clean_params()
 
-    if entity_dict['content_type'] != 'docker' and 'docker_upstream_name' in entity_dict:
-        module.fail_json(msg="docker_upstream_name should not be set unless content_type: docker")
+    if entity_dict['content_type'] != 'docker':
+        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in entity_dict]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'docker'".format(",".join(invalid_list)))
+
+    if entity_dict['content_type'] != 'deb':
+        invalid_list = [key for key in ['deb_releases', 'deb_components', 'deb_architectures'] if key in entity_dict]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     module.connect()
 
@@ -179,9 +221,9 @@ def main():
     scope['product_id'] = entity_dict['product']['id']
     entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
 
-    changed = module.ensure_entity_state('repositories', entity_dict, entity, params=scope)
+    module.ensure_entity('repositories', entity_dict, entity, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

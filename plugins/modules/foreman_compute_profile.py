@@ -71,7 +71,7 @@ EXAMPLES = '''
 - name: compute profile
   foreman_compute_profile:
     name: example_compute_profile
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -85,7 +85,7 @@ EXAMPLES = '''
         cluster: 'a96d44a4-f14a-1015-82c6-f80354acdf01'
         template: 'c88af4b7-a24a-453b-9ac2-bc647ca2ef99'
         instance_type: 'cb8927e7-a404-40fb-a6c1-06cbfc92e077'
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -129,7 +129,7 @@ EXAMPLES = '''
             capacity: 16G
             allocation: 16G
             format_type: raw
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -137,6 +137,9 @@ EXAMPLES = '''
 - name: Remove compute profile
   foreman_compute_profile:
     name: example_compute_profile2
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
     state: absent
 '''
 
@@ -173,7 +176,7 @@ def main():
     if module.state == 'present' and updated_name:
         entity_dict['name'] = updated_name
 
-    changed, compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
+    compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
 
     # Apply changes on underlying compute attributes only when present
     if module.state == 'present' and compute_attributes is not None:
@@ -184,9 +187,9 @@ def main():
                 'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
             ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
             ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == compute_profile['id']), None)
-            changed |= module.ensure_entity_state('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
+            module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':

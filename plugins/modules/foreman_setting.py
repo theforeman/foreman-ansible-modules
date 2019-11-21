@@ -108,13 +108,13 @@ def main():
     old_value = entity['value']
     entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-    changed, entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
+    entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
 
     if entity:
         # Fake the not serialized input value as output
         entity['value'] = new_value
 
-    module.exit_json(changed=changed, foreman_setting=entity)
+    module.exit_json(foreman_setting=entity)
 
 
 if __name__ == '__main__':

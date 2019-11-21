@@ -118,7 +118,7 @@ EXAMPLES = '''
     provider_params:
       url: libvirt.example.com
       display_type: vnc
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -135,7 +135,7 @@ EXAMPLES = '''
     provider_params:
       url: libvirt.example.com
       display_type: vnc
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -143,7 +143,7 @@ EXAMPLES = '''
 - name: Delete livirt compute resource
   foreman_compute_resource:
     name: example_compute_resource
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: absent
@@ -161,7 +161,7 @@ EXAMPLES = '''
       user: admin
       password: secret
       datacenter: ax01
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -181,7 +181,7 @@ EXAMPLES = '''
       datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
       ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
       use_v4: true
-    server_url: foreman.example.com
+    server_url: "https://foreman.example.com"
     username: admin
     password: secret
     state: present
@@ -274,9 +274,9 @@ def main():
         elif entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-    changed = module.ensure_entity_state('compute_resources', entity_dict, entity)
+    module.ensure_entity('compute_resources', entity_dict, entity)
 
-    module.exit_json(changed=changed)
+    module.exit_json()
 
 
 if __name__ == '__main__':
