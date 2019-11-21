@@ -42,11 +42,13 @@
   - include: tasks/auth_source_ldap.yml
     vars:
       auth_source_ldap_state: present
+      auth_source_ldap_account_password: "{{ omit }}"
       auth_source_ldap_netgroups: true
       expected_change: true
   - include: tasks/auth_source_ldap.yml
     vars:
       auth_source_ldap_state: present
+      auth_source_ldap_account_password: "{{ omit }}"
       auth_source_ldap_netgroups: true
       expected_change: false
   - include: tasks_auth_source_ldap.yml
