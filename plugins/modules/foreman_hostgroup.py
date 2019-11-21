@@ -428,9 +428,16 @@ def main():
             current_puppetclasses = [p['id'] for p in current_puppetclasses]
             for puppet_class_name in puppetclasses:
                 scope = {'environment_id': hostgroup['environment_id']}
-                results = module.list_resource("puppetclasses", params=scope, search='name="{0}"'.format(puppet_class_name))
-                if len(results) == 1 and len(list(results.values())[0]) == 1:
-                    puppet_class_id = list(results.values())[0][0]['id']
+
+                # puppet classes API return puppet classes grouped by puppet module name
+                puppet_modules = module.list_resource("puppetclasses", params=scope, search='name="{0}"'.format(puppet_class_name))
+                puppet_classes = list(puppet_modules.values())[0]
+
+                # verify that only one puppet module is returned with only one puppet class inside
+                # as provided search results have to be like "results": { "ntp": [{"id": 1, "name": "ntp" ...}]}
+                # and get the puppet class id
+                if len(puppet_modules) == 1 and len(puppet_classes) == 1:
+                    puppet_class_id = puppet_classes[0]['id']
                     if puppet_class_id in current_puppetclasses:
                         current_puppetclasses.remove(puppet_class_id)
                     else:
