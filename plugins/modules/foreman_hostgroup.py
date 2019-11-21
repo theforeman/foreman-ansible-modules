@@ -50,26 +50,6 @@ options:
     description: Hostgroup parent name
     required: false
     type: str
-  compute_resource:
-    description: Compute resource name
-    required: false
-    type: str
-  compute_profile:
-    description: Compute profile name
-    required: false
-    type: str
-  domain:
-    description: Domain name
-    required: false
-    type: str
-  subnet:
-    description: IPv4 Subnet name
-    required: false
-    type: str
-  subnet6:
-    description: IPv6 Subnet name
-    required: false
-    type: str
   realm:
     description: Realm name
     required: false
@@ -168,6 +148,7 @@ extends_documentation_fragment:
   - foreman.entity_state
   - foreman.taxonomy
   - foreman.nested_parameters
+  - foreman.host_options
 '''
 
 EXAMPLES = '''
@@ -240,23 +221,23 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     build_fqn,
+    HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
     parameter_entity_spec,
     split_fqn,
 )
 
 
+class ForemanHostgroupAnsibleModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanHostgroupAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity', flat_name='parent_id'),
-            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
-            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
-            domain=dict(type='entity', flat_name='domain_id'),
-            subnet=dict(type='entity', flat_name='subnet_id'),
-            subnet6=dict(type='entity', flat_name='subnet6_id'),
             realm=dict(type='entity', flat_name='realm_id'),
             architecture=dict(type='entity', flat_name='architecture_id'),
             operatingsystem=dict(type='entity', flat_name='operatingsystem_id'),
@@ -309,21 +290,6 @@ def main():
             module.exit_json()
 
     if not module.desired_absent:
-        if 'compute_resource' in entity_dict:
-            entity_dict['compute_resource'] = module.find_resource_by_name('compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True)
-
-        if 'compute_profile' in entity_dict:
-            entity_dict['compute_profile'] = module.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
-
-        if 'domain' in entity_dict:
-            entity_dict['domain'] = module.find_resource_by_name('domains', name=entity_dict['domain'], failsafe=False, thin=True)
-
-        if 'subnet' in entity_dict:
-            entity_dict['subnet'] = module.find_resource_by_name('subnets', name=entity_dict['subnet'], failsafe=False, thin=True)
-
-        if 'subnet6' in entity_dict:
-            entity_dict['subnet6'] = module.find_resource_by_name('subnets', name=entity_dict['subnet6'], failsafe=False, thin=True)
-
         if 'realm' in entity_dict:
             entity_dict['realm'] = module.find_resource_by_name('realms', name=entity_dict['realm'], failsafe=False, thin=True)
 
@@ -370,6 +336,7 @@ def main():
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
                                                                        params=scope, failsafe=False, thin=True)
 
+    entity_dict = module.handle_common_host_params(entity_dict)
     entity_dict = module.handle_taxonomy_params(entity_dict)
 
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)

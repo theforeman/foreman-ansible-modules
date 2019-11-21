@@ -137,6 +137,37 @@ class KatelloMixin(object):
             _sync_plan_remove_products['params'].append(_organization_parameter)
 
 
+class HostMixin(object):
+    def __init__(self, entity_spec=None, **kwargs):
+        args = dict(
+            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
+            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
+            domain=dict(type='entity', flat_name='domain_id'),
+            subnet=dict(type='entity', flat_name='subnet_id'),
+            subnet6=dict(type='entity', flat_name='subnet6_id'),
+        )
+        if entity_spec:
+            args.update(entity_spec)
+        super(HostMixin, self).__init__(entity_spec=args, **kwargs)
+
+    def handle_common_host_params(self, entity_dict):
+        if not self.desired_absent:
+            entity_dict = entity_dict.copy()  # "Copy on write"
+            if 'compute_resource' in entity_dict:
+                entity_dict['compute_resource'] = self.find_resource_by_name(
+                    'compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True
+                )
+            if 'compute_profile' in entity_dict:
+                entity_dict['compute_profile'] = self.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
+            if 'domain' in entity_dict:
+                entity_dict['domain'] = self.find_resource_by_name('domains', name=entity_dict['domain'], failsafe=False, thin=True)
+            if 'subnet' in entity_dict:
+                entity_dict['subnet'] = self.find_resource_by_name('subnets', name=entity_dict['subnet'], failsafe=False, thin=True)
+            if 'subnet6' in entity_dict:
+                entity_dict['subnet6'] = self.find_resource_by_name('subnets', name=entity_dict['subnet6'], failsafe=False, thin=True)
+        return entity_dict
+
+
 class ForemanAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):

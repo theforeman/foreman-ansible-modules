@@ -141,3 +141,27 @@ options:
       - absent
     type: str
 '''
+
+    HOST_OPTIONS = '''
+options:
+  compute_resource:
+    description: Compute resource name
+    required: false
+    type: str
+  compute_profile:
+    description: Compute profile name
+    required: false
+    type: str
+  domain:
+    description: Domain name
+    required: false
+    type: str
+  subnet:
+    description: IPv4 Subnet name
+    required: false
+    type: str
+  subnet6:
+    description: IPv6 Subnet name
+    required: false
+    type: str
+'''

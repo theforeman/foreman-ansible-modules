@@ -23,6 +23,17 @@
         domain_organizations:
           - "{{ host.organization }}"
         domain_state: present
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }}"
+        subnet_mask: '255.255.255.224'
+        subnet_domains:
+          - "{{ host.domain }}"
+        subnet_locations:
+          - "{{ host.location }}"
+        subnet_organizations:
+          - "{{ host.organization }}"
+        subnet_state: present
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "{{ host.hostgroup }}"
@@ -40,7 +51,7 @@
           - "{{ host.location }}"
         hostgroup_organizations:
           - "{{ host.organization }}"
-        hostgroup_state: present    
+        hostgroup_state: present
     - include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -67,6 +78,26 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
+        host_managed: False
+        expected_change: false
+
+    - name: Add subnet to host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
+        host_managed: False
+        expected_change: true
+
+    - name: Add subnet to host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
         host_managed: False
         expected_change: false
 
@@ -192,6 +223,21 @@
       vars:
         hostgroup_name: "{{ host.hostgroup }}"
         hostgroup_state: absent
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }}"
+        subnet_mask: '255.255.255.224'
+        subnet_domains: []
+        subnet_state: present
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }}"
+        subnet_mask: '255.255.255.224'
+        subnet_state: absent
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "{{ host.domain }}"
+        domain_state: absent
     - include_tasks: tasks/location.yml
       vars:
         location_name: "{{ host.location }}"
