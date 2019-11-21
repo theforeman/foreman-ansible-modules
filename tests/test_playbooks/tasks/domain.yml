@@ -10,8 +10,8 @@
     name: "{{ domain_name }}"
     updated_name: "{{ domain_updated_name | default(omit) }}"
     dns_proxy: "{{ domain_dns_proxy | default(omit) }}"
-    locations: "{{ domain_locations }}"
-    organizations: "{{ domain_organizations }}"
+    locations: "{{ domain_locations | default(omit) }}"
+    organizations: "{{ domain_organizations | default(omit) }}"
     parameters: "{{ domain_parameters | default(omit) }}"
     state: "{{ domain_state }}"
   register: result
