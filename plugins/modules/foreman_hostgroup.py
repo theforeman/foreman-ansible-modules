@@ -442,12 +442,12 @@ def main():
                         current_puppetclasses.remove(puppet_class_id)
                     else:
                         payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
-                        module.ensure_entity('hostgroup_classes', None, None, params=payload, state='present', entity_spec={})
+                        module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', entity_spec={})
                 else:
                     module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
             if len(current_puppetclasses) > 0:
                 for leftover_puppetclass in current_puppetclasses:
-                    module.ensure_entity('hostgroup_classes', None, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent', entity_spec={})
+                    module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent', entity_spec={})
 
     module.exit_json()
 
