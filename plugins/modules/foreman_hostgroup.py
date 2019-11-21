@@ -435,7 +435,7 @@ def main():
                         current_puppetclasses.remove(puppet_class_id)
                     else:
                         payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
-                        module.ensure_entity('hostgroup_classes', None, None, params=payload, state='present')
+                        module.ensure_entity('hostgroup_classes', None, None, params=payload, state='present', entity_spec={})
                 else:
                     module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
             if len(current_puppetclasses) > 0:
