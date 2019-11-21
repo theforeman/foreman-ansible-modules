@@ -428,7 +428,7 @@ def main():
         scope = {'hostgroup_id': hostgroup['id']}
         module.ensure_scoped_parameters(scope, entity, parameters)
 
-    if not module.desired_absent and 'environment' in entity_dict:
+    if not module.desired_absent and 'environment_id' in hostgroup:
         if puppetclasses is not None:
             current_puppetclasses = [p['id'] for p in current_puppetclasses]
             for puppet_class_name in puppetclasses:
