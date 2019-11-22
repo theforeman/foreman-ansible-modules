@@ -340,7 +340,6 @@ template_input_entity_spec = {
 def main():
     module = ForemanEntityAnsibleModule(
         entity_spec=dict(
-            audit_comment=dict(),
             description_format=dict(),
             job_category=dict(),
             locations=dict(type='entity_list', flat_name='location_ids'),
@@ -353,6 +352,7 @@ def main():
             template_inputs=dict(type='nested_list', entity_spec=template_input_entity_spec),
         ),
         argument_spec=dict(
+            audit_comment=dict(),
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
         ),
@@ -432,8 +432,13 @@ def main():
     # TemplateInputs need to be added as separate entities later
     template_inputs = entity_dict.get('template_inputs')
 
+    if 'audit_comment' in entity_dict:
+        extra_params = {'audit_comment': entity_dict['audit_comment']}
+    else:
+        extra_params = {}
+
     if not affects_multiple:
-        job_template = module.ensure_entity('job_templates', entity_dict, entity)
+        job_template = module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
 
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
         if update_dependent_entities and template_inputs is not None:
@@ -462,7 +467,7 @@ def main():
     else:
         entity_dict.pop('name')
         for entity in entities:
-            module.ensure_entity('job_templates', entity_dict, entity)
+            module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
 
     module.exit_json()
 
