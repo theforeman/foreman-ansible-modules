@@ -126,6 +126,10 @@ options:
     description: Puppet environment name
     required: false
     type: str
+  puppetclasses:
+    description: List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
+    required: false
+    type: list
   config_groups:
     description: Config groups list
     required: false
@@ -298,6 +302,7 @@ def main():
                                      'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
             root_pass=dict(no_log=True),
             environment=dict(type='entity', flat_name='environment_id'),
+            puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
             config_groups=dict(type='entity_list', flat_name='config_group_ids'),
             puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
             puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
@@ -312,6 +317,7 @@ def main():
             updated_name=dict(),
         ),
     )
+
     entity_dict = module.clean_params()
 
     module.connect()
@@ -408,11 +414,40 @@ def main():
 
     parameters = entity_dict.get('parameters')
 
+    puppetclasses = entity_dict.pop('puppetclasses', None)
+    current_puppetclasses = entity.pop('puppetclasses', None) if entity else []
+
     hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
 
     if hostgroup:
         scope = {'hostgroup_id': hostgroup['id']}
         module.ensure_scoped_parameters(scope, entity, parameters)
+
+    if not module.desired_absent and 'environment_id' in hostgroup:
+        if puppetclasses is not None:
+            current_puppetclasses = [p['id'] for p in current_puppetclasses]
+            for puppet_class_name in puppetclasses:
+                scope = {'environment_id': hostgroup['environment_id']}
+
+                # puppet classes API return puppet classes grouped by puppet module name
+                puppet_modules = module.list_resource("puppetclasses", params=scope, search='name="{0}"'.format(puppet_class_name))
+
+                # verify that only one puppet module is returned with only one puppet class inside
+                # as provided search results have to be like "results": { "ntp": [{"id": 1, "name": "ntp" ...}]}
+                # and get the puppet class id
+                if len(puppet_modules) == 1 and len(list(puppet_modules.values())[0]) == 1:
+                    puppet_classes = list(puppet_modules.values())[0]
+                    puppet_class_id = puppet_classes[0]['id']
+                    if puppet_class_id in current_puppetclasses:
+                        current_puppetclasses.remove(puppet_class_id)
+                    else:
+                        payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
+                        module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', entity_spec={})
+                else:
+                    module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
+            if len(current_puppetclasses) > 0:
+                for leftover_puppetclass in current_puppetclasses:
+                    module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent', entity_spec={})
 
     module.exit_json()
 
