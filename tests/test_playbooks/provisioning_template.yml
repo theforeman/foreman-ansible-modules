@@ -4,6 +4,17 @@
   vars_files:
     - vars/server.yml
   tasks:
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "{{ item }}"
+      provisioning_template_state: absent
+    loop:
+      - "Timetravel finish"
+      - "my template"
+      - "my template 2"
+      - 'A provisioning template with an template'
+      - 'A second provisioning template'
+
   - include: tasks/organization.yml
     vars:
       organization_state: present
@@ -19,10 +30,12 @@
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: present
+      provisioning_template_audit_comment: "create template"
       expected_change: true
   - include: tasks/provisioning_template.yml
     vars:
       provisioning_template_state: present
+      provisioning_template_audit_comment: "don't update template"
       expected_change: false
   - include: tasks/provisioning_template.yml
     vars:
