@@ -186,7 +186,7 @@ def main():
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
             upstream_username=dict(),
-            upstream_password=dict(nolog=True),
+            upstream_password=dict(no_log=True),
             docker_upstream_name=dict(),
             docker_tags_whitelist=dict(type='list'),
             deb_releases=dict(),
