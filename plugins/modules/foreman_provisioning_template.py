@@ -262,12 +262,12 @@ def find_template_kind(module, entity_dict):
 def main():
     module = ForemanEntityAnsibleModule(
         argument_spec=dict(
+            audit_comment=dict(),
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
             updated_name=dict(),
         ),
         entity_spec=dict(
-            audit_comment=dict(),
             kind=dict(choices=[
                 'finish',
                 'iPXE',
@@ -368,12 +368,17 @@ def main():
     if not affects_multiple:
         entity_dict = find_template_kind(module, entity_dict)
 
+    if 'audit_comment' in entity_dict:
+        extra_params = {'audit_comment': entity_dict['audit_comment']}
+    else:
+        extra_params = {}
+
     if not affects_multiple:
-        module.ensure_entity('provisioning_templates', entity_dict, entity)
+        module.ensure_entity('provisioning_templates', entity_dict, entity, params=extra_params)
     else:
         entity_dict.pop('name')
         for entity in entities:
-            module.ensure_entity('provisioning_templates', entity_dict, entity)
+            module.ensure_entity('provisioning_templates', entity_dict, entity, params=extra_params)
 
     module.exit_json()
 
