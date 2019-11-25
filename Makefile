@@ -9,6 +9,7 @@ DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 COLLECTION_TMP:=$(shell mktemp -du)
 COLLECTION_INSTALL_TMP:=$(shell mktemp -du)
+PYTEST=pytest -n 4 --boxed -v
 
 default: help
 help:
@@ -28,16 +29,16 @@ lint:
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 
 test:
-	pytest -v $(TEST)
+	$(PYTEST) $(TEST)
 
 test-crud:
-	pytest -v 'tests/test_crud.py::test_crud'
+	$(PYTEST) 'tests/test_crud.py::test_crud'
 
 test-check-mode:
-	pytest -v 'tests/test_crud.py::test_check_mode'
+	$(PYTEST) 'tests/test_crud.py::test_check_mode'
 
 test-other:
-	pytest -v -k 'not test_crud.py'
+	$(PYTEST) -k 'not test_crud.py'
 
 test_%: FORCE
 	pytest 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
