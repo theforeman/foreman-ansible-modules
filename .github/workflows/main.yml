@@ -45,12 +45,24 @@ jobs:
         run: make test-setup
       - name: Run basic tests
         run: make test-crud test-other
-      - name: Run check_mode tests
-        run: make test-check-mode
-        if: matrix.python == '3.6'
       - name: Run Ansible devel specific tests
         run: make sanity dist-test
         if: matrix.ansible == 'devel'
+
+  checkmode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+      - name: Install Ansible
+        run: pip install ansible
+      - name: Install dependencies
+        run: make test-setup
+      - name: Run check_mode tests
+        run: make test-check-mode
 
   docs:
     runs-on: ubuntu-latest
