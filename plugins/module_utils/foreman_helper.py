@@ -14,7 +14,7 @@ from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_bytes
+from ansible.module_utils._text import to_bytes, to_native
 
 try:
     import apypie
@@ -38,14 +38,14 @@ parameter_entity_spec = dict(
 )
 
 
-def _exception2fail_json(msg='Generic failure: %s'):
+def _exception2fail_json(msg='Generic failure: {0}'):
     def decor(f):
         @wraps(f)
         def inner(self, *args, **kwargs):
             try:
                 return f(self, *args, **kwargs)
             except Exception as e:
-                self.fail_from_exception(e, msg % str(e))
+                self.fail_from_exception(e, msg.format(to_native(e)))
         return inner
     return decor
 
@@ -59,7 +59,7 @@ class KatelloMixin(object):
             args.update(argument_spec)
         super(KatelloMixin, self).__init__(argument_spec=args, **kwargs)
 
-    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
+    @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
         super(KatelloMixin, self).connect()
         self._patch_content_uploads_update_api()
@@ -246,7 +246,7 @@ class ForemanAnsibleModule(AnsibleModule):
         if not HAS_APYPIE:
             self.fail_json(msg='The apypie Python module is required', exception=APYPIE_IMP_ERR)
 
-    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
+    @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
         self.foremanapi = apypie.Api(
             uri=self._foremanapi_server_url,
@@ -261,11 +261,11 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_location_api()
         self._patch_subnet_rex_api()
 
-    @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
+    @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def ping(self):
         return self.foremanapi.resource('home').call('status')
 
-    @_exception2fail_json(msg='Failed to show resource: %s')
+    @_exception2fail_json(msg='Failed to show resource: {0}')
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
             params = {}
@@ -278,7 +278,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return self.foremanapi.resource(resource).call('show', params)
 
-    @_exception2fail_json(msg='Failed to list resource: %s')
+    @_exception2fail_json(msg='Failed to list resource: {0}')
     def list_resource(self, resource, search=None, params=None):
         if params is None:
             params = {}
@@ -366,7 +366,7 @@ class ForemanAnsibleModule(AnsibleModule):
     def record_after_full(self, resource, entity):
         self._after_full[resource].append(entity)
 
-    @_exception2fail_json(msg='Failed to ensure entity state: %s')
+    @_exception2fail_json(msg='Failed to ensure entity state: {0}')
     def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=True):
         """Ensure that a given entity has a certain state
 
@@ -539,7 +539,7 @@ class ForemanAnsibleModule(AnsibleModule):
                     result = self.wait_for_task(result)
         except Exception as e:
             msg = 'Error while performing {0} on {1}: {2}'.format(
-                action, resource, str(e))
+                action, resource, to_native(e))
             self.fail_from_exception(e, msg)
         if record_change and not ignore_check_mode:
             # If we were supposed to ignore check_mode we can assume this action was not a changing one.
@@ -713,7 +713,7 @@ def parse_template(template_content, module):
         # No metadata, import template anyway
         template_dict['template'] = template_content
     except Exception as e:
-        module.fail_json(msg='Error while parsing template: ' + str(e))
+        module.fail_json(msg='Error while parsing template: ' + to_native(e))
     return template_dict
 
 
@@ -723,7 +723,7 @@ def parse_template_from_file(file_name, module):
             template_content = input_file.read()
             template_dict = parse_template(template_content, module)
     except Exception as e:
-        module.fail_json(msg='Error while reading template file: ' + str(e))
+        module.fail_json(msg='Error while reading template file: ' + to_native(e))
     return template_dict
 
 
