@@ -187,7 +187,7 @@ content_filter_rule_erratum_spec = {
     'date_type': {},
     'end_date': {},
     'start_date': {},
-    'types': {},
+    'types': {'type': 'list'},
 }
 
 content_filter_rule_erratum_id_spec = {

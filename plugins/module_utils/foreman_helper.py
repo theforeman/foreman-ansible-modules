@@ -454,8 +454,13 @@ class ForemanAnsibleModule(AnsibleModule):
         desired_entity = _flatten_entity(desired_entity, entity_spec)
         current_entity = _flatten_entity(current_entity, entity_spec)
         for key, value in desired_entity.items():
-            if current_entity.get(key) != value:
-                payload[key] = value
+            # String comparison needs extra care in face of unicode
+            if entity_spec[key].get('type', 'str') == 'str':
+                if to_native(current_entity.get(key)) != to_native(value):
+                    payload[key] = value
+            else:
+                if current_entity.get(key) != value:
+                    payload[key] = value
         if payload:
             payload['id'] = current_entity['id']
             if not self.check_mode:
@@ -642,10 +647,7 @@ def _entity_spec_helper(spec):
     for key, value in spec.items():
         entity_value = {}
         argument_value = value.copy()
-        if 'flat_name' in argument_value:
-            flat_name = argument_value.pop('flat_name')
-            entity_value['flat_name'] = flat_name
-            entity_spec[flat_name] = {}
+        flat_name = argument_value.pop('flat_name', None)
 
         if argument_value.get('type') == 'entity':
             entity_value['type'] = argument_value.pop('type')
@@ -657,8 +659,18 @@ def _entity_spec_helper(spec):
             argument_value['elements'] = 'dict'
             _dummy, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
             entity_value = None
+        elif 'type' in argument_value:
+            entity_value['type'] = argument_value['type']
+
+        if flat_name:
+            entity_value['flat_name'] = flat_name
+            entity_spec[flat_name] = {}
+            if 'type' in argument_value:
+                entity_spec[flat_name]['type'] = argument_value['type']
+
         if entity_value is not None:
             entity_spec[key] = entity_value
+
         if argument_value.get('type') != 'invisible':
             argument_spec[key] = argument_value
 
