@@ -161,7 +161,7 @@ options:
     required: false
     type: str
   kickstart_repository:
-    description: Kickstart repository name
+    description: Kickstart repository name. Only available for katello installations.
     required: false
     type: str
   content_view:
