@@ -409,7 +409,7 @@ def main():
 
         if 'kickstart_repository' in entity_dict:
             entity_dict['kickstart_repository'] = module.find_resource_by_name('repositories', name=entity_dict['kickstart_repository'],
-                                                                                params=scope, failsafe=False, thin=True)
+                                                                               params=scope, failsafe=False, thin=True)
 
         if 'content_view' in entity_dict:
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
