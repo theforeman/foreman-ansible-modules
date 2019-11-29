@@ -57,7 +57,8 @@ options:
        - URL to retrieve content from
     aliases: [ redhat_repository_url ]
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

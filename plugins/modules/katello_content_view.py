@@ -106,7 +106,8 @@ options:
         type: str
         aliases:
           - version
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

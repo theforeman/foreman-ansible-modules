@@ -58,7 +58,8 @@ options:
     default: present
     choices: ["present", "reverted", "absent"]
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

@@ -58,7 +58,8 @@ options:
     description:
       - Label of the Foreman organization
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

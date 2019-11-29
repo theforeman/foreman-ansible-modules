@@ -140,7 +140,8 @@ options:
     description:
       - Include all RPMs with no errata
     type: bool
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''
