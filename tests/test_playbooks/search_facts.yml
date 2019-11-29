@@ -44,6 +44,21 @@
       resource: domains
       organization: "Facts Organization"
       return_length: 1
+  - name: find organization id
+    foreman_search_facts:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      validate_certs: "{{ foreman_validate_certs }}"
+      resource: organizations
+      search: name="Facts Organization"
+    register: org_search
+  - include: tasks/search_facts.yml
+    vars:
+      resource: domains
+      params:
+        organization_id: "{{ org_search.resources[0]['id'] }}"
+      return_length: 1
   - name: Run with invalid resource
     foreman_search_facts:
       username: "{{ foreman_username }}"
