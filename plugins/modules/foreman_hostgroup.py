@@ -160,6 +160,10 @@ options:
     description: Katello Lifecycle environment. Only available for katello installations.
     required: false
     type: str
+  kickstart_repository:
+    description: Kickstart repository name. Only available for katello installations.
+    required: false
+    type: str
   content_view:
     description: Katello Content view. Only available for katello installations.
     required: false
@@ -241,7 +245,7 @@ EXAMPLES = '''
     parent: "new_hostgroup"
     name: "my nested hostgroup"
 
-- name: "My hostgroup with ome proxies"
+- name: "My hostgroup with some proxies"
   foreman_hostgroup:
     name: "my hostgroup"
     environment: production
@@ -310,6 +314,7 @@ def main():
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
             content_source=dict(type='entity', flat_name='content_source_id'),
             lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
+            kickstart_repository=dict(type='entity', flat_name='kickstart_repository_id'),
             content_view=dict(type='entity', flat_name='content_view_id'),
         ),
         argument_spec=dict(
@@ -401,6 +406,10 @@ def main():
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
                                                                                 params=scope, failsafe=False, thin=True)
+
+        if 'kickstart_repository' in entity_dict:
+            entity_dict['kickstart_repository'] = module.find_resource_by_name('repositories', name=entity_dict['kickstart_repository'],
+                                                                               params=scope, failsafe=False, thin=True)
 
         if 'content_view' in entity_dict:
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
