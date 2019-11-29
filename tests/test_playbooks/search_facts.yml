@@ -3,10 +3,21 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/search_facts.yml
   tasks:
     - include: tasks/organization.yml
       vars:
+        organization_name: "{{ item.organization }}"
         organization_state: present
+      loop: "{{ test_resources }}"
+    - include: tasks/domain.yml
+      vars:
+        domain_name: "{{ item.domain }}"
+        domain_locations: "{{ omit }}"
+        domain_organizations:
+          - "{{ item.organization }}"
+        domain_state: present
+      loop: "{{ test_resources }}"
 
 - hosts: tests
   gather_facts: false
@@ -28,6 +39,11 @@
       search: name="Test Organization"
       full_details: true
       return_length: 1
+  - include: tasks/search_facts.yml
+    vars:
+      resource: domains
+      organization: "Facts Organization"
+      return_length: 1
   - name: Run with invalid resource
     foreman_search_facts:
       username: "{{ foreman_username }}"
@@ -45,8 +61,19 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/search_facts.yml
   tasks:
+    - include: tasks/domain.yml
+      vars:
+        domain_name: "{{ item.domain }}"
+        domain_locations: "{{ omit }}"
+        domain_organizations:
+          - "{{ item.organization }}"
+        domain_state: absent
+      loop: "{{ test_resources }}"
     - include: tasks/organization.yml
       vars:
+        organization_name: "{{ item.organization }}"
         organization_state: absent
+      loop: "{{ test_resources }}"
 ...
