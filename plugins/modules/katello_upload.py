@@ -62,7 +62,8 @@ options:
 notes:
   - Currently only uploading to deb, RPM & file repositories is supported
   - For anything but file repositories, a supporting library must be installed. See Requirements.
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

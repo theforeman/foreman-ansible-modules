@@ -53,7 +53,8 @@ options:
     description: Wait for the Sync task to complete if True. Immediately return if False.
     default: true
     type: bool
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 ...
 '''
 

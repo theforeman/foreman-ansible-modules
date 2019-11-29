@@ -90,7 +90,8 @@ options:
       - absent
       - present_with_defaults
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

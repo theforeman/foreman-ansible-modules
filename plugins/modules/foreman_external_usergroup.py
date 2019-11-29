@@ -57,7 +57,8 @@ options:
       - present
       - absent
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

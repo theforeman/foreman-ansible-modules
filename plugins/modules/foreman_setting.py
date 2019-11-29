@@ -45,7 +45,8 @@ options:
       - if missing, reset to default
     required: false
     type: raw
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

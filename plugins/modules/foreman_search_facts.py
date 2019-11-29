@@ -63,7 +63,8 @@ options:
     aliases: [ info ]
 notes:
   - Some resources don't support scoping and will return errors when you pass I(organization) or unknown data in I(params).
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

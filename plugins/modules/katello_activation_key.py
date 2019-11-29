@@ -123,7 +123,8 @@ options:
     description:
       - Name of the new activation key when state == copied
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''

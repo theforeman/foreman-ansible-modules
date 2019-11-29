@@ -88,7 +88,8 @@ options:
       - The lifecycle environment that is already associated with the content view version
       - Helpful for promoting a content view version
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''
