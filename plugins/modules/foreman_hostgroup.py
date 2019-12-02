@@ -171,34 +171,6 @@ options:
   parameters:
     description:
       - Hostgroup specific host parameters
-    required: false
-    type: list
-    elements: dict
-    suboptions:
-      name:
-        description:
-          - Name of the parameter
-        required: true
-        type: str
-      value:
-        description:
-          - Value of the parameter
-        required: true
-        type: raw
-      parameter_type:
-        description:
-          - Type of the parameter
-        default: 'string'
-        choices:
-          - 'string'
-          - 'boolean'
-          - 'integer'
-          - 'real'
-          - 'array'
-          - 'hash'
-          - 'yaml'
-          - 'json'
-        type: str
   state:
     description: Hostgroup presence
     default: present
@@ -206,6 +178,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.nested_parameters
 '''
 
 EXAMPLES = '''
