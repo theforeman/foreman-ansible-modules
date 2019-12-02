@@ -10,11 +10,14 @@ import re
 import time
 import traceback
 
+from contextlib import contextmanager
+
 from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils import six
 
 try:
     import apypie
@@ -228,6 +231,12 @@ class ForemanAnsibleModule(AnsibleModule):
         self.state = 'undefined'
         self.entity_spec = {}
 
+    @contextmanager
+    def api_connection(self):
+        self.connect()
+        yield
+        self.exit_json()
+
     @property
     def changed(self):
         return self._changed
@@ -393,21 +402,23 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = self.show_resource(resource, result['id'], params=params)
         return result
 
-    def find_resource_by_name(self, resource, name, **kwargs):
-        search = 'name="{0}"'.format(name)
-        kwargs['name'] = name
+    def find_resource_by(self, resource, search_field, value, **kwargs):
+        search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
+        if search_field == 'name':
+            kwargs['name'] = value
         return self.find_resource(resource, search, **kwargs)
+
+    def find_resource_by_name(self, resource, name, **kwargs):
+        return self.find_resource_by(resource, 'name', name, **kwargs)
 
     def find_resource_by_title(self, resource, title, **kwargs):
-        search = 'title="{0}"'.format(title)
-        return self.find_resource(resource, search, **kwargs)
+        return self.find_resource_by(resource, 'title', title, **kwargs)
 
     def find_resource_by_id(self, resource, obj_id, **kwargs):
-        search = 'id="{0}"'.format(obj_id)
-        return self.find_resource(resource, search, **kwargs)
+        return self.find_resource_by(resource, 'id', obj_id, **kwargs)
 
-    def find_resources(self, resource, search_list, **kwargs):
-        return [self.find_resource(resource, search_item, **kwargs) for search_item in search_list]
+    def find_resources_by(self, resource, search_field, search_list, **kwargs):
+        return [self.find_resource_by(resource, search_field, search_item, **kwargs) for search_item in search_list]
 
     def find_resources_by_name(self, resource, names, **kwargs):
         return [self.find_resource_by_name(resource, name, **kwargs) for name in names]
@@ -421,12 +432,37 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_operatingsystem(self, name, params=None, failsafe=False, thin=None):
         result = self.find_resource_by_title('operatingsystems', name, params=params, failsafe=True, thin=thin)
         if not result:
-            search = 'title~"{0}"'.format(name)
-            result = self.find_resource('operatingsystems', search, params=params, failsafe=failsafe, thin=thin)
+            result = self.find_resource_by('operatingsystems', 'title', name, search_operator='~', params=params, failsafe=failsafe, thin=thin)
         return result
 
     def find_operatingsystems(self, names, **kwargs):
         return [self.find_operatingsystem(name, **kwargs) for name in names]
+
+    def find_puppetclass(self, name, environment=None, params=None, failsafe=False, thin=None):
+        if environment:
+            scope = {'environment_id': environment}
+        else:
+            scope = None
+        search = 'name="{0}"'.format(name)
+        results = self.list_resource('puppetclasses', search, params=scope)
+
+        # verify that only one puppet module is returned with only one puppet class inside
+        # as provided search results have to be like "results": { "ntp": [{"id": 1, "name": "ntp" ...}]}
+        # and get the puppet class id
+        if len(results) == 1 and len(list(results.values())[0]) == 1:
+            result = list(results.values())[0][0]
+            if thin:
+                return {'id': result['id']}
+            else:
+                return result
+
+        if failsafe:
+            return None
+        else:
+            self.fail_json(msg='No data found for name="%s"' % search)
+
+    def find_puppetclasses(self, names, **kwargs):
+        return [self.find_puppetclass(name, **kwargs) for name in names]
 
     def record_before(self, resource, entity):
         self._before[resource].append(entity)
@@ -656,9 +692,71 @@ class ForemanAnsibleModule(AnsibleModule):
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
+    """ Base class for Foreman entities. To use it, subclass it with the following convention:
+        To manage my_entity entity, create the following sub class:
+
+        ```
+        class ForemanMyEntityEntity(ForemanEntityAnsibleModule):
+            pass
+        ```
+
+        and use that class to instanciate module:
+
+        ```
+        module = ForemanMyEntityEntity(
+            argument_spec=dict(
+                [...]
+            ),
+            entity_spec=dict(
+                [...]
+            ),
+        )
+        ```
+
+        This add automatic entities resolution based on provided attributes/ sub entities options.
+        It add following options to entity_spec 'entity' and 'entity_list' types:
+        * search_by (str): Field used to search the sub entity. Defaults to 'name' unless `parent` was set, in which case it defaults to `title`.
+        * search_operator (str): Operator used to search the sub entity. Defaults to '='.
+        * resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
+        * resolve (boolean): Defaults to 'True'. If set to false, the sub entity will not be resolved automatically
+        * ensure (boolean): Defaults to 'True'. If set to false, it will be removed before sending data to the foreman server.
+        It add following attributes:
+        * entity_search (str): Defautls to None. If provided, the base entity resolver will use this search query instead to try to build it.
+        * entity_key (str): field used to search current entity. Defaults to 'name'. If entity_spec contains 'parent', defaults to 'title'.
+        * entity_name (str): name of the current entity.
+          By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
+        * entity_scope (str): Type of the entity used to build search scope. Defaults to None.
+        * entity_resolve (boolean): Set it to False to disable base entity resolution.
+        * entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in entity_spec.
+    """
+
+    ENTITY_KEYS = dict(
+        hostgroups='title',
+        locations='title',
+        operatingsystems='title',
+        # TODO: Organizations should be search by title (as foreman allow nested orgs) but that's not the case ATM.
+        #       Applying this will need to record a lot of tests that is out of scope for the moment.
+        # organizations='title',
+        users='login',
+    )
+
+    @classmethod
+    def resolve_entity_key(cls, entity_resource_name):
+        """Return field name to search on for provided entity name"""
+        if entity_resource_name in cls.ENTITY_KEYS:
+            return cls.ENTITY_KEYS[entity_resource_name]
+        else:
+            return 'name'
 
     def __init__(self, argument_spec=None, **kwargs):
-        entity_spec, gen_args = _entity_spec_helper(kwargs.pop('entity_spec', {}))
+        self.original_entity_spec = kwargs.pop('entity_spec', {})
+        self.entity_key = kwargs.pop('entity_key', 'name')
+        self.entity_scope = kwargs.pop('entity_scope', None)
+        self.entity_resolve = kwargs.pop('entity_resolve', True)
+        self.entity_opts = kwargs.pop('entity_opts', {})
+        self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
+
+        entity_spec, gen_args = _entity_spec_helper(self.original_entity_spec)
         args = dict(
             state=dict(choices=['present', 'absent'], default='present'),
         )
@@ -667,10 +765,195 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             args.update(argument_spec)
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
+        self.inflector = apypie.Inflector()
+        self._entity_resource_name = self.inflector.pluralize(self.entity_name)
         self.entity_spec = entity_spec
         self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
+        self.sub_entities = {key: value for key, value in self.original_entity_spec.items()
+                             if value.get('resolve', True) and 'type' in value and value['type'] in ['entity', 'entity_list']}
+        if 'thin' not in self.entity_opts:
+            self.entity_opts['thin'] = False
+        if 'failsafe' not in self.entity_opts:
+            self.entity_opts['failsafe'] = True
+        if 'search_operator' not in self.entity_opts:
+            self.entity_opts['search_operator'] = '='
+        if 'search_by' not in self.entity_opts:
+            self.entity_opts['search_by'] = self.__class__.resolve_entity_key(self._entity_resource_name)
+
+    @property
+    def entity_name_from_class(self):
+        """ Convert class name to entity name. The class name must follow folowing name convention:
+            * Starts with Foreman or Katello
+            * Ends with Module
+
+            This will concert ForemanMyEntityModule class name to my_entity entity name.
+            eg:
+            * ForemanArchitectureModule => architecture
+            * ForemanProvisioningTemplateModule => provisioning_template
+            * KatelloProductMudule => product
+            * ...
+        """
+        # Convert current class name from CamelCase to snake_case
+        class_name = re.sub(r'(?<=[a-z])[A-Z]|[A-Z](?=[^A-Z])', r'_\g<0>', self.__class__.__name__).lower().strip('_')
+        # Get entity name from snake case class name
+        return '_'.join(class_name.split('_')[1:-1])
+
+    def run(self, entity_dict=None, entity=None, search=None):
+        """ get entity_dict, resolve entities, ensure entity, remove sensitive data, manage parameters.
+            You can provide custom entity_dict and entity if custom workflow is needed before doing most of listed actions.
+            Returns entity.
+        """
+        if not entity_dict:
+            entity_dict = self.clean_params()
+
+        entity, entity_dict = self.resolve_entities(entity_dict, entity, search)
+        new_entity = self.ensure_entity(self._entity_resource_name, self._cleanup_entity_dict(entity_dict), entity)
+        new_entity = self.remove_sensitive_fields(new_entity)
+
+        if new_entity:
+            self.ensure_entity_parameters(new_entity, entity, entity_dict)
+
+        return new_entity
+
+    def remove_sensitive_fields(self, entity):
+        """ Set fields with 'no_log' option to None """
+        if entity:
+            for blacklisted_field in self.blacklisted_fields:
+                entity[blacklisted_field] = None
+        return entity
+
+    def ensure_entity_parameters(self, new_entity, entity, entity_dict):
+        if ('parameters' in self.original_entity_spec
+           and self.original_entity_spec['parameters'].get('type', 'str') == 'nested_list' and 'parameters' in entity_dict):
+            scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
+            self.ensure_scoped_parameters(scope, entity, entity_dict.get('parameters'))
+
+    def resolve_entities(self, entity_dict=None, entity=None, search=None):
+        """ This get current entity and all sub entities based on entity_spec when the param type is 'entity' or 'entity_list'
+             and resource_type is defined. You can also pass 'failsafe' and 'thin' options via entity_spec.
+             Params available for subentities:
+               * resolve (boolean): True by default. If false, this entity will be excluded and not resolved.
+               * failsafe (boolean): False by default.
+               * thin (boolean): True by default.
+               * scope (str): None by default. Provide the scope of the resource (eg: 'organization') (TODO: manage array for 'nested' scope ?)
+                              Defined scope must be a key of entity_spec.
+        """
+        if not entity_dict:
+            entity_dict = self.clean_params()
+
+        self.entity_opts['thin'] = self.desired_absent
+
+        if not entity and self.entity_resolve:
+            if search:
+                entity = self.find_resource(self._entity_resource_name, search,
+                                            failsafe=self.entity_opts['failsafe'],
+                                            thin=self.entity_opts['thin'])
+            else:
+                entity = self.resolve_base_entity(entity_dict)
+
+        if not self.desired_absent:
+            self._resolve_sub_entities(entity, self._unscoped_sub_entities, entity_dict)
+            self._resolve_sub_entities(entity, self._scoped_sub_entities, entity_dict)
+
+            updated_key = "updated_" + self.entity_key
+            if entity and updated_key in entity_dict:
+                entity_dict[self.entity_key] = entity_dict.pop(updated_key)
+
+        return (entity, entity_dict)
+
+    def resolve_base_entity(self, entity_dict):
+        entity = None
+        if 'parent' in self.sub_entities:
+            current, parent = split_fqn(entity_dict[self.entity_key])
+            entity_dict[self.entity_key] = current
+            if 'parent' in entity_dict and isinstance(entity_dict['parent'], six.string_types):
+                if parent:
+                    self.fail_json(msg="Please specify the parent either separately, or as part of the title.")
+                parent = entity_dict['parent']
+
+            if parent:
+                entity_dict['parent'] = self.find_resource_by_title(self._entity_resource_name,
+                                                                    parent, thin=True, failsafe=self.desired_absent)
+                if self.desired_absent and entity_dict['parent'] is None:
+                    # Parent does not exist so just exit here
+                    return entity
+
+            value = build_fqn(entity_dict[self.entity_key], parent)
+        else:
+            value = entity_dict[self.entity_key]
+        # Get current entity with its scope if defined (eg: organization for katello resources)
+        if self.entity_scope and self.entity_scope in entity_dict:
+            if isinstance(entity_dict[self.entity_scope], six.string_types) and self.entity_scope in self._unscoped_sub_entities:
+                entity_dict[self.entity_scope] = self._resolve_entity(self.entity_scope, entity_dict[self.entity_scope],
+                                                                      self._unscoped_sub_entities[self.entity_scope],
+                                                                      params={'failsafe': self.desired_absent})
+            if entity_dict[self.entity_scope]:
+                if isinstance(entity_dict[self.entity_scope], dict) and 'id' in entity_dict[self.entity_scope]:
+                    scope_id = entity_dict[self.entity_scope]['id']
+                else:
+                    scope_id = entity_dict[self.entity_scope]
+                scope = {'{0}_id'.format(self.entity_scope): scope_id}
+                entity = self._resolve_entity(self.entity_name, value, entity_opts=self.entity_opts, params=scope)
+            else:
+                self.fail_json(msg='Scope {0} not found for {1}'.format(to_native(self.entity_scope), self.entity_name))
+        elif not self.entity_scope:
+            entity = self._resolve_entity(self.entity_name, value, entity_opts=self.entity_opts)
+        else:
+            self.fail_json(msg='Invalid scope {0} for {1}'.format(to_native(self.entity_scope), self.entity_name))
+
+        return entity
+
+    def _resolve_sub_entities(self, entity, entities, entity_dict):
+        for entity_name, entity_opts in {key: value for key, value in entities.items() if key in entity_dict}.items():
+            if 'scope' in entity_opts:
+                if entity_opts['scope'] == self.entity_name and entity:
+                    scope_id = entity['id']
+                elif entity_opts['scope'] in entity_dict:
+                    scope_id = entity_dict[entity_opts['scope']]['id']
+
+                scope = {'{0}_id'.format(entity_opts['scope']): scope_id}
+            else:
+                scope = None
+            if entity_opts['type'] == 'entity' and isinstance(entity_dict[entity_name], six.string_types):
+                entity_dict[entity_name] = self._resolve_entity(entity_name, entity_dict[entity_name], entity_opts, params=scope)
+            elif (entity_opts['type'] == 'entity_list' and isinstance(entity_dict[entity_name], list)
+                  and len(entity_dict[entity_name]) > 0 and isinstance(entity_dict[entity_name][0], six.string_types)):
+                entity_dict[entity_name] = self._resolve_entity_list(entity_name, entity_dict[entity_name], entity_opts, params=scope)
+
+    @property
+    def _unscoped_sub_entities(self):
+        return {key: value for key, value in self.sub_entities.items() if 'scope' not in value}
+
+    @property
+    def _scoped_sub_entities(self):
+        return {key: value for key, value in self.sub_entities.items() if 'scope' in value}
+
+    def _cleanup_entity_dict(self, entity_dict):
+        for key, value in self.original_entity_spec.items():
+            if not value.get('ensure', True) and key in entity_dict:
+                entity_dict.pop(key)
+        return entity_dict
+
+    def _resolve_entity(self, entity_name, value, entity_opts, params=None):
+        resource_path = entity_opts.get('resource_type', self.inflector.pluralize(entity_name))
+        failsafe = entity_opts.get('failsafe', False)
+        thin = entity_opts.get('thin', True)
+        if resource_path == 'operatingsystems':
+            return self.find_operatingsystem(value, params=params, failsafe=failsafe, thin=thin)
+        elif resource_path == 'puppetclasses':
+            return self.find_puppetclass(value, params=params, failsafe=failsafe, thin=thin)
+        else:
+            return self.find_resource_by(resource_path,
+                                         entity_opts.get('search_by', self.__class__.resolve_entity_key(resource_path)), value,
+                                         search_operator=entity_opts.get('search_operator', '='),
+                                         failsafe=failsafe, thin=thin, params=params)
+
+    def _resolve_entity_list(self, entity_name, values, entity_opts, params=None):
+        opts = entity_opts.copy()
+        opts['resource_type'] = entity_opts.get('resource_type', entity_name)
+        return [self._resolve_entity(entity_name, value, opts, params) for value in values]
 
     def ensure_scoped_parameters(self, scope, entity, parameters):
         if parameters is not None:
@@ -703,12 +986,16 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             kwargs['entity'] = self._after_full
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
+    @property
+    def blacklisted_fields(self):
+        return [key for key, value in self.entity_spec.items() if value.get('no_log', False)]
+
 
 class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
     def __init__(self, argument_spec=None, **kwargs):
         spec = dict(
             organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
+            locations=dict(type='entity_list', flat_name='location_ids', search_by='title'),
         )
         entity_spec = kwargs.pop('entity_spec', {})
         spec.update(entity_spec)

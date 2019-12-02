@@ -8,11 +8,41 @@ When looking at actual modules in this repository ([`foreman_domain`](plugins/mo
 * Instead of Ansible's `argument_spec`, we provide an enhanced version called `entity_spec`. It handles the translation from Ansible module arguments to Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
 
 The rest of the module is usually very minimalistic:
+* Create a Sub class of `ForemanEntityAnsibleModule` for your module called `ForemanMyEntityModule` to work with `MyEntity` foreman resource and use this one for your module definition.
+  Eg: If the foreman entity is named `Architecture`:
+  ```python
+  [...]
 
-* Connect to the API (`module.connect()`)
-* Find the entity if it already exists (`entity = module.find_resource_by_name(…)`)
-* Adjust the data of the entity if desired
-* Ensure the entity state and details (`changed = module.ensure_resource_state(…)`)
+  class ForemanArchitectureModule(ForemanEntityAnsibleModule):
+      pass
+
+
+  [...]
+  ```
+* Connect to the API and run the module
+  Eg: Like previous example, if the foreman entity is named `Architecture`:
+  ```python
+  [...]
+
+  def main():
+      module = ForemanArchitectureModule(
+          argument_spec=dict(
+              [...]
+          ),
+          entity_spec=dict(
+              [...]
+          ),
+      )
+
+      with module.api_connection():
+          module.run()
+
+
+      if __name__ == '__main__':
+          main()
+  ```
+You can see a complete example of simple module in [`foreman_architecture`](plugins/modules/foreman_architecture.py)
+In some cases, you will have to handle some custom workflows/validations, you can see some examples in [`foreman_bookmark`](plugins/modules/foreman_bookmark.py), [`foreman_compute_attribute`](plugins/modules/foreman_compute_attribute.py), [`foreman_hostgroup`](plugins/modules/foreman_hostgroup.py), [`foreman_provisioning_template`](plugins/modules/foreman_provisioning_template.py)...
 
 ## Specification of the `entity_spec`
 
@@ -29,6 +59,11 @@ The module must handle the entities separately.
 See domain parameters in [`foreman_domain`](plugins/modules/foreman_domain.py) for an example.
 The sub entities must be described by `entity_spec=<sub_entity>_spec`.
 * `type='invisible'` The parameter is available to the API call, but it will be excluded from Ansible's `argument_spec`.
+* `search_by='login'`: Used with `type='entity'` or `type='entity_list'`. Field used to search the sub entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
+* `search_operator='~'`: Used with `type='entity'` or `type='entity_list'`. Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
+* `resource_type='organizations'`: Used with `type='entity'` or `type='entity_list'`. Resource type used to build API resource PATH. Defaults to pluralized entity key.
+* `resolve=False`: Defaults to 'True'. If set to false, the sub entity will not be resolved automatically.
+* `ensure=False`: Defaults to 'True'. If set to false, it will be removed before sending data to the foreman server.
 
 `flat_name` provides a way to translate the name of a module argument as known to Ansible to the name understood by the Foreman API.
 

@@ -67,24 +67,19 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
+class ForemanEnvironmentModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanEnvironmentModule(
         entity_spec=dict(
             name=dict(required=True),
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('environments', name=entity_dict['name'], failsafe=True)
-
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    module.ensure_entity('environments', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

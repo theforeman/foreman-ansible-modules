@@ -90,51 +90,48 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
-
-    organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
-    scope = {'organization_id': organization['id']}
-
-    try:
-        existing_manifest = organization['owner_details']['upstreamConsumer']
-    except KeyError:
-        existing_manifest = None
-
-    if module.state == 'present':
-        if 'repository_url' in entity_dict:
-            payload = {'redhat_repository_url': entity_dict['repository_url']}
-            org_spec = dict(redhat_repository_url=dict())
-            organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
+    with module.api_connection():
+        organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
+        scope = {'organization_id': organization['id']}
 
         try:
-            with open(entity_dict['manifest_path'], 'rb') as manifest_file:
-                files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
-                params = {}
-                if 'repository_url' in entity_dict:
-                    params['repository_url'] = entity_dict['repository_url']
-                params.update(scope)
-                result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False, ignore_task_errors=True)
-                for error in result['humanized']['errors']:
-                    if "same as existing data" in error:
-                        # Nothing changed, but everything ok
-                        break
-                    elif "older than existing data" in error:
-                        module.fail_json(msg="Manifest is older than existing data.")
-                    else:
-                        module.fail_json(msg="Upload of the manifest failed: %s" % error)
-                else:
-                    module.set_changed()
-        except IOError as e:
-            module.fail_json(msg="Unable to read the manifest file: %s" % e)
-    elif module.desired_absent and existing_manifest:
-        module.resource_action('subscriptions', 'delete_manifest', scope)
-    elif module.state == 'refreshed':
-        if existing_manifest:
-            module.resource_action('subscriptions', 'refresh_manifest', scope)
-        else:
-            module.fail_json(msg="No manifest found to refresh.")
+            existing_manifest = organization['owner_details']['upstreamConsumer']
+        except KeyError:
+            existing_manifest = None
 
-    module.exit_json()
+        if module.state == 'present':
+            if 'repository_url' in entity_dict:
+                payload = {'redhat_repository_url': entity_dict['repository_url']}
+                org_spec = dict(redhat_repository_url=dict())
+                organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
+
+            try:
+                with open(entity_dict['manifest_path'], 'rb') as manifest_file:
+                    files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
+                    params = {}
+                    if 'repository_url' in entity_dict:
+                        params['repository_url'] = entity_dict['repository_url']
+                    params.update(scope)
+                    result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False, ignore_task_errors=True)
+                    for error in result['humanized']['errors']:
+                        if "same as existing data" in error:
+                            # Nothing changed, but everything ok
+                            break
+                        elif "older than existing data" in error:
+                            module.fail_json(msg="Manifest is older than existing data.")
+                        else:
+                            module.fail_json(msg="Upload of the manifest failed: %s" % error)
+                    else:
+                        module.set_changed()
+            except IOError as e:
+                module.fail_json(msg="Unable to read the manifest file: %s" % e)
+        elif module.desired_absent and existing_manifest:
+            module.resource_action('subscriptions', 'delete_manifest', scope)
+        elif module.state == 'refreshed':
+            if existing_manifest:
+                module.resource_action('subscriptions', 'refresh_manifest', scope)
+            else:
+                module.fail_json(msg="No manifest found to refresh.")
 
 
 if __name__ == '__main__':

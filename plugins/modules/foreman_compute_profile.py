@@ -151,8 +151,12 @@ compute_attribute_entity_spec = {
 }
 
 
+class ForemanComputeProfileModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanComputeProfileModule(
         entity_spec=dict(
             name=dict(required=True),
             compute_attributes=dict(type='nested_list', entity_spec=compute_attribute_entity_spec),
@@ -163,30 +167,21 @@ def main():
     )
 
     entity_dict = module.clean_params()
-    updated_name = entity_dict.get('updated_name')
     compute_attributes = entity_dict.pop('compute_attributes', None)
 
-    module.connect()
+    with module.api_connection():
+        entity = module.run(entity_dict=entity_dict)
 
-    entity = module.find_resource_by_name('compute_profiles', name=entity_dict['name'], failsafe=True)
-
-    if module.state == 'present' and updated_name:
-        entity_dict['name'] = updated_name
-
-    compute_profile = module.ensure_entity('compute_profiles', entity_dict, entity)
-
-    # Apply changes on underlying compute attributes only when present
-    if module.state == 'present' and compute_attributes is not None:
-        # Update or create compute attributes
-        scope = {'compute_profile_id': compute_profile['id']}
-        for ca_entity_dict in compute_attributes:
-            ca_entity_dict['compute_resource'] = module.find_resource_by_name(
-                'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
-            ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
-            ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == compute_profile['id']), None)
-            module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
-
-    module.exit_json()
+        # Apply changes on underlying compute attributes only when present
+        if entity and module.state == 'present' and compute_attributes is not None:
+            # Update or create compute attributes
+            scope = {'compute_profile_id': entity['id']}
+            for ca_entity_dict in compute_attributes:
+                ca_entity_dict['compute_resource'] = module.find_resource_by_name(
+                    'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
+                ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
+                ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == entity['id']), None)
+                module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
 
 
 if __name__ == '__main__':

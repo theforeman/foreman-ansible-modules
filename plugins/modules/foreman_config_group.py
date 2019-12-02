@@ -68,8 +68,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanConfigGroupModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanConfigGroupModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -79,35 +83,8 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('config_groups', name=entity_dict['name'], failsafe=True)
-
-    if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-        if 'puppetclasses' in entity_dict:
-            # puppet classes API return puppet classes grouped by puppet module name
-            puppet_classes = []
-            for puppet_class in entity_dict['puppetclasses']:
-                search = 'name="{0}"'.format(puppet_class)
-                results = module.list_resource('puppetclasses', search)
-
-                # verify that only one puppet module is returned with only one puppet class inside
-                # as provided search results have to be like "results": { "ntp": [{"id": 1, "name": "ntp" ...}]}
-                # and get the puppet class id
-                if len(results) == 1 and len(list(results.values())[0]) == 1:
-                    puppet_classes.append({'id': list(results.values())[0][0]['id']})
-                else:
-                    module.fail_json(msg='No data found for name="%s"' % search)
-
-            entity_dict['puppetclasses'] = puppet_classes
-
-    module.ensure_entity('config_groups', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

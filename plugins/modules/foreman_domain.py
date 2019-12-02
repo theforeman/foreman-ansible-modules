@@ -83,43 +83,25 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
 
 
+class ForemanDomainModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanDomainModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
         entity_spec=dict(
             name=dict(required=True),
             description=dict(aliases=['fullname'], flat_name='fullname'),
-            dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns']),
+            dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns'], resource_type='smart_proxies'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    # Try to find the Domain to work on
-    entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
-
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-        if 'dns_proxy' in entity_dict:
-            entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
-
-    parameters = entity_dict.get('parameters')
-
-    domain = module.ensure_entity('domains', entity_dict, entity)
-
-    if domain:
-        scope = {'domain_id': domain['id']}
-        module.ensure_scoped_parameters(scope, entity, parameters)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

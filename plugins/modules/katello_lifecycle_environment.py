@@ -90,28 +90,25 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity = module.find_resource_by_name('lifecycle_environments', name=entity_dict['name'], params=scope, failsafe=True)
+        if not module.desired_absent:
+            if 'prior' in entity_dict:
+                entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', entity_dict['prior'], params=scope, thin=True)
+            # Default to 'Library' for new env with no 'prior' provided
+            elif not entity:
+                entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
 
-    entity = module.find_resource_by_name('lifecycle_environments', name=entity_dict['name'], params=scope, failsafe=True)
-    if not module.desired_absent:
-        if 'prior' in entity_dict:
-            entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', entity_dict['prior'], params=scope, thin=True)
-        # Default to 'Library' for new env with no 'prior' provided
-        elif not entity:
-            entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
+        if entity:
+            if 'label' in entity_dict and entity_dict['label'] and entity['label'] != entity_dict['label']:
+                module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
 
-    if entity:
-        if 'label' in entity_dict and entity_dict['label'] and entity['label'] != entity_dict['label']:
-            module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
+            if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
+                module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-        if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
-            module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
-
-    module.ensure_entity('lifecycle_environments', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('lifecycle_environments', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

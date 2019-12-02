@@ -106,8 +106,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
 
 
+class ForemanCommonParameterModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanCommonParameterModule(
         entity_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),
@@ -121,27 +125,23 @@ def main():
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
         ),
+        entity_resolve=False,
     )
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
 
-    entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
+        if not module.desired_absent:
+            # Convert values according to their corresponding parameter_type
+            if entity and 'parameter_type' not in entity:
+                entity['parameter_type'] = 'string'
+            entity_dict['value'] = parameter_value_to_str(entity_dict['value'], entity_dict['parameter_type'])
+            if entity and 'value' in entity:
+                entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-    if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-        # Convert values according to their corresponding parameter_type
-        if entity and 'parameter_type' not in entity:
-            entity['parameter_type'] = 'string'
-        entity_dict['value'] = parameter_value_to_str(entity_dict['value'], entity_dict['parameter_type'])
-        if entity and 'value' in entity:
-            entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
-
-    module.ensure_entity('common_parameters', entity_dict, entity)
-
-    module.exit_json()
+        module.run(entity_dict=entity_dict, entity=entity)
 
 
 if __name__ == '__main__':

@@ -68,34 +68,33 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanExternalUsergroupModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanExternalUsergroupModule(
         entity_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
-            auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id'),
+            auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
         ),
+        entity_resolve=False
     )
 
     entity_dict = module.clean_params()
-
-    module.connect()
-
     params = {"usergroup_id": entity_dict.pop('usergroup')}
-
     entity = None
 
-    # There is no way to find by name via API search, so we need
-    # to iterate over all external user groups of a given usergroup
-    for external_usergroup in module.list_resource("external_usergroups", params=params):
-        if external_usergroup['name'] == entity_dict['name']:
-            entity = external_usergroup
+    with module.api_connection():
+        # There is no way to find by name via API search, so we need
+        # to iterate over all external user groups of a given usergroup
+        for external_usergroup in module.list_resource("external_usergroups", params=params):
+            if external_usergroup['name'] == entity_dict['name']:
+                entity = external_usergroup
 
-    entity_dict['auth_source_ldap'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source_ldap'], thin=True)
-
-    module.ensure_entity('external_usergroups', entity_dict, entity, params)
-
-    module.exit_json()
+        _entity, entity_dict = module.resolve_entities(entity_dict)
+        module.ensure_entity('external_usergroups', entity_dict, entity, params)
 
 
 if __name__ == '__main__':

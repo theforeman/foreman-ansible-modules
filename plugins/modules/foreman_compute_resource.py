@@ -196,8 +196,12 @@ def get_provider_info(provider):
         return '', []
 
 
+class ForemanComputeResourceModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanComputeResourceModule(
         entity_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
@@ -230,16 +234,7 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
-
-    entity = module.find_resource_by_name('compute_resources', name=entity_dict['name'], failsafe=True)
-
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
     if not module.desired_absent:
-        if 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict['updated_name']
-
         if 'provider' in entity_dict:
             entity_dict['provider'], provider_param_keys = get_provider_info(provider=entity_dict['provider'])
             provider_params = {k: v for k, v in entity_dict.pop('provider_params', dict()).items() if v is not None}
@@ -251,13 +246,12 @@ def main():
                 module.fail_json(msg="Provider {0} does not support the following given parameters: {1}".format(
                     entity_dict['provider'], list(provider_params.keys())))
 
-        # Add provider specific params
-        elif entity is None:
+    with module.api_connection():
+        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
+        if not module.desired_absent and 'provider' not in entity_dict and entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-    module.ensure_entity('compute_resources', entity_dict, entity)
-
-    module.exit_json()
+        module.run(entity_dict=entity_dict, entity=entity)
 
 
 if __name__ == '__main__':

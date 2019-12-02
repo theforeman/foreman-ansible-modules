@@ -88,29 +88,27 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanComputeAttributeModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanComputeAttributeModule(
         entity_spec=dict(
             compute_profile=dict(required=True, type='entity', flat_name='compute_profile_id'),
-            compute_resource=dict(required=True, type='entity', flat_name='compute_resource_id'),
+            compute_resource=dict(required=True, type='entity', flat_name='compute_resource_id', thin=False),
             vm_attrs=dict(type='dict', aliases=['vm_attributes']),
         ),
+        entity_opts=dict(resolve=False),
+        entity_resolve=False,
     )
     entity_dict = module.clean_params()
 
-    module.connect()
-
-    entity_dict['compute_resource'] = module.find_resource_by_name('compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=False)
-
-    compute_attributes = entity_dict['compute_resource'].get('compute_attributes')
-
-    entity_dict['compute_profile'] = module.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
-
-    entity = next((item for item in compute_attributes if item.get('compute_profile_id') == entity_dict['compute_profile']['id']), None)
-
-    module.ensure_entity('compute_attributes', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        _entity, entity_dict = module.resolve_entities(entity_dict)
+        compute_attributes = entity_dict['compute_resource'].get('compute_attributes')
+        entity = next((item for item in compute_attributes if item.get('compute_profile_id') == entity_dict['compute_profile']['id']), None)
+        module.run(entity_dict=entity_dict, entity=entity)
 
 
 if __name__ == '__main__':

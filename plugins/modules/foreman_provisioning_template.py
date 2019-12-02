@@ -242,8 +242,12 @@ def find_template_kind(module, entity_dict):
     return entity_dict
 
 
+class ForemanProvisioningTemplateModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanProvisioningTemplateModule(
         argument_spec=dict(
             audit_comment=dict(),
             file_name=dict(type='path'),
@@ -265,7 +269,7 @@ def main():
                 'snippet',
                 'user_data',
                 'ZTP',
-            ], type='entity', flat_name='template_kind_id'),
+            ], type='entity', flat_name='template_kind_id', resolve=False),
             template=dict(),
             locked=dict(type='bool'),
             name=dict(),
@@ -278,6 +282,7 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'template'],
         ],
+        entity_resolve=False,
     )
 
     # We do not want a template text for bulk operations
@@ -287,6 +292,7 @@ def main():
                 msg="Neither file_name nor template nor updated_name allowed if 'name: *'!")
 
     entity_dict = module.clean_params()
+    entity = None
     file_name = entity_dict.pop('file_name', None)
 
     if file_name or 'template' in entity_dict:
@@ -316,49 +322,42 @@ def main():
     affects_multiple = entity_dict['name'] == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
+        if module.params['updated_name']:
+            module.fail_json(msg="updated_name not allowed if 'name: *'!")
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
             if len(entity_dict.keys()) != 1:
                 module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
 
-    module.connect()
+    with module.api_connection():
+        if affects_multiple:
+            entities = module.list_resource('provisioning_templates')
+            if not entities:
+                # Nothing to do; shortcut to exit
+                module.exit_json()
+            if not module.desired_absent:  # not 'thin'
+                entities = [module.show_resource('provisioning_templates', entity['id']) for entity in entities]
+        else:
+            entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
-    if affects_multiple:
-        entities = module.list_resource('provisioning_templates')
-        if not entities:
-            # Nothing to do; shortcut to exit
-            module.exit_json()
-        if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('provisioning_templates', entity['id']) for entity in entities]
-    else:
-        entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
+        if not module.desired_absent:
+            _entity, entity_dict = module.resolve_entities(entity_dict, entity)
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
+        if not affects_multiple:
+            entity_dict = find_template_kind(module, entity_dict)
 
-    if not module.desired_absent:
-        if not affects_multiple and entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
+        if 'audit_comment' in entity_dict:
+            extra_params = {'audit_comment': entity_dict['audit_comment']}
+        else:
+            extra_params = {}
 
-        if 'operatingsystems' in entity_dict:
-            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
-
-    if not affects_multiple:
-        entity_dict = find_template_kind(module, entity_dict)
-
-    if 'audit_comment' in entity_dict:
-        extra_params = {'audit_comment': entity_dict['audit_comment']}
-    else:
-        extra_params = {}
-
-    if not affects_multiple:
-        module.ensure_entity('provisioning_templates', entity_dict, entity, params=extra_params)
-    else:
-        entity_dict.pop('name')
-        for entity in entities:
+        if not affects_multiple:
             module.ensure_entity('provisioning_templates', entity_dict, entity, params=extra_params)
-
-    module.exit_json()
+        else:
+            entity_dict.pop('name')
+            for entity in entities:
+                module.ensure_entity('provisioning_templates', entity_dict, entity, params=extra_params)
 
 
 if __name__ == '__main__':

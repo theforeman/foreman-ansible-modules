@@ -96,15 +96,15 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
-    build_fqn,
-    ForemanEntityAnsibleModule,
-    split_fqn,
-)
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+
+
+class ForemanLocationModule(ForemanEntityAnsibleModule):
+    pass
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanLocationModule(
         entity_spec=dict(
             name=dict(required=True),
             parent=dict(type='entity', flat_name='parent_id'),
@@ -112,34 +112,8 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    # Get short name and parent from provided name
-    name, parent = split_fqn(entity_dict['name'])
-    entity_dict['name'] = name
-
-    if 'parent' in entity_dict:
-        if parent:
-            module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
-        parent = entity_dict['parent']
-    if parent:
-        entity_dict['parent'] = module.find_resource_by_title('locations', parent, thin=True, failsafe=module.desired_absent)
-
-        if module.desired_absent and entity_dict['parent'] is None:
-            # Parent location does not exist so just exit here
-            module.exit_json()
-
-    if not module.desired_absent:
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
-    entity = module.find_resource_by_title('locations', build_fqn(name, parent), failsafe=True)
-
-    module.ensure_entity('locations', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

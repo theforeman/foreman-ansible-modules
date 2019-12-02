@@ -121,12 +121,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, HostMixin
 
 
-class ForemanHostAnsibleModule(HostMixin, ForemanEntityAnsibleModule):
+class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
     pass
 
 
 def main():
-    module = ForemanHostAnsibleModule(
+    module = ForemanHostModule(
         entity_spec=dict(
             name=dict(required=True),
             hostgroup=dict(type='entity', flat_name='hostgroup_id'),
@@ -161,24 +161,8 @@ def main():
             # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
             entity_dict['build'] = False
 
-    module.connect()
-
-    entity = module.find_resource_by_name('hosts', name=entity_dict['name'], failsafe=True)
-
-    if not module.desired_absent:
-        if 'hostgroup' in entity_dict:
-            entity_dict['hostgroup'] = module.find_resource_by_title('hostgroups', entity_dict['hostgroup'], thin=True)
-
-        if 'location' in entity_dict:
-            entity_dict['location'] = module.find_resource_by_title('locations', entity_dict['location'], thin=True)
-
-        if 'organization' in entity_dict:
-            entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-
-    entity_dict = module.handle_common_host_params(entity_dict)
-
-    module.ensure_entity('hosts', entity_dict, entity)
-    module.exit_json()
+    with module.api_connection():
+        module.run(entity_dict=entity_dict)
 
 
 if __name__ == '__main__':

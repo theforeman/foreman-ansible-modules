@@ -87,8 +87,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanArchitectureModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanArchitectureModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -97,22 +101,8 @@ def main():
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
         ),
     )
-
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('architectures', name=entity_dict['name'], failsafe=True)
-
-    if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-        if 'operatingsystems' in entity_dict:
-            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
-
-    module.ensure_entity('architectures', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

@@ -193,67 +193,64 @@ def main():
 
     module_params = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        module_params, scope = module.handle_organization_param(module_params)
 
-    module_params, scope = module.handle_organization_param(module_params)
+        record_data = {}
+        if 'product' in module_params:
+            module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
+            scope['product_id'] = module_params['product']['id']
+            record_data['product'] = module_params['product']
 
-    record_data = {}
-    if 'product' in module_params:
-        module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
-        scope['product_id'] = module_params['product']['id']
-        record_data['product'] = module_params['product']
+        if 'label' in module_params:
+            search = 'label="{0}"'.format(module_params['label'])
+            repo_set = module.find_resource('repository_sets', search=search, params=scope)
+            record_data['label'] = module_params['label']
+        else:
+            repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
+            record_data['name'] = module_params['name']
 
-    if 'label' in module_params:
-        search = 'label="{0}"'.format(module_params['label'])
-        repo_set = module.find_resource('repository_sets', search=search, params=scope)
-        record_data['label'] = module_params['label']
-    else:
-        repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
-        record_data['name'] = module_params['name']
+        repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
+        repo_set_scope.update(scope)
 
-    repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
-    repo_set_scope.update(scope)
+        available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
+        available_repos = available_repos['results']
+        current_repos = repo_set['repositories']
+        if not module_params.get('all_repositories', False):
+            desired_repos = get_desired_repos(module_params['repositories'], available_repos)
+        else:
+            desired_repos = available_repos[:]
 
-    available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
-    available_repos = available_repos['results']
-    current_repos = repo_set['repositories']
-    if not module_params.get('all_repositories', False):
-        desired_repos = get_desired_repos(module_params['repositories'], available_repos)
-    else:
-        desired_repos = available_repos[:]
+        available_repo_names = set(map(lambda repo: repo['repo_name'], available_repos))
+        current_repo_names = set(map(lambda repo: repo['name'], current_repos))
+        desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-    available_repo_names = set(map(lambda repo: repo['repo_name'], available_repos))
-    current_repo_names = set(map(lambda repo: repo['name'], current_repos))
-    desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
+        if not module_params.get('all_repositories', False) and len(module_params['repositories']) != len(desired_repo_names):
+            repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
-    if not module_params.get('all_repositories', False) and len(module_params['repositories']) != len(desired_repo_names):
-        repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
+            error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
+                        repo_set_identification, module_params['repositories'], desired_repo_names, available_repo_names)
 
-        error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
-                    repo_set_identification, module_params['repositories'], desired_repo_names, available_repo_names)
+            module.fail_json(msg=error_msg)
 
-        module.fail_json(msg=error_msg)
+        if module.state == 'enabled':
+            for repo in desired_repo_names - current_repo_names:
+                repo_to_enable = next((r for r in available_repos if r['repo_name'] == repo))
+                repo_change_params = repo_to_enable['substitutions'].copy()
+                repo_change_params.update(repo_set_scope)
 
-    if module.state == 'enabled':
-        for repo in desired_repo_names - current_repo_names:
-            repo_to_enable = next((r for r in available_repos if r['repo_name'] == repo))
-            repo_change_params = repo_to_enable['substitutions'].copy()
-            repo_change_params.update(repo_set_scope)
+                record_repository_set_state(module, record_data, repo, 'disabled', 'enabled')
 
-            record_repository_set_state(module, record_data, repo, 'disabled', 'enabled')
+                module.resource_action('repository_sets', 'enable', params=repo_change_params)
+        elif module.state == 'disabled':
+            for repo in current_repo_names & desired_repo_names:
+                repo_to_disable = next((r for r in available_repos if r['repo_name'] == repo))
+                repo_change_params = repo_to_disable['substitutions'].copy()
+                repo_change_params.update(repo_set_scope)
 
-            module.resource_action('repository_sets', 'enable', params=repo_change_params)
-    elif module.state == 'disabled':
-        for repo in current_repo_names & desired_repo_names:
-            repo_to_disable = next((r for r in available_repos if r['repo_name'] == repo))
-            repo_change_params = repo_to_disable['substitutions'].copy()
-            repo_change_params.update(repo_set_scope)
+                record_repository_set_state(module, record_data, repo, 'enabled', 'disabled')
 
-            record_repository_set_state(module, record_data, repo, 'enabled', 'disabled')
-
-            module.resource_action('repository_sets', 'disable', params=repo_change_params)
-
-    module.exit_json()
+                module.resource_action('repository_sets', 'disable', params=repo_change_params)
 
 
 if __name__ == '__main__':

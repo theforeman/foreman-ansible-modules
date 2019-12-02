@@ -120,16 +120,13 @@ def main():
     )
     snapshot_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        host = module.find_resource_by_name('hosts', name=snapshot_dict['host'], failsafe=False, thin=True)
+        scope = {'host_id': host['id']}
 
-    host = module.find_resource_by_name('hosts', name=snapshot_dict['host'], failsafe=False, thin=True)
-    scope = {'host_id': host['id']}
+        entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params=scope, failsafe=True)
 
-    entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params=scope, failsafe=True)
-
-    module.ensure_entity('snapshots', snapshot_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('snapshots', snapshot_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

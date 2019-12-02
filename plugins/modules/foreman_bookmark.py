@@ -96,8 +96,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanBookmarkModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanBookmarkModule(
         entity_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
@@ -116,14 +120,8 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
-
-    search = 'name="{0}",controller="{1}"'.format(entity_dict['name'], entity_dict['controller'])
-    entity = module.find_resource('bookmarks', search, failsafe=True)
-
-    module.ensure_entity('bookmarks', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run(search='name="{0}",controller="{1}"'.format(entity_dict['name'], entity_dict['controller']))
 
 
 if __name__ == '__main__':

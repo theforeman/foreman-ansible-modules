@@ -83,8 +83,12 @@ entity_spec = {
 }
 
 
+class ForemanSettingModule(ForemanAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanSettingModule(
         argument_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),
@@ -93,29 +97,28 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity = module.find_resource_by_name('settings', entity_dict['name'], failsafe=False)
 
-    entity = module.find_resource_by_name('settings', entity_dict['name'], failsafe=False)
+        if 'value' not in entity_dict:
+            entity_dict['value'] = entity['default'] or ''
 
-    if 'value' not in entity_dict:
-        entity_dict['value'] = entity['default'] or ''
+        settings_type = entity['settings_type']
+        new_value = entity_dict['value']
+        # Allow to pass integers as string
+        if settings_type == 'integer':
+            new_value = int(new_value)
+        entity_dict['value'] = parameter_value_to_str(new_value, settings_type)
+        old_value = entity['value']
+        entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-    settings_type = entity['settings_type']
-    new_value = entity_dict['value']
-    # Allow to pass integers as string
-    if settings_type == 'integer':
-        new_value = int(new_value)
-    entity_dict['value'] = parameter_value_to_str(new_value, settings_type)
-    old_value = entity['value']
-    entity['value'] = parameter_value_to_str(old_value, settings_type)
+        entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
 
-    entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
+        if entity:
+            # Fake the not serialized input value as output
+            entity['value'] = new_value
 
-    if entity:
-        # Fake the not serialized input value as output
-        entity['value'] = new_value
-
-    module.exit_json(foreman_setting=entity)
+        module.exit_json(foreman_setting=entity)
 
 
 if __name__ == '__main__':

@@ -140,42 +140,39 @@ def main():
 
     module.task_timeout = 4 * 60
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        failsafe = (module.state != 'synced')
 
-    failsafe = (module.state != 'synced')
+        entity = module.find_resource_by_name('scc_accounts', name=entity_dict['name'], params=scope, failsafe=failsafe)
 
-    entity = module.find_resource_by_name('scc_accounts', name=entity_dict['name'], params=scope, failsafe=failsafe)
+        if not module.desired_absent:
+            if not entity:
+                if 'login' not in entity_dict:
+                    module.fail_json(msg="scc account login not provided")
+                if 'scc_account_password' not in entity_dict:
+                    module.fail_json(msg="Scc account password not provided")
 
-    if not module.desired_absent:
-        if not entity:
-            if 'login' not in entity_dict:
-                module.fail_json(msg="scc account login not provided")
-            if 'scc_account_password' not in entity_dict:
-                module.fail_json(msg="Scc account password not provided")
+            if entity_dict['test_connection']:
+                scc_account_credentials = {}
+                if entity:
+                    scc_account_credentials['id'] = entity['id']
+                if 'login' in entity_dict:
+                    scc_account_credentials['login'] = entity_dict['login']
+                if 'scc_account_password' in entity_dict:
+                    scc_account_credentials['password'] = entity_dict['scc_account_password']
+                if 'base_url' in entity_dict:
+                    scc_account_credentials['base_url'] = entity_dict['base_url']
+                module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
 
-        if entity_dict['test_connection']:
-            scc_account_credentials = {}
-            if entity:
-                scc_account_credentials['id'] = entity['id']
-            if 'login' in entity_dict:
-                scc_account_credentials['login'] = entity_dict['login']
-            if 'scc_account_password' in entity_dict:
-                scc_account_credentials['password'] = entity_dict['scc_account_password']
-            if 'base_url' in entity_dict:
-                scc_account_credentials['base_url'] = entity_dict['base_url']
-            module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
+        if 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
 
-    if 'updated_name' in entity_dict:
-        entity_dict['name'] = entity_dict.pop('updated_name')
-
-    if module.state == 'synced':
-        module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
-    else:
-        module.ensure_entity('scc_accounts', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        if module.state == 'synced':
+            module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
+        else:
+            module.ensure_entity('scc_accounts', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

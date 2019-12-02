@@ -500,8 +500,12 @@ locale_list = [
 ]
 
 
+class ForemanUserModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanUserModule(
         entity_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
@@ -510,46 +514,29 @@ def main():
             description=dict(required=False),
             admin=dict(required=False, type='bool', default=False),
             user_password=dict(required=False, no_log=True, flat_name='password'),
-            default_location=dict(required=False, type='entity', flat_name='default_location_id'),
-            default_organization=dict(required=False, type='entity', flat_name='default_organization_id'),
+            default_location=dict(required=False, type='entity', flat_name='default_location_id', resource_type='locations'),
+            default_organization=dict(required=False, type='entity', flat_name='default_organization_id', resource_type='organizations'),
             auth_source=dict(required=False, type='entity', flat_name='auth_source_id'),
             timezone=dict(required=False, choices=timezone_list),
             locale=dict(required=False, choices=locale_list),
             roles=dict(required=False, type='entity_list', flat_name='role_ids'),
         ),
+        entity_key='login',
     )
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity, entity_dict = module.resolve_entities(entity_dict)
 
-    search = 'login="{0}"'.format(entity_dict['login'])
-    entity = module.find_resource('users', search, failsafe=True)
+        if not module.desired_absent:
+            if 'mail' not in entity_dict:
+                if not entity:
+                    module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
+                else:
+                    entity_dict['mail'] = entity['mail']
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    if not module.desired_absent:
-        if 'mail' not in entity_dict:
-            if not entity:
-                module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
-            else:
-                entity_dict['mail'] = entity['mail']
-
-        if 'default_location' in entity_dict:
-            entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)
-
-        if 'default_organization' in entity_dict:
-            entity_dict['default_organization'] = module.find_resource_by_name('organizations', entity_dict['default_organization'], thin=True)
-
-        if 'auth_source' in entity_dict:
-            entity_dict['auth_source'] = module.find_resource_by_name('auth_sources', entity_dict['auth_source'], thin=True)
-
-        if 'roles' in entity_dict:
-            entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
-
-    module.ensure_entity('users', entity_dict, entity)
-
-    module.exit_json(entity_dict=entity_dict)
+        module.run(entity_dict=entity_dict, entity=entity)
 
 
 if __name__ == '__main__':

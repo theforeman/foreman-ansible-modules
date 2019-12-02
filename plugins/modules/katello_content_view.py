@@ -166,94 +166,91 @@ def main():
             if not component['latest'] and component.get('content_view_version') is None:
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        if not module.desired_absent:
+            if 'repositories' in entity_dict:
+                if entity_dict['composite']:
+                    module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
+                else:
+                    repositories = []
+                    for repository in entity_dict['repositories']:
+                        product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
+                        repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
+                    entity_dict['repositories'] = repositories
 
-    if not module.desired_absent:
-        if 'repositories' in entity_dict:
-            if entity_dict['composite']:
-                module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
-            else:
-                repositories = []
-                for repository in entity_dict['repositories']:
-                    product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
-                    repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
-                entity_dict['repositories'] = repositories
+        entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
-    entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
+        content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 
-    content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
+        # only update CVC's of newly created or updated CV's that are composite if components are specified
+        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
+        if update_dependent_entities and content_view_entity['composite'] and components is not None:
+            if not module.changed:
+                content_view_entity['content_view_components'] = entity['content_view_components']
+            current_cvcs = content_view_entity.get('content_view_components', [])
 
-    # only update CVC's of newly created or updated CV's that are composite if components are specified
-    update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
-    if update_dependent_entities and content_view_entity['composite'] and components is not None:
-        if not module.changed:
-            content_view_entity['content_view_components'] = entity['content_view_components']
-        current_cvcs = content_view_entity.get('content_view_components', [])
+            # only record a subset of data
+            current_cvcs_record = [{"id": cvc['id'], "content_view_id": cvc['content_view']['id'],
+                                    "content_view_version_id": cvc['content_view_version']['id'],
+                                    "latest": cvc['latest']}
+                                   for cvc in current_cvcs]
+            module.record_before('content_views/components', {'composite_content_view_id': content_view_entity['id'],
+                                                              'content_view_components': current_cvcs_record})
+            final_cvcs_record = copy.deepcopy(current_cvcs_record)
 
-        # only record a subset of data
-        current_cvcs_record = [{"id": cvc['id'], "content_view_id": cvc['content_view']['id'],
-                                "content_view_version_id": cvc['content_view_version']['id'],
-                                "latest": cvc['latest']}
-                               for cvc in current_cvcs]
-        module.record_before('content_views/components', {'composite_content_view_id': content_view_entity['id'],
-                                                          'content_view_components': current_cvcs_record})
-        final_cvcs_record = copy.deepcopy(current_cvcs_record)
+            components_to_add = []
+            ccv_scope = {'composite_content_view_id': content_view_entity['id']}
+            for component in components:
+                cvc = {
+                    'content_view': module.find_resource_by_name('content_views', name=component['content_view'], params=scope),
+                    'latest': component['latest'],
+                }
+                cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
+                if not cvc['latest']:
+                    search = "content_view_id={0},version={1}".format(cvc['content_view']['id'], component['content_view_version'])
+                    cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
+                    cvc['latest'] = False
+                    if cvc_matched and cvc_matched['latest']:
+                        # When changing to latest=False & version is the latest we must send 'content_view_version' to the server
+                        # Let's fake, it wasn't there...
+                        cvc_matched.pop('content_view_version', None)
+                        cvc_matched.pop('content_view_version_id', None)
+                if cvc_matched:
+                    module.ensure_entity(
+                        'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
+                    current_cvcs.remove(cvc_matched)
+                else:
+                    cvc['content_view_id'] = cvc.pop('content_view')['id']
+                    if 'content_view_version' in cvc:
+                        cvc['content_view_version_id'] = cvc.pop('content_view_version')['id']
+                    components_to_add.append(cvc)
 
-        components_to_add = []
-        ccv_scope = {'composite_content_view_id': content_view_entity['id']}
-        for component in components:
-            cvc = {
-                'content_view': module.find_resource_by_name('content_views', name=component['content_view'], params=scope),
-                'latest': component['latest'],
-            }
-            cvc_matched = next((item for item in current_cvcs if item['content_view']['id'] == cvc['content_view']['id']), None)
-            if not cvc['latest']:
-                search = "content_view_id={0},version={1}".format(cvc['content_view']['id'], component['content_view_version'])
-                cvc['content_view_version'] = module.find_resource('content_view_versions', search=search, thin=True)
-                cvc['latest'] = False
-                if cvc_matched and cvc_matched['latest']:
-                    # When changing to latest=False & version is the latest we must send 'content_view_version' to the server
-                    # Let's fake, it wasn't there...
-                    cvc_matched.pop('content_view_version', None)
-                    cvc_matched.pop('content_view_version_id', None)
-            if cvc_matched:
-                module.ensure_entity(
-                    'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
-                current_cvcs.remove(cvc_matched)
-            else:
-                cvc['content_view_id'] = cvc.pop('content_view')['id']
-                if 'content_view_version' in cvc:
-                    cvc['content_view_version_id'] = cvc.pop('content_view_version')['id']
-                components_to_add.append(cvc)
+            if components_to_add:
+                payload = {
+                    'composite_content_view_id': content_view_entity['id'],
+                    'components': components_to_add,
+                }
+                module.resource_action('content_view_components', 'add_components', payload)
 
-        if components_to_add:
-            payload = {
-                'composite_content_view_id': content_view_entity['id'],
-                'components': components_to_add,
-            }
-            module.resource_action('content_view_components', 'add_components', payload)
+                final_cvcs_record.extend(components_to_add)
 
-            final_cvcs_record.extend(components_to_add)
+            # desired cvcs have already been updated and removed from `current_cvcs`
+            components_to_remove = [item['id'] for item in current_cvcs]
+            if components_to_remove:
+                payload = {
+                    'composite_content_view_id': content_view_entity['id'],
+                    'component_ids': components_to_remove,
+                }
+                module.resource_action('content_view_components', 'remove_components', payload)
 
-        # desired cvcs have already been updated and removed from `current_cvcs`
-        components_to_remove = [item['id'] for item in current_cvcs]
-        if components_to_remove:
-            payload = {
-                'composite_content_view_id': content_view_entity['id'],
-                'component_ids': components_to_remove,
-            }
-            module.resource_action('content_view_components', 'remove_components', payload)
+                final_cvcs_record = [item for item in final_cvcs_record if item['id'] not in components_to_remove]
 
-            final_cvcs_record = [item for item in final_cvcs_record if item['id'] not in components_to_remove]
-
-        module.record_after('content_views/components', {'composite_content_view_id': content_view_entity['id'],
-                                                         'content_view_components': final_cvcs_record})
-        module.record_after_full('content_views/components', {'composite_content_view_id': content_view_entity['id'],
-                                                              'content_view_components': final_cvcs_record})
-
-    module.exit_json()
+            module.record_after('content_views/components', {'composite_content_view_id': content_view_entity['id'],
+                                                             'content_view_components': final_cvcs_record})
+            module.record_after_full('content_views/components', {'composite_content_view_id': content_view_entity['id'],
+                                                                  'content_view_components': final_cvcs_record})
 
 
 if __name__ == '__main__':

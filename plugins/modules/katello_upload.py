@@ -138,70 +138,67 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity_dict['product'] = module.find_resource_by_name('products', entity_dict['product'], params=scope, thin=True)
+        product_scope = {'product_id': entity_dict['product']['id']}
+        entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
+        repository_scope = {'repository_id': entity_dict['repository']['id']}
 
-    entity_dict['product'] = module.find_resource_by_name('products', entity_dict['product'], params=scope, thin=True)
-    product_scope = {'product_id': entity_dict['product']['id']}
-    entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
-    repository_scope = {'repository_id': entity_dict['repository']['id']}
+        b_src = to_bytes(entity_dict['src'])
+        filename = os.path.basename(entity_dict['src'])
 
-    b_src = to_bytes(entity_dict['src'])
-    filename = os.path.basename(entity_dict['src'])
+        checksum = module.sha256(entity_dict['src'])
 
-    checksum = module.sha256(entity_dict['src'])
+        content_unit = None
+        if entity_dict['repository']['content_type'] == 'deb':
+            if not HAS_DEBFILE:
+                module.fail_json(msg='The python-debian module is required', exception=DEBFILE_IMP_ERR)
 
-    content_unit = None
-    if entity_dict['repository']['content_type'] == 'deb':
-        if not HAS_DEBFILE:
-            module.fail_json(msg='The python-debian module is required', exception=DEBFILE_IMP_ERR)
+            name, version, architecture = get_deb_info(b_src)
+            query = 'name = "{0}" and version = "{1}" and architecture = "{2}"'.format(name, version, architecture)
+            content_unit = module.find_resource('debs', query, params=repository_scope, failsafe=True)
+        elif entity_dict['repository']['content_type'] == 'yum':
+            if not HAS_RPM:
+                module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
 
-        name, version, architecture = get_deb_info(b_src)
-        query = 'name = "{0}" and version = "{1}" and architecture = "{2}"'.format(name, version, architecture)
-        content_unit = module.find_resource('debs', query, params=repository_scope, failsafe=True)
-    elif entity_dict['repository']['content_type'] == 'yum':
-        if not HAS_RPM:
-            module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
-
-        name, epoch, version, release, arch = get_rpm_info(b_src)
-        query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
-        content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
-    elif entity_dict['repository']['content_type'] == 'file':
-        query = 'name = "{0}" and checksum = "{1}"'.format(filename, checksum)
-        content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
-    else:
-        # possible types in 3.12: docker, ostree, yum, puppet, file, deb
-        module.fail_json(msg="Uploading to a {0} repository is not supported yet.".format(entity_dict['repository']['content_type']))
-
-    if not content_unit:
-        if not module.check_mode:
-            size = os.stat(entity_dict['src']).st_size
-            content_upload_payload = {'size': size}
-            content_upload_payload.update(repository_scope)
-            content_upload = module.resource_action('content_uploads', 'create', content_upload_payload)
-            content_upload_scope = {'id': content_upload['upload_id']}
-            content_upload_scope.update(repository_scope)
-
-            offset = 0
-
-            with open(b_src, 'rb') as contentfile:
-                for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
-                    data = {'content': chunk, 'offset': offset, 'size': len(chunk)}
-                    module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
-
-                    offset += len(chunk)
-
-            uploads = [{'id': content_upload['upload_id'], 'name': filename,
-                        'size': offset, 'checksum': checksum}]
-            import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
-            module.resource_action('repositories', 'import_uploads', import_params)
-
-            module.resource_action('content_uploads', 'destroy', content_upload_scope)
+            name, epoch, version, release, arch = get_rpm_info(b_src)
+            query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
+            content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
+        elif entity_dict['repository']['content_type'] == 'file':
+            query = 'name = "{0}" and checksum = "{1}"'.format(filename, checksum)
+            content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
         else:
-            module.set_changed()
+            # possible types in 3.12: docker, ostree, yum, puppet, file, deb
+            module.fail_json(msg="Uploading to a {0} repository is not supported yet.".format(entity_dict['repository']['content_type']))
 
-    module.exit_json()
+        if not content_unit:
+            if not module.check_mode:
+                size = os.stat(entity_dict['src']).st_size
+                content_upload_payload = {'size': size}
+                content_upload_payload.update(repository_scope)
+                content_upload = module.resource_action('content_uploads', 'create', content_upload_payload)
+                content_upload_scope = {'id': content_upload['upload_id']}
+                content_upload_scope.update(repository_scope)
+
+                offset = 0
+
+                with open(b_src, 'rb') as contentfile:
+                    for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
+                        data = {'content': chunk, 'offset': offset, 'size': len(chunk)}
+                        module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
+
+                        offset += len(chunk)
+
+                uploads = [{'id': content_upload['upload_id'], 'name': filename,
+                            'size': offset, 'checksum': checksum}]
+                import_params = {'id': entity_dict['repository']['id'], 'uploads': uploads}
+                module.resource_action('repositories', 'import_uploads', import_params)
+
+                module.resource_action('content_uploads', 'destroy', content_upload_scope)
+            else:
+                module.set_changed()
 
 
 if __name__ == '__main__':

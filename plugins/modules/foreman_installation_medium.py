@@ -84,8 +84,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, OS_LIST
 
 
+class ForemanInstallationMediumModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanInstallationMediumModule(
         argument_spec=dict(
             updated_name=dict(),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
@@ -96,53 +100,49 @@ def main():
             os_family=dict(choices=OS_LIST),
             path=dict(),
         ),
+        entity_resolve=False,
     )
 
     entity_dict = module.clean_params()
+    entity = None
 
-    module.connect()
-    name = entity_dict['name']
+    with module.api_connection():
+        name = entity_dict['name']
 
-    affects_multiple = name == '*'
-    # sanitize user input, filter unuseful configuration combinations with 'name: *'
-    if affects_multiple:
-        if module.state == 'present_with_defaults':
-            module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
-        if module.params['updated_name']:
-            module.fail_json(msg="updated_name not allowed if 'name: *'!")
-        if module.desired_absent:
-            if list(entity_dict.keys()) != ['name']:
-                entity_dict.pop('name', None)
-                module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters: %s ' % entity_dict.keys())
+        affects_multiple = name == '*'
+        # sanitize user input, filter unuseful configuration combinations with 'name: *'
+        if affects_multiple:
+            if module.state == 'present_with_defaults':
+                module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
+            if module.params['updated_name']:
+                module.fail_json(msg="updated_name not allowed if 'name: *'!")
+            if module.desired_absent:
+                if list(entity_dict.keys()) != ['name']:
+                    entity_dict.pop('name', None)
+                    module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters: %s ' % entity_dict.keys())
 
-    if affects_multiple:
-        entities = module.list_resource('media')
-        if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('media', entity['id']) for entity in entities]
-        if not entities:
-            # Nothing to do shortcut to exit
-            module.exit_json()
-    else:
-        entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
+        if affects_multiple:
+            entities = module.list_resource('media')
+            if not module.desired_absent:  # not 'thin'
+                entities = [module.show_resource('media', entity['id']) for entity in entities]
+            if not entities:
+                # Nothing to do shortcut to exit
+                module.exit_json()
+        else:
+            entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    if not module.desired_absent:
-        if not affects_multiple and entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-        if 'operatingsystems' in entity_dict:
-            entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
-            if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
+        if not module.desired_absent:
+            _entity, entity_dict = module.resolve_entities(entity=entity)
+            if ('operatingsystems' in entity_dict and not affects_multiple
+               and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None):
                 entity_dict['os_family'] = module.show_resource('operatingsystems', entity_dict['operatingsystems'][0]['id'])['family']
 
-    if not affects_multiple:
-        module.ensure_entity('media', entity_dict, entity)
-    else:
-        entity_dict.pop('name')
-        for entity in entities:
+        if not affects_multiple:
             module.ensure_entity('media', entity_dict, entity)
-
-    module.exit_json()
+        else:
+            entity_dict.pop('name')
+            for entity in entities:
+                module.ensure_entity('media', entity_dict, entity)
 
 
 if __name__ == '__main__':
