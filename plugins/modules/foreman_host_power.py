@@ -113,29 +113,27 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        # power_status endpoint was only added in foreman 1.22.0 per https://projects.theforeman.org/issues/25436
+        # Delete this piece when versions below 1.22 are off common use
+        # begin delete
+        if 'power_status' not in module.foremanapi.resource('hosts').actions:
+            params = {'id': entity_dict['name'], 'power_action': 'status'}
+            power_state = module.resource_action('hosts', 'power', params=params, ignore_check_mode=True)
+            power_state['state'] = 'on' if power_state['power'] == 'running' else 'off'
+        else:
+            # end delete (on delete un-indent the below two lines)
+            params = {'id': entity_dict['name']}
+            power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
 
-    # power_status endpoint was only added in foreman 1.22.0 per https://projects.theforeman.org/issues/25436
-    # Delete this piece when versions below 1.22 are off common use
-    # begin delete
-    if 'power_status' not in module.foremanapi.resource('hosts').actions:
-        params = {'id': entity_dict['name'], 'power_action': 'status'}
-        power_state = module.resource_action('hosts', 'power', params=params, ignore_check_mode=True)
-        power_state['state'] = 'on' if power_state['power'] == 'running' else 'off'
-    else:
-        # end delete (on delete un-indent the below two lines)
-        params = {'id': entity_dict['name']}
-        power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
-
-    if module.state in ['state', 'status']:
-        module.exit_json(power_state=power_state['state'])
-    elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')
-          or (module.state in ['off', 'stop'] and power_state['state'] == 'off')):
-        module.exit_json()
-    else:
-        params['power_action'] = module.state
-        module.resource_action('hosts', 'power', params=params)
-        module.exit_json()
+        if module.state in ['state', 'status']:
+            module.exit_json(power_state=power_state['state'])
+        elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')
+              or (module.state in ['off', 'stop'] and power_state['state'] == 'off')):
+            module.exit_json()
+        else:
+            params['power_action'] = module.state
+            module.resource_action('hosts', 'power', params=params)
 
 
 if __name__ == '__main__':

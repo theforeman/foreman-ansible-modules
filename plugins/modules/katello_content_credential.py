@@ -84,16 +84,11 @@ def main():
     )
 
     entity_dict = module.clean_params()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=scope, failsafe=True)
 
-    module.connect()
-
-    entity_dict, scope = module.handle_organization_param(entity_dict)
-
-    entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=scope, failsafe=True)
-
-    module.ensure_entity('content_credentials', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('content_credentials', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

@@ -152,24 +152,23 @@ def main():
     search = module_params['search']
     params = module_params.get('params', {})
 
-    module.connect()
+    with module.api_connection():
+        if resource not in module.foremanapi.resources:
+            msg = "Resource '{0}' does not exist in the API. Existing resources: {1}".format(resource, ', '.join(sorted(module.foremanapi.resources)))
+            module.fail_json(msg=msg)
+        if 'organization' in module_params:
+            params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
 
-    if resource not in module.foremanapi.resources:
-        msg = "Resource '{0}' does not exist in the API. Existing resources: {1}".format(resource, ', '.join(sorted(module.foremanapi.resources)))
-        module.fail_json(msg=msg)
-    if 'organization' in module_params:
-        params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
+        response = module.list_resource(resource, search, params)
 
-    response = module.list_resource(resource, search, params)
+        if module_params['full_details']:
+            resources = []
+            for found_resource in response:
+                resources.append(module.show_resource(resource, found_resource['id']))
+        else:
+            resources = response
 
-    if module_params['full_details']:
-        resources = []
-        for found_resource in response:
-            resources.append(module.show_resource(resource, found_resource['id']))
-    else:
-        resources = response
-
-    module.exit_json(resources=resources)
+        module.exit_json(resources=resources)
 
 
 if __name__ == '__main__':

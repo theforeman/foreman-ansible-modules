@@ -71,8 +71,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanOrganizationModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanOrganizationModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -80,15 +84,8 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('organizations', name=entity_dict['name'], failsafe=True)
-
-    module.ensure_entity('organizations', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

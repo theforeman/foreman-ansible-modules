@@ -76,27 +76,21 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
+class ForemanRealmModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanRealmModule(
         entity_spec=dict(
             name=dict(required=True),
-            realm_proxy=dict(type='entity', flat_name='realm_proxy_id', required=True),
+            realm_proxy=dict(type='entity', flat_name='realm_proxy_id', required=True, resource_type='smart_proxies'),
             realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('realms', name=entity_dict['name'], failsafe=True)
-
-    if not module.desired_absent:
-        entity_dict['realm_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['realm_proxy'], thin=True)
-
-    module.ensure_entity('realms', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

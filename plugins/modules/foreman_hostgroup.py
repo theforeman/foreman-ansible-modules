@@ -220,21 +220,35 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    build_fqn,
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
     OrganizationMixin,
     parameter_entity_spec,
-    split_fqn,
 )
 
 
-class ForemanHostgroupAnsibleModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
+class ForemanHostgroupModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
+def ensure_puppetclasses(module, entity, expected_puppetclasses=None):
+    if expected_puppetclasses:
+        expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
+    current_puppetclasses = entity.pop('puppetclass_ids', [])
+    if expected_puppetclasses:
+        for puppetclass in expected_puppetclasses:
+            if puppetclass['id'] in current_puppetclasses:
+                current_puppetclasses.remove(puppetclass['id'])
+            else:
+                payload = {'hostgroup_id': entity['id'], 'puppetclass_id': puppetclass['id']}
+                module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', entity_spec={})
+        if len(current_puppetclasses) > 0:
+            for leftover_puppetclass in current_puppetclasses:
+                module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', entity_spec={})
+
+
 def main():
-    module = ForemanHostgroupAnsibleModule(
+    module = ForemanHostgroupModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -248,17 +262,17 @@ def main():
                                      'Grub2 UEFI', 'Grub2 UEFI SecureBoot', 'Grub2 UEFI HTTP', 'Grub2 UEFI HTTPS',
                                      'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
             root_pass=dict(no_log=True),
-            environment=dict(type='entity', flat_name='environment_id'),
-            puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
-            config_groups=dict(type='entity_list', flat_name='config_group_ids'),
-            puppet_proxy=dict(type='entity', flat_name='puppet_proxy_id'),
-            puppet_ca_proxy=dict(type='entity', flat_name='puppet_ca_proxy_id'),
-            openscap_proxy=dict(type='entity', flat_name='openscap_proxy_id'),
+            environment=dict(type='entity'),
+            puppetclasses=dict(type='entity_list', resolve=False),
+            config_groups=dict(type='entity_list'),
+            puppet_proxy=dict(type='entity', resource_type='smart_proxies'),
+            puppet_ca_proxy=dict(type='entity', resource_type='smart_proxies'),
+            openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
-            content_source=dict(type='entity', flat_name='content_source_id'),
-            lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
-            kickstart_repository=dict(type='entity', flat_name='kickstart_repository_id'),
-            content_view=dict(type='entity', flat_name='content_view_id'),
+            content_source=dict(type='entity', flat_name='content_source_id', scope='organization', resource_type='smart_proxies'),
+            lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id', scope='organization'),
+            kickstart_repository=dict(type='entity', flat_name='kickstart_repository_id', scope='organization', resource_type='repositories'),
+            content_view=dict(type='entity', flat_name='content_view_id', scope='organization'),
         ),
         argument_spec=dict(
             organization=dict(),
@@ -267,123 +281,25 @@ def main():
     )
 
     entity_dict = module.clean_params()
-
-    module.connect()
-
-    # Get short name and parent from provided name
-    name, parent = split_fqn(entity_dict['name'])
-    entity_dict['name'] = name
-
     katello_params = ['content_source', 'lifecycle_environment', 'content_view']
 
     if 'organization' not in entity_dict and list(set(katello_params) & set(entity_dict.keys())):
         module.fail_json(msg="Please specify the organization when using katello parameters.")
 
-    if 'parent' in entity_dict:
-        if parent:
-            module.fail_json(msg="Please specify the parent either separately, or as part of the title.")
-        parent = entity_dict['parent']
-    if parent:
-        entity_dict['parent'] = module.find_resource_by_title('hostgroups', title=parent, thin=True, failsafe=module.desired_absent)
-
-        if module.desired_absent and entity_dict['parent'] is None:
-            # Parent hostgroup does not exist so just exit here
-            module.exit_json()
-
-    if not module.desired_absent:
-        if 'realm' in entity_dict:
-            entity_dict['realm'] = module.find_resource_by_name('realms', name=entity_dict['realm'], failsafe=False, thin=True)
-
-        if 'architecture' in entity_dict:
-            entity_dict['architecture'] = module.find_resource_by_name('architectures', name=entity_dict['architecture'], failsafe=False, thin=True)
-
-        if 'operatingsystem' in entity_dict:
-            entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
-
-        if 'medium' in entity_dict:
-            entity_dict['medium'] = module.find_resource_by_name('media', name=entity_dict['medium'], failsafe=False, thin=True)
-
-        if 'ptable' in entity_dict:
-            entity_dict['ptable'] = module.find_resource_by_name('ptables', name=entity_dict['ptable'], failsafe=False, thin=True)
-
-        if 'environment' in entity_dict:
-            entity_dict['environment'] = module.find_resource_by_name('environments', name=entity_dict['environment'], failsafe=False, thin=True)
-
-        if 'config_groups' in entity_dict:
-            entity_dict['config_groups'] = module.find_resources_by_name('config_groups', entity_dict['config_groups'], failsafe=False, thin=True)
-
-        for proxy in ['puppet_proxy', 'puppet_ca_proxy', 'openscap_proxy', 'content_source']:
-            if proxy in entity_dict:
-                entity_dict[proxy] = module.find_resource_by_name('smart_proxies', entity_dict[proxy], thin=True)
-
-        if 'organization' in entity_dict:
-            if 'organizations' in entity_dict:
-                if entity_dict['organization'] not in entity_dict['organizations']:
-                    entity_dict['organizations'].append(entity_dict['organization'])
-            else:
-                entity_dict['organizations'] = [entity_dict['organization']]
-
-            entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        if 'lifecycle_environment' in entity_dict:
-            entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
-                                                                                params=scope, failsafe=False, thin=True)
-
-        if 'kickstart_repository' in entity_dict:
-            entity_dict['kickstart_repository'] = module.find_resource_by_name('repositories', name=entity_dict['kickstart_repository'],
-                                                                               params=scope, failsafe=False, thin=True)
-
-        if 'content_view' in entity_dict:
-            entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
-                                                                       params=scope, failsafe=False, thin=True)
-
-    entity_dict = module.handle_common_host_params(entity_dict)
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
-    if entity:
-        entity['root_pass'] = None
-        if 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-
-    parameters = entity_dict.get('parameters')
-
-    puppetclasses = entity_dict.pop('puppetclasses', None)
-    current_puppetclasses = entity.pop('puppetclasses', None) if entity else []
-
-    hostgroup = module.ensure_entity('hostgroups', entity_dict, entity)
-
-    if hostgroup:
-        scope = {'hostgroup_id': hostgroup['id']}
-        module.ensure_scoped_parameters(scope, entity, parameters)
-
-    if not module.desired_absent and 'environment_id' in hostgroup:
-        if puppetclasses is not None:
-            current_puppetclasses = [p['id'] for p in current_puppetclasses]
-            for puppet_class_name in puppetclasses:
-                scope = {'environment_id': hostgroup['environment_id']}
-
-                # puppet classes API return puppet classes grouped by puppet module name
-                puppet_modules = module.list_resource("puppetclasses", params=scope, search='name="{0}"'.format(puppet_class_name))
-
-                # verify that only one puppet module is returned with only one puppet class inside
-                # as provided search results have to be like "results": { "ntp": [{"id": 1, "name": "ntp" ...}]}
-                # and get the puppet class id
-                if len(puppet_modules) == 1 and len(list(puppet_modules.values())[0]) == 1:
-                    puppet_classes = list(puppet_modules.values())[0]
-                    puppet_class_id = puppet_classes[0]['id']
-                    if puppet_class_id in current_puppetclasses:
-                        current_puppetclasses.remove(puppet_class_id)
-                    else:
-                        payload = {'hostgroup_id': hostgroup['id'], 'puppetclass_id': puppet_class_id}
-                        module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', entity_spec={})
+    with module.api_connection():
+        if not module.desired_absent:
+            if 'organization' in entity_dict:
+                if 'organizations' in entity_dict:
+                    if entity_dict['organization'] not in entity_dict['organizations']:
+                        entity_dict['organizations'].append(entity_dict['organization'])
                 else:
-                    module.fail_json(msg='No data found for name="%s"' % puppet_class_name)
-            if len(current_puppetclasses) > 0:
-                for leftover_puppetclass in current_puppetclasses:
-                    module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': hostgroup['id']}, 'absent', entity_spec={})
-
-    module.exit_json()
+                    entity_dict['organizations'] = [entity_dict['organization']]
+                entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
+        expected_puppetclasses = entity_dict.pop('puppetclasses', None)
+        entity = module.run(entity_dict=entity_dict, entity=entity)
+        if not module.desired_absent and 'environment_id' in entity:
+            ensure_puppetclasses(module, entity, expected_puppetclasses)
 
 
 if __name__ == '__main__':

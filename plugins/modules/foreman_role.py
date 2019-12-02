@@ -94,8 +94,12 @@ filter_entity_spec = dict(
 )
 
 
+class ForemanRoleModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanRoleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -105,39 +109,32 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity, entity_dict = module.resolve_entities(entity_dict)
+        filters = entity_dict.pop("filters", None)
+        new_entity = module.ensure_entity('roles', entity_dict, entity)
 
-    entity = module.find_resource_by_name('roles', name=entity_dict['name'], failsafe=True)
+        if not module.desired_absent and filters is not None:
+            scope = {'role_id': new_entity['id']}
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    filters = entity_dict.pop("filters", None)
-
-    new_entity = module.ensure_entity('roles', entity_dict, entity)
-
-    if not module.desired_absent and filters is not None:
-        scope = {'role_id': new_entity['id']}
-
-        if entity:
-            current_filters = [module.show_resource('filters', filter['id']) for filter in entity['filters']]
-        else:
-            current_filters = []
-        desired_filters = copy.deepcopy(filters)
-
-        for desired_filter in desired_filters:
-            # search for an existing filter
-            for current_filter in current_filters:
-                if desired_filter['search'] == current_filter['search']:
-                    if set(desired_filter['permissions']) == set(perm['name'] for perm in current_filter['permissions']):
-                        current_filters.remove(current_filter)
-                        break
+            if entity:
+                current_filters = [module.show_resource('filters', filter['id']) for filter in entity['filters']]
             else:
-                desired_filter['permissions'] = module.find_resources_by_name('permissions', desired_filter['permissions'], thin=True)
-                module.ensure_entity('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
-        for current_filter in current_filters:
-            module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
+                current_filters = []
+            desired_filters = copy.deepcopy(filters)
 
-    module.exit_json()
+            for desired_filter in desired_filters:
+                # search for an existing filter
+                for current_filter in current_filters:
+                    if desired_filter['search'] == current_filter['search']:
+                        if set(desired_filter['permissions']) == set(perm['name'] for perm in current_filter['permissions']):
+                            current_filters.remove(current_filter)
+                            break
+                else:
+                    desired_filter['permissions'] = module.find_resources_by_name('permissions', desired_filter['permissions'], thin=True)
+                    module.ensure_entity('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
+            for current_filter in current_filters:
+                module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
 
 
 if __name__ == '__main__':

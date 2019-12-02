@@ -114,18 +114,18 @@ def main():
 
     params = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        params, scope = module.handle_organization_param(params)
 
-    params, scope = module.handle_organization_param(params)
+        params['product'] = module.find_resource_by_name('products', params['product'], params=scope, thin=True)
+        if 'repository' in params:
+            product_scope = {'product_id': params['product']['id']}
+            params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
+            task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']})
+        else:
+            task = module.resource_action('products', 'sync', {'id': params['product']['id']})
 
-    params['product'] = module.find_resource_by_name('products', params['product'], params=scope, thin=True)
-    if 'repository' in params:
-        product_scope = {'product_id': params['product']['id']}
-        params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
-        task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']})
-    else:
-        task = module.resource_action('products', 'sync', {'id': params['product']['id']})
-    module.exit_json(task=task)
+        module.exit_json(task=task)
 
 
 if __name__ == '__main__':

@@ -81,46 +81,47 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanOsDefaultTemplate(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanOsDefaultTemplate(
         argument_spec=dict(
             operatingsystem=dict(required=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         entity_spec=dict(
             template_kind=dict(required=True, type='entity', flat_name='template_kind_id'),
-            provisioning_template=dict(type='entity', flat_name='provisioning_template_id'),
+            provisioning_template=dict(type='entity', flat_name='provisioning_template_id', thin=False),
         ),
         required_if=(
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
+        entity_resolve=False,
     )
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    if 'provisioning_template' in entity_dict and module.desired_absent:
+        module.fail_json(msg='Provisioning template must not be specified for deletion.')
 
-    entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
-    entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
+    with module.api_connection():
+        entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
+        _entity, entity_dict = module.resolve_entities(entity_dict)
+        if not module.desired_absent:
+            if entity_dict['provisioning_template']['template_kind_id'] != entity_dict['template_kind']['id']:
+                module.fail_json(msg='Provisioning template kind mismatching.')
 
-    scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}
-    # Default templates do not support a scoped search
-    # see: https://projects.theforeman.org/issues/27722
-    entities = module.list_resource('os_default_templates', params=scope)
-    entity = next((item for item in entities if item['template_kind_id'] == entity_dict['template_kind']['id']), None)
+        entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
+        scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}
+        # Default templates do not support a scoped search
+        # see: https://projects.theforeman.org/issues/27722
+        entities = module.list_resource('os_default_templates', params=scope)
+        entity = next((item for item in entities if item['template_kind_id'] == entity_dict['template_kind']['id']), None)
 
-    # Find Provisioning Template
-    if 'provisioning_template' in entity_dict:
-        if module.desired_absent:
-            module.fail_json(msg='Provisioning template must not be specified for deletion.')
-        entity_dict['provisioning_template'] = module.find_resource_by_name('provisioning_templates', entity_dict['provisioning_template'])
-        if entity_dict['provisioning_template']['template_kind_id'] != entity_dict['template_kind']['id']:
-            module.fail_json(msg='Provisioning template kind mismatching.')
-
-    module.ensure_entity('os_default_templates', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('os_default_templates', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

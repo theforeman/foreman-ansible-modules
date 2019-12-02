@@ -108,22 +108,19 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity = module.find_resource_by_name('products', name=entity_dict['name'], params=scope, failsafe=True)
 
-    entity = module.find_resource_by_name('products', name=entity_dict['name'], params=scope, failsafe=True)
+        if not module.desired_absent:
+            if 'gpg_key' in entity_dict:
+                entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
 
-    if not module.desired_absent:
-        if 'gpg_key' in entity_dict:
-            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
+            if 'sync_plan' in entity_dict:
+                entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
 
-        if 'sync_plan' in entity_dict:
-            entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
-
-    module.ensure_entity('products', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('products', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

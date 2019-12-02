@@ -206,8 +206,12 @@ from ansible.module_utils.foreman_helper import (
 )
 
 
+class ForemanPtableModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanPtableModule(
         argument_spec=dict(
             file_name=dict(type='path'),
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
@@ -225,6 +229,7 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'layout'],
         ],
+        entity_resolve=False,
     )
 
     # We do not want a layout text for bulk operations
@@ -233,6 +238,7 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor layout nor updated_name allowed if 'name: *'!")
 
+    entity = None
     entity_dict = module.clean_params()
     file_name = entity_dict.pop('file_name', None)
 
@@ -272,32 +278,26 @@ def main():
             if len(entity_dict.keys()) != 1:
                 module.fail_json(msg='When deleting all partition tables, there is no need to specify further parameters.')
 
-    module.connect()
+    with module.api_connection():
+        if affects_multiple:
+            entities = module.list_resource('ptables')
+            if not entities:
+                # Nothing to do; shortcut to exit
+                module.exit_json()
+            if not module.desired_absent:  # not 'thin'
+                entities = [module.show_resource('ptables', entity['id']) for entity in entities]
+        else:
+            entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
 
-    if affects_multiple:
-        entities = module.list_resource('ptables')
-        if not entities:
-            # Nothing to do; shortcut to exit
-            module.exit_json()
-        if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('ptables', entity['id']) for entity in entities]
-    else:
-        entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
+        if not module.desired_absent:
+            _entity, entity_dict = module.resolve_entities(entity_dict, entity)
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    if not module.desired_absent:
-        if not affects_multiple and entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-
-    if not affects_multiple:
-        module.ensure_entity('ptables', entity_dict, entity)
-    else:
-        entity_dict.pop('name')
-        for entity in entities:
+        if not affects_multiple:
             module.ensure_entity('ptables', entity_dict, entity)
-
-    module.exit_json()
+        else:
+            entity_dict.pop('name')
+            for entity in entities:
+                module.ensure_entity('ptables', entity_dict, entity)
 
 
 if __name__ == '__main__':

@@ -196,22 +196,19 @@ def main():
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=scope, thin=True)
 
-    entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=scope, thin=True)
+        if not module.desired_absent:
+            if 'gpg_key' in entity_dict:
+                entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
 
-    if not module.desired_absent:
-        if 'gpg_key' in entity_dict:
-            entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
+        scope['product_id'] = entity_dict['product']['id']
+        entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
 
-    scope['product_id'] = entity_dict['product']['id']
-    entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
-
-    module.ensure_entity('repositories', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('repositories', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

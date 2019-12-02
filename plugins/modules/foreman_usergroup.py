@@ -90,8 +90,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanUsergroupModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanUsergroupModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -104,28 +108,8 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
-    module.connect()
-
-    entity = module.find_resource_by_name('usergroups', entity_dict['name'], failsafe=True)
-
-    if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
-
-        if 'roles' in entity_dict:
-            entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
-
-        if 'users' in entity_dict:
-            entity_dict['users'] = module.find_resources('users', ['login="{0}"'.format(login) for login in entity_dict['users']], thin=True)
-
-        if 'usergroups' in entity_dict:
-            entity_dict['usergroups'] = module.find_resources_by_name('usergroups', entity_dict['usergroups'], thin=True)
-
-    module.ensure_entity('usergroups', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

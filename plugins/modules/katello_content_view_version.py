@@ -170,58 +170,55 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
 
-    content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
+        if 'current_lifecycle_environment' in entity_dict:
+            entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
+                'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
+            search_scope = {'content_view_id': content_view['id'], 'environment_id': entity_dict['current_lifecycle_environment']['id']}
+            content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
+        elif 'version' in entity_dict:
+            search = "content_view_id={0},version={1}".format(content_view['id'], entity_dict['version'])
+            content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
+        else:
+            content_view_version = None
 
-    if 'current_lifecycle_environment' in entity_dict:
-        entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
-            'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
-        search_scope = {'content_view_id': content_view['id'], 'environment_id': entity_dict['current_lifecycle_environment']['id']}
-        content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
-    elif 'version' in entity_dict:
-        search = "content_view_id={0},version={1}".format(content_view['id'], entity_dict['version'])
-        content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
-    else:
-        content_view_version = None
+        if module.desired_absent:
+            module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
+        else:
+            if content_view_version is None:
+                payload = {
+                    'id': content_view['id'],
+                }
+                if 'description' in entity_dict:
+                    payload['description'] = entity_dict['description']
+                if 'force_yum_metadata_regeneration' in entity_dict:
+                    payload['force_yum_metadata_regeneration'] = entity_dict['force_yum_metadata_regeneration']
+                if 'version' in entity_dict:
+                    split_version = list(map(int, str(entity_dict['version']).split('.')))
+                    payload['major'] = split_version[0]
+                    payload['minor'] = split_version[1]
 
-    if module.desired_absent:
-        module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
-    else:
-        if content_view_version is None:
-            payload = {
-                'id': content_view['id'],
-            }
-            if 'description' in entity_dict:
-                payload['description'] = entity_dict['description']
-            if 'force_yum_metadata_regeneration' in entity_dict:
-                payload['force_yum_metadata_regeneration'] = entity_dict['force_yum_metadata_regeneration']
-            if 'version' in entity_dict:
-                split_version = list(map(int, str(entity_dict['version']).split('.')))
-                payload['major'] = split_version[0]
-                payload['minor'] = split_version[1]
+                response = module.resource_action('content_views', 'publish', params=payload)
+                # workaround for https://projects.theforeman.org/issues/28138
+                if not module.check_mode:
+                    content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')
+                    content_view_version = module.show_resource('content_view_versions', content_view_version_id)
+                else:
+                    content_view_version = {'id': -1, 'environments': []}
 
-            response = module.resource_action('content_views', 'publish', params=payload)
-            # workaround for https://projects.theforeman.org/issues/28138
-            if not module.check_mode:
-                content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')
-                content_view_version = module.show_resource('content_view_versions', content_view_version_id)
-            else:
-                content_view_version = {'id': -1, 'environments': []}
-
-        if 'lifecycle_environments' in entity_dict:
-            lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
-            promote_content_view_version(
-                module,
-                content_view_version,
-                lifecycle_environments,
-                force=entity_dict['force_promote'],
-                force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
-            )
-
-    module.exit_json()
+            if 'lifecycle_environments' in entity_dict:
+                lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
+                promote_content_view_version(
+                    module,
+                    content_view_version,
+                    lifecycle_environments,
+                    force=entity_dict['force_promote'],
+                    force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
+                )
 
 
 if __name__ == '__main__':

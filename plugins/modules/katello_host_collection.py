@@ -85,18 +85,15 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=scope, failsafe=True)
 
-    entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=scope, failsafe=True)
+        if entity and 'updated_name' in entity_dict:
+            entity_dict['name'] = entity_dict.pop('updated_name')
 
-    if entity and 'updated_name' in entity_dict:
-        entity_dict['name'] = entity_dict.pop('updated_name')
-
-    module.ensure_entity('host_collections', entity_dict, entity, params=scope)
-
-    module.exit_json()
+        module.ensure_entity('host_collections', entity_dict, entity, params=scope)
 
 
 if __name__ == '__main__':

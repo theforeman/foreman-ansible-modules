@@ -244,67 +244,64 @@ def main():
     elif 'rule_name' not in entity_dict:
         entity_dict['rule_name'] = entity_dict['name']
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
+        cv_scope = {'content_view_id': entity_dict['content_view']['id']}
+        if entity_dict['repositories']:
+            repositories = []
+            for repo in entity_dict['repositories']:
+                product = module.find_resource_by_name('products', repo['product'], params=scope, thin=True)
+                product_scope = {'product_id': product['id']}
+                repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
+            entity_dict['repositories'] = repositories
 
-    entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
-    cv_scope = {'content_view_id': entity_dict['content_view']['id']}
-    if entity_dict['repositories']:
-        repositories = []
-        for repo in entity_dict['repositories']:
-            product = module.find_resource_by_name('products', repo['product'], params=scope, thin=True)
-            product_scope = {'product_id': product['id']}
-            repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
-        entity_dict['repositories'] = repositories
-
-    entity = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
-    content_view_filter = module.ensure_entity(
-        'content_view_filters',
-        entity_dict,
-        entity,
-        params=cv_scope,
-        state=filter_state,
-        entity_spec=content_filter_spec,
-    )
-
-    if content_view_filter is not None:
-        cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
-        if 'errata_id' in entity_dict:
-            # should we try to find the errata the user is asking for? or just pass it blindly?
-            # errata = module.find_resource('errata', 'id={0}'.format(entity_dict['errata_id']), params=scope)
-            rule_spec = content_filter_rule_erratum_id_spec
-            search_scope = {'errata_id': entity_dict['errata_id']}
-            search_scope.update(cv_filter_scope)
-            search = None
-        else:
-            rule_spec = globals()['content_filter_rule_%s_spec' % (entity_dict['filter_type'])]
-            search_scope = cv_filter_scope
-            if entity_dict['rule_name'] is not None:
-                search = 'name="{0}"'.format(entity_dict['rule_name'])
-            else:
-                search = None
-        # not using find_resource_by_name here, because not all filters (errata) have names
-        content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
-
-        if entity_dict['filter_type'] == 'package_group':
-            package_group = module.find_resource_by_name('package_groups', entity_dict['rule_name'], params=scope)
-            entity_dict['uuid'] = package_group['uuid']
-
-        # drop 'name' from the dict, as otherwise it might override 'rule_name'
-        rule_dict = entity_dict.copy()
-        rule_dict.pop('name', None)
-
-        module.ensure_entity(
-            'content_view_filter_rules',
-            rule_dict,
-            content_view_filter_rule,
-            params=cv_filter_scope,
-            state=rule_state,
-            entity_spec=rule_spec,
+        entity = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
+        content_view_filter = module.ensure_entity(
+            'content_view_filters',
+            entity_dict,
+            entity,
+            params=cv_scope,
+            state=filter_state,
+            entity_spec=content_filter_spec,
         )
 
-    module.exit_json()
+        if content_view_filter is not None:
+            cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
+            if 'errata_id' in entity_dict:
+                # should we try to find the errata the user is asking for? or just pass it blindly?
+                # errata = module.find_resource('errata', 'id={0}'.format(entity_dict['errata_id']), params=scope)
+                rule_spec = content_filter_rule_erratum_id_spec
+                search_scope = {'errata_id': entity_dict['errata_id']}
+                search_scope.update(cv_filter_scope)
+                search = None
+            else:
+                rule_spec = globals()['content_filter_rule_%s_spec' % (entity_dict['filter_type'])]
+                search_scope = cv_filter_scope
+                if entity_dict['rule_name'] is not None:
+                    search = 'name="{0}"'.format(entity_dict['rule_name'])
+                else:
+                    search = None
+            # not using find_resource_by_name here, because not all filters (errata) have names
+            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
+
+            if entity_dict['filter_type'] == 'package_group':
+                package_group = module.find_resource_by_name('package_groups', entity_dict['rule_name'], params=scope)
+                entity_dict['uuid'] = package_group['uuid']
+
+            # drop 'name' from the dict, as otherwise it might override 'rule_name'
+            rule_dict = entity_dict.copy()
+            rule_dict.pop('name', None)
+
+            module.ensure_entity(
+                'content_view_filter_rules',
+                rule_dict,
+                content_view_filter_rule,
+                params=cv_filter_scope,
+                state=rule_state,
+                entity_spec=rule_spec,
+            )
 
 
 if __name__ == '__main__':

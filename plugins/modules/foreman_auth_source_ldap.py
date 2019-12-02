@@ -165,8 +165,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
+class ForemanAuthSourceLdapModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanAuthSourceLdapModule(
         entity_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
@@ -196,15 +200,8 @@ def main():
     if 'use_netgroups' in entity_dict and entity_dict['server_type'] == 'active_directory':
         module.fail_json(msg='use_netgroups cannot be used when server_type=active_directory')
 
-    module.connect()
-
-    entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
-
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
-    module.ensure_entity('auth_source_ldaps', entity_dict, entity)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run()
 
 
 if __name__ == '__main__':

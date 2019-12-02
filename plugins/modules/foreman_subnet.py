@@ -194,8 +194,12 @@ except ImportError:
     IPADDRESS_IMP_ERR = traceback.format_exc()
 
 
+class ForemanSubnetModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanSubnetModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -214,13 +218,13 @@ def main():
             to_ip=dict(flat_name='to'),
             boot_mode=dict(choices=['DHCP', 'Static'], default='DHCP'),
             ipam=dict(choices=['DHCP', 'Internal DB', 'Random DB', 'EUI-64', 'None'], default='DHCP'),
-            dhcp_proxy=dict(type='entity', flat_name='dhcp_id'),
-            httpboot_proxy=dict(type='entity', flat_name='httpboot_id'),
-            tftp_proxy=dict(type='entity', flat_name='tftp_id'),
-            discovery_proxy=dict(type='entity', flat_name='discovery_id'),
-            dns_proxy=dict(type='entity', flat_name='dns_id'),
-            template_proxy=dict(type='entity', flat_name='template_id'),
-            remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids'),
+            dhcp_proxy=dict(type='entity', flat_name='dhcp_id', resource_type='smart_proxies'),
+            httpboot_proxy=dict(type='entity', flat_name='httpboot_id', resource_type='smart_proxies'),
+            tftp_proxy=dict(type='entity', flat_name='tftp_id', resource_type='smart_proxies'),
+            discovery_proxy=dict(type='entity', flat_name='discovery_id', resource_type='smart_proxies'),
+            dns_proxy=dict(type='entity', flat_name='dns_id', resource_type='smart_proxies'),
+            template_proxy=dict(type='entity', flat_name='template_id', resource_type='smart_proxies'),
+            remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids', resource_type='smart_proxies'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
@@ -233,15 +237,7 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
-
-    entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
-
-    entity_dict = module.handle_taxonomy_params(entity_dict)
-
     if not module.desired_absent:
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
         if entity_dict['network_type'] == 'IPv4':
             IPNetwork = ipaddress.IPv4Network
         else:
@@ -251,25 +247,8 @@ def main():
         elif 'mask' not in entity_dict and 'cidr' in entity_dict:
             entity_dict['mask'] = str(IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
 
-        if 'domains' in entity_dict:
-            entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
-
-        for feature in ('dhcp_proxy', 'httpboot_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'template_proxy'):
-            if feature in entity_dict:
-                entity_dict[feature] = module.find_resource_by_name('smart_proxies', entity_dict[feature], thin=True)
-
-        if 'remote_execution_proxies' in entity_dict:
-            entity_dict['remote_execution_proxies'] = module.find_resources_by_name('smart_proxies', entity_dict['remote_execution_proxies'], thin=True)
-
-    parameters = entity_dict.get('parameters')
-
-    subnet = module.ensure_entity('subnets', entity_dict, entity)
-
-    if subnet:
-        scope = {'subnet_id': subnet['id']}
-        module.ensure_scoped_parameters(scope, entity, parameters)
-
-    module.exit_json()
+    with module.api_connection():
+        module.run(entity_dict=entity_dict)
 
 
 if __name__ == '__main__':

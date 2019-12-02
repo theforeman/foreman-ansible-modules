@@ -127,47 +127,44 @@ def main():
     if (entity_dict['interval'] != 'custom cron') and ('cron_expression' in entity_dict):
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
-    module.connect()
+    with module.api_connection():
+        entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
 
-    entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
+        products = entity_dict.pop('products', None)
 
-    products = entity_dict.pop('products', None)
+        sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
 
-    sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
+        if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
+            products = module.find_resources_by_name('products', products, params=scope, thin=True)
+            desired_product_ids = set(product['id'] for product in products)
+            current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
 
-    if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
-        products = module.find_resources_by_name('products', products, params=scope, thin=True)
-        desired_product_ids = set(product['id'] for product in products)
-        current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
+            module.record_before('sync_plans/products', {'id': sync_plan['id'], 'product_ids': current_product_ids})
+            module.record_after('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
+            module.record_after_full('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
 
-        module.record_before('sync_plans/products', {'id': sync_plan['id'], 'product_ids': current_product_ids})
-        module.record_after('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
-        module.record_after_full('sync_plans/products', {'id': sync_plan['id'], 'product_ids': desired_product_ids})
-
-        if desired_product_ids != current_product_ids:
-            if not module.check_mode:
-                product_ids_to_add = desired_product_ids - current_product_ids
-                if product_ids_to_add:
-                    payload = {
-                        'id': sync_plan['id'],
-                        'product_ids': list(product_ids_to_add),
-                    }
-                    payload.update(scope)
-                    module.resource_action('sync_plans', 'add_products', payload)
-                product_ids_to_remove = current_product_ids - desired_product_ids
-                if product_ids_to_remove:
-                    payload = {
-                        'id': sync_plan['id'],
-                        'product_ids': list(product_ids_to_remove),
-                    }
-                    payload.update(scope)
-                    module.resource_action('sync_plans', 'remove_products', payload)
-            else:
-                module.set_changed()
-
-    module.exit_json()
+            if desired_product_ids != current_product_ids:
+                if not module.check_mode:
+                    product_ids_to_add = desired_product_ids - current_product_ids
+                    if product_ids_to_add:
+                        payload = {
+                            'id': sync_plan['id'],
+                            'product_ids': list(product_ids_to_add),
+                        }
+                        payload.update(scope)
+                        module.resource_action('sync_plans', 'add_products', payload)
+                    product_ids_to_remove = current_product_ids - desired_product_ids
+                    if product_ids_to_remove:
+                        payload = {
+                            'id': sync_plan['id'],
+                            'product_ids': list(product_ids_to_remove),
+                        }
+                        payload.update(scope)
+                        module.resource_action('sync_plans', 'remove_products', payload)
+                else:
+                    module.set_changed()
 
 
 if __name__ == '__main__':

@@ -394,61 +394,58 @@ def main():
             if len(entity_dict.keys()) != 1:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
-    module.connect()
+    with module.api_connection():
+        if affects_multiple:
+            entities = module.list_resource('job_templates')
+            if not entities:
+                # Nothing to do; shortcut to exit
+                module.exit_json()
+            if not module.desired_absent:  # not 'thin'
+                entities = [module.show_resource('job_templates', entity['id']) for entity in entities]
+        else:
+            entity = module.find_resource_by_name('job_templates', name=entity_dict['name'], failsafe=True)
 
-    if affects_multiple:
-        entities = module.list_resource('job_templates')
-        if not entities:
-            # Nothing to do; shortcut to exit
-            module.exit_json()
-        if not module.desired_absent:  # not 'thin'
-            entities = [module.show_resource('job_templates', entity['id']) for entity in entities]
-    else:
-        entity = module.find_resource_by_name('job_templates', name=entity_dict['name'], failsafe=True)
+        entity_dict = module.handle_taxonomy_params(entity_dict)
 
-    entity_dict = module.handle_taxonomy_params(entity_dict)
+        # TemplateInputs need to be added as separate entities later
+        template_inputs = entity_dict.get('template_inputs')
 
-    # TemplateInputs need to be added as separate entities later
-    template_inputs = entity_dict.get('template_inputs')
+        if 'audit_comment' in entity_dict:
+            extra_params = {'audit_comment': entity_dict['audit_comment']}
+        else:
+            extra_params = {}
 
-    if 'audit_comment' in entity_dict:
-        extra_params = {'audit_comment': entity_dict['audit_comment']}
-    else:
-        extra_params = {}
+        if not affects_multiple:
+            job_template = module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
 
-    if not affects_multiple:
-        job_template = module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
+            update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
+            if update_dependent_entities and template_inputs is not None:
+                scope = {'template_id': job_template['id']}
 
-        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
-        if update_dependent_entities and template_inputs is not None:
-            scope = {'template_id': job_template['id']}
+                # Manage TemplateInputs here
+                current_template_input_list = module.list_resource('template_inputs', params=scope) if entity else []
+                current_template_inputs = {item['name']: item for item in current_template_input_list}
+                for template_input_dict in template_inputs:
+                    template_input_dict = {key: value for key, value in template_input_dict.items() if value is not None}
 
-            # Manage TemplateInputs here
-            current_template_input_list = module.list_resource('template_inputs', params=scope) if entity else []
-            current_template_inputs = {item['name']: item for item in current_template_input_list}
-            for template_input_dict in template_inputs:
-                template_input_dict = {key: value for key, value in template_input_dict.items() if value is not None}
+                    template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
 
-                template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
+                    module.ensure_entity(
+                        'template_inputs', template_input_dict, template_input_entity,
+                        params=scope, entity_spec=template_input_entity_spec,
+                    )
 
-                module.ensure_entity(
-                    'template_inputs', template_input_dict, template_input_entity,
-                    params=scope, entity_spec=template_input_entity_spec,
-                )
+                # At this point, desired template inputs have been removed from the dict.
+                for template_input_entity in current_template_inputs.values():
+                    module.ensure_entity(
+                        'template_inputs', None, template_input_entity, state="absent",
+                        params=scope, entity_spec=template_input_entity_spec,
+                    )
 
-            # At this point, desired template inputs have been removed from the dict.
-            for template_input_entity in current_template_inputs.values():
-                module.ensure_entity(
-                    'template_inputs', None, template_input_entity, state="absent",
-                    params=scope, entity_spec=template_input_entity_spec,
-                )
-
-    else:
-        entity_dict.pop('name')
-        for entity in entities:
-            module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
-
-    module.exit_json()
+        else:
+            entity_dict.pop('name')
+            for entity in entities:
+                module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
 
 
 if __name__ == '__main__':
