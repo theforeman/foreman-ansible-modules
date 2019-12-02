@@ -82,6 +82,9 @@ dist:
 	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
 	sed -i -e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' $(COLLECTION_TMP)/plugins/modules/*.py
 
+	# adjust README.md not to point to files that we don't ship in the collection
+	sed -i '/Documentation how to/d' $(COLLECTION_TMP)/README.md
+
 	ansible-galaxy collection build $(COLLECTION_TMP)
 
 	rm -rf $(COLLECTION_TMP)
