@@ -61,6 +61,10 @@ class KatelloMixin(object):
     @_exception2fail_json(msg="Failed to connect to Foreman server: %s ")
     def connect(self):
         super(KatelloMixin, self).connect()
+
+        if 'subscriptions' not in self.foremanapi.resources:
+            raise Exception('The server does not seem to have the Katello plugin installed.')
+
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
@@ -264,6 +268,17 @@ class ForemanAnsibleModule(AnsibleModule):
     def ping(self):
         return self.foremanapi.resource('home').call('status')
 
+    def _resource(self, resource):
+        if resource not in self.foremanapi.resources:
+            raise Exception("The server doesn't know about {0}, is the right plugin installed?".format(resource))
+        return self.foremanapi.resource(resource)
+
+    def _resource_call(self, resource, *args, **kwargs):
+        return self._resource(resource).call(*args, **kwargs)
+
+    def _resource_prepare_params(self, resource, action, params):
+        return self._resource(resource).action(action).prepare_params(params)
+
     @_exception2fail_json(msg='Failed to show resource: %s')
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
@@ -273,9 +288,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
         params['id'] = resource_id
 
-        params = self.foremanapi.resource(resource).action('show').prepare_params(params)
+        params = self._resource_prepare_params(resource, 'show', params)
 
-        return self.foremanapi.resource(resource).call('show', params)
+        return self._resource_call(resource, 'show', params)
 
     @_exception2fail_json(msg='Failed to list resource: %s')
     def list_resource(self, resource, search=None, params=None):
@@ -288,9 +303,9 @@ class ForemanAnsibleModule(AnsibleModule):
             params['search'] = search
         params['per_page'] = 2 << 31
 
-        params = self.foremanapi.resource(resource).action('index').prepare_params(params)
+        params = self._resource_prepare_params(resource, 'index', params)
 
-        return self.foremanapi.resource(resource).call('index', params)['results']
+        return self._resource_call(resource, 'index', params)['results']
 
     def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
         list_params = {}
@@ -526,13 +541,13 @@ class ForemanAnsibleModule(AnsibleModule):
         return None
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False, record_change=True):
-        resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
+        resource_payload = self._resource_prepare_params(resource, action, params)
         if options is None:
             options = {}
         try:
             result = None
             if ignore_check_mode or not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
+                result = self._resource_call(resource, action, resource_payload, options=options, data=data, files=files)
                 is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result
                 if synchronous and is_foreman_task:
                     result = self.wait_for_task(result)
