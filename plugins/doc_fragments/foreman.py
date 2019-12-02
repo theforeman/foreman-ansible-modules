@@ -45,3 +45,63 @@ options:
     default: true
     type: bool
 '''
+
+    NESTED_PARAMETERS = '''
+options:
+  parameters:
+    description:
+      - Entity domain specific host parameters
+    required: false
+    type: list
+    elements: dict
+    suboptions:
+      name:
+        description:
+          - Name of the parameter
+        required: true
+        type: str
+      value:
+        description:
+          - Value of the parameter
+        required: true
+        type: raw
+      parameter_type:
+        description:
+          - Type of the parameter
+        default: 'string'
+        choices:
+          - 'string'
+          - 'boolean'
+          - 'integer'
+          - 'real'
+          - 'array'
+          - 'hash'
+          - 'yaml'
+          - 'json'
+        type: str
+'''
+
+    OS_FAMILY = '''
+options:
+  os_family:
+    description:
+      - The OS family the entity shall be assigned with.
+    required: false
+    choices:
+      - AIX
+      - Altlinux
+      - Archlinux
+      - Coreos
+      - Debian
+      - Freebsd
+      - Gentoo
+      - Junos
+      - NXOS
+      - Rancheros
+      - Redhat
+      - Solaris
+      - Suse
+      - Windows
+      - Xenserver
+    type: str
+'''

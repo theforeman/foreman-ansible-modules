@@ -53,27 +53,11 @@ options:
       - Description of the Operating System
     required: false
     type: str
-  family:
+  os_family:
     description:
-      - distribution family of the Operating System
-    choices:
-      - AIX
-      - Altlinux
-      - Archlinux
-      - Coreos
-      - Debian
-      - Freebsd
-      - Gentoo
-      - Junos
-      - NXOS
-      - Rancheros
-      - Redhat
-      - Solaris
-      - Suse
-      - Windows
-      - Xenserver
-    required: false
-    type: str
+      - Distribution family of the Operating System
+    aliases:
+      - family
   major:
     description:
       - major version of the Operating System
@@ -120,34 +104,6 @@ options:
   parameters:
     description:
       - Operating System specific host parameters
-    required: false
-    type: list
-    elements: dict
-    suboptions:
-      name:
-        description:
-          - Name of the parameter
-        required: true
-        type: str
-      value:
-        description:
-          - Value of the parameter
-        required: true
-        type: raw
-      parameter_type:
-        description:
-          - Type of the parameter
-        default: 'string'
-        choices:
-          - 'string'
-          - 'boolean'
-          - 'integer'
-          - 'real'
-          - 'array'
-          - 'hash'
-          - 'yaml'
-          - 'json'
-        type: str
   state:
     description:
       - State of the Operating System
@@ -160,6 +116,8 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.nested_parameters
+  - foreman.os_family
 '''
 
 EXAMPLES = '''
@@ -215,7 +173,7 @@ def main():
             name=dict(required=True),
             release_name=dict(),
             description=dict(),
-            family=dict(choices=OS_LIST),
+            os_family=dict(choices=OS_LIST, flat_name='family', aliases=['family']),
             major=dict(),
             minor=dict(),
             architectures=dict(type='entity_list', flat_name='architecture_ids'),
@@ -230,8 +188,8 @@ def main():
             updated_name=dict(),
         ),
         required_if=[
-            ['state', 'present', ['name', 'major', 'family']],
-            ['state', 'present_with_defaults', ['name', 'major', 'family']],
+            ['state', 'present', ['name', 'major', 'os_family']],
+            ['state', 'present_with_defaults', ['name', 'major', 'os_family']],
         ],
         required_one_of=[
             ['description', 'name'],
@@ -258,7 +216,7 @@ def main():
 
     if not entity and (module.state == 'present' or module.state == 'present_with_defaults'):
         # we actually attempt to create a new one...
-        for param_name in ['major', 'family', 'password_hash']:
+        for param_name in ['major', 'os_family', 'password_hash']:
             if param_name not in entity_dict.keys():
                 module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
