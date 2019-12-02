@@ -80,3 +80,28 @@ options:
           - 'json'
         type: str
 '''
+
+    OS_FAMILY = '''
+options:
+  os_family:
+    description:
+      - The OS family the entity shall be assigned with.
+    required: false
+    choices:
+      - AIX
+      - Altlinux
+      - Archlinux
+      - Coreos
+      - Debian
+      - Freebsd
+      - Gentoo
+      - Junos
+      - NXOS
+      - Rancheros
+      - Redhat
+      - Solaris
+      - Suse
+      - Windows
+      - Xenserver
+    type: str
+'''

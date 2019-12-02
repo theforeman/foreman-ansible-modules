@@ -57,25 +57,9 @@ options:
     required: false
     type: list
   os_family:
-    description: The OS family the template shall be assigned with. If no os_family is set but a operatingsystem, the value will be derived from it.
-    required: false
-    choices:
-      - AIX
-      - Altlinux
-      - Archlinux
-      - Coreos
-      - Debian
-      - Freebsd
-      - Gentoo
-      - Junos
-      - NXOS
-      - Rancheros
-      - Redhat
-      - Solaris
-      - Suse
-      - Windows
-      - Xenserver
-    type: str
+    description:
+      - The OS family the template shall be assigned with.
+      - If no os_family is set but a operatingsystem, the value will be derived from it.
   path:
     description: Path to the installation medium
     type: str
@@ -86,6 +70,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.os_family
 '''
 
 EXAMPLES = '''
