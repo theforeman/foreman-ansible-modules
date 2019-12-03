@@ -6,7 +6,6 @@
     repository_name: "Test Repository"
     repository_content_type: "yum"
     repository_state: present
-    repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
   katello_repository:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -19,7 +18,7 @@
     state: "{{ repository_state }}"
     product: "{{ product_name }}"
     content_type: "{{ repository_content_type }}"
-    url: "{{ repository_url }}"
+    url: "{{ repository_url | default(omit) }}"
     upstream_username: "{{ repository_upstream_username | default(omit) }}"
     upstream_password: "{{ repository_upstream_password | default(omit) }}"
     deb_releases: "{{ repository_deb_releases | default(omit) }}"
