@@ -72,7 +72,7 @@
         activation_key_state: absent
         expected_change: true
 
-    - name: create AK with content overrides
+    - name: create AK with content overrides set to disabled
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_lifecycle_environment: "Library"
@@ -86,14 +86,31 @@
         expected_diff: true
         expected_diff_before: "content_overrides.*{}"
         expected_diff_after: "Test_Organization_Test_Product_Test_Repository.*false"
-    - name: create AK with content overrides again, no change
+    - name: create AK with content overrides set to disabled again, no change
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_content_overrides:
           - label: "Test_Organization_Test_Product_Test_Repository"
             override: disabled
         expected_change: false
-    - name: update AK with content overrides
+    - name: update AK with content overrides set to default
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: default
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "Test_Organization_Test_Product_Test_Repository.*false"
+        expected_diff_after: "Test_Organization_Test_Product_Test_Repository.*null"
+    - name: update AK with content overrides set to default again, no change
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: default
+        expected_change: false
+    - name: update AK with content overrides set to enabled
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_content_overrides:
@@ -101,9 +118,9 @@
             override: enabled
         expected_change: true
         expected_diff: true
-        expected_diff_before: "Test_Organization_Test_Product_Test_Repository.*false"
+        expected_diff_before: "content_overrides.*{}"
         expected_diff_after: "Test_Organization_Test_Product_Test_Repository.*true"
-    - name: update AK with content overrides again, no change
+    - name: update AK with content overrides set to enabled again, no change
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_content_overrides:
