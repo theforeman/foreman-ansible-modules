@@ -89,6 +89,7 @@ options:
         choices:
           - enabled
           - disabled
+          - default
         type: str
         required: true
   auto_attach:
@@ -194,7 +195,7 @@ def main():
             ),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
-                override=dict(required=True, choices=['enabled', 'disabled']),
+                override=dict(required=True, choices=['enabled', 'disabled', 'default']),
             )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
@@ -299,10 +300,10 @@ def main():
             module.record_after_full('activation_keys/content_overrides', {'id': activation_key['id'], 'content_overrides': desired_content_overrides})
 
             for label, override in desired_content_overrides.items():
-                if override != current_content_overrides.pop(label, None):
+                if override is not None and override != current_content_overrides.pop(label, None):
                     changed_content_overrides.append({'content_label': label, 'value': override})
             for label in current_content_overrides.keys():
-                changed_content_overrides.append({'content_label': label, 'reset': True})
+                changed_content_overrides.append({'content_label': label, 'remove': True})
 
             if changed_content_overrides:
                 payload = {
