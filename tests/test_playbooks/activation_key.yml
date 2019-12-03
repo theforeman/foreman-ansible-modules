@@ -185,11 +185,15 @@
             override: disabled
         activation_key_state: present_with_defaults
         expected_change: false
-    - include_tasks: tasks/activation_key_copy.yml
+    - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_new_name: "Test Activation Key Copy"
+        activation_key_state: copied
         expected_change: true
-    - include_tasks: tasks/activation_key_copy.yml
+    - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_new_name: "Test Activation Key Copy"
+        activation_key_state: copied
         expected_change: false
     - include_tasks: tasks/activation_key.yml
       vars:
