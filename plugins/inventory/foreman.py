@@ -63,7 +63,7 @@ DOCUMENTATION = '''
 
 EXAMPLES = '''
 # my.foreman.yml
-plugin: foreman
+plugin: theforeman.foreman.foreman
 url: http://localhost:2222
 user: ansible-tester
 password: secure
@@ -91,7 +91,7 @@ from requests.auth import HTTPBasicAuth
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     ''' Host inventory parser for ansible using foreman as source. '''
 
-    NAME = 'foreman'
+    NAME = 'theforeman.foreman.foreman'
 
     def __init__(self):
 
