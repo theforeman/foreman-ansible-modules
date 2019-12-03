@@ -36,6 +36,13 @@
     - name: create minimal AK
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         expected_change: true
         expected_diff: true
         expected_diff_before: "content_overrides.*{}"
@@ -43,6 +50,13 @@
     - name: create minimal AK again, no change
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         expected_change: false
     - name: remove minimal AK
       include_tasks: tasks/activation_key.yml
@@ -52,6 +66,13 @@
     - name: create AK with auto_attach=true
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: True
         expected_change: true
         expected_diff: true
@@ -60,6 +81,13 @@
     - name: create AK with auto_attach=true again, no change
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: True
         expected_change: false
     - name: remove AK with auto_attach=true
@@ -70,11 +98,25 @@
     - name: create AK with auto_attach=false
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: False
         expected_change: true
     - name: create AK with auto_attach=false again, no change
       include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: False
         expected_change: false
     - name: remote AK with auto_attach=false
@@ -84,28 +126,63 @@
         expected_change: true
     - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_host_collections:
           - "TheAnswer"
         expected_change: true
         expected_diff: true
         expected_diff_before: ""
         expected_diff_after: "activation_keys/host_collections"
-    - include_tasks: tasks/activation_key_minimal.yml
-      vars:
-        expected_change: false
     - include_tasks: tasks/activation_key.yml
       vars:
         expected_change: false
     - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
+        expected_change: false
+    - include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: False
         expected_change: true
     - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_auto_attach: False
         expected_change: false
     - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_state: present_with_defaults
         expected_change: false
     - include_tasks: tasks/activation_key_copy.yml
@@ -116,6 +193,13 @@
         expected_change: false
     - include_tasks: tasks/activation_key.yml
       vars:
+        activation_key_lifecycle_environment: "Library"
+        activation_key_content_view: "Default Organization View"
+        activation_key_subscriptions:
+          - name: "Test Product"
+        activation_key_content_overrides:
+          - label: "Test_Organization_Test_Product_Test_Repository"
+            override: disabled
         activation_key_host_collections: []
         expected_change: true
     - include_tasks: tasks/activation_key.yml
