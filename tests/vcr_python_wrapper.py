@@ -11,28 +11,25 @@ import json
 def body_json_l2_matcher(r1, r2):
     if r1.headers.get('content-type') == r2.headers.get('content-type') == 'application/json':
         if r1.body is None or r2.body is None:
-            return r1.body == r2.body
+            assert r1.body == r2.body, "{} != {}".format(r1.body, r2.body)
         body1 = json.loads(r1.body.decode('utf8'))
         body2 = json.loads(r2.body.decode('utf8'))
         if 'common_parameter' in body1 and 'common_parameter' in body2:
             if body1['common_parameter'].get('parameter_type') == body2['common_parameter'].get('parameter_type') in ['hash', 'json', 'yaml']:
                 body1['common_parameter']['value'] = json.loads(body1['common_parameter'].get('value'))
                 body2['common_parameter']['value'] = json.loads(body2['common_parameter'].get('value'))
-        return body1 == body2
+        assert body1 == body2, "{} != {}".format(body1, body2)
     elif (r1.headers.get('content-type') == r2.headers.get('content-type')
             and r1.headers.get('content-type') in ['multipart/form-data', 'application/x-www-form-urlencoded']):
         if r1.body is None or r2.body is None:
-            return r1.body == r2.body
+            assert r1.body == r2.body, "{} != {}".format(r1.body, r2.body)
         body1 = sorted(r1.body.replace(b'~', b'%7E').split(b'&'))
         body2 = sorted(r2.body.replace(b'~', b'%7E').split(b'&'))
-        if len(body1) != len(body2):
-            return False
+        assert len(body1) == len(body2), "the body lengths don't match"
         for i, v in enumerate(body1):
-            if body1[i] != body2[i]:
-                return False
-        return True
+            assert body1[i] == body2[i], "body contents at position {} dont't match: '{}' vs '{}'".format(i, body1[i], body2[i])
     else:
-        return r1.body == r2.body
+        assert r1.body == r2.body, "{} != {}".format(r1.body, r2.body)
 
 
 def snapshot_query_matcher(r1, r2):
