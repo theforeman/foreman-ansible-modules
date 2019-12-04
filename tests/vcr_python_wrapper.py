@@ -34,14 +34,20 @@ def body_json_l2_matcher(r1, r2):
 
 def snapshot_query_matcher(r1, r2):
     if r1.path == '/api/hosts' and r2.path == '/api/hosts':
-        return [q for q in r1.query if q[0] != 'search'] == [q for q in r2.query if q[0] != 'search']
-    vcr.matchers.query(r1, r2)
+        query1 = [q for q in r1.query if q[0] != 'search']
+        query2 = [q for q in r2.query if q[0] != 'search']
+        assert query1 == query2, "{} != {}".format(query1, query2)
+    else:
+        vcr.matchers.query(r1, r2)
 
 
 def query_matcher_ignore_proxy(r1, r2):
     if r1.path == '/api/smart_proxies' and r2.path == '/api/smart_proxies':
-        return [q for q in r1.query if q[0] != 'search'] == [q for q in r2.query if q[0] != 'search']
-    vcr.matchers.query(r1, r2)
+        query1 = [q for q in r1.query if q[0] != 'search']
+        query2 = [q for q in r2.query if q[0] != 'search']
+        assert query1 == query2, "{} != {}".format(query1, query2)
+    else:
+        vcr.matchers.query(r1, r2)
 
 
 def katello_manifest_body_matcher(r1, r2):
