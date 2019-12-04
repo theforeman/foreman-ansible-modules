@@ -108,6 +108,26 @@ options:
       - Standard
       - Premium
     type: str
+  max_hosts:
+    description:
+      - maximum number of registered content hosts
+    type: int
+  unlimited_hosts:
+    description:
+      - can the activation key have unlimited hosts
+    type: bool
+  purpose_usage:
+    description:
+      - Sets the system purpose usage
+    type: str
+  purpose_role:
+    description:
+      - Sets the system purpose role
+    type: str
+  purpose_addons:
+    description:
+      - Sets the system purpose add-ons
+    type: list
   state:
     description:
       - State of the Activation Key
@@ -184,6 +204,11 @@ def main():
             auto_attach=dict(type='bool'),
             release_version=dict(),
             service_level=dict(choices=['Self-Support', 'Standard', 'Premium']),
+            max_hosts=dict(type='int'),
+            unlimited_hosts=dict(type='bool'),
+            purpose_usage=dict(),
+            purpose_role=dict(),
+            purpose_addons=dict(type='list'),
         ),
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(
