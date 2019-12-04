@@ -165,6 +165,22 @@
         activation_key_state: absent
         expected_change: true
 
+    - name: create AK with unlimited_hosts=false
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_unlimited_hosts: False
+        expected_change: true
+    - name: create AK with unlimited_hosts=false again, no change
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_unlimited_hosts: False
+        expected_change: false
+    - name: remove AK with unlimited_hosts=false
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_state: absent
+        expected_change: true
+
     - name: create AK with host_collections
       include_tasks: tasks/activation_key.yml
       vars:
