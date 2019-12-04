@@ -81,7 +81,7 @@ options:
   provider_type:
     description:
       - Determines via which provider the template shall be executed
-    required: true
+    required: false
     type: str
   snippet:
     description:
@@ -125,6 +125,7 @@ options:
       name:
         description:
           - name of the Template Input
+        required: true
         type: str
       options:
         description:

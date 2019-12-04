@@ -48,7 +48,7 @@ options:
   vm_attrs:
     description:
       - Hash containing the data of vm_attrs
-    required: true
+    required: false
     aliases:
       - vm_attributes
     type: dict
