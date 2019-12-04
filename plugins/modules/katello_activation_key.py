@@ -110,11 +110,12 @@ options:
     type: str
   max_hosts:
     description:
-      - maximum number of registered content hosts
+      - Maximum number of registered content hosts.
+      - Required if I(unlimited_hosts=false)
     type: int
   unlimited_hosts:
     description:
-      - can the activation key have unlimited hosts
+      - Can the activation key have unlimited hosts
     type: bool
   purpose_usage:
     description:
