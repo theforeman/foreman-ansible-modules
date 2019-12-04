@@ -41,11 +41,11 @@ test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
 test_%: FORCE
-	pytest 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
+	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
 
 record_%: FORCE
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
-	pytest 'tests/test_crud.py::test_crud[$*]' --record
+	pytest -v 'tests/test_crud.py::test_crud[$*]' --record
 
 clean_%: FORCE
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
