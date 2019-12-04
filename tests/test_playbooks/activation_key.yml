@@ -169,11 +169,13 @@
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_unlimited_hosts: False
+        activation_key_max_hosts: 10
         expected_change: true
     - name: create AK with unlimited_hosts=false again, no change
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_unlimited_hosts: False
+        activation_key_max_hosts: 10
         expected_change: false
     - name: remove AK with unlimited_hosts=false
       include_tasks: tasks/activation_key.yml

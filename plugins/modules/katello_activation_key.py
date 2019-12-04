@@ -226,6 +226,7 @@ def main():
         ),
         required_if=[
             ['state', 'copied', ['new_name']],
+            ['unlimited_hosts', False, ['max_hosts']],
         ],
     )
 
