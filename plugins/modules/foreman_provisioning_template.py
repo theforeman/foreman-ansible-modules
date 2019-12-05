@@ -242,7 +242,7 @@ RETURN = ''' # '''
 import os
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
 )
@@ -261,7 +261,7 @@ def find_template_kind(module, entity_dict):
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             audit_comment=dict(),
             file_name=dict(type='path'),
@@ -285,10 +285,8 @@ def main():
                 'ZTP',
             ], type='entity', flat_name='template_kind_id'),
             template=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
             snippet=dict(type='invisible'),
         ),

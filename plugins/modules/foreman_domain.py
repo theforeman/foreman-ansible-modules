@@ -91,11 +91,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -103,8 +103,6 @@ def main():
             name=dict(required=True),
             description=dict(aliases=['fullname'], flat_name='fullname'),
             dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns']),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
     )

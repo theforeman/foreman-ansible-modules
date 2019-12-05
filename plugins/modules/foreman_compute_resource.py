@@ -191,7 +191,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 def get_provider_info(provider):
@@ -211,13 +211,11 @@ def get_provider_info(provider):
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             provider=dict(choices=['vmware', 'libvirt', 'ovirt']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),

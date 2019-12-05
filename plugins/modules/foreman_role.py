@@ -96,7 +96,7 @@ RETURN = ''' # '''
 
 import copy
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 filter_entity_spec = dict(
@@ -106,12 +106,10 @@ filter_entity_spec = dict(
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             filters=dict(type='nested_list', entity_spec=filter_entity_spec),
         ),
     )
