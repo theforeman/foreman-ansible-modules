@@ -97,18 +97,9 @@ options:
     description: The Operatingsystems the template shall be assigned to
     required: false
     type: list
-  state:
-    description:
-      - The state the template should be in
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - absent
-      - present
-      - present_with_defaults
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
   - foreman.taxonomy
 '''
 

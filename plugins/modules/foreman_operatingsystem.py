@@ -104,18 +104,9 @@ options:
   parameters:
     description:
       - Operating System specific host parameters
-  state:
-    description:
-      - State of the Operating System
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
   - foreman.nested_parameters
   - foreman.os_family
 '''

@@ -65,20 +65,11 @@ options:
       - yaml
       - json
     type: str
-  state:
-    description:
-      - State of the Global Parameter
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
-    type: str
 notes:
   - The I(parameter_type) only has an effect on Foreman >= 1.22
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
 '''
 
 EXAMPLES = '''
