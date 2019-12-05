@@ -72,13 +72,9 @@ options:
       - Forced to true when I(build=true)
     type: bool
     required: false
-  state:
-    description: host presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

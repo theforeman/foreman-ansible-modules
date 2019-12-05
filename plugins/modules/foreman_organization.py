@@ -46,20 +46,13 @@ options:
       - Description of the Foreman organization
     required: false
     type: str
-  state:
-    description:
-      - State of the Organization
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
   label:
     description:
       - Label of the Foreman organization
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

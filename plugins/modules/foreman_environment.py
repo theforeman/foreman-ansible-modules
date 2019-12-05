@@ -40,13 +40,9 @@ options:
     description: The full environment name
     required: true
     type: str
-  state:
-    description: environment presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
 '''
 

@@ -145,13 +145,9 @@ options:
   parameters:
     description:
       - Subnet specific host parameters
-  state:
-    description: subnet presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
   - foreman.nested_parameters
 '''

@@ -49,16 +49,9 @@ options:
       - Name of the authentication source to be used for this group
     required: true
     type: str
-  state:
-    description:
-      - State of the external user group
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

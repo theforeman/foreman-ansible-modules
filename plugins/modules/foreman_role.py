@@ -56,13 +56,9 @@ options:
         description: Filter condition for the resources
         required: false
         type: str
-  state:
-    description: role presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
 '''
 

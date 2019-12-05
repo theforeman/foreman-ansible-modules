@@ -119,13 +119,9 @@ options:
     description: Filter to apply to LDAP searches
     required: false
     type: str
-  state:
-    description: State ot the LDAP authentication source
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
 '''
 

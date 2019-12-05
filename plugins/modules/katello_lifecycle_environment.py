@@ -58,16 +58,9 @@ options:
     description:
       - Name of the parent lifecycle environment
     type: str
-  state:
-    description:
-      - Whether the lifecycle environment should be present or absent on the server
-    default: present
-    choices:
-      - absent
-      - present
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

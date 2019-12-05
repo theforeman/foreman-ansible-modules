@@ -50,14 +50,6 @@ options:
       - Organization that the content view is in
     required: true
     type: str
-  state:
-    description:
-      - Content View Version state
-    default: present
-    choices:
-      - absent
-      - present
-    type: str
   version:
     description:
       - The content view version number (i.e. 1.0)
@@ -90,6 +82,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''
