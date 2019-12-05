@@ -128,6 +128,8 @@ def main():
     else:
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if not affects_multiple and entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
@@ -135,12 +137,6 @@ def main():
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
             if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
                 entity_dict['os_family'] = module.show_resource('operatingsystems', entity_dict['operatingsystems'][0]['id'])['family']
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     if not affects_multiple:
         module.ensure_entity('media', entity_dict, entity)

@@ -113,12 +113,7 @@ def main():
 
     entity = module.find_resource_by_name('roles', name=entity_dict['name'], failsafe=True)
 
-    if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     filters = entity_dict.pop("filters", None)
 
