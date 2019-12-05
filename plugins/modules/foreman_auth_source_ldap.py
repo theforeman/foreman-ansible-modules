@@ -121,7 +121,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
-  - foreman.state
+  - foreman.entity_state
   - foreman.taxonomy
 '''
 

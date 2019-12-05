@@ -76,7 +76,7 @@ options:
       - The OS family the template shall be assigned with.
 extends_documentation_fragment:
   - foreman
-  - foreman.state_with_defaults
+  - foreman.entity_state_with_defaults
   - foreman.taxonomy
   - foreman.os_family
 '''

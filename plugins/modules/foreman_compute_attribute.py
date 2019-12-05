@@ -54,7 +54,7 @@ options:
     type: dict
 extends_documentation_fragment:
   - foreman
-  - foreman.state
+  - foreman.entity_state
 '''
 
 EXAMPLES = '''

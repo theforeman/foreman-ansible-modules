@@ -66,7 +66,7 @@ options:
     required: false
     type: str
 extends_documentation_fragment:
-  - foreman.state_with_defaults
+  - foreman.entity_state_with_defaults
   - foreman
 '''
 
