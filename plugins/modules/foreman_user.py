@@ -533,6 +533,8 @@ def main():
     search = 'login="{0}"'.format(entity_dict['login'])
     entity = module.find_resource('users', search, failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if 'mail' not in entity_dict:
             entity_dict['mail'] = entity['mail']
@@ -548,12 +550,6 @@ def main():
 
         if 'roles' in entity_dict:
             entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     module.ensure_entity('users', entity_dict, entity)
 

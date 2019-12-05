@@ -107,17 +107,13 @@ def main():
     # Try to find the Domain to work on
     entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
         if 'dns_proxy' in entity_dict:
             entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     parameters = entity_dict.get('parameters')
 

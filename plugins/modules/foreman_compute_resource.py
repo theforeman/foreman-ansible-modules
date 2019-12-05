@@ -241,15 +241,11 @@ def main():
 
     entity = module.find_resource_by_name('compute_resources', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict['updated_name']
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
         if 'provider' in entity_dict:
             entity_dict['provider'], provider_param_keys = get_provider_info(provider=entity_dict['provider'])

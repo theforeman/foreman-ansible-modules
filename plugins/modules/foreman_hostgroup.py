@@ -313,9 +313,6 @@ def main():
             module.exit_json()
 
     if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
         if 'compute_resource' in entity_dict:
             entity_dict['compute_resource'] = module.find_resource_by_name('compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True)
 
@@ -365,9 +362,6 @@ def main():
             entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], failsafe=False, thin=True)
             scope = {'organization_id': entity_dict['organization']['id']}
 
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
                                                                                 params=scope, failsafe=False, thin=True)
@@ -379,6 +373,8 @@ def main():
         if 'content_view' in entity_dict:
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
                                                                        params=scope, failsafe=False, thin=True)
+
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
     if entity:
