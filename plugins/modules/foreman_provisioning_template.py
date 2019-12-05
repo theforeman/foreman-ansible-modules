@@ -74,11 +74,6 @@ options:
         the Provisioning Template "content".
     required: false
     type: path
-  locations:
-    description:
-      - The locations the template should be assigend to
-    required: false
-    type: list
   locked:
     description:
       - Determines whether the template shall be locked
@@ -98,11 +93,6 @@ options:
   updated_name:
     description: New provisioning template name. When this parameter is set, the module will not be idempotent.
     type: str
-  organizations:
-    description:
-      - The organizations the template shall be assigned to
-    required: false
-    type: list
   operatingsystems:
     description: The Operatingsystems the template shall be assigned to
     required: false
@@ -119,6 +109,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''

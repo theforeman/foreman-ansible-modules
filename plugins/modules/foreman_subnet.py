@@ -142,14 +142,6 @@ options:
     description: MTU
     required: false
     type: int
-  organizations:
-    description: List of oganizations the subnet should be assigned to
-    required: false
-    type: list
-  locations:
-    description: List of locations the subnet should be assigned to
-    required: false
-    type: list
   parameters:
     description:
       - Subnet specific host parameters
@@ -160,6 +152,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
   - foreman.nested_parameters
 '''
 

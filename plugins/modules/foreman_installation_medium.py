@@ -44,16 +44,8 @@ options:
   updated_name:
     description: New full installation medium name. When this parameter is set, the module will not be idempotent.
     type: str
-  locations:
-    description: List of locations the installation medium should be assigned to
-    required: false
-    type: list
   operatingsystems:
     description: List of operating systems the installation medium should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the installation medium should be assigned to
     required: false
     type: list
   os_family:
@@ -70,6 +62,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
   - foreman.os_family
 '''
 

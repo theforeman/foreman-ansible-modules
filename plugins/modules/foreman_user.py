@@ -274,16 +274,6 @@ options:
       - List of roles assigned to the user
     required: false
     type: list
-  locations:
-    description:
-      - List of locations assigned to the user
-    required: false
-    type: list
-  organizations:
-    description:
-      - List of organizations assigned to the user
-    required: false
-    type: list
   state:
     description:
       - State of the user
@@ -294,6 +284,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''

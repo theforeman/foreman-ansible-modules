@@ -87,14 +87,6 @@ options:
         description:
           - oVirt quota ID, only valid for I(provider=ovirt)
         type: str
-  locations:
-    description: List of locations the compute resource should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the compute resource should be assigned to
-    required: false
-    type: list
   state:
     description:
       - compute resource presence
@@ -105,6 +97,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''

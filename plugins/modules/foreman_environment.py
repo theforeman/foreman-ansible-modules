@@ -40,14 +40,6 @@ options:
     description: The full environment name
     required: true
     type: str
-  locations:
-    description: List of locations the environent should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the environment should be assigned to
-    required: false
-    type: list
   state:
     description: environment presence
     default: present
@@ -55,6 +47,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
