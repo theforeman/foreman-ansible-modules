@@ -106,7 +106,7 @@ options:
       - Operating System specific host parameters
 extends_documentation_fragment:
   - foreman
-  - foreman.state_with_defaults
+  - foreman.entity_state_with_defaults
   - foreman.nested_parameters
   - foreman.os_family
 '''

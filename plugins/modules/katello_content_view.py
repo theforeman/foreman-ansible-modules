@@ -98,7 +98,7 @@ options:
           - version
 extends_documentation_fragment:
   - foreman
-  - foreman.state_with_defaults
+  - foreman.entity_state_with_defaults
 '''
 
 EXAMPLES = '''

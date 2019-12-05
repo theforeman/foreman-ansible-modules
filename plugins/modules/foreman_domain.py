@@ -58,7 +58,7 @@ options:
       - Domain specific host parameters
 extends_documentation_fragment:
   - foreman
-  - foreman.state
+  - foreman.entity_state
   - foreman.taxonomy
   - foreman.nested_parameters
 '''

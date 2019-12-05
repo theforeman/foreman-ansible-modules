@@ -69,7 +69,7 @@ notes:
   - The I(parameter_type) only has an effect on Foreman >= 1.22
 extends_documentation_fragment:
   - foreman
-  - foreman.state_with_defaults
+  - foreman.entity_state_with_defaults
 '''
 
 EXAMPLES = '''

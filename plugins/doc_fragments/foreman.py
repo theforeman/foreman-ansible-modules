@@ -116,7 +116,7 @@ options:
     type: list
 '''
 
-    STATE = '''
+    ENTITY_STATE = '''
 options:
   state:
     description:
@@ -128,7 +128,7 @@ options:
     type: str
 '''
 
-    STATE_WITH_DEFAULTS = '''
+    ENTITY_STATE_WITH_DEFAULTS = '''
 options:
   state:
     description:
