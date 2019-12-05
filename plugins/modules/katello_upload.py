@@ -137,7 +137,6 @@ def main():
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
             product=dict(required=True),
-            organization=dict(required=True),
         ),
     )
 
