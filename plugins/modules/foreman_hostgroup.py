@@ -251,20 +251,18 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     build_fqn,
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
     parameter_entity_spec,
     split_fqn,
 )
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity', flat_name='parent_id'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             compute_resource=dict(type='entity', flat_name='compute_resource_id'),
             compute_profile=dict(type='entity', flat_name='compute_profile_id'),
             domain=dict(type='entity', flat_name='domain_id'),

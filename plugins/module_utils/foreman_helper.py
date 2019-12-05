@@ -639,6 +639,17 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
 
+class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
+    def __init__(self, argument_spec=None, **kwargs):
+        spec = dict(
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+        )
+        entity_spec = kwargs.pop('entity_spec', {})
+        spec.update(entity_spec)
+        super(ForemanTaxonomicEntityAnsibleModule, self).__init__(argument_spec=argument_spec, entity_spec=spec, **kwargs)
+
+
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
     pass
 

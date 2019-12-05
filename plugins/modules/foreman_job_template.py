@@ -302,7 +302,7 @@ RETURN = ''' # '''
 
 import os
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
 )
@@ -340,14 +340,12 @@ template_input_entity_spec = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             description_format=dict(),
             job_category=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool', default=False),
             name=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),

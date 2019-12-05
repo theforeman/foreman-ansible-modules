@@ -335,7 +335,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
 )
 
 
@@ -517,7 +517,7 @@ locale_list = [
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
@@ -532,8 +532,6 @@ def main():
             timezone=dict(required=False, choices=timezone_list),
             locale=dict(required=False, choices=locale_list),
             roles=dict(required=False, type='entity_list', flat_name='role_ids'),
-            locations=dict(required=False, type='entity_list', flat_name='location_ids'),
-            organizations=dict(required=False, type='entity_list', flat_name='organization_ids')
         ),
     )
 

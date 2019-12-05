@@ -171,11 +171,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
@@ -194,8 +194,6 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             use_netgroups=dict(type='bool'),
         ),
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],

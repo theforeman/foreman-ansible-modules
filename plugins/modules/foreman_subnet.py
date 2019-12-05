@@ -196,7 +196,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
 try:
     import ipaddress
     HAS_IPADDRESS = True
@@ -206,7 +206,7 @@ except ImportError:
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -234,8 +234,6 @@ def main():
             remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         required_one_of=[['cidr', 'mask']],
