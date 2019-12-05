@@ -63,16 +63,6 @@ options:
           - Product of the Repository to be added
         type: str
         required: true
-  state:
-    description:
-      - State of the content view
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
-    type: str
   auto_publish:
     description:
       - Auto publish composite view when a new version of a component content view is created.
@@ -108,6 +98,7 @@ options:
           - version
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
 '''
 
 EXAMPLES = '''

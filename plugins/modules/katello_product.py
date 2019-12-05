@@ -65,17 +65,8 @@ options:
       - Possibly long descriptionto show the user in detail view
     required: false
     type: str
-  state:
-    description:
-      - State of the Product
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - absent
-      - present_with_defaults
-    type: str
 extends_documentation_fragment:
+  - foreman.state_with_defaults
   - foreman
 '''
 

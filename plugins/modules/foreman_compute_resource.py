@@ -87,16 +87,9 @@ options:
         description:
           - oVirt quota ID, only valid for I(provider=ovirt)
         type: str
-  state:
-    description:
-      - compute resource presence
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    required: false
-    default: present
-    choices: ["present", "absent", "present_with_defaults"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
   - foreman.taxonomy
 '''
 

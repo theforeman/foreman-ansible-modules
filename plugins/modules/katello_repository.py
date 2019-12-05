@@ -122,18 +122,9 @@ options:
       - comma separated list of architectures to be synced from deb-archive
       - only available for I(content_type=deb)
     type: str
-  state:
-    description:
-      - State of the Repository
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present_with_defaults
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
 '''
 
 EXAMPLES = '''

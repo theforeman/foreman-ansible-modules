@@ -55,13 +55,9 @@ options:
   path:
     description: Path to the installation medium
     type: str
-  state:
-    description: installation medium presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state_with_defaults
   - foreman.taxonomy
   - foreman.os_family
 '''
@@ -92,6 +88,7 @@ def main():
     module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         entity_spec=dict(
             name=dict(required=True),

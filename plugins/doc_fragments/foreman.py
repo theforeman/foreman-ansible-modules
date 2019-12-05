@@ -115,3 +115,17 @@ options:
     description: List of locations the entity should be assigned to
     type: list
 '''
+
+    STATE_WITH_DEFAULTS = '''
+options:
+  state:
+    description:
+      - State of the entity in Foreman
+      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+      - absent
+    type: str
+'''
