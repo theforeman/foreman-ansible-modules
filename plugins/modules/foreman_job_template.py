@@ -54,10 +54,6 @@ options:
     description:
       - The category the template should be assigend to
     type: str
-  locations:
-    description:
-      - The locations the template should be assigend to
-    type: list
   locked:
     description:
       - Determines whether the template shall be locked
@@ -74,10 +70,6 @@ options:
          The special name "*" (only possible as parameter) is used
          to perform bulk actions (modify, delete) on all existing Job Templates.
     type: str
-  organizations:
-    description:
-      - The organizations the template shall be assigned to
-    type: list
   provider_type:
     description:
       - Determines via which provider the template shall be executed
@@ -171,6 +163,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''

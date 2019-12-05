@@ -50,14 +50,6 @@ options:
     description: Hostgroup parent name
     required: false
     type: str
-  organizations:
-    description: List of organizations names
-    required: false
-    type: list
-  locations:
-    description: List of locations names
-    required: false
-    type: list
   compute_resource:
     description: Compute resource name
     required: false
@@ -178,6 +170,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
   - foreman.nested_parameters
 '''
 

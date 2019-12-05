@@ -42,14 +42,6 @@ options:
     description: Description of the role
     required: false
     type: str
-  locations:
-    description: List of locations the role should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the role should be assigned to
-    required: false
-    type: list
   filters:
     description: Filters with permissions for this role
     required: false
@@ -71,6 +63,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''

@@ -53,14 +53,6 @@ options:
     description: Full name describing the domain
     required: false
     type: str
-  locations:
-    description: List of locations the domain should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the domain should be assigned to
-    required: false
-    type: list
   parameters:
     description:
       - Domain specific host parameters
@@ -71,6 +63,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
   - foreman.nested_parameters
 '''
 

@@ -50,11 +50,6 @@ options:
         is required as a source for the Partition Template "content".
     required: false
     type: str
-  locations:
-    description:
-      - The locations the template should be assigend to
-    required: false
-    type: list
   locked:
     description:
       - Determines whether the template shall be locked
@@ -76,11 +71,6 @@ options:
     description: New name of the template. When this parameter is set, the module will not be idempotent.
     required: false
     type: str
-  organizations:
-    description:
-      - The organizations the template shall be assigned to
-    required: false
-    type: list
   os_family:
     description:
       - The OS family the template shall be assigned with.
@@ -96,6 +86,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
   - foreman.os_family
 '''
 

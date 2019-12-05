@@ -105,3 +105,13 @@ options:
       - Xenserver
     type: str
 '''
+
+    TAXONOMY = '''
+options:
+  organizations:
+    description: List of organizations the entity should be assigned to
+    type: list
+  locations:
+    description: List of locations the entity should be assigned to
+    type: list
+'''

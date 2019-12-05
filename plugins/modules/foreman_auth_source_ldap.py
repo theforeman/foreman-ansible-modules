@@ -119,12 +119,6 @@ options:
     description: Filter to apply to LDAP searches
     required: false
     type: str
-  organizations:
-    description: List of organizations the authentication source should be assigned to
-    type: list
-  locations:
-    description: List of locations the authentication source should be assigned to
-    type: list
   state:
     description: State ot the LDAP authentication source
     default: present
@@ -132,6 +126,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
