@@ -53,16 +53,9 @@ options:
       - Active Directory
     required: true
     type: str
-  state:
-    description:
-      - State of the Realm
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

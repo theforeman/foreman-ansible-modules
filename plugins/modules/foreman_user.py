@@ -274,16 +274,9 @@ options:
       - List of roles assigned to the user
     required: false
     type: list
-  state:
-    description:
-      - State of the user
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
 '''
 

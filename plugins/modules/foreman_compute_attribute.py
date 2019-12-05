@@ -52,16 +52,9 @@ options:
     aliases:
       - vm_attributes
     type: dict
-  state:
-    description:
-      - State of the compute attribute
-    choices:
-      - present
-      - absent
-    default: present
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

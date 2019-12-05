@@ -47,16 +47,9 @@ options:
     description:
       - List of organizations the location should be assigned to
     type: list
-  state:
-    description:
-      - State of the Location
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

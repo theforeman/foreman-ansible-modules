@@ -45,13 +45,9 @@ options:
     description: List of puppet classes to include in this group
     required: false
     type: list
-  state:
-    description: config group presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

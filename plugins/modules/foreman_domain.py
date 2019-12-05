@@ -56,13 +56,9 @@ options:
   parameters:
     description:
       - Domain specific host parameters
-  state:
-    description: domain presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
   - foreman.taxonomy
   - foreman.nested_parameters
 '''

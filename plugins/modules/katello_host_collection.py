@@ -54,16 +54,9 @@ options:
     description:
       - New name of the host collection. When this parameter is set, the module will not be idempotent.
     type: str
-  state:
-    description:
-      - State of the host collection
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''

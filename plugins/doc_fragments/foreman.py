@@ -116,6 +116,18 @@ options:
     type: list
 '''
 
+    STATE = '''
+options:
+  state:
+    description:
+      - State of the entity in Foreman
+    default: present
+    choices:
+      - present
+      - absent
+    type: str
+'''
+
     STATE_WITH_DEFAULTS = '''
 options:
   state:

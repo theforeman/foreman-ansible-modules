@@ -65,16 +65,9 @@ options:
       - List of other groups assigned to the group
     required: false
     type: list
-  state:
-    description:
-      - State of the user
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.state
 '''
 
 EXAMPLES = '''
