@@ -173,8 +173,8 @@ def main():
 
     module.connect()
 
-    module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
-    scope = {'organization_id': module_params['organization']['id']}
+    module_params, scope = module.handle_organization_param(module_params)
+
     record_data = {}
     if 'product' in module_params:
         module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)

@@ -133,8 +133,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
 
     products = entity_dict.pop('products', None)

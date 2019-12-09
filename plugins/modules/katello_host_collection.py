@@ -91,8 +91,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=scope, failsafe=True)
 
     if entity and 'updated_name' in entity_dict:

@@ -144,8 +144,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity_dict['product'] = module.find_resource_by_name('products', entity_dict['product'], params=scope, thin=True)
     product_scope = {'product_id': entity_dict['product']['id']}
     entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)

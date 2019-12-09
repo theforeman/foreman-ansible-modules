@@ -176,8 +176,7 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
 
     content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
 

@@ -617,6 +617,15 @@ class ForemanAnsibleModule(AnsibleModule):
                 fail['error'] = exc.response.text
         self.fail_json(**fail)
 
+    def handle_organization_param(self, entity_dict):
+        entity_dict = entity_dict.copy()
+
+        entity_dict['organization'] = self.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+
+        scope = {'organization_id': entity_dict['organization']['id']}
+
+        return (entity_dict, scope)
+
     def exit_json(self, changed=False, **kwargs):
         kwargs['changed'] = changed or self.changed
         super(ForemanAnsibleModule, self).exit_json(**kwargs)
