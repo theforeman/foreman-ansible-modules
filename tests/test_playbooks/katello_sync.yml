@@ -19,21 +19,12 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: sync product, synchronous
+    - name: sync product
       include_tasks: tasks/katello_sync.yml
-    - name: sync product, async
-      include_tasks: tasks/katello_sync.yml
-      vars:
-        synchronous: false
-    - name: sync repository, synchronous
+    - name: sync repository
       include_tasks: tasks/katello_sync.yml
       vars:
         repository: "Test Repository"
-    - name: sync repository, async
-      include_tasks: tasks/katello_sync.yml
-      vars:
-        repository: "Test Repository"
-        synchronous: false
 
 - hosts: localhost
   gather_facts: false
