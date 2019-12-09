@@ -1,0 +1,30 @@
+- name: Ensure Org directory exists
+  file:
+    mode: 0755
+    path: "{{ config_dump_dir }}/{{ org.name }}"
+    state: directory
+
+- name: Pull Products from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: products
+    full_details: true
+    organization: "{{ org.name }}"
+  register: satellite_config_dump_prods
+
+- name: Find only the active products
+  set_fact:
+    satellite_config_active_prods: "{{ satellite_config_active_prods | default ([]) }} + [ item ]"
+  loop: "{{ satellite_config_dump_prods.resources }}"
+  when: item.repository_count != 0
+
+- name: Write out product data via template
+  template:
+    src: products.j2
+    dest: "{{ config_dump_dir }}/{{ org.name }}/products.yml"
+    mode: 0644
+
+

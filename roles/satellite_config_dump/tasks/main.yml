@@ -1,12 +1,16 @@
 ---
 # tasks file for satellite_config_dump
+- name: Set dump source
+  set_fact:
+    satellite_host: "{{ dump_source }}"
+    satellite_password: "{{ dump_password }}"
 
-- name: Ensure we have required variables defined
-  assert:
-    that:
-      - satellite_host is defined
-      - satellite_user is defined
-      - satellite_password is defined
+#- name: Ensure we have required variables defined
+#  assert:
+#    that:
+#      - satellite_host is defined
+#      - satellite_user is defined
+#      - satellite_password is defined
 
 - name: Set the full dump folder path
   set_fact:
@@ -103,24 +107,33 @@
     dest: "{{ config_dump_dir }}/content_views.yml"
     mode: 0644
 
-# TODO: This section required a merge of upstream PR #537
-#- name: Pull Activation Keys from Satellite
-#  foreman_search_facts:
-#    username: "{{ satellite_user }}"
-#    password: "{{ satellite_password }}"
-#    server_url: "https://{{ satellite_host }}"
-#    validate_certs: false
-#    resource: activation_keys
-#    full_details: true
-#  register: satellite_config_dump_aks
-#
-#- name: Write out activtion key data via template
-#  template:
-#    src: activation_keys.j2
-#    dest: "{{ config_dump_dir }}/activation_keys.yml"
-#    mode: 0644
-#
-#- name: debug
-#  debug:
-#    var: satellite_config_dump_aks
-#
+- name: Dump Out AKs for all Orgs
+  include_tasks: dump_aks.yml
+  loop: "{{ satellite_config_dump_orgs.resources }}"
+  loop_control:
+    loop_var: org
+
+- name: Dump Out Products for all Orgs
+  include_tasks: dump_prods.yml
+  loop: "{{ satellite_config_dump_orgs.resources }}"
+  loop_control:
+    loop_var: org
+
+- name: List only non-RH repos
+  set_fact:
+    satellite_config_active_repos: "{{ satellite_config_active_repos | default ([]) + [ item ] }}"
+  loop: "{{ satellite_config_dump_repos.resources }}"
+  when: not item.product.redhat
+
+- name: Write out non-RH repositories
+  template:
+    src: addl_repos.j2
+    dest: "{{ config_dump_dir }}/addl_repos.yml"
+    mode: 0644
+
+- name: Dump content credentials for all Orgs
+  include_tasks: dump_creds.yml
+  loop: "{{ satellite_config_dump_orgs.resources }}"
+  loop_control:
+    loop_var: org
+

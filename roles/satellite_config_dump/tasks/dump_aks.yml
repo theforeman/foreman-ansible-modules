@@ -1,0 +1,24 @@
+- name: Ensure Org directory exists
+  file:
+    mode: 0755
+    path: "{{ config_dump_dir }}/{{ org.name }}"
+    state: directory
+
+- name: Pull Activation Keys from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: activation_keys
+    full_details: true
+    organization: "{{ org.name }}"
+  register: satellite_config_dump_aks
+
+- name: Write out activtion key data via template
+  template:
+    src: activation_keys.j2
+    dest: "{{ config_dump_dir }}/{{ org.name }}/activation_keys.yml"
+    mode: 0644
+
+

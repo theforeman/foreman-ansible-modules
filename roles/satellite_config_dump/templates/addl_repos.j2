@@ -1,0 +1,14 @@
+additional_repos:
+{% for repo in satellite_config_active_repos %}
+  - name: "{{ repo.name }}"
+{% if repo.description %}    description: "{{ repo.description }}"
+{% endif %}
+{% if repo.organization %}    organization: "{{ repo.organization.name }}"
+{% endif %}
+    content_type: "{{ repo.content_type }}"
+    url: "{{ repo.url }}"
+    download_policy: "{{ repo.download_policy }}"
+{% if repo.gpg_key %}    gpg_key: "{{ repo.gpg_key.name }}"
+{% endif %}
+    state: present
+{% endfor %}

@@ -1,0 +1,12 @@
+products:
+{% for prod in satellite_config_active_prods %}
+{% if prod.provider.name != "Red Hat" %}
+  - name: "{{ prod.name }}"
+{% if prod.description %}    description: "{{ prod.description }}"
+{% endif %}
+    organization: "{{ prod.organization.name }}"
+{% if prod.sync_plan %}    sync_plan: "{{ prod.sync_plan.name }}"
+{% endif %}
+    state: present
+{% endif %}
+{% endfor %}

@@ -1,7 +1,13 @@
 activation_keys:
 {% for ak in satellite_config_dump_aks.resources %}
   - name: "{{ ak.name }}"
-    label: "{{ ak.label }}"
+    lifecycle_environment: "{{ ak.environment.name }}"
+    content_view: "{{ ak.content_view.name }}"
+    content_overrides:
+{% for override in ak.content_overrides %}
+      - label: "{{ override.content_label }}"
+        override: "{{ override.name }}"
+{% endfor %}
 {% if ak.description %}    description: "{{ ak.description }}"
 {% endif %}
     state: present

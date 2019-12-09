@@ -1,0 +1,28 @@
+- name: Ensure Org directory exists
+  file:
+    mode: 0755
+    path: "{{ config_dump_dir }}/{{ org.name }}"
+    state: directory
+
+- name: Pull Credentials from Satellite
+  foreman_search_facts:
+    username: "{{ satellite_user }}"
+    password: "{{ satellite_password }}"
+    server_url: "https://{{ satellite_host }}"
+    validate_certs: false
+    resource: content_credentials
+    full_details: true
+    organization: "{{ org.name }}"
+  register: satellite_config_dump_creds
+
+#- name: debug
+#  debug:
+#    var: satellite_config_dump_creds
+
+- name: Write out credential data via template
+  template:
+    src: credentials.j2
+    dest: "{{ config_dump_dir }}/{{ org.name }}/credentials.yml"
+    mode: 0644
+
+
