@@ -19,7 +19,7 @@ We actively test the modules against the latest stable Foreman release and the m
 
 ### Supported Ansible Versions
 
-The modules should work with Ansible >= 2.3.
+The supported Ansible versions are aligned with currently maintained ansible versions. You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status). Older Ansible versions (Ansible >= 2.3) should work but are not tested.
 
 As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
 
