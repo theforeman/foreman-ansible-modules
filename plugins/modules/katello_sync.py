@@ -49,10 +49,6 @@ options:
       Name of the repository to sync
       If omitted, all repositories in I(product) are synched.
     type: str
-  synchronous:
-    description: Wait for the Sync task to complete if True. Immediately return if False.
-    default: true
-    type: bool
 extends_documentation_fragment:
   - foreman
 ...
@@ -114,7 +110,6 @@ def main():
         argument_spec=dict(
             product=dict(required=True),
             repository=dict(),
-            synchronous=dict(type='bool', default=True),
         ),
     )
 
@@ -130,9 +125,9 @@ def main():
     if 'repository' in params:
         product_scope = {'product_id': params['product']['id']}
         params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
-        task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']}, synchronous=params['synchronous'])
+        task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']})
     else:
-        task = module.resource_action('products', 'sync', {'id': params['product']['id']}, synchronous=params['synchronous'])
+        task = module.resource_action('products', 'sync', {'id': params['product']['id']})
     module.exit_json(task=task)
 
 
