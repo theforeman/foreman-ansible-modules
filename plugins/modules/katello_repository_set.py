@@ -51,7 +51,8 @@ options:
   repositories:
     description:
       - Release version and base architecture of the repositories to enable
-    required: true
+      - Required when I(all_repositories=false)
+    required: false
     type: list
     suboptions:
       basearch:
@@ -62,6 +63,12 @@ options:
         description:
           - Releasever of the repository to enable.
         type: str
+  all_repositories:
+    description:
+      - Affect all available repositories in the repository set instead of listing them in I(repositories)
+    required: false
+    type: bool
+    default: false
   state:
     description:
       - Whether the repositories are enabled or not
@@ -166,13 +173,17 @@ def main():
             name=dict(),
             product=dict(),
             label=dict(),
-            repositories=dict(required=True, type='list', elements='dict', options=dict(
+            repositories=dict(type='list', elements='dict', options=dict(
                 basearch=dict(),
                 releasever=dict(),
             )),
+            all_repositories=dict(type='bool', default=False),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         required_one_of=[['label', 'name']],
+        required_if=[
+            ['all_repositories', False, ['repositories']],
+        ],
     )
 
     module_params = module.clean_params()
@@ -201,7 +212,10 @@ def main():
     available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
     available_repos = available_repos['results']
     current_repos = repo_set['repositories']
-    desired_repos = get_desired_repos(module_params['repositories'], available_repos)
+    if not module_params['all_repositories']:
+        desired_repos = get_desired_repos(module_params['repositories'], available_repos)
+    else:
+        desired_repos = available_repos[:]
 
     available_repo_names = set(map(lambda repo: repo['repo_name'], available_repos))
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))

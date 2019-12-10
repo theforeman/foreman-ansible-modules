@@ -26,6 +26,15 @@
       include_tasks: tasks/repository_set.yml
       vars:
         name: Red Hat Enterprise Linux 7 Server (RPMs)
+        repositories:
+          - releasever: "7.0"
+            basearch: "x86_64"
+          - releasever: "7.1"
+            basearch: "x86_64"
+          - releasever: "7.2"
+            basearch: "x86_64"
+          - releasever: "7.3"
+            basearch: "x86_64"
         expected_change: true
         expected_diff: true
         expected_diff_before: "state.*disabled"
@@ -35,16 +44,43 @@
       vars:
         name: Red Hat Enterprise Linux 7 Server (RPMs)
         product: Red Hat Enterprise Linux Server
+        repositories:
+          - releasever: "7.0"
+            basearch: "x86_64"
+          - releasever: "7.1"
+            basearch: "x86_64"
+          - releasever: "7.2"
+            basearch: "x86_64"
+          - releasever: "7.3"
+            basearch: "x86_64"
         expected_change: false
     - name: enable repository_set by label, no change
       include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
+        repositories:
+          - releasever: "7.0"
+            basearch: "x86_64"
+          - releasever: "7.1"
+            basearch: "x86_64"
+          - releasever: "7.2"
+            basearch: "x86_64"
+          - releasever: "7.3"
+            basearch: "x86_64"
         expected_change: false
     - name: disable repository_set by label
       include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
+        repositories:
+          - releasever: "7.0"
+            basearch: "x86_64"
+          - releasever: "7.1"
+            basearch: "x86_64"
+          - releasever: "7.2"
+            basearch: "x86_64"
+          - releasever: "7.3"
+            basearch: "x86_64"
         state: disabled
         expected_change: true
         expected_diff: true
@@ -55,6 +91,15 @@
       vars:
         name: Red Hat Enterprise Linux 7 Server (RPMs)
         product: Red Hat Enterprise Linux Server
+        repositories:
+          - releasever: "7.0"
+            basearch: "x86_64"
+          - releasever: "7.1"
+            basearch: "x86_64"
+          - releasever: "7.2"
+            basearch: "x86_64"
+          - releasever: "7.3"
+            basearch: "x86_64"
         state: disabled
         expected_change: false
 

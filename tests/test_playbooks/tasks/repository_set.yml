@@ -3,15 +3,6 @@
   vars:
     organization: Test Organization
     state: enabled
-    repositories:
-      - releasever: "7.0"
-        basearch: "x86_64"
-      - releasever: "7.1"
-        basearch: "x86_64"
-      - releasever: "7.2"
-        basearch: "x86_64"
-      - releasever: "7.3"
-        basearch: "x86_64"
   katello_repository_set:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -21,7 +12,8 @@
     organization: "{{ organization }}"
     product: "{{ product | default(omit) }}"
     state: "{{ state }}"
-    repositories: "{{ repositories }}"
+    repositories: "{{ repositories | default(omit) }}"
+    all_repositories: "{{ all_repositories | default(omit) }}"
     label: "{{ label | default(omit) }}"
   register: result
 - assert:
