@@ -47,11 +47,6 @@ options:
       - Name of the content view
     required: true
     type: str
-  organization:
-    description:
-      - Organization that the Content View is in
-    required: true
-    type: str
   filter_state:
     description:
       - State of the content view filter
@@ -142,6 +137,7 @@ options:
     type: bool
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -250,8 +246,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
     cv_scope = {'content_view_id': entity_dict['content_view']['id']}
     if entity_dict['repositories']:

@@ -38,11 +38,6 @@ options:
       - Name of the content credential
     required: true
     type: str
-  organization:
-    description:
-      - Organization name that the content credential is in
-    required: true
-    type: str
   content_type:
     description:
     - Type of credential
@@ -59,6 +54,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -91,8 +87,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity = module.find_resource_by_name('content_credentials', name=entity_dict['name'], params=scope, failsafe=True)
 
     module.ensure_entity('content_credentials', entity_dict, entity, params=scope)

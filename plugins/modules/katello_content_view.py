@@ -42,11 +42,6 @@ options:
     description:
       - Description of the Content View
     type: str
-  organization:
-    description:
-      - Organization that the Content View is in
-    required: true
-    type: str
   repositories:
     description:
       - List of repositories that include name and product.
@@ -99,6 +94,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -172,8 +168,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     if not module.desired_absent:
         if 'repositories' in entity_dict:
             if entity_dict['composite']:

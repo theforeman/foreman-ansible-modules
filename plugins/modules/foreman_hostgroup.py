@@ -223,12 +223,13 @@ from ansible.module_utils.foreman_helper import (
     build_fqn,
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
+    OrganizationMixin,
     parameter_entity_spec,
     split_fqn,
 )
 
 
-class ForemanHostgroupAnsibleModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
+class ForemanHostgroupAnsibleModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -321,8 +322,8 @@ def main():
                     entity_dict['organizations'].append(entity_dict['organization'])
             else:
                 entity_dict['organizations'] = [entity_dict['organization']]
-            entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], failsafe=False, thin=True)
-            scope = {'organization_id': entity_dict['organization']['id']}
+
+            entity_dict, scope = module.handle_organization_param(entity_dict)
 
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],

@@ -53,11 +53,6 @@ options:
       - Release version and base architecture of the repositories to enable
     required: true
     type: list
-  organization:
-    description:
-      - Organization name that the repository set is in
-    required: true
-    type: str
   state:
     description:
       - Whether the repositories are enabled or not
@@ -69,6 +64,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -173,8 +169,8 @@ def main():
 
     module.connect()
 
-    module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
-    scope = {'organization_id': module_params['organization']['id']}
+    module_params, scope = module.handle_organization_param(module_params)
+
     record_data = {}
     if 'product' in module_params:
         module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)

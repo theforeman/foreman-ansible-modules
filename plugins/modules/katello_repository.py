@@ -47,11 +47,6 @@ options:
     description:
       - label of the repository
     type: str
-  organization:
-    description:
-      - Organization that the Product is in
-    required: true
-    type: str
   content_type:
     description:
       - The content type of the repository (e.g. yum)
@@ -125,6 +120,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -202,8 +198,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=scope, thin=True)
 
     if not module.desired_absent:

@@ -49,11 +49,6 @@ options:
     description:
       - Description of the lifecycle environment
     type: str
-  organization:
-    description:
-      - Organization name that the lifecycle environment is in
-    required: true
-    type: str
   prior:
     description:
       - Name of the parent lifecycle environment
@@ -61,6 +56,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -96,8 +92,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity = module.find_resource_by_name('lifecycle_environments', name=entity_dict['name'], params=scope, failsafe=True)
     if not module.desired_absent:
         if 'prior' in entity_dict:

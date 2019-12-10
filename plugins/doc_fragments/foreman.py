@@ -165,3 +165,12 @@ options:
     required: false
     type: str
 '''
+
+    ORGANIZATION = '''
+options:
+  organization:
+    description:
+      - Organization that the entity is in
+    required: true
+    type: str
+'''

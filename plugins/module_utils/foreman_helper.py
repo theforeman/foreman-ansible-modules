@@ -168,6 +168,27 @@ class HostMixin(object):
         return entity_dict
 
 
+class OrganizationMixin(object):
+    def handle_organization_param(self, entity_dict):
+        """
+        Find the Organization referenced in the entity_dict.
+        This *always* executes the search as we also need to know the Organization when deleting entities.
+
+        Parameters:
+            entity_dict (dict): the entity data as entered by the user
+        Return value:
+            entity_dict (dict): updated data
+            scope (dict): params that can be passed to further API calls to scope for the Organization
+        """
+        entity_dict = entity_dict.copy()
+
+        entity_dict['organization'] = self.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+
+        scope = {'organization_id': entity_dict['organization']['id']}
+
+        return (entity_dict, scope)
+
+
 class ForemanAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec, **kwargs):
@@ -694,11 +715,11 @@ class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
         return entity_dict
 
 
-class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+class KatelloAnsibleModule(OrganizationMixin, KatelloMixin, ForemanAnsibleModule):
     pass
 
 
-class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
+class KatelloEntityAnsibleModule(OrganizationMixin, KatelloMixin, ForemanEntityAnsibleModule):
     pass
 
 

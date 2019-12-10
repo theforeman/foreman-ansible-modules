@@ -38,11 +38,6 @@ options:
       - Name of the activation key
     required: true
     type: str
-  organization:
-    description:
-      - Organization name that the activation key is in
-    required: true
-    type: str
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
@@ -147,6 +142,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -235,8 +231,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     if not module.desired_absent:
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name(

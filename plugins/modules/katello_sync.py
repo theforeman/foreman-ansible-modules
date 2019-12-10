@@ -36,10 +36,6 @@ author:
   - "Eric D Helms (@ehelms)"
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:
-  organization:
-    description: Organization that the I(product) is in
-    required: true
-    type: str
   product:
     description: Product to which the I(repository) lives in
     required: true
@@ -51,6 +47,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 ...
 '''
 
@@ -119,8 +116,8 @@ def main():
 
     module.connect()
 
-    params['organization'] = module.find_resource_by_name('organizations', params['organization'], thin=True)
-    scope = {'organization_id': params['organization']['id']}
+    params, scope = module.handle_organization_param(params)
+
     params['product'] = module.find_resource_by_name('products', params['product'], params=scope, thin=True)
     if 'repository' in params:
         product_scope = {'product_id': params['product']['id']}

@@ -45,11 +45,6 @@ options:
     description:
       - Description of the Content View Version
     type: str
-  organization:
-    description:
-      - Organization that the content view is in
-    required: true
-    type: str
   version:
     description:
       - The content view version number (i.e. 1.0)
@@ -78,6 +73,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -176,8 +172,7 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
 
     content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
 
