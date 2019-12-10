@@ -13,8 +13,8 @@
         manifest_state: present
     - include_tasks: tasks/repository_set.yml
       vars:
-        name: Red Hat Enterprise Linux 7 Server (RPMs)
-        product: Red Hat Enterprise Linux Server
+        label: rhel-7-server-rpms
+        all_repositories: True
         state: disabled
 
 - hosts: tests
@@ -100,6 +100,40 @@
             basearch: "x86_64"
           - releasever: "7.3"
             basearch: "x86_64"
+        state: disabled
+        expected_change: false
+
+    - name: enable repository_set by label, all repos
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-7-server-rpms
+        all_repositories: True
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*disabled"
+        expected_diff_after: "state.*enabled"
+    - name: enable repository_set by label, all repos, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-7-server-rpms
+        all_repositories: True
+        expected_change: false
+    - name: disable repository_set by label, all repos
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-7-server-rpms
+        all_repositories: True
+        state: disabled
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*enabled"
+        expected_diff_after: "state.*disabled"
+    - name: disable repository_set by name, all repos, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        name: Red Hat Enterprise Linux 7 Server (RPMs)
+        product: Red Hat Enterprise Linux Server
+        all_repositories: True
         state: disabled
         expected_change: false
 
