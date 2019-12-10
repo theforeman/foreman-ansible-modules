@@ -185,6 +185,8 @@ def main():
         repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
         record_data['name'] = module_params['name']
 
+    repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
+
     repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
     repo_set_scope.update(scope)
 
@@ -197,9 +199,13 @@ def main():
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
+    if not desired_repo_names:
+        module.warn("Desired repositories not found for repository set {0}. Available: {1}"
+                    .format(repo_set_identification, available_repo_names))
+
     if len(desired_repo_names - available_repo_names) > 0:
         module.fail_json(msg="Desired repositories are not available on the repository set {0}. Desired: {1} Available: {2}"
-                         .format(module_params['name'], desired_repo_names, available_repo_names))
+                         .format(repo_set_identification, desired_repo_names, available_repo_names))
 
     if module.state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
