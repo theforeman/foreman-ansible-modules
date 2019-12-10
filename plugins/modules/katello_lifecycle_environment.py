@@ -49,11 +49,6 @@ options:
     description:
       - Description of the lifecycle environment
     type: str
-  organization:
-    description:
-      - Organization name that the lifecycle environment is in
-    required: true
-    type: str
   prior:
     description:
       - Name of the parent lifecycle environment
@@ -61,6 +56,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''

@@ -45,11 +45,6 @@ options:
     description:
       - Description of the Katello sync plan
     type: str
-  organization:
-    description:
-      - Organization that the sync plan is in
-    required: true
-    type: str
   interval:
     description:
       - How often synchronization should run
@@ -83,6 +78,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''

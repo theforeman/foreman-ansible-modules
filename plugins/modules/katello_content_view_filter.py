@@ -47,11 +47,6 @@ options:
       - Name of the content view
     required: true
     type: str
-  organization:
-    description:
-      - Organization that the Content View is in
-    required: true
-    type: str
   filter_state:
     description:
       - State of the content view filter
@@ -142,6 +137,7 @@ options:
     type: bool
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''

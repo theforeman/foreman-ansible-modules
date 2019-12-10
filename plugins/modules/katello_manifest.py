@@ -33,11 +33,6 @@ description:
     - Upload and Manage Katello manifests
 author: "Andrew Kofink (@akofink)"
 options:
-  organization:
-    description:
-      - Organization that the manifest is in
-    required: true
-    type: str
   manifest_path:
     description:
       - Path to the manifest zip file
@@ -59,6 +54,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''

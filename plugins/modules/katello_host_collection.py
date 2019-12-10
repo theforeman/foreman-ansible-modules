@@ -40,11 +40,6 @@ options:
       - Description of the host collection
     required: false
     type: str
-  organization:
-    description:
-      - Organization that the host collection is in
-    required: true
-    type: str
   name:
     description:
       - Name of the host collection
@@ -57,6 +52,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''

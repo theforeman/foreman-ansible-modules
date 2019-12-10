@@ -42,11 +42,6 @@ options:
     description:
       - Description of the Content View
     type: str
-  organization:
-    description:
-      - Organization that the Content View is in
-    required: true
-    type: str
   repositories:
     description:
       - List of repositories that include name and product.
@@ -99,6 +94,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''

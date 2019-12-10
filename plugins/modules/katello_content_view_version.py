@@ -45,11 +45,6 @@ options:
     description:
       - Description of the Content View Version
     type: str
-  organization:
-    description:
-      - Organization that the content view is in
-    required: true
-    type: str
   version:
     description:
       - The content view version number (i.e. 1.0)
@@ -78,6 +73,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''

@@ -53,11 +53,6 @@ options:
       - Release version and base architecture of the repositories to enable
     required: true
     type: list
-  organization:
-    description:
-      - Organization name that the repository set is in
-    required: true
-    type: str
   state:
     description:
       - Whether the repositories are enabled or not
@@ -69,6 +64,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''

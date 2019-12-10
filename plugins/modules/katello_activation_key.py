@@ -38,11 +38,6 @@ options:
       - Name of the activation key
     required: true
     type: str
-  organization:
-    description:
-      - Organization name that the activation key is in
-    required: true
-    type: str
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
@@ -147,6 +142,7 @@ options:
     type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''

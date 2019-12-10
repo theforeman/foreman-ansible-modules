@@ -54,16 +54,12 @@ options:
       - Product to which the repository lives in
     required: true
     type: str
-  organization:
-    description:
-      - Organization that the Product is in
-    required: true
-    type: str
 notes:
   - Currently only uploading to deb, RPM & file repositories is supported
   - For anything but file repositories, a supporting library must be installed. See Requirements.
 extends_documentation_fragment:
   - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''

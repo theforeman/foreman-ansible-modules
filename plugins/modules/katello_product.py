@@ -40,11 +40,6 @@ options:
       - Name of the Katello product
     required: true
     type: str
-  organization:
-    description:
-      - Organization that the Product is in
-    required: true
-    type: str
   label:
     description:
       - Label to show the user
@@ -66,8 +61,9 @@ options:
     required: false
     type: str
 extends_documentation_fragment:
-  - foreman.entity_state_with_defaults
   - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''

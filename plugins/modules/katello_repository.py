@@ -47,11 +47,6 @@ options:
     description:
       - label of the repository
     type: str
-  organization:
-    description:
-      - Organization that the Product is in
-    required: true
-    type: str
   content_type:
     description:
       - The content type of the repository (e.g. yum)
@@ -125,6 +120,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''
