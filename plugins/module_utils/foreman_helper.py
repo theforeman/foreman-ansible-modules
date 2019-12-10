@@ -592,7 +592,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, ignore_check_mode=False, record_change=True):
+    def resource_action(self, resource, action, params, options=None, data=None, files=None, ignore_check_mode=False, record_change=True, ignore_task_errors=False):
         resource_payload = self._resource_prepare_params(resource, action, params)
         if options is None:
             options = {}
@@ -602,7 +602,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 result = self._resource_call(resource, action, resource_payload, options=options, data=data, files=files)
                 is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'started_at' in result
                 if is_foreman_task:
-                    result = self.wait_for_task(result)
+                    result = self.wait_for_task(result, ignore_errors=ignore_task_errors)
         except Exception as e:
             msg = 'Error while performing {0} on {1}: {2}'.format(
                 action, resource, str(e))
@@ -612,7 +612,7 @@ class ForemanAnsibleModule(AnsibleModule):
             self.set_changed()
         return result
 
-    def wait_for_task(self, task):
+    def wait_for_task(self, task, ignore_errors=False):
         duration = self.task_timeout
         while task['state'] not in ['paused', 'stopped']:
             duration -= self.task_poll
@@ -622,7 +622,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
             resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})
             task = self._resource_call('foreman_tasks', 'show', resource_payload)
-        if task['result'] != 'success':
+        if not ignore_errors and task['result'] != 'success':
             self.fail_json(msg='Task {0} did not succeed. Task information: {1}'.format(task['action'], task['humanized']['errors']))
         return task
 
