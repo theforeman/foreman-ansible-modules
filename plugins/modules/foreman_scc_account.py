@@ -151,18 +151,16 @@ def main():
                 module.fail_json(msg="Scc account password not provided")
 
         if entity_dict['test_connection']:
-            if not entity:
-                scc_account_credentials = {'login': entity_dict['login'], 'password': entity_dict['scc_account_password'], 'base_url': entity_dict['base_url']}
-                module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
-            else:
-                scc_account_credentials = {'id': entity['id']}
-                if 'login' in entity_dict:
-                    scc_account_credentials['login'] = entity_dict['login']
-                if 'scc_account_password' in entity_dict:
-                    scc_account_credentials['password'] = entity_dict['scc_account_password']
-                if 'base_url' in entity_dict:
-                    scc_account_credentials['base_url'] = entity_dict['base_url']
-                module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
+            scc_account_credentials = {}
+            if entity:
+                scc_account_credentials['id'] = entity['id']
+            if 'login' in entity_dict:
+                scc_account_credentials['login'] = entity_dict['login']
+            if 'scc_account_password' in entity_dict:
+                scc_account_credentials['password'] = entity_dict['scc_account_password']
+            if 'base_url' in entity_dict:
+                scc_account_credentials['base_url'] = entity_dict['base_url']
+            module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
 
     if 'updated_name' in entity_dict:
         entity_dict['name'] = entity_dict['updated_name']
