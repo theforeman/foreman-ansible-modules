@@ -223,12 +223,13 @@ from ansible.module_utils.foreman_helper import (
     build_fqn,
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
+    OrganizationMixin,
     parameter_entity_spec,
     split_fqn,
 )
 
 
-class ForemanHostgroupAnsibleModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
+class ForemanHostgroupAnsibleModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
