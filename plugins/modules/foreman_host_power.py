@@ -123,7 +123,7 @@ def main():
         power_state = module.resource_action('hosts', 'power', params=params, ignore_check_mode=True)
         power_state['state'] = 'on' if power_state['power'] == 'running' else 'off'
     else:
-    # end delete (on delete un-indent the below two lines)
+        # end delete (on delete un-indent the below two lines)
         params = {'id': entity_dict['name']}
         power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
 
