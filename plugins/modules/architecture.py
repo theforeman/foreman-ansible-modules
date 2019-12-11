@@ -77,7 +77,28 @@ EXAMPLES = '''
     state: absent
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    architectures:
+      description: List of architectures.
+      type: list
+      elements: dict
+      contains:
+        id:
+          description: Database id of the architecture.
+          type: int
+        name:
+          description: Name of the architecture.
+          type: str
+        operatinsystem_ids:
+          description: Database ids of associated operatingsystems.
+          type: list
+          elements: int
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
