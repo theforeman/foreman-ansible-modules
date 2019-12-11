@@ -197,9 +197,13 @@ def main():
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-    if len(desired_repo_names - available_repo_names) > 0:
-        module.fail_json(msg="Desired repositories are not available on the repository set {0}. Desired: {1} Available: {2}"
-                         .format(module_params['name'], desired_repo_names, available_repo_names))
+    if len(module_params['repositories']) != len(desired_repo_names):
+        repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
+
+        error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
+                    repo_set_identification, module_params['repositories'], desired_repo_names, available_repo_names)
+
+        module.fail_json(msg=error_msg)
 
     if module.state == 'enabled':
         for repo in desired_repo_names - current_repo_names:
