@@ -113,7 +113,7 @@ def main():
                 if 'repository_url' in entity_dict:
                     params['repository_url'] = entity_dict['repository_url']
                 params.update(scope)
-                result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False)
+                result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False, ignore_task_errors=True)
                 for error in result['humanized']['errors']:
                     if "same as existing data" in error:
                         # Nothing changed, but everything ok
