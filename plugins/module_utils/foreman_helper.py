@@ -381,7 +381,7 @@ class ForemanAnsibleModule(AnsibleModule):
             result = None
         else:
             if len(results) > 1:
-                error_msg = "too many"
+                error_msg = "too many ({0})".format(len(results))
             else:
                 error_msg = "no"
             self.fail_json(msg="Found {0} results while searching for {1} with {2}".format(error_msg, resource, search))
