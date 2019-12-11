@@ -132,7 +132,8 @@ def main():
             state=dict(default='present', choices=['present', 'absent', 'synced']),
         ),
         argument_spec=dict(
-            test_connection=dict(type='bool', default=False)),
+            test_connection=dict(type='bool', default=False),
+        ),
     )
 
     entity_dict = module.clean_params()
