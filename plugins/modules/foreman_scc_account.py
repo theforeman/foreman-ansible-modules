@@ -167,7 +167,10 @@ def main():
         entity_dict['name'] = entity_dict['updated_name']
 
     if module.state == 'synced':
-        module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
+        if entity:
+            module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
+        else:
+            module.fail_json(msg="Could not find SCC account {0} to sync".format(entity_dict['name']))
     else:
         module.ensure_entity('scc_accounts', entity_dict, entity, params=scope)
 
