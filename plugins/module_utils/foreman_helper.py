@@ -380,7 +380,11 @@ class ForemanAnsibleModule(AnsibleModule):
         elif failsafe:
             result = None
         else:
-            self.fail_json(msg="No data found for %s" % search)
+            if len(results) > 1:
+                error_msg = "too many"
+            else:
+                error_msg = "no"
+            self.fail_json(msg="Found {0} results while searching for {1} with {2}".format(error_msg, resource, search))
         if result:
             if thin:
                 result = {'id': result['id']}
