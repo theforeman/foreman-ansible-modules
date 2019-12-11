@@ -164,7 +164,7 @@ def main():
             module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
 
     if 'updated_name' in entity_dict:
-        entity_dict['name'] = entity_dict['updated_name']
+        entity_dict['name'] = entity_dict.pop('updated_name')
 
     if module.state == 'synced':
         if entity:
