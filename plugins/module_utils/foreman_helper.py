@@ -624,7 +624,7 @@ class ForemanAnsibleModule(AnsibleModule):
             resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})
             task = self._resource_call('foreman_tasks', 'show', resource_payload)
         if not ignore_errors and task['result'] != 'success':
-            self.fail_json(msg='Task {0}({1}) did not succeed. Task information: {1}'.format(task['action'], task['id'], task['humanized']['errors']))
+            self.fail_json(msg='Task {0}({1}) did not succeed. Task information: {2}'.format(task['action'], task['id'], task['humanized']['errors']))
         return task
 
     def fail_from_exception(self, exc, msg):

@@ -132,7 +132,8 @@ def main():
             state=dict(default='present', choices=['present', 'absent', 'synced']),
         ),
         argument_spec=dict(
-            test_connection=dict(type='bool', default=False)),
+            test_connection=dict(type='bool', default=False),
+        ),
     )
 
     entity_dict = module.clean_params()
@@ -141,7 +142,9 @@ def main():
 
     entity_dict, scope = module.handle_organization_param(entity_dict)
 
-    entity = module.find_resource_by_name('scc_accounts', name=entity_dict['name'], params=scope, failsafe=True)
+    failsafe = (module.state != 'synced')
+
+    entity = module.find_resource_by_name('scc_accounts', name=entity_dict['name'], params=scope, failsafe=failsafe)
 
     if not module.desired_absent:
         if not entity:
@@ -163,7 +166,7 @@ def main():
             module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
 
     if 'updated_name' in entity_dict:
-        entity_dict['name'] = entity_dict['updated_name']
+        entity_dict['name'] = entity_dict.pop('updated_name')
 
     if module.state == 'synced':
         module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
