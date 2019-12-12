@@ -18,7 +18,7 @@ jobs:
           python-version: "3.7"
       - name: Install Ansible
         run: pip install --upgrade ansible
-      - name: Deploy Ansible Galaxy Collection
-        uses: artis3n/ansible_galaxy_collection@v1.0.10
-        with:
-          api_key: ${{ secrets.GALAXY_API_KEY }}
+      - name: Build Ansible Collection
+        run: make dist
+      - name: Deploy Ansible Collection
+        run: ansible-galaxy collection publish --api-key ${{ secrets.GALAXY_API_KEY }} theforeman-foreman-*.tar.gz
