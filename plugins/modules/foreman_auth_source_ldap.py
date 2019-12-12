@@ -160,7 +160,108 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    bookmarks:
+      description: List of auth sources for LDAP.
+      type: list
+      elements: dict
+      contains:
+        id:
+          description: Database id of the auth source.
+          type: int
+        name:
+          description: Name of the auth source.
+          type: str
+        organisations:
+          description: List of thin representation of associated organisations.
+          type: list
+        locations:
+          description: List of thin representation of associated locations.
+          type: list
+        created_at:
+          description: Creation date of the auth source.
+          type: str
+        updated_at:
+          description: Date of last update of the auth source.
+          type: str
+        server_type:
+          description: Type of the LDAP server.
+          type: str
+        host:
+          description: Address of the LDAP server.
+          type: str
+        port:
+          description: Port of the LDAP server.
+          type: int
+        tls:
+          Description: Whether the connection to the LDAP server is secured by TLS.
+          type: bool
+        account": "ansible",
+        attr_firstname": "givenName",
+        attr_lastname": "sn",
+        attr_login": "uid",
+        attr_mail": "mail",
+        attr_photo": null,
+        base_dn": "uid",
+        external_usergroups": [],
+        groups_base": "cn=groups,cn=accounts,dc=example,dc=com",
+        ldap_filter": "(uid=%s)",
+        onthefly_register": true,
+        type": "AuthSourceLdap",
+        use_netgroups": false,
+        usergroup_sync": true
+'''
+
+# "entity": {
+#         "auth_source_ldaps": [
+#             {
+#                 "account": "ansible",
+#                 "attr_firstname": "givenName",
+#                 "attr_lastname": "sn",
+#                 "attr_login": "uid",
+#                 "attr_mail": "mail",
+#                 "attr_photo": null,
+#                 "base_dn": "uid",
+#                 "created_at": "2019-11-21 11:14:34 UTC",
+#                 "external_usergroups": [],
+#                 "groups_base": "cn=groups,cn=accounts,dc=example,dc=com",
+#                 "host": "ldap.example.com",
+#                 "id": 10,
+#                 "ldap_filter": "(uid=%s)",
+#                 "locations": [
+#                     {
+#                         "description": null,
+#                         "id": 27,
+#                         "name": "Test Location",
+#                         "title": "Test Location"
+#                     }
+#                 ],
+#                 "name": "Example LDAP",
+#                 "onthefly_register": true,
+#                 "organizations": [
+#                     {
+#                         "description": "A test organization",
+#                         "id": 33,
+#                         "name": "Test Organization",
+#                         "title": "Test Organization"
+#                     }
+#                 ],
+#                 "port": 389,
+#                 "server_type": "free_ipa",
+#                 "tls": true,
+#                 "type": "AuthSourceLdap",
+#                 "updated_at": "2019-11-21 11:14:34 UTC",
+#                 "use_netgroups": false,
+#                 "usergroup_sync": true
+#             }
+#         ]
+#     },
+
 
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
