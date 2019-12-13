@@ -530,7 +530,10 @@ def main():
 
     if not module.desired_absent:
         if 'mail' not in entity_dict:
-            entity_dict['mail'] = entity['mail']
+            if not entity:
+                module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
+            else:
+                entity_dict['mail'] = entity['mail']
 
         if 'default_location' in entity_dict:
             entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)
