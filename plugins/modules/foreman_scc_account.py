@@ -138,6 +138,8 @@ def main():
 
     entity_dict = module.clean_params()
 
+    module.task_timeout = 4 * 60
+
     module.connect()
 
     entity_dict, scope = module.handle_organization_param(entity_dict)
