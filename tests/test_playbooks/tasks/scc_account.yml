@@ -1,0 +1,36 @@
+- name: "Ensure scc_account '{{ scc_account_name }}' is {{ scc_account_state }} change {{ expected_change }} "
+  vars:
+    scc_account_state: "present"
+    scc_account_name: 'Test'
+    organization_name: 'Test Organization'
+  foreman_scc_account:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ scc_account_name }}"
+    updated_name: "{{ scc_account_updated_name | default(omit) }}"
+    login: "{{ scc_account_login | default(omit) }}"
+    scc_account_password: "{{ scc_account_password | default(omit) }}"
+    organization: "{{ organization_name }}"
+    base_url: "{{ scc_account_base_url | default(omit) }}"
+    interval: "{{ scc_account_interval | default(omit) }}"
+    sync_date: "{{ scc_account_sync_date | default(omit) }}"
+    test_connection: "{{ test_connection | default(false) }}"
+    state: "{{ scc_account_state }}"
+  register: result
+  ignore_errors: "{{ expected_fail | default(false) }}"
+
+- assert:
+    fail_msg: "Ensuring scc_account is {{ scc_account_state }} failed! (expected_change: {{ expected_change }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- assert:
+    fail_msg: "Ensuring scc_account failed as expected!"
+    that:
+      - result is failed
+  when:
+      - expected_fail is defined
+      - expected_fail
+...

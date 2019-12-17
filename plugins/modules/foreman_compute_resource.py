@@ -87,23 +87,10 @@ options:
         description:
           - oVirt quota ID, only valid for I(provider=ovirt)
         type: str
-  locations:
-    description: List of locations the compute resource should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the compute resource should be assigned to
-    required: false
-    type: list
-  state:
-    description:
-      - compute resource presence
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    required: false
-    default: present
-    choices: ["present", "absent", "present_with_defaults"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -190,7 +177,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 def get_provider_info(provider):
@@ -210,13 +197,11 @@ def get_provider_info(provider):
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             provider=dict(choices=['vmware', 'libvirt', 'ovirt']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
@@ -249,15 +234,11 @@ def main():
 
     entity = module.find_resource_by_name('compute_resources', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict['updated_name']
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
         if 'provider' in entity_dict:
             entity_dict['provider'], provider_param_keys = get_provider_info(provider=entity_dict['provider'])

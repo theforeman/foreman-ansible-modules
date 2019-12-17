@@ -45,12 +45,9 @@ options:
     description: List of operating systems the architecture should be assigned to
     required: false
     type: list
-  state:
-    description: Architecture presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
 '''
 
 EXAMPLES = '''

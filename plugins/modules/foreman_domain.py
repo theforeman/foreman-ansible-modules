@@ -53,51 +53,14 @@ options:
     description: Full name describing the domain
     required: false
     type: str
-  locations:
-    description: List of locations the domain should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the domain should be assigned to
-    required: false
-    type: list
   parameters:
     description:
       - Domain specific host parameters
-    required: false
-    type: list
-    elements: dict
-    suboptions:
-      name:
-        description:
-          - Name of the parameter
-        required: true
-        type: str
-      value:
-        description:
-          - Value of the parameter
-        required: true
-        type: raw
-      parameter_type:
-        description:
-          - Type of the parameter
-        default: 'string'
-        choices:
-          - 'string'
-          - 'boolean'
-          - 'integer'
-          - 'real'
-          - 'array'
-          - 'hash'
-          - 'yaml'
-          - 'json'
-        type: str
-  state:
-    description: domain presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
+  - foreman.nested_parameters
 '''
 
 EXAMPLES = '''
@@ -117,11 +80,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -129,8 +92,6 @@ def main():
             name=dict(required=True),
             description=dict(aliases=['fullname'], flat_name='fullname'),
             dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns']),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
     )
@@ -142,17 +103,13 @@ def main():
     # Try to find the Domain to work on
     entity = module.find_resource_by_name('domains', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
         if 'dns_proxy' in entity_dict:
             entity_dict['dns_proxy'] = module.find_resource_by_name('smart_proxies', entity_dict['dns_proxy'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     parameters = entity_dict.get('parameters')
 

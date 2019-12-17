@@ -45,11 +45,6 @@ options:
     description:
       - Description of the Katello sync plan
     type: str
-  organization:
-    description:
-      - Organization that the sync plan is in
-    required: true
-    type: str
   interval:
     description:
       - How often synchronization should run
@@ -80,17 +75,10 @@ options:
       - List of products to include in the sync plan
     required: false
     type: list
-  state:
-    description:
-      - State of the Sync plan
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - absent
-      - present_with_defaults
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -141,8 +129,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
 
     products = entity_dict.pop('products', None)

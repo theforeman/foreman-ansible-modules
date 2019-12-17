@@ -1,0 +1,24 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+      - name: Install Ansible
+        run: pip install --upgrade ansible
+      - name: Build Ansible Collection
+        run: make dist
+      - name: Deploy Ansible Collection
+        run: ansible-galaxy collection publish --api-key ${{ secrets.GALAXY_API_KEY }} theforeman-foreman-*.tar.gz

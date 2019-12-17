@@ -38,11 +38,6 @@ options:
       - Name of the activation key
     required: true
     type: str
-  organization:
-    description:
-      - Organization name that the activation key is in
-    required: true
-    type: str
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
@@ -89,6 +84,7 @@ options:
         choices:
           - enabled
           - disabled
+          - default
         type: str
         required: true
   auto_attach:
@@ -107,6 +103,27 @@ options:
       - Standard
       - Premium
     type: str
+  max_hosts:
+    description:
+      - Maximum number of registered content hosts.
+      - Required if I(unlimited_hosts=false)
+    type: int
+  unlimited_hosts:
+    description:
+      - Can the activation key have unlimited hosts
+    type: bool
+  purpose_usage:
+    description:
+      - Sets the system purpose usage
+    type: str
+  purpose_role:
+    description:
+      - Sets the system purpose role
+    type: str
+  purpose_addons:
+    description:
+      - Sets the system purpose add-ons
+    type: list
   state:
     description:
       - State of the Activation Key
@@ -123,7 +140,9 @@ options:
     description:
       - Name of the new activation key when state == copied
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -182,6 +201,11 @@ def main():
             auto_attach=dict(type='bool'),
             release_version=dict(),
             service_level=dict(choices=['Self-Support', 'Standard', 'Premium']),
+            max_hosts=dict(type='int'),
+            unlimited_hosts=dict(type='bool'),
+            purpose_usage=dict(),
+            purpose_role=dict(),
+            purpose_addons=dict(type='list'),
         ),
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(
@@ -193,12 +217,13 @@ def main():
             ),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
-                override=dict(required=True, choices=['enabled', 'disabled']),
+                override=dict(required=True, choices=['enabled', 'disabled', 'default']),
             )),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
         required_if=[
             ['state', 'copied', ['new_name']],
+            ['unlimited_hosts', False, ['max_hosts']],
         ],
     )
 
@@ -206,8 +231,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     if not module.desired_absent:
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name(
@@ -298,10 +323,10 @@ def main():
             module.record_after_full('activation_keys/content_overrides', {'id': activation_key['id'], 'content_overrides': desired_content_overrides})
 
             for label, override in desired_content_overrides.items():
-                if override != current_content_overrides.pop(label, None):
+                if override is not None and override != current_content_overrides.pop(label, None):
                     changed_content_overrides.append({'content_label': label, 'value': override})
             for label in current_content_overrides.keys():
-                changed_content_overrides.append({'content_label': label, 'reset': True})
+                changed_content_overrides.append({'content_label': label, 'remove': True})
 
             if changed_content_overrides:
                 payload = {

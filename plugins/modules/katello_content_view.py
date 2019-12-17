@@ -42,11 +42,6 @@ options:
     description:
       - Description of the Content View
     type: str
-  organization:
-    description:
-      - Organization that the Content View is in
-    required: true
-    type: str
   repositories:
     description:
       - List of repositories that include name and product.
@@ -63,16 +58,6 @@ options:
           - Product of the Repository to be added
         type: str
         required: true
-  state:
-    description:
-      - State of the content view
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
-    type: str
   auto_publish:
     description:
       - Auto publish composite view when a new version of a component content view is created.
@@ -106,7 +91,10 @@ options:
         type: str
         aliases:
           - version
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -180,8 +168,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     if not module.desired_absent:
         if 'repositories' in entity_dict:
             if entity_dict['composite']:

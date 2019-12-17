@@ -9,6 +9,7 @@ DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 COLLECTION_TMP:=$(shell mktemp -du)
 COLLECTION_INSTALL_TMP:=$(shell mktemp -du)
+PYTEST=pytest -n 4 --boxed -v
 
 default: help
 help:
@@ -28,23 +29,23 @@ lint:
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 
 test:
-	pytest -v $(TEST)
+	$(PYTEST) $(TEST)
 
 test-crud:
-	pytest -v 'tests/test_crud.py::test_crud'
+	$(PYTEST) 'tests/test_crud.py::test_crud'
 
 test-check-mode:
-	pytest -v 'tests/test_crud.py::test_check_mode'
+	$(PYTEST) 'tests/test_crud.py::test_check_mode'
 
 test-other:
-	pytest -v -k 'not test_crud.py'
+	$(PYTEST) -k 'not test_crud.py'
 
 test_%: FORCE
-	pytest 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
+	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
 
 record_%: FORCE
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
-	pytest 'tests/test_crud.py::test_crud[$*]' --record
+	pytest -v 'tests/test_crud.py::test_crud[$*]' --record
 
 clean_%: FORCE
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
@@ -79,7 +80,10 @@ dist:
 
 	# fix the imports to use the collection namespace
 	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
-	sed -i '/extends_documentation_fragment/ s/foreman/theforeman.foreman.foreman/g' $(COLLECTION_TMP)/plugins/modules/*.py
+	sed -i -e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' $(COLLECTION_TMP)/plugins/modules/*.py
+
+	# adjust README.md not to point to files that we don't ship in the collection
+	sed -i '/Documentation how to/d' $(COLLECTION_TMP)/README.md
 
 	ansible-galaxy collection build $(COLLECTION_TMP)
 

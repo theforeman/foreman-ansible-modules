@@ -54,10 +54,6 @@ options:
     description:
       - The category the template should be assigend to
     type: str
-  locations:
-    description:
-      - The locations the template should be assigend to
-    type: list
   locked:
     description:
       - Determines whether the template shall be locked
@@ -74,14 +70,10 @@ options:
          The special name "*" (only possible as parameter) is used
          to perform bulk actions (modify, delete) on all existing Job Templates.
     type: str
-  organizations:
-    description:
-      - The organizations the template shall be assigned to
-    type: list
   provider_type:
     description:
       - Determines via which provider the template shall be executed
-    required: true
+    required: false
     type: str
   snippet:
     description:
@@ -125,6 +117,7 @@ options:
       name:
         description:
           - name of the Template Input
+        required: true
         type: str
       options:
         description:
@@ -158,17 +151,10 @@ options:
         description:
           - Type of the resource
         type: str
-  state:
-    description:
-      - The state the template should be in.
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - absent
-      - present
-      - present_with_defaults
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -300,7 +286,7 @@ RETURN = ''' # '''
 
 import os
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
 )
@@ -338,14 +324,12 @@ template_input_entity_spec = {
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             description_format=dict(),
             job_category=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool', default=False),
             name=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),
@@ -422,12 +406,7 @@ def main():
     else:
         entity = module.find_resource_by_name('job_templates', name=entity_dict['name'], failsafe=True)
 
-    if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     # TemplateInputs need to be added as separate entities later
     template_inputs = entity_dict.get('template_inputs')

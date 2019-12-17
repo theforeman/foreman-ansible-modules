@@ -74,11 +74,6 @@ options:
         the Provisioning Template "content".
     required: false
     type: path
-  locations:
-    description:
-      - The locations the template should be assigend to
-    required: false
-    type: list
   locked:
     description:
       - Determines whether the template shall be locked
@@ -98,26 +93,14 @@ options:
   updated_name:
     description: New provisioning template name. When this parameter is set, the module will not be idempotent.
     type: str
-  organizations:
-    description:
-      - The organizations the template shall be assigned to
-    required: false
-    type: list
   operatingsystems:
     description: The Operatingsystems the template shall be assigned to
     required: false
     type: list
-  state:
-    description:
-      - The state the template should be in
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - absent
-      - present
-      - present_with_defaults
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -241,7 +224,7 @@ RETURN = ''' # '''
 import os
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
 )
@@ -260,7 +243,7 @@ def find_template_kind(module, entity_dict):
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             audit_comment=dict(),
             file_name=dict(type='path'),
@@ -284,10 +267,8 @@ def main():
                 'ZTP',
             ], type='entity', flat_name='template_kind_id'),
             template=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
             locked=dict(type='bool'),
             name=dict(),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
             snippet=dict(type='invisible'),
         ),
@@ -353,14 +334,11 @@ def main():
     else:
         entity = module.find_resource_by_name('provisioning_templates', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if not affects_multiple and entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
         if 'operatingsystems' in entity_dict:
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)

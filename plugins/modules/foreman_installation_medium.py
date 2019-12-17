@@ -44,47 +44,22 @@ options:
   updated_name:
     description: New full installation medium name. When this parameter is set, the module will not be idempotent.
     type: str
-  locations:
-    description: List of locations the installation medium should be assigned to
-    required: false
-    type: list
   operatingsystems:
     description: List of operating systems the installation medium should be assigned to
     required: false
     type: list
-  organizations:
-    description: List of organizations the installation medium should be assigned to
-    required: false
-    type: list
   os_family:
-    description: The OS family the template shall be assigned with. If no os_family is set but a operatingsystem, the value will be derived from it.
-    required: false
-    choices:
-      - AIX
-      - Altlinux
-      - Archlinux
-      - Coreos
-      - Debian
-      - Freebsd
-      - Gentoo
-      - Junos
-      - NXOS
-      - Rancheros
-      - Redhat
-      - Solaris
-      - Suse
-      - Windows
-      - Xenserver
-    type: str
+    description:
+      - The OS family the template shall be assigned with.
+      - If no os_family is set but a operatingsystem, the value will be derived from it.
   path:
     description: Path to the installation medium
     type: str
-  state:
-    description: installation medium presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
+  - foreman.taxonomy
+  - foreman.os_family
 '''
 
 EXAMPLES = '''
@@ -106,18 +81,17 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, OS_LIST
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, OS_LIST
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         entity_spec=dict(
             name=dict(required=True),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
             os_family=dict(choices=OS_LIST),
             path=dict(),
@@ -151,6 +125,8 @@ def main():
     else:
         entity = module.find_resource_by_name('media', name=entity_dict['name'], failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if not affects_multiple and entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
@@ -158,12 +134,6 @@ def main():
             entity_dict['operatingsystems'] = module.find_operatingsystems(entity_dict['operatingsystems'], thin=True)
             if not affects_multiple and len(entity_dict['operatingsystems']) == 1 and 'os_family' not in entity_dict and entity is None:
                 entity_dict['os_family'] = module.show_resource('operatingsystems', entity_dict['operatingsystems'][0]['id'])['family']
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     if not affects_multiple:
         module.ensure_entity('media', entity_dict, entity)

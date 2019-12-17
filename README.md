@@ -19,7 +19,7 @@ We actively test the modules against the latest stable Foreman release and the m
 
 ### Supported Ansible Versions
 
-The modules should work with Ansible >= 2.3.
+The supported Ansible versions are aligned with currently maintained ansible versions. You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status). Older Ansible versions (Ansible >= 2.3) should work but are not tested.
 
 As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
 
@@ -28,6 +28,9 @@ As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansib
 Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
 
 ### Known issues
+
+* Some modules, e.g. `katello_sync` and `katello_content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
+  As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
 
 * `foreman_compute_resource` leak sensible data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over ansible resources can leak sensible data. You can prevent this by using `no_log: yes` on the task.
   

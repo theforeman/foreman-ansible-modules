@@ -142,51 +142,14 @@ options:
     description: MTU
     required: false
     type: int
-  organizations:
-    description: List of oganizations the subnet should be assigned to
-    required: false
-    type: list
-  locations:
-    description: List of locations the subnet should be assigned to
-    required: false
-    type: list
   parameters:
     description:
       - Subnet specific host parameters
-    required: false
-    type: list
-    elements: dict
-    suboptions:
-      name:
-        description:
-          - Name of the parameter
-        required: true
-        type: str
-      value:
-        description:
-          - Value of the parameter
-        required: true
-        type: raw
-      parameter_type:
-        description:
-          - Type of the parameter
-        default: 'string'
-        choices:
-          - 'string'
-          - 'boolean'
-          - 'integer'
-          - 'real'
-          - 'array'
-          - 'hash'
-          - 'yaml'
-          - 'json'
-        type: str
-  state:
-    description: subnet presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
+  - foreman.nested_parameters
 '''
 
 EXAMPLES = '''
@@ -222,7 +185,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
 try:
     import ipaddress
     HAS_IPADDRESS = True
@@ -232,7 +195,7 @@ except ImportError:
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -260,8 +223,6 @@ def main():
             remote_execution_proxies=dict(type='entity_list', flat_name='remote_execution_proxy_ids'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         ),
         required_one_of=[['cidr', 'mask']],
@@ -275,6 +236,8 @@ def main():
     module.connect()
 
     entity = module.find_resource_by_name('subnets', entity_dict['name'], failsafe=True)
+
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     if not module.desired_absent:
         if entity and 'updated_name' in entity_dict:
@@ -297,12 +260,6 @@ def main():
 
         if 'remote_execution_proxies' in entity_dict:
             entity_dict['remote_execution_proxies'] = module.find_resources_by_name('smart_proxies', entity_dict['remote_execution_proxies'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
     parameters = entity_dict.get('parameters')
 

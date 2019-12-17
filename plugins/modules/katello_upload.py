@@ -54,15 +54,12 @@ options:
       - Product to which the repository lives in
     required: true
     type: str
-  organization:
-    description:
-      - Organization that the Product is in
-    required: true
-    type: str
 notes:
   - Currently only uploading to deb, RPM & file repositories is supported
   - For anything but file repositories, a supporting library must be installed. See Requirements.
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -136,7 +133,6 @@ def main():
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
             product=dict(required=True),
-            organization=dict(required=True),
         ),
     )
 
@@ -144,8 +140,8 @@ def main():
 
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
+
     entity_dict['product'] = module.find_resource_by_name('products', entity_dict['product'], params=scope, thin=True)
     product_scope = {'product_id': entity_dict['product']['id']}
     entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
@@ -180,7 +176,10 @@ def main():
 
     if not content_unit:
         if not module.check_mode:
-            content_upload = module.resource_action('content_uploads', 'create', repository_scope)
+            size = os.stat(entity_dict['src']).st_size
+            content_upload_payload = {'size': size}
+            content_upload_payload.update(repository_scope)
+            content_upload = module.resource_action('content_uploads', 'create', content_upload_payload)
             content_upload_scope = {'id': content_upload['upload_id']}
             content_upload_scope.update(repository_scope)
 
@@ -188,7 +187,7 @@ def main():
 
             with open(b_src, 'rb') as contentfile:
                 for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
-                    data = {'content': chunk, 'offset': offset}
+                    data = {'content': chunk, 'offset': offset, 'size': len(chunk)}
                     module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
 
                     offset += len(chunk)

@@ -274,25 +274,10 @@ options:
       - List of roles assigned to the user
     required: false
     type: list
-  locations:
-    description:
-      - List of locations assigned to the user
-    required: false
-    type: list
-  organizations:
-    description:
-      - List of organizations assigned to the user
-    required: false
-    type: list
-  state:
-    description:
-      - State of the user
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -334,7 +319,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
 )
 
 
@@ -516,7 +501,7 @@ locale_list = [
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
@@ -531,8 +516,6 @@ def main():
             timezone=dict(required=False, choices=timezone_list),
             locale=dict(required=False, choices=locale_list),
             roles=dict(required=False, type='entity_list', flat_name='role_ids'),
-            locations=dict(required=False, type='entity_list', flat_name='location_ids'),
-            organizations=dict(required=False, type='entity_list', flat_name='organization_ids')
         ),
     )
 
@@ -543,9 +526,14 @@ def main():
     search = 'login="{0}"'.format(entity_dict['login'])
     entity = module.find_resource('users', search, failsafe=True)
 
+    entity_dict = module.handle_taxonomy_params(entity_dict)
+
     if not module.desired_absent:
         if 'mail' not in entity_dict:
-            entity_dict['mail'] = entity['mail']
+            if not entity:
+                module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
+            else:
+                entity_dict['mail'] = entity['mail']
 
         if 'default_location' in entity_dict:
             entity_dict['default_location'] = module.find_resource_by_title('locations', entity_dict['default_location'], thin=True)
@@ -558,12 +546,6 @@ def main():
 
         if 'roles' in entity_dict:
             entity_dict['roles'] = module.find_resources_by_name('roles', entity_dict['roles'], thin=True)
-
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
     module.ensure_entity('users', entity_dict, entity)
 

@@ -63,7 +63,8 @@ options:
     aliases: [ info ]
 notes:
   - Some resources don't support scoping and will return errors when you pass I(organization) or unknown data in I(params).
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''
@@ -153,6 +154,9 @@ def main():
 
     module.connect()
 
+    if resource not in module.foremanapi.resources:
+        msg = "Resource '{0}' does not exist in the API. Existing resources: {1}".format(resource, ', '.join(sorted(module.foremanapi.resources)))
+        module.fail_json(msg=msg)
     if 'organization' in module_params:
         params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
 

@@ -48,19 +48,13 @@ options:
   vm_attrs:
     description:
       - Hash containing the data of vm_attrs
-    required: true
+    required: false
     aliases:
       - vm_attributes
     type: dict
-  state:
-    description:
-      - State of the compute attribute
-    choices:
-      - present
-      - absent
-    default: present
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
 '''
 
 EXAMPLES = '''

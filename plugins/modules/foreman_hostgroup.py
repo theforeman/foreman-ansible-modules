@@ -50,34 +50,6 @@ options:
     description: Hostgroup parent name
     required: false
     type: str
-  organizations:
-    description: List of organizations names
-    required: false
-    type: list
-  locations:
-    description: List of locations names
-    required: false
-    type: list
-  compute_resource:
-    description: Compute resource name
-    required: false
-    type: str
-  compute_profile:
-    description: Compute profile name
-    required: false
-    type: str
-  domain:
-    description: Domain name
-    required: false
-    type: str
-  subnet:
-    description: IPv4 Subnet name
-    required: false
-    type: str
-  subnet6:
-    description: IPv6 Subnet name
-    required: false
-    type: str
   realm:
     description: Realm name
     required: false
@@ -160,6 +132,10 @@ options:
     description: Katello Lifecycle environment. Only available for katello installations.
     required: false
     type: str
+  kickstart_repository:
+    description: Kickstart repository name. Only available for katello installations.
+    required: false
+    type: str
   content_view:
     description: Katello Content view. Only available for katello installations.
     required: false
@@ -167,40 +143,12 @@ options:
   parameters:
     description:
       - Hostgroup specific host parameters
-    required: false
-    type: list
-    elements: dict
-    suboptions:
-      name:
-        description:
-          - Name of the parameter
-        required: true
-        type: str
-      value:
-        description:
-          - Value of the parameter
-        required: true
-        type: raw
-      parameter_type:
-        description:
-          - Type of the parameter
-        default: 'string'
-        choices:
-          - 'string'
-          - 'boolean'
-          - 'integer'
-          - 'real'
-          - 'array'
-          - 'hash'
-          - 'yaml'
-          - 'json'
-        type: str
-  state:
-    description: Hostgroup presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
+  - foreman.nested_parameters
+  - foreman.host_options
 '''
 
 EXAMPLES = '''
@@ -241,7 +189,7 @@ EXAMPLES = '''
     parent: "new_hostgroup"
     name: "my nested hostgroup"
 
-- name: "My hostgroup with ome proxies"
+- name: "My hostgroup with some proxies"
   foreman_hostgroup:
     name: "my hostgroup"
     environment: production
@@ -273,25 +221,24 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     build_fqn,
-    ForemanEntityAnsibleModule,
+    HostMixin,
+    ForemanTaxonomicEntityAnsibleModule,
+    OrganizationMixin,
     parameter_entity_spec,
     split_fqn,
 )
 
 
+class ForemanHostgroupAnsibleModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanHostgroupAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity', flat_name='parent_id'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
-            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
-            domain=dict(type='entity', flat_name='domain_id'),
-            subnet=dict(type='entity', flat_name='subnet_id'),
-            subnet6=dict(type='entity', flat_name='subnet6_id'),
             realm=dict(type='entity', flat_name='realm_id'),
             architecture=dict(type='entity', flat_name='architecture_id'),
             operatingsystem=dict(type='entity', flat_name='operatingsystem_id'),
@@ -310,6 +257,7 @@ def main():
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
             content_source=dict(type='entity', flat_name='content_source_id'),
             lifecycle_environment=dict(type='entity', flat_name='lifecycle_environment_id'),
+            kickstart_repository=dict(type='entity', flat_name='kickstart_repository_id'),
             content_view=dict(type='entity', flat_name='content_view_id'),
         ),
         argument_spec=dict(
@@ -343,24 +291,6 @@ def main():
             module.exit_json()
 
     if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'compute_resource' in entity_dict:
-            entity_dict['compute_resource'] = module.find_resource_by_name('compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True)
-
-        if 'compute_profile' in entity_dict:
-            entity_dict['compute_profile'] = module.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
-
-        if 'domain' in entity_dict:
-            entity_dict['domain'] = module.find_resource_by_name('domains', name=entity_dict['domain'], failsafe=False, thin=True)
-
-        if 'subnet' in entity_dict:
-            entity_dict['subnet'] = module.find_resource_by_name('subnets', name=entity_dict['subnet'], failsafe=False, thin=True)
-
-        if 'subnet6' in entity_dict:
-            entity_dict['subnet6'] = module.find_resource_by_name('subnets', name=entity_dict['subnet6'], failsafe=False, thin=True)
-
         if 'realm' in entity_dict:
             entity_dict['realm'] = module.find_resource_by_name('realms', name=entity_dict['realm'], failsafe=False, thin=True)
 
@@ -392,19 +322,23 @@ def main():
                     entity_dict['organizations'].append(entity_dict['organization'])
             else:
                 entity_dict['organizations'] = [entity_dict['organization']]
-            entity_dict['organization'] = module.find_resource_by_name('organizations', name=entity_dict['organization'], failsafe=False, thin=True)
-            scope = {'organization_id': entity_dict['organization']['id']}
 
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+            entity_dict, scope = module.handle_organization_param(entity_dict)
 
         if 'lifecycle_environment' in entity_dict:
             entity_dict['lifecycle_environment'] = module.find_resource_by_name('lifecycle_environments', name=entity_dict['lifecycle_environment'],
                                                                                 params=scope, failsafe=False, thin=True)
 
+        if 'kickstart_repository' in entity_dict:
+            entity_dict['kickstart_repository'] = module.find_resource_by_name('repositories', name=entity_dict['kickstart_repository'],
+                                                                               params=scope, failsafe=False, thin=True)
+
         if 'content_view' in entity_dict:
             entity_dict['content_view'] = module.find_resource_by_name('content_views', name=entity_dict['content_view'],
                                                                        params=scope, failsafe=False, thin=True)
+
+    entity_dict = module.handle_common_host_params(entity_dict)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     entity = module.find_resource_by_title('hostgroups', title=build_fqn(name, parent), failsafe=True)
     if entity:

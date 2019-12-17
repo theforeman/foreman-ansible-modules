@@ -42,6 +42,8 @@ TEST_PLAYBOOKS = [
     'repository',
     'repository_set',
     'role',
+    'scc_account',
+    'scc_product',
     'search_facts',
     'setting',
     'snapshot',

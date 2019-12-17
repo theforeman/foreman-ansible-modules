@@ -119,18 +119,10 @@ options:
     description: Filter to apply to LDAP searches
     required: false
     type: str
-  organizations:
-    description: List of organizations the authentication source should be assigned to
-    type: list
-  locations:
-    description: List of locations the authentication source should be assigned to
-    type: list
-  state:
-    description: State ot the LDAP authentication source
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -170,11 +162,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
@@ -193,8 +185,6 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             use_netgroups=dict(type='bool'),
         ),
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
@@ -210,12 +200,7 @@ def main():
 
     entity = module.find_resource_by_name('auth_source_ldaps', name=entity_dict['name'], failsafe=True)
 
-    if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     module.ensure_entity('auth_source_ldaps', entity_dict, entity)
 

@@ -45,19 +45,6 @@ options:
     description:
       - Description of the Content View Version
     type: str
-  organization:
-    description:
-      - Organization that the content view is in
-    required: true
-    type: str
-  state:
-    description:
-      - Content View Version state
-    default: present
-    choices:
-      - absent
-      - present
-    type: str
   version:
     description:
       - The content view version number (i.e. 1.0)
@@ -78,17 +65,15 @@ options:
       - Force metadata regeneration when performing Publish and Promote tasks
     type: bool
     default: false
-  synchronous:
-    description:
-      - Wait for the Publish or Promote task to complete if True. Immediately return if False.
-    default: true
-    type: bool
   current_lifecycle_environment:
     description:
       - The lifecycle environment that is already associated with the content view version
       - Helpful for promoting a content view version
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -151,7 +136,7 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
-def promote_content_view_version(module, content_view_version, environments, synchronous, force, force_yum_metadata_regeneration):
+def promote_content_view_version(module, content_view_version, environments, force, force_yum_metadata_regeneration):
     current_environment_ids = {environment['id'] for environment in content_view_version['environments']}
     desired_environment_ids = {environment['id'] for environment in environments}
     promote_to_environment_ids = list(desired_environment_ids - current_environment_ids)
@@ -164,7 +149,7 @@ def promote_content_view_version(module, content_view_version, environments, syn
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
-        module.resource_action('content_view_versions', 'promote', params=payload, synchronous=synchronous)
+        module.resource_action('content_view_versions', 'promote', params=payload)
 
 
 def main():
@@ -176,7 +161,6 @@ def main():
             lifecycle_environments=dict(type='list'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
-            synchronous=dict(type='bool', default=True),
             current_lifecycle_environment=dict(),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
@@ -186,18 +170,9 @@ def main():
 
     entity_dict = module.clean_params()
 
-    # Do an early (not exhaustive) sanity check, whether we can perform this non-synchronous
-    if (
-        not module.desired_absent and 'lifecycle_environments' in entity_dict
-        and 'version' not in entity_dict and 'current_lifecycle_environment' not in entity_dict
-        and not entity_dict['synchronous']
-    ):
-        module.fail_json(msg="Cannot perform non-blocking publishing and promoting in the same module call.")
-
     module.connect()
 
-    entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
-    scope = {'organization_id': entity_dict['organization']['id']}
+    entity_dict, scope = module.handle_organization_param(entity_dict)
 
     content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
 
@@ -216,10 +191,6 @@ def main():
         module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
     else:
         if content_view_version is None:
-            # Do a sanity check, whether we can perform this non-synchronous
-            if 'lifecycle_environments' in entity_dict and not entity_dict['synchronous']:
-                module.fail_json(msg="Cannot perform non-blocking publishing and promoting in the same module call.")
-
             payload = {
                 'id': content_view['id'],
             }
@@ -232,7 +203,7 @@ def main():
                 payload['major'] = split_version[0]
                 payload['minor'] = split_version[1]
 
-            response = module.resource_action('content_views', 'publish', params=payload, synchronous=entity_dict['synchronous'])
+            response = module.resource_action('content_views', 'publish', params=payload)
             # workaround for https://projects.theforeman.org/issues/28138
             if not module.check_mode:
                 content_view_version_id = response['output'].get('content_view_version_id') or response['input'].get('content_view_version_id')
@@ -243,7 +214,9 @@ def main():
         if 'lifecycle_environments' in entity_dict:
             lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
             promote_content_view_version(
-                module, content_view_version, lifecycle_environments, synchronous=entity_dict['synchronous'],
+                module,
+                content_view_version,
+                lifecycle_environments,
                 force=entity_dict['force_promote'],
                 force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
             )

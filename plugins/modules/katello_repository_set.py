@@ -53,11 +53,6 @@ options:
       - Release version and base architecture of the repositories to enable
     required: true
     type: list
-  organization:
-    description:
-      - Organization name that the repository set is in
-    required: true
-    type: str
   state:
     description:
       - Whether the repositories are enabled or not
@@ -67,7 +62,9 @@ options:
       - 'disabled'
     default: enabled
     type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.organization
 '''
 
 EXAMPLES = '''
@@ -128,17 +125,19 @@ EXAMPLES = '''
     organization: "Default Organization"
     label: rhel-8-for-x86_64-baseos-rpms
     repositories:
-      - releasever: 8
+      - releasever: "8"
 '''
 
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible.module_utils._text import to_text
 
 
 def get_desired_repos(desired_substitutions, available_repos):
     desired_repos = []
     for sub in desired_substitutions:
+        sub = {to_text(k): to_text(v) for (k, v) in sub.items()}
         desired_repos += filter(lambda available: available['substitutions'] == sub, available_repos)
     return desired_repos
 
@@ -170,8 +169,8 @@ def main():
 
     module.connect()
 
-    module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
-    scope = {'organization_id': module_params['organization']['id']}
+    module_params, scope = module.handle_organization_param(module_params)
+
     record_data = {}
     if 'product' in module_params:
         module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
@@ -198,9 +197,13 @@ def main():
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-    if len(desired_repo_names - available_repo_names) > 0:
-        module.fail_json(msg="Desired repositories are not available on the repository set {0}. Desired: {1} Available: {2}"
-                         .format(module_params['name'], desired_repo_names, available_repo_names))
+    if len(module_params['repositories']) != len(desired_repo_names):
+        repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
+
+        error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
+                    repo_set_identification, module_params['repositories'], desired_repo_names, available_repo_names)
+
+        module.fail_json(msg=error_msg)
 
     if module.state == 'enabled':
         for repo in desired_repo_names - current_repo_names:

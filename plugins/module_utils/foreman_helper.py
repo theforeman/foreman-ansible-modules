@@ -62,6 +62,10 @@ class KatelloMixin(object):
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
         super(KatelloMixin, self).connect()
+
+        if 'subscriptions' not in self.foremanapi.resources:
+            raise Exception('The server does not seem to have the Katello plugin installed.')
+
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
@@ -132,6 +136,58 @@ class KatelloMixin(object):
         _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
         if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
             _sync_plan_remove_products['params'].append(_organization_parameter)
+
+
+class HostMixin(object):
+    def __init__(self, entity_spec=None, **kwargs):
+        args = dict(
+            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
+            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
+            domain=dict(type='entity', flat_name='domain_id'),
+            subnet=dict(type='entity', flat_name='subnet_id'),
+            subnet6=dict(type='entity', flat_name='subnet6_id'),
+        )
+        if entity_spec:
+            args.update(entity_spec)
+        super(HostMixin, self).__init__(entity_spec=args, **kwargs)
+
+    def handle_common_host_params(self, entity_dict):
+        if not self.desired_absent:
+            entity_dict = entity_dict.copy()  # "Copy on write"
+            if 'compute_resource' in entity_dict:
+                entity_dict['compute_resource'] = self.find_resource_by_name(
+                    'compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True
+                )
+            if 'compute_profile' in entity_dict:
+                entity_dict['compute_profile'] = self.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
+            if 'domain' in entity_dict:
+                entity_dict['domain'] = self.find_resource_by_name('domains', name=entity_dict['domain'], failsafe=False, thin=True)
+            if 'subnet' in entity_dict:
+                entity_dict['subnet'] = self.find_resource_by_name('subnets', name=entity_dict['subnet'], failsafe=False, thin=True)
+            if 'subnet6' in entity_dict:
+                entity_dict['subnet6'] = self.find_resource_by_name('subnets', name=entity_dict['subnet6'], failsafe=False, thin=True)
+        return entity_dict
+
+
+class OrganizationMixin(object):
+    def handle_organization_param(self, entity_dict):
+        """
+        Find the Organization referenced in the entity_dict.
+        This *always* executes the search as we also need to know the Organization when deleting entities.
+
+        Parameters:
+            entity_dict (dict): the entity data as entered by the user
+        Return value:
+            entity_dict (dict): updated data
+            scope (dict): params that can be passed to further API calls to scope for the Organization
+        """
+        entity_dict = entity_dict.copy()
+
+        entity_dict['organization'] = self.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+
+        scope = {'organization_id': entity_dict['organization']['id']}
+
+        return (entity_dict, scope)
 
 
 class ForemanAnsibleModule(AnsibleModule):
@@ -265,6 +321,17 @@ class ForemanAnsibleModule(AnsibleModule):
     def ping(self):
         return self.foremanapi.resource('home').call('status')
 
+    def _resource(self, resource):
+        if resource not in self.foremanapi.resources:
+            raise Exception("The server doesn't know about {0}, is the right plugin installed?".format(resource))
+        return self.foremanapi.resource(resource)
+
+    def _resource_call(self, resource, *args, **kwargs):
+        return self._resource(resource).call(*args, **kwargs)
+
+    def _resource_prepare_params(self, resource, action, params):
+        return self._resource(resource).action(action).prepare_params(params)
+
     @_exception2fail_json(msg='Failed to show resource: {0}')
     def show_resource(self, resource, resource_id, params=None):
         if params is None:
@@ -274,9 +341,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
         params['id'] = resource_id
 
-        params = self.foremanapi.resource(resource).action('show').prepare_params(params)
+        params = self._resource_prepare_params(resource, 'show', params)
 
-        return self.foremanapi.resource(resource).call('show', params)
+        return self._resource_call(resource, 'show', params)
 
     @_exception2fail_json(msg='Failed to list resource: {0}')
     def list_resource(self, resource, search=None, params=None):
@@ -289,9 +356,9 @@ class ForemanAnsibleModule(AnsibleModule):
             params['search'] = search
         params['per_page'] = 2 << 31
 
-        params = self.foremanapi.resource(resource).action('index').prepare_params(params)
+        params = self._resource_prepare_params(resource, 'index', params)
 
-        return self.foremanapi.resource(resource).call('index', params)['results']
+        return self._resource_call(resource, 'index', params)['results']
 
     def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
         list_params = {}
@@ -314,7 +381,11 @@ class ForemanAnsibleModule(AnsibleModule):
         elif failsafe:
             result = None
         else:
-            self.fail_json(msg="No data found for %s" % search)
+            if len(results) > 1:
+                error_msg = "too many ({0})".format(len(results))
+            else:
+                error_msg = "no"
+            self.fail_json(msg="Found {0} results while searching for {1} with {2}".format(error_msg, resource, search))
         if result:
             if thin:
                 result = {'id': result['id']}
@@ -367,7 +438,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._after_full[resource].append(entity)
 
     @_exception2fail_json(msg='Failed to ensure entity state: {0}')
-    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None, synchronous=True):
+    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None):
         """Ensure that a given entity has a certain state
 
             Parameters:
@@ -393,21 +464,21 @@ class ForemanAnsibleModule(AnsibleModule):
 
         if state == 'present_with_defaults':
             if current_entity is None:
-                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
+                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
         elif state == 'present':
             if current_entity is None:
-                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec, synchronous)
+                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
             else:
-                updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec, synchronous)
+                updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
         elif state == 'copied':
             if current_entity is not None:
-                updated_entity = self._copy_entity(resource, desired_entity, current_entity, params, synchronous)
+                updated_entity = self._copy_entity(resource, desired_entity, current_entity, params)
         elif state == 'reverted':
             if current_entity is not None:
-                updated_entity = self._revert_entity(resource, current_entity, params, synchronous)
+                updated_entity = self._revert_entity(resource, current_entity, params)
         elif state == 'absent':
             if current_entity is not None:
-                updated_entity = self._delete_entity(resource, current_entity, params, synchronous)
+                updated_entity = self._delete_entity(resource, current_entity, params)
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
@@ -416,7 +487,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return updated_entity
 
-    def _create_entity(self, resource, desired_entity, params, entity_spec, synchronous):
+    def _create_entity(self, resource, desired_entity, params, entity_spec):
         """Create entity with given properties
 
             Parameters:
@@ -431,14 +502,14 @@ class ForemanAnsibleModule(AnsibleModule):
         if not self.check_mode:
             if params:
                 payload.update(params)
-            return self.resource_action(resource, 'create', payload, synchronous=synchronous)
+            return self.resource_action(resource, 'create', payload)
         else:
             fake_entity = desired_entity.copy()
             fake_entity['id'] = -1
             self.set_changed()
             return fake_entity
 
-    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec, synchronous):
+    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec):
         """Update a given entity with given properties if any diverge
 
             Parameters:
@@ -466,7 +537,7 @@ class ForemanAnsibleModule(AnsibleModule):
             if not self.check_mode:
                 if params:
                     payload.update(params)
-                return self.resource_action(resource, 'update', payload, synchronous=synchronous)
+                return self.resource_action(resource, 'update', payload)
             else:
                 # In check_mode we emulate the server updating the entity
                 fake_entity = current_entity.copy()
@@ -477,7 +548,7 @@ class ForemanAnsibleModule(AnsibleModule):
             # Nothing needs changing
             return current_entity
 
-    def _copy_entity(self, resource, desired_entity, current_entity, params, synchronous):
+    def _copy_entity(self, resource, desired_entity, current_entity, params):
         """Copy a given entity
 
             Parameters:
@@ -493,9 +564,9 @@ class ForemanAnsibleModule(AnsibleModule):
         }
         if params:
             payload.update(params)
-        return self.resource_action(resource, 'copy', payload, synchronous=synchronous)
+        return self.resource_action(resource, 'copy', payload)
 
-    def _revert_entity(self, resource, current_entity, params, synchronous):
+    def _revert_entity(self, resource, current_entity, params):
         """Revert a given entity
 
             Parameters:
@@ -508,9 +579,9 @@ class ForemanAnsibleModule(AnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        return self.resource_action(resource, 'revert', payload, synchronous=synchronous)
+        return self.resource_action(resource, 'revert', payload)
 
-    def _delete_entity(self, resource, current_entity, params, synchronous):
+    def _delete_entity(self, resource, current_entity, params):
         """Delete a given entity
 
             Parameters:
@@ -523,7 +594,7 @@ class ForemanAnsibleModule(AnsibleModule):
         payload = {'id': current_entity['id']}
         if params:
             payload.update(params)
-        entity = self.resource_action(resource, 'destroy', payload, synchronous=synchronous)
+        entity = self.resource_action(resource, 'destroy', payload)
 
         # this is a workaround for https://projects.theforeman.org/issues/26937
         if entity and 'error' in entity and 'message' in entity['error']:
@@ -531,17 +602,18 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return None
 
-    def resource_action(self, resource, action, params, options=None, data=None, files=None, synchronous=True, ignore_check_mode=False, record_change=True):
-        resource_payload = self.foremanapi.resource(resource).action(action).prepare_params(params)
+    def resource_action(self, resource, action, params, options=None, data=None, files=None,
+                        ignore_check_mode=False, record_change=True, ignore_task_errors=False):
+        resource_payload = self._resource_prepare_params(resource, action, params)
         if options is None:
             options = {}
         try:
             result = None
             if ignore_check_mode or not self.check_mode:
-                result = self.foremanapi.resource(resource).call(action, resource_payload, options=options, data=data, files=files)
-                is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'pending' in result
-                if synchronous and is_foreman_task:
-                    result = self.wait_for_task(result)
+                result = self._resource_call(resource, action, resource_payload, options=options, data=data, files=files)
+                is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'started_at' in result
+                if is_foreman_task:
+                    result = self.wait_for_task(result, ignore_errors=ignore_task_errors)
         except Exception as e:
             msg = 'Error while performing {0} on {1}: {2}'.format(
                 action, resource, to_native(e))
@@ -551,7 +623,7 @@ class ForemanAnsibleModule(AnsibleModule):
             self.set_changed()
         return result
 
-    def wait_for_task(self, task):
+    def wait_for_task(self, task, ignore_errors=False):
         duration = self.task_timeout
         while task['state'] not in ['paused', 'stopped']:
             duration -= self.task_poll
@@ -559,8 +631,10 @@ class ForemanAnsibleModule(AnsibleModule):
                 self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
-            task = self.resource_action('foreman_tasks', 'show', {'id': task['id']}, synchronous=False, record_change=False)
-
+            resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})
+            task = self._resource_call('foreman_tasks', 'show', resource_payload)
+        if not ignore_errors and task['result'] != 'success':
+            self.fail_json(msg='Task {0}({1}) did not succeed. Task information: {2}'.format(task['action'], task['id'], task['humanized']['errors']))
         return task
 
     def fail_from_exception(self, exc, msg):
@@ -630,11 +704,34 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
 
-class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
+    def __init__(self, argument_spec=None, **kwargs):
+        spec = dict(
+            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            locations=dict(type='entity_list', flat_name='location_ids'),
+        )
+        entity_spec = kwargs.pop('entity_spec', {})
+        spec.update(entity_spec)
+        super(ForemanTaxonomicEntityAnsibleModule, self).__init__(argument_spec=argument_spec, entity_spec=spec, **kwargs)
+
+    def handle_taxonomy_params(self, entity_dict):
+        if not self.desired_absent:
+            entity_dict = entity_dict.copy()
+
+            if 'locations' in entity_dict:
+                entity_dict['locations'] = self.find_resources_by_title('locations', entity_dict['locations'], thin=True)
+
+            if 'organizations' in entity_dict:
+                entity_dict['organizations'] = self.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+
+        return entity_dict
+
+
+class KatelloAnsibleModule(OrganizationMixin, KatelloMixin, ForemanAnsibleModule):
     pass
 
 
-class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
+class KatelloEntityAnsibleModule(OrganizationMixin, KatelloMixin, ForemanEntityAnsibleModule):
     pass
 
 

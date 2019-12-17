@@ -59,12 +59,9 @@ options:
         aliases:
           - vm_attributes
         type: dict
-  state:
-    description: compute profile presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
 '''
 
 EXAMPLES = '''

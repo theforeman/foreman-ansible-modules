@@ -49,17 +49,9 @@ options:
       - name of provisioning template
     required: false
     type: str
-  state:
-    description:
-      - State of the Association
-      - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
-    default: present
-    choices:
-      - present
-      - present_with_defaults
-      - absent
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state_with_defaults
 '''
 
 EXAMPLES = '''

@@ -72,12 +72,10 @@ options:
       - Forced to true when I(build=true)
     type: bool
     required: false
-  state:
-    description: host presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.host_options
 '''
 
 EXAMPLES = '''
@@ -120,11 +118,15 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, HostMixin
+
+
+class ForemanHostAnsibleModule(HostMixin, ForemanEntityAnsibleModule):
+    pass
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanHostAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             hostgroup=dict(type='entity', flat_name='hostgroup_id'),
@@ -172,6 +174,8 @@ def main():
 
         if 'organization' in entity_dict:
             entity_dict['organization'] = module.find_resource_by_name('organizations', entity_dict['organization'], thin=True)
+
+    entity_dict = module.handle_common_host_params(entity_dict)
 
     module.ensure_entity('hosts', entity_dict, entity)
     module.exit_json()

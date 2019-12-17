@@ -40,20 +40,10 @@ options:
     description: The full environment name
     required: true
     type: str
-  locations:
-    description: List of locations the environent should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the environment should be assigned to
-    required: false
-    type: list
-  state:
-    description: environment presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -73,16 +63,14 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
 )
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
     )
 
@@ -92,12 +80,7 @@ def main():
 
     entity = module.find_resource_by_name('environments', name=entity_dict['name'], failsafe=True)
 
-    if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     module.ensure_entity('environments', entity_dict, entity)
 

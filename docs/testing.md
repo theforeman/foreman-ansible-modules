@@ -47,7 +47,7 @@ Then, `make record_<playbook name>` must be called, and the resulting vcr files 
 
 ## Recording/storing apidoc.json for tests
 
-Modules that use the `apypie` library depend on a valid `apidoc.json` being available during test execution.
+The tests depend on a valid `apidoc.json` being available during execution.
 The easiest way to do so is to provide a `<module>.json` in the `tests/fixtures/apidoc` folder.
 Most modules can just use a symlink to either `foreman.json` or `katello.json`, depending on whether they need a plain Foreman or Foreman+Katello to function properly.
 If you need a setup with different plugins enabled, just get `https://foreman.example.com/apidoc/v2.json` from your install and place it in `tests/fixtures/apidoc`.

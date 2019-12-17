@@ -42,14 +42,6 @@ options:
     description: Description of the role
     required: false
     type: str
-  locations:
-    description: List of locations the role should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the role should be assigned to
-    required: false
-    type: list
   filters:
     description: Filters with permissions for this role
     required: false
@@ -64,12 +56,10 @@ options:
         description: Filter condition for the resources
         required: false
         type: str
-  state:
-    description: role presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -95,7 +85,7 @@ RETURN = ''' # '''
 
 import copy
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 filter_entity_spec = dict(
@@ -105,12 +95,10 @@ filter_entity_spec = dict(
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanTaxonomicEntityAnsibleModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
             filters=dict(type='nested_list', entity_spec=filter_entity_spec),
         ),
     )
@@ -121,12 +109,7 @@ def main():
 
     entity = module.find_resource_by_name('roles', name=entity_dict['name'], failsafe=True)
 
-    if not module.desired_absent:
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
-
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+    entity_dict = module.handle_taxonomy_params(entity_dict)
 
     filters = entity_dict.pop("filters", None)
 
