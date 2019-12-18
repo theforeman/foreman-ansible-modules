@@ -105,6 +105,8 @@ As the modules are not installed inside a collection, you will have to refer to 
 
 ## Dependencies
 
+These dependencies are required for the Ansible controller, not the Foreman server. 
+
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `foreman_subnet` module on Python 2.7
