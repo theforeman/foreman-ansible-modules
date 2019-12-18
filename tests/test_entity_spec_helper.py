@@ -13,6 +13,7 @@ def test_full_entity():
     spec = {
         'name': {},
         'count': {'type': 'int', 'aliases': ['number']},
+        'facilities': {'type': 'list'},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
         'prices': {'type': 'nested_list', 'entity_spec': {
@@ -23,6 +24,7 @@ def test_full_entity():
     assert spec == {
         'name': {},
         'count': {'type': 'int', 'aliases': ['number']},
+        'facilities': {'type': 'list'},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
         'prices': {'type': 'nested_list', 'entity_spec': {
@@ -32,15 +34,17 @@ def test_full_entity():
     assert entity_spec == {
         'id': {},
         'name': {},
-        'count': {},
+        'count': {'type': 'int'},
+        'facilities': {'type': 'list'},
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'street_id': {},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
-        'house_ids': {},
+        'house_ids': {'type': 'list'},
     }
     assert argument_spec == {
         'name': {},
         'count': {'type': 'int', 'aliases': ['number']},
+        'facilities': {'type': 'list'},
         'street': {},
         'houses': {'type': 'list'},
         'prices': {'type': 'list', 'elements': 'dict', 'options': {

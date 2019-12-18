@@ -77,9 +77,9 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import os
-import hashlib
 import traceback
 
+from ansible.module_utils._text import to_bytes
 from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 try:
@@ -147,27 +147,24 @@ def main():
     entity_dict['repository'] = module.find_resource_by_name('repositories', entity_dict['repository'], params=product_scope)
     repository_scope = {'repository_id': entity_dict['repository']['id']}
 
+    b_src = to_bytes(entity_dict['src'])
     filename = os.path.basename(entity_dict['src'])
 
-    checksum = hashlib.sha256()
-    with open(entity_dict['src'], 'rb') as contentfile:
-        for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
-            checksum.update(chunk)
-    checksum = checksum.hexdigest()
+    checksum = module.sha256(entity_dict['src'])
 
     content_unit = None
     if entity_dict['repository']['content_type'] == 'deb':
         if not HAS_DEBFILE:
             module.fail_json(msg='The python-debian module is required', exception=DEBFILE_IMP_ERR)
 
-        name, version, architecture = get_deb_info(entity_dict['src'])
+        name, version, architecture = get_deb_info(b_src)
         query = 'name = "{0}" and version = "{1}" and architecture = "{2}"'.format(name, version, architecture)
         content_unit = module.find_resource('debs', query, params=repository_scope, failsafe=True)
     elif entity_dict['repository']['content_type'] == 'yum':
         if not HAS_RPM:
             module.fail_json(msg='The rpm Python module is required', exception=RPM_IMP_ERR)
 
-        name, epoch, version, release, arch = get_rpm_info(entity_dict['src'])
+        name, epoch, version, release, arch = get_rpm_info(b_src)
         query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
         content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
     elif entity_dict['repository']['content_type'] == 'file':
@@ -188,7 +185,7 @@ def main():
 
             offset = 0
 
-            with open(entity_dict['src'], 'rb') as contentfile:
+            with open(b_src, 'rb') as contentfile:
                 for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
                     data = {'content': chunk, 'offset': offset, 'size': len(chunk)}
                     module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)

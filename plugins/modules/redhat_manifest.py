@@ -125,7 +125,7 @@ import json
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
-from ansible.module_utils._text import to_text
+from ansible.module_utils._text import to_text, to_native
 
 
 def fetch_portal(module, path, method, data=None, accept_header='application/json'):
@@ -254,7 +254,7 @@ def export_manifest(module, manifest):
                         break
                     f.write(data)
     except Exception as e:
-        module.fail_json(msg="Failure downloading manifest, %s" % (e))
+        module.fail_json(msg="Failure downloading manifest, {0}".format(to_native(e)))
 
 
 def main():
