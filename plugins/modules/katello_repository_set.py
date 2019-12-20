@@ -140,13 +140,11 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
-from ansible.module_utils._text import to_text
 
 
 def get_desired_repos(desired_substitutions, available_repos):
     desired_repos = []
     for sub in desired_substitutions:
-        sub = {to_text(k): to_text(v) for (k, v) in sub.items()}
         desired_repos += filter(lambda available: available['substitutions'] == sub, available_repos)
     return desired_repos
 
