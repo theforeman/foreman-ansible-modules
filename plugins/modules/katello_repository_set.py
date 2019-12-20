@@ -53,6 +53,15 @@ options:
       - Release version and base architecture of the repositories to enable
     required: true
     type: list
+    suboptions:
+      basearch:
+        description:
+          - Basearch of the repository to enable.
+        type: str
+      releasever:
+        description:
+          - Releasever of the repository to enable.
+        type: str
   state:
     description:
       - Whether the repositories are enabled or not
@@ -159,7 +168,10 @@ def main():
             name=dict(),
             product=dict(),
             label=dict(),
-            repositories=dict(required=True, type='list', elements='dict'),
+            repositories=dict(required=True, type='list', elements='dict', options=dict(
+                basearch=dict(),
+                releasever=dict(),
+            )),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         required_one_of=[['label', 'name']],
