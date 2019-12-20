@@ -50,8 +50,8 @@ options:
     type: str
   repositories:
     description:
-      - Release version and base architecture of the repositories to enable
-      - Required when I(all_repositories=false)
+      - Release version and base architecture of the repositories to enable.
+      - Required when I(all_repositories) is unset or C(false).
     required: false
     type: list
     suboptions:
@@ -65,10 +65,10 @@ options:
         type: str
   all_repositories:
     description:
-      - Affect all available repositories in the repository set instead of listing them in I(repositories)
+      - Affect all available repositories in the repository set instead of listing them in I(repositories).
+      - Required when I(repositories) is unset or an empty list.
     required: false
     type: bool
-    default: false
   state:
     description:
       - Whether the repositories are enabled or not
@@ -177,12 +177,16 @@ def main():
                 basearch=dict(),
                 releasever=dict(),
             )),
-            all_repositories=dict(type='bool', default=False),
+            all_repositories=dict(type='bool'),
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
-        required_one_of=[['label', 'name']],
+        required_one_of=[
+            ['label', 'name'],
+            ['repositories', 'all_repositories'],
+        ],
         required_if=[
             ['all_repositories', False, ['repositories']],
+            ['repositories', [], ['all_repositories']],
         ],
     )
 
@@ -212,7 +216,7 @@ def main():
     available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
     available_repos = available_repos['results']
     current_repos = repo_set['repositories']
-    if not module_params['all_repositories']:
+    if not module_params.get('all_repositories', False):
         desired_repos = get_desired_repos(module_params['repositories'], available_repos)
     else:
         desired_repos = available_repos[:]
@@ -221,7 +225,7 @@ def main():
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-    if not module_params['all_repositories'] and len(module_params['repositories']) != len(desired_repo_names):
+    if not module_params.get('all_repositories', False) and len(module_params['repositories']) != len(desired_repo_names):
         repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
         error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
