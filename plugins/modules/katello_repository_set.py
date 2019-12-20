@@ -130,6 +130,8 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
+_ARCHES = ['x86_64', 's390x', 'ppc64le', 'aarch64', 'multiarch', 'ppc64']
+
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 from ansible.module_utils._text import to_text
 
@@ -151,6 +153,12 @@ def record_repository_set_state(module, record_data, repo, state_before, state_a
     module.record_before('repository_sets', repo_change_data)
     module.record_after('repository_sets', repo_change_data_after)
     module.record_after_full('repository_sets', repo_change_data_after)
+
+
+def arch_from_path(path):
+    for part in path.lower().split('/'):
+        if part in _ARCHES:
+            return part
 
 
 def main():
@@ -209,6 +217,11 @@ def main():
         for repo in desired_repo_names - current_repo_names:
             repo_to_enable = next((r for r in available_repos if r['repo_name'] == repo))
             repo_change_params = repo_to_enable['substitutions'].copy()
+            # Workaround for https://projects.theforeman.org/issues/28555
+            if 'basearch' not in repo_change_params:
+                arch = arch_from_path(repo_to_enable['path'])
+                if arch:
+                    repo_change_params['basearch'] = arch
             repo_change_params.update(repo_set_scope)
 
             record_repository_set_state(module, record_data, repo, 'disabled', 'enabled')
