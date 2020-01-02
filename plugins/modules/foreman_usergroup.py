@@ -102,9 +102,9 @@ def main():
         entity_spec=dict(
             name=dict(required=True),
             admin=dict(required=False, type='bool', default=False),
-            users=dict(required=False, type='entity_list', flat_name='user_ids'),
-            usergroups=dict(required=False, type='entity_list', flat_name='usergroup_ids'),
-            roles=dict(required=False, type='entity_list', flat_name='role_ids'),
+            users=dict(required=False, type='entity_list'),
+            usergroups=dict(required=False, type='entity_list'),
+            roles=dict(required=False, type='entity_list'),
         ),
     )
 

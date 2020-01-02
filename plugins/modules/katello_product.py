@@ -99,8 +99,8 @@ def main():
         entity_spec=dict(
             name=dict(required=True),
             label=dict(),
-            gpg_key=dict(type='entity', flat_name='gpg_key_id'),
-            sync_plan=dict(type='entity', flat_name='sync_plan_id'),
+            gpg_key=dict(type='entity'),
+            sync_plan=dict(type='entity'),
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),

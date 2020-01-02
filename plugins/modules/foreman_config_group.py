@@ -79,7 +79,7 @@ def main():
         ),
         entity_spec=dict(
             name=dict(required=True),
-            puppetclasses=dict(type='entity_list', flat_name='puppetclass_ids'),
+            puppetclasses=dict(type='entity_list'),
         ),
     )
 

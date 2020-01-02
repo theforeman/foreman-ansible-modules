@@ -98,7 +98,7 @@ def main():
         ),
         entity_spec=dict(
             name=dict(required=True),
-            operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
+            operatingsystems=dict(type='entity_list'),
         ),
     )
     with module.api_connection():

@@ -84,7 +84,7 @@ def main():
             name=dict(required=True),
             label=dict(),
             description=dict(),
-            prior=dict(type='entity', flat_name='prior_id'),
+            prior=dict(type='entity'),
         ),
     )
 

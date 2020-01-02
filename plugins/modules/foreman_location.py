@@ -107,8 +107,8 @@ def main():
     module = ForemanLocationModule(
         entity_spec=dict(
             name=dict(required=True),
-            parent=dict(type='entity', flat_name='parent_id'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            parent=dict(type='entity'),
+            organizations=dict(type='entity_list'),
         ),
     )
 
