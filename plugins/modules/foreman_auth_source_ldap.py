@@ -199,68 +199,51 @@ entity:
           description: Port of the LDAP server.
           type: int
         tls:
-          Description: Whether the connection to the LDAP server is secured by TLS.
+          description: Whether the connection to the LDAP server is secured by TLS.
           type: bool
-        account": "ansible",
-        attr_firstname": "givenName",
-        attr_lastname": "sn",
-        attr_login": "uid",
-        attr_mail": "mail",
-        attr_photo": null,
-        base_dn": "uid",
-        external_usergroups": [],
-        groups_base": "cn=groups,cn=accounts,dc=example,dc=com",
-        ldap_filter": "(uid=%s)",
-        onthefly_register": true,
-        type": "AuthSourceLdap",
-        use_netgroups": false,
-        usergroup_sync": true
+        account:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        attr_firstname:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        attr_lastname:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        attr_login:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        attr_mail:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        attr_photo:
+          description: "TODO: Add a proper description for this property."
+          type: raw
+        base_dn:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        external_usergroups:
+          description: "TODO: Add a proper description for this property."
+          type: list
+        groups_base:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        ldap_filter:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        onthefly_register:
+          description: "TODO: Add a proper description for this property."
+          type: bool
+        type:
+          description: "TODO: Add a proper description for this property."
+          type: str
+        use_netgroups:
+          description: "TODO: Add a proper description for this property."
+          type: bool
+        usergroup_sync:
+          description: "TODO: Add a proper description for this property."
+          type: bool
 '''
-
-# "entity": {
-#         "auth_source_ldaps": [
-#             {
-#                 "account": "ansible",
-#                 "attr_firstname": "givenName",
-#                 "attr_lastname": "sn",
-#                 "attr_login": "uid",
-#                 "attr_mail": "mail",
-#                 "attr_photo": null,
-#                 "base_dn": "uid",
-#                 "created_at": "2019-11-21 11:14:34 UTC",
-#                 "external_usergroups": [],
-#                 "groups_base": "cn=groups,cn=accounts,dc=example,dc=com",
-#                 "host": "ldap.example.com",
-#                 "id": 10,
-#                 "ldap_filter": "(uid=%s)",
-#                 "locations": [
-#                     {
-#                         "description": null,
-#                         "id": 27,
-#                         "name": "Test Location",
-#                         "title": "Test Location"
-#                     }
-#                 ],
-#                 "name": "Example LDAP",
-#                 "onthefly_register": true,
-#                 "organizations": [
-#                     {
-#                         "description": "A test organization",
-#                         "id": 33,
-#                         "name": "Test Organization",
-#                         "title": "Test Organization"
-#                     }
-#                 ],
-#                 "port": 389,
-#                 "server_type": "free_ipa",
-#                 "tls": true,
-#                 "type": "AuthSourceLdap",
-#                 "updated_at": "2019-11-21 11:14:34 UTC",
-#                 "use_netgroups": false,
-#                 "usergroup_sync": true
-#             }
-#         ]
-#     },
 
 
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
