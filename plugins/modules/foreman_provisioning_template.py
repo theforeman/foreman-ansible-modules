@@ -273,7 +273,7 @@ def main():
             template=dict(),
             locked=dict(type='bool'),
             name=dict(),
-            operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
+            operatingsystems=dict(type='entity_list'),
             snippet=dict(type='invisible'),
         ),
         mutually_exclusive=[

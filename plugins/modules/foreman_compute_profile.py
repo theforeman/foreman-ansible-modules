@@ -146,7 +146,7 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 compute_attribute_entity_spec = {
-    'compute_resource': {'type': 'entity', 'flat_name': 'compute_resource_id'},
+    'compute_resource': {'type': 'entity'},
     'vm_attrs': {'type': 'dict', 'aliases': ['vm_attributes']},
 }
 

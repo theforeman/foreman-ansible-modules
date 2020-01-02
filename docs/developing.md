@@ -51,9 +51,9 @@ The `entity_spec` can be seen as an extended version of Ansible's `argument_spec
 In addition to Ansible's `argument_spec`, `entity_spec` understands the following types:
 
 * `type='entity'` The referenced value is another Foreman entity.
-This is usually combined with `flat_name=<entity>_id`.
+This is usually combined with `flat_name=<entity>_id`. If no flat_name is provided, fallback to `<entity>_id` where entity is the entity_spec key. eg `default_organization=dict(type='entity')` => `flat_name=default_organization_id`.
 * `type='entity_list'` The referenced value is a list of Foreman entities.
-This is usually combined with `flat_name=<entity>_ids`.
+This is usually combined with `flat_name=<entity>_ids`. If no flat_name is provided, fallback to `singularize(<entity>)_ids` where entity is the entity_spec key. eg `organizations=dict(type='entity_list')` => `flat_name=organization_ids`.
 * `type='nested_list'` The referenced value is a list of Foreman entities that are not included in the main API call.
 The module must handle the entities separately.
 See domain parameters in [`foreman_domain`](plugins/modules/foreman_domain.py) for an example.

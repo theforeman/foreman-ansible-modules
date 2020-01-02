@@ -144,11 +144,11 @@ class KatelloMixin(object):
 class HostMixin(object):
     def __init__(self, entity_spec=None, **kwargs):
         args = dict(
-            compute_resource=dict(type='entity', flat_name='compute_resource_id'),
-            compute_profile=dict(type='entity', flat_name='compute_profile_id'),
-            domain=dict(type='entity', flat_name='domain_id'),
-            subnet=dict(type='entity', flat_name='subnet_id'),
-            subnet6=dict(type='entity', flat_name='subnet6_id'),
+            compute_resource=dict(type='entity'),
+            compute_profile=dict(type='entity'),
+            domain=dict(type='entity'),
+            subnet=dict(type='entity'),
+            subnet6=dict(type='entity'),
         )
         if entity_spec:
             args.update(entity_spec)
@@ -716,13 +716,13 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         This add automatic entities resolution based on provided attributes/ sub entities options.
         It add following options to entity_spec 'entity' and 'entity_list' types:
         * search_by (str): Field used to search the sub entity. Defaults to 'name' unless `parent` was set, in which case it defaults to `title`.
-        * search_operator (str): Operator used to search the sub entity. Defaults to '='.
+        * search_operator (str): Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
         * resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
         * resolve (boolean): Defaults to 'True'. If set to false, the sub entity will not be resolved automatically
         * ensure (boolean): Defaults to 'True'. If set to false, it will be removed before sending data to the foreman server.
         It add following attributes:
         * entity_search (str): Defautls to None. If provided, the base entity resolver will use this search query instead to try to build it.
-        * entity_key (str): field used to search current entity. Defaults to 'name'. If entity_spec contains 'parent', defaults to 'title'.
+        * entity_key (str): field used to search current entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
         * entity_name (str): name of the current entity.
           By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
         * entity_scope (str): Type of the entity used to build search scope. Defaults to None.
@@ -994,8 +994,8 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
     def __init__(self, argument_spec=None, **kwargs):
         spec = dict(
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids', search_by='title'),
+            organizations=dict(type='entity_list'),
+            locations=dict(type='entity_list'),
         )
         entity_spec = kwargs.pop('entity_spec', {})
         spec.update(entity_spec)
@@ -1028,6 +1028,17 @@ def _entity_spec_helper(spec):
     """
     entity_spec = {'id': {}}
     argument_spec = {}
+    # _entity_spec_helper() is called before we call __init__ of ForemanAnsibleModule and thus before the if HAS APYPIE check happens.
+    # We have to ensure that apypie is available before using it.
+    # There is two cases where we can call _entity_spec_helper() without apypie available:
+    # * When the user calls the module but doesn't have the right Python libraries installed.
+    #   In this case nothing will works and the module will warn teh user to install the required library.
+    # * When Ansible generates docs from the argument_spec. As the inflector is only used to build entity_spec and not argument_spec,
+    #   This is not a problem.
+    #
+    # So in conclusion, we only have to verify that apypie is available before using it.
+    if HAS_APYPIE:
+        inflector = apypie.Inflector()
     for key, value in spec.items():
         entity_value = {}
         argument_value = value.copy()
@@ -1035,8 +1046,12 @@ def _entity_spec_helper(spec):
 
         if argument_value.get('type') == 'entity':
             entity_value['type'] = argument_value.pop('type')
+            if not flat_name:
+                flat_name = '{0}_id'.format(key)
         elif argument_value.get('type') == 'entity_list':
             argument_value['type'] = 'list'
+            if HAS_APYPIE and not flat_name:
+                flat_name = '{0}_ids'.format(inflector.singularize(key))
             entity_value['type'] = 'entity_list'
         elif argument_value.get('type') == 'nested_list':
             argument_value['type'] = 'list'

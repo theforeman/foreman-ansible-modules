@@ -129,9 +129,9 @@ def main():
     module = ForemanHostModule(
         entity_spec=dict(
             name=dict(required=True),
-            hostgroup=dict(type='entity', flat_name='hostgroup_id'),
-            location=dict(type='entity', flat_name='location_id'),
-            organization=dict(type='entity', flat_name='organization_id'),
+            hostgroup=dict(type='entity'),
+            location=dict(type='entity'),
+            organization=dict(type='entity'),
             enabled=dict(type='bool'),
             managed=dict(type='bool'),
             build=dict(type='bool'),

@@ -92,8 +92,8 @@ def main():
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         entity_spec=dict(
-            template_kind=dict(required=True, type='entity', flat_name='template_kind_id'),
-            provisioning_template=dict(type='entity', flat_name='provisioning_template_id', thin=False),
+            template_kind=dict(required=True, type='entity'),
+            provisioning_template=dict(type='entity', thin=False),
         ),
         required_if=(
             ['state', 'present', ['provisioning_template']],

@@ -84,7 +84,7 @@ def main():
     module = ForemanRealmModule(
         entity_spec=dict(
             name=dict(required=True),
-            realm_proxy=dict(type='entity', flat_name='realm_proxy_id', required=True, resource_type='smart_proxies'),
+            realm_proxy=dict(type='entity', required=True, resource_type='smart_proxies'),
             realm_type=dict(required=True, choices=['Red Hat Identity Management', 'FreeIPA', 'Active Directory']),
         ),
     )

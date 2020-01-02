@@ -89,7 +89,7 @@ from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleMod
 
 
 filter_entity_spec = dict(
-    permissions=dict(type='entity_list', flat_name='permission_ids', required=True),
+    permissions=dict(type='entity_list', required=True),
     search=dict(),
 )
 

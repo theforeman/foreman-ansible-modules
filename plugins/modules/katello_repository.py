@@ -170,7 +170,7 @@ def main():
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
-            gpg_key=dict(type='entity', flat_name='gpg_key_id'),
+            gpg_key=dict(type='entity'),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
             upstream_username=dict(),

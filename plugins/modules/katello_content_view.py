@@ -132,9 +132,9 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 cvc_entity_spec = {
-    'content_view': {'type': 'entity', 'flat_name': 'content_view_id', 'required': True},
+    'content_view': {'type': 'entity', 'required': True},
     'latest': {'type': 'bool', 'default': False},
-    'content_view_version': {'type': 'entity', 'flat_name': 'content_view_version_id', 'aliases': ['version']},
+    'content_view_version': {'type': 'entity', 'aliases': ['version']},
 }
 
 
@@ -146,7 +146,7 @@ def main():
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
             components=dict(type='nested_list', entity_spec=cvc_entity_spec),
-            repositories=dict(type='entity_list', flat_name='repository_ids', elements='dict', options=dict(
+            repositories=dict(type='entity_list', elements='dict', options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
             )),

@@ -96,7 +96,7 @@ def main():
         ),
         entity_spec=dict(
             name=dict(required=True),
-            operatingsystems=dict(type='entity_list', flat_name='operatingsystem_ids'),
+            operatingsystems=dict(type='entity_list'),
             os_family=dict(choices=OS_LIST),
             path=dict(),
         ),

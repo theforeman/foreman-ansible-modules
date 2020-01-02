@@ -173,9 +173,9 @@ from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 content_filter_spec = {
     'name': {},
     'description': {},
-    'repositories': {'type': 'entity_list', 'flat_name': 'repository_ids'},
+    'repositories': {'type': 'entity_list'},
     'inclusion': {},
-    'content_view': {'type': 'entity', 'flat_name': 'content_view_id'},
+    'content_view': {'type': 'entity'},
     'filter_type': {'flat_name': 'type'},
     'original_packages': {},
 }
