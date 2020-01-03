@@ -137,6 +137,43 @@
         state: disabled
         expected_change: false
 
+    - name: enable RHEL8 repository_set
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-8-for-x86_64-baseos-rpms
+        repositories:
+          - releasever: '8'
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*disabled"
+        expected_diff_after: "state.*enabled"
+    - name: enable RHEL8 repository_set again, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-8-for-x86_64-baseos-rpms
+        repositories:
+          - releasever: '8'
+        expected_change: false
+    - name: disable RHEL8 repository_set
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-8-for-x86_64-baseos-rpms
+        repositories:
+          - releasever: '8'
+        state: disabled
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "state.*enabled"
+        expected_diff_after: "state.*disabled"
+    - name: disable RHEL8 repository_set again, no change
+      include_tasks: tasks/repository_set.yml
+      vars:
+        label: rhel-8-for-x86_64-baseos-rpms
+        repositories:
+          - releasever: '8'
+        state: disabled
+        expected_change: false
+
 - hosts: localhost
   gather_facts: false
   vars_files:
