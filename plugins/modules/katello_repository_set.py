@@ -152,6 +152,7 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 def get_desired_repos(desired_substitutions, available_repos):
     desired_repos = []
     for sub in desired_substitutions:
+        sub = {k: v for (k, v) in sub.items() if v is not None}
         desired_repos += filter(lambda available: available['substitutions'] == sub, available_repos)
     return desired_repos
 
