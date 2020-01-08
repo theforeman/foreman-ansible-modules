@@ -71,17 +71,17 @@ options:
     type: str
   ssl_ca_cert:
     description:
-    - Repository SSL CA CERT
+    - Repository SSL CA certificate
     required: false
     type: str
   ssl_client_cert:
     description:
-    - Repository SSL CLIENT CERT
+    - Repository SSL client certificate
     required: false
     type: str
   ssl_client_key:
     description:
-    - Repository SSL CLIENT KEY
+    - Repository SSL client private key
     required: false
     type: str
   download_policy:
@@ -134,8 +134,8 @@ options:
     type: str
   deb_errata_url:
     description:
-      - Errataurl to sync from
-    type: string
+      - URL to sync errata information from
+    type: str
     required: false
 extends_documentation_fragment:
   - foreman

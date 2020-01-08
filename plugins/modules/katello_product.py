@@ -52,17 +52,17 @@ options:
     type: str
   ssl_ca_cert:
     description:
-    - Content SSL CA CERT name attached to this product
+    - Content SSL CA certificate name attached to this product
     required: false
     type: str
   ssl_client_cert:
     description:
-    - Content SSL CLIENT CERT name attached to this product
+    - Content SSL client certificate name attached to this product
     required: false
     type: str
   ssl_client_key:
     description:
-    - Content SSL CLIENT KEY name attached to this product
+    - Content SSL client private key name attached to this product
     required: false
     type: str
   sync_plan:
