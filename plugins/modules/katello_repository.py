@@ -69,6 +69,21 @@ options:
     - Repository GPG key
     required: false
     type: str
+  ssl_ca_cert:
+    description:
+    - Repository SSL CA CERT
+    required: false
+    type: str
+  ssl_client_cert:
+    description:
+    - Repository SSL CLIENT CERT
+    required: false
+    type: str
+  ssl_client_key:
+    description:
+    - Repository SSL CLIENT KEY
+    required: false
+    type: str
   download_policy:
     description:
       - download policy for sync from upstream
@@ -117,6 +132,11 @@ options:
       - comma separated list of architectures to be synced from deb-archive
       - only available for I(content_type=deb)
     type: str
+  deb_errata_url:
+    description:
+      - Errataurl to sync from
+    type: string
+    required: false
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
@@ -171,12 +191,16 @@ def main():
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
             gpg_key=dict(type='entity'),
+            ssl_ca_cert=dict(type='entity'),
+            ssl_client_cert=dict(type='entity'),
+            ssl_client_key=dict(type='entity'),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
             upstream_username=dict(),
             upstream_password=dict(no_log=True),
             docker_upstream_name=dict(),
             docker_tags_whitelist=dict(type='list'),
+            deb_errata_url=dict(),
             deb_releases=dict(),
             deb_components=dict(),
             deb_architectures=dict(),
@@ -192,7 +216,7 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'docker'".format(",".join(invalid_list)))
 
     if entity_dict['content_type'] != 'deb':
-        invalid_list = [key for key in ['deb_releases', 'deb_components', 'deb_architectures'] if key in entity_dict]
+        invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in entity_dict]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
@@ -204,6 +228,12 @@ def main():
         if not module.desired_absent:
             if 'gpg_key' in entity_dict:
                 entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
+            if 'ssl_ca_cert' in entity_dict:
+                entity_dict['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_ca_cert'], params=scope, thin=True)
+            if 'ssl_client_cert' in entity_dict:
+                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_cert'], params=scope, thin=True)
+            if 'ssl_client_key' in entity_dict:
+                entity_dict['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_key'], params=scope, thin=True)
 
         scope['product_id'] = entity_dict['product']['id']
         entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
