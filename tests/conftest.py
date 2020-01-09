@@ -47,6 +47,7 @@ TEST_PLAYBOOKS = [
     'scc_product',
     'search_facts',
     'setting',
+    'smart_class_parameter',
     'snapshot',
     'subnet',
     'sync_plan',

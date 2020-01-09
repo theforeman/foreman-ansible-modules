@@ -1,0 +1,31 @@
+---
+- name: "Ensure SmartClassParameter '{{ smart_class_parameter_puppetclass_name }}::{{ smart_class_parameter_parameter }}' is {{ smart_class_parameter_state }}"
+  vars:
+    smart_class_parameter_state: present
+  foreman_smart_class_parameter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    puppetclass_name: "{{ smart_class_parameter_puppetclass_name }}"
+    parameter: "{{ smart_class_parameter_parameter }}"
+    parameter_type: "{{ smart_class_parameter_parameter_type | default(omit) }}"
+    validator_type: "{{ smart_class_parameter_validator_type | default(omit) }}"
+    validator_rule: "{{ smart_class_parameter_validator_rule | default(omit) }}"
+    description: "{{ smart_class_parameter_description | default(omit) }}"
+    default_value: "{{ smart_class_parameter_default_value | default(omit) }}"
+    omit: "{{ smart_class_parameter_omit | default(omit) }}"
+    override: "{{ smart_class_parameter_override | default(omit) }}"
+    merge_default: "{{ smart_class_parameter_merge_default | default(omit) }}"
+    merge_overrides: "{{ smart_class_parameter_merge_overrides | default(omit) }}"
+    avoid_duplicates: "{{ smart_class_parameter_avoid_duplicates | default(omit) }}"
+    required: "{{ smart_class_parameter_required | default(omit) }}"
+    hidden_value: "{{ smart_class_parameter_hidden_value | default(omit) }}"
+    override_value_order: "{{ smart_class_parameter_override_value_order | default(omit) }}"
+    override_values: "{{ smart_class_parameter_override_values | default(omit) }}"
+    state: "{{ smart_class_parameter_state | default('present') }}"
+  register: result
+- fail:
+    msg: "Ensuring SmartClassParameter is {{ smart_class_parameter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
