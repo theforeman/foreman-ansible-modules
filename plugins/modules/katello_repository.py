@@ -134,7 +134,9 @@ options:
     type: str
   deb_errata_url:
     description:
-      - URL to sync errata information from
+      - URL to sync Debian or Ubuntu errata information from
+      - only available on Orcharhino
+      - only available for I(content_type=deb)
     type: str
     required: false
 extends_documentation_fragment:

@@ -58,7 +58,7 @@
           repository_state: absent
           expected_change: false
 
-  - name: Test Yum Repository with content GPG key
+  - name: Test Yum Repository with content SSL and GPG key
     block:
       - include: tasks/repository.yml
         vars:
@@ -67,6 +67,9 @@
           repository_name: "Test Repository 2"
           repository_label: "just_a_test_repo2"
           repository_gpg_key: "Test GPG key"
+          repository_ssl_ca_cert: "Test GPG key"
+          repository_ssl_client_cert: "Test GPG key"
+          repository_ssl_client_key: "Test GPG key"
           repository_mirror_on_sync: false
           repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
       - include: tasks/repository.yml
