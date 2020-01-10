@@ -233,7 +233,8 @@ def main():
             if 'ssl_ca_cert' in entity_dict:
                 entity_dict['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_ca_cert'], params=scope, thin=True)
             if 'ssl_client_cert' in entity_dict:
-                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_cert'], params=scope, thin=True)
+                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
+                                                                              name=entity_dict['ssl_client_cert'], params=scope, thin=True)
             if 'ssl_client_key' in entity_dict:
                 entity_dict['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_key'], params=scope, thin=True)
 
