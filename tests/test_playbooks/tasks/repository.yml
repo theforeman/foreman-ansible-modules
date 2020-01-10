@@ -28,6 +28,9 @@
     docker_tags_whitelist: "{{ repository_docker_tags_whitelist | default(omit) }}"
     download_policy: "{{ repository_download_policy | default(omit) }}"
     gpg_key: "{{ repository_gpg_key | default(omit) }}"
+    ssl_ca_cert: "{{ repository_ssl_ca_cert | default(omit) }}"
+    ssl_client_cert: "{{ repository_ssl_client_cert | default(omit) }}"
+    ssl_client_key: "{{ repository_ssl_client_key | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Ensuring repositroy is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"

@@ -10,6 +10,11 @@
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: present
+  - include: tasks/content_credential.yml
+    vars:
+      content_credential_name: "Test SSL Cert"
+      content_credential_type: "cert" 
+      content_credential_state: present
   - include: tasks/product.yml
     vars:
       product_state: present
@@ -58,7 +63,7 @@
           repository_state: absent
           expected_change: false
 
-  - name: Test Yum Repository with content GPG key
+  - name: Test Yum Repository with content SSL and GPG key
     block:
       - include: tasks/repository.yml
         vars:
@@ -67,6 +72,9 @@
           repository_name: "Test Repository 2"
           repository_label: "just_a_test_repo2"
           repository_gpg_key: "Test GPG key"
+          repository_ssl_ca_cert: "Test SSL Cert"
+          repository_ssl_client_cert: "Test SSL Cert"
+          repository_ssl_client_key: "Test SSL Cert"
           repository_mirror_on_sync: false
           repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
       - include: tasks/repository.yml
@@ -184,6 +192,11 @@
   vars_files:
     - vars/server.yml
   tasks:
+  - include: tasks/content_credential.yml
+    vars:
+      content_credential_name: "Test SSL Cert"
+      content_credential_type: "cert" 
+      content_credential_state: absent
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: absent

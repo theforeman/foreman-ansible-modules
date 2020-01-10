@@ -50,6 +50,21 @@ options:
     - Content GPG key name attached to this product
     required: false
     type: str
+  ssl_ca_cert:
+    description:
+    - Content SSL CA certificate name attached to this product
+    required: false
+    type: str
+  ssl_client_cert:
+    description:
+    - Content SSL client certificate name attached to this product
+    required: false
+    type: str
+  ssl_client_key:
+    description:
+    - Content SSL client private key name attached to this product
+    required: false
+    type: str
   sync_plan:
     description:
       - Sync plan name attached to this product
@@ -100,6 +115,9 @@ def main():
             name=dict(required=True),
             label=dict(),
             gpg_key=dict(type='entity'),
+            ssl_ca_cert=dict(type='entity'),
+            ssl_client_cert=dict(type='entity'),
+            ssl_client_key=dict(type='entity'),
             sync_plan=dict(type='entity'),
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -116,7 +134,13 @@ def main():
         if not module.desired_absent:
             if 'gpg_key' in entity_dict:
                 entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
-
+            if 'ssl_ca_cert' in entity_dict:
+                entity_dict['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_ca_cert'], params=scope, thin=True)
+            if 'ssl_client_cert' in entity_dict:
+                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
+                                                                              name=entity_dict['ssl_client_cert'], params=scope, thin=True)
+            if 'ssl_client_key' in entity_dict:
+                entity_dict['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_key'], params=scope, thin=True)
             if 'sync_plan' in entity_dict:
                 entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
 

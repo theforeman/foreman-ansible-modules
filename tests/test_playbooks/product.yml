@@ -10,6 +10,11 @@
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: present
+  - include: tasks/content_credential.yml
+    vars:
+      content_credential_name: "Test SSL Cert"
+      content_credential_type: "cert" 
+      content_credential_state: present
   - include: tasks/sync_plan.yml
     vars:
       sync_plan_state: present
@@ -52,11 +57,17 @@
         product_name: "Test Product 2"
         product_gpg_key: "Test GPG key"
         product_state: present
+        product_ssl_ca_cert: "Test SSL Cert"
+        product_ssl_client_cert: "Test SSL Cert"
+        product_ssl_client_key: "Test SSL Cert"
         expected_change: true
     - include: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_gpg_key: "Test GPG key"
+        product_ssl_ca_cert: "Test SSL Cert"
+        product_ssl_client_cert: "Test SSL Cert"
+        product_ssl_client_key: "Test SSL Cert"
         product_state: present
         expected_change: false
     - include: tasks/product.yml
@@ -102,6 +113,10 @@
   - include: tasks/sync_plan.yml
     vars:
       sync_plan_state: absent
+  - include: tasks/content_credential.yml
+    vars:
+      content_credential_name: "Test SSL Cert" 
+      content_credential_state: absent
   - include: tasks/content_credential.yml
     vars:
       content_credential_state: absent
