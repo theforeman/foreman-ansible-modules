@@ -23,6 +23,24 @@
   - include: tasks/organization.yml
     vars:
       organization_state: present
+      organization_name: "会社"
+      organization_description: "アクメ株式会社"
+      expected_change: true
+      expected_diff: true
+      expected_diff_before: ""
+      expected_diff_after: "name['\": ]*\\\\u4f1a\\\\u793e"
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
+      organization_name: "ÄCMÈ"
+      organization_description: "Because Ä makes it look more METAL"
+      expected_change: true
+      expected_diff: true
+      expected_diff_before: ""
+      expected_diff_after: "description['\": ]*Because \\\\u00c4 makes it look more METAL"
+  - include: tasks/organization.yml
+    vars:
+      organization_state: present
       expected_change: true
       expected_diff: true
       expected_diff_before: "description.*test"
@@ -33,6 +51,16 @@
       expected_change: false
   - include: tasks/organization.yml
     vars:
+      organization_state: absent
+      expected_change: true
+  - include: tasks/organization.yml
+    vars:
+      organization_name: "会社"
+      organization_state: absent
+      expected_change: true
+  - include: tasks/organization.yml
+    vars:
+      organization_name: "ÄCMÈ"
       organization_state: absent
       expected_change: true
 ...
