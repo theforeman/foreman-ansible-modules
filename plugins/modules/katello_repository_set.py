@@ -152,7 +152,6 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 def get_desired_repos(desired_substitutions, available_repos):
     desired_repos = []
     for sub in desired_substitutions:
-        sub = {k: v for (k, v) in sub.items() if v is not None}
         desired_repos += filter(lambda available: available['substitutions'] == sub, available_repos)
     return desired_repos
 
@@ -196,6 +195,7 @@ def main():
     module.connect()
 
     module_params, scope = module.handle_organization_param(module_params)
+    repositories = [{k: v for (k, v) in sub.items() if v is not None} for sub in module_params.get('repositories', [])]
 
     record_data = {}
     if 'product' in module_params:
@@ -218,7 +218,7 @@ def main():
     available_repos = available_repos['results']
     current_repos = repo_set['repositories']
     if not module_params.get('all_repositories', False):
-        desired_repos = get_desired_repos(module_params['repositories'], available_repos)
+        desired_repos = get_desired_repos(repositories, available_repos)
     else:
         desired_repos = available_repos[:]
 
@@ -226,11 +226,11 @@ def main():
     current_repo_names = set(map(lambda repo: repo['name'], current_repos))
     desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-    if not module_params.get('all_repositories', False) and len(module_params['repositories']) != len(desired_repo_names):
+    if not module_params.get('all_repositories', False) and len(repositories) != len(desired_repo_names):
         repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
         error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
-                    repo_set_identification, module_params['repositories'], desired_repo_names, available_repo_names)
+                    repo_set_identification, repositories, desired_repo_names, available_repo_names)
 
         module.fail_json(msg=error_msg)
 
