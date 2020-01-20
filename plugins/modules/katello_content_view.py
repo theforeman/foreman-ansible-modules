@@ -193,10 +193,12 @@ def main():
         current_cvcs = content_view_entity.get('content_view_components', [])
 
         # only record a subset of data
-        current_cvcs_record = [{"id": cvc['id'], "content_view_id": cvc['content_view']['id'],
-                                "content_view_version_id": cvc['content_view_version']['id'],
-                                "latest": cvc['latest']}
-                               for cvc in current_cvcs]
+        current_cvcs_record = []
+        for cvc in current_cvcs:
+            entry = {"id": cvc['id'], "content_view_id": cvc['content_view']['id'], "latest": cvc['latest']}
+            if 'content_view_version' in cvc and isinstance(cvc['content_view_version'], dict):
+                entry['content_view_version_id'] = cvc['content_view_version'].get('id')
+            current_cvcs_record.append(entry)
         module.record_before('content_views/components', {'composite_content_view_id': content_view_entity['id'],
                                                           'content_view_components': current_cvcs_record})
         final_cvcs_record = copy.deepcopy(current_cvcs_record)
