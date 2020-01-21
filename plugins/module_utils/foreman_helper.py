@@ -154,23 +154,6 @@ class HostMixin(object):
             args.update(entity_spec)
         super(HostMixin, self).__init__(entity_spec=args, **kwargs)
 
-    def handle_common_host_params(self, entity_dict):
-        if not self.desired_absent:
-            entity_dict = entity_dict.copy()  # "Copy on write"
-            if 'compute_resource' in entity_dict:
-                entity_dict['compute_resource'] = self.find_resource_by_name(
-                    'compute_resources', name=entity_dict['compute_resource'], failsafe=False, thin=True
-                )
-            if 'compute_profile' in entity_dict:
-                entity_dict['compute_profile'] = self.find_resource_by_name('compute_profiles', name=entity_dict['compute_profile'], failsafe=False, thin=True)
-            if 'domain' in entity_dict:
-                entity_dict['domain'] = self.find_resource_by_name('domains', name=entity_dict['domain'], failsafe=False, thin=True)
-            if 'subnet' in entity_dict:
-                entity_dict['subnet'] = self.find_resource_by_name('subnets', name=entity_dict['subnet'], failsafe=False, thin=True)
-            if 'subnet6' in entity_dict:
-                entity_dict['subnet6'] = self.find_resource_by_name('subnets', name=entity_dict['subnet6'], failsafe=False, thin=True)
-        return entity_dict
-
 
 class OrganizationMixin(object):
     def handle_organization_param(self, entity_dict):
