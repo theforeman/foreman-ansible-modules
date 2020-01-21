@@ -66,7 +66,7 @@ debug-setup: .tmp/ansible
 	ansible-playbook debug-setup.yml
 
 test-setup: tests/test_playbooks/vars/server.yml
-	pip install --upgrade pip
+	pip install --upgrade 'pip<20'
 	pip install -r requirements-dev.txt
 	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt
 tests/test_playbooks/vars/server.yml:
