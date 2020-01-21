@@ -148,7 +148,7 @@ class HostMixin(object):
             compute_profile=dict(type='entity'),
             domain=dict(type='entity'),
             subnet=dict(type='entity'),
-            subnet6=dict(type='entity'),
+            subnet6=dict(type='entity', resource_type='subnets'),
         )
         if entity_spec:
             args.update(entity_spec)
