@@ -252,7 +252,7 @@ def main():
             entity_dict['mask'] = str(IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
 
         if 'domains' in entity_dict:
-            entity_dict['domains'] = module.find_resources('domains', entity_dict['domains'], thin=True)
+            entity_dict['domains'] = module.find_resources_by_name('domains', entity_dict['domains'], thin=True)
 
         for feature in ('dhcp_proxy', 'httpboot_proxy', 'tftp_proxy', 'discovery_proxy', 'dns_proxy', 'template_proxy'):
             if feature in entity_dict:
