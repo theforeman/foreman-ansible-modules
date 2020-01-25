@@ -306,7 +306,8 @@ def main():
                     product_content = module.resource_action(
                         'activation_keys',
                         'product_content',
-                        params={'id': activation_key['id']},
+                        params={'id': activation_key['id'],
+                                'content_access_mode_all': True},
                         ignore_check_mode=True,
                     )
                 else:
