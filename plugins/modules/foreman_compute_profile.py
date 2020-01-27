@@ -140,7 +140,27 @@ EXAMPLES = '''
     state: absent
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    compute_profiles:
+      description: List of compute profiles.
+      type: list
+      elements: dict
+      contains:
+        id:
+          description: Database id of the compute profile.
+          type: int
+        name:
+          description: Name of the compute profile.
+          type: str
+        compute_attributes:
+          description: Attributes for this compute profile.
+          type: list
+'''
 
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
