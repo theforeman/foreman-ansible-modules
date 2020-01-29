@@ -962,10 +962,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                         'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
 
     def exit_json(self, **kwargs):
-        if 'diff' not in kwargs:
+        if 'diff' not in kwargs and (self._before or self._after):
             kwargs['diff'] = {'before': self._before,
                               'after': self._after}
-        if 'entity' not in kwargs:
+        if 'entity' not in kwargs and self._after_full:
             kwargs['entity'] = self._after_full
         super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
