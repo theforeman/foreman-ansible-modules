@@ -149,7 +149,10 @@ def promote_content_view_version(module, content_view_version, environments, for
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
+        module.record_before('content_view_versions', {'id': content_view_version['id'], 'environments': content_view_version['environments']})
         module.resource_action('content_view_versions', 'promote', params=payload)
+        module.record_after('content_view_versions', {'id': content_view_version['id'], 'environments': environments})
+        module.record_after_full('content_view_versions', {'id': content_view_version['id'], 'environments': environments})
 
 
 def main():
