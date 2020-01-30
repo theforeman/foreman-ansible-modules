@@ -117,6 +117,7 @@ options:
       - list of tags to sync for Container Image repository
       - only available for I(content_type=docker)
     type: list
+    elements: str
   deb_releases:
     description:
       - comma separated list of releases to be synced from deb-archive
@@ -201,7 +202,7 @@ def main():
             upstream_username=dict(),
             upstream_password=dict(no_log=True),
             docker_upstream_name=dict(),
-            docker_tags_whitelist=dict(type='list'),
+            docker_tags_whitelist=dict(type='list', elements='str'),
             deb_errata_url=dict(),
             deb_releases=dict(),
             deb_components=dict(),

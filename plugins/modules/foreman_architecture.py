@@ -45,6 +45,7 @@ options:
     description: List of operating systems the architecture should be assigned to
     required: false
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state

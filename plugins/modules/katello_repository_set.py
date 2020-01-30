@@ -54,6 +54,7 @@ options:
       - Required when I(all_repositories) is unset or C(false).
     required: false
     type: list
+    elements: dict
     suboptions:
       basearch:
         description:

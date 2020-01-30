@@ -52,6 +52,7 @@ options:
         description: List of permissions
         required: true
         type: list
+        elements: str
       search:
         description: Filter condition for the resources
         required: false

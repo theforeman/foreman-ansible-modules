@@ -47,6 +47,7 @@ options:
       - List of repositories that include name and product.
       - Cannot be combined with I(composite=True).
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -74,6 +75,7 @@ options:
       - List of content views to includes content_view and either version or latest.
       - Ignored if I(composite=False).
     type: list
+    elements: dict
     suboptions:
       content_view:
         description:

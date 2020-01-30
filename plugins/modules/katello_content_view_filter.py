@@ -61,6 +61,7 @@ options:
       - An empty Array means all current and future repositories
     default: []
     type: list
+    elements: dict
   rule_state:
     description:
       - State of the content view filter rule
@@ -122,6 +123,7 @@ options:
       - erratum types (enhancement, bugfix, security)
     default: ["bugfix", "enhancement", "security"]
     type: list
+    elements: str
   version:
     description:
       - package version
@@ -216,7 +218,7 @@ def main():
         argument_spec=dict(
             name=dict(required=True),
             description=dict(),
-            repositories=dict(type='list', default=[]),
+            repositories=dict(type='list', default=[], elements='dict'),
             inclusion=dict(type='bool', default=False),
             original_packages=dict(type='bool'),
             content_view=dict(required=True),
@@ -230,7 +232,7 @@ def main():
             max_version=dict(),
             min_version=dict(),
             start_date=dict(),
-            types=dict(default=["bugfix", "enhancement", "security"], type='list'),
+            types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             version=dict(),
         ),
     )

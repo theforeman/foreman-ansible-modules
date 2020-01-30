@@ -55,16 +55,19 @@ options:
       - List of roles assigned to the group
     required: false
     type: list
+    elements: str
   users:
     description:
       - List of users assigned to the group
     required: false
     type: list
+    elements: str
   usergroups:
     description:
       - List of other groups assigned to the group
     required: false
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state

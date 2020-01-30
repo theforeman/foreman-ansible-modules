@@ -53,6 +53,7 @@ options:
     description:
       - The lifecycle environments the Content View Version should be in.
     type: list
+    elements: str
   force_promote:
     description:
       - Force content view promotion and bypass lifecycle environment restriction
@@ -158,7 +159,7 @@ def main():
             content_view=dict(type='entity', required=True),
             description=dict(),
             version=dict(),
-            lifecycle_environments=dict(type='list'),
+            lifecycle_environments=dict(type='list', elements='str'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
             current_lifecycle_environment=dict(),
