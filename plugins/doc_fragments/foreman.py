@@ -111,9 +111,11 @@ options:
   organizations:
     description: List of organizations the entity should be assigned to
     type: list
+    elements: str
   locations:
     description: List of locations the entity should be assigned to
     type: list
+    elements: str
 '''
 
     ENTITY_STATE = '''
