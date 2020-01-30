@@ -13,7 +13,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["2.7", "3.5", "3.6", "3.7"]
+        python:
+          - "2.7"
+          - "3.5"
+          - "3.6"
+          - "3.7"
+          - "3.8"
         ansible:
           - stable-2.8
           - stable-2.9
@@ -37,6 +42,12 @@ jobs:
           - python: "3.6"
             ansible: "stable-2.9"
           - python: "3.6"
+            ansible: "stable-2.10"
+          - python: "3.8"
+            ansible: "stable-2.8"
+          - python: "3.8"
+            ansible: "stable-2.9"
+          - python: "3.8"
             ansible: "stable-2.10"
     steps:
       - uses: actions/checkout@v2
@@ -63,7 +74,7 @@ jobs:
         run: make test-crud test-other
       - name: Run Ansible devel specific tests
         run: make SANITY_OPTS="--local" sanity dist-test
-        if: matrix.ansible == 'devel'
+        if: matrix.ansible == 'devel' && matrix.python != '3.8'
 
   checkmode:
     runs-on: ubuntu-latest
