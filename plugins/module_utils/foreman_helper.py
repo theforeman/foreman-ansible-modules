@@ -1036,6 +1036,8 @@ def _entity_spec_helper(spec):
                 flat_name = '{0}_id'.format(key)
         elif argument_value.get('type') == 'entity_list':
             argument_value['type'] = 'list'
+            if argument_value.get('elements') is None:
+                argument_value['elements'] = 'str'
             if HAS_APYPIE and not flat_name:
                 flat_name = '{0}_ids'.format(inflector.singularize(key))
             entity_value['type'] = 'entity_list'

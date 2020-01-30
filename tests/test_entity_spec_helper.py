@@ -51,7 +51,7 @@ def test_full_entity():
         'facilities': {'type': 'list'},
         'street': {},
         'quarter': {},
-        'houses': {'type': 'list'},
+        'houses': {'type': 'list', 'elements': 'str'},
         'prices': {'type': 'list', 'elements': 'dict', 'options': {
             'value': {},
         }},
