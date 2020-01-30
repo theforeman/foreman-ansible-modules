@@ -47,6 +47,7 @@ options:
     description:
       - List of organizations the location should be assigned to
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state

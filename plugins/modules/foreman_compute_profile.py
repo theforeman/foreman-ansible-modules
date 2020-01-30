@@ -48,6 +48,7 @@ options:
     description: Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type
     required: false
     type: list
+    elements: dict
     suboptions:
       compute_resource:
         description:

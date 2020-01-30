@@ -48,6 +48,7 @@ options:
     description: List of operating systems the installation medium should be assigned to
     required: false
     type: list
+    elements: str
   os_family:
     description:
       - The OS family the template shall be assigned with.

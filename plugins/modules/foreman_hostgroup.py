@@ -102,10 +102,12 @@ options:
     description: List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
     required: false
     type: list
+    elements: str
   config_groups:
     description: Config groups list
     required: false
     type: list
+    elements: str
   puppet_proxy:
     description: Puppet server proxy name
     required: false

@@ -51,6 +51,7 @@ options:
       - List of subscriptions that include either Name or Pool ID.
       - Pool IDs are preferred since Names are not unique and the module will fail if it finds more than one subscription with the same name.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -68,10 +69,12 @@ options:
     description:
       - List of host collections to add to activation key
     type: list
+    elements: str
   content_overrides:
     description:
       - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
     type: list
+    elements: dict
     suboptions:
       label:
         description:
@@ -124,6 +127,7 @@ options:
     description:
       - Sets the system purpose add-ons
     type: list
+    elements: str
   state:
     description:
       - State of the Activation Key
@@ -205,7 +209,7 @@ def main():
             unlimited_hosts=dict(type='bool'),
             purpose_usage=dict(),
             purpose_role=dict(),
-            purpose_addons=dict(type='list'),
+            purpose_addons=dict(type='list', elements='str'),
         ),
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(

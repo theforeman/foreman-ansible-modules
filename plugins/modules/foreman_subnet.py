@@ -63,6 +63,7 @@ options:
     description: List of DNS domains the subnet should assigned to
     required: false
     type: list
+    elements: str
   gateway:
     description: Subnet gateway IP address
     required: false
@@ -134,6 +135,7 @@ options:
       - This option is only available, if the remote_execution plugin is installed.
     required: false
     type: list
+    elements: str
   vlanid:
     description: VLAN ID
     required: false

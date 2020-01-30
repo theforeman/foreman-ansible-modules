@@ -97,6 +97,7 @@ options:
     description: The Operatingsystems the template shall be assigned to
     required: false
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults

@@ -90,6 +90,7 @@ options:
     description:
       - The template inputs used in the Job Template
     type: list
+    elements: dict
     suboptions:
       advanced:
         description:
@@ -123,6 +124,7 @@ options:
         description:
           - Template values for user inputs. Must be an array of any type.
         type: list
+        elements: raw
       puppet_class_name:
         description:
           - Puppet class name, used when input type is puppet_parameter
@@ -313,7 +315,7 @@ template_input_entity_spec = {
     'variable_name': dict(),
     'puppet_class_name': dict(),
     'puppet_parameter_name': dict(),
-    'options': dict(type='list'),
+    'options': dict(type='list', elements='raw'),
     'value_type': dict(choices=[
         'plain',
         'search',

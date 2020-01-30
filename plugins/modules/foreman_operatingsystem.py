@@ -73,16 +73,19 @@ options:
       - architectures, the operating system can be installed on
     required: false
     type: list
+    elements: str
   media:
     description:
       - list of installation media
     required: false
     type: list
+    elements: str
   ptables:
     description:
       - list of partitioning tables
     required: false
     type: list
+    elements: str
   provisioning_templates:
     description:
       - List of provisioning templates that are associated with the operating system.
@@ -92,6 +95,7 @@ options:
       - the M(foreman_os_default_template) module.
     required: false
     type: list
+    elements: str
   password_hash:
     description:
       - hashing algorithm for passwd

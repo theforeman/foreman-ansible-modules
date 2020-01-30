@@ -274,6 +274,7 @@ options:
       - List of roles assigned to the user
     required: false
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state

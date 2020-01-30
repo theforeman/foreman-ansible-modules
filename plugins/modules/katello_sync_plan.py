@@ -75,6 +75,7 @@ options:
       - List of products to include in the sync plan
     required: false
     type: list
+    elements: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
@@ -115,7 +116,7 @@ def main():
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         argument_spec=dict(
-            products=dict(type='list'),
+            products=dict(type='list', elements='str'),
         ),
         required_if=[
             ['interval', 'custom cron', ['cron_expression']],
