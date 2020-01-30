@@ -1011,6 +1011,9 @@ def _entity_spec_helper(spec):
     """
     entity_spec = {'id': {}}
     argument_spec = {}
+
+    _FILTER_SPEC_KEYS = ['thin', 'scope', 'resource_type', 'search_by', 'search_operator', 'resolve', 'ensure']
+
     # _entity_spec_helper() is called before we call __init__ of ForemanAnsibleModule and thus before the if HAS APYPIE check happens.
     # We have to ensure that apypie is available before using it.
     # There is two cases where we can call _entity_spec_helper() without apypie available:
@@ -1024,7 +1027,7 @@ def _entity_spec_helper(spec):
         inflector = apypie.Inflector()
     for key, value in spec.items():
         entity_value = {}
-        argument_value = value.copy()
+        argument_value = {k: v for (k, v) in value.items() if k not in _FILTER_SPEC_KEYS}
         flat_name = argument_value.pop('flat_name', None)
 
         if argument_value.get('type') == 'entity':
