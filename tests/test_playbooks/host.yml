@@ -209,6 +209,37 @@
         host_state: absent
         expected_change: false
 
+    - name: create host with ip and mac
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_ip: "192.0.2.23"
+        host_mac: "EE:FF:00:00:00:01"
+        host_managed: False
+        host_build: False
+        expected_change: true
+
+    - name: create host again with ip and mac
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_ip: "192.0.2.23"
+        host_mac: "EE:FF:00:00:00:01"
+        host_managed: False
+        host_build: False
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
 - hosts: localhost
   gather_facts: false
   vars_files:
