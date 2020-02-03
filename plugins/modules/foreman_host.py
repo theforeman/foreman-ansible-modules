@@ -72,6 +72,23 @@ options:
       - Forced to true when I(build=true)
     type: bool
     required: false
+  ip:
+    description:
+      - IP address of the primary interface of the host.
+    type: str
+    required: false
+  mac:
+    description:
+      - MAC address of the primary interface of the host.
+      - Please include leading zeros and separate nibbles by colons, otherwise the exection will not be idempotent.
+      - Example EE:BB:01:02:03:04
+    type: str
+    required: false
+  comment:
+    description:
+      - Comment about the host.
+    type: str
+    required: false
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
@@ -136,6 +153,9 @@ def main():
             enabled=dict(type='bool'),
             managed=dict(type='bool'),
             build=dict(type='bool'),
+            ip=dict(),
+            mac=dict(),
+            comment=dict(),
         ),
         required_if=(
             ['managed', True, ['hostgroup']],
@@ -161,6 +181,9 @@ def main():
         elif 'build' not in entity_dict and 'managed' in entity_dict and not entity_dict['managed']:
             # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
             entity_dict['build'] = False
+
+        if 'mac' in entity_dict:
+            entity_dict['mac'] = entity_dict['mac'].lower()
 
     with module.api_connection():
         module.run(entity_dict=entity_dict)
