@@ -166,6 +166,12 @@ options:
     description: IPv6 Subnet name
     required: false
     type: str
+  root_pass:
+    description:
+      - Root password.
+      - Will result in the entity always being updated, as the current password cannot be retrieved.
+    type: str
+    required: false
 '''
 
     ORGANIZATION = '''
