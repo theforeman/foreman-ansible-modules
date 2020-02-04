@@ -150,6 +150,7 @@ class HostMixin(object):
             subnet=dict(type='entity'),
             subnet6=dict(type='entity', resource_type='subnets'),
             parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
+            root_pass=dict(no_log=True),
         )
         if entity_spec:
             args.update(entity_spec)
