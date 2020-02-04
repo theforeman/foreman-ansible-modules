@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 03 Feb 2020 10:19:08 GMT
+      - Tue, 04 Feb 2020 19:13:23 GMT
       ETag:
       - W/"39b73f2292fd196be82f6d5e7da4a321"
       Foreman_api_version:
@@ -45,7 +45,7 @@ interactions:
       Server:
       - Apache
       Set-Cookie:
-      - _session_id=ad698537ad6c7321282e8db6452af691; path=/; secure; HttpOnly; SameSite=Lax
+      - _session_id=cb795b171555e248572157644c521c76; path=/; secure; HttpOnly; SameSite=Lax
       Status:
       - 200 OK
       Strict-Transport-Security:
@@ -61,9 +61,9 @@ interactions:
       X-Powered-By:
       - Phusion Passenger 4.0.53
       X-Request-Id:
-      - 7bda3f40-aef1-4673-9a31-45123c7ec4fa
+      - cad6c95d-d778-47e6-b56a-f39cda211064
       X-Runtime:
-      - '0.102881'
+      - '0.103520'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -79,17 +79,17 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _session_id=ad698537ad6c7321282e8db6452af691
+      - _session_id=cb795b171555e248572157644c521c76
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-foreman-1-24.yatsu.example.com/api/hosts?thin=True&search=name%3D%22test-host.example.net%22&per_page=4294967296
+    uri: https://centos7-foreman-1-24.yatsu.example.com/api/hosts?thin=False&search=name%3D%22test-host.example.net%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
-        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n\
-        }\n"
+        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
+        id\":23,\"name\":\"test-host.example.net\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -102,9 +102,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 03 Feb 2020 10:19:08 GMT
+      - Tue, 04 Feb 2020 19:13:23 GMT
       ETag:
-      - W/"c1d6b0bb51318c6a119e40d475aaab06-gzip"
+      - W/"1bb86f6d553849e2129dba201854db46-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -134,13 +134,319 @@ interactions:
       X-Powered-By:
       - Phusion Passenger 4.0.53
       X-Request-Id:
-      - 964e5724-47eb-465e-be64-7d70a70b31d5
+      - 75c8e056-b8b0-4601-b7d4-0a2bcfeeafb5
       X-Runtime:
-      - '0.016716'
+      - '0.016164'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '187'
+      - '227'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - _session_id=cb795b171555e248572157644c521c76
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://centos7-foreman-1-24.yatsu.example.com/api/hosts/23
+  response:
+    body:
+      string: '{"ip":null,"ip6":null,"environment_id":null,"environment_name":null,"last_report":null,"mac":null,"realm_id":null,"realm_name":null,"sp_mac":null,"sp_ip":null,"sp_name":null,"domain_id":5,"domain_name":"example.net","architecture_id":null,"architecture_name":null,"operatingsystem_id":null,"operatingsystem_name":null,"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"sp_subnet_id":null,"ptable_id":null,"ptable_name":null,"medium_id":null,"medium_name":null,"pxe_loader":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":2,"owner_name":"testgroup","owner_type":"Usergroup","enabled":true,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"compute_resource_name":null,"compute_profile_id":null,"compute_profile_name":null,"capabilities":["build"],"provision_method":"build","certname":"test-host.example.net","image_id":null,"image_name":null,"created_at":"2020-02-04
+        19:13:19 UTC","updated_at":"2020-02-04 19:13:22 UTC","last_compile":null,"global_status":0,"global_status_label":"OK","uptime_seconds":null,"organization_id":9,"organization_name":"Test
+        Organization","location_id":10,"location_name":"Test Location","puppet_status":0,"model_name":null,"name":"test-host.example.net","id":23,"puppet_proxy_id":null,"puppet_proxy_name":null,"puppet_ca_proxy_id":null,"puppet_ca_proxy_name":null,"puppet_proxy":null,"puppet_ca_proxy":null,"hostgroup_name":null,"hostgroup_title":null,"parameters":[],"all_parameters":[],"interfaces":[{"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"domain_id":5,"domain_name":"example.net","created_at":"2020-02-04
+        19:13:19 UTC","updated_at":"2020-02-04 19:13:19 UTC","managed":true,"identifier":null,"id":23,"name":"test-host.example.net","ip":null,"ip6":null,"mac":null,"mtu":null,"fqdn":"test-host.example.net","primary":true,"provision":true,"type":"interface","virtual":false}],"puppetclasses":[],"config_groups":[],"all_puppetclasses":[],"permissions":{"view_hosts":true,"create_hosts":true,"edit_hosts":true,"destroy_hosts":true,"build_hosts":true,"power_hosts":true,"console_hosts":true,"ipmi_boot_hosts":true,"puppetrun_hosts":true}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Feb 2020 19:13:23 GMT
+      ETag:
+      - W/"65c09ee0090dd185e45c1481c698d77c-gzip"
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 1.24.2
+      Keep-Alive:
+      - timeout=5, max=98
+      Server:
+      - Apache
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger 4.0.53
+      X-Request-Id:
+      - d1d9b158-c0d7-4a93-a48e-00f4e10826b3
+      X-Runtime:
+      - '0.049171'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '2227'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - _session_id=cb795b171555e248572157644c521c76
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://centos7-foreman-1-24.yatsu.example.com/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
+        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-02-04\
+        \ 19:09:38 UTC\",\"updated_at\":\"2020-02-04 19:09:38 UTC\",\"id\":10,\"name\"\
+        :\"Test Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Feb 2020 19:13:23 GMT
+      ETag:
+      - W/"876ffc7550030cf19e6a7d3030e8adee-gzip"
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 1.24.2
+      Keep-Alive:
+      - timeout=5, max=97
+      Server:
+      - Apache
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger 4.0.53
+      X-Request-Id:
+      - e3d06104-91f5-43a5-b3d7-cd0aa70a3e0c
+      X-Runtime:
+      - '0.016634'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '385'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - _session_id=cb795b171555e248572157644c521c76
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://centos7-foreman-1-24.yatsu.example.com/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
+        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-02-04\
+        \ 19:09:37 UTC\",\"updated_at\":\"2020-02-04 19:09:37 UTC\",\"id\":9,\"name\"\
+        :\"Test Organization\",\"title\":\"Test Organization\",\"description\":\"\
+        A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Feb 2020 19:13:23 GMT
+      ETag:
+      - W/"6fb53fb62e022d761bcd9094a8301389-gzip"
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 1.24.2
+      Keep-Alive:
+      - timeout=5, max=96
+      Server:
+      - Apache
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger 4.0.53
+      X-Request-Id:
+      - 717935d5-9067-4b2e-80f2-bf54958fd11e
+      X-Runtime:
+      - '0.017421'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '412'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - _session_id=cb795b171555e248572157644c521c76
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://centos7-foreman-1-24.yatsu.example.com/api/usergroups?search=name%3D%22testgroup%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"testgroup\\\"\",\n  \"sort\": {\n\
+        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"admin\"\
+        :false,\"created_at\":\"2020-02-04 19:11:38 UTC\",\"updated_at\":\"2020-02-04\
+        \ 19:11:38 UTC\",\"name\":\"testgroup\",\"id\":2}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
+        ''self''; style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Feb 2020 19:13:23 GMT
+      ETag:
+      - W/"e7bc61439a105b0d5728435fb83af70b-gzip"
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 1.24.2
+      Keep-Alive:
+      - timeout=5, max=95
+      Server:
+      - Apache
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Powered-By:
+      - Phusion Passenger 4.0.53
+      X-Request-Id:
+      - 872bf700-2f7a-4941-936c-d85f5790a821
+      X-Runtime:
+      - '0.016325'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '294'
     status:
       code: 200
       message: OK
