@@ -52,6 +52,13 @@
         hostgroup_organizations:
           - "{{ host.organization }}"
         hostgroup_state: present
+    - include_tasks: tasks/user.yml
+      vars:
+        user_state: present
+        user_password: password
+    - include_tasks: tasks/usergroup.yml
+      vars:
+        usergroup_state: present
     - include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -79,6 +86,46 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_managed: False
+        expected_change: false
+
+    - name: update host, set owner to a user
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: False
+        host_owner: test
+        expected_change: true
+
+    - name: update host, set owner to a user again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: False
+        host_owner: test
+        expected_change: false
+
+    - name: update host, set owner to a usergroup
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: False
+        host_owner_group: testgroup
+        expected_change: true
+
+    - name: update host, set owner to a usergroup again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: False
+        host_owner_group: testgroup
         expected_change: false
 
     - name: Add subnet to host
@@ -246,6 +293,12 @@
     - vars/server.yml
     - vars/host.yml
   tasks:
+    - include_tasks: tasks/user.yml
+      vars:
+        user_state: absent
+    - include_tasks: tasks/usergroup.yml
+      vars:
+        usergroup_state: absent
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "{{ host.hostgroup }}/child_group"
