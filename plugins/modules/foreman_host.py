@@ -89,6 +89,18 @@ options:
       - Comment about the host.
     type: str
     required: false
+  owner:
+    description:
+      - Owner (user) of the host.
+      - Mutually exclusive with I(owner_group).
+    type: str
+    required: false
+  owner_group:
+    description:
+      - Owner (user group) of the host.
+      - Mutually excluside with I(owner).
+    type: str
+    required: false
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
@@ -156,11 +168,17 @@ def main():
             ip=dict(),
             mac=dict(),
             comment=dict(),
+            owner=dict(type='entity', resource_type='users', flat_name='owner_id'),
+            owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
+            owner_type=dict(type='invisible'),
         ),
         required_if=(
             ['managed', True, ['hostgroup']],
             ['build', True, ['hostgroup']],
         ),
+        mutually_exclusive=[
+            ['owner', 'owner_group']
+        ],
     )
 
     entity_dict = module.clean_params()
@@ -184,6 +202,11 @@ def main():
 
         if 'mac' in entity_dict:
             entity_dict['mac'] = entity_dict['mac'].lower()
+
+        if 'owner' in entity_dict:
+            entity_dict['owner_type'] = 'User'
+        elif 'owner_group' in entity_dict:
+            entity_dict['owner_type'] = 'Usergroup'
 
     with module.api_connection():
         module.run(entity_dict=entity_dict)
