@@ -122,10 +122,14 @@ EXAMPLES = '''
 RETURN = '''# '''
 
 import json
+import os
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
 from ansible.module_utils._text import to_text, to_native
+
+
+REDHAT_UEP = '/etc/rhsm/ca/redhat-uep.pem'
 
 
 def fetch_portal(module, path, method, data=None, accept_header='application/json'):
@@ -134,7 +138,11 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
     url = module.params['portal'] + path
     headers = {'accept': accept_header,
                'content-type': 'application/json'}
-    resp, info = fetch_url(module, url, json.dumps(data), headers, method)
+    if os.path.exists(REDHAT_UEP):
+        fetch_kwargs = {'ca_path': REDHAT_UEP}
+    else:
+        fetch_kwargs = {}
+    resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
     if resp is None:
         try:
             error = json.loads(info['body'])['displayMessage']
@@ -275,6 +283,10 @@ def main():
         required_one_of=[['name', 'uuid']],
         supports_check_mode=True,
     )
+
+    if module.params['validate_certs'] and not os.path.exists(REDHAT_UEP):
+        module.warn("Couldn't find the Red Hat Entitlement Platform CA certificate ({0}) on your system. "
+                    "It's required to validate the certificate of {1}.".format(REDHAT_UEP, module.params['portal']))
 
     username = module.params['username']
     password = module.params['password']
