@@ -225,7 +225,6 @@ from ansible.module_utils.foreman_helper import (
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
     OrganizationMixin,
-    parameter_entity_spec,
 )
 
 
@@ -270,7 +269,6 @@ def main():
             puppet_proxy=dict(type='entity', resource_type='smart_proxies'),
             puppet_ca_proxy=dict(type='entity', resource_type='smart_proxies'),
             openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
-            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
             content_source=dict(type='entity', scope='organization', resource_type='smart_proxies'),
             lifecycle_environment=dict(type='entity', scope='organization'),
             kickstart_repository=dict(type='entity', scope='organization', resource_type='repositories'),
