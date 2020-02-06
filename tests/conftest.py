@@ -31,6 +31,7 @@ TEST_PLAYBOOKS = [
     'katello_sync',
     'lifecycle_environment',
     'location',
+    'model',
     'operatingsystem',
     'organization',
     'os_default_template',
