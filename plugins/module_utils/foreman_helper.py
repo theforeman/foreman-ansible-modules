@@ -149,6 +149,7 @@ class HostMixin(object):
             domain=dict(type='entity'),
             subnet=dict(type='entity'),
             subnet6=dict(type='entity', resource_type='subnets'),
+            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
         )
         if entity_spec:
             args.update(entity_spec)
