@@ -1,0 +1,22 @@
+---
+- name: "Create/Update/Delete model"
+  vars:
+    model_name: "acme_laptop"
+    model_state: "present"
+  foreman_model:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ model_name }}"
+    info: "{{ model_info | default(omit) }}"
+    vendor_class: "{{ model_vendor_class | default(omit) }}"
+    hardware_model: "{{ model_hardware_model | default(omit) }}"
+    state: "{{ model_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring model is {{ model_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
