@@ -60,7 +60,9 @@ options:
     type: str
   medium:
     aliases: [ media ]
-    description: Medium name
+    description:
+      - Medium name
+      - Mutually exclusive with I(kickstart_repository).
     required: False
     type: str
   operatingsystem:
@@ -122,24 +124,35 @@ options:
     type: str
   organization:
     description:
-      - Organization for scoped resources attached to the hostgroup. Only used for katello installations.
+      - Organization for scoped resources attached to the hostgroup.
+      - Only used for Katello installations.
       - This organization will implicitly be added to the I(organizations) parameter if needed.
     required: false
     type: str
   content_source:
-    description: Katello Content source. Only available for katello installations.
+    description:
+      - Katello Content source.
+      - Only available for Katello installations.
     required: false
     type: str
   lifecycle_environment:
-    description: Katello Lifecycle environment. Only available for katello installations.
+    description:
+      - Katello Lifecycle environment.
+      - Only available for Katello installations.
     required: false
     type: str
   kickstart_repository:
-    description: Kickstart repository name. Only available for katello installations.
+    description:
+     - Kickstart repository name.
+     - You need to provide this to use the "Synced Content" feature of Katello.
+     - Mutually exclusive with I(medium).
+     - Only available for Katello installations.
     required: false
     type: str
   content_view:
-    description: Katello Content view. Only available for katello installations.
+    description:
+      - Katello Content view.
+      - Only available for Katello installations.
     required: false
     type: str
   parameters:
@@ -278,6 +291,7 @@ def main():
             organization=dict(),
             updated_name=dict(),
         ),
+        mutually_exclusive=[['medium', 'kickstart_repository']],
     )
 
     entity_dict = module.clean_params()
