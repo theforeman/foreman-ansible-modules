@@ -139,7 +139,7 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
     headers = {'accept': accept_header,
                'content-type': 'application/json'}
     if os.path.exists(REDHAT_UEP):
-        fetch_kwargs = {'ca_path': REDHAT_UEP}
+        fetch_kwargs = {'ca_path': REDHAT_UEP, 'timeout': 30}
     else:
         fetch_kwargs = {}
     resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
