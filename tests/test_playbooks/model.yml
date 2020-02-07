@@ -1,0 +1,57 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/model.yml
+      vars:
+        model_state: "absent"
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: create model
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "present"
+        expected_change: true
+    - name: create model again, no change
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "present"
+        expected_change: false
+    - name: update model
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "present"
+        model_info: "fancy laptop for ACME"
+        expected_change: true
+    - name: update model again, no change
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "present"
+        model_info: "fancy laptop for ACME"
+        expected_change: false
+    - name: delete model
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "absent"
+        expected_change: true
+    - name: delete model again, no change
+      include_tasks: tasks/model.yml
+      vars:
+        model_state: "absent"
+        expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/model.yml
+      vars:
+        model_state: "absent"
+...

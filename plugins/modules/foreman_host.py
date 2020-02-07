@@ -76,6 +76,7 @@ extends_documentation_fragment:
   - foreman
   - foreman.entity_state
   - foreman.host_options
+  - foreman.nested_parameters
 '''
 
 EXAMPLES = '''
