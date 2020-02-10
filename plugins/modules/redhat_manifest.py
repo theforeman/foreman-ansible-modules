@@ -138,9 +138,9 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
     url = module.params['portal'] + path
     headers = {'accept': accept_header,
                'content-type': 'application/json'}
-    fetch_kwargs = {'timeout':30}
+    fetch_kwargs = {'timeout': 30}
     if os.path.exists(REDHAT_UEP):
-        fetch_kwargs['ca_path']=REDHAT_UEP
+        fetch_kwargs['ca_path'] = REDHAT_UEP
     resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
     if resp is None:
         try:
