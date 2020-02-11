@@ -1,0 +1,31 @@
+- name: Sync templates in from a git repo
+  foreman_template_sync:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    location: "{{ template_sync_location | default(omit) }}"
+    organization: "{{ template_sync_organization | default(omit) }}"
+    associate: "{{ template_sync_associate | default(omit) }}"
+    prefix: "{{ template_sync_prefix | default(omit) }}"
+    branch: "{{ template_sync_branch | default(omit) }}"
+    repo: "{{ template_sync_repo | default(omit) }}"
+    filter: "{{ template_sync_filter | default(omit) }}"
+    dirname: "{{ template_sync_dirname | default(omit) }}"
+    verbose: "{{ template_sync_verbose | default(omit) }}"
+    force: "{{ template_sync_force | default(omit) }}"
+    lock: "{{ template_sync_lock | default(omit) }}"
+    negate: "{{ template_sync_negate | default(omit) }}"
+    locations: "{{ template_sync_locations | default(omit) }}"
+    organizations: "{{ template_sync_organizations | default(omit) }}"
+    direction: "{{ template_sync_direction | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring templates are synced from a git repo has failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- include_tasks: _assert_diff.yml
+  vars:
+    module: template_sync
+...

@@ -55,6 +55,7 @@ TEST_PLAYBOOKS = [
     'snapshot',
     'subnet',
     'sync_plan',
+    'template_sync',
     'upload',
     'user',
     'usergroup',
