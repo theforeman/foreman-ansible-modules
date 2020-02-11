@@ -61,24 +61,24 @@ options:
       - export
   location:
     description: Scope by location
-	  required: false
+    required: false
   organization:
     description: Scope by organization
-	  required: false
+    required: false
   prefix:
     description: Adds specified string to beginning of the template on import, but only if the template name does not start with the prefix already.
-	  required: false
+    required: false
   associate:
     description: Associate to OSes, Locations and Organizations based on metadata.
-	  required: false
-	  choices:
-	   - always
-	   - new
-	   - never
+    required: false
+    choices:
+     - always
+     - new
+     - never
   verbose:
     description: Add template diffs to the output.
-	  required: false
-	  type: bool
+    required: false
+    type: bool
   metadata_export_mode:
     description:
       - Only for I(direction=export).
@@ -92,45 +92,45 @@ options:
       - keep
   force:
     description: Update templates that are locked.
-	  required: false
-	  type: bool
+    required: false
+    type: bool
   lock:
     description: Lock imported templates.
-	  required: false
-	  type: bool
+    required: false
+    type: bool
   branch:
     description: Branch in Git repo.
-	  required: false
-	  type: str
+    required: false
+    type: str
   repo:
     description: Filesystem path or repo (with protocol), for example /tmp/dir or git://example.com/repo.git or https://example.com/repo.git.
-	  required: false
-	  type: str
+    required: false
+    type: str
   filter:
     description:
       - On I(direction=import) import only templates with name matching this regular expression, after $prefix was applied.
       - On I(direction=export) export templates with names matching this regex.
       - Case-insensitive, snippets are not filtered.
-	  required: false
-	  type: str
+    required: false
+    type: str
   negate:
     description: Negate the prefix (for purging).
-	  required: false
-	  type: bool
+    required: false
+    type: bool
   dirname:
     description: The directory within Git repo containing the templates.
-	  required: false
-	  type: str
+    required: false
+    type: str
   locations:
     description: REPLACE locations with given list.
-	  required: false
-	  type: list
-	  elements: str
+    required: false
+    type: list
+    elements: str
   organizations:
     description: REPLACE organizations with given list.
-	  required: false
+    required: false
     type: list
-	  elements: str
+    elements: str
 extends_documentation_fragment: foreman
 '''
 
@@ -147,7 +147,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():
@@ -196,11 +196,11 @@ def main():
     msg_templates = result['message'].pop('templates', [])
 
     if entity_dict['direction'] == 'import':
-        diff={'changed': [], 'new': []}
+        diff = {'changed': [], 'new': []}
     else:
         if result['message'].get('warning', '') != 'No change detected, skipping the commit and push':
             changed = True
-        templates = { template.pop('name'): template for template in msg_templates }
+        templates = {template.pop('name'): template for template in msg_templates}
         module.exit_json(changed=changed, message=result['message'], templates=templates, diff=None)
 
     templates = {}
@@ -216,6 +216,7 @@ def main():
         templates[tmpl_name] = template
 
     module.exit_json(changed=changed, templates=templates, message=result['message'], diff=diff)
+
 
 if __name__ == '__main__':
     main()
