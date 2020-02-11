@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "fam_tsync_test_Kickstart default"
+      provisioning_template_kind: provision
+      provisioning_template_state: absent
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/template_sync.yml
+  tasks:
+  - include_tasks: tasks/template_sync.yml
+    vars:
+      template_sync_prefix: "fam_tsync_test_"
+      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      expected_change: true
+  - include_tasks: tasks/template_sync.yml
+    vars:
+      template_sync_prefix: "fam_tsync_test_"
+      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      expected_change: false
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "fam_tsync_test_Kickstart default"
+      provisioning_template_template: "Modified Kickstart default provisioning template"
+      provisioning_template_state: present
+      provisioning_template_kind: provision
+      provisioning_template_locations: '{{ omit }}'
+      provisioning_template_organizations: '{{ omit }}'
+      expected_change: true
+  - include_tasks: tasks/template_sync.yml
+    vars:
+      template_sync_prefix: "fam_tsync_test_"
+      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      expected_change: true
+  - include_tasks: tasks/template_sync.yml
+    vars:
+      template_sync_prefix: "fam_tsync_test_"
+      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+  - include: tasks/provisioning_template.yml
+    vars:
+      provisioning_template_name: "fam_tsync_test_Kickstart default"
+      provisioning_template_kind: provision
+      provisioning_template_state: absent
+...
