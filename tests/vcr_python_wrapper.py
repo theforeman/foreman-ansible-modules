@@ -4,6 +4,10 @@ import os
 import sys
 import vcr
 import json
+try:
+    from urlparse import urlparse, urlunparse
+except ImportError:
+    from urllib.parse import urlparse, urlunparse
 
 
 # We need our own json level2 matcher, because, python2 and python3 do not save
@@ -84,6 +88,11 @@ def filter_apipie_checksum(response):
     return response
 
 
+def filter_request_uri(request):
+    request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
+    return request
+
+
 VCR_PARAMS_FILE = os.environ.get('FAM_TEST_VCR_PARAMS_FILE')
 
 # Remove the name of the wrapper from argv
@@ -132,6 +141,7 @@ else:
                               record_mode=test_params['record_mode'],
                               match_on=['method', 'path', query_matcher, body_matcher],
                               filter_headers=['Authorization'],
+                              before_record_request=filter_request_uri,
                               before_record_response=filter_apipie_checksum,
                               decode_compressed_response=True,
                               ):
