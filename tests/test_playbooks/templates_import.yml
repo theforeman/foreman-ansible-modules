@@ -14,17 +14,17 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
-    - vars/template_sync.yml
+    - vars/templates_import.yml
   tasks:
-  - include_tasks: tasks/template_sync.yml
+  - include_tasks: tasks/templates_import.yml
     vars:
-      template_sync_prefix: "fam_tsync_test_"
-      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      templates_import_prefix: "fam_tsync_test_"
+      templates_import_filter: "^fam_tsync_test_Kickstart default$"
       expected_change: true
-  - include_tasks: tasks/template_sync.yml
+  - include_tasks: tasks/templates_import.yml
     vars:
-      template_sync_prefix: "fam_tsync_test_"
-      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      templates_import_prefix: "fam_tsync_test_"
+      templates_import_filter: "^fam_tsync_test_Kickstart default$"
       expected_change: false
   - include: tasks/provisioning_template.yml
     vars:
@@ -35,15 +35,15 @@
       provisioning_template_locations: '{{ omit }}'
       provisioning_template_organizations: '{{ omit }}'
       expected_change: true
-  - include_tasks: tasks/template_sync.yml
+  - include_tasks: tasks/templates_import.yml
     vars:
-      template_sync_prefix: "fam_tsync_test_"
-      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      templates_import_prefix: "fam_tsync_test_"
+      templates_import_filter: "^fam_tsync_test_Kickstart default$"
       expected_change: true
-  - include_tasks: tasks/template_sync.yml
+  - include_tasks: tasks/templates_import.yml
     vars:
-      template_sync_prefix: "fam_tsync_test_"
-      template_sync_filter: "^fam_tsync_test_Kickstart default$"
+      templates_import_prefix: "fam_tsync_test_"
+      templates_import_filter: "^fam_tsync_test_Kickstart default$"
       expected_change: false
 
 - hosts: localhost

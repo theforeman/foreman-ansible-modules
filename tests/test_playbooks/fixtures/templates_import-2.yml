@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-13.anestero.example.com/api/status
+    uri: https://foreman.example.com/api/status
   response:
     body:
       string: !!python/unicode '{"result":"ok","status":200,"version":"1.23.0","api_version":2}'
@@ -29,7 +29,7 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Wed, 12 Feb 2020 10:57:32 GMT
+      - Wed, 12 Feb 2020 15:09:37 GMT
       etag:
       - W/"e155d3039d3e53c9bd4f09acfe48e637"
       foreman_api_version:
@@ -45,7 +45,7 @@ interactions:
       server:
       - Apache
       set-cookie:
-      - _session_id=819d24c7e1a602447775c6fe0e5cb094; path=/; secure; HttpOnly; SameSite=Lax
+      - _session_id=a735037072d6f21301190497fb394c3a; path=/; secure; HttpOnly; SameSite=Lax
       status:
       - 200 OK
       strict-transport-security:
@@ -61,9 +61,9 @@ interactions:
       x-powered-by:
       - Phusion Passenger 4.0.53
       x-request-id:
-      - 9c6265b0-eefa-4718-a0cd-56364d3a0d8f
+      - 919bda7a-5510-4dda-b48d-4a8dbe39feae
       x-runtime:
-      - '0.095396'
+      - '0.085094'
       x-xss-protection:
       - 1; mode=block
     status:
@@ -79,19 +79,19 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _session_id=819d24c7e1a602447775c6fe0e5cb094
+      - _session_id=a735037072d6f21301190497fb394c3a
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-13.anestero.example.com/api/provisioning_templates?per_page=4294967296&search=name%3D%22fam_tsync_test_Kickstart+default%22
+    uri: https://foreman.example.com/api/provisioning_templates?per_page=4294967296&search=name%3D%22fam_tsync_test_Kickstart+default%22
   response:
     body:
       string: !!python/unicode "{\n  \"total\": 209,\n  \"subtotal\": 1,\n  \"page\"\
         : 1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"fam_tsync_test_Kickstart\
         \ default\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n\
         \  },\n  \"results\": [{\"snippet\":false,\"audit_comment\":null,\"created_at\"\
-        :\"2020-02-12 10:57:28 UTC\",\"updated_at\":\"2020-02-12 10:57:28 UTC\",\"\
-        id\":306,\"name\":\"fam_tsync_test_Kickstart default\",\"template_kind_id\"\
+        :\"2020-02-12 15:09:34 UTC\",\"updated_at\":\"2020-02-12 15:09:34 UTC\",\"\
+        id\":307,\"name\":\"fam_tsync_test_Kickstart default\",\"template_kind_id\"\
         :5,\"template_kind_name\":\"provision\"}]\n}\n"
     headers:
       cache-control:
@@ -107,9 +107,9 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Wed, 12 Feb 2020 10:57:32 GMT
+      - Wed, 12 Feb 2020 15:09:37 GMT
       etag:
-      - W/"148e9fe1131d9258883477ffd8e21888-gzip"
+      - W/"568d6be11cb5b02d7d7ad4896b6c6659-gzip"
       foreman_api_version:
       - '2'
       foreman_current_location:
@@ -139,9 +139,9 @@ interactions:
       x-powered-by:
       - Phusion Passenger 4.0.53
       x-request-id:
-      - ef01131e-878e-4bfa-97f4-d6ba39c065b5
+      - b4a2cf7f-99d9-4e5e-ad93-a6c21dd01084
       x-runtime:
-      - '0.019261'
+      - '0.018691'
       x-xss-protection:
       - 1; mode=block
     status:
@@ -157,11 +157,11 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _session_id=819d24c7e1a602447775c6fe0e5cb094
+      - _session_id=a735037072d6f21301190497fb394c3a
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-13.anestero.example.com/api/provisioning_templates/306
+    uri: https://foreman.example.com/api/provisioning_templates/307
   response:
     body:
       string: !!python/unicode '{"template":"<%#\nkind: provision\nname: Kickstart
@@ -201,9 +201,8 @@ interactions:
         --url=<%= liveimg_url %> <%= proxy_string %>\n<% else %>\n<%= @mediapath %><%=
         proxy_string %>\n<% @additional_media.each do |medium| -%>\nrepo --name <%=
         medium[:name] %> --baseurl <%= medium[:url] %> <%= medium[:install] ? '' --install''
-        : '''' %><%= proxy_string %>\n<% end -%>\n<%= snippet_if_exists(template_name
-        + \" custom repositories\") %>\n<% end %>\nlang <%= host_param(''lang'') ||
-        ''en_US.UTF-8'' %>\nselinux --<%= host_param(''selinux-mode'') || host_param(''selinux'')
+        : '''' %><%= proxy_string %>\n<% end -%>\n<% end %>\nlang <%= host_param(''lang'')
+        || ''en_US.UTF-8'' %>\nselinux --<%= host_param(''selinux-mode'') || host_param(''selinux'')
         || ''enforcing'' %>\nkeyboard <%= host_param(''keyboard'') || ''us'' %>\nskipx\n\n<%
         subnet = @host.subnet -%>\n<% if subnet.respond_to?(:dhcp_boot_mode?) -%>\n<%
         dhcp = subnet.dhcp_boot_mode? && !@static -%>\n<% else -%>\n<% dhcp = !@static
@@ -225,9 +224,12 @@ interactions:
         password will be requested at install time. Otherwise, $HOST[OTP] is used
         as a placeholder value.\nrealm join --one-time-password=''<%= @host.otp ||
         \"$HOST[OTP]\" %>'' <%= @host.realm %>\n<% end -%>\n\n<% if @host.operatingsystem.name
-        == ''OracleLinux'' && os_major == 7 && os_minor < 5 -%>\nrepo --name=\"Server-Mysql\"\n<%
-        end -%>\n\n<% if @host.operatingsystem.name == ''Fedora'' && os_major <= 16
-        -%>\n# Bootloader exception for Fedora 16:\nbootloader --append=\"<%= host_param(''bootloader-append'')
+        == ''Fedora'' -%>\nrepo --name=fedora-everything --mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-<%=
+        @host.operatingsystem.major %>&arch=<%= @host.architecture %><%= proxy_string
+        %>\n<% end -%>\n\n<% if @host.operatingsystem.name == ''OracleLinux'' && os_major
+        == 7 && os_minor < 5 -%>\nrepo --name=\"Server-Mysql\"\n<% end -%>\n\n<% if
+        @host.operatingsystem.name == ''Fedora'' && os_major <= 16 -%>\n# Bootloader
+        exception for Fedora 16:\nbootloader --append=\"<%= host_param(''bootloader-append'')
         || ''nofb quiet splash=quiet'' %> <%= ks_console %>\" <%= @grub_pass %>\npart
         biosboot --fstype=biosboot --size=1\n<% else -%>\nbootloader --location=mbr
         --append=\"<%= host_param(''bootloader-append'') || ''nofb quiet splash=quiet''
@@ -236,8 +238,8 @@ interactions:
         @host.diskLayout %>\n<% end -%>\n\ntext\n<% if @host.respond_to?(:bootdisk_build?)
         && @host.bootdisk_build? %>\nreboot --eject\n<% else -%>\nreboot\n<% end -%>\n\n%packages\n<%=
         snippet_if_exists(template_name + \" custom packages\") %>\nyum\ndhclient\n<%
-        if use_ntp -%>\nntp\n-chrony\n<% else -%>\nchrony\n-ntp\n<% end -%>\nwget\n@Core\n<%
-        if os_major >= 6 -%>\nredhat-lsb-core\n<% end -%>\n<% if host_param_true?(''fips_enabled'')
+        if use_ntp -%>\nntp\n<% else -%>\nchrony\n<% end -%>\nwget\n@Core\n<% if os_major
+        >= 6 -%>\nredhat-lsb-core\n<% end -%>\n<% if host_param_true?(''fips_enabled'')
         -%>\n<%=   snippet ''fips_packages'' %>\n<% end -%>\n\n\n<% if salt_enabled
         %>\nsalt-minion\n<% end -%>\n<%= section_end -%>\n\n<% if @dynamic -%>\n%pre\n<%=
         snippet_if_exists(template_name + \" custom pre\") %>\n<%= @host.diskLayout
@@ -283,7 +285,7 @@ interactions:
         true) { snippet(''built'', :variables => { :endpoint => ''failed'', :method
         => ''POST'', :body_file => ''/mnt/sysimage/root/install.post.log'' }) } -%>\nfi\n\nsync\n<%=
         section_end -%>\n\n","locked":false,"snippet":false,"audit_comment":null,"created_at":"2020-02-12
-        10:57:28 UTC","updated_at":"2020-02-12 10:57:28 UTC","id":306,"name":"fam_tsync_test_Kickstart
+        15:09:34 UTC","updated_at":"2020-02-12 15:09:34 UTC","id":307,"name":"fam_tsync_test_Kickstart
         default","template_kind_id":5,"template_kind_name":"provision","template_combinations":[],"operatingsystems":[{"id":1,"name":"CentOS","title":"CentOS
         7.6.1810"},{"id":4,"name":"RedHat","title":"RedHat 7.6"}],"os_default_templates":[],"locations":[],"organizations":[]}'
     headers:
@@ -292,7 +294,7 @@ interactions:
       connection:
       - Keep-Alive
       content-length:
-      - '10563'
+      - '10728'
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
@@ -300,9 +302,9 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Wed, 12 Feb 2020 10:57:32 GMT
+      - Wed, 12 Feb 2020 15:09:37 GMT
       etag:
-      - W/"51eee101dd98abc0bc1617ad3afbc111-gzip"
+      - W/"276b7184d0eb0fbf1b7374e69b28fcb0-gzip"
       foreman_api_version:
       - '2'
       foreman_current_location:
@@ -332,9 +334,9 @@ interactions:
       x-powered-by:
       - Phusion Passenger 4.0.53
       x-request-id:
-      - 67200318-fcfe-4d01-8d6c-5e1317dc5442
+      - 89c8abaf-deaa-4c57-969e-d7cfa9b34755
       x-runtime:
-      - '0.025632'
+      - '0.031451'
       x-xss-protection:
       - 1; mode=block
     status:
@@ -350,11 +352,11 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _session_id=819d24c7e1a602447775c6fe0e5cb094
+      - _session_id=a735037072d6f21301190497fb394c3a
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-13.anestero.example.com/api/template_kinds?per_page=4294967296&search=name%3D%22provision%22
+    uri: https://foreman.example.com/api/template_kinds?per_page=4294967296&search=name%3D%22provision%22
   response:
     body:
       string: !!python/unicode "{\n  \"total\": 11,\n  \"subtotal\": 1,\n  \"page\"\
@@ -376,7 +378,7 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Wed, 12 Feb 2020 10:57:32 GMT
+      - Wed, 12 Feb 2020 15:09:37 GMT
       etag:
       - W/"eb40ced393d0de7c42366e22c034b95e-gzip"
       foreman_api_version:
@@ -408,9 +410,9 @@ interactions:
       x-powered-by:
       - Phusion Passenger 4.0.53
       x-request-id:
-      - 23bc318b-8122-4429-9612-677f9c27f31a
+      - 7cca144b-b0ea-4c26-bfbd-55e42c23795c
       x-runtime:
-      - '0.014318'
+      - '0.013893'
       x-xss-protection:
       - 1; mode=block
     status:
@@ -431,16 +433,16 @@ interactions:
       Content-Type:
       - application/json
       Cookie:
-      - _session_id=819d24c7e1a602447775c6fe0e5cb094
+      - _session_id=a735037072d6f21301190497fb394c3a
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://centos7-katello-3-13.anestero.example.com/api/provisioning_templates/306
+    uri: https://foreman.example.com/api/provisioning_templates/307
   response:
     body:
       string: !!python/unicode '{"template":"Modified Kickstart default provisioning
         template","locked":false,"snippet":false,"audit_comment":null,"created_at":"2020-02-12
-        10:57:28 UTC","updated_at":"2020-02-12 10:57:32 UTC","id":306,"name":"fam_tsync_test_Kickstart
+        15:09:34 UTC","updated_at":"2020-02-12 15:09:38 UTC","id":307,"name":"fam_tsync_test_Kickstart
         default","template_kind_id":5,"template_kind_name":"provision","template_combinations":[],"operatingsystems":[{"id":1,"name":"CentOS","title":"CentOS
         7.6.1810"},{"id":4,"name":"RedHat","title":"RedHat 7.6"}],"os_default_templates":[],"locations":[],"organizations":[]}'
     headers:
@@ -457,9 +459,9 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Wed, 12 Feb 2020 10:57:32 GMT
+      - Wed, 12 Feb 2020 15:09:37 GMT
       etag:
-      - W/"b91b4dd7ddacb5b24fddabcfc0cc465a-gzip"
+      - W/"f704978ad67806660f5de98c5ed5d74c-gzip"
       foreman_api_version:
       - '2'
       foreman_current_location:
@@ -491,9 +493,9 @@ interactions:
       x-powered-by:
       - Phusion Passenger 4.0.53
       x-request-id:
-      - 38e9159b-74b7-4404-bdfc-a1b053f62313
+      - 1332b359-a111-4515-b7a2-aa9ccb95bc57
       x-runtime:
-      - '0.045993'
+      - '0.050268'
       x-xss-protection:
       - 1; mode=block
     status:

@@ -27,28 +27,16 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: foreman_template_sync
-short_description: Sync templates from or to a repository
+module: foreman_templates_import
+short_description: Sync templates from a repository
 description:
-  - Sync provisioning templates, partition tables and job templates from external git repository and/or file system.
+  - Sync provisioning templates, report_templates, partition tables and job templates from external git repository and/or file system.
   - Based on foreman_templates plugin U(https://github.com/theforeman/foreman_templates).
   - Some defaults can be set in TemplateSync settings using M(foreman_setting) or GUI.
   - Module attempts to be idempotent as much as the plugin allows.
-  - "Known issues:"
-  - I(direction=export) exports all templates even if only one changes, there also could be 500 responses on C(export).
 author:
   - "Anton Nesterov (@nesanton)"
 options:
-  direction:
-    description:
-      - Direction of the sync.
-      - If C(export) is chosen, new commit will be added to the I(branch) if any template has changed.
-    required: false
-    type: str
-    default: import
-    choices:
-      - import
-      - export
   location:
     description: Scope by location
     required: false
@@ -58,7 +46,7 @@ options:
     required: false
     type: str
   prefix:
-    description: Adds specified string to beginning of the template on import, but only if the template name does not start with the prefix already.
+    description: Adds specified string to beginning of the template, but only if the template name does not start with the prefix already.
     required: false
     type: str
   associate:
@@ -73,18 +61,6 @@ options:
     description: Add template diffs to the output.
     required: false
     type: bool
-  metadata_export_mode:
-    description:
-      - Only for I(direction=export).
-      - C(refresh) generates new metadata based on current associations and attributes,
-      - C(remove) strips all metadata from template,
-      - C(keep) keeps the same metadata that are part of template code.
-      - If omited - metadata changes are ignored.
-    type: str
-    choices:
-      - refresh
-      - remove
-      - keep
   force:
     description: Update templates that are locked.
     required: false
@@ -103,13 +79,12 @@ options:
     type: str
   filter:
     description:
-      - On I(direction=import) import only templates with name matching this regular expression, after $prefix was applied.
-      - On I(direction=export) export templates with names matching this regex.
+      - Sync only templates with name matching this regular expression, after I(prefix) was applied.
       - Case-insensitive, snippets are not filtered.
     required: false
     type: str
   negate:
-    description: Negate the prefix (for purging).
+    description: Negate the prefix.
     required: false
     type: bool
   dirname:
@@ -132,7 +107,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Sync templates from git repo
-  foreman_template_sync:
+  foreman_templates_import:
     repo: https://github.com/theforeman/community-templates.git
     branch: 1.24-stable
     associate: new
@@ -149,11 +124,9 @@ from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 def main():
     module = ForemanAnsibleModule(
         argument_spec=dict(
-            direction=dict(choices=['import', 'export'], default='import'),
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
             associate=dict(choices=['always', 'new', 'never']),
-            metadata_export_mode=dict(choices=['refresh', 'remove', 'keep']),
             prefix=dict(),
             branch=dict(),
             repo=dict(),
@@ -191,31 +164,23 @@ def main():
         for resource in resources:
             all_templates.append([resource['name'], resource['id']])
 
-    result = module.resource_action(resource_name, argument_dict['direction'], record_change=False, params=argument_dict)
+    result = module.resource_action(resource_name, 'import', record_change=False, params=argument_dict)
     msg_templates = result['message'].pop('templates', [])
 
-    if argument_dict['direction'] == 'import':
-        diff = {'changed': [], 'new': []}
-        templates = {}
+    diff = {'changed': [], 'new': []}
+    templates = {}
 
-        for template in msg_templates:
-            if template['changed']:
-                diff['changed'].append(template['name'])
-                module.set_changed()
-            elif template['imported']:
-                if [template['name'], template['id']] not in all_templates:
-                    diff['new'].append(template['name'])
-                    module.set_changed()
-            tmpl_name = template.pop('name')
-            templates[tmpl_name] = template
-
-        module.exit_json(templates=templates, message=result['message'], diff=diff)
-
-    else:
-        if result['message'].get('warning', '') != 'No change detected, skipping the commit and push':
+    for template in msg_templates:
+        if template['changed']:
+            diff['changed'].append(template['name'])
             module.set_changed()
-        templates = {template.pop('name'): template for template in msg_templates}
-        module.exit_json(message=result['message'], templates=templates, diff=None)
+        elif template['imported']:
+            if [template['name'], template['id']] not in all_templates:
+                diff['new'].append(template['name'])
+                module.set_changed()
+        templates[template.pop('name')] = template
+
+    module.exit_json(templates=templates, message=result['message'], diff=diff)
 
 
 if __name__ == '__main__':
