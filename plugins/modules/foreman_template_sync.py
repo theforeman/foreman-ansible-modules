@@ -172,7 +172,11 @@ def main():
     argument_dict = module.clean_params()
     module.connect()
 
-    if 'template' not in module.foremanapi.resources:
+    if 'template' in module.foremanapi.resources:
+        resource_name = 'template'
+    elif 'templates' in module.foremanapi.resources:
+        resource_name = 'template'
+    else:
         raise Exception('The server does not seem to have the foreman_templates plugin installed.')
 
     # Build a list of all existing templates of all supported types to check if we are adding any new
@@ -187,7 +191,7 @@ def main():
         for resource in resources:
             all_templates.append([resource['name'], resource['id']])
 
-    result = module.resource_action('template', argument_dict['direction'], record_change=False, params=argument_dict)
+    result = module.resource_action(resource_name, argument_dict['direction'], record_change=False, params=argument_dict)
     msg_templates = result['message'].pop('templates', [])
 
     if argument_dict['direction'] == 'import':
