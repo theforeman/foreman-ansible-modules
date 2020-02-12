@@ -44,6 +44,7 @@ options:
       - Direction of the sync.
       - If C(export) is chosen, new commit will be added to the I(branch) if any template has changed.
     required: false
+    type: str
     default: import
     choices:
       - import
@@ -51,15 +52,19 @@ options:
   location:
     description: Scope by location
     required: false
+    type: str
   organization:
     description: Scope by organization
     required: false
+    type: str
   prefix:
     description: Adds specified string to beginning of the template on import, but only if the template name does not start with the prefix already.
     required: false
+    type: str
   associate:
     description: Associate to OSes, Locations and Organizations based on metadata.
     required: false
+    type: str
     choices:
      - always
      - new
@@ -75,6 +80,7 @@ options:
       - C(remove) strips all metadata from template,
       - C(keep) keeps the same metadata that are part of template code.
       - If omited - metadata changes are ignored.
+    type: str
     choices:
       - refresh
       - remove
