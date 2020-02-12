@@ -169,41 +169,43 @@ def main():
     if 'template' not in module.foremanapi.resources:
         raise Exception('The server does not seem to have the foreman_templates plugin installed.')
 
+    # Build a list of all existing templates of all supported types to check if we are adding any new
     all_templates = []
 
     template_types = ['provisioning_templates', 'report_templates', 'ptables']
     if 'job_templates' in module.foremanapi.resources:
         template_types.append('job_templates')
+
     for template_type in template_types:
         resources = module.list_resource(template_type)
         for resource in resources:
             all_templates.append([resource['name'], resource['id']])
 
     result = module.resource_action('template', entity_dict['direction'], record_change=False, params=entity_dict)
-    changed = False
     msg_templates = result['message'].pop('templates', [])
 
     if entity_dict['direction'] == 'import':
         diff = {'changed': [], 'new': []}
+        templates = {}
+
+        for template in msg_templates:
+            if template['changed']:
+                diff['changed'].append(template['name'])
+                module.set_changed()
+            elif template['imported']:
+                if [template['name'], template['id']] not in all_templates:
+                    diff['new'].append(template['name'])
+                    module.set_changed()
+            tmpl_name = template.pop('name')
+            templates[tmpl_name] = template
+
+        module.exit_json(templates=templates, message=result['message'], diff=diff)
+
     else:
         if result['message'].get('warning', '') != 'No change detected, skipping the commit and push':
-            changed = True
+            module.set_changed()
         templates = {template.pop('name'): template for template in msg_templates}
-        module.exit_json(changed=changed, message=result['message'], templates=templates, diff=None)
-
-    templates = {}
-    for template in msg_templates:
-        if template['changed']:
-            diff['changed'].append(template['name'])
-            changed = True
-        elif template['imported']:
-            if [template['name'], template['id']] not in all_templates:
-                diff['new'].append(template['name'])
-                changed = True
-        tmpl_name = template.pop('name')
-        templates[tmpl_name] = template
-
-    module.exit_json(changed=changed, templates=templates, message=result['message'], diff=diff)
+        module.exit_json(message=result['message'], templates=templates, diff=None)
 
 
 if __name__ == '__main__':
