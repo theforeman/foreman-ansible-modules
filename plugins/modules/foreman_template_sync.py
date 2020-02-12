@@ -120,7 +120,8 @@ options:
     required: false
     type: list
     elements: str
-extends_documentation_fragment: foreman
+extends_documentation_fragment:
+  - foreman
 '''
 
 EXAMPLES = '''
