@@ -36,6 +36,7 @@ author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
   - "Manisha Singhal (@Manisha15) ATIX AG"
+  - "Mark Hlawatschek (@hlawatschek) ATIX AG"
 options:
   name:
     description: compute resource name
@@ -74,6 +75,10 @@ options:
       region:
         description:
           - AWS region
+        type: str
+      tenant:
+        description:
+          - AzureRM tenant
         type: str
       datacenter:
         description:
@@ -195,6 +200,25 @@ EXAMPLES = '''
     password: secret
     state: present
 
+- name: create Azure compute resource
+  foreman_compute_resource:
+    name: AzureRM_compute_resource
+    description: AzureRM
+    locations:
+       - Azure
+    organizations:
+       - ATIX
+    provider: AzureRM
+    provider_params:
+      user: SUBSCRIPTION_ID
+      tenant: TENANT_ID
+      url: CLIENT_ID
+      password: CLIENT_SECRET
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
+    state: present
+
 '''
 
 RETURN = ''' # '''
@@ -218,6 +242,9 @@ def get_provider_info(provider):
     elif provider_name == 'ec2':
         return 'EC2', ['user', 'password', 'region']
 
+    elif provider_name == 'azurerm':
+        return 'AzureRM', ['url', 'user', 'password', 'tenant', 'region']
+
     else:
         return '', []
 
@@ -232,13 +259,14 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRM']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
             user=dict(type='invisible'),
             password=dict(type='invisible'),
             region=dict(type='invisible'),
+            tenant=dict(type='invisible'),
             use_v4=dict(type='invisible'),
             ovirt_quota=dict(type='invisible'),
         ),
@@ -249,6 +277,7 @@ def main():
                 user=dict(),
                 password=dict(no_log=True),
             	region=dict(),
+            	tenant=dict(),
                 datacenter=dict(),
                 use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
