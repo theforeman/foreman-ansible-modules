@@ -152,9 +152,6 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 def main():
     module = ForemanEntityAnsibleModule(
-        argument_spec=dict(
-            updated_name=dict(),
-        ),
         entity_spec=dict(
             direction=dict(choices=['import', 'export'], default='import'),
             location=dict(type='entity', flat_name='location_id'),
@@ -173,6 +170,7 @@ def main():
             locations=dict(type='entity_list', flat_name='location_ids'),
             organizations=dict(type='entity_list', flat_name='organization_ids'),
         ),
+        supports_check_mode=False,
     )
 
     entity_dict = module.clean_params()
