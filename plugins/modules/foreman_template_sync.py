@@ -143,12 +143,12 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 
 def main():
-    module = ForemanEntityAnsibleModule(
-        entity_spec=dict(
+    module = ForemanAnsibleModule(
+        argument_spec=dict(
             direction=dict(choices=['import', 'export'], default='import'),
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
@@ -169,7 +169,7 @@ def main():
         supports_check_mode=False,
     )
 
-    entity_dict = module.clean_params()
+    argument_dict = module.clean_params()
     module.connect()
 
     if 'template' not in module.foremanapi.resources:
@@ -187,10 +187,10 @@ def main():
         for resource in resources:
             all_templates.append([resource['name'], resource['id']])
 
-    result = module.resource_action('template', entity_dict['direction'], record_change=False, params=entity_dict)
+    result = module.resource_action('template', argument_dict['direction'], record_change=False, params=argument_dict)
     msg_templates = result['message'].pop('templates', [])
 
-    if entity_dict['direction'] == 'import':
+    if argument_dict['direction'] == 'import':
         diff = {'changed': [], 'new': []}
         templates = {}
 
