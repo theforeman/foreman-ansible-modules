@@ -33,20 +33,9 @@ description:
   - Sync provisioning templates, partition tables and job templates from external git repository and/or file system.
   - Based on foreman_templates plugin U(https://github.com/theforeman/foreman_templates).
   - Some defaults can be set in TemplateSync settings using M(foreman_setting) or GUI.
-  - Module attempts to be idempotent as much as the plugin allows.    # Issues
-  - Known issues:
-  - I(direction=export) exports all templates if one changes, there also could be 500 responses on C(export).
-    # the are three fields in the api response that are of interest: changed (bool), imported(bool), diff
-    # changed works as expected - set as true for each changed template, diff shows, well, the diff (if verbose=true)
-    # imported, on the other hand seems to misbehave - it returns as true when changed=false and diff=nil.
-    # It is impossible to tell if the template was added as new or existed before.
-    # The workaround below collects name:id pairs of existing templates to check for new after import.
-
-    ## Export:
-    # 1. Metadata changes are not detected
-    # 2. When one template changes, all templates in the response have "exported=true"
-
-    # Build a list of ['template_name', 'template_id'] elements for all existing templates of all types handled by plugin
+  - Module attempts to be idempotent as much as the plugin allows.
+  - "Known issues:"
+  - I(direction=export) exports all templates even if only one changes, there also could be 500 responses on C(export).
 author:
   - "Anton Nesterov (@nesanton)"
 options:
