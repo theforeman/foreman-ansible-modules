@@ -36,6 +36,7 @@ author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
   - "Manisha Singhal (@Manisha15) ATIX AG"
+  - "Mark Hlawatschek (@hlawatschek) ATIX AG"
 options:
   name:
     description: compute resource name
@@ -52,7 +53,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt"]
+    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRM"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -70,6 +71,14 @@ options:
       password:
         description:
           - Password for the compute resource connection, not valid for I(provider=libvirt)
+        type: str
+      region:
+        description:
+          - AWS region
+        type: str
+      tenant:
+        description:
+          - AzureRM tenant
         type: str
       datacenter:
         description:
@@ -172,6 +181,44 @@ EXAMPLES = '''
     username: admin
     password: secret
     state: present
+
+- name: create EC2 compute resource
+  foreman_compute_resource:
+    name: EC2_compute_resource
+    description: EC2
+    locations:
+      - AWS
+    organizations:
+      - ATIX
+    provider: EC2
+    provider_params:
+      user: AWS_ACCESS_KEY
+      password: AWS_SECRET_KEY
+      region: eu-west-1
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
+    state: present
+
+- name: create Azure compute resource
+  foreman_compute_resource:
+    name: AzureRM_compute_resource
+    description: AzureRM
+    locations:
+       - Azure
+    organizations:
+       - ATIX
+    provider: AzureRM
+    provider_params:
+      user: SUBSCRIPTION_ID
+      tenant: TENANT_ID
+      url: CLIENT_ID
+      password: CLIENT_SECRET
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
+    state: present
+
 '''
 
 RETURN = ''' # '''
@@ -192,6 +239,12 @@ def get_provider_info(provider):
     elif provider_name == 'vmware':
         return 'Vmware', ['url', 'user', 'password', 'datacenter']
 
+    elif provider_name == 'ec2':
+        return 'EC2', ['user', 'password', 'region']
+
+    elif provider_name == 'azurerm':
+        return 'AzureRM', ['url', 'user', 'password', 'tenant', 'region']
+
     else:
         return '', []
 
@@ -206,12 +259,14 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRM']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
             user=dict(type='invisible'),
             password=dict(type='invisible'),
+            region=dict(type='invisible'),
+            tenant=dict(type='invisible'),
             use_v4=dict(type='invisible'),
             ovirt_quota=dict(type='invisible'),
         ),
@@ -221,6 +276,8 @@ def main():
                 display_type=dict(),
                 user=dict(),
                 password=dict(no_log=True),
+                region=dict(),
+                tenant=dict(),
                 datacenter=dict(),
                 use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
