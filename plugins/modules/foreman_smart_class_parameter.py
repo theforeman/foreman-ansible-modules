@@ -74,7 +74,7 @@ options:
     description: Used to enforce certain values for the parameter values.
     type: str
   parameter_type:
-    description: Types of variable values. Set an empty to reset the parameter type.
+    description: Types of variable values. If C(none), set the parameter type to empty value.
     type: str
     choices:
       - string
@@ -85,7 +85,7 @@ options:
       - hash
       - yaml
       - json
-      - ''
+      - none
   required:
     description: If true, will raise an error if there is no default value and no matcher provide a value.
     type: bool
@@ -203,7 +203,7 @@ def main():
             parameter=dict(required=True),
         ),
         entity_spec=dict(
-            parameter_type=dict(choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json', '']),
+            parameter_type=dict(choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json', 'none']),
             validator_type=dict(choices=['list', 'regexp']),
             validator_rule=dict(),
             description=dict(),
@@ -227,12 +227,29 @@ def main():
     )
 
     entity_dict = module.clean_params()
+    if entity_dict.get('parameter_type', 'string') not in ['array', 'hash']:
+        if 'merge_default' in entity_dict or 'merge_overrides' in entity_dict:
+            module.fail_json(msg="merge_default or merge_overrides can be used only with array or hash parameter_type")
+    if entity_dict.get('parameter_type', 'string') != 'array' and 'avoid_duplicates' in entity_dict:
+        module.fail_json(msg="avoid_duplicates can be used only with array parameter_type")
+
     search = "puppetclass_name={0} and parameter={1}".format(entity_dict['puppetclass_name'], entity_dict['parameter'])
     override_values = entity_dict.pop('override_values', None)
+
     if 'override_value_order' in entity_dict:
         entity_dict['override_value_order'] = '\n'.join(entity_dict['override_value_order'])
+    if 'parameter_type' in entity_dict and entity_dict['parameter_type'] == 'none':
+        entity_dict['parameter_type'] = ''
+
     with module.api_connection():
         entity, entity_dict = module.resolve_entities(search=search, entity_dict=entity_dict)
+        # When override is set to false, foreman API don't accept parameter_type and all 'override options' have to be set to false if present
+        if not entity_dict.get('override', False):
+            entity_dict['parameter_type'] = ''
+            for override_option in ['merge_default', 'merge_overrides', 'avoid_duplicates']:
+                if override_option in entity and entity[override_option]:
+                    entity_dict[override_option] = False
+
         # Foreman API returns 'hidden_value?' instead of 'hidden_value' this is a bug ?
         if 'hidden_value?' in entity:
             entity['hidden_value'] = entity.pop('hidden_value?')
@@ -240,6 +257,7 @@ def main():
             entity_dict['default_value'] = parameter_value_to_str(entity_dict['default_value'], entity_dict.get('parameter_type', 'string'))
         if 'default_value' in entity:
             entity['default_value'] = parameter_value_to_str(entity['default_value'], entity.get('parameter_type', 'string'))
+
         entity = module.run(search=search, entity_dict=entity_dict, entity=entity)
         module.ensure_override_values(entity, override_values)
 

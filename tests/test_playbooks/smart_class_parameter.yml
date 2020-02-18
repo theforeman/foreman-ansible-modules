@@ -16,7 +16,7 @@
         smart_class_parameter_override: true
         smart_class_parameter_hidden_value: false
         smart_class_parameter_default_value: ""
-        smart_class_parameter_parameter_type: ""
+        smart_class_parameter_parameter_type: none
         smart_class_parameter_override_values: []
         smart_class_parameter_override_value_order:
           - fqdn
@@ -66,6 +66,36 @@
             smart_class_parameter_description: ntp log file
             smart_class_parameter_state: present
             expected_change: false
+
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: string
+            smart_class_parameter_state: present
+            expected_change: true
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: string
+            smart_class_parameter_state: present
+            expected_change: false
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_state: present
+            expected_change: false
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: none
+            smart_class_parameter_state: present
+            expected_change: true
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: none
+            smart_class_parameter_state: present
+            expected_change: false
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_state: present
+            expected_change: false
+
         - include: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: true
@@ -98,6 +128,7 @@
             smart_class_parameter_hidden_value: false
             smart_class_parameter_state: present
             expected_change: false
+
         - include: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_override_value_order:
@@ -465,12 +496,50 @@
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_state: present
             expected_change: false
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_merge_default: false
+            smart_class_parameter_merge_overrides: false
+            smart_class_parameter_avoid_duplicates: false
+            smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
+            smart_class_parameter_state: present
+            expected_change: true
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_merge_default: false
+            smart_class_parameter_merge_overrides: false
+            smart_class_parameter_avoid_duplicates: false
+            smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
+            smart_class_parameter_state: present
+            expected_change: false
 
 - hosts: localhost
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
+    - include: tasks/smart_class_parameter.yml
+      vars:
+        smart_class_parameter_puppetclass_name: ntp
+        smart_class_parameter_parameter: "{{ item }}"
+        smart_class_parameter_description: ""
+        smart_class_parameter_override: true
+        smart_class_parameter_hidden_value: false
+        smart_class_parameter_default_value: ""
+        smart_class_parameter_parameter_type: none
+        smart_class_parameter_override_values: []
+        smart_class_parameter_override_value_order:
+          - fqdn
+          - hostgroup
+          - os
+          - domain
+        smart_class_parameter_state: present
+      loop:
+        - logfile
+        - config_dir
+        - servers
+        - burst
+        - stepout
     - include: tasks/smart_class_parameter.yml
       vars:
         smart_class_parameter_puppetclass_name: ntp
