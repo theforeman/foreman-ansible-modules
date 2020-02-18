@@ -1,0 +1,176 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/location.yml
+      vars:
+        location_state: present
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "MYCR"
+        compute_resource_state: present
+        compute_resource_provider: libvirt
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_description: "MYOS SP1"
+        operatingsystem_name: "MYOS"
+        operatingsystem_minor: 1
+        operatingsystem_state: present
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_description: "MY2NDOS"
+        operatingsystem_name: "MY2NDOS"
+        operatingsystem_minor: 1
+        operatingsystem_state: present
+    - include: tasks/architecture.yml
+      vars:
+        operatingsystems:
+          - "MYOS SP1"
+          - "MY2NDOS"
+        architecture_name: "MY1024"
+        architecture_state: present
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "MYCR"
+        compute_resource_description: 'A compute_resource'
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+          display_type: spice
+        compute_resource_state: present
+    - include: tasks/image.yml
+      vars:
+        image_name: "MYOS1"
+        image_uuid: "MYOStemplate"
+        image_username: "myosadmin"
+        image_operatingsystem: "MYOS SP1"
+        image_compute_resource: "MYCR"
+        image_architecture: "MY1024"
+        image_state: absent
+    - include: tasks/image.yml
+      vars:
+        image_name: "MYOS1"
+        image_uuid: "MY2NDOStemplate"
+        image_username: "myosadmin"
+        image_operatingsystem: "MY2NDOS"
+        image_compute_resource: "MYCR"
+        image_architecture: "MY1024"
+        image_state: absent
+
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: 'MYIMAGE'
+      block:
+        - name: Create MYIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MYOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MYOS SP1"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: present
+            expected_change: true
+        - name: Do not change MYIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MYOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MYOS SP1"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: present
+            expected_change: false
+        - name: Modify MYIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MYOStemplate-new"
+            image_username: "myosadmin"
+            image_operatingsystem: "MYOS SP1"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_user_data: true
+            image_state: present
+            expected_change: true
+        - name: Create MY2NDIMAGE with same name
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MY2NDOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MY2NDOS"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: present
+            expected_change: true
+        - name: Delete MYIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MYOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MYOS SP1"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_user_data: false
+            image_state: absent
+            expected_change: true
+        - name: Delete MY2NDIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MY2NDOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MY2NDOS"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: absent
+            expected_change: true
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/architecture.yml
+      vars:
+        operatingsystems:
+          - "MYOS SP1"
+          - "MY2NDOS"
+        architecture_name: "MY1024"
+        architecture_state: absent
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_description: "MYOS SP1"
+        operatingsystem_minor: 1
+        operatingsystem_state: absent
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_description: "MY2NDOS"
+        operatingsystem_minor: 1
+        operatingsystem_state: absent
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "MYCR"
+        compute_resource_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

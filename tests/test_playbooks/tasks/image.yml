@@ -1,0 +1,26 @@
+---
+- name: Create/update image
+  vars:
+    compute_resource_name: "Test Compute Resource"
+    image_name: "MYIMAGE"
+  foreman_image:
+    server_url: "{{ foreman_server_url }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ image_name }}"
+    image_uuid: "{{ image_uuid }}"
+    image_username: "{{ image_username }}"
+    operatingsystem: "{{ image_operatingsystem }}"
+    compute_resource: "{{ image_compute_resource }}"
+    architecture: "{{ image_architecture }}"
+    user_data: "{{ image_user_data | default(omit) }}"
+    state: "{{ image_state }}"
+
+  register: result
+- assert:
+    fail_msg: "Ensuring image is {{ image_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
