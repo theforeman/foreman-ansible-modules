@@ -22,6 +22,7 @@ TEST_PLAYBOOKS = [
     'host',
     'host_power',
     'hostgroup',
+    'image',
     'katello_hostgroup',
     'luna_hostgroup',
     'host_collection',
