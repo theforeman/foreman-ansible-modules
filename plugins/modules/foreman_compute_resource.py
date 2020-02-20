@@ -74,11 +74,15 @@ options:
         type: str
       region:
         description:
-          - AWS region
+          - AWS region, AZURE region
         type: str
       tenant:
         description:
           - AzureRM tenant
+        type: str
+      app_ident:
+        description:
+          - AzureRM client id
         type: str
       datacenter:
         description:
@@ -212,8 +216,9 @@ EXAMPLES = '''
     provider_params:
       user: SUBSCRIPTION_ID
       tenant: TENANT_ID
-      url: CLIENT_ID
+      app_ident: CLIENT_ID
       password: CLIENT_SECRET
+      region: westeurope
     server_url: "https://foreman.example.com"
     username: admin
     password: secret
@@ -243,7 +248,7 @@ def get_provider_info(provider):
         return 'EC2', ['user', 'password', 'region']
 
     elif provider_name == 'azurerm':
-        return 'AzureRM', ['url', 'user', 'password', 'tenant', 'region']
+        return 'AzureRm', ['url', 'user', 'password', 'tenant', 'region', 'app_ident']
 
     else:
         return '', []
@@ -267,6 +272,7 @@ def main():
             password=dict(type='invisible'),
             region=dict(type='invisible'),
             tenant=dict(type='invisible'),
+            app_ident=dict(type='invisible'),
             use_v4=dict(type='invisible'),
             ovirt_quota=dict(type='invisible'),
         ),
@@ -278,6 +284,7 @@ def main():
                 password=dict(no_log=True),
                 region=dict(),
                 tenant=dict(),
+                app_ident=dict(),
                 datacenter=dict(),
                 use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
