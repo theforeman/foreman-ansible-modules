@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) Philipp Joos 2017
 # (c) Baptiste Agasse 2019
+# (c) Mark Hlawatschek 2020
 #
 # This file is part of Ansible
 #
@@ -53,7 +54,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRM"]
+    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -206,13 +207,13 @@ EXAMPLES = '''
 
 - name: create Azure compute resource
   foreman_compute_resource:
-    name: AzureRM_compute_resource
-    description: AzureRM
+    name: AzureRm_compute_resource
+    description: AzureRm
     locations:
        - Azure
     organizations:
        - ATIX
-    provider: AzureRM
+    provider: AzureRm
     provider_params:
       user: SUBSCRIPTION_ID
       tenant: TENANT_ID
@@ -248,7 +249,7 @@ def get_provider_info(provider):
         return 'EC2', ['user', 'password', 'region']
 
     elif provider_name == 'azurerm':
-        return 'AzureRm', ['url', 'user', 'password', 'tenant', 'region', 'app_ident']
+        return 'AzureRm', ['user', 'password', 'tenant', 'region', 'app_ident']
 
     else:
         return '', []
@@ -264,7 +265,7 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRM']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRm']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
