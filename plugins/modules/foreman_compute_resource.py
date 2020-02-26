@@ -54,7 +54,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm"]
+    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm", "GCE"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
