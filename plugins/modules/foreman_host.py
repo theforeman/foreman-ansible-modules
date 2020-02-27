@@ -80,7 +80,7 @@ options:
   mac:
     description:
       - MAC address of the primary interface of the host.
-      - Please include leading zeros and separate nibbles by colons, otherwise the exection will not be idempotent.
+      - Please include leading zeros and separate nibbles by colons, otherwise the execution will not be idempotent.
       - Example EE:BB:01:02:03:04
     type: str
     required: false
