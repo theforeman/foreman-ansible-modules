@@ -54,7 +54,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm"]
+    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm", "GCE"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -100,6 +100,22 @@ options:
       ovirt_quota:
         description:
           - oVirt quota ID, only valid for I(provider=ovirt)
+        type: str
+      project:
+        description:
+          - Project id for I(provider=GCE)
+        type: str
+      email:
+        description:
+          - Email for I(provider=GCE)
+        type: str
+      key_path:
+        description:
+          - Certificate path for I(provider=GCE)
+        type: str
+      zone:
+        description:
+          - zone for I(provider=GCE)
         type: str
 extends_documentation_fragment:
   - foreman
@@ -210,9 +226,9 @@ EXAMPLES = '''
     name: AzureRm_compute_resource
     description: AzureRm
     locations:
-       - Azure
+      - Azure
     organizations:
-       - ATIX
+      - ATIX
     provider: AzureRm
     provider_params:
       user: SUBSCRIPTION_ID
@@ -220,6 +236,25 @@ EXAMPLES = '''
       app_ident: CLIENT_ID
       password: CLIENT_SECRET
       region: westeurope
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
+    state: present
+
+- name: create GCE compute resource
+  foreman_compute_resource:
+    name: GCE compute resource
+    description: Google Cloud Engine
+    locations:
+      - GCE
+    organizations:
+      - ATIX
+    provider: GCE
+    provider_params:
+      project: orcharhino
+      email: myname@atix.de
+      key_path: "/usr/share/foreman/gce_orcharhino_key.json"
+      zone: europe-west3-b
     server_url: "https://foreman.example.com"
     username: admin
     password: secret
@@ -251,6 +286,9 @@ def get_provider_info(provider):
     elif provider_name == 'azurerm':
         return 'AzureRm', ['user', 'password', 'tenant', 'region', 'app_ident']
 
+    elif provider_name == 'gce':
+        return 'GCE', ['project', 'email', 'key_path', 'zone']
+
     else:
         return '', []
 
@@ -265,7 +303,7 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRm']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRm', 'GCE']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
@@ -276,6 +314,10 @@ def main():
             app_ident=dict(type='invisible'),
             use_v4=dict(type='invisible'),
             ovirt_quota=dict(type='invisible'),
+            project=dict(type='invisible'),
+            email=dict(type='invisible'),
+            key_path=dict(type='invisible'),
+            zone=dict(type='invisible'),
         ),
         argument_spec=dict(
             provider_params=dict(type='dict', options=dict(
@@ -289,6 +331,10 @@ def main():
                 datacenter=dict(),
                 use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
+                project=dict(),
+                email=dict(),
+                key_path=dict(),
+                zone=dict(),
             )),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
         ),
