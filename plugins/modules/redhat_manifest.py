@@ -88,7 +88,7 @@ options:
   portal:
     description:
       - Red Hat Portal subscription access address
-    default: https://subscription.rhn.redhat.com
+    default: https://subscription.rhsm.redhat.com
     type: str
 '''
 
@@ -277,7 +277,7 @@ def main():
             state=dict(choices=['present', 'absent'], default='present'),
             path=dict(type='path'),
             validate_certs=dict(default=True, type='bool'),
-            portal=dict(default='https://subscription.rhn.redhat.com'),
+            portal=dict(default='https://subscription.rhsm.redhat.com'),
         ),
         required_one_of=[['name', 'uuid']],
         supports_check_mode=True,
