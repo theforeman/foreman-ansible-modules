@@ -48,6 +48,8 @@ jobs:
         run: pip install git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}#egg=ansible
       - name: Install dependencies
         run: make test-setup
+      - name: fake redhat-uep.pem for redhat_manifest module
+        run: sudo mkdir -p /etc/rhsm/ca/ && sudo touch /etc/rhsm/ca/redhat-uep.pem
       - name: Run basic tests
         run: make test-crud test-other
       - name: Run Ansible devel specific tests
