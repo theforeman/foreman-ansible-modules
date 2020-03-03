@@ -1,3 +1,14 @@
+NAMESPACE := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml"))["namespace"])')
+NAME := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml"))["name"])')
+VERSION := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml"))["version"])')
+MANIFEST := build/collections/ansible_collections/$(NAMESPACE)/$(NAME)/MANIFEST.json
+
+FILTER := $(shell find plugins/filter -name *.py)
+MODULES := $(shell find plugins/modules -name *.py)
+MODULE_UTILS := $(shell find plugins/module_utils -name *.py)
+DOC_FRAGMENTS := $(shell find plugins/doc_fragments -name *.py)
+
+PYTHON_VERSION = 3.7
 TEST=
 DATA=$(shell echo $(MODULE) | sed 's/\(foreman\|katello\)_//; s/_/-/g')
 PDB_PATH=$(shell find /usr/lib{,64} -type f -executable -name pdb.py 2> /dev/null)
@@ -7,15 +18,14 @@ endif
 MODULE_PATH=plugins/modules/$(MODULE).py
 DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
 DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
-COLLECTION_TMP:=$(shell mktemp -du)
-COLLECTION_INSTALL_TMP:=$(shell mktemp -du)
 PYTEST=pytest -n 4 --boxed -v
 
 default: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of:"
 	@echo "  help           to show this message"
-	@echo "  lint           to run flake8 and pylint"
+	@echo "  info           to show infos about the collection"
+	@echo "  lint           to run code linting"
 	@echo "  test           to run unit tests"
 	@echo "  sanity         to run santy tests"
 	@echo "  debug          debug a module using the ansible hacking module"
@@ -24,9 +34,24 @@ help:
 	@echo "  debug-setup    to set up the ansible hacking module"
 	@echo "  test_<test>    to run a specific unittest"
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
+	@echo "  clean_<test>   to run a specific test playbook with the teardown and cleanup tags"
+	@echo "  dist           to build the collection artifact"
 
-lint:
+info:
+	@echo Building collection $(NAMESPACE)-$(NAME)-$(VERSION)
+	@echo   filter: $(FILTER)
+	@echo   modules: $(MODULES)
+	@echo   module_utils: $(MODULE_UTILS)
+	@echo   doc_fragments: $(DOC_FRAGMENTS)
+
+lint: tests/test_playbooks/vars/server.yml $(MANIFEST)
+	# yamllint -f parsable tests/test_playbooks
+	ansible-playbook --syntax-check tests/test_playbooks/*.yml | grep -v '^$$'
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
+
+sanity: $(MANIFEST)
+	# Fake a fresh git repo for ansible-test
+	cd $(<D) ; git init ; echo tests > .gitignore ; ansible-test sanity --local --python $(PYTHON_VERSION)
 
 test:
 	$(PYTEST) $(TEST)
@@ -50,9 +75,6 @@ record_%: FORCE
 clean_%: FORCE
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
 
-sanity: dist-install
-	ansible-playbook $(CURDIR)/tests/extras/sanity.yml -e test_collection_path=$(COLLECTION_INSTALL_TMP)/ansible_collections/theforeman/foreman/
-
 debug:
 ifndef MODULE
 	$(error MODULE is undefined)
@@ -68,38 +90,36 @@ debug-setup: .tmp/ansible
 test-setup: tests/test_playbooks/vars/server.yml
 	pip install --upgrade 'pip<20'
 	pip install -r requirements-dev.txt
-	pip install -r https://raw.githubusercontent.com/ansible/ansible/devel/requirements.txt
+
 tests/test_playbooks/vars/server.yml:
 	cp tests/test_playbooks/vars/server.yml.example tests/test_playbooks/vars/server.yml
+	@echo "For recording, please adjust tests/tests_playbooks/vars/server.yml to match your reference server."
 
-dist:
-	mkdir -p $(COLLECTION_TMP)
+dist-test: $(MANIFEST)
+	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible -m theforeman.foreman.foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
+	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc theforeman.foreman.foreman_organization | grep -q "Manage Foreman Organization"
 
-	# only copy selected files/folders from our git
-	git archive HEAD LICENSE README.md galaxy.yml plugins tests/sanity | tar -C $(COLLECTION_TMP) -xf -
+$(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+	ansible-galaxy collection install -p build/collections $+ --force
+
+$(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: galaxy.yml LICENSE README.md $(FILTER) $(MODULES) $(MODULE_UTILS) $(DOC_FRAGMENTS)
+	mkdir -p build/src
+	cp galaxy.yml LICENSE README.md build/src
+	cp -r plugins build/src
 
 	# fix the imports to use the collection namespace
-	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' $(COLLECTION_TMP)/plugins/modules/*.py
-	sed -i -e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' $(COLLECTION_TMP)/plugins/modules/*.py
+	sed -i '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' build/src/plugins/modules/*.py
+	sed -i -e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' build/src/plugins/modules/*.py
 
 	# adjust README.md not to point to files that we don't ship in the collection
-	sed -i '/Documentation how to/d' $(COLLECTION_TMP)/README.md
+	sed -i '/Documentation how to/d' build/src/README.md
 
-	ansible-galaxy collection build $(COLLECTION_TMP)
+	ansible-galaxy collection build build/src --force
 
-	rm -rf $(COLLECTION_TMP)
+dist: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 
-dist-install: dist
-	mkdir -p $(COLLECTION_INSTALL_TMP)
-
-	ansible-galaxy collection install --collections-path $(COLLECTION_INSTALL_TMP) ./theforeman-foreman-*.tar.gz
-
-dist-test: dist-install
-	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible -m theforeman.foreman.foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost |grep -q "Failed to connect to Foreman server"
-	ANSIBLE_COLLECTIONS_PATHS=$(COLLECTION_INSTALL_TMP) ansible-doc theforeman.foreman.foreman_organization |grep -q "Manage Foreman Organization"
-
-dist-clean:
-	rm -rf $(COLLECTION_INSTALL_TMP)
+clean:
+	rm -rf build
 
 doc-setup:
 	pip install -r docs/requirements.txt
@@ -108,4 +128,4 @@ doc:
 
 FORCE:
 
-.PHONY: help debug lint test test-crud test-check-mode test-other setup debug-setup test-setup FORCE
+.PHONY: help debug lint sanity test test-crud test-check-mode test-other setup debug-setup test-setup FORCE
