@@ -53,7 +53,7 @@ jobs:
       - name: Run basic tests
         run: make test-crud test-other
       - name: Run Ansible devel specific tests
-        run: make sanity dist-test
+        run: make PYTHON_VERSION=${{ matrix.python }} sanity dist-test
         if: matrix.ansible == 'devel'
 
   checkmode:
@@ -93,6 +93,6 @@ jobs:
         with:
           python-version: "3.7"
       - name: Install dependencies
-        run: pip install flake8
+        run: pip install flake8 yamllint
       - name: Run lint
         run: make lint

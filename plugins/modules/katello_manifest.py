@@ -115,7 +115,7 @@ def main():
                         if "same as existing data" in error:
                             # Nothing changed, but everything ok
                             break
-                        elif "older than existing data" in error:
+                        if "older than existing data" in error:
                             module.fail_json(msg="Manifest is older than existing data.")
                         else:
                             module.fail_json(msg="Upload of the manifest failed: %s" % error)
