@@ -145,8 +145,8 @@ options:
       - Name of the new activation key when state == copied
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.organization
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
 '''
 
 EXAMPLES = '''
@@ -176,7 +176,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def override_to_boolnone(override):

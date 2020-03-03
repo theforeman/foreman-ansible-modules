@@ -118,9 +118,9 @@ options:
           - zone for I(provider=GCE)
         type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state_with_defaults
-  - foreman.taxonomy
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state_with_defaults
+  - theforeman.foreman.foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -265,7 +265,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
 def get_provider_info(provider):

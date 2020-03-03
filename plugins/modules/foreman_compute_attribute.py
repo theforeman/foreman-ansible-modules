@@ -53,8 +53,8 @@ options:
       - vm_attributes
     type: dict
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
 '''
 
 EXAMPLES = '''
@@ -85,7 +85,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 class ForemanComputeAttributeModule(ForemanEntityAnsibleModule):

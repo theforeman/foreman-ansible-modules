@@ -75,10 +75,10 @@ options:
     description:
       - The OS family the template shall be assigned with.
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state_with_defaults
-  - foreman.taxonomy
-  - foreman.os_family
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state_with_defaults
+  - theforeman.foreman.foreman.taxonomy
+  - theforeman.foreman.foreman.os_family
 '''
 
 EXAMPLES = '''
@@ -198,7 +198,7 @@ RETURN = ''' # '''
 
 import os
 
-from ansible.module_utils.foreman_helper import (
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,

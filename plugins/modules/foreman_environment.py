@@ -41,9 +41,9 @@ options:
     required: true
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state
-  - foreman.taxonomy
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -62,7 +62,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanTaxonomicEntityAnsibleModule,
 )
 

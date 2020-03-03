@@ -80,8 +80,8 @@ options:
     choices: ["present", "absent", "synced"]
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.organization
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
 '''
 
 EXAMPLES = '''
@@ -116,7 +116,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 def main():

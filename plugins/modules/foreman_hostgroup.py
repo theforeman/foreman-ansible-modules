@@ -159,11 +159,11 @@ options:
     description:
       - Hostgroup specific host parameters
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state
-  - foreman.taxonomy
-  - foreman.nested_parameters
-  - foreman.host_options
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.taxonomy
+  - theforeman.foreman.foreman.nested_parameters
+  - theforeman.foreman.foreman.host_options
 '''
 
 EXAMPLES = '''
@@ -234,7 +234,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import (
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
     OrganizationMixin,

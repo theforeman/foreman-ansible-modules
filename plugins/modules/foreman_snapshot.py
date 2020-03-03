@@ -59,7 +59,7 @@ options:
     choices: ["present", "reverted", "absent"]
     type: str
 extends_documentation_fragment:
-  - foreman
+  - theforeman.foreman.foreman
 '''
 
 EXAMPLES = '''
@@ -104,7 +104,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
 def main():

@@ -68,8 +68,8 @@ options:
 notes:
   - The I(parameter_type) only has an effect on Foreman >= 1.22
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state_with_defaults
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state_with_defaults
 '''
 
 EXAMPLES = '''
@@ -103,7 +103,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
 
 
 class ForemanCommonParameterModule(ForemanEntityAnsibleModule):

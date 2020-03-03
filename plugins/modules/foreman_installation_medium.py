@@ -57,10 +57,10 @@ options:
     description: Path to the installation medium
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state_with_defaults
-  - foreman.taxonomy
-  - foreman.os_family
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state_with_defaults
+  - theforeman.foreman.foreman.taxonomy
+  - theforeman.foreman.foreman.os_family
 '''
 
 EXAMPLES = '''
@@ -82,7 +82,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, OS_LIST
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, OS_LIST
 
 
 class ForemanInstallationMediumModule(ForemanTaxonomicEntityAnsibleModule):
