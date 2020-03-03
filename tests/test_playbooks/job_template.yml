@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -23,6 +25,8 @@
         - "delete file"
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -170,6 +174,8 @@
         expected_change: true
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml

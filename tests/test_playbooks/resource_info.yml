@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -20,6 +22,8 @@
       loop: "{{ test_resources }}"
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -73,6 +77,8 @@
       when: "'config_groups' not in result.msg"
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml

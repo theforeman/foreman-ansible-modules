@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -9,6 +11,8 @@
         snapshot_state: absent
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml

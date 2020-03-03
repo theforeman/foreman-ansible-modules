@@ -9,6 +9,7 @@ $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE)))
 
 PYTHON_VERSION = 3.7
+COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST=
 PYTEST=pytest -n 4 --boxed -v
@@ -41,26 +42,26 @@ sanity: $(MANIFEST)
 	# Fake a fresh git repo for ansible-test
 	cd $(<D) ; git init ; echo tests > .gitignore ; ansible-test sanity $(SANITY_OPTS) --python $(PYTHON_VERSION)
 
-test: | tests/test_playbooks/vars/server.yml
+test: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) $(TEST)
 
-test-crud: | tests/test_playbooks/vars/server.yml
+test-crud: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) 'tests/test_crud.py::test_crud'
 
-test-check-mode: | tests/test_playbooks/vars/server.yml
+test-check-mode: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) 'tests/test_crud.py::test_check_mode'
 
 test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
-test_%: FORCE | tests/test_playbooks/vars/server.yml
+test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
 
-record_%: FORCE
+record_%: FORCE $(MANIFEST)
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
 	pytest -v 'tests/test_crud.py::test_crud[$*]' --record
 
-clean_%: FORCE
+clean_%: FORCE $(MANIFEST)
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
 
 setup: test-setup
@@ -74,33 +75,44 @@ tests/test_playbooks/vars/server.yml:
 	@echo "For recording, please adjust $@ to match your reference server."
 
 dist-test: $(MANIFEST)
-	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
 	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc $(NAMESPACE).$(NAME).organization | grep -q "Manage Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+ifeq ($(COLLECTION_COMMAND),mazer)
+	# No idea, why this fails. But mazer is old and deprecated so unlikely to beeing fixed...
+	# mazer install --collections-path build/collections $<
+	-mkdir build/collections build/collections/ansible_collections build/collections/ansible_collections/theforeman build/collections/ansible_collections/theforeman/foreman
+	tar xf $< -C build/collections/ansible_collections/theforeman/foreman
+else
 	ansible-galaxy collection install -p build/collections $< --force
+endif
 
 # fix the imports to use the collection namespace
-build/src/plugins/modules/%.py: plugins/modules/%.py | build
+build/src/plugins/modules/%.py: plugins/modules/%.py | build/src
 	sed -e '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.$(NAMESPACE).$(NAME).plugins.module_utils/g' \
 	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- $(NAMESPACE).$(NAME).foreman/; t1}' $< > $@
 
-build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
+build/src/plugins/inventory/%.py: plugins/inventory/%.py | build/src
 	sed -E -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
 		-e '/(plugin|choices):/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
 
-build/src/plugins/callback/%.py: plugins/callback/%.py | build
+build/src/plugins/callback/%.py: plugins/callback/%.py | build/src
 	sed -e '/CALLBACK_NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
 		-e '/callback:/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
 
-build/src/%: % | build
+build/src/%: % | build/src
 	cp $< $@
 
-build:
+build/src:
 	-mkdir build build/src build/src/meta build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
 
-$(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build
+$(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build/src
+ifeq ($(COLLECTION_COMMAND),mazer)
+	mazer build build/src
+	cp releases/$@ .
+else
 	ansible-galaxy collection build build/src --force
+endif
 
 dist: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 

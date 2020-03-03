@@ -10,6 +10,8 @@
       command: hammer proxy import-classes --puppet-environment production --name {{ ansible_fqdn }}
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -88,6 +90,8 @@
         host_state: absent
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -373,6 +377,8 @@
         expected_change: true
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml

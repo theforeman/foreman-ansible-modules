@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -29,6 +31,8 @@
         subnet_state: absent
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
@@ -251,6 +255,8 @@
             expected_change: false
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
