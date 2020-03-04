@@ -4,42 +4,42 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/organization.yml
-    vars:
-      organization_state: present
-  - include: tasks/product.yml
-    vars:
-      product_state: present
-  - include: tasks/repository.yml
-    vars:
-      repository_state: present
-  - include: tasks/lifecycle_environment.yml
-    vars:
-      lifecycle_environment_state: present
-      lifecycle_environment_name: "{{ item.name }}"
-      lifecycle_environment_label: "{{ item.label }}"
-      lifecycle_environment_prior: "{{ item.prior }}"
-    loop:
-      - name: Test
-        label: test
-        prior: Library
-      - name: QA
-        label: qa
-        prior: Test
-      - name: Prod
-        label: prod
-        prior: QA
-  - include: tasks/content_view_version.yml
-    vars:
-      state: absent
-      version: 1.0
-    ignore_errors: true
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: present
-      repositories:
-        - name: "Test Repository"
-          product: "Test Product"
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Test
+          label: test
+          prior: Library
+        - name: QA
+          label: qa
+          prior: Test
+        - name: Prod
+          label: prod
+          prior: QA
+    - include: tasks/content_view_version.yml
+      vars:
+        state: absent
+        version: 1.0
+      ignore_errors: true
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
 
 - hosts: tests
   gather_facts: false
@@ -128,23 +128,23 @@
   vars_files:
     - vars/server.yml
   tasks:
-  - include: tasks/content_view_version.yml
-    vars:
-      state: absent
-      version: 1.0
-    ignore_errors: true
-  - include: tasks/content_view.yml
-    vars:
-      content_view_state: absent
-    ignore_errors: true
-  - include: tasks/repository.yml
-    vars:
-      repository_state: absent
-    ignore_errors: true
-  - include: tasks/product.yml
-    vars:
-      product_state: absent
-    ignore_errors: true
-  - include: tasks/organization.yml
-    vars:
-      organization_state: absent
+    - include: tasks/content_view_version.yml
+      vars:
+        state: absent
+        version: 1.0
+      ignore_errors: true
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+      ignore_errors: true
+    - include: tasks/repository.yml
+      vars:
+        repository_state: absent
+      ignore_errors: true
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+      ignore_errors: true
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent

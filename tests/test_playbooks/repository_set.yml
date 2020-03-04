@@ -14,7 +14,7 @@
     - include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
-        all_repositories: True
+        all_repositories: true
         state: disabled
 
 - hosts: tests
@@ -107,7 +107,7 @@
       include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
-        all_repositories: True
+        all_repositories: true
         expected_change: true
         expected_diff: true
         expected_diff_before: "state.*disabled"
@@ -116,13 +116,13 @@
       include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
-        all_repositories: True
+        all_repositories: true
         expected_change: false
     - name: disable repository_set by label, all repos
       include_tasks: tasks/repository_set.yml
       vars:
         label: rhel-7-server-rpms
-        all_repositories: True
+        all_repositories: true
         state: disabled
         expected_change: true
         expected_diff: true
@@ -133,7 +133,7 @@
       vars:
         name: Red Hat Enterprise Linux 7 Server (RPMs)
         product: Red Hat Enterprise Linux Server
-        all_repositories: True
+        all_repositories: true
         state: disabled
         expected_change: false
 

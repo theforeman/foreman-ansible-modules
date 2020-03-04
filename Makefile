@@ -45,7 +45,7 @@ info:
 	@echo   doc_fragments: $(DOC_FRAGMENTS)
 
 lint: tests/test_playbooks/vars/server.yml $(MANIFEST)
-	# yamllint -f parsable tests/test_playbooks
+	yamllint -f parsable tests/test_playbooks
 	ansible-playbook --syntax-check tests/test_playbooks/*.yml | grep -v '^$$'
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 

@@ -76,7 +76,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         expected_change: true
 
     - name: create host again, no change
@@ -85,7 +85,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         expected_change: false
 
     - name: update host, set owner to a user
@@ -94,7 +94,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         host_owner: test
         expected_change: true
 
@@ -104,7 +104,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         host_owner: test
         expected_change: false
 
@@ -114,7 +114,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         host_owner_group: testgroup
         expected_change: true
 
@@ -124,7 +124,7 @@
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: False
+        host_managed: false
         host_owner_group: testgroup
         expected_change: false
 
@@ -135,7 +135,7 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_subnet: "{{ host.subnet }}"
-        host_managed: False
+        host_managed: false
         expected_change: true
 
     - name: Add subnet to host again, no change
@@ -145,7 +145,7 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_subnet: "{{ host.subnet }}"
-        host_managed: False
+        host_managed: false
         expected_change: false
 
     - name: delete host
@@ -169,8 +169,8 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: true
 
     - name: create host again with hostgroup, no change
@@ -180,8 +180,8 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: false
 
     - name: move host to child hostgroup
@@ -191,9 +191,9 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}/child_group"
-        host_managed: False
-        host_build: False
-        expected_change: True
+        host_managed: false
+        host_build: false
+        expected_change: true
 
     - name: move host again to child hostgroup, no change
       include_tasks: tasks/host.yml
@@ -202,8 +202,8 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}/child_group"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: false
 
     - name: delete host
@@ -227,8 +227,8 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}/child_group"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: true
 
     - name: create host again with nested hostgroup, no change
@@ -238,8 +238,8 @@
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
         host_hostgroup: "{{ host.hostgroup }}/child_group"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: false
 
     - name: delete host
@@ -264,8 +264,8 @@
         host_location: "{{ host.location }}"
         host_ip: "192.0.2.23"
         host_mac: "EE:FF:00:00:00:01"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: true
 
     - name: create host again with ip and mac
@@ -276,8 +276,8 @@
         host_location: "{{ host.location }}"
         host_ip: "192.0.2.23"
         host_mac: "EE:FF:00:00:00:01"
-        host_managed: False
-        host_build: False
+        host_managed: false
+        host_build: false
         expected_change: false
 
     - name: delete host
