@@ -102,8 +102,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloSyncPlanModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloSyncPlanModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
@@ -111,10 +115,8 @@ def main():
             enabled=dict(type='bool', required=True),
             sync_date=dict(required=True),
             cron_expression=dict(),
+            products=dict(type='entity_list', scope='organization', resolve=False),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
-        ),
-        argument_spec=dict(
-            products=dict(type='list', elements='str'),
         ),
         required_if=[
             ['interval', 'custom cron', ['cron_expression']],
@@ -127,9 +129,8 @@ def main():
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        entity = module.find_resource_by_name('sync_plans', name=entity_dict['name'], params=scope, failsafe=True)
+        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
+        scope = {'organization_id': entity_dict['organization']['id']}
 
         products = entity_dict.pop('products', None)
 

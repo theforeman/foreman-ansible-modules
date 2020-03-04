@@ -192,14 +192,18 @@ def override_to_boolnone(override):
     return value
 
 
+class KatelloActivationKeyModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloActivationKeyModule(
         entity_spec=dict(
             name=dict(required=True),
             new_name=dict(),
-            lifecycle_environment=dict(type='entity', flat_name='environment_id'),
-            content_view=dict(type='entity'),
-            host_collections=dict(type='entity_list'),
+            lifecycle_environment=dict(type='entity', flat_name='environment_id', scope='organization'),
+            content_view=dict(type='entity', scope='organization'),
+            host_collections=dict(type='entity_list', scope='organization'),
             auto_attach=dict(type='bool'),
             release_version=dict(),
             service_level=dict(choices=['Self-Support', 'Standard', 'Premium']),
@@ -229,20 +233,9 @@ def main():
         ],
     )
 
-    entity_dict = module.clean_params()
-
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        if not module.desired_absent:
-            if 'lifecycle_environment' in entity_dict:
-                entity_dict['lifecycle_environment'] = module.find_resource_by_name(
-                    'lifecycle_environments', entity_dict['lifecycle_environment'], params=scope, thin=True)
-
-            if 'content_view' in entity_dict:
-                entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
-
-        entity = module.find_resource_by_name('activation_keys', name=entity_dict['name'], params=scope, failsafe=True)
+        entity, entity_dict = module.resolve_entities()
+        scope = {'organization_id': entity_dict['organization']['id']}
 
         if module.state == 'copied':
             new_entity = module.find_resource_by_name('activation_keys', name=entity_dict['new_name'], params=scope, failsafe=True)
@@ -344,7 +337,7 @@ def main():
                     current_host_collection_ids = set(activation_key['host_collection_ids'])
                 else:
                     current_host_collection_ids = set(item['id'] for item in activation_key['host_collections'])
-                desired_host_collections = module.find_resources_by_name('host_collections', host_collections, params=scope, thin=True)
+                desired_host_collections = host_collections
                 desired_host_collection_ids = set(item['id'] for item in desired_host_collections)
 
                 if desired_host_collection_ids != current_host_collection_ids:

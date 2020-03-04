@@ -138,15 +138,19 @@ cvc_entity_spec = {
 }
 
 
+class KatelloContentViewModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloContentViewModule(
         entity_spec=dict(
             name=dict(required=True),
             description=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
-            components=dict(type='nested_list', entity_spec=cvc_entity_spec),
-            repositories=dict(type='entity_list', elements='dict', options=dict(
+            components=dict(type='nested_list', entity_spec=cvc_entity_spec, resolve=False),
+            repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
             )),
@@ -167,7 +171,8 @@ def main():
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
+        scope = {'organization_id': entity_dict['organization']['id']}
 
         if not module.desired_absent:
             if 'repositories' in entity_dict:
@@ -179,8 +184,6 @@ def main():
                         product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
                     entity_dict['repositories'] = repositories
-
-        entity = module.find_resource_by_name('content_views', name=entity_dict['name'], params=scope, failsafe=True)
 
         content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
 

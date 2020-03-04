@@ -107,42 +107,28 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloProductModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloProductModule(
+        entity_name='product',
         entity_spec=dict(
             name=dict(required=True),
             label=dict(),
-            gpg_key=dict(type='entity'),
-            ssl_ca_cert=dict(type='entity'),
-            ssl_client_cert=dict(type='entity'),
-            ssl_client_key=dict(type='entity'),
-            sync_plan=dict(type='entity'),
+            gpg_key=dict(type='entity', resource_type='content_credentials', scope='organization'),
+            ssl_ca_cert=dict(type='entity', resource_type='content_credentials', scope='organization'),
+            ssl_client_cert=dict(type='entity', resource_type='content_credentials', scope='organization'),
+            ssl_client_key=dict(type='entity', resource_type='content_credentials', scope='organization'),
+            sync_plan=dict(type='entity', scope='organization'),
             description=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
     )
 
-    entity_dict = module.clean_params()
-
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        entity = module.find_resource_by_name('products', name=entity_dict['name'], params=scope, failsafe=True)
-
-        if not module.desired_absent:
-            if 'gpg_key' in entity_dict:
-                entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
-            if 'ssl_ca_cert' in entity_dict:
-                entity_dict['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_ca_cert'], params=scope, thin=True)
-            if 'ssl_client_cert' in entity_dict:
-                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                              name=entity_dict['ssl_client_cert'], params=scope, thin=True)
-            if 'ssl_client_key' in entity_dict:
-                entity_dict['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_key'], params=scope, thin=True)
-            if 'sync_plan' in entity_dict:
-                entity_dict['sync_plan'] = module.find_resource_by_name('sync_plans', name=entity_dict['sync_plan'], params=scope, thin=True)
-
-        module.ensure_entity('products', entity_dict, entity, params=scope)
+        module.run()
 
 
 if __name__ == '__main__':

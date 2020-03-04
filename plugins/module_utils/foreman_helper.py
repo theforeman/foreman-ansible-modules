@@ -53,15 +53,28 @@ def _exception2fail_json(msg='Generic failure: {0}'):
     return decor
 
 
-class KatelloMixin(object):
-    def __init__(self, argument_spec=None, **kwargs):
-        args = dict(
-            organization=dict(required=True),
-        )
-        if argument_spec:
-            args.update(argument_spec)
-        super(KatelloMixin, self).__init__(argument_spec=args, **kwargs)
+class OrganizationMixin(object):
+    def handle_organization_param(self, entity_dict):
+        """
+        Find the Organization referenced in the entity_dict.
+        This *always* executes the search as we also need to know the Organization when deleting entities.
 
+        Parameters:
+            entity_dict (dict): the entity data as entered by the user
+        Return value:
+            entity_dict (dict): updated data
+            scope (dict): params that can be passed to further API calls to scope for the Organization
+        """
+        entity_dict = entity_dict.copy()
+
+        entity_dict['organization'] = self.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
+
+        scope = {'organization_id': entity_dict['organization']['id']}
+
+        return (entity_dict, scope)
+
+
+class KatelloMixin(OrganizationMixin):
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
         super(KatelloMixin, self).connect()
@@ -155,27 +168,6 @@ class HostMixin(object):
         if entity_spec:
             args.update(entity_spec)
         super(HostMixin, self).__init__(entity_spec=args, **kwargs)
-
-
-class OrganizationMixin(object):
-    def handle_organization_param(self, entity_dict):
-        """
-        Find the Organization referenced in the entity_dict.
-        This *always* executes the search as we also need to know the Organization when deleting entities.
-
-        Parameters:
-            entity_dict (dict): the entity data as entered by the user
-        Return value:
-            entity_dict (dict): updated data
-            scope (dict): params that can be passed to further API calls to scope for the Organization
-        """
-        entity_dict = entity_dict.copy()
-
-        entity_dict['organization'] = self.find_resource_by_name('organizations', name=entity_dict['organization'], thin=True)
-
-        scope = {'organization_id': entity_dict['organization']['id']}
-
-        return (entity_dict, scope)
 
 
 class ForemanAnsibleModule(AnsibleModule):
@@ -757,7 +749,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
         self.sub_entities = {key: value for key, value in self.original_entity_spec.items()
-                             if value.get('resolve', True) and 'type' in value and value['type'] in ['entity', 'entity_list']}
+                             if value.get('resolve', True) and value.get('type') in ['entity', 'entity_list']}
         if 'thin' not in self.entity_opts:
             self.entity_opts['thin'] = False
         if 'failsafe' not in self.entity_opts:
@@ -765,7 +757,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         if 'search_operator' not in self.entity_opts:
             self.entity_opts['search_operator'] = '='
         if 'search_by' not in self.entity_opts:
-            self.entity_opts['search_by'] = self.__class__.resolve_entity_key(self._entity_resource_name)
+            self.entity_opts['search_by'] = self.resolve_entity_key(self._entity_resource_name)
 
     @property
     def entity_name_from_class(self):
@@ -999,12 +991,28 @@ class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
         return entity_dict
 
 
-class KatelloAnsibleModule(OrganizationMixin, KatelloMixin, ForemanAnsibleModule):
-    pass
+class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+    def __init__(self, argument_spec=None, **kwargs):
+        _argument_spec = dict(
+            organization=dict(required=True),
+        )
+        if argument_spec:
+            _argument_spec.update(argument_spec)
+        super(KatelloAnsibleModule, self).__init__(argument_spec=_argument_spec, **kwargs)
 
 
-class KatelloEntityAnsibleModule(OrganizationMixin, KatelloMixin, ForemanEntityAnsibleModule):
-    pass
+class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
+    def __init__(self, entity_spec=None, entity_scope=None, **kwargs):
+        _entity_spec = dict(
+            organization=dict(type='entity', required=True),
+        )
+        if entity_spec:
+            _entity_spec.update(entity_spec)
+        if entity_scope and not entity_scope == 'organization':
+            # Fail with a warning, until scope can be a list
+            self.fail_json('You cannot have two entity_scopes.')
+        _entity_scope = 'organization'
+        super(KatelloEntityAnsibleModule, self).__init__(entity_spec=_entity_spec, entity_scope=_entity_scope, **kwargs)
 
 
 def _entity_spec_helper(spec):

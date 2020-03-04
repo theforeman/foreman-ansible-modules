@@ -71,32 +71,35 @@ EXAMPLES = '''
     state: "present"
 '''
 
-RETURN = '''# '''
+RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloLifecycleEnvironmentModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloLifecycleEnvironmentModule(
+        entity_opts=dict(
+            failsafe=True,
+        ),
         entity_spec=dict(
             name=dict(required=True),
             label=dict(),
             description=dict(),
-            prior=dict(type='entity'),
+            prior=dict(type='entity', resource_type='lifecycle_environments', scope='organization'),
         ),
     )
 
-    entity_dict = module.clean_params()
-
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
+        entity, entity_dict = module.resolve_entities()
+        scope = {'organization_id': entity_dict['organization']['id']}
 
-        entity = module.find_resource_by_name('lifecycle_environments', name=entity_dict['name'], params=scope, failsafe=True)
         if not module.desired_absent:
-            if 'prior' in entity_dict:
-                entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', entity_dict['prior'], params=scope, thin=True)
             # Default to 'Library' for new env with no 'prior' provided
-            elif not entity:
+            if 'prior' not in entity_dict and not entity:
                 entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
 
         if entity:

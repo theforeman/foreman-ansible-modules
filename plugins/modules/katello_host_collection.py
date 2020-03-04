@@ -70,8 +70,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloHostCollectionModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloHostCollectionModule(
         argument_spec=dict(
             updated_name=dict(),
         ),
@@ -81,12 +85,9 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        entity = module.find_resource_by_name('host_collections', name=entity_dict['name'], params=scope, failsafe=True)
+        entity, entity_dict = module.resolve_entities()
+        scope = {'organization_id': entity_dict['organization']['id']}
 
         if entity and 'updated_name' in entity_dict:
             entity_dict['name'] = entity_dict.pop('updated_name')
