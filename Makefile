@@ -10,14 +10,6 @@ DOC_FRAGMENTS := $(shell find plugins/doc_fragments -name *.py)
 
 PYTHON_VERSION = 3.7
 TEST=
-DATA=$(shell echo $(MODULE) | sed 's/\(foreman\|katello\)_//; s/_/-/g')
-PDB_PATH=$(shell find /usr/lib{,64} -type f -executable -name pdb.py 2> /dev/null)
-ifeq ($(PDB_PATH),)
-	PDB_PATH=$(shell which pdb)
-endif
-MODULE_PATH=plugins/modules/$(MODULE).py
-DEBUG_DATA_PATH=tests/debug_data/$(DATA).json
-DEBUG_OPTIONS=-m $(MODULE_PATH) -a @$(DEBUG_DATA_PATH) -D $(PDB_PATH)
 PYTEST=pytest -n 4 --boxed -v
 
 default: help
@@ -28,10 +20,8 @@ help:
 	@echo "  lint           to run code linting"
 	@echo "  test           to run unit tests"
 	@echo "  sanity         to run santy tests"
-	@echo "  debug          debug a module using the ansible hacking module"
-	@echo "  setup          to set up test, lint, and debugging"
+	@echo "  setup          to set up test, lint"
 	@echo "  test-setup     to install test dependencies"
-	@echo "  debug-setup    to set up the ansible hacking module"
 	@echo "  test_<test>    to run a specific unittest"
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
 	@echo "  clean_<test>   to run a specific test playbook with the teardown and cleanup tags"
@@ -75,17 +65,7 @@ record_%: FORCE
 clean_%: FORCE
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
 
-debug:
-ifndef MODULE
-	$(error MODULE is undefined)
-endif
-	./.tmp/ansible/hacking/test-module $(DEBUG_OPTIONS)
-
-setup: test-setup debug-setup
-
-debug-setup: .tmp/ansible
-.tmp/ansible:
-	ansible-playbook debug-setup.yml
+setup: test-setup
 
 test-setup: tests/test_playbooks/vars/server.yml
 	pip install --upgrade 'pip<20'
@@ -128,4 +108,4 @@ doc:
 
 FORCE:
 
-.PHONY: help debug lint sanity test test-crud test-check-mode test-other setup debug-setup test-setup FORCE
+.PHONY: help lint sanity test test-crud test-check-mode test-other setup test-setup FORCE
