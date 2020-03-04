@@ -235,11 +235,10 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import (
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
-    OrganizationMixin,
 )
 
 
-class ForemanHostgroupModule(OrganizationMixin, HostMixin, ForemanTaxonomicEntityAnsibleModule):
+class ForemanHostgroupModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -284,9 +283,9 @@ def main():
             lifecycle_environment=dict(type='entity', scope='organization'),
             kickstart_repository=dict(type='entity', scope='organization', resource_type='repositories'),
             content_view=dict(type='entity', scope='organization'),
+            organization=dict(type='entity', required=False, ensure=False),
         ),
         argument_spec=dict(
-            organization=dict(),
             updated_name=dict(),
         ),
         mutually_exclusive=[['medium', 'kickstart_repository']],
@@ -306,7 +305,6 @@ def main():
                         entity_dict['organizations'].append(entity_dict['organization'])
                 else:
                     entity_dict['organizations'] = [entity_dict['organization']]
-                entity_dict, scope = module.handle_organization_param(entity_dict)
         entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
         expected_puppetclasses = entity_dict.pop('puppetclasses', None)
         entity = module.run(entity_dict=entity_dict, entity=entity)

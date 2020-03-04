@@ -117,8 +117,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloSccAccountModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloSccAccountModule(
         entity_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
@@ -134,16 +138,12 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-
     module.task_timeout = 4 * 60
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
-
-        failsafe = (module.state != 'synced')
-
-        entity = module.find_resource_by_name('scc_accounts', name=entity_dict['name'], params=scope, failsafe=failsafe)
+        module.entity_opts['failsafe'] = (module.state != 'synced')
+        entity, entity_dict = module.resolve_entities()
+        scope = {'organization_id': entity_dict['organization']['id']}
 
         if not module.desired_absent:
             if not entity:
