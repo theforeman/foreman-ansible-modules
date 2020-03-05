@@ -1024,7 +1024,8 @@ def _foreman_spec_helper(spec):
 
     _FILTER_SPEC_KEYS = ['thin', 'scope', 'resource_type', 'search_by', 'search_operator', 'resolve', 'ensure']
 
-    # _foreman_spec_helper() is called before we call __init__ of ForemanAnsibleModule and thus before the if HAS APYPIE check happens.
+    # _foreman_spec_helper() is called before we call check_requirements() in the __init__ of ForemanAnsibleModule 
+    # and thus before the if HAS APYPIE check happens.
     # We have to ensure that apypie is available before using it.
     # There is two cases where we can call _foreman_spec_helper() without apypie available:
     # * When the user calls the module but doesn't have the right Python libraries installed.
