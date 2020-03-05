@@ -185,7 +185,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_entity_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_foreman_spec
 try:
     import ipaddress
     HAS_IPADDRESS = True
@@ -203,7 +203,7 @@ def main():
         argument_spec=dict(
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             network_type=dict(choices=['IPv4', 'IPv6'], default='IPv4'),
@@ -227,7 +227,7 @@ def main():
             remote_execution_proxies=dict(type='entity_list', resource_type='smart_proxies'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
-            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
+            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
         required_one_of=[['cidr', 'mask']],
     )

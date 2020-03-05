@@ -1,11 +1,11 @@
-from plugins.module_utils.foreman_helper import _entity_spec_helper
+from plugins.module_utils.foreman_helper import _foreman_spec_helper
 
 
 def test_empty_entity():
     spec = {}
-    entity_spec, argument_spec = _entity_spec_helper(spec)
+    foreman_spec, argument_spec = _foreman_spec_helper(spec)
     assert spec == {}
-    assert entity_spec == {'id': {}}
+    assert foreman_spec == {'id': {}}
     assert argument_spec == {}
 
 
@@ -17,11 +17,11 @@ def test_full_entity():
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'quarter': {'type': 'entity', 'resource_type': 'edges'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
-        'prices': {'type': 'nested_list', 'entity_spec': {
+        'prices': {'type': 'nested_list', 'foreman_spec': {
             'value': {},
         }},
     }
-    entity_spec, argument_spec = _entity_spec_helper(spec)
+    foreman_spec, argument_spec = _foreman_spec_helper(spec)
     assert spec == {
         'name': {},
         'count': {'type': 'int', 'aliases': ['number']},
@@ -29,11 +29,11 @@ def test_full_entity():
         'street': {'type': 'entity', 'flat_name': 'street_id'},
         'quarter': {'type': 'entity', 'resource_type': 'edges'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
-        'prices': {'type': 'nested_list', 'entity_spec': {
+        'prices': {'type': 'nested_list', 'foreman_spec': {
             'value': {},
         }},
     }
-    assert entity_spec == {
+    assert foreman_spec == {
         'id': {},
         'name': {},
         'count': {'type': 'int'},

@@ -108,7 +108,7 @@ class KatelloSyncPlanModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloSyncPlanModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             interval=dict(choices=['hourly', 'daily', 'weekly', 'custom cron'], required=True),

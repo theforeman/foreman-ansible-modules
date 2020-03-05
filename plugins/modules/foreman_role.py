@@ -87,7 +87,7 @@ import copy
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
-filter_entity_spec = dict(
+filter_foreman_spec = dict(
     permissions=dict(type='entity_list', required=True),
     search=dict(),
 )
@@ -99,10 +99,10 @@ class ForemanRoleModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanRoleModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
-            filters=dict(type='nested_list', entity_spec=filter_entity_spec),
+            filters=dict(type='nested_list', foreman_spec=filter_foreman_spec),
         ),
     )
 
@@ -131,9 +131,9 @@ def main():
                             break
                 else:
                     desired_filter['permissions'] = module.find_resources_by_name('permissions', desired_filter['permissions'], thin=True)
-                    module.ensure_entity('filters', desired_filter, None, params=scope, state='present', entity_spec=filter_entity_spec)
+                    module.ensure_entity('filters', desired_filter, None, params=scope, state='present', foreman_spec=filter_foreman_spec)
             for current_filter in current_filters:
-                module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', entity_spec=filter_entity_spec)
+                module.ensure_entity('filters', None, {'id': current_filter['id']}, params=scope, state='absent', foreman_spec=filter_foreman_spec)
 
 
 if __name__ == '__main__':

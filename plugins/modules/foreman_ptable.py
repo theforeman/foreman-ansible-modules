@@ -215,7 +215,7 @@ def main():
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             layout=dict(),
             locked=dict(type='bool'),
             name=dict(),

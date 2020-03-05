@@ -92,7 +92,7 @@ class ForemanComputeAttributeModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanComputeAttributeModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             compute_profile=dict(required=True, type='entity'),
             compute_resource=dict(required=True, type='entity', thin=False),
             vm_attrs=dict(type='dict', aliases=['vm_attributes']),

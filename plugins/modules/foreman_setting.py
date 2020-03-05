@@ -75,7 +75,7 @@ foreman_setting:
 from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str
 
 
-entity_spec = {
+foreman_spec = {
     'name': {},
     'value': {},
 }
@@ -110,7 +110,7 @@ def main():
         old_value = entity['value']
         entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-        entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
+        entity = module.ensure_entity('settings', entity_dict, entity, state='present', foreman_spec=foreman_spec)
 
         if entity:
             # Fake the not serialized input value as output

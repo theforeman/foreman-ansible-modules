@@ -76,7 +76,7 @@ def main():
         argument_spec=dict(
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             puppetclasses=dict(type='entity_list'),
         ),

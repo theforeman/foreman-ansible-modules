@@ -186,7 +186,7 @@ def main():
         argument_spec=dict(
             product=dict(required=True),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             label=dict(),
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),

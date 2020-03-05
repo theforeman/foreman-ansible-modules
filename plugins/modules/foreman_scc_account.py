@@ -123,7 +123,7 @@ class KatelloSccAccountModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloSccAccountModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
             login=dict(),

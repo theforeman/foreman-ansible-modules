@@ -505,7 +505,7 @@ class ForemanUserModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanUserModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
             lastname=dict(required=False),

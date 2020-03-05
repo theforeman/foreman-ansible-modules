@@ -155,7 +155,7 @@ class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanHostModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             hostgroup=dict(type='entity'),
             location=dict(type='entity'),

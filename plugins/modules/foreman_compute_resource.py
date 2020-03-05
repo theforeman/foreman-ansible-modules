@@ -297,7 +297,7 @@ class ForemanComputeResourceModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanComputeResourceModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),

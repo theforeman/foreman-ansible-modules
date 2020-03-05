@@ -75,7 +75,7 @@ class ForemanOrganizationModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanOrganizationModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             label=dict(),

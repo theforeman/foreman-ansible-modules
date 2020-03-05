@@ -198,7 +198,7 @@ class KatelloActivationKeyModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloActivationKeyModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             new_name=dict(),
             lifecycle_environment=dict(type='entity', flat_name='environment_id', scope='organization'),

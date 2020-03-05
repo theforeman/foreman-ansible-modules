@@ -114,7 +114,7 @@ class KatelloProductModule(KatelloEntityAnsibleModule):
 def main():
     module = KatelloProductModule(
         entity_name='product',
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
             gpg_key=dict(type='entity', resource_type='content_credentials', scope='organization'),

@@ -93,7 +93,7 @@ def main():
             updated_name=dict(),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             operatingsystems=dict(type='entity_list'),
             os_family=dict(choices=OS_LIST),

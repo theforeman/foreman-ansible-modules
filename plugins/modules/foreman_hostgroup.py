@@ -252,15 +252,15 @@ def ensure_puppetclasses(module, entity, expected_puppetclasses=None):
                 current_puppetclasses.remove(puppetclass['id'])
             else:
                 payload = {'hostgroup_id': entity['id'], 'puppetclass_id': puppetclass['id']}
-                module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', entity_spec={})
+                module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', foreman_spec={})
         if len(current_puppetclasses) > 0:
             for leftover_puppetclass in current_puppetclasses:
-                module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', entity_spec={})
+                module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', foreman_spec={})
 
 
 def main():
     module = ForemanHostgroupModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity'),

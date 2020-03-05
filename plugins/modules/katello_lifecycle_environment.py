@@ -85,7 +85,7 @@ def main():
         entity_opts=dict(
             failsafe=True,
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
             description=dict(),

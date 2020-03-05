@@ -298,7 +298,7 @@ template_defaults = {
 }
 
 
-template_input_entity_spec = {
+template_input_foreman_spec = {
     'name': dict(required=True),
     'description': dict(),
     'required': dict(type='bool'),
@@ -325,7 +325,7 @@ template_input_entity_spec = {
 
 def main():
     module = ForemanTaxonomicEntityAnsibleModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             description_format=dict(),
             job_category=dict(),
             locked=dict(type='bool', default=False),
@@ -333,7 +333,7 @@ def main():
             provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),
-            template_inputs=dict(type='nested_list', entity_spec=template_input_entity_spec),
+            template_inputs=dict(type='nested_list', foreman_spec=template_input_foreman_spec),
         ),
         argument_spec=dict(
             audit_comment=dict(),
@@ -432,14 +432,14 @@ def main():
 
                     module.ensure_entity(
                         'template_inputs', template_input_dict, template_input_entity,
-                        params=scope, entity_spec=template_input_entity_spec,
+                        params=scope, foreman_spec=template_input_foreman_spec,
                     )
 
                 # At this point, desired template inputs have been removed from the dict.
                 for template_input_entity in current_template_inputs.values():
                     module.ensure_entity(
                         'template_inputs', None, template_input_entity, state="absent",
-                        params=scope, entity_spec=template_input_entity_spec,
+                        params=scope, foreman_spec=template_input_foreman_spec,
                     )
 
         else:

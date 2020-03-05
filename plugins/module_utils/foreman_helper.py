@@ -34,7 +34,7 @@ except ImportError:
     HAS_PYYAML = False
     PYYAML_IMP_ERR = traceback.format_exc()
 
-parameter_entity_spec = dict(
+parameter_foreman_spec = dict(
     name=dict(required=True),
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
@@ -155,37 +155,42 @@ class KatelloMixin(OrganizationMixin):
 
 
 class HostMixin(object):
-    def __init__(self, entity_spec=None, **kwargs):
+    def __init__(self, foreman_spec=None, **kwargs):
         args = dict(
             compute_resource=dict(type='entity'),
             compute_profile=dict(type='entity'),
             domain=dict(type='entity'),
             subnet=dict(type='entity'),
             subnet6=dict(type='entity', resource_type='subnets'),
-            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
+            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
             root_pass=dict(no_log=True),
         )
-        if entity_spec:
-            args.update(entity_spec)
-        super(HostMixin, self).__init__(entity_spec=args, **kwargs)
+        if foreman_spec:
+            args.update(foreman_spec)
+        super(HostMixin, self).__init__(foreman_spec=args, **kwargs)
 
 
 class ForemanAnsibleModule(AnsibleModule):
 
-    def __init__(self, argument_spec, **kwargs):
+    def __init__(self, argument_spec=None, **kwargs):
         # State recording for changed and diff reporting
         self._changed = False
         self._before = defaultdict(list)
         self._after = defaultdict(list)
         self._after_full = defaultdict(list)
 
+        self.original_foreman_spec = kwargs.pop('foreman_spec', {})
+        foreman_spec, gen_args = _foreman_spec_helper(self.original_foreman_spec)
+        self.foreman_spec = foreman_spec
         args = dict(
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
             validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
         )
-        args.update(argument_spec)
+        if argument_spec is not None:
+            args.update(argument_spec)
+        args.update(gen_args)
         supports_check_mode = kwargs.pop('supports_check_mode', True)
         self._aliases = {alias for arg in args.values() for alias in arg.get('aliases', [])}
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
@@ -206,7 +211,6 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self._thin_default = False
         self.state = 'undefined'
-        self.entity_spec = {}
 
     @contextmanager
     def api_connection(self):
@@ -451,7 +455,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._after_full[resource].append(entity)
 
     @_exception2fail_json(msg='Failed to ensure entity state: {0}')
-    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, entity_spec=None):
+    def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, foreman_spec=None):
         """Ensure that a given entity has a certain state
 
             Parameters:
@@ -460,29 +464,29 @@ class ForemanAnsibleModule(AnsibleModule):
                 current_entity (dict, None): Current properties of the entity or None if nonexistent
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
                 state (dict): Desired state of the entity (optionally taken from the module)
-                entity_spec (dict): Description of the entity structure (optionally taken from module)
+                foreman_spec (dict): Description of the entity structure (optionally taken from module)
             Return value:
                 The new current state of the entity
         """
         if state is None:
             state = self.state
-        if entity_spec is None:
-            entity_spec = self.entity_spec
+        if foreman_spec is None:
+            foreman_spec = self.foreman_spec
         else:
-            entity_spec, _dummy = _entity_spec_helper(entity_spec)
+            foreman_spec, _dummy = _foreman_spec_helper(foreman_spec)
 
         updated_entity = None
 
-        self.record_before(resource, _flatten_entity(current_entity, entity_spec))
+        self.record_before(resource, _flatten_entity(current_entity, foreman_spec))
 
         if state == 'present_with_defaults':
             if current_entity is None:
-                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                updated_entity = self._create_entity(resource, desired_entity, params, foreman_spec)
         elif state == 'present':
             if current_entity is None:
-                updated_entity = self._create_entity(resource, desired_entity, params, entity_spec)
+                updated_entity = self._create_entity(resource, desired_entity, params, foreman_spec)
             else:
-                updated_entity = self._update_entity(resource, desired_entity, current_entity, params, entity_spec)
+                updated_entity = self._update_entity(resource, desired_entity, current_entity, params, foreman_spec)
         elif state == 'copied':
             if current_entity is not None:
                 updated_entity = self._copy_entity(resource, desired_entity, current_entity, params)
@@ -495,23 +499,23 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             self.fail_json(msg='Not a valid state: {0}'.format(state))
 
-        self.record_after(resource, _flatten_entity(updated_entity, entity_spec))
+        self.record_after(resource, _flatten_entity(updated_entity, foreman_spec))
         self.record_after_full(resource, updated_entity)
 
         return updated_entity
 
-    def _create_entity(self, resource, desired_entity, params, entity_spec):
+    def _create_entity(self, resource, desired_entity, params, foreman_spec):
         """Create entity with given properties
 
             Parameters:
                 resource (string): Plural name of the api resource to manipulate
                 desired_entity (dict): Desired properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-                entity_spec (dict): Description of the entity structure
+                foreman_spec (dict): Description of the entity structure
             Return value:
                 The new current state if the entity
         """
-        payload = _flatten_entity(desired_entity, entity_spec)
+        payload = _flatten_entity(desired_entity, foreman_spec)
         if not self.check_mode:
             if params:
                 payload.update(params)
@@ -522,7 +526,7 @@ class ForemanAnsibleModule(AnsibleModule):
             self.set_changed()
             return fake_entity
 
-    def _update_entity(self, resource, desired_entity, current_entity, params, entity_spec):
+    def _update_entity(self, resource, desired_entity, current_entity, params, foreman_spec):
         """Update a given entity with given properties if any diverge
 
             Parameters:
@@ -530,16 +534,16 @@ class ForemanAnsibleModule(AnsibleModule):
                 desired_entity (dict): Desired properties of the entity
                 current_entity (dict): Current properties of the entity
                 params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-                entity_spec (dict): Description of the entity structure
+                foreman_spec (dict): Description of the entity structure
             Return value:
                 The new current state if the entity
         """
         payload = {}
-        desired_entity = _flatten_entity(desired_entity, entity_spec)
-        current_entity = _flatten_entity(current_entity, entity_spec)
+        desired_entity = _flatten_entity(desired_entity, foreman_spec)
+        current_entity = _flatten_entity(current_entity, foreman_spec)
         for key, value in desired_entity.items():
             # String comparison needs extra care in face of unicode
-            if entity_spec[key].get('type', 'str') == 'str':
+            if foreman_spec[key].get('type', 'str') == 'str':
                 if to_native(current_entity.get(key)) != to_native(value):
                     payload[key] = value
             else:
@@ -684,14 +688,14 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             argument_spec=dict(
                 [...]
             ),
-            entity_spec=dict(
+            foreman_spec=dict(
                 [...]
             ),
         )
         ```
 
         This add automatic entities resolution based on provided attributes/ sub entities options.
-        It add following options to entity_spec 'entity' and 'entity_list' types:
+        It add following options to foreman_spec 'entity' and 'entity_list' types:
         * search_by (str): Field used to search the sub entity. Defaults to 'name' unless `parent` was set, in which case it defaults to `title`.
         * search_operator (str): Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
         * resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
@@ -704,7 +708,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
           By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
         * entity_scope (str): Type of the entity used to build search scope. Defaults to None.
         * entity_resolve (boolean): Set it to False to disable base entity resolution.
-        * entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in entity_spec.
+        * entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in foreman_spec.
     """
 
     ENTITY_KEYS = dict(
@@ -726,29 +730,25 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             return 'name'
 
     def __init__(self, argument_spec=None, **kwargs):
-        self.original_entity_spec = kwargs.pop('entity_spec', {})
         self.entity_key = kwargs.pop('entity_key', 'name')
         self.entity_scope = kwargs.pop('entity_scope', None)
         self.entity_resolve = kwargs.pop('entity_resolve', True)
         self.entity_opts = kwargs.pop('entity_opts', {})
         self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
 
-        entity_spec, gen_args = _entity_spec_helper(self.original_entity_spec)
         args = dict(
             state=dict(choices=['present', 'absent'], default='present'),
         )
-        args.update(gen_args)
         if argument_spec is not None:
             args.update(argument_spec)
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=args, **kwargs)
 
         self.inflector = apypie.Inflector()
         self._entity_resource_name = self.inflector.pluralize(self.entity_name)
-        self.entity_spec = entity_spec
         self.state = self._params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
-        self.sub_entities = {key: value for key, value in self.original_entity_spec.items()
+        self.sub_entities = {key: value for key, value in self.original_foreman_spec.items()
                              if value.get('resolve', True) and value.get('type') in ['entity', 'entity_list']}
         if 'thin' not in self.entity_opts:
             self.entity_opts['thin'] = False
@@ -802,20 +802,20 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return entity
 
     def ensure_entity_parameters(self, new_entity, entity, entity_dict):
-        if ('parameters' in self.original_entity_spec
-           and self.original_entity_spec['parameters'].get('type', 'str') == 'nested_list' and 'parameters' in entity_dict):
+        if ('parameters' in self.original_foreman_spec
+           and self.original_foreman_spec['parameters'].get('type', 'str') == 'nested_list' and 'parameters' in entity_dict):
             scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
             self.ensure_scoped_parameters(scope, entity, entity_dict.get('parameters'))
 
     def resolve_entities(self, entity_dict=None, entity=None, search=None):
-        """ This get current entity and all sub entities based on entity_spec when the param type is 'entity' or 'entity_list'
-             and resource_type is defined. You can also pass 'failsafe' and 'thin' options via entity_spec.
+        """ This get current entity and all sub entities based on foreman_spec when the param type is 'entity' or 'entity_list'
+             and resource_type is defined. You can also pass 'failsafe' and 'thin' options via foreman_spec.
              Params available for subentities:
                * resolve (boolean): True by default. If false, this entity will be excluded and not resolved.
                * failsafe (boolean): False by default.
                * thin (boolean): True by default.
                * scope (str): None by default. Provide the scope of the resource (eg: 'organization') (TODO: manage array for 'nested' scope ?)
-                              Defined scope must be a key of entity_spec.
+                              Defined scope must be a key of foreman_spec.
         """
         if not entity_dict:
             entity_dict = self.clean_params()
@@ -908,7 +908,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return {key: value for key, value in self.sub_entities.items() if 'scope' in value}
 
     def _cleanup_entity_dict(self, entity_dict):
-        for key, value in self.original_entity_spec.items():
+        for key, value in self.original_foreman_spec.items():
             if not value.get('ensure', True) and key in entity_dict:
                 entity_dict.pop(key)
         return entity_dict
@@ -950,10 +950,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                             current_parameter['parameter_type'] = 'string'
                         current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
                     self.ensure_entity(
-                        'parameters', desired_parameter, current_parameter, state="present", entity_spec=parameter_entity_spec, params=scope)
+                        'parameters', desired_parameter, current_parameter, state="present", foreman_spec=parameter_foreman_spec, params=scope)
                 for current_parameter in current_parameters.values():
                     self.ensure_entity(
-                        'parameters', None, current_parameter, state="absent", entity_spec=parameter_entity_spec, params=scope)
+                        'parameters', None, current_parameter, state="absent", foreman_spec=parameter_foreman_spec, params=scope)
 
     def exit_json(self, **kwargs):
         if 'diff' not in kwargs and (self._before or self._after):
@@ -965,7 +965,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 
     @property
     def blacklisted_fields(self):
-        return [key for key, value in self.entity_spec.items() if value.get('no_log', False)]
+        return [key for key, value in self.foreman_spec.items() if value.get('no_log', False)]
 
 
 class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
@@ -974,9 +974,9 @@ class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
             organizations=dict(type='entity_list'),
             locations=dict(type='entity_list'),
         )
-        entity_spec = kwargs.pop('entity_spec', {})
-        spec.update(entity_spec)
-        super(ForemanTaxonomicEntityAnsibleModule, self).__init__(argument_spec=argument_spec, entity_spec=spec, **kwargs)
+        foreman_spec = kwargs.pop('foreman_spec', {})
+        spec.update(foreman_spec)
+        super(ForemanTaxonomicEntityAnsibleModule, self).__init__(argument_spec=argument_spec, foreman_spec=spec, **kwargs)
 
     def handle_taxonomy_params(self, entity_dict):
         if not self.desired_absent:
@@ -1015,21 +1015,21 @@ class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
         super(KatelloEntityAnsibleModule, self).__init__(entity_spec=_entity_spec, entity_scope=_entity_scope, **kwargs)
 
 
-def _entity_spec_helper(spec):
+def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
     Extract ansible compatible argument_spec on the way.
     """
-    entity_spec = {'id': {}}
+    foreman_spec = {'id': {}}
     argument_spec = {}
 
     _FILTER_SPEC_KEYS = ['thin', 'scope', 'resource_type', 'search_by', 'search_operator', 'resolve', 'ensure']
 
-    # _entity_spec_helper() is called before we call __init__ of ForemanAnsibleModule and thus before the if HAS APYPIE check happens.
+    # _foreman_spec_helper() is called before we call __init__ of ForemanAnsibleModule and thus before the if HAS APYPIE check happens.
     # We have to ensure that apypie is available before using it.
-    # There is two cases where we can call _entity_spec_helper() without apypie available:
+    # There is two cases where we can call _foreman_spec_helper() without apypie available:
     # * When the user calls the module but doesn't have the right Python libraries installed.
     #   In this case nothing will works and the module will warn teh user to install the required library.
-    # * When Ansible generates docs from the argument_spec. As the inflector is only used to build entity_spec and not argument_spec,
+    # * When Ansible generates docs from the argument_spec. As the inflector is only used to build foreman_spec and not argument_spec,
     #   This is not a problem.
     #
     # So in conclusion, we only have to verify that apypie is available before using it.
@@ -1054,34 +1054,34 @@ def _entity_spec_helper(spec):
         elif argument_value.get('type') == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
-            _dummy, argument_value['options'] = _entity_spec_helper(argument_value.pop('entity_spec'))
+            _dummy, argument_value['options'] = _foreman_spec_helper(argument_value.pop('foreman_spec'))
             entity_value = None
         elif 'type' in argument_value:
             entity_value['type'] = argument_value['type']
 
         if flat_name:
             entity_value['flat_name'] = flat_name
-            entity_spec[flat_name] = {}
+            foreman_spec[flat_name] = {}
             if 'type' in argument_value:
-                entity_spec[flat_name]['type'] = argument_value['type']
+                foreman_spec[flat_name]['type'] = argument_value['type']
 
         if entity_value is not None:
-            entity_spec[key] = entity_value
+            foreman_spec[key] = entity_value
 
         if argument_value.get('type') != 'invisible':
             argument_spec[key] = argument_value
 
-    return entity_spec, argument_spec
+    return foreman_spec, argument_spec
 
 
-def _flatten_entity(entity, entity_spec):
+def _flatten_entity(entity, foreman_spec):
     """Flatten entity according to spec"""
     result = {}
     if entity is None:
         entity = {}
     for key, value in entity.items():
-        if key in entity_spec and value is not None:
-            spec = entity_spec[key]
+        if key in foreman_spec and value is not None:
+            spec = foreman_spec[key]
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
             if property_type == 'entity':

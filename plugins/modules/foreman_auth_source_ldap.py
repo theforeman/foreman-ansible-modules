@@ -169,7 +169,7 @@ class ForemanAuthSourceLdapModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanAuthSourceLdapModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             host=dict(required=True),
             port=dict(type='int', default=389),

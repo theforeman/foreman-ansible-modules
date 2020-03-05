@@ -111,7 +111,7 @@ def main():
             host=dict(required=True),
             state=dict(default='present', choices=['present', 'absent', 'reverted']),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
         ),

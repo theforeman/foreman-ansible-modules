@@ -71,7 +71,7 @@ class ForemanEnvironmentModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanEnvironmentModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
         ),
     )

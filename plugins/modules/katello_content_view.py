@@ -131,7 +131,7 @@ import copy
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
-cvc_entity_spec = {
+cvc_foreman_spec = {
     'content_view': {'type': 'entity', 'required': True},
     'latest': {'type': 'bool', 'default': False},
     'content_view_version': {'type': 'entity', 'aliases': ['version']},
@@ -144,12 +144,12 @@ class KatelloContentViewModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloContentViewModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
-            components=dict(type='nested_list', entity_spec=cvc_entity_spec, resolve=False),
+            components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
@@ -224,7 +224,7 @@ def main():
                         cvc_matched.pop('content_view_version_id', None)
                 if cvc_matched:
                     module.ensure_entity(
-                        'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
+                        'content_view_components', cvc, cvc_matched, state='present', foreman_spec=cvc_foreman_spec, params=ccv_scope)
                     current_cvcs.remove(cvc_matched)
                 else:
                     cvc['content_view_id'] = cvc.pop('content_view')['id']

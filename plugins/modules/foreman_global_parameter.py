@@ -110,7 +110,7 @@ class ForemanCommonParameterModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanCommonParameterModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),
             parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),

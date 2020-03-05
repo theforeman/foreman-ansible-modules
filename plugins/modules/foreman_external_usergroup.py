@@ -72,7 +72,7 @@ class ForemanExternalUsergroupModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanExternalUsergroupModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
             auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),

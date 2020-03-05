@@ -104,7 +104,7 @@ class ForemanLocationModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanLocationModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             parent=dict(type='entity'),
             organizations=dict(type='entity_list'),

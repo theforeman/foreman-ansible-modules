@@ -253,7 +253,7 @@ def main():
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             kind=dict(choices=[
                 'finish',
                 'iPXE',

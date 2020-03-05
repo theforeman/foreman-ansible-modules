@@ -156,7 +156,7 @@ def promote_content_view_version(module, content_view_version, environments, for
 
 def main():
     module = KatelloEntityAnsibleModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             content_view=dict(type='entity', required=True),
             description=dict(),
             version=dict(),

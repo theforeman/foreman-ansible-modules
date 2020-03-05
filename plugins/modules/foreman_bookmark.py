@@ -100,7 +100,7 @@ class ForemanBookmarkModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanBookmarkModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
             public=dict(default='true', type='bool'),

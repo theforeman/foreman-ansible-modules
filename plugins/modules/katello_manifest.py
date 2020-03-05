@@ -101,7 +101,7 @@ def main():
             if 'repository_url' in entity_dict:
                 payload = {'redhat_repository_url': entity_dict['repository_url']}
                 org_spec = dict(redhat_repository_url=dict())
-                organization = module.ensure_entity('organizations', payload, organization, state='present', entity_spec=org_spec)
+                organization = module.ensure_entity('organizations', payload, organization, state='present', foreman_spec=org_spec)
 
             try:
                 with open(entity_dict['manifest_path'], 'rb') as manifest_file:

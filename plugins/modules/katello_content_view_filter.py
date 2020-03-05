@@ -264,7 +264,7 @@ def main():
             entity,
             params=cv_scope,
             state=filter_state,
-            entity_spec=content_filter_spec,
+            foreman_spec=content_filter_spec,
         )
 
         if content_view_filter is not None:
@@ -300,7 +300,7 @@ def main():
                 content_view_filter_rule,
                 params=cv_filter_scope,
                 state=rule_state,
-                entity_spec=rule_spec,
+                foreman_spec=rule_spec,
             )
 
 

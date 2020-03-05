@@ -89,7 +89,7 @@ def main():
             operatingsystem=dict(required=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             template_kind=dict(required=True, type='entity'),
             provisioning_template=dict(type='entity', thin=False),
         ),

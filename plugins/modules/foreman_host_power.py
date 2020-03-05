@@ -103,7 +103,7 @@ from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 def main():
     module = ForemanEntityAnsibleModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(aliases=['hostname'], required=True),
             state=dict(default='state', choices=['on', 'start', 'off', 'stop', 'soft', 'reboot', 'cycle', 'reset', 'state', 'status']),
         ),
