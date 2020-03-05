@@ -64,12 +64,13 @@ DOCUMENTATION = '''
         type: boolean
         default: False
         version_added: '2.10'
-      want_ansible_ssh_host:
-        description: Toggle, if true the plugin will populate the ansible_ssh_host variable to explicitly specify the connection target
+      legacy_hostvars:
+        description:
+            - Toggle, if true the plugin will build legacy hostvars present in the foreman script
+            - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
         version_added: '2.10'
-
 '''
 
 EXAMPLES = '''
@@ -208,6 +209,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             raise ValueError("More than one set of facts returned for '%s'" % host)
         return facts
 
+    def _get_hostvars(self, host, vars_prefix='', omitted_vars=()):
+        hostvars = {}
+        for k, v in host.items():
+            if k not in omitted_vars:
+                hostvars[vars_prefix + k] = v
+        return hostvars
+
     def _populate(self):
 
         for host in self._get_hosts():
@@ -222,25 +230,36 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     group_name = self.inventory.add_group(group_name)
                     self.inventory.add_child(group_name, host_name)
 
-                # set host vars from host info
-                try:
-                    for k, v in host.items():
-                        if k not in ('name', 'hostgroup_title', 'hostgroup_name'):
-                            try:
-                                self.inventory.set_variable(host_name, self.get_option('vars_prefix') + k, v)
-                            except ValueError as e:
-                                self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
-                except ValueError as e:
-                    self.display.warning("Could not get host info for %s, skipping: %s" % (host_name, to_text(e)))
+                if self.get_option('legacy_hostvars'):
+                    hostvars = self._get_hostvars(host)
+                    self.inventory.set_variable(host_name, 'foreman', hostvars)
+                else:
+                    omitted_vars = ('name', 'hostgroup_title', 'hostgroup_name')
+                    hostvars = self._get_hostvars(host, self.get_option('vars_prefix'), omitted_vars)
+
+                    for k, v in hostvars.items():
+                        try:
+                            self.inventory.set_variable(host_name, k, v)
+                        except ValueError as e:
+                            self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
 
                 # set host vars from params
                 if self.get_option('want_params'):
-                    for p in self._get_all_params_by_id(host['id']):
-                        try:
-                            self.inventory.set_variable(host_name, p['name'], p['value'])
-                        except ValueError as e:
-                            self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
-                                                 (p['name'], to_native(p['value']), host, to_native(e)))
+                    params = self._get_all_params_by_id(host['id'])
+                    filtered_params = {}
+                    for p in params:
+                        if 'name' in p and 'value' in p:
+                            filtered_params[p['name']] = p['value']
+
+                    if self.get_option('legacy_hostvars'):
+                        self.inventory.set_variable(host_name, 'foreman_params', filtered_params)
+                    else:
+                        for k, v in filtered_params:
+                            try:
+                                self.inventory.set_variable(host_name, p['name'], p['value'])
+                            except ValueError as e:
+                                self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
+                                                     (p['name'], to_native(p['value']), host, to_native(e)))
 
                 # set host vars from facts
                 if self.get_option('want_facts'):
@@ -260,17 +279,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                                 self.inventory.add_child(hostcollection_group, host_name)
                             except ValueError as e:
                                 self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
-
-                # put ansible_ssh_host as hostvar
-                if self.get_option('want_ansible_ssh_host'):
-                    for key in ('ip', 'ipv4', 'ipv6'):
-                        if host.get(key):
-                            try:
-                                self.inventory.set_variable(host_name, 'ansible_ssh_host', host[key])
-                                break
-                            except ValueError as e:
-                                self.display.warning("Could not set hostvar ansible_ssh_host to '%s' for the '%s' host, skipping: %s" %
-                                                     (host[key], host_name, to_text(e)))
 
                 strict = self.get_option('strict')
 
