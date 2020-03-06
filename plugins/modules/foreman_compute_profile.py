@@ -165,22 +165,22 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-    compute_attributes = entity_dict.pop('compute_attributes', None)
+    module_params = module.clean_params()
+    compute_attributes = module_params.pop('compute_attributes', None)
 
     with module.api_connection():
-        entity = module.run(entity_dict=entity_dict)
+        entity = module.run(module_params=module_params)
 
         # Apply changes on underlying compute attributes only when present
         if entity and module.state == 'present' and compute_attributes is not None:
             # Update or create compute attributes
             scope = {'compute_profile_id': entity['id']}
-            for ca_entity_dict in compute_attributes:
-                ca_entity_dict['compute_resource'] = module.find_resource_by_name(
-                    'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
-                ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
+            for ca_module_params in compute_attributes:
+                ca_module_params['compute_resource'] = module.find_resource_by_name(
+                    'compute_resources', name=ca_module_params['compute_resource'], failsafe=False, thin=False)
+                ca_entities = ca_module_params['compute_resource'].get('compute_attributes', [])
                 ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == entity['id']), None)
-                module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, foreman_spec=compute_attribute_foreman_spec, params=scope)
+                module.ensure_entity('compute_attributes', ca_module_params, ca_entity, foreman_spec=compute_attribute_foreman_spec, params=scope)
 
 
 if __name__ == '__main__':

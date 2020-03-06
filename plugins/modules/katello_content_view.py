@@ -161,31 +161,41 @@ def main():
         mutually_exclusive=[['repositories', 'components']],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     # components is None when we're managing a CCV but don't want to adjust its components
-    components = entity_dict.pop('components', None)
+    components = module_params.pop('components', None)
     if components:
         for component in components:
             if not component['latest'] and component.get('content_view_version') is None:
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
     with module.api_connection():
+<<<<<<< HEAD
         entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
         scope = {'organization_id': entity_dict['organization']['id']}
+=======
+        module_params, scope = module.handle_organization_param(module_params)
+>>>>>>> Rename entity_dict to module_params
 
         if not module.desired_absent:
-            if 'repositories' in entity_dict:
-                if entity_dict['composite']:
+            if 'repositories' in module_params:
+                if module_params['composite']:
                     module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
                 else:
                     repositories = []
-                    for repository in entity_dict['repositories']:
+                    for repository in module_params['repositories']:
                         product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
-                    entity_dict['repositories'] = repositories
+                    module_params['repositories'] = repositories
 
+<<<<<<< HEAD
         content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
+=======
+        entity = module.find_resource_by_name('content_views', name=module_params['name'], params=scope, failsafe=True)
+
+        content_view_entity = module.ensure_entity('content_views', module_params, entity, params=scope)
+>>>>>>> Rename entity_dict to module_params
 
         # only update CVC's of newly created or updated CV's that are composite if components are specified
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))

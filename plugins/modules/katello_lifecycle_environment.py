@@ -93,6 +93,7 @@ def main():
         ),
     )
 
+<<<<<<< HEAD
     with module.api_connection():
         entity, entity_dict = module.resolve_entities()
         scope = {'organization_id': entity_dict['organization']['id']}
@@ -101,15 +102,29 @@ def main():
             # Default to 'Library' for new env with no 'prior' provided
             if 'prior' not in entity_dict and not entity:
                 entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
+=======
+    module_params = module.clean_params()
+
+    with module.api_connection():
+        module_params, scope = module.handle_organization_param(module_params)
+
+        entity = module.find_resource_by_name('lifecycle_environments', name=module_params['name'], params=scope, failsafe=True)
+        if not module.desired_absent:
+            if 'prior' in module_params:
+                module_params['prior'] = module.find_resource_by_name('lifecycle_environments', module_params['prior'], params=scope, thin=True)
+            # Default to 'Library' for new env with no 'prior' provided
+            elif not entity:
+                module_params['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
+>>>>>>> Rename entity_dict to module_params
 
         if entity:
-            if 'label' in entity_dict and entity_dict['label'] and entity['label'] != entity_dict['label']:
+            if 'label' in module_params and module_params['label'] and entity['label'] != module_params['label']:
                 module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
 
-            if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
+            if 'prior' in module_params and entity['prior']['id'] != module_params['prior']['id']:
                 module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-        module.ensure_entity('lifecycle_environments', entity_dict, entity, params=scope)
+        module.ensure_entity('lifecycle_environments', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':

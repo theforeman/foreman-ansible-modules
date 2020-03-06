@@ -209,38 +209,38 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
-    if entity_dict['content_type'] != 'docker':
-        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in entity_dict]
+    if module_params['content_type'] != 'docker':
+        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in module_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'docker'".format(",".join(invalid_list)))
 
-    if entity_dict['content_type'] != 'deb':
-        invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in entity_dict]
+    if module_params['content_type'] != 'deb':
+        invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in module_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
+        module_params, scope = module.handle_organization_param(module_params)
 
-        entity_dict['product'] = module.find_resource_by_name('products', name=entity_dict['product'], params=scope, thin=True)
+        module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
 
         if not module.desired_absent:
-            if 'gpg_key' in entity_dict:
-                entity_dict['gpg_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['gpg_key'], params=scope, thin=True)
-            if 'ssl_ca_cert' in entity_dict:
-                entity_dict['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_ca_cert'], params=scope, thin=True)
-            if 'ssl_client_cert' in entity_dict:
-                entity_dict['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                              name=entity_dict['ssl_client_cert'], params=scope, thin=True)
-            if 'ssl_client_key' in entity_dict:
-                entity_dict['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=entity_dict['ssl_client_key'], params=scope, thin=True)
+            if 'gpg_key' in module_params:
+                module_params['gpg_key'] = module.find_resource_by_name('content_credentials', name=module_params['gpg_key'], params=scope, thin=True)
+            if 'ssl_ca_cert' in module_params:
+                module_params['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_ca_cert'], params=scope, thin=True)
+            if 'ssl_client_cert' in module_params:
+                module_params['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
+                                                                              name=module_params['ssl_client_cert'], params=scope, thin=True)
+            if 'ssl_client_key' in module_params:
+                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_client_key'], params=scope, thin=True)
 
-        scope['product_id'] = entity_dict['product']['id']
-        entity = module.find_resource_by_name('repositories', name=entity_dict['name'], params=scope, failsafe=True)
+        scope['product_id'] = module_params['product']['id']
+        entity = module.find_resource_by_name('repositories', name=module_params['name'], params=scope, failsafe=True)
 
-        module.ensure_entity('repositories', entity_dict, entity, params=scope)
+        module.ensure_entity('repositories', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':

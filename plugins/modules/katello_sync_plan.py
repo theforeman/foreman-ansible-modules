@@ -123,18 +123,24 @@ def main():
         ],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
-    if (entity_dict['interval'] != 'custom cron') and ('cron_expression' in entity_dict):
+    if (module_params['interval'] != 'custom cron') and ('cron_expression' in module_params):
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     with module.api_connection():
+<<<<<<< HEAD
         entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
         scope = {'organization_id': entity_dict['organization']['id']}
+=======
+        module_params, scope = module.handle_organization_param(module_params)
 
-        products = entity_dict.pop('products', None)
+        entity = module.find_resource_by_name('sync_plans', name=module_params['name'], params=scope, failsafe=True)
+>>>>>>> Rename entity_dict to module_params
 
-        sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
+        products = module_params.pop('products', None)
+
+        sync_plan = module.ensure_entity('sync_plans', module_params, entity, params=scope)
 
         if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
             products = module.find_resources_by_name('products', products, params=scope, thin=True)

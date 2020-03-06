@@ -86,10 +86,10 @@ def main():
 
     module.task_timeout = 5 * 60
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        organization = module.find_resource_by_name('organizations', name=entity_dict['organization'], thin=False)
+        organization = module.find_resource_by_name('organizations', name=module_params['organization'], thin=False)
         scope = {'organization_id': organization['id']}
 
         try:
@@ -98,17 +98,17 @@ def main():
             existing_manifest = None
 
         if module.state == 'present':
-            if 'repository_url' in entity_dict:
-                payload = {'redhat_repository_url': entity_dict['repository_url']}
+            if 'repository_url' in module_params:
+                payload = {'redhat_repository_url': module_params['repository_url']}
                 org_spec = dict(redhat_repository_url=dict())
                 organization = module.ensure_entity('organizations', payload, organization, state='present', foreman_spec=org_spec)
 
             try:
-                with open(entity_dict['manifest_path'], 'rb') as manifest_file:
-                    files = {'content': (entity_dict['manifest_path'], manifest_file, 'application/zip')}
+                with open(module_params['manifest_path'], 'rb') as manifest_file:
+                    files = {'content': (module_params['manifest_path'], manifest_file, 'application/zip')}
                     params = {}
-                    if 'repository_url' in entity_dict:
-                        params['repository_url'] = entity_dict['repository_url']
+                    if 'repository_url' in module_params:
+                        params['repository_url'] = module_params['repository_url']
                     params.update(scope)
                     result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False, ignore_task_errors=True)
                     for error in result['humanized']['errors']:

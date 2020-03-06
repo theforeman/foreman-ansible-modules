@@ -106,12 +106,12 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(entity_dict)
-        filters = entity_dict.pop("filters", None)
-        new_entity = module.ensure_entity('roles', entity_dict, entity)
+        entity, module_params = module.resolve_entities(module_params)
+        filters = module_params.pop("filters", None)
+        new_entity = module.ensure_entity('roles', module_params, entity)
 
         if not module.desired_absent and filters is not None:
             scope = {'role_id': new_entity['id']}

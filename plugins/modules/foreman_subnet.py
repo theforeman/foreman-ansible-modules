@@ -235,20 +235,20 @@ def main():
     if not HAS_IPADDRESS:
         module.fail_json(msg='The ipaddress Python module is required', exception=IPADDRESS_IMP_ERR)
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     if not module.desired_absent:
-        if entity_dict['network_type'] == 'IPv4':
+        if module_params['network_type'] == 'IPv4':
             IPNetwork = ipaddress.IPv4Network
         else:
             IPNetwork = ipaddress.IPv6Network
-        if 'mask' in entity_dict and 'cidr' not in entity_dict:
-            entity_dict['cidr'] = IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['mask'])).prefixlen
-        elif 'mask' not in entity_dict and 'cidr' in entity_dict:
-            entity_dict['mask'] = str(IPNetwork(u'%s/%s' % (entity_dict['network'], entity_dict['cidr'])).netmask)
+        if 'mask' in module_params and 'cidr' not in module_params:
+            module_params['cidr'] = IPNetwork(u'%s/%s' % (module_params['network'], module_params['mask'])).prefixlen
+        elif 'mask' not in module_params and 'cidr' in module_params:
+            module_params['mask'] = str(IPNetwork(u'%s/%s' % (module_params['network'], module_params['cidr'])).netmask)
 
     with module.api_connection():
-        module.run(entity_dict=entity_dict)
+        module.run(module_params=module_params)
 
 
 if __name__ == '__main__':

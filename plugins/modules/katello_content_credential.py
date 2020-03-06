@@ -85,8 +85,17 @@ def main():
         ),
     )
 
+<<<<<<< HEAD
     with module.api_connection():
         module.run()
+=======
+    module_params = module.clean_params()
+    with module.api_connection():
+        module_params, scope = module.handle_organization_param(module_params)
+        entity = module.find_resource_by_name('content_credentials', name=module_params['name'], params=scope, failsafe=True)
+
+        module.ensure_entity('content_credentials', module_params, entity, params=scope)
+>>>>>>> Rename entity_dict to module_params
 
 
 if __name__ == '__main__':

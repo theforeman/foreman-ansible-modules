@@ -354,14 +354,14 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor template allowed if 'name: *'!")
 
-    entity_dict = module.clean_params()
-    file_name = entity_dict.pop('file_name', None)
+    module_params = module.clean_params()
+    file_name = module_params.pop('file_name', None)
 
-    if file_name or 'template' in entity_dict:
+    if file_name or 'template' in module_params:
         if file_name:
             parsed_dict = parse_template_from_file(file_name, module)
         else:
-            parsed_dict = parse_template(entity_dict['template'], module)
+            parsed_dict = parse_template(module_params['template'], module)
         # sanitize name from template data
         # The following condition can actually be hit, when someone is trying to import a
         # template with the name set to '*'.
@@ -369,21 +369,21 @@ def main():
         if 'name' in parsed_dict and parsed_dict['name'] == '*':
             module.fail_json(msg="Cannot use '*' as a job template name!")
         # module params are priorized
-        parsed_dict.update(entity_dict)
+        parsed_dict.update(module_params)
         # make sure certain values are set
-        entity_dict = template_defaults.copy()
-        entity_dict.update(parsed_dict)
+        module_params = template_defaults.copy()
+        module_params.update(parsed_dict)
 
     # make sure, we have a name
-    if 'name' not in entity_dict:
+    if 'name' not in module_params:
         if file_name:
-            entity_dict['name'] = os.path.splitext(
+            module_params['name'] = os.path.splitext(
                 os.path.basename(file_name))[0]
         else:
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    name = entity_dict['name']
+    name = module_params['name']
 
     affects_multiple = name == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
@@ -391,7 +391,7 @@ def main():
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
-            if len(entity_dict.keys()) != 1:
+            if len(module_params.keys()) != 1:
                 module.fail_json(msg="When deleting all job templates, there is no need to specify further parameters.")
 
     with module.api_connection():
@@ -403,20 +403,20 @@ def main():
             if not module.desired_absent:  # not 'thin'
                 entities = [module.show_resource('job_templates', entity['id']) for entity in entities]
         else:
-            entity = module.find_resource_by_name('job_templates', name=entity_dict['name'], failsafe=True)
+            entity = module.find_resource_by_name('job_templates', name=module_params['name'], failsafe=True)
 
-        entity_dict = module.handle_taxonomy_params(entity_dict)
+        module_params = module.handle_taxonomy_params(module_params)
 
         # TemplateInputs need to be added as separate entities later
-        template_inputs = entity_dict.get('template_inputs')
+        template_inputs = module_params.get('template_inputs')
 
-        if 'audit_comment' in entity_dict:
-            extra_params = {'audit_comment': entity_dict['audit_comment']}
+        if 'audit_comment' in module_params:
+            extra_params = {'audit_comment': module_params['audit_comment']}
         else:
             extra_params = {}
 
         if not affects_multiple:
-            job_template = module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
+            job_template = module.ensure_entity('job_templates', module_params, entity, params=extra_params)
 
             update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
             if update_dependent_entities and template_inputs is not None:
@@ -443,9 +443,9 @@ def main():
                     )
 
         else:
-            entity_dict.pop('name')
+            module_params.pop('name')
             for entity in entities:
-                module.ensure_entity('job_templates', entity_dict, entity, params=extra_params)
+                module.ensure_entity('job_templates', module_params, entity, params=extra_params)
 
 
 if __name__ == '__main__':

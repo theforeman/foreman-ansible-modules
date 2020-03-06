@@ -291,23 +291,31 @@ def main():
         mutually_exclusive=[['medium', 'kickstart_repository']],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
     katello_params = ['content_source', 'lifecycle_environment', 'content_view']
 
-    if 'organization' not in entity_dict and list(set(katello_params) & set(entity_dict.keys())):
+    if 'organization' not in module_params and list(set(katello_params) & set(module_params.keys())):
         module.fail_json(msg="Please specify the organization when using katello parameters.")
 
     with module.api_connection():
         if not module.desired_absent:
-            if 'organization' in entity_dict:
-                if 'organizations' in entity_dict:
-                    if entity_dict['organization'] not in entity_dict['organizations']:
-                        entity_dict['organizations'].append(entity_dict['organization'])
+            if 'organization' in module_params:
+                if 'organizations' in module_params:
+                    if module_params['organization'] not in module_params['organizations']:
+                        module_params['organizations'].append(module_params['organization'])
                 else:
+<<<<<<< HEAD
                     entity_dict['organizations'] = [entity_dict['organization']]
         entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
         expected_puppetclasses = entity_dict.pop('puppetclasses', None)
         entity = module.run(entity_dict=entity_dict, entity=entity)
+=======
+                    module_params['organizations'] = [module_params['organization']]
+                module_params, scope = module.handle_organization_param(module_params)
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        expected_puppetclasses = module_params.pop('puppetclasses', None)
+        entity = module.run(module_params=module_params, entity=entity)
+>>>>>>> Rename entity_dict to module_params
         if not module.desired_absent and 'environment_id' in entity:
             ensure_puppetclasses(module, entity, expected_puppetclasses)
 

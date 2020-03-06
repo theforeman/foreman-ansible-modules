@@ -126,20 +126,20 @@ def main():
         entity_resolve=False,
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity = module.find_resource_by_name('common_parameters', name=entity_dict['name'], failsafe=True)
+        entity = module.find_resource_by_name('common_parameters', name=module_params['name'], failsafe=True)
 
         if not module.desired_absent:
             # Convert values according to their corresponding parameter_type
             if entity and 'parameter_type' not in entity:
                 entity['parameter_type'] = 'string'
-            entity_dict['value'] = parameter_value_to_str(entity_dict['value'], entity_dict['parameter_type'])
+            module_params['value'] = parameter_value_to_str(module_params['value'], module_params['parameter_type'])
             if entity and 'value' in entity:
                 entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-        module.run(entity_dict=entity_dict, entity=entity)
+        module.run(module_params=module_params, entity=entity)
 
 
 if __name__ == '__main__':
