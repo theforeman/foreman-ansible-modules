@@ -1,0 +1,264 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# (c) 2020 Baptiste Agasse (@bagasse)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+
+ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
+
+DOCUMENTATION = '''
+---
+module: foreman_smart_class_parameter
+short_description: Manage Foreman Smart Class Parameters using Foreman API
+description:
+  - Update Foreman Smart Class Parameters using Foreman API. Smart Class Paramters are created/deleted at on puppet classes import
+  - and cannot be created or deleted via Foreman API.
+author:
+  - "Baptiste Agasse (@bagasse)"
+options:
+  puppetclass_name:
+    description: Name of the puppetclass that own the parameter
+    required: true
+    type: str
+  parameter:
+    description: Name of the parameter
+    required: true
+    type: str
+  description:
+    description: Description of the Smart Class Parameter
+    type: str
+  override:
+    description: Whether the smart class parameter value is managed by Foreman
+    type: bool
+  default_value:
+    description: Value to use by default.
+    type: raw
+  hidden_value:
+    description: When enabled the parameter is hidden in the UI.
+    type: bool
+  omit:
+    description:
+      - Foreman will not send this parameter in classification output.
+      - Puppet will use the value defined in the Puppet manifest for this parameter.
+    type: bool
+  override_value_order:
+    description: The order in which values are resolved.
+    type: list
+    elements: str
+  validator_type:
+    description: Types of validation values.
+    type: str
+    choices:
+      - regexp
+      - list
+  validator_rule:
+    description: Used to enforce certain values for the parameter values.
+    type: str
+  parameter_type:
+    description: Types of variable values. If C(none), set the parameter type to empty value.
+    type: str
+    choices:
+      - string
+      - boolean
+      - integer
+      - real
+      - array
+      - hash
+      - yaml
+      - json
+      - none
+  required:
+    description: If true, will raise an error if there is no default value and no matcher provide a value.
+    type: bool
+  merge_overrides:
+    description: Merge all matching values (only array/hash type).
+    type: bool
+  merge_default:
+    description: Include default value when merging all matching values.
+    type: bool
+  avoid_duplicates:
+    description: Remove duplicate values (only array type)
+    type: bool
+  override_values:
+    description: Value overrides
+    required: false
+    type: list
+    elements: dict
+    suboptions:
+      match:
+        description: Override match
+        required: true
+        type: str
+      value:
+        description: Override value, required if omit is false
+        type: raw
+      omit:
+        description: Foreman will not send this parameter in classification output, replaces use_puppet_default.
+        type: bool
+  state:
+    description: State of the entity.
+    type: str
+    default: present
+    choices:
+      - present
+      - present_with_defaults
+extends_documentation_fragment:
+  - foreman
+'''
+
+EXAMPLES = '''
+- name: "Update prometheus::server alertmanagers_config param default value"
+  foreman_smart_class_parameter:
+    puppetclass_name: "prometheus::server"
+    parameter: alertmanagers_config
+    override: true
+    required: true
+    default_value: /etc/prometheus/alert.yml
+    server_url: "https://foreman.example.com"
+    username: "admin"
+    password: "secret"
+    state: present
+
+- name: "Update prometheus::server alertmanagers_config param default value"
+  foreman_smart_class_parameter:
+    puppetclass_name: "prometheus::server"
+    parameter: alertmanagers_config
+    override: true
+    override_value_order:
+      - fqdn
+      - hostgroup
+      - domain
+    required: true
+    default_value: /etc/prometheus/alert.yml
+    server_url: "https://foreman.example.com"
+    username: "admin"
+    password: "secret"
+    override_values:
+      - match: domain=example.com
+        value: foo
+      - match: domain=foo.example.com
+        omit: true
+    state: present
+'''
+
+RETURN = ''' # '''
+
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
+
+override_value_entity_spec = dict(
+    match=dict(required=True),
+    value=dict(type='raw'),
+    omit=dict(type='bool'),
+)
+
+
+class ForemanSmartClassParameterModule(ForemanEntityAnsibleModule):
+    # TODO: greatly similar to how parameters are managed, dry it up ?
+    def ensure_override_values(self, entity, expected_override_values):
+        if expected_override_values is not None:
+            parameter_type = entity.get('parameter_type', 'string')
+            scope = {'smart_class_parameter_id': entity['id']}
+            if not self.desired_absent:
+                current_override_values = {override_value['match']: override_value for override_value in entity.get('override_values', [])}
+                desired_override_values = {override_value['match']: override_value for override_value in expected_override_values}
+
+                for match in desired_override_values:
+                    desired_override_value = desired_override_values[match]
+                    if 'value' in desired_override_value:
+                        desired_override_value['value'] = parameter_value_to_str(desired_override_value['value'], parameter_type)
+                    current_override_value = current_override_values.pop(match, None)
+                    if current_override_value:
+                        current_override_value['value'] = parameter_value_to_str(current_override_value['value'], parameter_type)
+                    self.ensure_entity(
+                        'override_values', desired_override_value, current_override_value,
+                        state="present", entity_spec=override_value_entity_spec, params=scope)
+                for current_override_value in current_override_values.values():
+                    self.ensure_entity(
+                        'override_values', None, current_override_value, state="absent", entity_spec=override_value_entity_spec, params=scope)
+
+
+def main():
+    module = ForemanSmartClassParameterModule(
+        argument_spec=dict(
+            puppetclass_name=dict(required=True),
+            parameter=dict(required=True),
+        ),
+        entity_spec=dict(
+            parameter_type=dict(choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json', 'none']),
+            validator_type=dict(choices=['list', 'regexp']),
+            validator_rule=dict(),
+            description=dict(),
+            default_value=dict(type='raw'),
+            omit=dict(type='bool'),
+            override=dict(type='bool'),
+            merge_default=dict(type='bool'),
+            merge_overrides=dict(type='bool'),
+            avoid_duplicates=dict(type='bool'),
+            required=dict(type='bool'),
+            hidden_value=dict(type='bool'),
+            override_value_order=dict(type='list', elements='str'),
+            # tried nested_list here but, if using nested_list, override_values are not part of loaded entity.
+            # override_values=dict(type='nested_list', elements='dict', entity_spec=override_value_entity_spec),
+            override_values=dict(type='list', elements='dict'),
+            state=dict(default='present', choices=['present_with_defaults', 'present']),
+        ),
+        # smart_class_parameters are created on puppetclass import and cannot be created/deleted from API,
+        # so if we don't find it, it's an error.
+        entity_opts=dict(failsafe=False),
+    )
+
+    entity_dict = module.clean_params()
+    if entity_dict.get('parameter_type', 'string') not in ['array', 'hash']:
+        if 'merge_default' in entity_dict or 'merge_overrides' in entity_dict:
+            module.fail_json(msg="merge_default or merge_overrides can be used only with array or hash parameter_type")
+    if entity_dict.get('parameter_type', 'string') != 'array' and 'avoid_duplicates' in entity_dict:
+        module.fail_json(msg="avoid_duplicates can be used only with array parameter_type")
+
+    search = "puppetclass_name={0} and parameter={1}".format(entity_dict['puppetclass_name'], entity_dict['parameter'])
+    override_values = entity_dict.pop('override_values', None)
+
+    if 'override_value_order' in entity_dict:
+        entity_dict['override_value_order'] = '\n'.join(entity_dict['override_value_order'])
+    if 'parameter_type' in entity_dict and entity_dict['parameter_type'] == 'none':
+        entity_dict['parameter_type'] = ''
+
+    with module.api_connection():
+        entity, entity_dict = module.resolve_entities(search=search, entity_dict=entity_dict)
+        # When override is set to false, foreman API don't accept parameter_type and all 'override options' have to be set to false if present
+        if not entity_dict.get('override', False):
+            entity_dict['parameter_type'] = ''
+            for override_option in ['merge_default', 'merge_overrides', 'avoid_duplicates']:
+                if override_option in entity and entity[override_option]:
+                    entity_dict[override_option] = False
+
+        # Foreman API returns 'hidden_value?' instead of 'hidden_value' this is a bug ?
+        if 'hidden_value?' in entity:
+            entity['hidden_value'] = entity.pop('hidden_value?')
+        if 'default_value' in entity_dict:
+            entity_dict['default_value'] = parameter_value_to_str(entity_dict['default_value'], entity_dict.get('parameter_type', 'string'))
+        if 'default_value' in entity:
+            entity['default_value'] = parameter_value_to_str(entity['default_value'], entity.get('parameter_type', 'string'))
+
+        entity = module.run(search=search, entity_dict=entity_dict, entity=entity)
+        module.ensure_override_values(entity, override_values)
+
+
+if __name__ == '__main__':
+    main()
