@@ -153,7 +153,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 # process results
                 # FIXME: This assumes 'return type' matches a specific query,
                 #        it will break if we expand the queries and they dont have different types
-                if 'results' not in json:
+                if 'results' not in json:  # pylint: disable=no-else-break
                     # /hosts/:id dos not have a 'results' key
                     results = json
                     break
@@ -254,7 +254,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     if self.get_option('legacy_hostvars'):
                         self.inventory.set_variable(host_name, 'foreman_params', filtered_params)
                     else:
-                        for k, v in filtered_params:
+                        for k, v in filtered_params.items():
                             try:
                                 self.inventory.set_variable(host_name, p['name'], p['value'])
                             except ValueError as e:
