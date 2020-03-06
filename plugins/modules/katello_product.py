@@ -145,9 +145,10 @@ def main():
                 module_params['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_ca_cert'], params=scope, thin=True)
             if 'ssl_client_cert' in module_params:
                 module_params['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                              name=module_params['ssl_client_cert'], params=scope, thin=True)
+                                                                                name=module_params['ssl_client_cert'], params=scope, thin=True)
             if 'ssl_client_key' in module_params:
-                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_client_key'], params=scope, thin=True)
+                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials',
+                                                                               name=module_params['ssl_client_key'], params=scope, thin=True)
             if 'sync_plan' in module_params:
                 module_params['sync_plan'] = module.find_resource_by_name('sync_plans', name=module_params['sync_plan'], params=scope, thin=True)
 

@@ -233,9 +233,10 @@ def main():
                 module_params['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_ca_cert'], params=scope, thin=True)
             if 'ssl_client_cert' in module_params:
                 module_params['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                              name=module_params['ssl_client_cert'], params=scope, thin=True)
+                                                                                name=module_params['ssl_client_cert'], params=scope, thin=True)
             if 'ssl_client_key' in module_params:
-                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_client_key'], params=scope, thin=True)
+                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials',
+                                                                               name=module_params['ssl_client_key'], params=scope, thin=True)
 
         scope['product_id'] = module_params['product']['id']
         entity = module.find_resource_by_name('repositories', name=module_params['name'], params=scope, failsafe=True)

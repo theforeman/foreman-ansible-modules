@@ -876,7 +876,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 
             if parent:
                 module_params['parent'] = self.find_resource_by_title(self._entity_resource_name,
-                                                                    parent, thin=True, failsafe=self.desired_absent)
+                                                                      parent, thin=True, failsafe=self.desired_absent)
                 if self.desired_absent and module_params['parent'] is None:
                     # Parent does not exist so just exit here
                     return entity
@@ -888,8 +888,8 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         if self.entity_scope and self.entity_scope in module_params:
             if isinstance(module_params[self.entity_scope], six.string_types) and self.entity_scope in self._unscoped_sub_entities:
                 module_params[self.entity_scope] = self._resolve_entity(self.entity_scope, module_params[self.entity_scope],
-                                                                      self._unscoped_sub_entities[self.entity_scope],
-                                                                      params={'failsafe': self.desired_absent})
+                                                                        self._unscoped_sub_entities[self.entity_scope],
+                                                                        params={'failsafe': self.desired_absent})
             if module_params[self.entity_scope]:
                 if isinstance(module_params[self.entity_scope], dict) and 'id' in module_params[self.entity_scope]:
                     scope_id = module_params[self.entity_scope]['id']
