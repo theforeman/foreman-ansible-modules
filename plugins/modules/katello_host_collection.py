@@ -85,18 +85,9 @@ def main():
         ),
     )
 
-<<<<<<< HEAD
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
-=======
-    module_params = module.clean_params()
-
-    with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        entity = module.find_resource_by_name('host_collections', name=module_params['name'], params=scope, failsafe=True)
->>>>>>> Rename entity_dict to module_params
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if entity and 'updated_name' in module_params:
             module_params['name'] = module_params.pop('updated_name')

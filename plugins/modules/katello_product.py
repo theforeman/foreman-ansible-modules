@@ -127,33 +127,8 @@ def main():
         ),
     )
 
-<<<<<<< HEAD
     with module.api_connection():
         module.run()
-=======
-    module_params = module.clean_params()
-
-    with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        entity = module.find_resource_by_name('products', name=module_params['name'], params=scope, failsafe=True)
-
-        if not module.desired_absent:
-            if 'gpg_key' in module_params:
-                module_params['gpg_key'] = module.find_resource_by_name('content_credentials', name=module_params['gpg_key'], params=scope, thin=True)
-            if 'ssl_ca_cert' in module_params:
-                module_params['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_ca_cert'], params=scope, thin=True)
-            if 'ssl_client_cert' in module_params:
-                module_params['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                                name=module_params['ssl_client_cert'], params=scope, thin=True)
-            if 'ssl_client_key' in module_params:
-                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials',
-                                                                               name=module_params['ssl_client_key'], params=scope, thin=True)
-            if 'sync_plan' in module_params:
-                module_params['sync_plan'] = module.find_resource_by_name('sync_plans', name=module_params['sync_plan'], params=scope, thin=True)
-
-        module.ensure_entity('products', module_params, entity, params=scope)
->>>>>>> Rename entity_dict to module_params
 
 
 if __name__ == '__main__':

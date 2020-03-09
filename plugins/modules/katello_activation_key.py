@@ -233,26 +233,9 @@ def main():
         ],
     )
 
-<<<<<<< HEAD
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
-=======
-    module_params = module.clean_params()
-
-    with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        if not module.desired_absent:
-            if 'lifecycle_environment' in module_params:
-                module_params['lifecycle_environment'] = module.find_resource_by_name(
-                    'lifecycle_environments', module_params['lifecycle_environment'], params=scope, thin=True)
-
-            if 'content_view' in module_params:
-                module_params['content_view'] = module.find_resource_by_name('content_views', module_params['content_view'], params=scope, thin=True)
-
-        entity = module.find_resource_by_name('activation_keys', name=module_params['name'], params=scope, failsafe=True)
->>>>>>> Rename entity_dict to module_params
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if module.state == 'copied':
             new_entity = module.find_resource_by_name('activation_keys', name=module_params['new_name'], params=scope, failsafe=True)

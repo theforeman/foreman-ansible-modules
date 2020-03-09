@@ -93,29 +93,14 @@ def main():
         ),
     )
 
-<<<<<<< HEAD
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if not module.desired_absent:
             # Default to 'Library' for new env with no 'prior' provided
-            if 'prior' not in entity_dict and not entity:
-                entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
-=======
-    module_params = module.clean_params()
-
-    with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        entity = module.find_resource_by_name('lifecycle_environments', name=module_params['name'], params=scope, failsafe=True)
-        if not module.desired_absent:
-            if 'prior' in module_params:
-                module_params['prior'] = module.find_resource_by_name('lifecycle_environments', module_params['prior'], params=scope, thin=True)
-            # Default to 'Library' for new env with no 'prior' provided
-            elif not entity:
+            if 'prior' not in module_params and not entity:
                 module_params['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
->>>>>>> Rename entity_dict to module_params
 
         if entity:
             if 'label' in module_params and module_params['label'] and entity['label'] != module_params['label']:

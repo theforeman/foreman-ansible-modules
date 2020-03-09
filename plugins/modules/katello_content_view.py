@@ -171,12 +171,8 @@ def main():
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
     with module.api_connection():
-<<<<<<< HEAD
-        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
-        scope = {'organization_id': entity_dict['organization']['id']}
-=======
-        module_params, scope = module.handle_organization_param(module_params)
->>>>>>> Rename entity_dict to module_params
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        scope = {'organization_id': module_params['organization']['id']}
 
         if not module.desired_absent:
             if 'repositories' in module_params:
@@ -189,13 +185,7 @@ def main():
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
                     module_params['repositories'] = repositories
 
-<<<<<<< HEAD
-        content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
-=======
-        entity = module.find_resource_by_name('content_views', name=module_params['name'], params=scope, failsafe=True)
-
         content_view_entity = module.ensure_entity('content_views', module_params, entity, params=scope)
->>>>>>> Rename entity_dict to module_params
 
         # only update CVC's of newly created or updated CV's that are composite if components are specified
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))

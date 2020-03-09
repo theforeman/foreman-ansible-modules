@@ -170,30 +170,6 @@ class HostMixin(object):
         super(HostMixin, self).__init__(foreman_spec=args, **kwargs)
 
 
-<<<<<<< HEAD
-=======
-class OrganizationMixin(object):
-    def handle_organization_param(self, module_params):
-        """
-        Find the Organization referenced in the module_params.
-        This *always* executes the search as we also need to know the Organization when deleting entities.
-
-        Parameters:
-            module_params (dict): the entity data as entered by the user
-        Return value:
-            module_params (dict): updated data
-            scope (dict): params that can be passed to further API calls to scope for the Organization
-        """
-        module_params = module_params.copy()
-
-        module_params['organization'] = self.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
-
-        scope = {'organization_id': module_params['organization']['id']}
-
-        return (module_params, scope)
-
-
->>>>>>> Rename entity_dict to module_params
 class ForemanAnsibleModule(AnsibleModule):
 
     def __init__(self, argument_spec=None, **kwargs):

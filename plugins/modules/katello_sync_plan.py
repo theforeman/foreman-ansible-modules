@@ -129,14 +129,8 @@ def main():
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     with module.api_connection():
-<<<<<<< HEAD
-        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
-        scope = {'organization_id': entity_dict['organization']['id']}
-=======
-        module_params, scope = module.handle_organization_param(module_params)
-
-        entity = module.find_resource_by_name('sync_plans', name=module_params['name'], params=scope, failsafe=True)
->>>>>>> Rename entity_dict to module_params
+        entity, entity_dict = module.resolve_entities(module_params=module_params)
+        scope = {'organization_id': module_params['organization']['id']}
 
         products = module_params.pop('products', None)
 

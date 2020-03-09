@@ -138,25 +138,12 @@ def main():
         ),
     )
 
-<<<<<<< HEAD
     module.task_timeout = 4 * 60
 
     with module.api_connection():
         module.entity_opts['failsafe'] = (module.state != 'synced')
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
-=======
-    module_params = module.clean_params()
-
-    module.task_timeout = 4 * 60
-
-    with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        failsafe = (module.state != 'synced')
-
-        entity = module.find_resource_by_name('scc_accounts', name=module_params['name'], params=scope, failsafe=failsafe)
->>>>>>> Rename entity_dict to module_params
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if not module.desired_absent:
             if not entity:
