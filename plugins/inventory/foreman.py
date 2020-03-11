@@ -9,7 +9,6 @@ DOCUMENTATION = '''
     name: foreman
     plugin_type: inventory
     short_description: foreman inventory source
-    version_added: "2.6"
     requirements:
         - requests >= 1.1
     description:
@@ -28,19 +27,16 @@ DOCUMENTATION = '''
         default: 'http://localhost:3000'
         env:
             - name: FOREMAN_SERVER
-              version_added: "2.8"
       user:
         description: foreman authentication user
         required: True
         env:
             - name: FOREMAN_USER
-              version_added: "2.8"
       password:
         description: foreman authentication password
         required: True
         env:
             - name: FOREMAN_PASSWORD
-              version_added: "2.8"
       validate_certs:
         description: verify SSL certificate if using https
         type: boolean
@@ -63,14 +59,12 @@ DOCUMENTATION = '''
         description: Toggle, if true the plugin will create Ansible groups for host collections
         type: boolean
         default: False
-        version_added: '2.10'
       legacy_hostvars:
         description:
             - Toggle, if true the plugin will build legacy hostvars present in the foreman script
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
-        version_added: '2.10'
 '''
 
 EXAMPLES = '''
