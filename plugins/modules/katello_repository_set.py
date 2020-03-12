@@ -197,9 +197,9 @@ def main():
 
         record_data = {}
         if 'product' in module_params:
+            record_data['product'] = module_params['product']
             module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
             scope['product_id'] = module_params['product']['id']
-            record_data['product'] = module_params['product']
 
         if 'label' in module_params:
             search = 'label="{0}"'.format(module_params['label'])
@@ -220,15 +220,18 @@ def main():
         else:
             desired_repos = available_repos[:]
 
-        available_repo_names = set(map(lambda repo: repo['repo_name'], available_repos))
         current_repo_names = set(map(lambda repo: repo['name'], current_repos))
         desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
         if not module_params.get('all_repositories', False) and len(repositories) != len(desired_repo_names):
             repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
+            available_repo_details = [{'name': repo['repo_name'], 'repositories': repo['substitutions']} for repo in available_repos]
+            search_details = record_data.copy()
+            search_details['repositories'] = repositories
+
             error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
-                        repo_set_identification, repositories, desired_repo_names, available_repo_names)
+                        repo_set_identification, search_details, desired_repo_names, available_repo_details)
 
             module.fail_json(msg=error_msg)
 
