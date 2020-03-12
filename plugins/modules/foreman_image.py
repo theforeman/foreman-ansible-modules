@@ -107,7 +107,8 @@ def main():
             operatingsystem=dict(type='entity', required=True),
             user_data=dict(type='bool')
         ),
-        entity_scope="compute_resource"
+        entity_scope="compute_resource",
+        entity_resolve=False,
     )
 
     entity_dict = module.clean_params()
@@ -117,8 +118,9 @@ def main():
         if 'image_password' in entity_dict:
             entity_dict['password'] = entity_dict['image_password']
         operatingsystem_id = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)['id']
-        entity, entity_dict = module.resolve_entities(entity_dict)
-        scope = {'compute_resource_id': entity_dict['compute_resource']['id']}
+        compute_resource_id = module.find_resource_by_name('compute_resources', entity_dict['compute_resource'], thin=True)['id']
+        _entity, entity_dict = module.resolve_entities(entity_dict)
+        scope = {'compute_resource_id': compute_resource_id}
         entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(entity_dict['name'],
                                       operatingsystem_id), name=entity_dict['name'], params=scope, failsafe=True)
         module.ensure_entity('images', entity_dict, entity, params=scope)
