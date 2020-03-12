@@ -89,7 +89,7 @@ def main():
             operatingsystem=dict(required=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             template_kind=dict(required=True, type='entity'),
             provisioning_template=dict(type='entity', thin=False),
         ),
@@ -100,26 +100,26 @@ def main():
         entity_resolve=False,
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
-    if 'provisioning_template' in entity_dict and module.desired_absent:
+    if 'provisioning_template' in module_params and module.desired_absent:
         module.fail_json(msg='Provisioning template must not be specified for deletion.')
 
     with module.api_connection():
-        entity_dict['template_kind'] = module.find_resource_by_name('template_kinds', entity_dict['template_kind'], thin=True)
-        _entity, entity_dict = module.resolve_entities(entity_dict)
+        module_params['template_kind'] = module.find_resource_by_name('template_kinds', module_params['template_kind'], thin=True)
+        _entity, module_params = module.resolve_entities(module_params)
         if not module.desired_absent:
-            if entity_dict['provisioning_template']['template_kind_id'] != entity_dict['template_kind']['id']:
+            if module_params['provisioning_template']['template_kind_id'] != module_params['template_kind']['id']:
                 module.fail_json(msg='Provisioning template kind mismatching.')
 
-        entity_dict['operatingsystem'] = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)
-        scope = {'operatingsystem_id': entity_dict['operatingsystem']['id']}
+        module_params['operatingsystem'] = module.find_operatingsystem(module_params['operatingsystem'], thin=True)
+        scope = {'operatingsystem_id': module_params['operatingsystem']['id']}
         # Default templates do not support a scoped search
         # see: https://projects.theforeman.org/issues/27722
         entities = module.list_resource('os_default_templates', params=scope)
-        entity = next((item for item in entities if item['template_kind_id'] == entity_dict['template_kind']['id']), None)
+        entity = next((item for item in entities if item['template_kind_id'] == module_params['template_kind']['id']), None)
 
-        module.ensure_entity('os_default_templates', entity_dict, entity, params=scope)
+        module.ensure_entity('os_default_templates', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':

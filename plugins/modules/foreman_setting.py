@@ -75,7 +75,7 @@ foreman_setting:
 from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str
 
 
-entity_spec = {
+foreman_spec = {
     'name': {},
     'value': {},
 }
@@ -93,24 +93,24 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity = module.find_resource_by_name('settings', entity_dict['name'], failsafe=False)
+        entity = module.find_resource_by_name('settings', module_params['name'], failsafe=False)
 
-        if 'value' not in entity_dict:
-            entity_dict['value'] = entity['default'] or ''
+        if 'value' not in module_params:
+            module_params['value'] = entity['default'] or ''
 
         settings_type = entity['settings_type']
-        new_value = entity_dict['value']
+        new_value = module_params['value']
         # Allow to pass integers as string
         if settings_type == 'integer':
             new_value = int(new_value)
-        entity_dict['value'] = parameter_value_to_str(new_value, settings_type)
+        module_params['value'] = parameter_value_to_str(new_value, settings_type)
         old_value = entity['value']
         entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-        entity = module.ensure_entity('settings', entity_dict, entity, state='present', entity_spec=entity_spec)
+        entity = module.ensure_entity('settings', module_params, entity, state='present', foreman_spec=foreman_spec)
 
         if entity:
             # Fake the not serialized input value as output

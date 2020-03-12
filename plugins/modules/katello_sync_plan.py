@@ -108,7 +108,7 @@ class KatelloSyncPlanModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloSyncPlanModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             interval=dict(choices=['hourly', 'daily', 'weekly', 'custom cron'], required=True),
@@ -123,18 +123,18 @@ def main():
         ],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
-    if (entity_dict['interval'] != 'custom cron') and ('cron_expression' in entity_dict):
+    if (module_params['interval'] != 'custom cron') and ('cron_expression' in module_params):
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        scope = {'organization_id': module_params['organization']['id']}
 
-        products = entity_dict.pop('products', None)
+        products = module_params.pop('products', None)
 
-        sync_plan = module.ensure_entity('sync_plans', entity_dict, entity, params=scope)
+        sync_plan = module.ensure_entity('sync_plans', module_params, entity, params=scope)
 
         if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
             products = module.find_resources_by_name('products', products, params=scope, thin=True)

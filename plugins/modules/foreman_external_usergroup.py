@@ -72,7 +72,7 @@ class ForemanExternalUsergroupModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanExternalUsergroupModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
             auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
@@ -80,19 +80,19 @@ def main():
         entity_resolve=False
     )
 
-    entity_dict = module.clean_params()
-    params = {"usergroup_id": entity_dict.pop('usergroup')}
+    module_params = module.clean_params()
+    params = {"usergroup_id": module_params.pop('usergroup')}
     entity = None
 
     with module.api_connection():
         # There is no way to find by name via API search, so we need
         # to iterate over all external user groups of a given usergroup
         for external_usergroup in module.list_resource("external_usergroups", params=params):
-            if external_usergroup['name'] == entity_dict['name']:
+            if external_usergroup['name'] == module_params['name']:
                 entity = external_usergroup
 
-        _entity, entity_dict = module.resolve_entities(entity_dict)
-        module.ensure_entity('external_usergroups', entity_dict, entity, params)
+        _entity, module_params = module.resolve_entities(module_params)
+        module.ensure_entity('external_usergroups', module_params, entity, params)
 
 
 if __name__ == '__main__':

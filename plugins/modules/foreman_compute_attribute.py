@@ -92,7 +92,7 @@ class ForemanComputeAttributeModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanComputeAttributeModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             compute_profile=dict(required=True, type='entity'),
             compute_resource=dict(required=True, type='entity', thin=False),
             vm_attrs=dict(type='dict', aliases=['vm_attributes']),
@@ -100,13 +100,13 @@ def main():
         entity_opts=dict(resolve=False),
         entity_resolve=False,
     )
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        _entity, entity_dict = module.resolve_entities(entity_dict)
-        compute_attributes = entity_dict['compute_resource'].get('compute_attributes')
-        entity = next((item for item in compute_attributes if item.get('compute_profile_id') == entity_dict['compute_profile']['id']), None)
-        module.run(entity_dict=entity_dict, entity=entity)
+        _entity, module_params = module.resolve_entities(module_params)
+        compute_attributes = module_params['compute_resource'].get('compute_attributes')
+        entity = next((item for item in compute_attributes if item.get('compute_profile_id') == module_params['compute_profile']['id']), None)
+        module.run(module_params=module_params, entity=entity)
 
 
 if __name__ == '__main__':

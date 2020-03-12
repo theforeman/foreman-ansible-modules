@@ -85,7 +85,7 @@ def main():
         entity_opts=dict(
             failsafe=True,
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
             description=dict(),
@@ -94,22 +94,22 @@ def main():
     )
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if not module.desired_absent:
             # Default to 'Library' for new env with no 'prior' provided
-            if 'prior' not in entity_dict and not entity:
-                entity_dict['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
+            if 'prior' not in module_params and not entity:
+                module_params['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
 
         if entity:
-            if 'label' in entity_dict and entity_dict['label'] and entity['label'] != entity_dict['label']:
+            if 'label' in module_params and module_params['label'] and entity['label'] != module_params['label']:
                 module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
 
-            if 'prior' in entity_dict and entity['prior']['id'] != entity_dict['prior']['id']:
+            if 'prior' in module_params and entity['prior']['id'] != module_params['prior']['id']:
                 module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-        module.ensure_entity('lifecycle_environments', entity_dict, entity, params=scope)
+        module.ensure_entity('lifecycle_environments', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':

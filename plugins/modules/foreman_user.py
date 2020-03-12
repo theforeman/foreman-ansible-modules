@@ -505,7 +505,7 @@ class ForemanUserModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanUserModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             login=dict(required=True, aliases=['name']),
             firstname=dict(required=False),
             lastname=dict(required=False),
@@ -523,19 +523,19 @@ def main():
         entity_key='login',
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(entity_dict)
+        entity, module_params = module.resolve_entities(module_params)
 
         if not module.desired_absent:
-            if 'mail' not in entity_dict:
+            if 'mail' not in module_params:
                 if not entity:
                     module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
                 else:
-                    entity_dict['mail'] = entity['mail']
+                    module_params['mail'] = entity['mail']
 
-        module.run(entity_dict=entity_dict, entity=entity)
+        module.run(module_params=module_params, entity=entity)
 
 
 if __name__ == '__main__':

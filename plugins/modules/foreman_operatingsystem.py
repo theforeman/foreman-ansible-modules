@@ -157,7 +157,7 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     ForemanEntityAnsibleModule,
-    parameter_entity_spec,
+    parameter_foreman_spec,
     OS_LIST,
 )
 
@@ -168,7 +168,7 @@ class ForemanOperatingsystemModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanOperatingsystemModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             release_name=dict(),
             description=dict(),
@@ -180,7 +180,7 @@ def main():
             ptables=dict(type='entity_list'),
             provisioning_templates=dict(type='entity_list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512', 'Base64', 'Base64-Windows']),
-            parameters=dict(type='nested_list', entity_spec=parameter_entity_spec),
+            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
@@ -197,7 +197,7 @@ def main():
         entity_resolve=False,
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
 
@@ -205,22 +205,22 @@ def main():
         # name is however not unique, but description is, as well as "<name> <major>[.<minor>]"
         entity = None
         # If we have a description, search for it
-        if 'description' in entity_dict and entity_dict['description'] != '':
-            search_string = 'description="{0}"'.format(entity_dict['description'])
+        if 'description' in module_params and module_params['description'] != '':
+            search_string = 'description="{0}"'.format(module_params['description'])
             entity = module.find_resource('operatingsystems', search_string, failsafe=True)
         # If we did not yet find a unique OS, search by name & version
         # In case of state == absent, those information might be missing, we assume that we did not find an operatingsytem to delete then
-        if entity is None and 'name' in entity_dict and 'major' in entity_dict:
-            search_string = ','.join('{0}="{1}"'.format(key, entity_dict[key]) for key in ('name', 'major', 'minor') if key in entity_dict)
+        if entity is None and 'name' in module_params and 'major' in module_params:
+            search_string = ','.join('{0}="{1}"'.format(key, module_params[key]) for key in ('name', 'major', 'minor') if key in module_params)
             entity = module.find_resource('operatingsystems', search_string, failsafe=True)
 
         if not entity and (module.state == 'present' or module.state == 'present_with_defaults'):
             # we actually attempt to create a new one...
             for param_name in ['major', 'os_family', 'password_hash']:
-                if param_name not in entity_dict.keys():
+                if param_name not in module_params.keys():
                     module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
-        module.run(entity_dict=entity_dict, entity=entity)
+        module.run(module_params=module_params, entity=entity)
 
 
 if __name__ == '__main__':

@@ -155,7 +155,7 @@ class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanHostModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             hostgroup=dict(type='entity'),
             location=dict(type='entity'),
@@ -179,35 +179,35 @@ def main():
         ],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     # additional param validation
-    if '.' not in entity_dict['name']:
+    if '.' not in module_params['name']:
         module.fail_json(msg="The hostname must be FQDN")
 
     if not module.desired_absent:
-        if 'hostgroup' not in entity_dict and entity_dict.get('managed', True):
+        if 'hostgroup' not in module_params and module_params.get('managed', True):
             module.fail_json(msg='Hostgroup can be omitted only with managed=False')
 
-        if 'build' in entity_dict and entity_dict['build']:
+        if 'build' in module_params and module_params['build']:
             # When 'build'=True, 'managed' has to be True. Assuming that user's priority is to build.
-            if 'managed' in entity_dict and not entity_dict['managed']:
+            if 'managed' in module_params and not module_params['managed']:
                 module.warn("when 'build'=True, 'managed' is ignored and forced to True")
-            entity_dict['managed'] = True
-        elif 'build' not in entity_dict and 'managed' in entity_dict and not entity_dict['managed']:
+            module_params['managed'] = True
+        elif 'build' not in module_params and 'managed' in module_params and not module_params['managed']:
             # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
-            entity_dict['build'] = False
+            module_params['build'] = False
 
-        if 'mac' in entity_dict:
-            entity_dict['mac'] = entity_dict['mac'].lower()
+        if 'mac' in module_params:
+            module_params['mac'] = module_params['mac'].lower()
 
-        if 'owner' in entity_dict:
-            entity_dict['owner_type'] = 'User'
-        elif 'owner_group' in entity_dict:
-            entity_dict['owner_type'] = 'Usergroup'
+        if 'owner' in module_params:
+            module_params['owner_type'] = 'User'
+        elif 'owner_group' in module_params:
+            module_params['owner_type'] = 'Usergroup'
 
     with module.api_connection():
-        module.run(entity_dict=entity_dict)
+        module.run(module_params=module_params)
 
 
 if __name__ == '__main__':

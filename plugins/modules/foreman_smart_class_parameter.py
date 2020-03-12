@@ -162,7 +162,7 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
 
-override_value_entity_spec = dict(
+override_value_foreman_spec = dict(
     match=dict(required=True),
     value=dict(type='raw'),
     omit=dict(type='bool'),
@@ -188,10 +188,10 @@ class ForemanSmartClassParameterModule(ForemanEntityAnsibleModule):
                         current_override_value['value'] = parameter_value_to_str(current_override_value['value'], parameter_type)
                     self.ensure_entity(
                         'override_values', desired_override_value, current_override_value,
-                        state="present", entity_spec=override_value_entity_spec, params=scope)
+                        state="present", foreman_spec=override_value_foreman_spec, params=scope)
                 for current_override_value in current_override_values.values():
                     self.ensure_entity(
-                        'override_values', None, current_override_value, state="absent", entity_spec=override_value_entity_spec, params=scope)
+                        'override_values', None, current_override_value, state="absent", foreman_spec=override_value_foreman_spec, params=scope)
 
 
 def main():
@@ -200,7 +200,7 @@ def main():
             puppetclass_name=dict(required=True),
             parameter=dict(required=True),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             parameter_type=dict(choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json', 'none']),
             validator_type=dict(choices=['list', 'regexp']),
             validator_rule=dict(),
@@ -215,7 +215,7 @@ def main():
             hidden_value=dict(type='bool'),
             override_value_order=dict(type='list', elements='str'),
             # tried nested_list here but, if using nested_list, override_values are not part of loaded entity.
-            # override_values=dict(type='nested_list', elements='dict', entity_spec=override_value_entity_spec),
+            # override_values=dict(type='nested_list', elements='dict', foreman_spec=override_value_foreman_spec),
             override_values=dict(type='list', elements='dict'),
             state=dict(default='present', choices=['present_with_defaults', 'present']),
         ),
@@ -224,39 +224,39 @@ def main():
         entity_opts=dict(failsafe=False),
     )
 
-    entity_dict = module.clean_params()
-    if entity_dict.get('parameter_type', 'string') not in ['array', 'hash']:
-        if 'merge_default' in entity_dict or 'merge_overrides' in entity_dict:
+    module_params = module.clean_params()
+    if module_params.get('parameter_type', 'string') not in ['array', 'hash']:
+        if 'merge_default' in module_params or 'merge_overrides' in module_params:
             module.fail_json(msg="merge_default or merge_overrides can be used only with array or hash parameter_type")
-    if entity_dict.get('parameter_type', 'string') != 'array' and 'avoid_duplicates' in entity_dict:
+    if module_params.get('parameter_type', 'string') != 'array' and 'avoid_duplicates' in module_params:
         module.fail_json(msg="avoid_duplicates can be used only with array parameter_type")
 
-    search = "puppetclass_name={0} and parameter={1}".format(entity_dict['puppetclass_name'], entity_dict['parameter'])
-    override_values = entity_dict.pop('override_values', None)
+    search = "puppetclass_name={0} and parameter={1}".format(module_params['puppetclass_name'], module_params['parameter'])
+    override_values = module_params.pop('override_values', None)
 
-    if 'override_value_order' in entity_dict:
-        entity_dict['override_value_order'] = '\n'.join(entity_dict['override_value_order'])
-    if 'parameter_type' in entity_dict and entity_dict['parameter_type'] == 'none':
-        entity_dict['parameter_type'] = ''
+    if 'override_value_order' in module_params:
+        module_params['override_value_order'] = '\n'.join(module_params['override_value_order'])
+    if 'parameter_type' in module_params and module_params['parameter_type'] == 'none':
+        module_params['parameter_type'] = ''
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(search=search, entity_dict=entity_dict)
+        entity, module_params = module.resolve_entities(search=search, module_params=module_params)
         # When override is set to false, foreman API don't accept parameter_type and all 'override options' have to be set to false if present
-        if not entity_dict.get('override', False):
-            entity_dict['parameter_type'] = ''
+        if not module_params.get('override', False):
+            module_params['parameter_type'] = ''
             for override_option in ['merge_default', 'merge_overrides', 'avoid_duplicates']:
                 if override_option in entity and entity[override_option]:
-                    entity_dict[override_option] = False
+                    module_params[override_option] = False
 
         # Foreman API returns 'hidden_value?' instead of 'hidden_value' this is a bug ?
         if 'hidden_value?' in entity:
             entity['hidden_value'] = entity.pop('hidden_value?')
-        if 'default_value' in entity_dict:
-            entity_dict['default_value'] = parameter_value_to_str(entity_dict['default_value'], entity_dict.get('parameter_type', 'string'))
+        if 'default_value' in module_params:
+            module_params['default_value'] = parameter_value_to_str(module_params['default_value'], module_params.get('parameter_type', 'string'))
         if 'default_value' in entity:
             entity['default_value'] = parameter_value_to_str(entity['default_value'], entity.get('parameter_type', 'string'))
 
-        entity = module.run(search=search, entity_dict=entity_dict, entity=entity)
+        entity = module.run(search=search, module_params=module_params, entity=entity)
         module.ensure_override_values(entity, override_values)
 
 

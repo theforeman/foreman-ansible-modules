@@ -79,20 +79,20 @@ def main():
         argument_spec=dict(
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
         ),
     )
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
-        if entity and 'updated_name' in entity_dict:
-            entity_dict['name'] = entity_dict.pop('updated_name')
+        if entity and 'updated_name' in module_params:
+            module_params['name'] = module_params.pop('updated_name')
 
-        module.ensure_entity('host_collections', entity_dict, entity, params=scope)
+        module.ensure_entity('host_collections', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':

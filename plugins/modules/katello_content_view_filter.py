@@ -213,7 +213,7 @@ content_filter_rule_docker_spec = {
 
 def main():
     module = KatelloAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             repositories=dict(type='list', default=[], elements='dict'),
@@ -235,63 +235,63 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
-    filter_state = entity_dict.pop('filter_state')
-    rule_state = entity_dict.pop('rule_state')
+    module_params = module.clean_params()
+    filter_state = module_params.pop('filter_state')
+    rule_state = module_params.pop('rule_state')
 
-    if entity_dict['filter_type'] == 'erratum':
-        entity_dict['rule_name'] = None
-    elif 'rule_name' not in entity_dict:
-        entity_dict['rule_name'] = entity_dict['name']
+    if module_params['filter_type'] == 'erratum':
+        module_params['rule_name'] = None
+    elif 'rule_name' not in module_params:
+        module_params['rule_name'] = module_params['name']
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
+        module_params, scope = module.handle_organization_param(module_params)
 
-        entity_dict['content_view'] = module.find_resource_by_name('content_views', entity_dict['content_view'], params=scope, thin=True)
-        cv_scope = {'content_view_id': entity_dict['content_view']['id']}
-        if entity_dict['repositories']:
+        module_params['content_view'] = module.find_resource_by_name('content_views', module_params['content_view'], params=scope, thin=True)
+        cv_scope = {'content_view_id': module_params['content_view']['id']}
+        if module_params['repositories']:
             repositories = []
-            for repo in entity_dict['repositories']:
+            for repo in module_params['repositories']:
                 product = module.find_resource_by_name('products', repo['product'], params=scope, thin=True)
                 product_scope = {'product_id': product['id']}
                 repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
-            entity_dict['repositories'] = repositories
+            module_params['repositories'] = repositories
 
-        entity = module.find_resource_by_name('content_view_filters', entity_dict['name'], params=cv_scope, failsafe=True)
+        entity = module.find_resource_by_name('content_view_filters', module_params['name'], params=cv_scope, failsafe=True)
         content_view_filter = module.ensure_entity(
             'content_view_filters',
-            entity_dict,
+            module_params,
             entity,
             params=cv_scope,
             state=filter_state,
-            entity_spec=content_filter_spec,
+            foreman_spec=content_filter_spec,
         )
 
         if content_view_filter is not None:
             cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
-            if 'errata_id' in entity_dict:
+            if 'errata_id' in module_params:
                 # should we try to find the errata the user is asking for? or just pass it blindly?
-                # errata = module.find_resource('errata', 'id={0}'.format(entity_dict['errata_id']), params=scope)
+                # errata = module.find_resource('errata', 'id={0}'.format(module_params['errata_id']), params=scope)
                 rule_spec = content_filter_rule_erratum_id_spec
-                search_scope = {'errata_id': entity_dict['errata_id']}
+                search_scope = {'errata_id': module_params['errata_id']}
                 search_scope.update(cv_filter_scope)
                 search = None
             else:
-                rule_spec = globals()['content_filter_rule_%s_spec' % (entity_dict['filter_type'])]
+                rule_spec = globals()['content_filter_rule_%s_spec' % (module_params['filter_type'])]
                 search_scope = cv_filter_scope
-                if entity_dict['rule_name'] is not None:
-                    search = 'name="{0}"'.format(entity_dict['rule_name'])
+                if module_params['rule_name'] is not None:
+                    search = 'name="{0}"'.format(module_params['rule_name'])
                 else:
                     search = None
             # not using find_resource_by_name here, because not all filters (errata) have names
             content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
 
-            if entity_dict['filter_type'] == 'package_group':
-                package_group = module.find_resource_by_name('package_groups', entity_dict['rule_name'], params=scope)
-                entity_dict['uuid'] = package_group['uuid']
+            if module_params['filter_type'] == 'package_group':
+                package_group = module.find_resource_by_name('package_groups', module_params['rule_name'], params=scope)
+                module_params['uuid'] = package_group['uuid']
 
             # drop 'name' from the dict, as otherwise it might override 'rule_name'
-            rule_dict = entity_dict.copy()
+            rule_dict = module_params.copy()
             rule_dict.pop('name', None)
 
             module.ensure_entity(
@@ -300,7 +300,7 @@ def main():
                 content_view_filter_rule,
                 params=cv_filter_scope,
                 state=rule_state,
-                entity_spec=rule_spec,
+                foreman_spec=rule_spec,
             )
 
 

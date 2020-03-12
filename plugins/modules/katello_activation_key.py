@@ -198,7 +198,7 @@ class KatelloActivationKeyModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloActivationKeyModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             new_name=dict(),
             lifecycle_environment=dict(type='entity', flat_name='environment_id', scope='organization'),
@@ -234,19 +234,19 @@ def main():
     )
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities()
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities()
+        scope = {'organization_id': module_params['organization']['id']}
 
         if module.state == 'copied':
-            new_entity = module.find_resource_by_name('activation_keys', name=entity_dict['new_name'], params=scope, failsafe=True)
+            new_entity = module.find_resource_by_name('activation_keys', name=module_params['new_name'], params=scope, failsafe=True)
             if new_entity is not None:
-                module.warn("Activation Key '{0}' already exists.".format(entity_dict['new_name']))
+                module.warn("Activation Key '{0}' already exists.".format(module_params['new_name']))
                 module.exit_json()
 
-        subscriptions = entity_dict.pop('subscriptions', None)
-        content_overrides = entity_dict.pop('content_overrides', None)
-        host_collections = entity_dict.pop('host_collections', None)
-        activation_key = module.ensure_entity('activation_keys', entity_dict, entity, params=scope)
+        subscriptions = module_params.pop('subscriptions', None)
+        content_overrides = module_params.pop('content_overrides', None)
+        host_collections = module_params.pop('host_collections', None)
+        activation_key = module.ensure_entity('activation_keys', module_params, entity, params=scope)
 
         # only update subscriptions of newly created or updated AKs
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
@@ -254,8 +254,8 @@ def main():
         if module.state == 'present' or (module.state == 'present_with_defaults' and module.changed):
             # the auto_attach, release_version and service_level parameters can only be set on an existing AK with an update,
             # not during create, so let's force an update. see https://projects.theforeman.org/issues/27632 for details
-            if any(key in entity_dict for key in ['auto_attach', 'release_version', 'service_level']) and module.changed:
-                activation_key = module.ensure_entity('activation_keys', entity_dict, activation_key, params=scope)
+            if any(key in module_params for key in ['auto_attach', 'release_version', 'service_level']) and module.changed:
+                activation_key = module.ensure_entity('activation_keys', module_params, activation_key, params=scope)
 
             ak_scope = {'activation_key_id': activation_key['id']}
             if subscriptions is not None:

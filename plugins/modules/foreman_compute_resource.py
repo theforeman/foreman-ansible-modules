@@ -297,7 +297,7 @@ class ForemanComputeResourceModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     module = ForemanComputeResourceModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
@@ -341,26 +341,26 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     if not module.desired_absent:
-        if 'provider' in entity_dict:
-            entity_dict['provider'], provider_param_keys = get_provider_info(provider=entity_dict['provider'])
-            provider_params = {k: v for k, v in entity_dict.pop('provider_params', dict()).items() if v is not None}
+        if 'provider' in module_params:
+            module_params['provider'], provider_param_keys = get_provider_info(provider=module_params['provider'])
+            provider_params = {k: v for k, v in module_params.pop('provider_params', dict()).items() if v is not None}
 
             for key in provider_param_keys:
                 if key in provider_params:
-                    entity_dict[key] = provider_params.pop(key)
+                    module_params[key] = provider_params.pop(key)
             if provider_params:
                 module.fail_json(msg="Provider {0} does not support the following given parameters: {1}".format(
-                    entity_dict['provider'], list(provider_params.keys())))
+                    module_params['provider'], list(provider_params.keys())))
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
-        if not module.desired_absent and 'provider' not in entity_dict and entity is None:
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        if not module.desired_absent and 'provider' not in module_params and entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-        module.run(entity_dict=entity_dict, entity=entity)
+        module.run(module_params=module_params, entity=entity)
 
 
 if __name__ == '__main__':

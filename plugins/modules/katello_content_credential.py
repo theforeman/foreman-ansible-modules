@@ -78,7 +78,7 @@ class KatelloContentCredentialModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloContentCredentialModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             content_type=dict(required=True, choices=['gpg_key', 'cert']),
             content=dict(required=True),

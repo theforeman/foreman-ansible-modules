@@ -100,7 +100,7 @@ class ForemanBookmarkModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanBookmarkModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             controller=dict(required=True),
             public=dict(default='true', type='bool'),
@@ -116,10 +116,10 @@ def main():
         ),
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        module.run(search='name="{0}",controller="{1}"'.format(entity_dict['name'], entity_dict['controller']))
+        module.run(search='name="{0}",controller="{1}"'.format(module_params['name'], module_params['controller']))
 
 
 if __name__ == '__main__':

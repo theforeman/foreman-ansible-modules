@@ -131,7 +131,7 @@ import copy
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
-cvc_entity_spec = {
+cvc_foreman_spec = {
     'content_view': {'type': 'entity', 'required': True},
     'latest': {'type': 'bool', 'default': False},
     'content_view_version': {'type': 'entity', 'aliases': ['version']},
@@ -144,12 +144,12 @@ class KatelloContentViewModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloContentViewModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
-            components=dict(type='nested_list', entity_spec=cvc_entity_spec, resolve=False),
+            components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
@@ -161,31 +161,31 @@ def main():
         mutually_exclusive=[['repositories', 'components']],
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     # components is None when we're managing a CCV but don't want to adjust its components
-    components = entity_dict.pop('components', None)
+    components = module_params.pop('components', None)
     if components:
         for component in components:
             if not component['latest'] and component.get('content_view_version') is None:
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
     with module.api_connection():
-        entity, entity_dict = module.resolve_entities(entity_dict=entity_dict)
-        scope = {'organization_id': entity_dict['organization']['id']}
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        scope = {'organization_id': module_params['organization']['id']}
 
         if not module.desired_absent:
-            if 'repositories' in entity_dict:
-                if entity_dict['composite']:
+            if 'repositories' in module_params:
+                if module_params['composite']:
                     module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
                 else:
                     repositories = []
-                    for repository in entity_dict['repositories']:
+                    for repository in module_params['repositories']:
                         product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
-                    entity_dict['repositories'] = repositories
+                    module_params['repositories'] = repositories
 
-        content_view_entity = module.ensure_entity('content_views', entity_dict, entity, params=scope)
+        content_view_entity = module.ensure_entity('content_views', module_params, entity, params=scope)
 
         # only update CVC's of newly created or updated CV's that are composite if components are specified
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
@@ -224,7 +224,7 @@ def main():
                         cvc_matched.pop('content_view_version_id', None)
                 if cvc_matched:
                     module.ensure_entity(
-                        'content_view_components', cvc, cvc_matched, state='present', entity_spec=cvc_entity_spec, params=ccv_scope)
+                        'content_view_components', cvc, cvc_matched, state='present', foreman_spec=cvc_foreman_spec, params=ccv_scope)
                     current_cvcs.remove(cvc_matched)
                 else:
                     cvc['content_view_id'] = cvc.pop('content_view')['id']

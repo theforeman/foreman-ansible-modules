@@ -64,7 +64,7 @@ from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 def main():
     module = KatelloAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             friendly_name=dict(required=True),
             scc_account=dict(required=True),
         ),

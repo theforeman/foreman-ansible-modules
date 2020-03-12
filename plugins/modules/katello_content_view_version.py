@@ -156,7 +156,7 @@ def promote_content_view_version(module, content_view_version, environments, for
 
 def main():
     module = KatelloEntityAnsibleModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             content_view=dict(type='entity', required=True),
             description=dict(),
             version=dict(),
@@ -170,20 +170,20 @@ def main():
 
     module.task_timeout = 60 * 60
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity_dict, scope = module.handle_organization_param(entity_dict)
+        module_params, scope = module.handle_organization_param(module_params)
 
-        content_view = module.find_resource_by_name('content_views', name=entity_dict['content_view'], params=scope)
+        content_view = module.find_resource_by_name('content_views', name=module_params['content_view'], params=scope)
 
-        if 'current_lifecycle_environment' in entity_dict:
-            entity_dict['current_lifecycle_environment'] = module.find_resource_by_name(
-                'lifecycle_environments', name=entity_dict['current_lifecycle_environment'], params=scope)
-            search_scope = {'content_view_id': content_view['id'], 'environment_id': entity_dict['current_lifecycle_environment']['id']}
+        if 'current_lifecycle_environment' in module_params:
+            module_params['current_lifecycle_environment'] = module.find_resource_by_name(
+                'lifecycle_environments', name=module_params['current_lifecycle_environment'], params=scope)
+            search_scope = {'content_view_id': content_view['id'], 'environment_id': module_params['current_lifecycle_environment']['id']}
             content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
-        elif 'version' in entity_dict:
-            search = "content_view_id={0},version={1}".format(content_view['id'], entity_dict['version'])
+        elif 'version' in module_params:
+            search = "content_view_id={0},version={1}".format(content_view['id'], module_params['version'])
             content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
         else:
             content_view_version = None
@@ -195,12 +195,12 @@ def main():
                 payload = {
                     'id': content_view['id'],
                 }
-                if 'description' in entity_dict:
-                    payload['description'] = entity_dict['description']
-                if 'force_yum_metadata_regeneration' in entity_dict:
-                    payload['force_yum_metadata_regeneration'] = entity_dict['force_yum_metadata_regeneration']
-                if 'version' in entity_dict:
-                    split_version = list(map(int, str(entity_dict['version']).split('.')))
+                if 'description' in module_params:
+                    payload['description'] = module_params['description']
+                if 'force_yum_metadata_regeneration' in module_params:
+                    payload['force_yum_metadata_regeneration'] = module_params['force_yum_metadata_regeneration']
+                if 'version' in module_params:
+                    split_version = list(map(int, str(module_params['version']).split('.')))
                     payload['major'] = split_version[0]
                     payload['minor'] = split_version[1]
 
@@ -212,14 +212,14 @@ def main():
                 else:
                     content_view_version = {'id': -1, 'environments': []}
 
-            if 'lifecycle_environments' in entity_dict:
-                lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=entity_dict['lifecycle_environments'], params=scope)
+            if 'lifecycle_environments' in module_params:
+                lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=module_params['lifecycle_environments'], params=scope)
                 promote_content_view_version(
                     module,
                     content_view_version,
                     lifecycle_environments,
-                    force=entity_dict['force_promote'],
-                    force_yum_metadata_regeneration=entity_dict['force_yum_metadata_regeneration'],
+                    force=module_params['force_promote'],
+                    force_yum_metadata_regeneration=module_params['force_yum_metadata_regeneration'],
                 )
 
 

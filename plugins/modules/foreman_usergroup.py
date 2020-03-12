@@ -100,7 +100,7 @@ def main():
         argument_spec=dict(
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             admin=dict(required=False, type='bool', default=False),
             users=dict(required=False, type='entity_list'),

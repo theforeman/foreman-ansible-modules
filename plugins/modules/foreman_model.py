@@ -79,7 +79,7 @@ class ForemanModelModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanModelModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             info=dict(),
             vendor_class=dict(),

@@ -144,7 +144,7 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
-compute_attribute_entity_spec = {
+compute_attribute_foreman_spec = {
     'compute_resource': {'type': 'entity'},
     'vm_attrs': {'type': 'dict', 'aliases': ['vm_attributes']},
 }
@@ -156,31 +156,31 @@ class ForemanComputeProfileModule(ForemanEntityAnsibleModule):
 
 def main():
     module = ForemanComputeProfileModule(
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
-            compute_attributes=dict(type='nested_list', entity_spec=compute_attribute_entity_spec),
+            compute_attributes=dict(type='nested_list', foreman_spec=compute_attribute_foreman_spec),
         ),
         argument_spec=dict(
             updated_name=dict(),
         ),
     )
 
-    entity_dict = module.clean_params()
-    compute_attributes = entity_dict.pop('compute_attributes', None)
+    module_params = module.clean_params()
+    compute_attributes = module_params.pop('compute_attributes', None)
 
     with module.api_connection():
-        entity = module.run(entity_dict=entity_dict)
+        entity = module.run(module_params=module_params)
 
         # Apply changes on underlying compute attributes only when present
         if entity and module.state == 'present' and compute_attributes is not None:
             # Update or create compute attributes
             scope = {'compute_profile_id': entity['id']}
-            for ca_entity_dict in compute_attributes:
-                ca_entity_dict['compute_resource'] = module.find_resource_by_name(
-                    'compute_resources', name=ca_entity_dict['compute_resource'], failsafe=False, thin=False)
-                ca_entities = ca_entity_dict['compute_resource'].get('compute_attributes', [])
+            for ca_module_params in compute_attributes:
+                ca_module_params['compute_resource'] = module.find_resource_by_name(
+                    'compute_resources', name=ca_module_params['compute_resource'], failsafe=False, thin=False)
+                ca_entities = ca_module_params['compute_resource'].get('compute_attributes', [])
                 ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == entity['id']), None)
-                module.ensure_entity('compute_attributes', ca_entity_dict, ca_entity, entity_spec=compute_attribute_entity_spec, params=scope)
+                module.ensure_entity('compute_attributes', ca_module_params, ca_entity, foreman_spec=compute_attribute_foreman_spec, params=scope)
 
 
 if __name__ == '__main__':

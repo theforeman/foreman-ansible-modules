@@ -215,7 +215,7 @@ def main():
             state=dict(default='present', choices=['absent', 'present_with_defaults', 'present']),
             updated_name=dict(),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             layout=dict(),
             locked=dict(type='bool'),
             name=dict(),
@@ -237,14 +237,14 @@ def main():
                 msg="Neither file_name nor layout nor updated_name allowed if 'name: *'!")
 
     entity = None
-    entity_dict = module.clean_params()
-    file_name = entity_dict.pop('file_name', None)
+    module_params = module.clean_params()
+    file_name = module_params.pop('file_name', None)
 
-    if file_name or 'layout' in entity_dict:
+    if file_name or 'layout' in module_params:
         if file_name:
             parsed_dict = parse_template_from_file(file_name, module)
         else:
-            parsed_dict = parse_template(entity_dict['layout'], module)
+            parsed_dict = parse_template(module_params['layout'], module)
         parsed_dict['layout'] = parsed_dict.pop('template')
         if 'oses' in parsed_dict:
             parsed_dict['os_family'] = parsed_dict.pop('oses')
@@ -255,25 +255,25 @@ def main():
         if 'name' in parsed_dict and parsed_dict['name'] == '*':
             module.fail_json(msg="Cannot use '*' as a partition table name!")
         # module params are priorized
-        parsed_dict.update(entity_dict)
-        entity_dict = parsed_dict
+        parsed_dict.update(module_params)
+        module_params = parsed_dict
 
     # make sure, we have a name
-    if 'name' not in entity_dict:
+    if 'name' not in module_params:
         if file_name:
-            entity_dict['name'] = os.path.splitext(
+            module_params['name'] = os.path.splitext(
                 os.path.basename(file_name))[0]
         else:
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    affects_multiple = entity_dict['name'] == '*'
+    affects_multiple = module_params['name'] == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
-            if len(entity_dict.keys()) != 1:
+            if len(module_params.keys()) != 1:
                 module.fail_json(msg='When deleting all partition tables, there is no need to specify further parameters.')
 
     with module.api_connection():
@@ -285,17 +285,17 @@ def main():
             if not module.desired_absent:  # not 'thin'
                 entities = [module.show_resource('ptables', entity['id']) for entity in entities]
         else:
-            entity = module.find_resource_by_name('ptables', name=entity_dict['name'], failsafe=True)
+            entity = module.find_resource_by_name('ptables', name=module_params['name'], failsafe=True)
 
         if not module.desired_absent:
-            _entity, entity_dict = module.resolve_entities(entity_dict, entity)
+            _entity, module_params = module.resolve_entities(module_params, entity)
 
         if not affects_multiple:
-            module.ensure_entity('ptables', entity_dict, entity)
+            module.ensure_entity('ptables', module_params, entity)
         else:
-            entity_dict.pop('name')
+            module_params.pop('name')
             for entity in entities:
-                module.ensure_entity('ptables', entity_dict, entity)
+                module.ensure_entity('ptables', module_params, entity)
 
 
 if __name__ == '__main__':
