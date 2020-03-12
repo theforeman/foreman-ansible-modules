@@ -136,7 +136,7 @@ from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 def main():
 
     module = ForemanAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             resource=dict(type='str', required=True),
             search=dict(default=""),
             full_details=dict(type='bool', aliases=['info'], default='false'),

@@ -213,7 +213,7 @@ content_filter_rule_docker_spec = {
 
 def main():
     module = KatelloAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             repositories=dict(type='list', default=[], elements='dict'),

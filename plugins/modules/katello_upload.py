@@ -127,7 +127,7 @@ def get_rpm_info(path):
 
 def main():
     module = KatelloAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True),
             product=dict(required=True),
