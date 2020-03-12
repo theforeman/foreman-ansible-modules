@@ -74,7 +74,7 @@
     - name: 'MYIMAGE'
       block:
         - name: Create MYIMAGE
-          include: tasks/image.yml
+          include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS1"
             image_uuid: "MYOStemplate"
@@ -118,6 +118,28 @@
             image_architecture: "MY1024"
             image_state: present
             expected_change: true
+        - name: Do not change MY2NDIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MY2NDOStemplate"
+            image_username: "myosadmin"
+            image_operatingsystem: "MY2NDOS"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: present
+            expected_change: false
+        - name: Do not change MYIMAGE
+          include: tasks/image.yml
+          vars:
+            image_name: "MYOS1"
+            image_uuid: "MYOStemplate-new"
+            image_username: "myosadmin"
+            image_operatingsystem: "MYOS SP1"
+            image_compute_resource: "MYCR"
+            image_architecture: "MY1024"
+            image_state: present
+            expected_change: false
         - name: Delete MYIMAGE
           include: tasks/image.yml
           vars:
@@ -134,13 +156,14 @@
           include: tasks/image.yml
           vars:
             image_name: "MYOS1"
-            image_uuid: "MY2NDOStemplate"
+            image_uuid: "MY2NDOStemplate-new"
             image_username: "myosadmin"
             image_operatingsystem: "MY2NDOS"
             image_compute_resource: "MYCR"
             image_architecture: "MY1024"
             image_state: absent
             expected_change: true
+
 - hosts: localhost
   gather_facts: false
   vars_files:
