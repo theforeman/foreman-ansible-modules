@@ -49,6 +49,8 @@ options:
   repositories:
     description:
       - Release version and base architecture of the repositories to enable.
+      - Some reposotory sets require only I(basearch) or only I(releasever) to be set.
+      - See the examples how you can obtain this information using M(foreman_search_facts).
       - Required when I(all_repositories) is unset or C(false).
     required: false
     type: list
@@ -141,6 +143,53 @@ EXAMPLES = '''
     label: rhel-8-for-x86_64-baseos-rpms
     repositories:
       - releasever: "8"
+
+- name: "Enable Red Hat Virtualization Manager RPMs repository with label"
+  katello_repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    label: "rhel-7-server-rhv-4.2-manager-rpms"
+    repositories:
+      - basearch: x86_64
+    state: enabled
+
+- name: "Enable Red Hat Virtualization Manager RPMs repository without specifying basearch"
+  katello_repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    label: "rhel-7-server-rhv-4.2-manager-rpms"
+    all_repositories: true
+    state: enabled
+
+- name: "Search for possible repository sets of a product"
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    resource: repository_sets
+    search: product_name="Red Hat Virtualization Manager"
+  register: data
+- name: "Output found repository sets, see the contentUrl section for possible repository substitutions"
+  debug:
+    var: data
+
+- name: "Search for possible repository sets by label"
+  foreman_search_facts:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    resource: repository_sets
+    search: label=rhel-7-server-rhv-4.2-manager-rpms
+  register: data
+- name: "Output found repository sets, see the contentUrl section for possible repository substitutions"
+  debug:
+    var: data
 '''
 
 RETURN = ''' # '''
