@@ -123,7 +123,7 @@ from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 
 def main():
     module = ForemanAnsibleModule(
-        argument_spec=dict(
+        foreman_spec=dict(
             location=dict(type='entity', flat_name='location_id'),
             organization=dict(type='entity', flat_name='organization_id'),
             associate=dict(choices=['always', 'new', 'never']),
@@ -142,7 +142,7 @@ def main():
         supports_check_mode=False,
     )
 
-    argument_dict = module.clean_params()
+    module_params = module.clean_params()
     module.connect()
 
     if 'template' in module.foremanapi.resources:
@@ -164,7 +164,7 @@ def main():
         for resource in resources:
             all_templates.append([resource['name'], resource['id']])
 
-    result = module.resource_action(resource_name, 'import', record_change=False, params=argument_dict)
+    result = module.resource_action(resource_name, 'import', record_change=False, params=module_params)
     msg_templates = result['message'].pop('templates', [])
 
     diff = {'changed': [], 'new': []}
