@@ -276,11 +276,12 @@ def main():
             repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
             available_repo_details = [{'name': repo['repo_name'], 'repositories': repo['substitutions']} for repo in available_repos]
+            desired_repo_details = [{'name': repo['repo_name'], 'repositories': repo['substitutions']} for repo in desired_repos]
             search_details = record_data.copy()
             search_details['repositories'] = repositories
 
             error_msg = "Desired repositories are not available on the repository set {0}.\nSearched: {1}\nFound: {2}\nAvailable: {3}".format(
-                        repo_set_identification, search_details, desired_repo_names, available_repo_details)
+                        repo_set_identification, search_details, desired_repo_details, available_repo_details)
 
             module.fail_json(msg=error_msg)
 
