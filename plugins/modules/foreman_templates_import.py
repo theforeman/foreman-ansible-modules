@@ -145,9 +145,7 @@ def main():
     module_params = module.clean_params()
     module.connect()
 
-    if 'template' in module.foremanapi.resources:
-        resource_name = 'template'
-    elif 'templates' in module.foremanapi.resources:
+    if 'template' in module.foremanapi.resources or 'templates' in module.foremanapi.resources:
         resource_name = 'template'
     else:
         raise Exception('The server does not seem to have the foreman_templates plugin installed.')
