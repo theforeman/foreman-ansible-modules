@@ -97,7 +97,7 @@ def main():
             image_username=dict(required=True),
             image_password=dict(no_log=True),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             name=dict(required=True),
             username=dict(type='invisible'),
             uuid=dict(required=True, aliases=['image_uuid']),
@@ -111,19 +111,19 @@ def main():
         entity_resolve=False,
     )
 
-    entity_dict = module.clean_params()
+    module_params = module.clean_params()
 
     with module.api_connection():
-        entity_dict['username'] = entity_dict['image_username']
-        if 'image_password' in entity_dict:
-            entity_dict['password'] = entity_dict['image_password']
-        operatingsystem_id = module.find_operatingsystem(entity_dict['operatingsystem'], thin=True)['id']
-        compute_resource_id = module.find_resource_by_name('compute_resources', entity_dict['compute_resource'], thin=True)['id']
-        _entity, entity_dict = module.resolve_entities(entity_dict)
+        module_params['username'] = module_params['image_username']
+        if 'image_password' in module_params:
+            module_params['password'] = module_params['image_password']
+        operatingsystem_id = module.find_operatingsystem(module_params['operatingsystem'], thin=True)['id']
+        compute_resource_id = module.find_resource_by_name('compute_resources', module_params['compute_resource'], thin=True)['id']
+        _entity, module_params = module.resolve_entities(module_params)
         scope = {'compute_resource_id': compute_resource_id}
-        entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(entity_dict['name'],
-                                      operatingsystem_id), name=entity_dict['name'], params=scope, failsafe=True)
-        module.ensure_entity('images', entity_dict, entity, params=scope)
+        entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(module_params['name'],
+                                      operatingsystem_id), name=module_params['name'], params=scope, failsafe=True)
+        module.ensure_entity('images', module_params, entity, params=scope)
 
 
 if __name__ == '__main__':
