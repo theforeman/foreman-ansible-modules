@@ -202,6 +202,9 @@ class ForemanAnsibleModule(AnsibleModule):
         args.update(gen_args)
         supports_check_mode = kwargs.pop('supports_check_mode', True)
         self._aliases = {alias for arg in args.values() for alias in arg.get('aliases', [])}
+
+        self.required_plugins = kwargs.pop('required_plugins', [])
+
         super(ForemanAnsibleModule, self).__init__(argument_spec=args, supports_check_mode=supports_check_mode, **kwargs)
 
         self._params = self.params.copy()
@@ -312,6 +315,8 @@ class ForemanAnsibleModule(AnsibleModule):
         )
 
         self.ping()
+
+        self.check_required_plugins()
 
         self._patch_location_api()
         self._patch_subnet_rex_api()
@@ -686,6 +691,16 @@ class ForemanAnsibleModule(AnsibleModule):
         except KeyError:
             raise Exception("Unknown plugin: {0}".format(plugin_name))
         return resource_name in self.foremanapi.resources
+
+    def check_required_plugins(self):
+        missing_plugins = []
+        for (plugin, params) in self.required_plugins:
+            for param in params:
+                if param in self.clean_params() and not self.has_plugin(plugin):
+                    missing_plugins.append(plugin)
+                    break
+        if missing_plugins:
+            self.fail_json(msg="You don't have the following plugins installed: {0}".format(missing_plugins))
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
