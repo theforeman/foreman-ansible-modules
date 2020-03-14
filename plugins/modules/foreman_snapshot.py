@@ -115,6 +115,7 @@ def main():
             name=dict(required=True),
             description=dict(),
         ),
+        required_plugins=[('snapshot_management', ['name'])],
     )
     snapshot_dict = module.clean_params()
 

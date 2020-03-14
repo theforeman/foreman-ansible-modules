@@ -68,6 +68,7 @@ def main():
             friendly_name=dict(required=True),
             scc_account=dict(required=True),
         ),
+        required_plugins=[('scc_manager', ['acc_account'])],
     )
 
     module.task_timeout = 4 * 60
