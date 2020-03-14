@@ -136,6 +136,7 @@ def main():
         argument_spec=dict(
             test_connection=dict(type='bool', default=False),
         ),
+        required_plugins=[('scc_manager', ['name'])],
     )
 
     module.task_timeout = 4 * 60
