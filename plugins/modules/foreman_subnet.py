@@ -230,6 +230,7 @@ def main():
             parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
         required_one_of=[['cidr', 'mask']],
+        required_plugins=[('discovery', ['discovery_proxy'])],
     )
 
     if not HAS_IPADDRESS:
