@@ -40,6 +40,15 @@ parameter_foreman_spec = dict(
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
 )
 
+_PLUGIN_RESOURCES = {
+    'discovery': 'discovery_rules',
+    'katello': 'subscriptions',
+    'openscap': 'scap_contents',
+    'remote_execution': 'remote_execution_features',
+    'scc_manager': 'scc_accounts',
+    'snapshot_management': 'snapshots',
+}
+
 
 def _exception2fail_json(msg='Generic failure: {0}'):
     def decor(f):
@@ -79,7 +88,7 @@ class KatelloMixin(OrganizationMixin):
     def connect(self):
         super(KatelloMixin, self).connect()
 
-        if 'subscriptions' not in self.foremanapi.resources:
+        if not self.has_plugin('katello'):
             raise Exception('The server does not seem to have the Katello plugin installed.')
 
         self._patch_content_uploads_update_api()
@@ -261,7 +270,7 @@ class ForemanAnsibleModule(AnsibleModule):
             see https://projects.theforeman.org/issues/19086
         """
 
-        if 'remote_execution_features' not in self.foremanapi.apidoc['docs']['resources']:
+        if not self.has_plugin('remote_execution'):
             # the system has no foreman_remote_execution installed, no need to patch
             return
 
@@ -670,6 +679,13 @@ class ForemanAnsibleModule(AnsibleModule):
     def exit_json(self, changed=False, **kwargs):
         kwargs['changed'] = changed or self.changed
         super(ForemanAnsibleModule, self).exit_json(**kwargs)
+
+    def has_plugin(self, plugin_name):
+        try:
+            resource_name = _PLUGIN_RESOURCES[plugin_name]
+        except KeyError:
+            raise Exception("Unknown plugin: {0}".format(plugin_name))
+        return resource_name in self.foremanapi.resources
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
