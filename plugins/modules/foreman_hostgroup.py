@@ -289,6 +289,10 @@ def main():
             updated_name=dict(),
         ),
         mutually_exclusive=[['medium', 'kickstart_repository']],
+        required_plugins=[
+            ('katello', ['content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
+            ('openscap', ['openscap_proxy']),
+        ],
     )
 
     module_params = module.clean_params()
