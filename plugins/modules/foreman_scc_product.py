@@ -52,7 +52,7 @@ EXAMPLES = '''
 - name: "Subscribe to suse customer center product"
   foreman_scc_product:
     friendly_name: "Product1"
-    scc_account_name: "Test"
+    scc_account: "Test"
     organization: "Test Organization"
 '''
 
