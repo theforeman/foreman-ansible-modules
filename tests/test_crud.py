@@ -38,7 +38,7 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False, check_mode=F
         # Never reach out to the internet
         record_mode = 'none'
         # Only run the tests (skip fixtures)
-        limit = 'tests'
+        limit = 'tests:container'
 
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode}
@@ -64,7 +64,7 @@ def run_playbook(module, extra_vars=None, limit=None, check_mode=False):
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
     kwargs = {}
     kwargs['playbook'] = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
-    kwargs['inventory'] = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
+    kwargs['inventory'] = os.path.join(os.getcwd(), 'tests', 'inventory')
     kwargs['verbosity'] = 4
     if extra_vars:
         kwargs['extravars'] = extra_vars
@@ -83,7 +83,7 @@ def test_crud(tmpdir, module, record):
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_check_mode(tmpdir, module):
-    if module == 'katello_manifest':
+    if module in ['katello_manifest', 'inventory_plugin']:
         pytest.skip("This module does not support check_mode.")
     run = run_playbook_vcr(tmpdir, module, check_mode=True)
     assert run.rc == 0

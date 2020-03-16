@@ -23,6 +23,7 @@ TEST_PLAYBOOKS = [
     'host_power',
     'hostgroup',
     'image',
+    'inventory_plugin',
     'katello_hostgroup',
     'luna_hostgroup',
     'host_collection',

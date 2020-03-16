@@ -1,0 +1,122 @@
+---
+- hosts: container
+  vars:
+    foreman_groups:
+      - group_a
+      - group_b
+    foreman_hosts:
+      testhost1.example.com: group_a
+      testhost2.example.com: group_b
+  tasks:
+    - name: fetch Foreman container
+      docker_image:
+        name: quay.io/foreman/foreman:2.0-stable
+        source: pull
+
+    - name: start Foreman container
+      docker_container:
+        name: foreman
+        image: quay.io/foreman/foreman:2.0-stable
+        command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
+        env:
+          SEED_ADMIN_PASSWORD: changeme
+          RAILS_ENV: production
+          DATABASE_URL: sqlite3:db/production.sqlite3
+        published_ports:
+          - "0.0.0.0:3000:3000"
+
+    - name: wait for foreman to start
+      uri:
+        url: http://127.0.0.1:3000/api/status
+        url_username: admin
+        url_password: changeme
+        force_basic_auth: true
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 10
+      delay: 10
+
+    - name: create test hostgroups
+      foreman_hostgroup:
+        username: admin
+        password: changeme
+        server_url: http://127.0.0.1:3000/
+        name: "{{ item }}"
+        organizations:
+          - Default Organization
+        locations:
+          - Default Location
+      with_items: "{{ foreman_groups }}"
+
+    - name: create test hosts
+      foreman_host:
+        username: admin
+        password: changeme
+        server_url: http://127.0.0.1:3000/
+        name: "{{ item.key }}"
+        hostgroup: "{{ item.value }}"
+        build: false
+        organization: Default Organization
+        location: Default Location
+        managed: false
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: submit facts for hosts
+      uri:
+        url: http://127.0.0.1:3000/api/hosts/facts
+        url_username: admin
+        url_password: changeme
+        validate_certs: false
+        method: POST
+        body:
+          name: "{{ item.key }}"
+          facts:
+            fqdn: "{{ item.key }}"
+            domain: example.com
+            famtesthost: true
+            operatingsystem: CentOS
+            operatingsystemrelease: "7.7"
+        force_basic_auth: true
+        status_code: 201
+        body_format: json
+      with_dict: "{{ foreman_hosts }}"
+      ignore_errors: true
+
+    - name: Refresh inventory to ensure new instances exist in inventory
+      meta: refresh_inventory
+
+    - name: test that all groups are present
+      assert:
+        that: >
+          'foreman_{{ item }}' in groups
+      with_items: "{{ foreman_groups }}"
+
+    - name: test that all hosts are in the "all" group
+      assert:
+        that: >
+          '{{ item.key }}' in groups['all']
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: test that all hosts are in the correct hostgroup
+      assert:
+        that: >
+          '{{ item.key }}' in groups['foreman_{{ item.value }}']
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: test that all hosts have the domain fact set
+      assert:
+        that: >
+          hostvars['{{ item.key }}']['foreman_domain_name']  == 'example.com'
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: test that all hosts have the OS fact set
+      assert:
+        that: >
+          hostvars['{{ item.key }}']['foreman_operatingsystem_name']  == 'CentOS 7.7'
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: remove Foreman container
+      docker_container:
+        name: foreman
+        state: absent
