@@ -697,10 +697,10 @@ class ForemanAnsibleModule(AnsibleModule):
         for (plugin, params) in self.required_plugins:
             for param in params:
                 if param in self.clean_params() and not self.has_plugin(plugin):
-                    missing_plugins.append(plugin)
-                    break
+                    missing_plugins.append("{0} (for {1})".format(plugin, param))
         if missing_plugins:
-            self.fail_json(msg="You don't have the following plugins installed: {0}".format(missing_plugins))
+            missing_msg = "The server is missing required plugins: {0}.".format(', '.join(missing_plugins))
+            self.fail_json(msg=missing_msg)
 
 
 class ForemanEntityAnsibleModule(ForemanAnsibleModule):
