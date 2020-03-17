@@ -84,12 +84,14 @@ class OrganizationMixin(object):
 
 
 class KatelloMixin(OrganizationMixin):
+    def __init__(self, **kwargs):
+        required_plugins = kwargs.pop('required_plugins', [])
+        required_plugins.append(('katello', ['*']))
+        super(KatelloMixin, self).__init__(required_plugins=required_plugins, **kwargs)
+
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
         super(KatelloMixin, self).connect()
-
-        if not self.has_plugin('katello'):
-            raise Exception('The server does not seem to have the Katello plugin installed.')
 
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
