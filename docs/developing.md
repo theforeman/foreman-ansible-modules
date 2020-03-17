@@ -6,6 +6,7 @@ When looking at actual modules in this repository ([`foreman_domain`](plugins/mo
 
 * Instead of `AnsibleModule`, we use `ForemanEntityAnsibleModule` (and a few others, see [`plugins/module_utils/foreman_helper.py`](plugins/module_utils/foreman_helper.py)) which provides an abstraction layer for talking with the Foreman API
 * Instead of Ansible's `argument_spec`, we provide an enhanced version called `foreman_spec`. It handles the translation from Ansible module arguments to Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
+* In addition to Ansible's validation options, we provide `required_plugins` which will check for installed Foreman plugins should the module require any.
 
 The rest of the module is usually very minimalistic:
 * Create a Sub class of `ForemanEntityAnsibleModule` for your module called `ForemanMyEntityModule` to work with `MyEntity` foreman resource and use this one for your module definition.
@@ -68,3 +69,22 @@ The sub entities must be described by `foreman_spec=<sub_entity>_spec`.
 `flat_name` provides a way to translate the name of a module argument as known to Ansible to the name understood by the Foreman API.
 
 You can add new or override generated Ansible module arguments, by specifying them in the `argument_spec` as usual.
+
+## required_plugins
+
+A module can pass an optional `required_plugins` list to `ForemanAnsibleModule`, which will indicate whether the module needs any Foreman plugins to be installed to work.
+
+You can either specify that the whole module needs a specific plugin, like Katello modules:
+
+```python
+required_plugins=[
+    ('katello', ['*']),
+]
+```
+
+Or specific parameters, like the `discovery_proxy` parameter of `foreman_subnet` which needs the Discovery plugin:
+```python
+required_plugins=[
+    ('discovery', ['discovery_proxy']),
+]
+```
