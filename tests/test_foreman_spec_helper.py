@@ -38,12 +38,13 @@ def test_full_entity():
         'name': {},
         'count': {'type': 'int'},
         'facilities': {'type': 'list'},
-        'street': {'type': 'entity', 'flat_name': 'street_id'},
+        'street': {'type': 'entity', 'flat_name': 'street_id', 'resource_type': 'streets'},
         'street_id': {},
-        'quarter': {'type': 'entity', 'flat_name': 'quarter_id'},
+        'quarter': {'type': 'entity', 'flat_name': 'quarter_id', 'resource_type': 'edges'},
         'quarter_id': {},
-        'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
+        'houses': {'type': 'entity_list', 'flat_name': 'house_ids', 'resource_type': 'houses'},
         'house_ids': {'type': 'list'},
+        'prices': {'type': 'nested_list', 'ensure': False},
     }
     assert argument_spec == {
         'name': {},
