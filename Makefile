@@ -32,7 +32,7 @@ info:
 	@echo "Building collection $(NAMESPACE)-$(NAME)-$(VERSION)"
 	@echo $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),"\n  $(PLUGIN_TYPE): $(basename $(notdir $(_$(PLUGIN_TYPE))))")
 
-lint: tests/test_playbooks/vars/server.yml $(MANIFEST)
+lint: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	yamllint -f parsable tests/test_playbooks
 	ansible-playbook --syntax-check tests/test_playbooks/*.yml | grep -v '^$$'
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
@@ -41,19 +41,19 @@ sanity: $(MANIFEST)
 	# Fake a fresh git repo for ansible-test
 	cd $(<D) ; git init ; echo tests > .gitignore ; ansible-test sanity $(SANITY_OPTS) --python $(PYTHON_VERSION)
 
-test:
+test: | tests/test_playbooks/vars/server.yml
 	$(PYTEST) $(TEST)
 
-test-crud:
+test-crud: | tests/test_playbooks/vars/server.yml
 	$(PYTEST) 'tests/test_crud.py::test_crud'
 
-test-check-mode:
+test-check-mode: | tests/test_playbooks/vars/server.yml
 	$(PYTEST) 'tests/test_crud.py::test_check_mode'
 
 test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
-test_%: FORCE
+test_%: FORCE | tests/test_playbooks/vars/server.yml
 	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
 
 record_%: FORCE
@@ -65,7 +65,7 @@ clean_%: FORCE
 
 setup: test-setup
 
-test-setup: tests/test_playbooks/vars/server.yml
+test-setup: | tests/test_playbooks/vars/server.yml
 	pip install --upgrade 'pip<20'
 	pip install -r requirements-dev.txt
 
