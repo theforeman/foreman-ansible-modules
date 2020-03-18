@@ -323,8 +323,12 @@ template_input_foreman_spec = {
 }
 
 
+class ForemanJobTemplateModule(ForemanTaxonomicEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanTaxonomicEntityAnsibleModule(
+    module = ForemanJobTemplateModule(
         foreman_spec=dict(
             description_format=dict(),
             job_category=dict(),
@@ -346,6 +350,7 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'template'],
         ],
+        entity_resolve=False,
     )
 
     # We do not want a layout text for bulk operations
@@ -354,6 +359,7 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor template allowed if 'name: *'!")
 
+    entity = None
     module_params = module.clean_params()
     file_name = module_params.pop('file_name', None)
 
@@ -383,9 +389,7 @@ def main():
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    name = module_params['name']
-
-    affects_multiple = name == '*'
+    affects_multiple = module_params['name'] == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
         if module.state == 'present_with_defaults':
@@ -405,7 +409,8 @@ def main():
         else:
             entity = module.find_resource_by_name('job_templates', name=module_params['name'], failsafe=True)
 
-        module_params = module.handle_taxonomy_params(module_params)
+        if not module.desired_absent:
+            _entity, module_params = module.resolve_entities(module_params, entity)
 
         # TemplateInputs need to be added as separate entities later
         template_inputs = module_params.get('template_inputs')
