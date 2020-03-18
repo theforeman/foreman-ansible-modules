@@ -1021,18 +1021,6 @@ class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(ForemanTaxonomicEntityAnsibleModule, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
-    def handle_taxonomy_params(self, module_params):
-        if not self.desired_absent:
-            module_params = module_params.copy()
-
-            if 'locations' in module_params:
-                module_params['locations'] = self.find_resources_by_title('locations', module_params['locations'], thin=True)
-
-            if 'organizations' in module_params:
-                module_params['organizations'] = self.find_resources_by_name('organizations', module_params['organizations'], thin=True)
-
-        return module_params
-
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
     def __init__(self, **kwargs):
