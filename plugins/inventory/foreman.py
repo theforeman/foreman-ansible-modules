@@ -13,16 +13,16 @@ DOCUMENTATION = '''
     requirements:
         - requests >= 1.1
     description:
-        - Get inventory hosts from the foreman service.
-        - "Uses a configuration file as an inventory source, it must end in ``.foreman.yml`` or ``.foreman.yaml`` and has a ``plugin: foreman`` entry."
+        - Get inventory hosts from the Foreman service.
+        - Uses a YAML configuration file that ends with ``foreman.(yml|yaml)``.
     extends_documentation_fragment:
         - inventory_cache
         - constructed
     options:
       plugin:
-        description: the name of this plugin, it should always be set to 'foreman' for this plugin to recognize it as it's own.
+        description: the name of this plugin, it should always be set to 'theforeman.foreman.foreman' for this plugin to recognize it as it's own.
         required: True
-        choices: ['foreman']
+        choices: ['theforeman.foreman.foreman']
       url:
         description: url to foreman
         default: 'http://localhost:3000'
