@@ -48,74 +48,6 @@ options:
     description: Hostgroup parent name
     required: false
     type: str
-  realm:
-    description: Realm name
-    required: false
-    type: str
-  architecture:
-    description: Architecture name
-    required: False
-    type: str
-  medium:
-    aliases: [ media ]
-    description:
-      - Medium name
-      - Mutually exclusive with I(kickstart_repository).
-    required: False
-    type: str
-  operatingsystem:
-    description: Operatingsystem title
-    required: False
-    type: str
-  pxe_loader:
-    description: PXE Bootloader
-    required: false
-    choices:
-      - PXELinux BIOS
-      - PXELinux UEFI
-      - Grub UEFI
-      - Grub2 BIOS
-      - Grub2 ELF
-      - Grub2 UEFI
-      - Grub2 UEFI SecureBoot
-      - Grub2 UEFI HTTP
-      - Grub2 UEFI HTTPS
-      - Grub2 UEFI HTTPS SecureBoot
-      - iPXE Embedded
-      - iPXE UEFI HTTP
-      - iPXE Chain BIOS
-      - iPXE Chain UEFI
-    type: str
-  ptable:
-    description: Partition table name
-    required: False
-    type: str
-  root_pass:
-    description: root password
-    required: false
-    type: str
-  environment:
-    description: Puppet environment name
-    required: false
-    type: str
-  puppetclasses:
-    description: List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
-    required: false
-    type: list
-    elements: str
-  config_groups:
-    description: Config groups list
-    required: false
-    type: list
-    elements: str
-  puppet_proxy:
-    description: Puppet server proxy name
-    required: false
-    type: str
-  puppet_ca_proxy:
-    description: Puppet CA proxy name
-    required: false
-    type: str
   openscap_proxy:
     description:
       - OpenSCAP proxy name.
@@ -266,20 +198,6 @@ def main():
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity'),
-            realm=dict(type='entity'),
-            architecture=dict(type='entity'),
-            operatingsystem=dict(type='entity'),
-            medium=dict(aliases=['media'], type='entity'),
-            ptable=dict(type='entity'),
-            pxe_loader=dict(choices=['PXELinux BIOS', 'PXELinux UEFI', 'Grub UEFI', 'Grub2 BIOS', 'Grub2 ELF',
-                                     'Grub2 UEFI', 'Grub2 UEFI SecureBoot', 'Grub2 UEFI HTTP', 'Grub2 UEFI HTTPS',
-                                     'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
-            root_pass=dict(no_log=True),
-            environment=dict(type='entity'),
-            puppetclasses=dict(type='entity_list', resolve=False),
-            config_groups=dict(type='entity_list'),
-            puppet_proxy=dict(type='entity', resource_type='smart_proxies'),
-            puppet_ca_proxy=dict(type='entity', resource_type='smart_proxies'),
             openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
             content_source=dict(type='entity', scope='organization', resource_type='smart_proxies'),
             lifecycle_environment=dict(type='entity', scope='organization'),

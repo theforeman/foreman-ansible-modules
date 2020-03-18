@@ -175,6 +175,19 @@ class HostMixin(object):
             subnet6=dict(type='entity', resource_type='subnets'),
             parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
             root_pass=dict(no_log=True),
+            realm=dict(type='entity'),
+            architecture=dict(type='entity'),
+            operatingsystem=dict(type='entity'),
+            medium=dict(aliases=['media'], type='entity'),
+            ptable=dict(type='entity'),
+            pxe_loader=dict(choices=['PXELinux BIOS', 'PXELinux UEFI', 'Grub UEFI', 'Grub2 BIOS', 'Grub2 ELF',
+                                     'Grub2 UEFI', 'Grub2 UEFI SecureBoot', 'Grub2 UEFI HTTP', 'Grub2 UEFI HTTPS',
+                                     'Grub2 UEFI HTTPS SecureBoot', 'iPXE Embedded', 'iPXE UEFI HTTP', 'iPXE Chain BIOS', 'iPXE Chain UEFI']),
+            environment=dict(type='entity'),
+            puppetclasses=dict(type='entity_list', resolve=False),
+            config_groups=dict(type='entity_list'),
+            puppet_proxy=dict(type='entity', resource_type='smart_proxies'),
+            puppet_ca_proxy=dict(type='entity', resource_type='smart_proxies'),
         )
         if foreman_spec:
             args.update(foreman_spec)
