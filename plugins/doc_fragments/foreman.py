@@ -170,6 +170,70 @@ options:
       - Will result in the entity always being updated, as the current password cannot be retrieved.
     type: str
     required: false
+  realm:
+    description: Realm name
+    required: false
+    type: str
+  architecture:
+    description: Architecture name
+    required: False
+    type: str
+  medium:
+    aliases: [ media ]
+    description:
+      - Medium name
+      - Mutually exclusive with I(kickstart_repository).
+    required: False
+    type: str
+  operatingsystem:
+    description: Operatingsystem title
+    required: False
+    type: str
+  pxe_loader:
+    description: PXE Bootloader
+    required: false
+    choices:
+      - PXELinux BIOS
+      - PXELinux UEFI
+      - Grub UEFI
+      - Grub2 BIOS
+      - Grub2 ELF
+      - Grub2 UEFI
+      - Grub2 UEFI SecureBoot
+      - Grub2 UEFI HTTP
+      - Grub2 UEFI HTTPS
+      - Grub2 UEFI HTTPS SecureBoot
+      - iPXE Embedded
+      - iPXE UEFI HTTP
+      - iPXE Chain BIOS
+      - iPXE Chain UEFI
+    type: str
+  ptable:
+    description: Partition table name
+    required: False
+    type: str
+  environment:
+    description: Puppet environment name
+    required: false
+    type: str
+  puppetclasses:
+    description: List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
+    required: false
+    type: list
+    elements: str
+  config_groups:
+    description: Config groups list
+    required: false
+    type: list
+    elements: str
+  puppet_proxy:
+    description: Puppet server proxy name
+    required: false
+    type: str
+  puppet_ca_proxy:
+    description: Puppet CA proxy name
+    required: false
+    type: str
 '''
 
     ORGANIZATION = '''
