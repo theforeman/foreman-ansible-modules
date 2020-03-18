@@ -85,6 +85,9 @@ build/src/plugins/modules/%.py: plugins/modules/%.py | build
 	sed -e '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' \
 	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' $< > $@
 
+build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
+	sed -e '/NAME =/ s/foreman/theforeman.foreman.foreman/' $< > $@
+
 # adjust README.md not to point to files that we don't ship in the collection
 build/src/README.md: README.md | build
 	sed -e '/Documentation how to/d' $< > $@
