@@ -188,10 +188,20 @@ class HostMixin(object):
             config_groups=dict(type='entity_list'),
             puppet_proxy=dict(type='entity', resource_type='smart_proxies'),
             puppet_ca_proxy=dict(type='entity', resource_type='smart_proxies'),
+            openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
+            content_source=dict(type='entity', scope='organization', resource_type='smart_proxies'),
+            lifecycle_environment=dict(type='entity', scope='organization'),
+            kickstart_repository=dict(type='entity', scope='organization', resource_type='repositories'),
+            content_view=dict(type='entity', scope='organization'),
         )
         if foreman_spec:
             args.update(foreman_spec)
-        super(HostMixin, self).__init__(foreman_spec=args, **kwargs)
+        required_plugins = kwargs.pop('required_plugins', []) + [
+            ('katello', ['content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
+            ('openscap', ['openscap_proxy']),
+        ]
+        mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
+        super(HostMixin, self).__init__(foreman_spec=args, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
 
 
 class ForemanAnsibleModule(AnsibleModule):

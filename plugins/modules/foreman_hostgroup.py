@@ -48,43 +48,11 @@ options:
     description: Hostgroup parent name
     required: false
     type: str
-  openscap_proxy:
-    description:
-      - OpenSCAP proxy name.
-      - Only available when the OpenSCAP plugin is installed.
-    required: false
-    type: str
   organization:
     description:
       - Organization for scoped resources attached to the hostgroup.
       - Only used for Katello installations.
       - This organization will implicitly be added to the I(organizations) parameter if needed.
-    required: false
-    type: str
-  content_source:
-    description:
-      - Katello Content source.
-      - Only available for Katello installations.
-    required: false
-    type: str
-  lifecycle_environment:
-    description:
-      - Katello Lifecycle environment.
-      - Only available for Katello installations.
-    required: false
-    type: str
-  kickstart_repository:
-    description:
-      - Kickstart repository name.
-      - You need to provide this to use the "Synced Content" feature of Katello.
-      - Mutually exclusive with I(medium).
-      - Only available for Katello installations.
-    required: false
-    type: str
-  content_view:
-    description:
-      - Katello Content view.
-      - Only available for Katello installations.
     required: false
     type: str
   parameters:
@@ -198,21 +166,11 @@ def main():
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity'),
-            openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
-            content_source=dict(type='entity', scope='organization', resource_type='smart_proxies'),
-            lifecycle_environment=dict(type='entity', scope='organization'),
-            kickstart_repository=dict(type='entity', scope='organization', resource_type='repositories'),
-            content_view=dict(type='entity', scope='organization'),
             organization=dict(type='entity', required=False, ensure=False),
         ),
         argument_spec=dict(
             updated_name=dict(),
         ),
-        mutually_exclusive=[['medium', 'kickstart_repository']],
-        required_plugins=[
-            ('katello', ['content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
-            ('openscap', ['openscap_proxy']),
-        ],
     )
 
     module_params = module.clean_params()
