@@ -18,8 +18,9 @@ def test_full_entity():
         'quarter': {'type': 'entity', 'resource_type': 'edges'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
         'prices': {'type': 'nested_list', 'foreman_spec': {
-            'value': {},
+            'value': {'type': 'int'},
         }},
+        'tenant': {'type': 'invisible'},
     }
     foreman_spec, argument_spec = _foreman_spec_helper(spec)
     assert spec == {
@@ -30,8 +31,9 @@ def test_full_entity():
         'quarter': {'type': 'entity', 'resource_type': 'edges'},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids'},
         'prices': {'type': 'nested_list', 'foreman_spec': {
-            'value': {},
+            'value': {'type': 'int'},
         }},
+        'tenant': {'type': 'invisible'},
     }
     assert foreman_spec == {
         'id': {},
@@ -43,8 +45,9 @@ def test_full_entity():
         'quarter': {'type': 'entity', 'flat_name': 'quarter_id', 'resource_type': 'edges'},
         'quarter_id': {},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids', 'resource_type': 'houses'},
-        'house_ids': {'type': 'list'},
+        'house_ids': {},
         'prices': {'type': 'nested_list', 'ensure': False},
+        'tenant': {'type': 'invisible'},
     }
     assert argument_spec == {
         'name': {},
@@ -54,6 +57,6 @@ def test_full_entity():
         'quarter': {},
         'houses': {'type': 'list', 'elements': 'str'},
         'prices': {'type': 'list', 'elements': 'dict', 'options': {
-            'value': {},
+            'value': {'type': 'int'},
         }},
     }
