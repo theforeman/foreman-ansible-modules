@@ -234,6 +234,38 @@ options:
     description: Puppet CA proxy name
     required: false
     type: str
+  openscap_proxy:
+    description:
+      - OpenSCAP proxy name.
+      - Only available when the OpenSCAP plugin is installed.
+    required: false
+    type: str
+  content_source:
+    description:
+      - Katello Content source.
+      - Only available for Katello installations.
+    required: false
+    type: str
+  lifecycle_environment:
+    description:
+      - Katello Lifecycle environment.
+      - Only available for Katello installations.
+    required: false
+    type: str
+  kickstart_repository:
+    description:
+      - Kickstart repository name.
+      - You need to provide this to use the "Synced Content" feature of Katello.
+      - Mutually exclusive with I(medium).
+      - Only available for Katello installations.
+    required: false
+    type: str
+  content_view:
+    description:
+      - Katello Content view.
+      - Only available for Katello installations.
+    required: false
+    type: str
 '''
 
     ORGANIZATION = '''
