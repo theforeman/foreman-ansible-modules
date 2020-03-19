@@ -290,7 +290,7 @@ def main():
             module.fail_json(
                 msg="Neither file_name nor template nor updated_name allowed if 'name: *'!")
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     entity = None
     file_name = module_params.pop('file_name', None)
 

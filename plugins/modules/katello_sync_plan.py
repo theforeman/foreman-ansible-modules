@@ -123,7 +123,7 @@ def main():
         ],
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     if (module_params['interval'] != 'custom cron') and ('cron_expression' in module_params):
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')

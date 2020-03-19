@@ -209,7 +209,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     if module_params['content_type'] != 'docker':
         invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in module_params]

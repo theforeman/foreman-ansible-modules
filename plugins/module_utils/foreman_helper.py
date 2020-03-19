@@ -260,11 +260,6 @@ class ForemanAnsibleModule(AnsibleModule):
     def set_changed(self):
         self._changed = True
 
-    def clean_params(self):
-        # TODO Remove this once no users are left
-        self.warn("'module.clean_params()' has been deprecated. Use 'module.foreman_params' instead.")
-        return self.foreman_params
-
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
             see https://projects.theforeman.org/issues/10359

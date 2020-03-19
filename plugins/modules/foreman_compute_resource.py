@@ -341,7 +341,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     if not module.desired_absent:
         if 'provider' in module_params:

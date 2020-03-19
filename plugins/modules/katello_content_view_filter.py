@@ -240,7 +240,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     filter_state = module_params.pop('filter_state')
     rule_state = module_params.pop('rule_state')
 

@@ -80,7 +80,7 @@ def main():
         entity_resolve=False
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     params = {"usergroup_id": module_params.pop('usergroup')}
     entity = None
 

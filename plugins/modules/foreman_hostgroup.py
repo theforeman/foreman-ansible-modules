@@ -158,7 +158,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     katello_params = ['content_source', 'lifecycle_environment', 'content_view']
 
     if 'organization' not in module_params and list(set(katello_params) & set(module_params.keys())):

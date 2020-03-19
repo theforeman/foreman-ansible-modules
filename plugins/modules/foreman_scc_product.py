@@ -73,7 +73,7 @@ def main():
 
     module.task_timeout = 4 * 60
 
-    params = module.clean_params()
+    params = module.foreman_params
 
     with module.api_connection():
         params, scope = module.handle_organization_param(params)

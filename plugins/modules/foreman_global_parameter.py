@@ -126,7 +126,7 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         entity = module.find_resource_by_name('common_parameters', name=module_params['name'], failsafe=True)

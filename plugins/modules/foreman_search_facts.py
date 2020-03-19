@@ -145,7 +145,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     resource = module_params['resource']
     search = module_params['search']
     params = module_params.get('params', {})

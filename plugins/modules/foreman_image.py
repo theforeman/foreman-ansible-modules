@@ -111,7 +111,7 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         module_params['username'] = module_params['image_username']

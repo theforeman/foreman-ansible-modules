@@ -116,7 +116,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         module.run(search='name="{0}",controller="{1}"'.format(module_params['name'], module_params['controller']))

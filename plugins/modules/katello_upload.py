@@ -134,7 +134,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         module_params, scope = module.handle_organization_param(module_params)

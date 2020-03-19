@@ -236,7 +236,7 @@ def main():
     if not HAS_IPADDRESS:
         module.fail_json(msg='The ipaddress Python module is required', exception=IPADDRESS_IMP_ERR)
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     if not module.desired_absent:
         if module_params['network_type'] == 'IPv4':

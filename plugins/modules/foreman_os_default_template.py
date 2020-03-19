@@ -100,7 +100,7 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     if 'provisioning_template' in module_params and module.desired_absent:
         module.fail_json(msg='Provisioning template must not be specified for deletion.')

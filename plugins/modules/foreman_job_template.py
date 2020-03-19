@@ -360,7 +360,7 @@ def main():
                 msg="Neither file_name nor template allowed if 'name: *'!")
 
     entity = None
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     file_name = module_params.pop('file_name', None)
 
     if file_name or 'template' in module_params:

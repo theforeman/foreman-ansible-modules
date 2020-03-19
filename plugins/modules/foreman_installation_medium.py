@@ -102,7 +102,7 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     entity = None
 
     with module.api_connection():

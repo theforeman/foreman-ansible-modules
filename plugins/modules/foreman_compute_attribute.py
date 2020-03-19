@@ -100,7 +100,7 @@ def main():
         entity_opts=dict(resolve=False),
         entity_resolve=False,
     )
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         _entity, module_params = module.resolve_entities(module_params)
