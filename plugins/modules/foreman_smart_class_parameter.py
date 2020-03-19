@@ -224,7 +224,7 @@ def main():
         entity_opts=dict(failsafe=False),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     if module_params.get('parameter_type', 'string') not in ['array', 'hash']:
         if 'merge_default' in module_params or 'merge_overrides' in module_params:
             module.fail_json(msg="merge_default or merge_overrides can be used only with array or hash parameter_type")

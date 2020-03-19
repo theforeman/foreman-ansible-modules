@@ -93,7 +93,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         entity = module.find_resource_by_name('settings', module_params['name'], failsafe=False)

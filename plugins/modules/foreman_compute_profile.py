@@ -165,7 +165,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     compute_attributes = module_params.pop('compute_attributes', None)
 
     with module.api_connection():

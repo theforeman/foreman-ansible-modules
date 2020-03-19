@@ -86,7 +86,7 @@ def main():
 
     module.task_timeout = 5 * 60
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         organization = module.find_resource_by_name('organizations', name=module_params['organization'], thin=False)

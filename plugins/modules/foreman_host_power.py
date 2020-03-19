@@ -109,7 +109,7 @@ def main():
         ),
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         # power_status endpoint was only added in foreman 1.22.0 per https://projects.theforeman.org/issues/25436

@@ -195,7 +195,7 @@ def main():
         ],
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     # additional param validation
     if '.' not in module_params['name']:

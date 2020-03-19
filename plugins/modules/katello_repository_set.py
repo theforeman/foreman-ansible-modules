@@ -238,7 +238,7 @@ def main():
         ],
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     repositories = [{k: v for (k, v) in sub.items() if v is not None} for sub in module_params.get('repositories', [])]
 
     with module.api_connection():

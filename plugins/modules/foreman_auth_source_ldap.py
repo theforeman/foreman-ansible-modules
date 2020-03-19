@@ -192,7 +192,7 @@ def main():
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     # additional parameter checks
     if 'use_netgroups' in module_params and module_params['server_type'] == 'active_directory':

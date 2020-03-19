@@ -237,7 +237,7 @@ def main():
                 msg="Neither file_name nor layout nor updated_name allowed if 'name: *'!")
 
     entity = None
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     file_name = module_params.pop('file_name', None)
 
     if file_name or 'layout' in module_params:

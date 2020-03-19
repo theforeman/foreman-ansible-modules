@@ -161,7 +161,7 @@ def main():
         mutually_exclusive=[['repositories', 'components']],
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     # components is None when we're managing a CCV but don't want to adjust its components
     components = module_params.pop('components', None)

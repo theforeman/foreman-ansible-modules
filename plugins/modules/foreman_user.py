@@ -523,7 +523,7 @@ def main():
         entity_key='login',
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
 
     with module.api_connection():
         entity, module_params = module.resolve_entities(module_params)
