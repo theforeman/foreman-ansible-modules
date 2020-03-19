@@ -78,6 +78,9 @@ def main():
             state=dict(default='present', choices=['absent', 'present', 'refreshed']),
             repository_url=dict(aliases=['redhat_repository_url']),
         ),
+        foreman_spec=dict(
+            organization=dict(type='entity', required=True, thin=False),
+        ),
         required_if=[
             ['state', 'present', ['manifest_path']],
         ],
@@ -89,7 +92,7 @@ def main():
     module_params = module.foreman_params
 
     with module.api_connection():
-        organization = module.find_resource_by_name('organizations', name=module_params['organization'], thin=False)
+        organization = module.lookup_entity('organization')
         scope = {'organization_id': organization['id']}
 
         try:

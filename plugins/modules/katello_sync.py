@@ -103,25 +103,22 @@ from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 def main():
     module = KatelloAnsibleModule(
         foreman_spec=dict(
-            product=dict(required=True),
-            repository=dict(),
+            product=dict(type='entity', scope=['organization'], required=True),
+            repository=dict(type='entity', scope=['product'], failsafe=True),
+            # This should be scoped more explicit for better serch performance, but needs rerecording
+            # repository=dict(type='entity', scope=['organization', 'product'], failsafe=True),
         ),
     )
 
     module.task_timeout = 12 * 60 * 60
 
-    params = module.foreman_params
-
     with module.api_connection():
-        params, scope = module.handle_organization_param(params)
-
-        params['product'] = module.find_resource_by_name('products', params['product'], params=scope, thin=True)
-        if 'repository' in params:
-            product_scope = {'product_id': params['product']['id']}
-            params['repository'] = module.find_resource_by_name('repositories', params['repository'], params=product_scope, thin=True)
-            task = module.resource_action('repositories', 'sync', {'id': params['repository']['id']})
+        product = module.lookup_entity('product')
+        repository = module.lookup_entity('repository')
+        if repository:
+            task = module.resource_action('repositories', 'sync', {'id': repository['id']})
         else:
-            task = module.resource_action('products', 'sync', {'id': params['product']['id']})
+            task = module.resource_action('products', 'sync', {'id': product['id']})
 
         module.exit_json(task=task)
 

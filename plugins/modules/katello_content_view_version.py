@@ -157,13 +157,13 @@ def promote_content_view_version(module, content_view_version, environments, for
 def main():
     module = KatelloEntityAnsibleModule(
         foreman_spec=dict(
-            content_view=dict(type='entity', required=True, scope='organization'),
+            content_view=dict(type='entity', required=True, scope=['organization']),
             description=dict(),
             version=dict(),
-            lifecycle_environments=dict(type='entity_list', scope='organization'),
+            lifecycle_environments=dict(type='entity_list', scope=['organization']),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
-            current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope='organization'),
+            current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope=['organization']),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
         entity_resolve=False,

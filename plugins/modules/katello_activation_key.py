@@ -201,9 +201,9 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             new_name=dict(),
-            lifecycle_environment=dict(type='entity', flat_name='environment_id', scope='organization'),
-            content_view=dict(type='entity', scope='organization'),
-            host_collections=dict(type='entity_list', scope='organization'),
+            lifecycle_environment=dict(type='entity', flat_name='environment_id', scope=['organization']),
+            content_view=dict(type='entity', scope=['organization']),
+            host_collections=dict(type='entity_list', scope=['organization']),
             auto_attach=dict(type='bool'),
             release_version=dict(),
             service_level=dict(choices=['Self-Support', 'Standard', 'Premium']),
