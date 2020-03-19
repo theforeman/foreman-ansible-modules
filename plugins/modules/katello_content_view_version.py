@@ -157,29 +157,33 @@ def promote_content_view_version(module, content_view_version, environments, for
 def main():
     module = KatelloEntityAnsibleModule(
         foreman_spec=dict(
-            content_view=dict(type='entity', required=True),
+            content_view=dict(type='entity', required=True, scope='organization'),
             description=dict(),
             version=dict(),
-            lifecycle_environments=dict(type='list', elements='str'),
+            lifecycle_environments=dict(type='entity_list', scope='organization'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
-            current_lifecycle_environment=dict(),
+            current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope='organization'),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
+        entity_resolve=False,
     )
 
     module.task_timeout = 60 * 60
 
-    module_params = module.clean_params()
-
     with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
+        _entity, module_params = module.resolve_entities()
+        # Hack until automatic dependency scope resolution is in place
+        if module.desired_absent:
+            module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'])
+        scope = {'organization_id': module_params['organization']['id']}
+        # Hack until automatic dependency scope resolution is in place
+        if module.desired_absent:
+            module_params['content_view'] = module.find_resource_by_name('content_views', name=module_params['content_view'], params=scope)
 
-        content_view = module.find_resource_by_name('content_views', name=module_params['content_view'], params=scope)
+        content_view = module_params['content_view']
 
         if 'current_lifecycle_environment' in module_params:
-            module_params['current_lifecycle_environment'] = module.find_resource_by_name(
-                'lifecycle_environments', name=module_params['current_lifecycle_environment'], params=scope)
             search_scope = {'content_view_id': content_view['id'], 'environment_id': module_params['current_lifecycle_environment']['id']}
             content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
         elif 'version' in module_params:
@@ -213,11 +217,10 @@ def main():
                     content_view_version = {'id': -1, 'environments': []}
 
             if 'lifecycle_environments' in module_params:
-                lifecycle_environments = module.find_resources_by_name('lifecycle_environments', names=module_params['lifecycle_environments'], params=scope)
                 promote_content_view_version(
                     module,
                     content_view_version,
-                    lifecycle_environments,
+                    module_params['lifecycle_environments'],
                     force=module_params['force_promote'],
                     force_yum_metadata_regeneration=module_params['force_yum_metadata_regeneration'],
                 )
