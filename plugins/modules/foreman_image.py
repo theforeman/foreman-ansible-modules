@@ -107,7 +107,7 @@ def main():
             operatingsystem=dict(type='entity', required=True),
             user_data=dict(type='bool')
         ),
-        entity_scope="compute_resource",
+        entity_scope=['compute_resource'],
         entity_resolve=False,
     )
 

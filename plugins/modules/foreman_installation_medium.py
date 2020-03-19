@@ -116,8 +116,9 @@ def main():
             if module.params['updated_name']:
                 module.fail_json(msg="updated_name not allowed if 'name: *'!")
             if module.desired_absent:
-                if list(module_params.keys()) != ['name']:
+                if list(module_params.keys()) != ['name', 'entity']:
                     module_params.pop('name', None)
+                    module_params.pop('entity', None)
                     module.fail_json(msg='When deleting all installation media, there is no need to specify further parameters: %s ' % module_params.keys())
 
         if affects_multiple:

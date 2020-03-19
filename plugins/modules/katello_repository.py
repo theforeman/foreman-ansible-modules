@@ -183,18 +183,16 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 def main():
     module = KatelloEntityAnsibleModule(
-        argument_spec=dict(
-            product=dict(required=True),
-        ),
         foreman_spec=dict(
+            product=dict(type='entity', scope=['organization'], required=True),
             label=dict(),
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
-            gpg_key=dict(type='entity'),
-            ssl_ca_cert=dict(type='entity'),
-            ssl_client_cert=dict(type='entity'),
-            ssl_client_key=dict(type='entity'),
+            gpg_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
+            ssl_ca_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
+            ssl_client_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
+            ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
             upstream_username=dict(),
@@ -207,41 +205,31 @@ def main():
             deb_architectures=dict(),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
+        entity_name='repository',
+        entity_scope=['product'],
     )
 
-    module_params = module.foreman_params
-
-    if module_params['content_type'] != 'docker':
-        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in module_params]
+    if module.foreman_params['content_type'] != 'docker':
+        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'docker'".format(",".join(invalid_list)))
 
-    if module_params['content_type'] != 'deb':
-        invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in module_params]
+    if module.foreman_params['content_type'] != 'deb':
+        invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
-
+        entity = module.lookup_entity('entity')
         if not module.desired_absent:
-            if 'gpg_key' in module_params:
-                module_params['gpg_key'] = module.find_resource_by_name('content_credentials', name=module_params['gpg_key'], params=scope, thin=True)
-            if 'ssl_ca_cert' in module_params:
-                module_params['ssl_ca_cert'] = module.find_resource_by_name('content_credentials', name=module_params['ssl_ca_cert'], params=scope, thin=True)
-            if 'ssl_client_cert' in module_params:
-                module_params['ssl_client_cert'] = module.find_resource_by_name('content_credentials',
-                                                                                name=module_params['ssl_client_cert'], params=scope, thin=True)
-            if 'ssl_client_key' in module_params:
-                module_params['ssl_client_key'] = module.find_resource_by_name('content_credentials',
-                                                                               name=module_params['ssl_client_key'], params=scope, thin=True)
+            module.lookup_entity('gpg_key')
+            module.lookup_entity('ssl_ca_cert')
+            module.lookup_entity('ssl_client_cert')
+            module.lookup_entity('ssl_client_key')
 
-        scope['product_id'] = module_params['product']['id']
-        entity = module.find_resource_by_name('repositories', name=module_params['name'], params=scope, failsafe=True)
-
-        module.ensure_entity('repositories', module_params, entity, params=scope)
+        scope = module.scope_for('organization')
+        scope.update(module.scope_for('product'))
+        module.ensure_entity('repositories', module.foreman_params, entity, params=scope)
 
 
 if __name__ == '__main__':

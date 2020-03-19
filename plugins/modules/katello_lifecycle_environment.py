@@ -89,7 +89,7 @@ def main():
             name=dict(required=True),
             label=dict(),
             description=dict(),
-            prior=dict(type='entity', resource_type='lifecycle_environments', scope='organization'),
+            prior=dict(type='entity', resource_type='lifecycle_environments', scope=['organization']),
         ),
     )
 

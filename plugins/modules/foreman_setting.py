@@ -87,16 +87,16 @@ class ForemanSettingModule(ForemanAnsibleModule):
 
 def main():
     module = ForemanSettingModule(
-        argument_spec=dict(
-            name=dict(required=True),
+        foreman_spec=dict(
+            name=dict(type='entity', resource_type='settings', required=True, failsafe=False, thin=False, ensure=False),
             value=dict(type='raw'),
         ),
     )
 
-    module_params = module.foreman_params
+    module_params = module.foreman_params.copy()
 
     with module.api_connection():
-        entity = module.find_resource_by_name('settings', module_params['name'], failsafe=False)
+        entity = module.lookup_entity('name')
 
         if 'value' not in module_params:
             module_params['value'] = entity['default'] or ''

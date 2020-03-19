@@ -115,7 +115,7 @@ def main():
             enabled=dict(type='bool', required=True),
             sync_date=dict(required=True),
             cron_expression=dict(),
-            products=dict(type='entity_list', scope='organization', resolve=False),
+            products=dict(type='entity_list', scope=['organization'], resolve=False),
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=[

@@ -35,10 +35,12 @@ description:
 author:
   - "Manisha Singhal (@manisha15) ATIX AG"
 options:
-  friendly_name:
+  scc_product:
     description: Full name of the product of suse customer center account
     required: true
     type: str
+    aliases:
+      - friendly_name
   scc_account:
     description: Name of the suse customer center account associated with product
     required: true
@@ -65,31 +67,21 @@ from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 def main():
     module = KatelloAnsibleModule(
         foreman_spec=dict(
-            friendly_name=dict(required=True),
-            scc_account=dict(required=True),
+            scc_product=dict(required=True, type='entity', aliases=['friendly_name'], scope=['scc_account'], thin=False),
+            scc_account=dict(required=True, type='entity', scope=['organization']),
         ),
         required_plugins=[('scc_manager', ['*'])],
     )
 
     module.task_timeout = 4 * 60
 
-    params = module.foreman_params
-
     with module.api_connection():
-        params, scope = module.handle_organization_param(params)
-
-        params['scc_account'] = module.find_resource_by_name('scc_accounts', name=params['scc_account'], params=scope, thin=True)
-
-        scc_account_scope = {'scc_account_id': params['scc_account']['id']}
-
-        # Try to find the SccProduct to work on
-        # name is however not unique, but friendly_name is
-
-        search_string = 'friendly_name="{0}"'.format(params['friendly_name'])
-        scc_product = module.find_resource('scc_products', search_string, params=scc_account_scope)
+        scc_product = module.lookup_entity('scc_product')
 
         if not scc_product.get('product_id'):
-            module.resource_action('scc_products', 'subscribe', {'id': scc_product['id'], 'scc_account_id': scc_account_scope['scc_account_id']})
+            payload = {'id': scc_product['id']}
+            payload.update(module.scope_for('scc_account'))
+            module.resource_action('scc_products', 'subscribe', payload)
 
 
 if __name__ == '__main__':
