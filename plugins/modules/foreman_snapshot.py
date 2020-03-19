@@ -105,27 +105,26 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+class ForemanSnapshotModule(ForemanEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = ForemanEntityAnsibleModule(
+    module = ForemanSnapshotModule(
         argument_spec=dict(
-            host=dict(required=True),
             state=dict(default='present', choices=['present', 'absent', 'reverted']),
         ),
         foreman_spec=dict(
+            host=dict(type='entity', required=True, ensure=False),
             name=dict(required=True),
             description=dict(),
         ),
         required_plugins=[('snapshot_management', ['*'])],
+        entity_scope='host',
     )
-    snapshot_dict = module.clean_params()
 
     with module.api_connection():
-        host = module.find_resource_by_name('hosts', name=snapshot_dict['host'], failsafe=False, thin=True)
-        scope = {'host_id': host['id']}
-
-        entity = module.find_resource_by_name('snapshots', name=snapshot_dict['name'], params=scope, failsafe=True)
-
-        module.ensure_entity('snapshots', snapshot_dict, entity, params=scope)
+        module.run()
 
 
 if __name__ == '__main__':
