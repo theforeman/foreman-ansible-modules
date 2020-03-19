@@ -41,7 +41,6 @@ options:
   hostgroup:
     description:
       - Name of related hostgroup.
-      - Required if I(state=present) and (I(managed=true) or I(build=true))
     required: false
     type: str
   location:
@@ -170,10 +169,6 @@ def main():
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
             owner_type=dict(type='invisible'),
         ),
-        required_if=(
-            ['managed', True, ['hostgroup']],
-            ['build', True, ['hostgroup']],
-        ),
         mutually_exclusive=[
             ['owner', 'owner_group']
         ],
@@ -186,9 +181,6 @@ def main():
         module.fail_json(msg="The hostname must be FQDN")
 
     if not module.desired_absent:
-        if 'hostgroup' not in module_params and module_params.get('managed', True):
-            module.fail_json(msg='Hostgroup can be omitted only with managed=False')
-
         if 'build' in module_params and module_params['build']:
             # When 'build'=True, 'managed' has to be True. Assuming that user's priority is to build.
             if 'managed' in module_params and not module_params['managed']:
