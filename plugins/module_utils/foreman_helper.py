@@ -223,22 +223,23 @@ class ForemanAnsibleModule(AnsibleModule):
         argument_spec.update(kwargs.pop('argument_spec', {}))
         argument_spec.update(gen_args)
         supports_check_mode = kwargs.pop('supports_check_mode', True)
-        self._aliases = {alias for arg in argument_spec.values() for alias in arg.get('aliases', [])}
 
         self.required_plugins = kwargs.pop('required_plugins', [])
 
         super(ForemanAnsibleModule, self).__init__(argument_spec=argument_spec, supports_check_mode=supports_check_mode, **kwargs)
 
-        self._params = self.params.copy()
+        if 'verify_ssl' in self.params:
+            self.warn("Please use 'validate_certs' instead of deprecated 'verify_ssl'.")
+
+        aliases = {alias for arg in argument_spec.values() for alias in arg.get('aliases', [])}
+        self.foreman_params = {k: v for (k, v) in self.params.items() if v is not None and k not in aliases}
 
         self.check_requirements()
 
-        self._foremanapi_server_url = self._params.pop('server_url')
-        self._foremanapi_username = self._params.pop('username')
-        self._foremanapi_password = self._params.pop('password')
-        self._foremanapi_validate_certs = self._params.pop('validate_certs')
-        if 'verify_ssl' in self._params:
-            self.warn("Please use 'validate_certs' instead of deprecated 'verify_ssl'.")
+        self._foremanapi_server_url = self.foreman_params.pop('server_url')
+        self._foremanapi_username = self.foreman_params.pop('username')
+        self._foremanapi_password = self.foreman_params.pop('password')
+        self._foremanapi_validate_certs = self.foreman_params.pop('validate_certs')
 
         self.task_timeout = 60
         self.task_poll = 4
@@ -260,7 +261,9 @@ class ForemanAnsibleModule(AnsibleModule):
         self._changed = True
 
     def clean_params(self):
-        return {k: v for (k, v) in self._params.items() if v is not None and k not in self._aliases}
+        # TODO Remove this once no users are left
+        self.warn("'module.clean_params()' has been deprecated. Use 'module.foreman_params' instead.")
+        return self.foreman_params
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -708,7 +711,7 @@ class ForemanAnsibleModule(AnsibleModule):
         missing_plugins = []
         for (plugin, params) in self.required_plugins:
             for param in params:
-                if (param in self.clean_params() or param == '*') and not self.has_plugin(plugin):
+                if (param in self.foreman_params or param == '*') and not self.has_plugin(plugin):
                     if param == '*':
                         param = 'the whole module'
                     missing_plugins.append("{0} (for {1})".format(plugin, param))
@@ -790,7 +793,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
 
         self.inflector = apypie.Inflector()
         self._entity_resource_name = self.inflector.pluralize(self.entity_name)
-        self.state = self._params.pop('state')
+        self.state = self.foreman_params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
         self.sub_entities = {key: value for key, value in self.foreman_spec.items()
@@ -830,7 +833,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             Returns entity.
         """
         if not module_params:
-            module_params = self.clean_params()
+            module_params = self.foreman_params
 
         entity, module_params = self.resolve_entities(module_params, entity, search)
 
@@ -865,7 +868,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                               Defined scope must be a key of foreman_spec.
         """
         if not module_params:
-            module_params = self.clean_params()
+            module_params = self.foreman_params
 
         self.entity_opts['thin'] = self.desired_absent
 
