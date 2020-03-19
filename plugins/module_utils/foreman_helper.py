@@ -386,7 +386,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return self._resource_call(resource, 'index', params)['results']
 
-    def find_resource(self, resource, search, name=None, params=None, failsafe=False, thin=None):
+    def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
         list_params = {}
         if params is not None:
             list_params.update(params)
@@ -394,14 +394,6 @@ class ForemanAnsibleModule(AnsibleModule):
             thin = self._thin_default
         list_params['thin'] = thin
         results = self.list_resource(resource, search, list_params)
-        if resource == 'snapshots':
-            # Snapshots API does not do search
-            snapshot = []
-            for result in results:
-                if result['name'] == name:
-                    snapshot.append(result)
-                    break
-            results = snapshot
         if len(results) == 1:
             result = results[0]
         elif failsafe:
@@ -421,8 +413,6 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def find_resource_by(self, resource, search_field, value, **kwargs):
         search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
-        if search_field == 'name':
-            kwargs['name'] = value
         return self.find_resource(resource, search, **kwargs)
 
     def find_resource_by_name(self, resource, name, **kwargs):
@@ -969,7 +959,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             return self.find_puppetclass(value, params=params, failsafe=failsafe, thin=thin)
         else:
             return self.find_resource_by(resource_path,
-                                         entity_opts.get('search_by', self.__class__.resolve_entity_key(resource_path)), value,
+                                         entity_opts.get('search_by', self.resolve_entity_key(resource_path)), value,
                                          search_operator=entity_opts.get('search_operator', '='),
                                          failsafe=failsafe, thin=thin, params=params)
 
