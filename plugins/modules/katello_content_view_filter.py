@@ -31,6 +31,10 @@ description:
     - Create and Manage Katello content View filters
 author: "Sean O'Keeffe (@sean797)"
 options:
+  architecture:
+    description:
+      - package architecture
+    type: str
   name:
     description:
       - Name of the Content View Filter
@@ -232,6 +236,7 @@ def main():
             start_date=dict(),
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             version=dict(),
+            architecture=dict(),
         ),
     )
 
