@@ -122,7 +122,7 @@ def main():
         _entity, module_params = module.resolve_entities(module_params)
         scope = {'compute_resource_id': compute_resource_id}
         entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(module_params['name'],
-                                      operatingsystem_id), name=module_params['name'], params=scope, failsafe=True)
+                                      operatingsystem_id), params=scope, failsafe=True)
         module.ensure_entity('images', module_params, entity, params=scope)
 
 
