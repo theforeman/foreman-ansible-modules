@@ -832,7 +832,11 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             module_params = self.clean_params()
 
         entity, module_params = self.resolve_entities(module_params, entity, search)
-        new_entity = self.ensure_entity(self._entity_resource_name, module_params, entity)
+
+        params = {}
+        if self.entity_scope:
+            params['{0}_id'.format(self.entity_scope)] = module_params[self.entity_scope]['id']
+        new_entity = self.ensure_entity(self._entity_resource_name, module_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
         if new_entity and 'parameters' in module_params:
