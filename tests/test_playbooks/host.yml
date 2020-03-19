@@ -59,6 +59,19 @@
     - include_tasks: tasks/usergroup.yml
       vars:
         usergroup_state: present
+    - include: tasks/architecture.yml
+      vars:
+        architecture_name: "{{ host.arch }}"
+        architecture_state: present
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "{{ host.os.name }}"
+        operatingsystem_major: "{{ host.os.major }}"
+        operatingsystem_minor: "{{ host.os.minor }}"
+        operatingsystem_family: "{{ host.os.family }}"
+        operatingsystem_architectures:
+          - "{{ host.arch }}"
+        operatingsystem_state: present
     - include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -287,6 +300,37 @@
         host_state: absent
         expected_change: true
 
+    - name: create host with os and arch
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_operatingsystem: "{{ host.os.name }}"
+        host_architecture: "{{ host.arch }}"
+        expected_change: true
+
+    - name: create host with os and arch again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_operatingsystem: "{{ host.os.name }}"
+        host_architecture: "{{ host.arch }}"
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
 - hosts: localhost
   gather_facts: false
   vars_files:
@@ -322,6 +366,14 @@
       vars:
         domain_name: "{{ host.domain }}"
         domain_state: absent
+    - include_tasks: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "{{ host.os.name }}"
+        operatingsystem_state: absent
+    - include_tasks: tasks/architecture.yml
+      vars:
+        architecture_name: "{{ host.arch }}"
+        architecture_state: absent
     - include_tasks: tasks/location.yml
       vars:
         location_name: "{{ host.location }}"
