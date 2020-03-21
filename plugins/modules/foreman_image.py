@@ -108,22 +108,20 @@ def main():
             user_data=dict(type='bool')
         ),
         entity_scope=['compute_resource'],
-        entity_resolve=False,
     )
 
-    module_params = module.foreman_params
-
+    module.foreman_params['username'] = module.foreman_params.pop('image_username')
+    if 'image_password' in module.foreman_params:
+        module.foreman_params['password'] = module.foreman_params.pop('image_password')
     with module.api_connection():
-        module_params['username'] = module_params['image_username']
-        if 'image_password' in module_params:
-            module_params['password'] = module_params['image_password']
-        operatingsystem_id = module.find_operatingsystem(module_params['operatingsystem'], thin=True)['id']
-        compute_resource_id = module.find_resource_by_name('compute_resources', module_params['compute_resource'], thin=True)['id']
-        _entity, module_params = module.resolve_entities(module_params)
-        scope = {'compute_resource_id': compute_resource_id}
-        entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(module_params['name'],
+        if not module.desired_absent:
+            module.lookup_entity('architecture')
+        scope = module.scope_for('compute_resource')
+        operatingsystem_id = module.lookup_entity('operatingsystem')['id']
+        # TODO figure out, how to map this kind of search to lookup_entity
+        entity = module.find_resource('images', search="name={0},operatingsystem={1}".format(module.foreman_params['name'],
                                       operatingsystem_id), params=scope, failsafe=True)
-        module.ensure_entity('images', module_params, entity, params=scope)
+        module.ensure_entity('images', module.foreman_params, entity, params=scope)
 
 
 if __name__ == '__main__':
