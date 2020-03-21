@@ -175,6 +175,7 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloAnsibleModule
 
 content_filter_spec = {
+    'id': {},
     'name': {},
     'description': {},
     'repositories': {'type': 'entity_list'},
@@ -185,6 +186,7 @@ content_filter_spec = {
 }
 
 content_filter_rule_erratum_spec = {
+    'id': {},
     'date_type': {},
     'end_date': {},
     'start_date': {},
@@ -192,11 +194,13 @@ content_filter_rule_erratum_spec = {
 }
 
 content_filter_rule_erratum_id_spec = {
+    'id': {},
     'errata_id': {},
     'date_type': {},
 }
 
 content_filter_rule_rpm_spec = {
+    'id': {},
     'rule_name': {'flat_name': 'name'},
     'end_date': {},
     'max_version': {},
@@ -206,11 +210,13 @@ content_filter_rule_rpm_spec = {
 }
 
 content_filter_rule_package_group_spec = {
+    'id': {},
     'rule_name': {'flat_name': 'name'},
     'uuid': {},
 }
 
 content_filter_rule_docker_spec = {
+    'id': {},
     'rule_name': {'flat_name': 'name'},
 }
 

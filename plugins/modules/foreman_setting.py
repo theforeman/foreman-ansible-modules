@@ -72,13 +72,7 @@ foreman_setting:
 '''
 
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str
-
-
-foreman_spec = {
-    'name': {},
-    'value': {},
-}
+from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str, _foreman_spec_helper
 
 
 class ForemanSettingModule(ForemanAnsibleModule):
@@ -88,29 +82,33 @@ class ForemanSettingModule(ForemanAnsibleModule):
 def main():
     module = ForemanSettingModule(
         foreman_spec=dict(
-            name=dict(type='entity', resource_type='settings', required=True, failsafe=False, thin=False, ensure=False),
+            name=dict(required=True),
             value=dict(type='raw'),
         ),
     )
 
-    module_params = module.foreman_params.copy()
+    # TODO Maybe refactor this into a EntityMixin
+    module.foreman_spec.update(_foreman_spec_helper(dict(
+        entity=dict(type='entity', flat_name='id', resource_type='settings', failsafe=False, thin=False, ensure=False),
+    ))[0])
+    module.foreman_params['entity'] = module.foreman_params['name']
 
     with module.api_connection():
-        entity = module.lookup_entity('name')
+        entity = module.lookup_entity('entity')
 
-        if 'value' not in module_params:
-            module_params['value'] = entity['default'] or ''
+        if 'value' not in module.foreman_params:
+            module.foreman_params['value'] = entity['default'] or ''
 
         settings_type = entity['settings_type']
-        new_value = module_params['value']
+        new_value = module.foreman_params['value']
         # Allow to pass integers as string
         if settings_type == 'integer':
             new_value = int(new_value)
-        module_params['value'] = parameter_value_to_str(new_value, settings_type)
+        module.foreman_params['value'] = parameter_value_to_str(new_value, settings_type)
         old_value = entity['value']
         entity['value'] = parameter_value_to_str(old_value, settings_type)
 
-        entity = module.ensure_entity('settings', module_params, entity, state='present', foreman_spec=foreman_spec)
+        entity = module.ensure_entity('settings', module.foreman_params, entity, state='present')
 
         if entity:
             # Fake the not serialized input value as output

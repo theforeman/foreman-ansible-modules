@@ -36,6 +36,7 @@ except ImportError:
     PYYAML_IMP_ERR = traceback.format_exc()
 
 parameter_foreman_spec = dict(
+    id=dict(type='invisible'),
     name=dict(required=True),
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
@@ -1089,8 +1090,7 @@ def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
     Extract ansible compatible argument_spec on the way.
     """
-    # TODO this should be foreman_spec = {}
-    foreman_spec = {'id': {}}
+    foreman_spec = {}
     argument_spec = {}
 
     _FILTER_SPEC_KEYS = [

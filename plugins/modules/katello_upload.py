@@ -129,20 +129,15 @@ def main():
     module = KatelloAnsibleModule(
         foreman_spec=dict(
             src=dict(required=True, type='path', aliases=['file']),
-            repository=dict(required=True),
-            product=dict(required=True),
+            repository=dict(required=True, type='entity', scope=['product'], thin=False),
+            product=dict(required=True, type='entity', scope=['organization']),
         ),
     )
 
     module_params = module.foreman_params
 
     with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
-
-        module_params['product'] = module.find_resource_by_name('products', module_params['product'], params=scope, thin=True)
-        product_scope = {'product_id': module_params['product']['id']}
-        module_params['repository'] = module.find_resource_by_name('repositories', module_params['repository'], params=product_scope)
-        repository_scope = {'repository_id': module_params['repository']['id']}
+        repository_scope = module.scope_for('repository')
 
         b_src = to_bytes(module_params['src'])
         filename = os.path.basename(module_params['src'])

@@ -103,7 +103,7 @@ def main():
         if module.state == 'present':
             if 'repository_url' in module_params:
                 payload = {'redhat_repository_url': module_params['repository_url']}
-                org_spec = dict(redhat_repository_url=dict())
+                org_spec = dict(id=dict(), redhat_repository_url=dict())
                 organization = module.ensure_entity('organizations', payload, organization, state='present', foreman_spec=org_spec)
 
             try:
