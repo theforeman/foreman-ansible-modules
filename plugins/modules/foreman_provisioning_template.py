@@ -326,8 +326,9 @@ def main():
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
-            if len(module_params.keys()) != 2:
-                module.fail_json(msg="When deleting all templates, there is no need to specify further parameters.")
+            further_params = set(module_params.keys()) - {'name', 'entity'}
+            if further_params:
+                module.fail_json(msg='When deleting all templates, there is no need to specify further parameters: %s ' % further_params)
 
     with module.api_connection():
         if affects_multiple:
