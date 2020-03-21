@@ -132,6 +132,7 @@ from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 cvc_foreman_spec = {
+    'id': {'type': 'invisible'},
     'content_view': {'type': 'entity', 'required': True},
     'latest': {'type': 'bool', 'default': False},
     'content_view_version': {'type': 'entity', 'aliases': ['version']},

@@ -5,7 +5,7 @@ def test_empty_entity():
     spec = {}
     foreman_spec, argument_spec = _foreman_spec_helper(spec)
     assert spec == {}
-    assert foreman_spec == {'id': {}}
+    assert foreman_spec == {}
     assert argument_spec == {}
 
 
@@ -36,7 +36,6 @@ def test_full_entity():
         'tenant': {'type': 'invisible'},
     }
     assert foreman_spec == {
-        'id': {},
         'name': {},
         'count': {'type': 'int'},
         'facilities': {'type': 'list'},
