@@ -77,7 +77,7 @@ def main():
             usergroup=dict(required=True),
             auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
         ),
-        entity_resolve=False
+        entity_resolve=False,
     )
 
     module_params = module.foreman_params
@@ -91,7 +91,9 @@ def main():
             if external_usergroup['name'] == module_params['name']:
                 entity = external_usergroup
 
-        _entity, module_params = module.resolve_entities(module_params)
+        module.foreman_params['entity'] = entity
+        module.foreman_spec['entity']['resolved'] = True
+        module.auto_lookup_entities()
         module.ensure_entity('external_usergroups', module_params, entity, params)
 
 

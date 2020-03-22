@@ -129,7 +129,7 @@ def main():
     module_params = module.foreman_params
 
     with module.api_connection():
-        entity = module.find_resource_by_name('common_parameters', name=module_params['name'], failsafe=True)
+        entity = module.lookup_entity('entity')
 
         if not module.desired_absent:
             # Convert values according to their corresponding parameter_type
@@ -139,7 +139,7 @@ def main():
             if entity and 'value' in entity:
                 entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-        module.run(module_params=module_params, entity=entity)
+        module.cycle()
 
 
 if __name__ == '__main__':

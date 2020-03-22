@@ -203,6 +203,8 @@ def main():
             deb_releases=dict(),
             deb_components=dict(),
             deb_architectures=dict(),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         entity_name='repository',
@@ -220,16 +222,7 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     with module.api_connection():
-        entity = module.lookup_entity('entity')
-        if not module.desired_absent:
-            module.lookup_entity('gpg_key')
-            module.lookup_entity('ssl_ca_cert')
-            module.lookup_entity('ssl_client_cert')
-            module.lookup_entity('ssl_client_key')
-
-        scope = module.scope_for('organization')
-        scope.update(module.scope_for('product'))
-        module.ensure_entity('repositories', module.foreman_params, entity, params=scope)
+        module.cycle()
 
 
 if __name__ == '__main__':

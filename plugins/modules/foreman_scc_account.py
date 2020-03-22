@@ -131,10 +131,10 @@ def main():
             base_url=dict(),
             sync_date=dict(),
             interval=dict(choices=['never', 'daily', 'weekly', 'monthly']),
-            state=dict(default='present', choices=['present', 'absent', 'synced']),
         ),
         argument_spec=dict(
             test_connection=dict(type='bool', default=False),
+            state=dict(default='present', choices=['present', 'absent', 'synced']),
         ),
         required_plugins=[('scc_manager', ['*'])],
     )

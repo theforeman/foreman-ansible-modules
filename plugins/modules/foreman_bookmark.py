@@ -114,12 +114,20 @@ def main():
             ['state', 'present', ['query']],
             ['state', 'present_with_defaults', ['query']],
         ),
+        entity_resolve=False,
     )
 
     module_params = module.foreman_params
 
     with module.api_connection():
-        module.run(search='name="{0}",controller="{1}"'.format(module_params['name'], module_params['controller']))
+        # TODO figure out, how to map this kind of search to lookup_entity
+        module.foreman_params['entity'] = module.find_resource(
+            'bookmarks',
+            search='name="{0}",controller="{1}"'.format(module_params['name'], module_params['controller']),
+            failsafe=True,
+        )
+        module.foreman_spec['entity']['resolved'] = True
+        module.cycle()
 
 
 if __name__ == '__main__':

@@ -100,13 +100,14 @@ def main():
         entity_opts=dict(resolve=False),
         entity_resolve=False,
     )
-    module_params = module.foreman_params
 
     with module.api_connection():
-        _entity, module_params = module.resolve_entities(module_params)
-        compute_attributes = module_params['compute_resource'].get('compute_attributes')
-        entity = next((item for item in compute_attributes if item.get('compute_profile_id') == module_params['compute_profile']['id']), None)
-        module.run(module_params=module_params, entity=entity)
+        compute_attributes = module.lookup_entity('compute_resource').get('compute_attributes')
+        compute_profile_id = module.lookup_entity('compute_profile').get('id')
+        entity = next((item for item in compute_attributes if item.get('compute_profile_id') == compute_profile_id), None)
+        module.foreman_params['entity'] = entity
+        module.foreman_spec['entity']['resolved'] = True
+        module.cycle()
 
 
 if __name__ == '__main__':
