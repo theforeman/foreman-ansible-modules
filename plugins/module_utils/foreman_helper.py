@@ -234,8 +234,8 @@ class ForemanAnsibleModule(AnsibleModule):
             password=dict(required=True, no_log=True),
             validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
         )
-        argument_spec.update(kwargs.pop('argument_spec', {}))
         argument_spec.update(gen_args)
+        argument_spec.update(kwargs.pop('argument_spec', {}))
         supports_check_mode = kwargs.pop('supports_check_mode', True)
 
         self.required_plugins = kwargs.pop('required_plugins', [])
@@ -491,8 +491,8 @@ class ForemanAnsibleModule(AnsibleModule):
             return None
 
         entity_spec = self.foreman_spec[key]
-        if entity_spec.get('resolved'):
-            # Already looked up shortcut
+        if entity_spec.get('resolved') or entity_spec.get('type') not in {'entity', 'entity_list'}:
+            # Already looked up or not an entity(_list) so nothing to do
             return self.foreman_params[key]
 
         resource_type = entity_spec['resource_type']
@@ -505,25 +505,51 @@ class ForemanAnsibleModule(AnsibleModule):
                     params.update(self.scope_for(scope))
         except TypeError:
             if failsafe:
-                entity = None
+                if entity_spec.get('type') == 'entity':
+                    result = None
+                else:
+                    result = [None for value in self.foreman_params[key]]
             else:
-                raise
+                self.fail_json(msg="Failed to lookup scope {0} while searching for {1}.".format(entity_spec['scope'], resource_type))
         else:
+            # No exception happend => scope is in place
             if resource_type == 'operatingsystems':
-                entity = self.find_operatingsystem(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                if entity_spec.get('type') == 'entity':
+                    result = self.find_operatingsystem(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                else:
+                    result = [self.find_operatingsystem(value, params=params, failsafe=failsafe, thin=thin) for value in self.foreman_params[key]]
             elif resource_type == 'puppetclasses':
-                entity = self.find_puppetclass(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                if entity_spec.get('type') == 'entity':
+                    result = self.find_puppetclass(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                else:
+                    result = [self.find_puppetclass(value, params=params, failsafe=failsafe, thin=thin) for value in self.foreman_params[key]]
             else:
-                entity = self.find_resource_by(
-                    resource_type,
-                    entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
-                    self.foreman_params[key],
-                    search_operator=entity_spec.get('search_operator', '='),
-                    failsafe=failsafe, thin=thin, params=params,
-                )
-        self.foreman_params[key] = entity
+                if entity_spec.get('type') == 'entity':
+                    result = self.find_resource_by(
+                        resource=resource_type,
+                        value=self.foreman_params[key],
+                        search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
+                        search_operator=entity_spec.get('search_operator', '='),
+                        failsafe=failsafe, thin=thin, params=params,
+                    )
+                else:
+                    result = [self.find_resource_by(
+                        resource=resource_type,
+                        value=value,
+                        search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
+                        search_operator=entity_spec.get('search_operator', '='),
+                        failsafe=failsafe, thin=thin, params=params,
+                    ) for value in self.foreman_params[key]]
+        self.foreman_params[key] = result
         entity_spec['resolved'] = True
-        return entity
+        return result
+
+    def auto_lookup_entities(self):
+        return [
+            self.lookup_entity(key)
+            for key, entity_spec in self.foreman_spec.items()
+            if entity_spec.get('resolve', True) and entity_spec.get('type') in {'entity', 'entity_list'}
+        ]
 
     def record_before(self, resource, entity):
         self._before[resource].append(entity)
@@ -883,6 +909,34 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         params = {}
         if self.entity_scope:
             params['{0}_id'.format(self.entity_scope[0])] = module_params[self.entity_scope[0]]['id']
+        new_entity = self.ensure_entity(self._entity_resource_name, module_params, entity, params=params)
+        new_entity = self.remove_sensitive_fields(new_entity)
+
+        if new_entity and 'parameters' in module_params:
+            if 'parameters' in self.foreman_spec and self.foreman_spec['parameters'].get('type') == 'nested_list':
+                scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
+                self.ensure_scoped_parameters(scope, entity, module_params.get('parameters'))
+
+        return new_entity
+
+    def cycle(self):
+        """ lookup entities, ensure entity, remove sensitive data, manage parameters.
+            Like 'run', just faster and more convenient...
+        """
+        module_params = self.foreman_params
+        if not self.desired_absent:
+            self.auto_lookup_entities()
+        entity = self.lookup_entity('entity')
+
+        if not self.desired_absent:
+            updated_key = "updated_" + self.entity_key
+            if entity and updated_key in module_params:
+                module_params[self.entity_key] = module_params.pop(updated_key)
+
+        params = {}
+        if self.entity_scope:
+            for scope in self.entity_scope:
+                params.update(self.scope_for(scope))
         new_entity = self.ensure_entity(self._entity_resource_name, module_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 

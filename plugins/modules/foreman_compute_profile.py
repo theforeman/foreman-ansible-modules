@@ -169,7 +169,7 @@ def main():
     compute_attributes = module_params.pop('compute_attributes', None)
 
     with module.api_connection():
-        entity = module.run(module_params=module_params)
+        entity = module.cycle()
 
         # Apply changes on underlying compute attributes only when present
         if entity and module.state == 'present' and compute_attributes is not None:

@@ -356,11 +356,11 @@ def main():
                     module_params['provider'], list(provider_params.keys())))
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities(module_params=module_params)
+        entity = module.lookup_entity('entity')
         if not module.desired_absent and 'provider' not in module_params and entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-        module.run(module_params=module_params, entity=entity)
+        module.cycle()
 
 
 if __name__ == '__main__':

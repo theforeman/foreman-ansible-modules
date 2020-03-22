@@ -105,8 +105,10 @@ def main():
     module = ForemanEntityAnsibleModule(
         foreman_spec=dict(
             name=dict(aliases=['hostname'], required=True),
-            state=dict(default='state', choices=['on', 'start', 'off', 'stop', 'soft', 'reboot', 'cycle', 'reset', 'state', 'status']),
         ),
+        argument_spec=dict(
+            state=dict(default='state', choices=['on', 'start', 'off', 'stop', 'soft', 'reboot', 'cycle', 'reset', 'state', 'status']),
+        )
     )
 
     module_params = module.foreman_params

@@ -199,6 +199,7 @@ def main():
         argument_spec=dict(
             puppetclass_name=dict(required=True),
             parameter=dict(required=True),
+            state=dict(default='present', choices=['present_with_defaults', 'present']),
         ),
         foreman_spec=dict(
             parameter_type=dict(choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json', 'none']),
@@ -217,7 +218,6 @@ def main():
             # tried nested_list here but, if using nested_list, override_values are not part of loaded entity.
             # override_values=dict(type='nested_list', elements='dict', foreman_spec=override_value_foreman_spec),
             override_values=dict(type='list', elements='dict'),
-            state=dict(default='present', choices=['present_with_defaults', 'present']),
         ),
         # smart_class_parameters are created on puppetclass import and cannot be created/deleted from API,
         # so if we don't find it, it's an error.

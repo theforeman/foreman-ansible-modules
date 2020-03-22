@@ -116,6 +116,8 @@ def main():
             sync_date=dict(required=True),
             cron_expression=dict(),
             products=dict(type='entity_list', scope=['organization'], resolve=False),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=[

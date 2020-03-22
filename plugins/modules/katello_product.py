@@ -123,12 +123,14 @@ def main():
             ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             sync_plan=dict(type='entity', scope=['organization']),
             description=dict(),
+        ),
+        argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
     )
 
     with module.api_connection():
-        module.run()
+        module.cycle()
 
 
 if __name__ == '__main__':
