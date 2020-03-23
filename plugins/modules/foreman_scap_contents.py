@@ -114,7 +114,7 @@ def main():
         argument_spec=dict(
             updated_title=dict(type='str'),
         ),
-        entity_spec=dict(
+        foreman_spec=dict(
             title=dict(type='str', required=True),
             original_filename=dict(type='str', required=False),
             scap_file=dict(type='str'),
