@@ -49,6 +49,7 @@ options:
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
+  - foreman.nested_parameters
 '''
 
 EXAMPLES = '''
@@ -95,7 +96,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_foreman_spec
 
 
 class ForemanLocationModule(ForemanEntityAnsibleModule):
@@ -108,6 +109,7 @@ def main():
             name=dict(required=True),
             parent=dict(type='entity'),
             organizations=dict(type='entity_list'),
+            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
     )
 

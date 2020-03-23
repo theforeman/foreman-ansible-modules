@@ -63,4 +63,69 @@
         organization_name: "ÄCMÈ"
         organization_state: absent
         expected_change: true
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+        expected_change: true
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+        expected_change: false
+    - include: tasks/organization.yml
+      vars:
+        organization_parameters:
+          - name: my_param
+            value: my value
+          - name: my_param2
+            parameter_type: string
+            value: my other value
+          - name: my_param3
+            parameter_type: array
+            value:
+              - array
+              - value
+        organization_state: present
+        expected_change: true
+    - include: tasks/organization.yml
+      vars:
+        organization_parameters:
+          - name: my_param
+            value: my value
+          - name: my_param2
+            parameter_type: string
+            value: my other value
+          - name: my_param3
+            parameter_type: array
+            value:
+              - array
+              - value
+        organization_state: present
+        expected_change: false
+    - include: tasks/organization.yml
+      vars:
+        organization_parameters:
+          - name: my_param
+            value: my value
+        organization_state: present
+        expected_change: true
+    - include: tasks/organization.yml
+      vars:
+        organization_parameters:
+          - name: my_param
+            value: my value
+        organization_state: present
+        expected_change: false
+    - include: tasks/organization.yml
+      vars:
+        organization_parameters: []
+        organization_state: present
+        expected_change: true
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+        expected_change: false
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+        expected_change: true
 ...
