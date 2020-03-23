@@ -10,6 +10,7 @@
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ organization_name }}"
     description: "{{ organization_description }}"
+    parameters: "{{ organization_parameters | default(omit) }}"
     label: "{{ organization_label | default(omit) }}"
     state: "{{ organization_state }}"
   register: result

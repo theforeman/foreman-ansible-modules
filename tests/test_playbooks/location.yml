@@ -116,6 +116,71 @@
         location_state: absent
         location_name: Test Location
         expected_change: true
+    - include: tasks/location.yml
+      vars:
+        location_state: present
+        expected_change: true
+    - include: tasks/location.yml
+      vars:
+        location_state: present
+        expected_change: false
+    - include: tasks/location.yml
+      vars:
+        location_parameters:
+          - name: my_param
+            value: my value
+          - name: my_param2
+            parameter_type: string
+            value: my other value
+          - name: my_param3
+            parameter_type: array
+            value:
+              - array
+              - value
+        location_state: present
+        expected_change: true
+    - include: tasks/location.yml
+      vars:
+        location_parameters:
+          - name: my_param
+            value: my value
+          - name: my_param2
+            parameter_type: string
+            value: my other value
+          - name: my_param3
+            parameter_type: array
+            value:
+              - array
+              - value
+        location_state: present
+        expected_change: false
+    - include: tasks/location.yml
+      vars:
+        location_parameters:
+          - name: my_param
+            value: my value
+        location_state: present
+        expected_change: true
+    - include: tasks/location.yml
+      vars:
+        location_parameters:
+          - name: my_param
+            value: my value
+        location_state: present
+        expected_change: false
+    - include: tasks/location.yml
+      vars:
+        location_parameters: []
+        location_state: present
+        expected_change: true
+    - include: tasks/location.yml
+      vars:
+        location_state: present
+        expected_change: false
+    - include: tasks/location.yml
+      vars:
+        location_state: absent
+        expected_change: true
 
 - hosts: localhost
   gather_facts: false
