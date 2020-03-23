@@ -142,9 +142,9 @@ def main():
         if 'organizations' in entity_dict:
             entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    changed = module.ensure_entity_state('scap_contents', entity_dict, entity)
+    module.ensure_entity('scap_contents', entity_dict, entity)
 
-    module.exit_json(changed=changed, entity_dict=entity_dict)
+    module.exit_json()
 
 
 if __name__ == '__main__':
