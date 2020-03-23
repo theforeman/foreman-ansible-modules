@@ -10,9 +10,9 @@
     title: "{{ title }}"
     updated_title: "{{ updated_title | default(omit) }}"
     scap_file: "{{ content_of_scap_file | default(omit) }}"
-    original_filename: "{{ original_filename }}"
-    locations: "{{ locations }}"
-    organizations: "{{ organizations }}"
+    original_filename: "{{ original_filename | default(omit) }}"
+    locations: "{{ locations | default(omit) }}"
+    organizations: "{{ organizations | default(omit) }}"
     state: "{{ scap_content_state }}"
   register: result
 - assert:
