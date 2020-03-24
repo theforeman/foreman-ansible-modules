@@ -35,18 +35,25 @@ author:
   - "Jameer Pathan (@jameerpathan111)"
 options:
   title:
-    description: Title of SCAP content.
+    description:
+      - Title of SCAP content.
     required: true
     type: str
   updated_title:
-    description: New SCAP content name. When this parameter is set, the module will not be idempotent.
+    description:
+      - New SCAP content name.
+      - When this parameter is set, the module will not be idempotent.
     type: str
   scap_file:
-    description: XML containing SCAP content. Required when creating SCAP content.
+    description:
+      - XML containing SCAP content.
+      - Required when creating SCAP content.
+      - When this parameter is set, the module will not be idempotent.
     required: false
     type: str
   original_filename:
-    description: Original file name of the XML file
+    description:
+      - Original file name of the XML file
     required: false
     type: str
 extends_documentation_fragment:
