@@ -7,12 +7,12 @@
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
-    title: "{{ title }}"
-    updated_title: "{{ updated_title | default(omit) }}"
-    scap_file: "{{ content_of_scap_file | default(omit) }}"
-    original_filename: "{{ original_filename | default(omit) }}"
-    locations: "{{ locations | default(omit) }}"
-    organizations: "{{ organizations | default(omit) }}"
+    title: "{{ scap_content_title }}"
+    updated_title: "{{ scap_content_updated_title | default(omit) }}"
+    scap_file: "{{ scap_content_scap_file | default(omit) }}"
+    original_filename: "{{ scap_content_original_filename | default(omit) }}"
+    locations: "{{ scap_content_locations | default(omit) }}"
+    organizations: "{{ scap_content_organizations | default(omit) }}"
     state: "{{ scap_content_state }}"
   register: result
 - assert:

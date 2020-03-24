@@ -12,7 +12,7 @@
         location_state: "present"
     - include_tasks: tasks/scap_content.yml
       vars:
-        title: "{{ item }}"
+        scap_content_title: "{{ item }}"
         scap_content_state: "absent"
       loop:
         - scap_content_title
@@ -26,48 +26,48 @@
     - name: import scap content
       include_tasks: tasks/scap_content.yml
       vars:
-        title: "scap_content_title"
-        content_of_scap_file: "{{ lookup('file', 'data/ssg-firefox-ds.xml') }}"
-        original_filename: "scap_file_name.xml"
-        locations:
+        scap_content_title: "scap_content_title"
+        scap_content_scap_file: "{{ lookup('file', 'data/ssg-firefox-ds.xml') }}"
+        scap_content_original_filename: "scap_file_name.xml"
+        scap_content_locations:
           - Test Location
-        organizations:
+        scap_content_organizations:
           - Test Organization
         scap_content_state: "present"
         expected_change: true
     - name: rename scap content
       include_tasks: tasks/scap_content.yml
       vars:
-        title: "scap_content_title"
-        updated_title: "updated_scap_content_title"
-        original_filename: "updated_scap_file_name.xml"
-        locations:
+        scap_content_title: "scap_content_title"
+        scap_content_updated_title: "updated_scap_content_title"
+        scap_content_original_filename: "updated_scap_file_name.xml"
+        scap_content_locations:
           - Test Location
-        organizations:
+        scap_content_organizations:
           - Test Organization
         scap_content_state: "present"
         expected_change: true
-    - name: rename scap content again, no change
+    - name: ensure the renamed scap content has all the data, no change
       include_tasks: tasks/scap_content.yml
       vars:
-        title: "updated_scap_content_title"
-        original_filename: "updated_scap_file_name.xml"
-        locations:
+        scap_content_title: "updated_scap_content_title"
+        scap_content_original_filename: "updated_scap_file_name.xml"
+        scap_content_locations:
           - Test Location
-        organizations:
+        scap_content_organizations:
           - Test Organization
         scap_content_state: "present"
         expected_change: false
     - name: delete scap content
       include_tasks: tasks/scap_content.yml
       vars:
-        title: "updated_scap_content_title"
+        scap_content_title: "updated_scap_content_title"
         scap_content_state: "absent"
         expected_change: true
     - name: delete scap content again, no change
       include_tasks: tasks/scap_content.yml
       vars:
-        title: "updated_scap_content_title"
+        scap_content_title: "updated_scap_content_title"
         scap_content_state: "absent"
         expected_change: false
 
@@ -78,7 +78,7 @@
   tasks:
     - include_tasks: tasks/scap_content.yml
       vars:
-        title: "{{ item }}"
+        scap_content_title: "{{ item }}"
         scap_content_state: "absent"
       loop:
         - scap_content_title
