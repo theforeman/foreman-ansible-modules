@@ -125,27 +125,24 @@ def main():
 
     entity_dict = module.clean_params()
 
-    module.connect()
+    with module.api_connection():
 
-    entity = module.find_scapcontent(entity_dict['title'], failsafe=True)
+        entity = module.find_scapcontent(entity_dict['title'], failsafe=True)
 
-    if not module.desired_absent:
-        if entity and 'updated_title' in entity_dict:
-            entity_dict['title'] = entity_dict.pop('updated_title')
+        if not module.desired_absent:
+            if entity and 'updated_title' in entity_dict:
+                entity_dict['title'] = entity_dict.pop('updated_title')
 
-        if not entity and 'scap_file' not in entity_dict:
-            module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
+            if not entity and 'scap_file' not in entity_dict:
+                module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
 
-        if 'locations' in entity_dict:
-            entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
+            if 'locations' in entity_dict:
+                entity_dict['locations'] = module.find_resources_by_title('locations', entity_dict['locations'], thin=True)
 
-        if 'organizations' in entity_dict:
-            entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
+            if 'organizations' in entity_dict:
+                entity_dict['organizations'] = module.find_resources_by_name('organizations', entity_dict['organizations'], thin=True)
 
-    module.ensure_entity('scap_contents', entity_dict, entity)
-
-    module.exit_json()
-
+        module.ensure_entity('scap_contents', entity_dict, entity)
 
 if __name__ == '__main__':
     main()
