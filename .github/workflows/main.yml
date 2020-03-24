@@ -50,6 +50,9 @@ jobs:
         run: make test-setup
       - name: fake redhat-uep.pem for redhat_manifest module
         run: sudo mkdir -p /etc/rhsm/ca/ && sudo touch /etc/rhsm/ca/redhat-uep.pem
+      - name: Install Ansible devel specific dependencies
+        run: ansible-galaxy collection install community.general
+        if: matrix.ansible == 'devel'
       - name: Run basic tests
         run: make test-crud test-other
       - name: Run Ansible devel specific tests
