@@ -49,21 +49,10 @@ options:
     description: Original file name of the XML file
     required: false
     type: str
-  locations:
-    description: List of locations the SCAP content should be assigned to
-    required: false
-    type: list
-  organizations:
-    description: List of organizations the SCAP content should be assigned to
-    required: false
-    type: list
-  state:
-    description: SCAP content presence
-    default: present
-    choices: ["present", "absent"]
-    type: str
 extends_documentation_fragment:
   - foreman
+  - foreman.entity_state
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -107,10 +96,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
-class ForemanScapContentModule(ForemanEntityAnsibleModule):
+class ForemanScapContentModule(ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -123,8 +112,6 @@ def main():
             title=dict(type='str', required=True),
             original_filename=dict(type='str', required=False),
             scap_file=dict(type='str'),
-            organizations=dict(type='entity_list'),
-            locations=dict(type='entity_list'),
         ),
         entity_key='title'
     )
