@@ -118,8 +118,8 @@ def main():
             title=dict(type='str', required=True),
             original_filename=dict(type='str', required=False),
             scap_file=dict(type='str'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
+            organizations=dict(type='entity_list'),
+            locations=dict(type='entity_list'),
         ),
     )
 
