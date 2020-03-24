@@ -108,8 +108,10 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
+
 class ForemanScapContentModule(ForemanEntityAnsibleModule):
     pass
+
 
 def main():
     module = ForemanScapContentModule(
