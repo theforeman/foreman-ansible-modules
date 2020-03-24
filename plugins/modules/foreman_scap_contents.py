@@ -127,10 +127,14 @@ def main():
     )
 
     with module.api_connection():
-        module.run()
+        entity, module_params = module.resolve_entities()
 
-        #if not entity and 'scap_file' not in entity_dict:
-        #     module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
+        if not module.desired_absent:
+            if not entity and 'scap_file' not in module_params:
+                module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
+
+        module.run(module_params=module_params, entity=entity)
+
 
 if __name__ == '__main__':
     main()
