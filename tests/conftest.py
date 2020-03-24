@@ -46,7 +46,7 @@ TEST_PLAYBOOKS = [
     'role',
     'scc_account',
     'scc_product',
-    'scap_contents',
+    'scap_content',
     'search_facts',
     'setting',
     'smart_class_parameter',

@@ -57,7 +57,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP content
-  foreman_scap_contents:
+  foreman_scap_content:
     title: "Red Hat firefox default content"
     scap_file: "{{ lookup('file', '/home/user/Downloads/ssg-firefox-ds.xml') }}"
     original_filename: "ssg-firefox-ds.xml"
@@ -70,7 +70,7 @@ EXAMPLES = '''
     password: "secret"
     state: present
 - name: Update SCAP content
-  foreman_scap_contents:
+  foreman_scap_content:
     title: "Red Hat firefox default content"
     updated_title: "Updated scap content title"
     scap_file: "{{ lookup('file', '/home/user/Downloads/updated-ssg-firefox-ds.xml') }}"
@@ -86,7 +86,7 @@ EXAMPLES = '''
     password: "secret"
     state: present
 - name: Delete SCAP content
-  foreman_scap_contents:
+  foreman_scap_content:
     title: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"
