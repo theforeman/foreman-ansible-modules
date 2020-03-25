@@ -107,14 +107,14 @@ def main():
     module = ForemanLocationModule(
         foreman_spec=dict(
             name=dict(required=True),
-            parent=dict(type='entity'),
+            parent=dict(type='entity', resource_type='locations'),
             organizations=dict(type='entity_list'),
             parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
     )
 
     with module.api_connection():
-        module.run()
+        module.cycle()
 
 
 if __name__ == '__main__':

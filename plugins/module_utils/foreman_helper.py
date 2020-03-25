@@ -876,7 +876,18 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                 **self.entity_opts
             ),
         ))[0])
-        self.foreman_params['entity'] = self.foreman_params.get(self.entity_key)
+        if 'parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity':
+            current, parent = split_fqn(self.foreman_params[self.entity_key])
+            if isinstance(self.foreman_params.get('parent'), six.string_types):
+                if parent:
+                    self.fail_json(msg="Please specify the parent either separately, or as part of the title.")
+                parent = self.foreman_params['parent']
+            elif parent:
+                self.foreman_params['parent'] = parent
+            self.foreman_params[self.entity_key] = current
+            self.foreman_params['entity'] = build_fqn(current, parent)
+        else:
+            self.foreman_params['entity'] = self.foreman_params.get(self.entity_key)
 
     @property
     def entity_name_from_class(self):
@@ -923,27 +934,30 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         """ lookup entities, ensure entity, remove sensitive data, manage parameters.
             Like 'run', just faster and more convenient...
         """
-        module_params = self.foreman_params
+        if ('parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity'
+                and self.desired_absent and 'parent' in self.foreman_params and self.lookup_entity('parent') is None):
+            # Parent does not exist so just exit here
+            return None
         if not self.desired_absent:
             self.auto_lookup_entities()
         entity = self.lookup_entity('entity')
 
         if not self.desired_absent:
             updated_key = "updated_" + self.entity_key
-            if entity and updated_key in module_params:
-                module_params[self.entity_key] = module_params.pop(updated_key)
+            if entity and updated_key in self.foreman_params:
+                self.foreman_params[self.entity_key] = self.foreman_params.pop(updated_key)
 
         params = {}
         if self.entity_scope:
             for scope in self.entity_scope:
                 params.update(self.scope_for(scope))
-        new_entity = self.ensure_entity(self._entity_resource_name, module_params, entity, params=params)
+        new_entity = self.ensure_entity(self._entity_resource_name, self.foreman_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
-        if new_entity and 'parameters' in module_params:
+        if new_entity and 'parameters' in self.foreman_params:
             if 'parameters' in self.foreman_spec and self.foreman_spec['parameters'].get('type') == 'nested_list':
                 scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
-                self.ensure_scoped_parameters(scope, entity, module_params.get('parameters'))
+                self.ensure_scoped_parameters(scope, entity, self.foreman_params.get('parameters'))
 
         return new_entity
 
