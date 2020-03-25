@@ -48,7 +48,6 @@ options:
     description:
       - XML containing SCAP content.
       - Required when creating SCAP content.
-      - When this parameter is set, the module will not be idempotent.
     required: false
     type: str
   original_filename:
@@ -103,6 +102,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
+import hashlib
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
@@ -130,6 +130,11 @@ def main():
         if not module.desired_absent:
             if not entity and 'scap_file' not in module_params:
                 module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
+
+            if entity and 'scap_file' in module_params:
+                digest = hashlib.sha256(module_params['scap_file'].encode("utf-8")).hexdigest()
+                if entity['digest'] == digest:
+                    module_params.pop('scap_file')
 
         module.run(module_params=module_params, entity=entity)
 
