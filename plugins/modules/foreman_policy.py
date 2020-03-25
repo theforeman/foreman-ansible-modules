@@ -37,8 +37,18 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 from calendar import day_name
 from locale import setlocale, LC_ALL
 
+
 class ForemanPolicyModule(ForemanTaxonomicEntityAnsibleModule):
-    pass
+    def ensure_profile(self, search_by, res_type, res_profiles, looking_for):
+        method_to_call = getattr(self, 'find_resource_by_' + search_by)
+        resource = method_to_call(res_type, self.params[res_type[:-1]])
+        for profile in resource[res_profiles]:
+            if profile['title'] == self.params[res_type[:-1] + '_profile']:
+                return profile['id']
+        self.fail_json(msg="Can not find {0} profile ({1}) "
+                             "for the the given ({2}) {0}.".format(looking_for,
+                                                                   self.params[res_type[:-1] + '_profile'],
+                                                                   self.params[res_type[:-1]]))
 
 
 def main():
@@ -64,37 +74,26 @@ def main():
             ['period', 'monthly', ['day_of_month']],
             ['period', 'custom', ['cron_line']],
         ],
+        required_together=[
+            ['tailoring_file', 'tailoring_file_profile'],
+            ['scap_content', 'scap_content_profile'],
+        ],
         required_plugins=[
-            ('openscap', ['openscap_proxy']),
+            ('openscap', ['*']),
         ],
     )
 
-    # import pydevd_pycharm
-    # pydevd_pycharm.settrace('localhost', port=8090, stdoutToServer=True, stderrToServer=True)
     with module.api_connection():
         entity, module_params = module.resolve_entities()
         if not module.desired_absent:
-            scap_content_updated = False
-            scap_content = module.find_resource_by_title('scap_contents', module.params['scap_content'])
-            for profile in scap_content['scap_content_profiles']:
-                if profile['title'] == module_params['scap_content_profile']:
-                    module_params['scap_content_profile'] = profile['id']
-                    scap_content_updated = True
-                    break
-            if not scap_content_updated:
-                module.fail_json(msg="Can not find SCAP profile ({0}) for the the given ({1}) SCAP content.".format(
-                    module_params['scap_content_profile'], module.params['scap_content']))
-            tailoring_file_updated = False
-            tailoring_file = module.find_resource_by_name('tailoring_files', module.params['tailoring_file'])
-            for profile in tailoring_file['tailoring_file_profiles']:
-                if profile['title'] == module_params['tailoring_file_profile']:
-                    module_params['tailoring_file_profile'] = profile['id']
-                    tailoring_file_updated = True
-                    break
-            if not tailoring_file_updated:
-                module.fail_json(
-                    msg="Can not find Tailoring file profile ({0}) for the the given ({1}) Tailoring file.".format(
-                        module_params['tailoring_file_profile'], module.params['tailoring_file']))
+            if 'scap_content_profile' in module_params:
+                module_params['scap_content_profile'] = module.ensure_profile('title', 'scap_contents',
+                                                                              'scap_content_profiles',
+                                                                              'SCAP content')
+            if 'tailoring_file' in module_params:
+                module_params['tailoring_file_profile'] = module.ensure_profile('name', 'tailoring_files',
+                                                                                'tailoring_file_profiles',
+                                                                                'Tailoring file')
         module.run(module_params=module_params, entity=entity)
 
 
