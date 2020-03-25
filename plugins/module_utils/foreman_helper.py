@@ -427,6 +427,17 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return self._resource_call(resource, 'show', params)
 
+    @_exception2fail_json(msg='Failed to fetch resource: {0}')
+    def fetch_resource(self, resource, params=None):
+        if params is None:
+            params = {}
+        else:
+            params = params.copy()
+
+        params = self._resource_prepare_params(resource, 'fetch', params)
+
+        return self._resource_call(resource, 'fetch', params)
+
     @_exception2fail_json(msg='Failed to list resource: {0}')
     def list_resource(self, resource, search=None, params=None):
         if params is None:
