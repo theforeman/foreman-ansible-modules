@@ -120,7 +120,8 @@ def main():
             original_filename=dict(type='str', required=False),
             scap_file=dict(type='str'),
         ),
-        entity_key='title'
+        entity_key='title',
+        required_plugins=[('openscap', ['*'])],
     )
 
     with module.api_connection():
