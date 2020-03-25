@@ -39,7 +39,7 @@ options:
     type: str
   updated_title:
     description:
-      - New SCAP content name.
+      - New SCAP content title.
       - When this parameter is set, the module will not be idempotent.
     type: str
   scap_file:
@@ -47,10 +47,11 @@ options:
       - XML containing SCAP content.
       - Required when creating SCAP content.
     required: false
-    type: str
+    type: path
   original_filename:
     description:
-      - Original file name of the XML file
+      - Original file name of the XML file.
+      - If unset, the filename of I(scap_file) will be used.
     required: false
     type: str
 extends_documentation_fragment:
@@ -63,7 +64,7 @@ EXAMPLES = '''
 - name: Create SCAP content
   foreman_scap_content:
     title: "Red Hat firefox default content"
-    scap_file: "{{ lookup('file', '/home/user/Downloads/ssg-firefox-ds.xml') }}"
+    scap_file: "/home/user/Downloads/ssg-firefox-ds.xml"
     original_filename: "ssg-firefox-ds.xml"
     organizations:
       - "Default Organization"
@@ -73,11 +74,12 @@ EXAMPLES = '''
     username: "admin"
     password: "secret"
     state: present
+
 - name: Update SCAP content
   foreman_scap_content:
     title: "Red Hat firefox default content"
     updated_title: "Updated scap content title"
-    scap_file: "{{ lookup('file', '/home/user/Downloads/updated-ssg-firefox-ds.xml') }}"
+    scap_file: "/home/user/Downloads/updated-ssg-firefox-ds.xml"
     original_filename: "updated-ssg-firefox-ds.xml"
     organizations:
       - "Org One"
@@ -89,6 +91,7 @@ EXAMPLES = '''
     username: "admin"
     password: "secret"
     state: present
+
 - name: Delete SCAP content
   foreman_scap_content:
     title: "Red Hat firefox default content"
@@ -101,6 +104,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import hashlib
+import os
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
@@ -115,8 +119,8 @@ def main():
         ),
         foreman_spec=dict(
             title=dict(type='str', required=True),
-            original_filename=dict(type='str', required=False),
-            scap_file=dict(type='str'),
+            original_filename=dict(type='str'),
+            scap_file=dict(type='path'),
         ),
         entity_key='title',
         required_plugins=[('openscap', ['*'])],
@@ -129,10 +133,19 @@ def main():
             if not entity and 'scap_file' not in module_params:
                 module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
 
+            if 'scap_file' in module_params:
+                with open(module_params['scap_file']) as input_file:
+                    module_params['scap_file'] = input_file.read()
+
             if entity and 'scap_file' in module_params:
                 digest = hashlib.sha256(module_params['scap_file'].encode("utf-8")).hexdigest()
-                if entity['digest'] == digest:
+                # workaround for https://projects.theforeman.org/issues/29409
+                digest_stripped = hashlib.sha256(module_params['scap_file'].strip().encode("utf-8")).hexdigest()
+                if entity['digest'] in [digest, digest_stripped]:
                     module_params.pop('scap_file')
+
+            if 'scap_file' in module_params and 'original_filename' not in module_params:
+                module_params['original_filename'] = os.path.basename(module_params['scap_file'])
 
         module.run(module_params=module_params, entity=entity)
 
