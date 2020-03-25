@@ -1,0 +1,110 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/policy.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ policy.organization }}"
+        organization_state: present
+  - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ policy.location }}"
+        location_organizations:
+          - "{{ policy.organization }}"
+        location_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ policy.hostgroup }}"
+        hostgroup_locations:
+          - "{{ policy.location }}"
+        hostgroup_organizations:
+          - "{{ policy.organization }}"
+        hostgroup_state: present
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "{{ policy.host_name }}"
+        host_organization: "{{ policy.organization }}"
+        host_location: "{{ policy.location }}"
+        host_managed: false
+        host_state: present
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ policy.scap_content_title }}"
+        scap_content_scap_file: "{{ policy.scap_content_scap_file }}"
+        scap_content_locations:
+          - "{{ policy.location }}"
+        scap_content_organizations:
+          - "{{ policy.organization }}"
+        scap_content_state: present
+    - include_tasks: tasks/tailoring_file.yml
+      vars:
+        tailoring_file_name: "{{ policy.tailoring_file_name }}"
+        tailoring_file_scap_file: "{{ policy.tailoring_file_scap_file }}"
+        tailoring_file_locations:
+          - "{{ policy.location }}"
+        scap_content_organizations:
+          - "{{ policy.organization }}"
+        scap_content_state: present
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: 'Test policy'
+      block:
+        - include: tasks/policy.yml
+          vars:
+            policy_state: present
+            expected_change: true
+        - include: tasks/policy.yml
+          vars:
+            policy_state: present
+            expected_change: false
+        - include: tasks/policy.yml
+          vars:
+            policy_description: 'A policy with an updated description'
+            policy_state: present
+            expected_change: true
+        - include: tasks/policy.yml
+          vars:
+            policy_state: absent
+            expected_change: true
+        - include: tasks/policy.yml
+          vars:
+            policy_state: absent
+            expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ policy.organization }}"
+        organization_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ policy.location }}"
+        location_state: absent
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ policy.hostgroup }}"
+        hostgroup_state: absent
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "{{ policy.host_name }}"
+        host_state: absent
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ policy.scap_content_title }}"
+        scap_content_state: absent
+    - include_tasks: tasks/tailoring_file.yml
+      vars:
+        tailoring_file_name: "{{ policy.tailoring_file_name }}"
+        scap_content_state: absent
+...

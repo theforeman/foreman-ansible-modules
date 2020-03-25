@@ -37,6 +37,7 @@ TEST_PLAYBOOKS = [
     'operatingsystem',
     'organization',
     'os_default_template',
+    'policy',
     'product',
     'provisioning_template',
     'ptable',
