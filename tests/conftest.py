@@ -48,6 +48,7 @@ TEST_PLAYBOOKS = [
     'scc_account',
     'scc_product',
     'scap_content',
+    'scap_tailoring_file',
     'search_facts',
     'setting',
     'smart_class_parameter',

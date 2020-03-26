@@ -1,0 +1,23 @@
+---
+- name: "Create/Update/Delete tailoring file."
+  vars:
+    scap_tailoring_file_state: "present"
+  foreman_scap_tailoring_file:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ scap_tailoring_file_name }}"
+    updated_name: "{{ scap_tailoring_file_updated_name | default(omit) }}"
+    scap_file: "{{ scap_tailoring_file_scap_file | default(omit) }}"
+    original_filename: "{{ scap_tailoring_file_original_filename | default(omit) }}"
+    locations: "{{ scap_tailoring_file_locations | default(omit) }}"
+    organizations: "{{ scap_tailoring_file_organizations | default(omit) }}"
+    state: "{{ scap_tailoring_file_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring tailoring file is {{ scap_tailoring_file_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
