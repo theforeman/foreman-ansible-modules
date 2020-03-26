@@ -107,7 +107,7 @@ def main():
     module = ForemanLocationModule(
         foreman_spec=dict(
             name=dict(required=True),
-            parent=dict(type='entity', resource_type='locations'),
+            parent=dict(type='entity'),
             organizations=dict(type='entity_list'),
             parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),

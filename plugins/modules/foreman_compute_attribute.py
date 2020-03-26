@@ -105,8 +105,7 @@ def main():
         compute_attributes = module.lookup_entity('compute_resource').get('compute_attributes')
         compute_profile_id = module.lookup_entity('compute_profile').get('id')
         entity = next((item for item in compute_attributes if item.get('compute_profile_id') == compute_profile_id), None)
-        module.foreman_params['entity'] = entity
-        module.foreman_spec['entity']['resolved'] = True
+        module.set_entity('entity', entity)
         module.cycle()
 
 

@@ -90,8 +90,7 @@ def main():
             if external_usergroup['name'] == module.foreman_params['name']:
                 entity = external_usergroup
 
-        module.foreman_params['entity'] = entity
-        module.foreman_spec['entity']['resolved'] = True
+        module.set_entity('entity', entity)
         module.auto_lookup_entities()
         module.ensure_entity('external_usergroups', module.foreman_params, entity, params)
 
