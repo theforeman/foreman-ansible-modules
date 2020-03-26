@@ -126,8 +126,6 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.foreman_params
-
     with module.api_connection():
         entity = module.lookup_entity('entity')
 
@@ -135,7 +133,7 @@ def main():
             # Convert values according to their corresponding parameter_type
             if entity and 'parameter_type' not in entity:
                 entity['parameter_type'] = 'string'
-            module_params['value'] = parameter_value_to_str(module_params['value'], module_params['parameter_type'])
+            module.foreman_params['value'] = parameter_value_to_str(module.foreman_params['value'], module.foreman_params['parameter_type'])
             if entity and 'value' in entity:
                 entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 

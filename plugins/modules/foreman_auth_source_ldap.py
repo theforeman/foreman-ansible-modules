@@ -192,10 +192,8 @@ def main():
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
     )
 
-    module_params = module.foreman_params
-
     # additional parameter checks
-    if 'use_netgroups' in module_params and module_params['server_type'] == 'active_directory':
+    if 'use_netgroups' in module.foreman_params and module.foreman_params['server_type'] == 'active_directory':
         module.fail_json(msg='use_netgroups cannot be used when server_type=active_directory')
 
     with module.api_connection():

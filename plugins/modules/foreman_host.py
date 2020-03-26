@@ -195,34 +195,33 @@ def main():
         ],
     )
 
-    module_params = module.foreman_params
-
     # additional param validation
-    if '.' not in module_params['name']:
+    if '.' not in module.foreman_params['name']:
         module.fail_json(msg="The hostname must be FQDN")
 
     if not module.desired_absent:
-        if 'build' in module_params and module_params['build']:
+        if 'build' in module.foreman_params and module.foreman_params['build']:
             # When 'build'=True, 'managed' has to be True. Assuming that user's priority is to build.
-            if 'managed' in module_params and not module_params['managed']:
+            if 'managed' in module.foreman_params and not module.foreman_params['managed']:
                 module.warn("when 'build'=True, 'managed' is ignored and forced to True")
-            module_params['managed'] = True
-        elif 'build' not in module_params and 'managed' in module_params and not module_params['managed']:
+            module.foreman_params['managed'] = True
+        elif 'build' not in module.foreman_params and 'managed' in module.foreman_params and not module.foreman_params['managed']:
             # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
-            module_params['build'] = False
+            module.foreman_params['build'] = False
 
-        if 'mac' in module_params:
-            module_params['mac'] = module_params['mac'].lower()
+        if 'mac' in module.foreman_params:
+            module.foreman_params['mac'] = module.foreman_params['mac'].lower()
 
-        if 'owner' in module_params:
-            module_params['owner_type'] = 'User'
-        elif 'owner_group' in module_params:
-            module_params['owner_type'] = 'Usergroup'
+        if 'owner' in module.foreman_params:
+            module.foreman_params['owner_type'] = 'User'
+        elif 'owner_group' in module.foreman_params:
+            module.foreman_params['owner_type'] = 'Usergroup'
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities(module_params=module_params)
-        expected_puppetclasses = module_params.pop('puppetclasses', None)
-        entity = module.run(module_params=module_params, entity=entity)
+        if not module.desired_absent:
+            module.auto_lookup_entities()
+        expected_puppetclasses = module.foreman_params.pop('puppetclasses', None)
+        entity = module.cycle()
         if not module.desired_absent and 'environment_id' in entity:
             ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
 
