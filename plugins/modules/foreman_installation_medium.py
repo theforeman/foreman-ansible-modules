@@ -99,7 +99,10 @@ def main():
             os_family=dict(choices=OS_LIST),
             path=dict(),
         ),
-        entity_resolve=False,
+        entity_opts=dict(
+            resource_type='media',
+        ),
+        entity_name='medium',
     )
 
     module_params = module.foreman_params
@@ -121,27 +124,25 @@ def main():
 
     with module.api_connection():
         if affects_multiple:
+            module.set_entity('entity', None)  # prevent lookup
             entities = module.list_resource('media')
-            if not module.desired_absent:  # not 'thin'
-                entities = [module.show_resource('media', entity['id']) for entity in entities]
             if not entities:
                 # Nothing to do shortcut to exit
                 module.exit_json()
-        else:
-            entity = module.find_resource_by_name('media', name=module_params['name'], failsafe=True)
-
-        if not module.desired_absent:
-            _entity, module_params = module.resolve_entities(entity=entity)
-            if ('operatingsystems' in module_params and not affects_multiple
-               and len(module_params['operatingsystems']) == 1 and 'os_family' not in module_params and entity is None):
-                module_params['os_family'] = module.show_resource('operatingsystems', module_params['operatingsystems'][0]['id'])['family']
-
-        if not affects_multiple:
-            module.ensure_entity('media', module_params, entity)
-        else:
+            if not module.desired_absent:  # not 'thin'
+                entities = [module.show_resource('media', entity['id']) for entity in entities]
+                module.auto_lookup_entities()
             module_params.pop('name')
             for entity in entities:
                 module.ensure_entity('media', module_params, entity)
+        else:
+            entity = module.lookup_entity('entity')
+            if not module.desired_absent and 'operatingsystems' in module_params:
+                operatingsystems = module.lookup_entity('operatingsystems')
+                if len(operatingsystems) == 1 and 'os_family' not in module_params and entity is None:
+                    module_params['os_family'] = module.show_resource('operatingsystems', operatingsystems[0]['id'])['family']
+
+            module.cycle()
 
 
 if __name__ == '__main__':

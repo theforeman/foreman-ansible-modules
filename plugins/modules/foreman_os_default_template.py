@@ -79,17 +79,17 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
-class ForemanOsDefaultTemplate(ForemanEntityAnsibleModule):
+class ForemanOsDefaultTemplateModule(ForemanEntityAnsibleModule):
     pass
 
 
 def main():
-    module = ForemanOsDefaultTemplate(
+    module = ForemanOsDefaultTemplateModule(
         argument_spec=dict(
-            operatingsystem=dict(required=True),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         foreman_spec=dict(
+            operatingsystem=dict(required=True, type='entity'),
             template_kind=dict(required=True, type='entity'),
             provisioning_template=dict(type='entity', thin=False),
         ),
@@ -97,29 +97,26 @@ def main():
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
-        entity_resolve=False,
+        entity_scope=['operatingsystem'],
     )
 
-    module_params = module.foreman_params
-
-    if 'provisioning_template' in module_params and module.desired_absent:
+    if 'provisioning_template' in module.foreman_params and module.desired_absent:
         module.fail_json(msg='Provisioning template must not be specified for deletion.')
 
     with module.api_connection():
-        module_params['template_kind'] = module.find_resource_by_name('template_kinds', module_params['template_kind'], thin=True)
-        _entity, module_params = module.resolve_entities(module_params)
+        template_kind_id = module.lookup_entity('template_kind')['id']
         if not module.desired_absent:
-            if module_params['provisioning_template']['template_kind_id'] != module_params['template_kind']['id']:
+            if module.lookup_entity('provisioning_template')['template_kind_id'] != template_kind_id:
                 module.fail_json(msg='Provisioning template kind mismatching.')
 
-        module_params['operatingsystem'] = module.find_operatingsystem(module_params['operatingsystem'], thin=True)
-        scope = {'operatingsystem_id': module_params['operatingsystem']['id']}
+        scope = module.scope_for('operatingsystem')
         # Default templates do not support a scoped search
         # see: https://projects.theforeman.org/issues/27722
         entities = module.list_resource('os_default_templates', params=scope)
-        entity = next((item for item in entities if item['template_kind_id'] == module_params['template_kind']['id']), None)
+        entity = next((item for item in entities if item['template_kind_id'] == template_kind_id), None)
+        module.set_entity('entity', entity)
 
-        module.ensure_entity('os_default_templates', module_params, entity, params=scope)
+        module.cycle()
 
 
 if __name__ == '__main__':

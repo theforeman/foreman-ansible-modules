@@ -107,11 +107,10 @@ def main():
     )
 
     with module.api_connection():
-        # TODO Use module.run()
-        entity, module_params = module.resolve_entities()
-        new_entity = module.ensure_entity('roles', module_params, entity)
+        entity = module.lookup_entity('entity')
+        new_entity = module.cycle()
 
-        filters = module_params.get("filters")
+        filters = module.foreman_params.get("filters")
         if not module.desired_absent and filters is not None:
             scope = {'role_id': new_entity['id']}
 

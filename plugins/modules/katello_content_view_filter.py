@@ -172,7 +172,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloAnsibleModule
+from ansible.module_utils.foreman_helper import KatelloAnsibleModule, _foreman_spec_helper
 
 content_filter_spec = {
     'id': {},
@@ -221,15 +221,19 @@ content_filter_rule_docker_spec = {
 }
 
 
+class KatelloContentViewFilterModule(KatelloAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloAnsibleModule(
+    module = KatelloContentViewFilterModule(
         foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
             repositories=dict(type='list', default=[], elements='dict'),
             inclusion=dict(type='bool', default=False),
             original_packages=dict(type='bool'),
-            content_view=dict(required=True),
+            content_view=dict(type='entity', scope=['organization'], required=True),
             filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker']),
             filter_state=dict(default='present', choices=['present', 'absent']),
             rule_state=dict(default='present', choices=['present', 'absent']),
@@ -246,32 +250,39 @@ def main():
         ),
     )
 
-    module_params = module.foreman_params
-    filter_state = module_params.pop('filter_state')
-    rule_state = module_params.pop('rule_state')
+    # TODO Maybe refactor this into a EntityMixin
+    module.foreman_spec.update(_foreman_spec_helper(dict(
+        entity=dict(
+            type='entity', flat_name='id', resource_type='content_view_filters', scope=['content_view'],
+            failsafe=True, thin=False, ensure=False,
+        ),
+    ))[0])
+    module.foreman_params['entity'] = module.foreman_params['name']
 
-    if module_params['filter_type'] == 'erratum':
-        module_params['rule_name'] = None
-    elif 'rule_name' not in module_params:
-        module_params['rule_name'] = module_params['name']
+    filter_state = module.foreman_params.pop('filter_state')
+    rule_state = module.foreman_params.pop('rule_state')
+
+    if module.foreman_params['filter_type'] == 'erratum':
+        module.foreman_params['rule_name'] = None
+    elif 'rule_name' not in module.foreman_params:
+        module.foreman_params['rule_name'] = module.foreman_params['name']
 
     with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
+        scope = module.scope_for('organization')
 
-        module_params['content_view'] = module.find_resource_by_name('content_views', module_params['content_view'], params=scope, thin=True)
-        cv_scope = {'content_view_id': module_params['content_view']['id']}
-        if module_params['repositories']:
+        cv_scope = module.scope_for('content_view')
+        if module.foreman_params['repositories']:
             repositories = []
-            for repo in module_params['repositories']:
+            for repo in module.foreman_params['repositories']:
                 product = module.find_resource_by_name('products', repo['product'], params=scope, thin=True)
                 product_scope = {'product_id': product['id']}
                 repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
-            module_params['repositories'] = repositories
+            module.foreman_params['repositories'] = repositories
 
-        entity = module.find_resource_by_name('content_view_filters', module_params['name'], params=cv_scope, failsafe=True)
+        entity = module.lookup_entity('entity')
         content_view_filter = module.ensure_entity(
             'content_view_filters',
-            module_params,
+            module.foreman_params,
             entity,
             params=cv_scope,
             state=filter_state,
@@ -280,29 +291,29 @@ def main():
 
         if content_view_filter is not None:
             cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
-            if 'errata_id' in module_params:
+            if 'errata_id' in module.foreman_params:
                 # should we try to find the errata the user is asking for? or just pass it blindly?
-                # errata = module.find_resource('errata', 'id={0}'.format(module_params['errata_id']), params=scope)
+                # errata = module.find_resource('errata', 'id={0}'.format(module.foreman_params['errata_id']), params=scope)
                 rule_spec = content_filter_rule_erratum_id_spec
-                search_scope = {'errata_id': module_params['errata_id']}
+                search_scope = {'errata_id': module.foreman_params['errata_id']}
                 search_scope.update(cv_filter_scope)
                 search = None
             else:
-                rule_spec = globals()['content_filter_rule_%s_spec' % (module_params['filter_type'])]
+                rule_spec = globals()['content_filter_rule_%s_spec' % (module.foreman_params['filter_type'])]
                 search_scope = cv_filter_scope
-                if module_params['rule_name'] is not None:
-                    search = 'name="{0}"'.format(module_params['rule_name'])
+                if module.foreman_params['rule_name'] is not None:
+                    search = 'name="{0}"'.format(module.foreman_params['rule_name'])
                 else:
                     search = None
             # not using find_resource_by_name here, because not all filters (errata) have names
             content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
 
-            if module_params['filter_type'] == 'package_group':
-                package_group = module.find_resource_by_name('package_groups', module_params['rule_name'], params=scope)
-                module_params['uuid'] = package_group['uuid']
+            if module.foreman_params['filter_type'] == 'package_group':
+                package_group = module.find_resource_by_name('package_groups', module.foreman_params['rule_name'], params=scope)
+                module.foreman_params['uuid'] = package_group['uuid']
 
             # drop 'name' from the dict, as otherwise it might override 'rule_name'
-            rule_dict = module_params.copy()
+            rule_dict = module.foreman_params.copy()
             rule_dict.pop('name', None)
 
             module.ensure_entity(

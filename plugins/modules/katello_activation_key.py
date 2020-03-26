@@ -234,19 +234,21 @@ def main():
     )
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities()
-        scope = {'organization_id': module_params['organization']['id']}
+        entity = module.lookup_entity('entity')
+        scope = module.scope_for('organization')
 
         if module.state == 'copied':
-            new_entity = module.find_resource_by_name('activation_keys', name=module_params['new_name'], params=scope, failsafe=True)
+            new_entity = module.find_resource_by_name('activation_keys', name=module.foreman_params['new_name'], params=scope, failsafe=True)
             if new_entity is not None:
-                module.warn("Activation Key '{0}' already exists.".format(module_params['new_name']))
+                module.warn("Activation Key '{0}' already exists.".format(module.foreman_params['new_name']))
                 module.exit_json()
 
-        subscriptions = module_params.pop('subscriptions', None)
-        content_overrides = module_params.pop('content_overrides', None)
-        host_collections = module_params.pop('host_collections', None)
-        activation_key = module.ensure_entity('activation_keys', module_params, entity, params=scope)
+        subscriptions = module.foreman_params.pop('subscriptions', None)
+        content_overrides = module.foreman_params.pop('content_overrides', None)
+        if not module.desired_absent:
+            module.lookup_entity('host_collections')
+        host_collections = module.foreman_params.pop('host_collections', None)
+        activation_key = module.cycle()
 
         # only update subscriptions of newly created or updated AKs
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
@@ -254,8 +256,8 @@ def main():
         if module.state == 'present' or (module.state == 'present_with_defaults' and module.changed):
             # the auto_attach, release_version and service_level parameters can only be set on an existing AK with an update,
             # not during create, so let's force an update. see https://projects.theforeman.org/issues/27632 for details
-            if any(key in module_params for key in ['auto_attach', 'release_version', 'service_level']) and module.changed:
-                activation_key = module.ensure_entity('activation_keys', module_params, activation_key, params=scope)
+            if any(key in module.foreman_params for key in ['auto_attach', 'release_version', 'service_level']) and module.changed:
+                activation_key = module.ensure_entity('activation_keys', module.foreman_params, activation_key, params=scope)
 
             ak_scope = {'activation_key_id': activation_key['id']}
             if subscriptions is not None:

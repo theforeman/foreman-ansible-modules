@@ -154,8 +154,12 @@ def promote_content_view_version(module, content_view_version, environments, for
         module.record_after_full('content_view_versions', {'id': content_view_version['id'], 'environments': environments})
 
 
+class KatelloContentViewVersionModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloContentViewVersionModule(
         foreman_spec=dict(
             content_view=dict(type='entity', required=True, scope=['organization']),
             description=dict(),
@@ -172,39 +176,33 @@ def main():
     module.task_timeout = 60 * 60
 
     with module.api_connection():
-        _entity, module_params = module.resolve_entities()
-        # Hack until automatic dependency scope resolution is in place
-        if module.desired_absent:
-            module_params['organization'] = module.find_resource_by_name('organizations', name=module_params['organization'])
-        scope = {'organization_id': module_params['organization']['id']}
-        # Hack until automatic dependency scope resolution is in place
-        if module.desired_absent:
-            module_params['content_view'] = module.find_resource_by_name('content_views', name=module_params['content_view'], params=scope)
+        scope = module.scope_for('organization')
+        content_view = module.lookup_entity('content_view')
 
-        content_view = module_params['content_view']
-
-        if 'current_lifecycle_environment' in module_params:
-            search_scope = {'content_view_id': content_view['id'], 'environment_id': module_params['current_lifecycle_environment']['id']}
+        if 'current_lifecycle_environment' in module.foreman_params:
+            search_scope = {'content_view_id': content_view['id'], 'environment_id': module.lookup_entity('current_lifecycle_environment')['id']}
             content_view_version = module.find_resource('content_view_versions', search=None, params=search_scope)
-        elif 'version' in module_params:
-            search = "content_view_id={0},version={1}".format(content_view['id'], module_params['version'])
+        elif 'version' in module.foreman_params:
+            search = "content_view_id={0},version={1}".format(content_view['id'], module.foreman_params['version'])
             content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
         else:
             content_view_version = None
+        module.set_entity('entity', content_view_version)
 
         if module.desired_absent:
             module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
         else:
+            module.auto_lookup_entities()
             if content_view_version is None:
                 payload = {
                     'id': content_view['id'],
                 }
-                if 'description' in module_params:
-                    payload['description'] = module_params['description']
-                if 'force_yum_metadata_regeneration' in module_params:
-                    payload['force_yum_metadata_regeneration'] = module_params['force_yum_metadata_regeneration']
-                if 'version' in module_params:
-                    split_version = list(map(int, str(module_params['version']).split('.')))
+                if 'description' in module.foreman_params:
+                    payload['description'] = module.foreman_params['description']
+                if 'force_yum_metadata_regeneration' in module.foreman_params:
+                    payload['force_yum_metadata_regeneration'] = module.foreman_params['force_yum_metadata_regeneration']
+                if 'version' in module.foreman_params:
+                    split_version = list(map(int, str(module.foreman_params['version']).split('.')))
                     payload['major'] = split_version[0]
                     payload['minor'] = split_version[1]
 
@@ -216,13 +214,13 @@ def main():
                 else:
                     content_view_version = {'id': -1, 'environments': []}
 
-            if 'lifecycle_environments' in module_params:
+            if 'lifecycle_environments' in module.foreman_params:
                 promote_content_view_version(
                     module,
                     content_view_version,
-                    module_params['lifecycle_environments'],
-                    force=module_params['force_promote'],
-                    force_yum_metadata_regeneration=module_params['force_yum_metadata_regeneration'],
+                    module.foreman_params['lifecycle_environments'],
+                    force=module.foreman_params['force_promote'],
+                    force_yum_metadata_regeneration=module.foreman_params['force_yum_metadata_regeneration'],
                 )
 
 

@@ -162,31 +162,29 @@ def main():
         mutually_exclusive=[['repositories', 'components']],
     )
 
-    module_params = module.foreman_params
-
     # components is None when we're managing a CCV but don't want to adjust its components
-    components = module_params.pop('components', None)
+    components = module.foreman_params.pop('components', None)
     if components:
         for component in components:
             if not component['latest'] and component.get('content_view_version') is None:
                 module.fail_json(msg="Content View Component must either have latest=True or provide a Content View Version.")
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities(module_params=module_params)
-        scope = {'organization_id': module_params['organization']['id']}
+        entity = module.lookup_entity('entity')
+        scope = module.scope_for('organization')
 
         if not module.desired_absent:
-            if 'repositories' in module_params:
-                if module_params['composite']:
+            if 'repositories' in module.foreman_params:
+                if module.foreman_params['composite']:
                     module.fail_json(msg="Repositories cannot be parts of a Composite Content View.")
                 else:
                     repositories = []
-                    for repository in module_params['repositories']:
+                    for repository in module.foreman_params['repositories']:
                         product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
-                    module_params['repositories'] = repositories
+                    module.foreman_params['repositories'] = repositories
 
-        content_view_entity = module.ensure_entity('content_views', module_params, entity, params=scope)
+        content_view_entity = module.cycle()
 
         # only update CVC's of newly created or updated CV's that are composite if components are specified
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))

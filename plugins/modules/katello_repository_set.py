@@ -215,17 +215,23 @@ def record_repository_set_state(module, record_data, repo, state_before, state_a
     module.record_after_full('repository_sets', repo_change_data_after)
 
 
+class KatelloRepositorySetModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
-        argument_spec=dict(
+    module = KatelloRepositorySetModule(
+        foreman_spec=dict(
+            product=dict(type='entity', scope=['organization']),
             name=dict(),
-            product=dict(),
             label=dict(),
             repositories=dict(type='list', elements='dict', options=dict(
                 basearch=dict(),
                 releasever=dict(),
             )),
             all_repositories=dict(type='bool'),
+        ),
+        argument_spec=dict(
             state=dict(default='enabled', choices=['disabled', 'enabled']),
         ),
         required_one_of=[
@@ -238,25 +244,24 @@ def main():
         ],
     )
 
-    module_params = module.foreman_params
-    repositories = [{k: v for (k, v) in sub.items() if v is not None} for sub in module_params.get('repositories', [])]
+    repositories = [{k: v for (k, v) in sub.items() if v is not None} for sub in module.foreman_params.get('repositories', [])]
 
     with module.api_connection():
-        module_params, scope = module.handle_organization_param(module_params)
+        scope = module.scope_for('organization')
 
         record_data = {}
-        if 'product' in module_params:
-            record_data['product'] = module_params['product']
-            module_params['product'] = module.find_resource_by_name('products', name=module_params['product'], params=scope, thin=True)
-            scope['product_id'] = module_params['product']['id']
+        if 'product' in module.foreman_params:
+            record_data['product'] = module.foreman_params['product']
+            scope.update(module.scope_for('product'))
 
-        if 'label' in module_params:
-            search = 'label="{0}"'.format(module_params['label'])
+        if 'label' in module.foreman_params:
+            search = 'label="{0}"'.format(module.foreman_params['label'])
             repo_set = module.find_resource('repository_sets', search=search, params=scope)
-            record_data['label'] = module_params['label']
+            record_data['label'] = module.foreman_params['label']
         else:
-            repo_set = module.find_resource_by_name('repository_sets', name=module_params['name'], params=scope)
-            record_data['name'] = module_params['name']
+            repo_set = module.find_resource_by_name('repository_sets', name=module.foreman_params['name'], params=scope)
+            record_data['name'] = module.foreman_params['name']
+        module.set_entity('entity', repo_set)
 
         repo_set_scope = {'id': repo_set['id'], 'product_id': repo_set['product']['id']}
         repo_set_scope.update(scope)
@@ -264,7 +269,7 @@ def main():
         available_repos = module.resource_action('repository_sets', 'available_repositories', params=repo_set_scope, ignore_check_mode=True)
         available_repos = available_repos['results']
         current_repos = repo_set['repositories']
-        if not module_params.get('all_repositories', False):
+        if not module.foreman_params.get('all_repositories', False):
             desired_repos = get_desired_repos(repositories, available_repos)
         else:
             desired_repos = available_repos[:]
@@ -272,7 +277,7 @@ def main():
         current_repo_names = set(map(lambda repo: repo['name'], current_repos))
         desired_repo_names = set(map(lambda repo: repo['repo_name'], desired_repos))
 
-        if not module_params.get('all_repositories', False) and len(repositories) != len(desired_repo_names):
+        if not module.foreman_params.get('all_repositories', False) and len(repositories) != len(desired_repo_names):
             repo_set_identification = ' '.join(['{0}: {1}'.format(k, v) for (k, v) in record_data.items()])
 
             available_repo_details = [{'name': repo['repo_name'], 'repositories': repo['substitutions']} for repo in available_repos]

@@ -89,11 +89,9 @@ def main():
 
     module.task_timeout = 5 * 60
 
-    module_params = module.foreman_params
-
     with module.api_connection():
         organization = module.lookup_entity('organization')
-        scope = {'organization_id': organization['id']}
+        scope = module.scope_for('organization')
 
         try:
             existing_manifest = organization['owner_details']['upstreamConsumer']
@@ -101,17 +99,17 @@ def main():
             existing_manifest = None
 
         if module.state == 'present':
-            if 'repository_url' in module_params:
-                payload = {'redhat_repository_url': module_params['repository_url']}
+            if 'repository_url' in module.foreman_params:
+                payload = {'redhat_repository_url': module.foreman_params['repository_url']}
                 org_spec = dict(id=dict(), redhat_repository_url=dict())
                 organization = module.ensure_entity('organizations', payload, organization, state='present', foreman_spec=org_spec)
 
             try:
-                with open(module_params['manifest_path'], 'rb') as manifest_file:
-                    files = {'content': (module_params['manifest_path'], manifest_file, 'application/zip')}
+                with open(module.foreman_params['manifest_path'], 'rb') as manifest_file:
+                    files = {'content': (module.foreman_params['manifest_path'], manifest_file, 'application/zip')}
                     params = {}
-                    if 'repository_url' in module_params:
-                        params['repository_url'] = module_params['repository_url']
+                    if 'repository_url' in module.foreman_params:
+                        params['repository_url'] = module.foreman_params['repository_url']
                     params.update(scope)
                     result = module.resource_action('subscriptions', 'upload', params, files=files, record_change=False, ignore_task_errors=True)
                     for error in result['humanized']['errors']:

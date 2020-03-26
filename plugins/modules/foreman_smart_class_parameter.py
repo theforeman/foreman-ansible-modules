@@ -240,7 +240,8 @@ def main():
         module_params['parameter_type'] = ''
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities(search=search, module_params=module_params)
+        entity = module.find_resource('smart_class_parameters', search=search)
+        module.set_entity('entity', entity)
         # When override is set to false, foreman API don't accept parameter_type and all 'override options' have to be set to false if present
         if not module_params.get('override', False):
             module_params['parameter_type'] = ''
@@ -256,7 +257,7 @@ def main():
         if 'default_value' in entity:
             entity['default_value'] = parameter_value_to_str(entity['default_value'], entity.get('parameter_type', 'string'))
 
-        entity = module.run(search=search, module_params=module_params, entity=entity)
+        entity = module.cycle()
         module.ensure_override_values(entity, override_values)
 
 

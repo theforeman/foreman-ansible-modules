@@ -249,7 +249,7 @@ def main():
             module_params['mask'] = str(IPNetwork(u'%s/%s' % (module_params['network'], module_params['cidr'])).netmask)
 
     with module.api_connection():
-        module.run(module_params=module_params)
+        module.cycle()
 
 
 if __name__ == '__main__':

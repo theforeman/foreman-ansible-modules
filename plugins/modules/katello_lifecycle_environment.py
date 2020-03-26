@@ -82,9 +82,6 @@ class KatelloLifecycleEnvironmentModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloLifecycleEnvironmentModule(
-        entity_opts=dict(
-            failsafe=True,
-        ),
         foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
@@ -94,22 +91,20 @@ def main():
     )
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities()
-        scope = {'organization_id': module_params['organization']['id']}
+        entity = module.lookup_entity('entity')
 
-        if not module.desired_absent:
-            # Default to 'Library' for new env with no 'prior' provided
-            if 'prior' not in module_params and not entity:
-                module_params['prior'] = module.find_resource_by_name('lifecycle_environments', 'Library', params=scope, thin=True)
+        # Default to 'Library' for new env with no 'prior' provided
+        if 'prior' not in module.foreman_params and not entity:
+            module.foreman_params['prior'] = 'Library'
 
         if entity:
-            if 'label' in module_params and module_params['label'] and entity['label'] != module_params['label']:
+            if 'label' in module.foreman_params and module.foreman_params['label'] and entity['label'] != module.foreman_params['label']:
                 module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
 
-            if 'prior' in module_params and entity['prior']['id'] != module_params['prior']['id']:
+            if 'prior' in module.foreman_params and entity['prior']['id'] != module.foreman_params['prior']['id']:
                 module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-        module.ensure_entity('lifecycle_environments', module_params, entity, params=scope)
+        module.cycle()
 
 
 if __name__ == '__main__':
