@@ -523,19 +523,17 @@ def main():
         entity_key='login',
     )
 
-    module_params = module.foreman_params
-
     with module.api_connection():
-        entity, module_params = module.resolve_entities(module_params)
+        entity = module.lookup_entity('entity')
 
         if not module.desired_absent:
-            if 'mail' not in module_params:
+            if 'mail' not in module.foreman_params:
                 if not entity:
                     module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
                 else:
-                    module_params['mail'] = entity['mail']
+                    module.foreman_params['mail'] = entity['mail']
 
-        module.run(module_params=module_params, entity=entity)
+        module.cycle()
 
 
 if __name__ == '__main__':

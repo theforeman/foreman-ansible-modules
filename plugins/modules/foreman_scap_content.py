@@ -127,27 +127,27 @@ def main():
     )
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities()
+        entity = module.lookup_entity('entity')
 
         if not module.desired_absent:
-            if not entity and 'scap_file' not in module_params:
+            if not entity and 'scap_file' not in module.foreman_params:
                 module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
 
-            if 'scap_file' in module_params and 'original_filename' not in module_params:
-                module_params['original_filename'] = os.path.basename(module_params['scap_file'])
+            if 'scap_file' in module.foreman_params and 'original_filename' not in module.foreman_params:
+                module.foreman_params['original_filename'] = os.path.basename(module.foreman_params['scap_file'])
 
-            if 'scap_file' in module_params:
-                with open(module_params['scap_file']) as input_file:
-                    module_params['scap_file'] = input_file.read()
+            if 'scap_file' in module.foreman_params:
+                with open(module.foreman_params['scap_file']) as input_file:
+                    module.foreman_params['scap_file'] = input_file.read()
 
-            if entity and 'scap_file' in module_params:
-                digest = hashlib.sha256(module_params['scap_file'].encode("utf-8")).hexdigest()
+            if entity and 'scap_file' in module.foreman_params:
+                digest = hashlib.sha256(module.foreman_params['scap_file'].encode("utf-8")).hexdigest()
                 # workaround for https://projects.theforeman.org/issues/29409
-                digest_stripped = hashlib.sha256(module_params['scap_file'].strip().encode("utf-8")).hexdigest()
+                digest_stripped = hashlib.sha256(module.foreman_params['scap_file'].strip().encode("utf-8")).hexdigest()
                 if entity['digest'] in [digest, digest_stripped]:
-                    module_params.pop('scap_file')
+                    module.foreman_params.pop('scap_file')
 
-        module.run(module_params=module_params, entity=entity)
+        module.cycle()
 
 
 if __name__ == '__main__':

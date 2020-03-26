@@ -143,35 +143,31 @@ def main():
 
     with module.api_connection():
         module.entity_opts['failsafe'] = (module.state != 'synced')
-        entity, module_params = module.resolve_entities()
-        scope = {'organization_id': module_params['organization']['id']}
+        entity = module.lookup_entity('entity')
 
         if not module.desired_absent:
             if not entity:
-                if 'login' not in module_params:
+                if 'login' not in module.foreman_params:
                     module.fail_json(msg="scc account login not provided")
-                if 'scc_account_password' not in module_params:
+                if 'scc_account_password' not in module.foreman_params:
                     module.fail_json(msg="Scc account password not provided")
 
-            if module_params['test_connection']:
+            if module.foreman_params['test_connection']:
                 scc_account_credentials = {}
                 if entity:
                     scc_account_credentials['id'] = entity['id']
-                if 'login' in module_params:
-                    scc_account_credentials['login'] = module_params['login']
-                if 'scc_account_password' in module_params:
-                    scc_account_credentials['password'] = module_params['scc_account_password']
-                if 'base_url' in module_params:
-                    scc_account_credentials['base_url'] = module_params['base_url']
+                if 'login' in module.foreman_params:
+                    scc_account_credentials['login'] = module.foreman_params['login']
+                if 'scc_account_password' in module.foreman_params:
+                    scc_account_credentials['password'] = module.foreman_params['scc_account_password']
+                if 'base_url' in module.foreman_params:
+                    scc_account_credentials['base_url'] = module.foreman_params['base_url']
                 module.resource_action('scc_accounts', 'test_connection', scc_account_credentials, ignore_check_mode=True)
-
-        if 'updated_name' in module_params:
-            module_params['name'] = module_params.pop('updated_name')
 
         if module.state == 'synced':
             module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
         else:
-            module.ensure_entity('scc_accounts', module_params, entity, params=scope)
+            module.cycle()
 
 
 if __name__ == '__main__':

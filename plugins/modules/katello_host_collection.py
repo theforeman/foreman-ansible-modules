@@ -86,13 +86,7 @@ def main():
     )
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities()
-        scope = {'organization_id': module_params['organization']['id']}
-
-        if entity and 'updated_name' in module_params:
-            module_params['name'] = module_params.pop('updated_name')
-
-        module.ensure_entity('host_collections', module_params, entity, params=scope)
+        module.cycle()
 
 
 if __name__ == '__main__':

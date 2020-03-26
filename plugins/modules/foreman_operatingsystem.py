@@ -194,7 +194,6 @@ def main():
             ['description', 'name'],
             ['description', 'major'],
         ],
-        entity_resolve=False,
     )
 
     module_params = module.foreman_params
@@ -220,7 +219,8 @@ def main():
                 if param_name not in module_params.keys():
                     module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
-        module.run(module_params=module_params, entity=entity)
+        module.set_entity('entity', entity)
+        module.cycle()
 
 
 if __name__ == '__main__':

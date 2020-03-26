@@ -281,83 +281,85 @@ def main():
         required_one_of=[
             ['name', 'file_name', 'template'],
         ],
-        entity_resolve=False,
     )
 
     # We do not want a template text for bulk operations
-    if module.params['name'] == '*':
-        if module.params['file_name'] or module.params['template'] or module.params['updated_name']:
+    if module.foreman_params.get('name') == '*':
+        if module.foreman_params.get('file_name') or module.foreman_params.get('template') or module.foreman_params.get('updated_name'):
             module.fail_json(
                 msg="Neither file_name nor template nor updated_name allowed if 'name: *'!")
 
-    module_params = module.foreman_params
     entity = None
-    file_name = module_params.pop('file_name', None)
+    file_name = module.foreman_params.pop('file_name', None)
 
-    if file_name or 'template' in module_params:
+    if file_name or 'template' in module.foreman_params:
         if file_name:
             parsed_dict = parse_template_from_file(file_name, module)
         else:
-            parsed_dict = parse_template(module_params['template'], module)
+            parsed_dict = parse_template(module.foreman_params['template'], module)
         # sanitize name from template data
         # The following condition can actually be hit, when someone is trying to import a
         # template with the name set to '*'.
         # Besides not being sensible, this would go horribly wrong in this module.
-        if 'name' in parsed_dict and parsed_dict['name'] == '*':
+        if parsed_dict.get('name') == '*':
             module.fail_json(msg="Cannot use '*' as a template name!")
         # module params are priorized
-        parsed_dict.update(module_params)
-        module_params = parsed_dict
+        parsed_dict.update(module.foreman_params)
+        module.foreman_params = parsed_dict
 
     # make sure, we have a name
-    if 'name' not in module_params:
+    if 'name' not in module.foreman_params:
         if file_name:
-            module_params['name'] = os.path.splitext(
+            module.foreman_params['name'] = os.path.splitext(
                 os.path.basename(file_name))[0]
         else:
             module.fail_json(
                 msg='No name specified and no filename to infer it.')
 
-    affects_multiple = module_params['name'] == '*'
+    affects_multiple = module.foreman_params['name'] == '*'
     # sanitize user input, filter unuseful configuration combinations with 'name: *'
     if affects_multiple:
-        if module.params['updated_name']:
+        if module.foreman_params.get('updated_name'):
             module.fail_json(msg="updated_name not allowed if 'name: *'!")
         if module.state == 'present_with_defaults':
             module.fail_json(msg="'state: present_with_defaults' and 'name: *' cannot be used together")
         if module.desired_absent:
-            further_params = set(module_params.keys()) - {'name', 'entity'}
+            further_params = set(module.foreman_params.keys()) - {'name', 'entity'}
             if further_params:
                 module.fail_json(msg='When deleting all templates, there is no need to specify further parameters: %s ' % further_params)
 
     with module.api_connection():
+        if 'audit_comment' in module.foreman_params:
+            extra_params = {'audit_comment': module.foreman_params['audit_comment']}
+        else:
+            extra_params = {}
+
         if affects_multiple:
+            module.set_entity('entity', None)  # prevent lookup
             entities = module.list_resource('provisioning_templates')
             if not entities:
                 # Nothing to do; shortcut to exit
                 module.exit_json()
             if not module.desired_absent:  # not 'thin'
                 entities = [module.show_resource('provisioning_templates', entity['id']) for entity in entities]
-        else:
-            entity = module.find_resource_by_name('provisioning_templates', name=module_params['name'], failsafe=True)
-
-        if not module.desired_absent:
-            _entity, module_params = module.resolve_entities(module_params, entity)
-
-        if not affects_multiple:
-            module_params = find_template_kind(module, module_params)
-
-        if 'audit_comment' in module_params:
-            extra_params = {'audit_comment': module_params['audit_comment']}
-        else:
-            extra_params = {}
-
-        if not affects_multiple:
-            module.ensure_entity('provisioning_templates', module_params, entity, params=extra_params)
-        else:
-            module_params.pop('name')
+                module.auto_lookup_entities()
+            module.foreman_params.pop('name')
             for entity in entities:
-                module.ensure_entity('provisioning_templates', module_params, entity, params=extra_params)
+                module.ensure_entity('provisioning_templates', module.foreman_params, entity, params=extra_params)
+        else:
+            # The name could have been determined to late, so copy it again
+            module.foreman_params['entity'] = module.foreman_params['name']
+
+            # TODO Use module.cycle _with_ extra_params
+            if 'updated_name' in module.foreman_params:
+                module.foreman_params['name'] = module.foreman_params['updated_name']
+            entity = module.lookup_entity('entity')
+            if not module.desired_absent:
+                module.auto_lookup_entities()
+
+            module.foreman_params = find_template_kind(module, module.foreman_params)
+
+            module.ensure_entity('provisioning_templates', module.foreman_params, entity, params=extra_params)
 
 
 if __name__ == '__main__':

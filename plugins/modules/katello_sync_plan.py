@@ -125,21 +125,21 @@ def main():
         ],
     )
 
-    module_params = module.foreman_params
-
-    if (module_params['interval'] != 'custom cron') and ('cron_expression' in module_params):
+    if (module.foreman_params['interval'] != 'custom cron') and ('cron_expression' in module.foreman_params):
         module.fail_json(msg='"cron_expression" cannot be combined with "interval"!="custom cron".')
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities(module_params=module_params)
-        scope = {'organization_id': module_params['organization']['id']}
+        entity = module.lookup_entity('entity')
+        scope = module.scope_for('organization')
 
-        products = module_params.pop('products', None)
+        handle_products = not (module.desired_absent or module.state == 'present_with_defaults') and 'products' in module.foreman_params
+        if handle_products:
+            module.lookup_entity('products')
 
-        sync_plan = module.ensure_entity('sync_plans', module_params, entity, params=scope)
+        products = module.foreman_params.pop('products', None)
+        sync_plan = module.cycle()
 
-        if not (module.desired_absent or module.state == 'present_with_defaults') and products is not None:
-            products = module.find_resources_by_name('products', products, params=scope, thin=True)
+        if handle_products:
             desired_product_ids = set(product['id'] for product in products)
             current_product_ids = set(product['id'] for product in entity['products']) if entity else set()
 
