@@ -1,0 +1,103 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "present"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "present"
+    - include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "{{ item }}"
+        scap_tailoring_file_state: "absent"
+      loop:
+        - scap_tailoring_file_name
+        - updated_scap_tailoring_file_name
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: import tailoring file
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "scap_tailoring_file_name"
+        scap_tailoring_file_scap_file: "data/ssg-firefox-ds-tailoring.xml"
+        scap_tailoring_file_original_filename: "scap_file_name.xml"
+        scap_tailoring_file_locations:
+          - Test Location
+        scap_tailoring_file_organizations:
+          - Test Organization
+        scap_tailoring_file_state: "present"
+        expected_change: true
+    - name: import tailoring file again, no change
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "scap_tailoring_file_name"
+        scap_tailoring_file_scap_file: "data/ssg-firefox-ds-tailoring.xml"
+        scap_tailoring_file_original_filename: "scap_file_name.xml"
+        scap_tailoring_file_locations:
+          - Test Location
+        scap_tailoring_file_organizations:
+          - Test Organization
+        scap_tailoring_file_state: "present"
+        expected_change: false
+    - name: rename tailoring file
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "scap_tailoring_file_name"
+        scap_tailoring_file_updated_name: "updated_scap_tailoring_file_name"
+        scap_tailoring_file_original_filename: "updated_scap_file_name.xml"
+        scap_tailoring_file_locations:
+          - Test Location
+        scap_tailoring_file_organizations:
+          - Test Organization
+        scap_tailoring_file_state: "present"
+        expected_change: true
+    - name: ensure the renamed tailoring file has all the data, no change
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "updated_scap_tailoring_file_name"
+        scap_tailoring_file_original_filename: "updated_scap_file_name.xml"
+        scap_tailoring_file_locations:
+          - Test Location
+        scap_tailoring_file_organizations:
+          - Test Organization
+        scap_tailoring_file_state: "present"
+        expected_change: false
+    - name: delete tailoring file
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "updated_scap_tailoring_file_name"
+        scap_tailoring_file_state: "absent"
+        expected_change: true
+    - name: delete tailoring file again, no change
+      include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "updated_scap_tailoring_file_name"
+        scap_tailoring_file_state: "absent"
+        expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/scap_tailoring_file.yml
+      vars:
+        scap_tailoring_file_name: "{{ item }}"
+        scap_tailoring_file_state: "absent"
+      loop:
+        - scap_tailoring_file_name
+        - updated_scap_tailoring_file_name
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "absent"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "absent"
