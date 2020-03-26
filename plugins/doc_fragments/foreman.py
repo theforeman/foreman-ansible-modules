@@ -276,3 +276,19 @@ options:
     required: true
     type: str
 '''
+
+    SCAP_DATASTREAM = '''
+options:
+  scap_file:
+    description:
+      - File containing XML DataStream content.
+      - Required when creating a new DataStream.
+    required: false
+    type: path
+  original_filename:
+    description:
+      - Original file name of the XML file.
+      - If unset, the filename of I(scap_file) will be used.
+    required: false
+    type: str
+'''

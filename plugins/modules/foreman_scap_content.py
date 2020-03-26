@@ -42,22 +42,11 @@ options:
       - New SCAP content title.
       - When this parameter is set, the module will not be idempotent.
     type: str
-  scap_file:
-    description:
-      - File containing XML SCAP content.
-      - Required when creating SCAP content.
-    required: false
-    type: path
-  original_filename:
-    description:
-      - Original file name of the XML file.
-      - If unset, the filename of I(scap_file) will be used.
-    required: false
-    type: str
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
   - foreman.taxonomy
+  - foreman.scap_datastream
 '''
 
 EXAMPLES = '''
@@ -103,12 +92,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-import hashlib
-import os
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanScapDataStreamModule
 
 
-class ForemanScapContentModule(ForemanTaxonomicEntityAnsibleModule):
+class ForemanScapContentModule(ForemanScapDataStreamModule):
     pass
 
 
@@ -119,34 +106,12 @@ def main():
         ),
         foreman_spec=dict(
             title=dict(type='str', required=True),
-            original_filename=dict(type='str'),
-            scap_file=dict(type='path'),
         ),
         entity_key='title',
         required_plugins=[('openscap', ['*'])],
     )
 
     with module.api_connection():
-        entity = module.lookup_entity('entity')
-
-        if not module.desired_absent:
-            if not entity and 'scap_file' not in module.foreman_params:
-                module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
-
-            if 'scap_file' in module.foreman_params and 'original_filename' not in module.foreman_params:
-                module.foreman_params['original_filename'] = os.path.basename(module.foreman_params['scap_file'])
-
-            if 'scap_file' in module.foreman_params:
-                with open(module.foreman_params['scap_file']) as input_file:
-                    module.foreman_params['scap_file'] = input_file.read()
-
-            if entity and 'scap_file' in module.foreman_params:
-                digest = hashlib.sha256(module.foreman_params['scap_file'].encode("utf-8")).hexdigest()
-                # workaround for https://projects.theforeman.org/issues/29409
-                digest_stripped = hashlib.sha256(module.foreman_params['scap_file'].strip().encode("utf-8")).hexdigest()
-                if entity['digest'] in [digest, digest_stripped]:
-                    module.foreman_params.pop('scap_file')
-
         module.run()
 
 
