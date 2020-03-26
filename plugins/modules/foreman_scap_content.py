@@ -44,7 +44,7 @@ options:
     type: str
   scap_file:
     description:
-      - XML containing SCAP content.
+      - File containing XML SCAP content.
       - Required when creating SCAP content.
     required: false
     type: path
