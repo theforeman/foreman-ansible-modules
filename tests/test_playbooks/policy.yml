@@ -53,27 +53,42 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/policy.yml
   tasks:
     - name: 'Test policy'
       block:
-        - include: tasks/policy.yml
+        - name: create SCAP policy
+          include: tasks/policy.yml
           vars:
+            scap_content: "{{ policy.scap_content_title }}"
             policy_state: present
             expected_change: true
-        - include: tasks/policy.yml
+        - name: create SCAP policy again, no change
+          include: tasks/policy.yml
           vars:
             policy_state: present
             expected_change: false
-        - include: tasks/policy.yml
+        - name: update SCAP policy description
+          include: tasks/policy.yml
           vars:
             policy_description: 'A policy with an updated description'
             policy_state: present
             expected_change: true
-        - include: tasks/policy.yml
+        - name: assign tailoring file to the SCAP policy
+          include: tasks/policy.yml
+            vars:
+              policy_tailoring_file: "{{ policy.tailoring_file_name }}"
+              policy_tailoring_file_profile:
+              policy_state: present
+              expected_change: true
+        # TODO: test also fails
+        - name: delete SCAP policy
+          include: tasks/policy.yml
           vars:
             policy_state: absent
             expected_change: true
-        - include: tasks/policy.yml
+        - name: delete SCAP policy again, no change
+          include: tasks/policy.yml
           vars:
             policy_state: absent
             expected_change: false
@@ -82,6 +97,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/policy.yml
   tasks:
     - include_tasks: tasks/organization.yml
       vars:

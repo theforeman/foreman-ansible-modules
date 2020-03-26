@@ -1,7 +1,11 @@
 ---
 - name: "Create/Update/Delete policy"
   vars:
-    domain_state: "present"
+    policy_name: Test SCAP policy
+    policy_deploy_by: puppet
+    policy_period: weekly
+    policy_weekday: monday
+    policy_state: "present"
   foreman_policy:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -30,4 +34,11 @@
     that:
       - result.changed == expected_change
   when: expected_change is defined
+- assert:
+    fail_msg: "Ensuring policy failed as expected!"
+    that:
+      - result is failed
+  when:
+    - expected_fail is defined
+    - expected_fail
 ...
