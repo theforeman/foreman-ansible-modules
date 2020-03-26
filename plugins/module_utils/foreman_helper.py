@@ -954,10 +954,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         new_entity = self.ensure_entity(self._entity_resource_name, self.foreman_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
-        if new_entity and 'parameters' in self.foreman_params:
-            if 'parameters' in self.foreman_spec and self.foreman_spec['parameters'].get('type') == 'nested_list':
-                scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
-                self.ensure_scoped_parameters(scope, entity, self.foreman_params.get('parameters'))
+        if (new_entity and 'parameters' in self.foreman_params
+                and 'parameters' in self.foreman_spec and self.foreman_spec['parameters'].get('type') == 'nested_list'):
+            scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
+            self.ensure_scoped_parameters(scope, entity, self.foreman_params.get('parameters'))
 
         return new_entity
 

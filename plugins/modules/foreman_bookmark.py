@@ -107,8 +107,7 @@ def main():
             query=dict(),
         ),
         argument_spec=dict(
-            state=dict(default='present', choices=[
-                       'present_with_defaults', 'present', 'absent']),
+            state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
         required_if=(
             ['state', 'present', ['query']],
@@ -117,13 +116,11 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.foreman_params
-
     with module.api_connection():
         # TODO figure out, how to map this kind of search to lookup_entity
         module.foreman_params['entity'] = module.find_resource(
             'bookmarks',
-            search='name="{0}",controller="{1}"'.format(module_params['name'], module_params['controller']),
+            search='name="{0}",controller="{1}"'.format(module.foreman_params['name'], module.foreman_params['controller']),
             failsafe=True,
         )
         module.foreman_spec['entity']['resolved'] = True

@@ -80,21 +80,20 @@ def main():
         entity_resolve=False,
     )
 
-    module_params = module.foreman_params
-    params = {"usergroup_id": module_params.pop('usergroup')}
+    params = {"usergroup_id": module.foreman_params.pop('usergroup')}
     entity = None
 
     with module.api_connection():
         # There is no way to find by name via API search, so we need
         # to iterate over all external user groups of a given usergroup
         for external_usergroup in module.list_resource("external_usergroups", params=params):
-            if external_usergroup['name'] == module_params['name']:
+            if external_usergroup['name'] == module.foreman_params['name']:
                 entity = external_usergroup
 
         module.foreman_params['entity'] = entity
         module.foreman_spec['entity']['resolved'] = True
         module.auto_lookup_entities()
-        module.ensure_entity('external_usergroups', module_params, entity, params)
+        module.ensure_entity('external_usergroups', module.foreman_params, entity, params)
 
 
 if __name__ == '__main__':

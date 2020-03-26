@@ -341,23 +341,21 @@ def main():
         ),
     )
 
-    module_params = module.foreman_params
-
     if not module.desired_absent:
-        if 'provider' in module_params:
-            module_params['provider'], provider_param_keys = get_provider_info(provider=module_params['provider'])
-            provider_params = {k: v for k, v in module_params.pop('provider_params', dict()).items() if v is not None}
+        if 'provider' in module.foreman_params:
+            module.foreman_params['provider'], provider_param_keys = get_provider_info(provider=module.foreman_params['provider'])
+            provider_params = {k: v for k, v in module.foreman_params.pop('provider_params', dict()).items() if v is not None}
 
             for key in provider_param_keys:
                 if key in provider_params:
-                    module_params[key] = provider_params.pop(key)
+                    module.foreman_params[key] = provider_params.pop(key)
             if provider_params:
                 module.fail_json(msg="Provider {0} does not support the following given parameters: {1}".format(
-                    module_params['provider'], list(provider_params.keys())))
+                    module.foreman_params['provider'], list(provider_params.keys())))
 
     with module.api_connection():
         entity = module.lookup_entity('entity')
-        if not module.desired_absent and 'provider' not in module_params and entity is None:
+        if not module.desired_absent and 'provider' not in module.foreman_params and entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
         module.cycle()
