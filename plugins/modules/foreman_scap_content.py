@@ -133,6 +133,9 @@ def main():
             if not entity and 'scap_file' not in module_params:
                 module.fail_json(msg="Content of scap_file not provided. XML containing SCAP content is required.")
 
+            if 'scap_file' in module_params and 'original_filename' not in module_params:
+                module_params['original_filename'] = os.path.basename(module_params['scap_file'])
+
             if 'scap_file' in module_params:
                 with open(module_params['scap_file']) as input_file:
                     module_params['scap_file'] = input_file.read()
@@ -143,9 +146,6 @@ def main():
                 digest_stripped = hashlib.sha256(module_params['scap_file'].strip().encode("utf-8")).hexdigest()
                 if entity['digest'] in [digest, digest_stripped]:
                     module_params.pop('scap_file')
-
-            if 'scap_file' in module_params and 'original_filename' not in module_params:
-                module_params['original_filename'] = os.path.basename(module_params['scap_file'])
 
         module.run(module_params=module_params, entity=entity)
 
