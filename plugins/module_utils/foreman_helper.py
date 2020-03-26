@@ -640,7 +640,7 @@ class ForemanAnsibleModule(AnsibleModule):
         entity = self.resource_action(resource, 'destroy', payload)
 
         # this is a workaround for https://projects.theforeman.org/issues/26937
-        if entity and 'error' in entity and 'message' in entity['error']:
+        if entity and isinstance(entity, dict) and 'error' in entity and 'message' in entity['error']:
             self.fail_json(msg=entity['error']['message'])
 
         return None
@@ -763,6 +763,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         # TODO: Organizations should be search by title (as foreman allow nested orgs) but that's not the case ATM.
         #       Applying this will need to record a lot of tests that is out of scope for the moment.
         # organizations='title',
+        scap_contents='title',
         users='login',
     )
 

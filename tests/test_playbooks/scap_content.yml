@@ -1,0 +1,103 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "present"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "present"
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ item }}"
+        scap_content_state: "absent"
+      loop:
+        - scap_content_title
+        - updated_scap_content_title
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: import scap content
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "scap_content_title"
+        scap_content_scap_file: "data/ssg-firefox-ds.xml"
+        scap_content_original_filename: "scap_file_name.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+        expected_change: true
+    - name: import scap content again, no change
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "scap_content_title"
+        scap_content_scap_file: "data/ssg-firefox-ds.xml"
+        scap_content_original_filename: "scap_file_name.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+        expected_change: false
+    - name: rename scap content
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "scap_content_title"
+        scap_content_updated_title: "updated_scap_content_title"
+        scap_content_original_filename: "updated_scap_file_name.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+        expected_change: true
+    - name: ensure the renamed scap content has all the data, no change
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "updated_scap_content_title"
+        scap_content_original_filename: "updated_scap_file_name.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+        expected_change: false
+    - name: delete scap content
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "updated_scap_content_title"
+        scap_content_state: "absent"
+        expected_change: true
+    - name: delete scap content again, no change
+      include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "updated_scap_content_title"
+        scap_content_state: "absent"
+        expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ item }}"
+        scap_content_state: "absent"
+      loop:
+        - scap_content_title
+        - updated_scap_content_title
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "absent"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "absent"
