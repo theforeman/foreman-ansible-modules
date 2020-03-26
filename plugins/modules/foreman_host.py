@@ -98,6 +98,21 @@ options:
       - Mutually excluside with I(owner).
     type: str
     required: false
+  provision_method:
+    description:
+      - The method used to provision the host.
+      - I(provision_method=bootdisk) is only available if the bootdisk plugin is installed.
+    choices:
+      - 'build'
+      - 'image'
+      - 'bootdisk'
+    type: str
+    required: false
+  image:
+    description:
+      - The image to use when I(provision_method=image).
+    type: str
+    required: false
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
@@ -168,6 +183,8 @@ def main():
             owner=dict(type='entity', resource_type='users', flat_name='owner_id'),
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
             owner_type=dict(type='invisible'),
+            provision_method=dict(choices=['build', 'image', 'bootdisk']),
+            image=dict(type='entity'),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']

@@ -116,7 +116,7 @@ options:
   discovery_proxy:
     description:
       - Discovery Smart proxy for this subnet
-      - This option is only available, if the discovery plugin is installed.
+      - This option is only available if the discovery plugin is installed.
     required: false
     type: str
   dns_proxy:
@@ -130,7 +130,7 @@ options:
   remote_execution_proxies:
     description:
       - Remote execution Smart proxies for this subnet
-      - This option is only available, if the remote_execution plugin is installed.
+      - This option is only available if the remote_execution plugin is installed.
     required: false
     type: list
     elements: str
