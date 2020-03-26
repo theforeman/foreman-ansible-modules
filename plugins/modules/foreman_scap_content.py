@@ -69,7 +69,7 @@ EXAMPLES = '''
     organizations:
       - "Default Organization"
     locations:
-    - "Default Location"
+      - "Default Location"
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
@@ -85,8 +85,8 @@ EXAMPLES = '''
       - "Org One"
       - "Org Two"
     locations:
-        - "Loc Tne"
-        - "Loc Two"
+      - "Loc One"
+      - "Loc Two"
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"
