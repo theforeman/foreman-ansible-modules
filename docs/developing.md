@@ -65,6 +65,7 @@ The sub entities must be described by `foreman_spec=<sub_entity>_spec`.
 * `resource_type='organizations'`: Used with `type='entity'` or `type='entity_list'`. Resource type used to build API resource PATH. Defaults to pluralized entity key.
 * `resolve=False`: Defaults to 'True'. If set to false, the sub entity will not be resolved automatically.
 * `ensure=False`: Defaults to 'True'. If set to false, it will be removed before sending data to the foreman server.
+* `scope=['organization']`: Defaults to '[]'. A list of entities that are used to build the lookup scope for this one.
 
 `flat_name` provides a way to translate the name of a module argument as known to Ansible to the name understood by the Foreman API.
 

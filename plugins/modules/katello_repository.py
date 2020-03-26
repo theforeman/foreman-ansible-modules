@@ -181,8 +181,12 @@ RETURN = ''' # '''
 from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
+class KatelloRepositoryModule(KatelloEntityAnsibleModule):
+    pass
+
+
 def main():
-    module = KatelloEntityAnsibleModule(
+    module = KatelloRepositoryModule(
         foreman_spec=dict(
             product=dict(type='entity', scope=['organization'], required=True),
             label=dict(),
@@ -207,7 +211,6 @@ def main():
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        entity_name='repository',
         entity_scope=['product'],
     )
 

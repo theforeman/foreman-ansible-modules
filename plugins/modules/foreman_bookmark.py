@@ -117,13 +117,11 @@ def main():
     )
 
     with module.api_connection():
-        # TODO figure out, how to map this kind of search to lookup_entity
-        module.foreman_params['entity'] = module.find_resource(
+        module.set_entity('entity', module.find_resource(
             'bookmarks',
             search='name="{0}",controller="{1}"'.format(module.foreman_params['name'], module.foreman_params['controller']),
             failsafe=True,
-        )
-        module.foreman_spec['entity']['resolved'] = True
+        ))
         module.cycle()
 
 

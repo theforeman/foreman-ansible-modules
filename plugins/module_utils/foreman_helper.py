@@ -486,12 +486,16 @@ class ForemanAnsibleModule(AnsibleModule):
     def scope_for(self, key):
         return {'{0}_id'.format(key): self.lookup_entity(key)['id']}
 
+    def set_entity(self, key, entity):
+        self.foreman_params[key] = entity
+        self.foreman_spec[key]['resolved'] = True
+
     def lookup_entity(self, key):
         if key not in self.foreman_params:
             return None
 
         entity_spec = self.foreman_spec[key]
-        if entity_spec.get('resolved') or entity_spec.get('type') not in {'entity', 'entity_list'}:
+        if entity_spec.get('resolved') or entity_spec.get('type') not in ('entity', 'entity_list'):
             # Already looked up or not an entity(_list) so nothing to do
             return self.foreman_params[key]
 
@@ -540,8 +544,7 @@ class ForemanAnsibleModule(AnsibleModule):
                         search_operator=entity_spec.get('search_operator', '='),
                         failsafe=failsafe, thin=thin, params=params,
                     ) for value in self.foreman_params[key]]
-        self.foreman_params[key] = result
-        entity_spec['resolved'] = True
+        self.set_entity(key, result)
         return result
 
     def auto_lookup_entities(self):
@@ -876,7 +879,10 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
                 **self.entity_opts
             ),
         ))[0])
+
         if 'parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity':
+            if 'resouce_type' not in self.foreman_spec['parent']:
+                self.foreman_spec['parent']['resource_type'] = self.foreman_spec['entity']['resource_type']
             current, parent = split_fqn(self.foreman_params[self.entity_key])
             if isinstance(self.foreman_params.get('parent'), six.string_types):
                 if parent:

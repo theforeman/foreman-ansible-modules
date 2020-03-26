@@ -117,14 +117,12 @@ def main():
     with module.api_connection():
         scope = module.scope_for('compute_resource')
         operatingsystem_id = module.lookup_entity('operatingsystem')['id']
-        # TODO figure out, how to map this kind of search to lookup_entity
-        module.foreman_params['entity'] = module.find_resource(
+        module.set_entity('entity', module.find_resource(
             'images',
             search="name={0},operatingsystem={1}".format(module.foreman_params['name'], operatingsystem_id),
             params=scope,
             failsafe=True,
-        )
-        module.foreman_spec['entity']['resolved'] = True
+        ))
         module.cycle()
 
 
