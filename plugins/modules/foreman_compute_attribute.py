@@ -106,7 +106,7 @@ def main():
         compute_profile_id = module.lookup_entity('compute_profile').get('id')
         entity = next((item for item in compute_attributes if item.get('compute_profile_id') == compute_profile_id), None)
         module.set_entity('entity', entity)
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

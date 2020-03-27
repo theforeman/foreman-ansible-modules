@@ -147,7 +147,7 @@ def main():
                 if entity['digest'] in [digest, digest_stripped]:
                     module.foreman_params.pop('scap_file')
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

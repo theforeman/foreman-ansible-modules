@@ -142,7 +142,7 @@ def main():
                 if len(operatingsystems) == 1 and 'os_family' not in module_params and entity is None:
                     module_params['os_family'] = module.show_resource('operatingsystems', operatingsystems[0]['id'])['family']
 
-            module.cycle()
+            module.run()
 
 
 if __name__ == '__main__':

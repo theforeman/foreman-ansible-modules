@@ -137,7 +137,7 @@ def main():
             module.lookup_entity('products')
 
         products = module.foreman_params.pop('products', None)
-        sync_plan = module.cycle()
+        sync_plan = module.run()
 
         if handle_products:
             desired_product_ids = set(product['id'] for product in products)

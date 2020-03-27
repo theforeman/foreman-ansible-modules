@@ -221,7 +221,7 @@ def main():
         if not module.desired_absent:
             module.auto_lookup_entities()
         expected_puppetclasses = module.foreman_params.pop('puppetclasses', None)
-        entity = module.cycle()
+        entity = module.run()
         if not module.desired_absent and 'environment_id' in entity:
             ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
 

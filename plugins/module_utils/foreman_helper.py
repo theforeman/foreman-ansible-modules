@@ -913,7 +913,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         # Get entity name from snake case class name
         return '_'.join(class_name.split('_')[1:-1])
 
-    def cycle(self):
+    def run(self):
         """ lookup entities, ensure entity, remove sensitive data, manage parameters.
             Like 'run', just faster and more convenient...
         """

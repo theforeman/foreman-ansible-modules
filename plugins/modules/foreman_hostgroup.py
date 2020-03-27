@@ -173,7 +173,7 @@ def main():
                 else:
                     module_params['organizations'] = [module_params['organization']]
         expected_puppetclasses = module_params.pop('puppetclasses', None)
-        entity = module.cycle()
+        entity = module.run()
         if not module.desired_absent and 'environment_id' in entity:
             ensure_puppetclasses(module, 'hostgroup', entity, expected_puppetclasses)
 

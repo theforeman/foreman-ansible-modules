@@ -123,7 +123,7 @@ def main():
             params=scope,
             failsafe=True,
         ))
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

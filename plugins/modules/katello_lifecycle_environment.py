@@ -104,7 +104,7 @@ def main():
             if 'prior' in module.foreman_params and entity['prior']['id'] != module.foreman_params['prior']['id']:
                 module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

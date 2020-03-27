@@ -77,7 +77,7 @@ def main():
     )
 
     with module.api_connection():
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

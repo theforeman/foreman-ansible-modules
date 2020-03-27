@@ -292,7 +292,7 @@ def main():
             # The name could have been determined to late, so copy it again
             module.foreman_params['entity'] = module.foreman_params['name']
 
-            module.cycle()
+            module.run()
 
 
 if __name__ == '__main__':

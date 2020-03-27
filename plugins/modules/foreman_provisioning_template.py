@@ -350,7 +350,7 @@ def main():
             # The name could have been determined to late, so copy it again
             module.foreman_params['entity'] = module.foreman_params['name']
 
-            # TODO Use module.cycle _with_ extra_params
+            # TODO Use module.run _with_ extra_params
             if 'updated_name' in module.foreman_params:
                 module.foreman_params['name'] = module.foreman_params['updated_name']
             entity = module.lookup_entity('entity')

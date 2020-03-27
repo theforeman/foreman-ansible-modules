@@ -108,7 +108,7 @@ def main():
 
     with module.api_connection():
         entity = module.lookup_entity('entity')
-        new_entity = module.cycle()
+        new_entity = module.run()
 
         filters = module.foreman_params.get("filters")
         if not module.desired_absent and filters is not None:

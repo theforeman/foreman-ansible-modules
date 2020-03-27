@@ -184,7 +184,7 @@ def main():
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
                     module.foreman_params['repositories'] = repositories
 
-        content_view_entity = module.cycle()
+        content_view_entity = module.run()
 
         # only update CVC's of newly created or updated CV's that are composite if components are specified
         update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))

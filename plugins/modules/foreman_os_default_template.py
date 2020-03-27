@@ -116,7 +116,7 @@ def main():
         entity = next((item for item in entities if item['template_kind_id'] == template_kind_id), None)
         module.set_entity('entity', entity)
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

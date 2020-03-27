@@ -197,7 +197,7 @@ def main():
         module.fail_json(msg='use_netgroups cannot be used when server_type=active_directory')
 
     with module.api_connection():
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

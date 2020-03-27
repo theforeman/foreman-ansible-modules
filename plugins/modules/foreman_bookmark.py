@@ -122,7 +122,7 @@ def main():
             search='name="{0}",controller="{1}"'.format(module.foreman_params['name'], module.foreman_params['controller']),
             failsafe=True,
         ))
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

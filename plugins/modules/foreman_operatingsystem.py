@@ -220,7 +220,7 @@ def main():
                     module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
         module.set_entity('entity', entity)
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':
