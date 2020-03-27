@@ -1,4 +1,14 @@
 ---
+- hosts: foreman
+  become: true
+  tasks:
+    - name: install puppet-prometheus
+      command: /opt/puppetlabs/bin/puppet module install puppet-prometheus
+      args:
+        creates: /etc/puppetlabs/code/environments/production/modules/prometheus/
+    - name: import puppet modules into Foreman
+      command: hammer proxy import-classes --puppet-environment production --name {{ ansible_fqdn }}
+
 - hosts: localhost
   gather_facts: false
   vars_files:
@@ -322,6 +332,37 @@
         host_build: false
         host_operatingsystem: "{{ host.os.name }}"
         host_architecture: "{{ host.arch }}"
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
+    - name: create host with puppetclasses
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_puppetclasses:
+          - "prometheus::redis_exporter"
+        expected_change: true
+
+    - name: create host with puppetclasses again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_puppetclasses:
+          - "prometheus::redis_exporter"
         expected_change: false
 
     - name: delete host
