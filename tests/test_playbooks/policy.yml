@@ -57,10 +57,15 @@
   tasks:
     - name: 'Test policy'
       block:
+        - name: ensure we have no SCAP policy
+          include: tasks/policy.yml
+          vars:
+            policy_state: absent
         - name: create SCAP policy
           include: tasks/policy.yml
           vars:
-            scap_content: "{{ policy.scap_content_title }}"
+            policy_scap_content: "{{ policy.scap_content_title }}"
+            policy_scap_content_profile: "{{ policy.scap_content_profile }}"
             policy_state: present
             expected_change: true
         - name: create SCAP policy again, no change
@@ -78,10 +83,15 @@
           include: tasks/policy.yml
           vars:
             policy_tailoring_file: "{{ policy.tailoring_file_name }}"
-            policy_tailoring_file_profile:
+            policy_tailoring_file_profile: "{{ policy.tailoring_file_profile }}"
             policy_state: present
             expected_change: true
-        # TODO: test also fails
+        - name: enter incorrect tailoring file profile, fail expected
+          include: tasks/policy.yml
+          vars:
+            policy_tailoring_file: "{{ policy.tailoring_file_name }}"
+            policy_tailoring_file_profile: "invalid profile"
+            expected_fail: true
         - name: delete SCAP policy
           include: tasks/policy.yml
           vars:

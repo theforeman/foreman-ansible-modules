@@ -29,6 +29,7 @@
     hosts: "{{ policy_hosts | default(omit) }}"
     state: "{{ policy_state }}"
   register: result
+  ignore_errors: "{{ expected_fail | default(false) }}"
 - assert:
     fail_msg: "Ensuring policy is {{ policy_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:

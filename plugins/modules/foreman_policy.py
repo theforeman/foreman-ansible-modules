@@ -131,10 +131,6 @@ extends_documentation_fragment:
 EXAMPLES = '''
 - name: Create SCAP policy
   foreman_policy:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
-    validate_certs: "{{ validate_certs }}"
     name: Default RHEL 7 policy
     description: Policy for RHEL 7 hosts
     deploy_by: puppet
@@ -225,7 +221,7 @@ def main():
             ['period', 'custom', ['cron_line']],
         ],
         required_together=[
-            ['scap_content', 'scap_content_profile']
+            ['scap_content', 'scap_content_profile'],
             ['tailoring_file', 'tailoring_file_profile'],
         ],
         required_plugins=[
@@ -236,13 +232,12 @@ def main():
     with module.api_connection():
         entity, module_params = module.resolve_entities()
 
-        required_parameters = ['deploy_by', 'scap_content', 'scap_content']
-        if set(module_params.keys()).issubset(required_parameters):
-            missing_params = set(module_params.keys()).difference(required_parameters)
-            module.warn("{0}".format(missing_params))
-            pass
-
         if not module.desired_absent:
+            required_parameters = {'deploy_by', 'period', 'scap_content'}
+            missing_params = required_parameters.difference(module_params)
+            if entity is None and missing_params:
+                module.fail_json(msg="The following parameters are needed "
+                                     "while creating a new SCAP policy: {0}".format(", ".join(missing_params)))
             if 'scap_content_profile' in module_params:
                 module_params['scap_content_profile'] = module.ensure_profile('title', 'scap_contents', 'SCAP content')
             if 'tailoring_file' in module_params:
