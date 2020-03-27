@@ -913,7 +913,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         # Get entity name from snake case class name
         return '_'.join(class_name.split('_')[1:-1])
 
-    def run(self):
+    def run(self, **kwargs):
         """ lookup entities, ensure entity, remove sensitive data, manage parameters.
             Like 'run', just faster and more convenient...
         """
@@ -930,7 +930,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             if entity and updated_key in self.foreman_params:
                 self.foreman_params[self.entity_key] = self.foreman_params.pop(updated_key)
 
-        params = {}
+        params = kwargs.get('params', {})
         if self.entity_scope:
             for scope in self.entity_scope:
                 params.update(self.scope_for(scope))
