@@ -144,7 +144,8 @@ class ForemanHostgroupModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
-def ensure_puppetclasses(module, entity, expected_puppetclasses=None):
+def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=None):
+    puppetclasses_resource = '{0}_classes'.format(entity_type)
     if expected_puppetclasses:
         expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
     current_puppetclasses = entity.pop('puppetclass_ids', [])
@@ -153,11 +154,11 @@ def ensure_puppetclasses(module, entity, expected_puppetclasses=None):
             if puppetclass['id'] in current_puppetclasses:
                 current_puppetclasses.remove(puppetclass['id'])
             else:
-                payload = {'hostgroup_id': entity['id'], 'puppetclass_id': puppetclass['id']}
-                module.ensure_entity('hostgroup_classes', {}, None, params=payload, state='present', foreman_spec={})
+                payload = {'{0}_id'.format(entity_type): entity['id'], 'puppetclass_id': puppetclass['id']}
+                module.ensure_entity(puppetclasses_resource, {}, None, params=payload, state='present', foreman_spec={})
         if len(current_puppetclasses) > 0:
             for leftover_puppetclass in current_puppetclasses:
-                module.ensure_entity('hostgroup_classes', {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', foreman_spec={})
+                module.ensure_entity(puppetclasses_resource, {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', foreman_spec={})
 
 
 def main():
@@ -191,7 +192,7 @@ def main():
         expected_puppetclasses = module_params.pop('puppetclasses', None)
         entity = module.run(module_params=module_params, entity=entity)
         if not module.desired_absent and 'environment_id' in entity:
-            ensure_puppetclasses(module, entity, expected_puppetclasses)
+            ensure_puppetclasses(module, 'hostgroup', entity, expected_puppetclasses)
 
 
 if __name__ == '__main__':
