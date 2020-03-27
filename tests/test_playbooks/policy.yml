@@ -76,11 +76,11 @@
             expected_change: true
         - name: assign tailoring file to the SCAP policy
           include: tasks/policy.yml
-            vars:
-              policy_tailoring_file: "{{ policy.tailoring_file_name }}"
-              policy_tailoring_file_profile:
-              policy_state: present
-              expected_change: true
+          vars:
+            policy_tailoring_file: "{{ policy.tailoring_file_name }}"
+            policy_tailoring_file_profile:
+            policy_state: present
+            expected_change: true
         # TODO: test also fails
         - name: delete SCAP policy
           include: tasks/policy.yml

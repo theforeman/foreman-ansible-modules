@@ -45,7 +45,6 @@ options:
   description:
     description:
       - Description of the SCAP policy.
-    required: false
     type: str
   deploy_by:
     description:
@@ -55,50 +54,49 @@ options:
       - ansible
       - puppet
       - manual
-    required: true
     type: str
   scap_content:
     description:
       - SCAP content to be used for the SCAP policy..
-    required: true
+      - Required when creating SCAP policy.
     type: str
   scap_content_profile:
     description:
       - SCAP content profile title to be used for the SCAP policy.
-    required: true
+      - Required when creating SCAP policy.
     type: str
   tailoring_file:
     description:
       - Tailoring file to be used for the SCAP policy.
       - Required when using I(tailoring_file_profile).
-    required: false
     type: str
   tailoring_file_profile:
     description:
       - Tailoring file profile name to be used for the SCAP policy.
       - Required when using I(tailoring_file).
-    required: false
     type: str
   period:
     description:
       - Policy schedule period.
+      - Required when creating SCAP policy.
     choices:
       - weekly
       - monthly
       - custom
-    required: true
     type: str
   day_of_month:
     description:
       - Policy schedule day of month.
-      - Required when using I(period=monthly).
-    choices: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
-    required: false
+      - Required when I(period=monthly).
+    choices:
+      - "1"
+      - "..."
+      - "31"
     type: str
   weekday:
     description:
       - Policy schedule weekday.
-      - Required when using I(period=weekly).
+      - Required when I(period=weekly).
     choices:
       - monday
       - tuesday
@@ -107,24 +105,20 @@ options:
       - friday
       - saturday
       - sunday
-    required: false
     type: str
   cron_line:
     description:
       - Policy schedule cron line.
-      - Required when using I(period=custom).
-    required: false
+      - Required when I(period=custom).
     type: str
   hostgroups:
     description:
       - List of host groups the policy should be applied to.
-    required: false
     type: list
     elements: str
   hosts:
     description:
       - List of hosts the policy should be applied to.
-    required: false
     type: list
     elements: str
   
@@ -213,12 +207,12 @@ def main():
         foreman_spec=dict(
             name=dict(type='str', required=True),
             description=dict(type='str'),
-            deploy_by=dict(choices=['puppet', 'ansible', 'manual'], required=True),
-            scap_content=dict(type='entity', search_by='title', required=True),
-            scap_content_profile=dict(flat_name='scap_content_profile_id', type='str', required=True),
+            deploy_by=dict(choices=['puppet', 'ansible', 'manual']),
+            scap_content=dict(type='entity', search_by='title'),
+            scap_content_profile=dict(flat_name='scap_content_profile_id', type='str'),
             tailoring_file=dict(type='entity'),
             tailoring_file_profile=dict(flat_name='tailoring_file_profile_id', type='str'),
-            period=dict(type='str', choices=['weekly', 'monthly', 'custom'], required=True),
+            period=dict(type='str', choices=['weekly', 'monthly', 'custom']),
             weekday=dict(type='str', choices=[day.lower() for day in list(day_name)]),
             day_of_month=dict(type='str', choices=[str(i) for i in range(1, 32)]),
             cron_line=dict(type='str'),
@@ -231,6 +225,7 @@ def main():
             ['period', 'custom', ['cron_line']],
         ],
         required_together=[
+            ['scap_content', 'scap_content_profile']
             ['tailoring_file', 'tailoring_file_profile'],
         ],
         required_plugins=[
@@ -240,6 +235,13 @@ def main():
 
     with module.api_connection():
         entity, module_params = module.resolve_entities()
+
+        required_parameters = ['deploy_by', 'scap_content', 'scap_content']
+        if set(module_params.keys()).issubset(required_parameters):
+            missing_params = set(module_params.keys()).difference(required_parameters)
+            module.warn("{0}".format(missing_params))
+            pass
+
         if not module.desired_absent:
             if 'scap_content_profile' in module_params:
                 module_params['scap_content_profile'] = module.ensure_profile('title', 'scap_contents', 'SCAP content')
