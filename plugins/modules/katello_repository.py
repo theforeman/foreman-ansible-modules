@@ -225,7 +225,7 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     with module.api_connection():
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

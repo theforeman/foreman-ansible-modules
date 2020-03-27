@@ -358,7 +358,7 @@ def main():
         if not module.desired_absent and 'provider' not in module.foreman_params and entity is None:
             module.fail_json(msg='To create a compute resource a valid provider must be supplied')
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

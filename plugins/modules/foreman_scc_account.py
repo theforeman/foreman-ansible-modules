@@ -167,7 +167,7 @@ def main():
         if module.state == 'synced':
             module.resource_action('scc_accounts', 'sync', {'id': entity['id']})
         else:
-            module.cycle()
+            module.run()
 
 
 if __name__ == '__main__':

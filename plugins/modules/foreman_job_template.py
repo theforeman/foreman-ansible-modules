@@ -422,7 +422,7 @@ def main():
             # TemplateInputs need to be added as separate entities later
             template_inputs = module.foreman_params.get('template_inputs')
 
-            # TODO Use module.cycle _with_ extra_params
+            # TODO Use module.run _with_ extra_params
             if not module.desired_absent:
                 module.auto_lookup_entities()
             job_template = module.ensure_entity('job_templates', module.foreman_params, entity, params=extra_params)

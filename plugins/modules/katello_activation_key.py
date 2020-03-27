@@ -248,7 +248,7 @@ def main():
         if not module.desired_absent:
             module.lookup_entity('host_collections')
         host_collections = module.foreman_params.pop('host_collections', None)
-        activation_key = module.cycle()
+        activation_key = module.run()
 
         # only update subscriptions of newly created or updated AKs
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again

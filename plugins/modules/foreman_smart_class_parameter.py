@@ -257,7 +257,7 @@ def main():
         if 'default_value' in entity:
             entity['default_value'] = parameter_value_to_str(entity['default_value'], entity.get('parameter_type', 'string'))
 
-        entity = module.cycle()
+        entity = module.run()
         module.ensure_override_values(entity, override_values)
 
 

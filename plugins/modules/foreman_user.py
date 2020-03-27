@@ -533,7 +533,7 @@ def main():
                 else:
                     module.foreman_params['mail'] = entity['mail']
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':

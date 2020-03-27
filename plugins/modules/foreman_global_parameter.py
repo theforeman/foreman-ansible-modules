@@ -137,7 +137,7 @@ def main():
             if entity and 'value' in entity:
                 entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
 
-        module.cycle()
+        module.run()
 
 
 if __name__ == '__main__':
