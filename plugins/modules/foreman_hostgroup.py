@@ -135,6 +135,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
+    ensure_puppetclasses,
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
 )
@@ -142,23 +143,6 @@ from ansible.module_utils.foreman_helper import (
 
 class ForemanHostgroupModule(HostMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
-
-
-def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=None):
-    puppetclasses_resource = '{0}_classes'.format(entity_type)
-    if expected_puppetclasses:
-        expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
-    current_puppetclasses = entity.pop('puppetclass_ids', [])
-    if expected_puppetclasses:
-        for puppetclass in expected_puppetclasses:
-            if puppetclass['id'] in current_puppetclasses:
-                current_puppetclasses.remove(puppetclass['id'])
-            else:
-                payload = {'{0}_id'.format(entity_type): entity['id'], 'puppetclass_id': puppetclass['id']}
-                module.ensure_entity(puppetclasses_resource, {}, None, params=payload, state='present', foreman_spec={})
-        if len(current_puppetclasses) > 0:
-            for leftover_puppetclass in current_puppetclasses:
-                module.ensure_entity(puppetclasses_resource, {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', foreman_spec={})
 
 
 def main():
