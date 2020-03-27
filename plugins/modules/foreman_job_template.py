@@ -422,10 +422,7 @@ def main():
             # TemplateInputs need to be added as separate entities later
             template_inputs = module.foreman_params.get('template_inputs')
 
-            # TODO Use module.run _with_ extra_params
-            if not module.desired_absent:
-                module.auto_lookup_entities()
-            job_template = module.ensure_entity('job_templates', module.foreman_params, entity, params=extra_params)
+            job_template = module.run(params=extra_params)
 
             update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
             if update_dependent_entities and template_inputs is not None:

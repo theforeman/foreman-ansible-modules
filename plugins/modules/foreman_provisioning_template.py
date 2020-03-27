@@ -350,16 +350,9 @@ def main():
             # The name could have been determined to late, so copy it again
             module.foreman_params['entity'] = module.foreman_params['name']
 
-            # TODO Use module.run _with_ extra_params
-            if 'updated_name' in module.foreman_params:
-                module.foreman_params['name'] = module.foreman_params['updated_name']
-            entity = module.lookup_entity('entity')
-            if not module.desired_absent:
-                module.auto_lookup_entities()
-
             module.foreman_params = find_template_kind(module, module.foreman_params)
 
-            module.ensure_entity('provisioning_templates', module.foreman_params, entity, params=extra_params)
+            module.run(params=extra_params)
 
 
 if __name__ == '__main__':
