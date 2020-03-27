@@ -160,7 +160,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, HostMixin
+from ansible.module_utils.foreman_helper import (
+    ensure_puppetclasses,
+    ForemanEntityAnsibleModule,
+    HostMixin,
+)
 
 
 class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
@@ -216,7 +220,11 @@ def main():
             module_params['owner_type'] = 'Usergroup'
 
     with module.api_connection():
-        module.run(module_params=module_params)
+        entity, module_params = module.resolve_entities(module_params=module_params)
+        expected_puppetclasses = module_params.pop('puppetclasses', None)
+        entity = module.run(module_params=module_params, entity=entity)
+        if not module.desired_absent and 'environment_id' in entity:
+            ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
 
 
 if __name__ == '__main__':
