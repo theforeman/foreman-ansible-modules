@@ -72,7 +72,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     resource: settings
-    search: name = http_proxy
+    search: name = foreman_url
   register: result
 - debug:
     var: result.resources[0].value
