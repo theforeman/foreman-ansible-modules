@@ -77,7 +77,7 @@ EXAMPLES = '''
 - debug:
     var: result.resources[0].value
 
-- name: "Read all Registries"
+- name: "Read all Registries (Katello)"
   foreman_search_facts:
     username: "admin"
     password: "changeme"
@@ -99,7 +99,7 @@ EXAMPLES = '''
 - debug:
     var: result.resources
 
-- name: Get all existing subscriptions for organization with id 1
+- name: Get all existing subscriptions for organization with id 1 (Katello)
   foreman_search_facts:
     username: "admin"
     password: "changeme"
@@ -111,7 +111,7 @@ EXAMPLES = '''
 - debug:
     var: result
 
-- name: Get all existing activation keys for organization ACME
+- name: Get all existing activation keys for organization ACME (Katello)
   foreman_search_facts:
     username: "admin"
     password: "changeme"
