@@ -121,7 +121,7 @@ options:
       - List of hosts the policy should be applied to.
     type: list
     elements: str
-  
+
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state
