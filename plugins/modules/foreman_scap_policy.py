@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_policy
+module: foreman_scap_policy
 short_description: Manage Foreman SCAP policy using Foreman API.
 description:
   - Create, Update and Delete Foreman SCAP policy using Foreman API.
@@ -130,7 +130,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP policy
-  foreman_policy:
+  foreman_scap_policy:
     name: Default RHEL 7 policy
     description: Policy for RHEL 7 hosts
     deploy_by: puppet
@@ -154,7 +154,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update SCAP policy
-  foreman_policy:
+  foreman_scap_policy:
     name: Default RHEL 7 policy
     deploy_by: ansible
     period: weekly
@@ -167,7 +167,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete SCAP policy
-  foreman_policy:
+  foreman_scap_policy:
     name: Default RHEL 7 policy
     username: "admin"
     password: "secret"
@@ -182,7 +182,7 @@ from locale import setlocale, LC_ALL
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
-class ForemanPolicyModule(ForemanTaxonomicEntityAnsibleModule):
+class ForemanScapPolicyModule(ForemanTaxonomicEntityAnsibleModule):
     def ensure_profile(self, search_by, res_type, looking_for):
         method_to_call = getattr(self, 'find_resource_by_' + search_by)
         resource = method_to_call(res_type, self.params[res_type[:-1]])
@@ -196,7 +196,8 @@ class ForemanPolicyModule(ForemanTaxonomicEntityAnsibleModule):
 
 def main():
     setlocale(LC_ALL, 'en_US')
-    module = ForemanPolicyModule(
+    module = ForemanScapPolicyModule(
+        entity_name='policy',
         argument_spec=dict(
             updated_name=dict(type='str'),
         ),

@@ -1,0 +1,155 @@
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/scap_policy.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ scap_policy.organization }}"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ scap_policy.location }}"
+        location_organizations:
+          - "{{ scap_policy.organization }}"
+        location_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ scap_policy.hostgroup }}"
+        hostgroup_locations:
+          - "{{ scap_policy.location }}"
+        hostgroup_organizations:
+          - "{{ scap_policy.organization }}"
+        hostgroup_state: present
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "{{ scap_policy.host_name }}"
+        host_organization: "{{ scap_policy.organization }}"
+        host_location: "{{ scap_policy.location }}"
+        host_managed: false
+        host_state: present
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ scap_policy.scap_content_title }}"
+        scap_content_scap_file: "{{ scap_policy.scap_content_scap_file }}"
+        scap_content_locations:
+          - "{{ scap_policy.location }}"
+        scap_content_organizations:
+          - "{{ scap_policy.organization }}"
+        scap_content_state: present
+    - include_tasks: tasks/tailoring_file.yml
+      vars:
+        tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
+        tailoring_file_scap_file: "{{ scap_policy.tailoring_file_scap_file }}"
+        tailoring_file_locations:
+          - "{{ scap_policy.location }}"
+        scap_content_organizations:
+          - "{{ scap_policy.organization }}"
+        scap_content_state: present
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/scap_policy.yml
+  tasks:
+    - name: 'Test policy'
+      block:
+        - name: ensure we have no SCAP policy
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_state: absent
+        - name: create SCAP policy
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_scap_content: "{{ scap_policy.scap_content_title }}"
+            scap_policy_scap_content_profile: "{{ scap_policy.scap_content_profile }}"
+            scap_policy_state: present
+            expected_change: true
+        - name: create SCAP policy again, no change
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_state: present
+            expected_change: false
+        - name: update SCAP policy description
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_description: 'A policy with an updated description'
+            scap_policy_state: present
+            expected_change: true
+        - name: assign tailoring file to the SCAP policy
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_tailoring_file: "{{ scap_policy.tailoring_file_name }}"
+            scap_policy_tailoring_file_profile: "{{ scap_policy.tailoring_file_profile }}"
+            scap_policy_state: present
+            expected_change: true
+        - name: enter incorrect tailoring file profile, fail expected
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_tailoring_file: "{{ scap_policy.tailoring_file_name }}"
+            scap_policy_tailoring_file_profile: "invalid profile"
+            expected_fail: true
+        - name: make sure we have no SCAP policy with updated name
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_name: updated SCAP policy name
+            scap_policy_state: absent
+        - name: rename policy
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_updated_name: updated SCAP policy name
+        - name: delete SCAP policy with updated name
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_name: updated SCAP policy name
+            scap_policy_state: absent
+        - name: try to create a policy without specifying scap_content
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_state: present
+            expected_fail: true
+        - name: delete SCAP policy
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_state: absent
+            expected_change: false
+        - name: delete SCAP policy again, no change
+          include: tasks/scap_policy.yml
+          vars:
+            scap_policy_state: absent
+            expected_change: false
+
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/scap_policy.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ scap_policy.organization }}"
+        organization_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ scap_policy.location }}"
+        location_state: absent
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ scap_policy.hostgroup }}"
+        hostgroup_state: absent
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "{{ scap_policy.host_name }}"
+        host_state: absent
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "{{ scap_policy.scap_content_title }}"
+        scap_content_state: absent
+    - include_tasks: tasks/tailoring_file.yml
+      vars:
+        tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
+        scap_content_state: absent
+...

@@ -1,0 +1,45 @@
+---
+- name: "Create/Update/Delete policy"
+  vars:
+    scap_policy_name: Test SCAP policy
+    scap_policy_deploy_by: puppet
+    scap_policy_period: weekly
+    scap_policy_weekday: monday
+    scap_policy_state: "present"
+  foreman_scap_policy:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ scap_policy_name }}"
+    description: "{{ scap_policy_description | default(omit) }}"
+    updated_name: "{{ scap_policy_updated_name | default(omit) }}"
+    deploy_by: "{{ scap_policy_deploy_by | default(omit) }}"
+    scap_content: "{{ scap_policy_scap_content | default(omit) }}"
+    scap_content_profile: "{{ scap_policy_scap_content_profile | default(omit) }}"
+    tailoring_file: "{{ scap_policy_tailoring_file | default(omit) }}"
+    tailoring_file_profile: "{{ scap_policy_tailoring_file_profile | default(omit) }}"
+    period: "{{ scap_policy_period | default(omit) }}"
+    day_of_month: "{{ scap_policy_day_of_month | default(omit) }}"
+    weekday: "{{ scap_policy_weekday | default(omit) }}"
+    cron_line: "{{ scap_policy_cron_line | default(omit) }}"
+    locations: "{{ scap_policy_locations | default(omit) }}"
+    organizations: "{{ scap_policy_organizations | default(omit) }}"
+    hostgroups: "{{ scap_policy_hostgroups | default(omit) }}"
+    hosts: "{{ scap_policy_hosts | default(omit) }}"
+    state: "{{ scap_policy_state }}"
+  register: result
+  ignore_errors: "{{ expected_fail | default(false) }}"
+- assert:
+    fail_msg: "Ensuring policy is {{ scap_policy_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- assert:
+    fail_msg: "Ensuring policy failed as expected!"
+    that:
+      - result is failed
+  when:
+    - expected_fail is defined
+    - expected_fail
+...
