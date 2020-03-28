@@ -86,7 +86,7 @@ EXAMPLES = '''
   register: result
 - debug:
     var: item.name
-  with_items: result.resources
+  with_items: "{{ result.resources }}"
 
 - name: "Read all Organizations with full details"
   foreman_search_facts:
