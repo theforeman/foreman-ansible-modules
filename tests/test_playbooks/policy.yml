@@ -92,11 +92,30 @@
             policy_tailoring_file: "{{ policy.tailoring_file_name }}"
             policy_tailoring_file_profile: "invalid profile"
             expected_fail: true
+        - name: make sure we have no SCAP policy with updated name
+          include: tasks/policy.yml
+          vars:
+            policy_updated_name: Updated SCAP policy name
+            policy_state: absent
+        - name: rename policy
+          include: tasks/policy.yml
+          vars:
+            policy_updated_name: updated SCAP policy name
+        - name: delete SCAP policy with updated name
+          include: tasks/policy.yml
+          vars:
+            policy_updated_name: Updated SCAP policy name
+            policy_state: absent
+        - name: try to create a policy without specifying scap_content
+          include: tasks/policy.yml
+          vars:
+            policy_state: present
+            expected_fail: true
         - name: delete SCAP policy
           include: tasks/policy.yml
           vars:
             policy_state: absent
-            expected_change: true
+            expected_change: false
         - name: delete SCAP policy again, no change
           include: tasks/policy.yml
           vars:
