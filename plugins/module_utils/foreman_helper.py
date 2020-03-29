@@ -76,32 +76,15 @@ def _exception2fail_json(msg='Generic failure: {0}'):
     return decor
 
 
-class OrganizationMixin(object):
-    def handle_organization_param(self, module_params):
-        """
-        Find the Organization referenced in the module_params.
-        This *always* executes the search as we also need to know the Organization when deleting entities.
-
-        Parameters:
-            module_params (dict): the entity data as entered by the user
-        Return value:
-            module_params (dict): updated data
-            scope (dict): params that can be passed to further API calls to scope for the Organization
-        """
-        module_params = module_params.copy()
-
-        module_params['organization'] = self.find_resource_by_name('organizations', name=module_params['organization'], thin=True)
-
-        scope = {'organization_id': module_params['organization']['id']}
-
-        return (module_params, scope)
-
-
-class KatelloMixin(OrganizationMixin):
+class KatelloMixin():
     def __init__(self, **kwargs):
+        foreman_spec = dict(
+            organization=dict(type='entity', required=True),
+        )
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', [])
         required_plugins.append(('katello', ['*']))
-        super(KatelloMixin, self).__init__(required_plugins=required_plugins, **kwargs)
+        super(KatelloMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, **kwargs)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
@@ -180,8 +163,8 @@ class KatelloMixin(OrganizationMixin):
 
 
 class HostMixin(object):
-    def __init__(self, foreman_spec=None, **kwargs):
-        args = dict(
+    def __init__(self, **kwargs):
+        foreman_spec = dict(
             compute_resource=dict(type='entity'),
             compute_profile=dict(type='entity'),
             domain=dict(type='entity'),
@@ -208,14 +191,13 @@ class HostMixin(object):
             kickstart_repository=dict(type='entity', scope=['organization'], resource_type='repositories'),
             content_view=dict(type='entity', scope=['organization']),
         )
-        if foreman_spec:
-            args.update(foreman_spec)
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', []) + [
             ('katello', ['content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
             ('openscap', ['openscap_proxy']),
         ]
         mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
-        super(HostMixin, self).__init__(foreman_spec=args, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
+        super(HostMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
 
 
 class ForemanAnsibleModule(AnsibleModule):
@@ -805,14 +787,14 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         To manage my_entity entity, create the following sub class:
 
         ```
-        class ForemanMyEntityEntity(ForemanEntityAnsibleModule):
+        class ForemanMyEntityModule(ForemanEntityAnsibleModule):
             pass
         ```
 
         and use that class to instanciate module:
 
         ```
-        module = ForemanMyEntityEntity(
+        module = ForemanMyEntityModule(
             argument_spec=dict(
                 [...]
             ),
@@ -856,8 +838,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         self.state = self.foreman_params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
-        self.sub_entities = {key: value for key, value in self.foreman_spec.items()
-                             if value.get('resolve', True) and value.get('type') in ['entity', 'entity_list']}
+
         if 'resource_type' not in self.entity_opts:
             self.entity_opts['resource_type'] = inflector.pluralize(self.entity_name)
         if 'thin' not in self.entity_opts:
@@ -998,24 +979,15 @@ class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
 
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
-    def __init__(self, **kwargs):
-        foreman_spec = dict(
-            organization=dict(type='entity', required=True),
-        )
-        foreman_spec.update(kwargs.pop('foreman_spec', {}))
-        super(KatelloAnsibleModule, self).__init__(foreman_spec=foreman_spec, **kwargs)
+    pass
 
 
 class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
     def __init__(self, **kwargs):
-        foreman_spec = dict(
-            organization=dict(type='entity', required=True),
-        )
-        foreman_spec.update(kwargs.pop('foreman_spec', {}))
         entity_scope = kwargs.pop('entity_scope', [])
         if 'organization' not in entity_scope:
             entity_scope.append('organization')
-        super(KatelloEntityAnsibleModule, self).__init__(foreman_spec=foreman_spec, entity_scope=entity_scope, **kwargs)
+        super(KatelloEntityAnsibleModule, self).__init__(entity_scope=entity_scope, **kwargs)
 
 
 def _foreman_spec_helper(spec):
