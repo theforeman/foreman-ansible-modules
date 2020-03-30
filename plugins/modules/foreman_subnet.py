@@ -185,7 +185,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_foreman_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin
 try:
     import ipaddress
     HAS_IPADDRESS = True
@@ -194,7 +194,7 @@ except ImportError:
     IPADDRESS_IMP_ERR = traceback.format_exc()
 
 
-class ForemanSubnetModule(ForemanTaxonomicEntityAnsibleModule):
+class ForemanSubnetModule(NestedParametersMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -227,7 +227,6 @@ def main():
             remote_execution_proxies=dict(type='entity_list', resource_type='smart_proxies'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
-            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
         required_one_of=[['cidr', 'mask']],
         required_plugins=[('discovery', ['discovery_proxy'])],
