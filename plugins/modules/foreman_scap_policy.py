@@ -178,7 +178,6 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 from calendar import day_name
-from locale import setlocale, LC_ALL
 from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
@@ -195,7 +194,6 @@ class ForemanScapPolicyModule(ForemanTaxonomicEntityAnsibleModule):
 
 
 def main():
-    setlocale(LC_ALL, 'en_US')
     module = ForemanScapPolicyModule(
         entity_name='policy',
         argument_spec=dict(
