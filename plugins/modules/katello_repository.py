@@ -62,6 +62,28 @@ options:
       - Repository URL to sync from
     required: false
     type: str
+  ignore_global_proxy:
+    description:
+      - Whether content sync should use or ignore the global http proxy setting
+      - This is deprecated with Katello 3.13
+      - It has been superseeded by I(http_proxy_policy)
+    required: false
+    type: bool
+  http_proxy_policy:
+    description:
+      - Which proxy to use for content synching
+    choices:
+      - global_default_http_proxy
+      - none
+      - use_selected_http_proxy
+    required: false
+    type: str
+  http_proxy:
+    description:
+      - Name of the http proxy to use for content synching
+      - Should be combined with I(http_proxy_policy='use_selected_http_proxy')
+    required: false
+    type: str
   gpg_key:
     description:
     - Repository GPG key
@@ -193,6 +215,9 @@ def main():
             name=dict(required=True),
             content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
             url=dict(),
+            ignore_global_proxy=dict(type='bool'),
+            http_proxy_policy=dict(choices=['global_default_http_proxy', 'none', 'use_selected_http_proxy']),
+            http_proxy=dict(type='entity'),
             gpg_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             ssl_ca_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             ssl_client_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
