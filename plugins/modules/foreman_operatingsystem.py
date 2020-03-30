@@ -157,12 +157,12 @@ RETURN = ''' # '''
 
 from ansible.module_utils.foreman_helper import (
     ForemanEntityAnsibleModule,
-    parameter_foreman_spec,
+    NestedParametersMixin,
     OS_LIST,
 )
 
 
-class ForemanOperatingsystemModule(ForemanEntityAnsibleModule):
+class ForemanOperatingsystemModule(NestedParametersMixin, ForemanEntityAnsibleModule):
     pass
 
 
@@ -180,7 +180,6 @@ def main():
             ptables=dict(type='entity_list'),
             provisioning_templates=dict(type='entity_list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512', 'Base64', 'Base64-Windows']),
-            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),

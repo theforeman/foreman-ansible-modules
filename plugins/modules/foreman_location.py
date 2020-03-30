@@ -96,10 +96,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_foreman_spec
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule, NestedParametersMixin
 
 
-class ForemanLocationModule(ForemanEntityAnsibleModule):
+class ForemanLocationModule(NestedParametersMixin, ForemanEntityAnsibleModule):
     pass
 
 
@@ -109,7 +109,6 @@ def main():
             name=dict(required=True),
             parent=dict(type='entity'),
             organizations=dict(type='entity_list'),
-            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
     )
 

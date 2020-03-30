@@ -78,10 +78,10 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, parameter_foreman_spec
+from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin
 
 
-class ForemanDomainModule(ForemanTaxonomicEntityAnsibleModule):
+class ForemanDomainModule(NestedParametersMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -94,7 +94,6 @@ def main():
             name=dict(required=True),
             description=dict(aliases=['fullname'], flat_name='fullname'),
             dns_proxy=dict(type='entity', flat_name='dns_id', aliases=['dns'], resource_type='smart_proxies'),
-            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
         ),
     )
 

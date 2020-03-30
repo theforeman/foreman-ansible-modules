@@ -164,7 +164,48 @@ class KatelloMixin():
             _sync_plan_remove_products['params'].append(_organization_parameter)
 
 
-class HostMixin(object):
+class NestedParametersMixin(object):
+    def __init__(self, **kwargs):
+        foreman_spec = dict(
+            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
+        )
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        super(NestedParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
+
+    def run(self, **kwargs):
+        new_entity = super(NestedParametersMixin, self).run(**kwargs)
+        if new_entity:
+            scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
+            self.ensure_scoped_parameters(scope)
+        return new_entity
+
+    def ensure_scoped_parameters(self, scope):
+        parameters = self.foreman_params.get('parameters')
+        if parameters is not None:
+            entity = self.lookup_entity('entity')
+            if self.state == 'present' or (self.state == 'present_with_defaults' and entity is None):
+                if entity:
+                    current_parameters = {parameter['name']: parameter for parameter in self.list_resource('parameters', params=scope)}
+                else:
+                    current_parameters = {}
+                desired_parameters = {parameter['name']: parameter for parameter in parameters}
+
+                for name in desired_parameters:
+                    desired_parameter = desired_parameters[name]
+                    desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
+                    current_parameter = current_parameters.pop(name, None)
+                    if current_parameter:
+                        if 'parameter_type' not in current_parameter:
+                            current_parameter['parameter_type'] = 'string'
+                        current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
+                    self.ensure_entity(
+                        'parameters', desired_parameter, current_parameter, state="present", foreman_spec=parameter_foreman_spec, params=scope)
+                for current_parameter in current_parameters.values():
+                    self.ensure_entity(
+                        'parameters', None, current_parameter, state="absent", foreman_spec=parameter_foreman_spec, params=scope)
+
+
+class HostMixin(NestedParametersMixin):
     def __init__(self, **kwargs):
         foreman_spec = dict(
             compute_resource=dict(type='entity'),
@@ -920,11 +961,6 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         new_entity = self.ensure_entity(self._entity_resource_name, self.foreman_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
-        if (new_entity and 'parameters' in self.foreman_params
-                and 'parameters' in self.foreman_spec and self.foreman_spec['parameters'].get('type') == 'nested_list'):
-            scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
-            self.ensure_scoped_parameters(scope, entity, self.foreman_params.get('parameters'))
-
         return new_entity
 
     def remove_sensitive_fields(self, entity):
@@ -933,29 +969,6 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
             for blacklisted_field in self.blacklisted_fields:
                 entity[blacklisted_field] = None
         return entity
-
-    def ensure_scoped_parameters(self, scope, entity, parameters):
-        if parameters is not None:
-            if self.state == 'present' or (self.state == 'present_with_defaults' and entity is None):
-                if entity:
-                    current_parameters = {parameter['name']: parameter for parameter in self.list_resource('parameters', params=scope)}
-                else:
-                    current_parameters = {}
-                desired_parameters = {parameter['name']: parameter for parameter in parameters}
-
-                for name in desired_parameters:
-                    desired_parameter = desired_parameters[name]
-                    desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
-                    current_parameter = current_parameters.pop(name, None)
-                    if current_parameter:
-                        if 'parameter_type' not in current_parameter:
-                            current_parameter['parameter_type'] = 'string'
-                        current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
-                    self.ensure_entity(
-                        'parameters', desired_parameter, current_parameter, state="present", foreman_spec=parameter_foreman_spec, params=scope)
-                for current_parameter in current_parameters.values():
-                    self.ensure_entity(
-                        'parameters', None, current_parameter, state="absent", foreman_spec=parameter_foreman_spec, params=scope)
 
     def exit_json(self, **kwargs):
         if 'diff' not in kwargs and (self._before or self._after):
