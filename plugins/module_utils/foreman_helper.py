@@ -997,7 +997,7 @@ def _foreman_spec_helper(spec):
     foreman_spec = {}
     argument_spec = {}
 
-    _FILTER_SPEC_KEYS = [
+    _FILTER_SPEC_KEYS = {
         'ensure',
         'failsafe',
         'flat_name',
@@ -1009,7 +1009,20 @@ def _foreman_spec_helper(spec):
         'search_operator',
         'thin',
         'type',
-    ]
+    }
+    _VALUE_SPEC_KEYS = {
+        'ensure',
+        'type',
+    }
+    _ENTITY_SPEC_KEYS = {
+        'failsafe',
+        'resolve',
+        'resource_type',
+        'scope',
+        'search_by',
+        'search_operator',
+        'thin',
+    }
 
     # _foreman_spec_helper() is called before we call check_requirements() in the __init__ of ForemanAnsibleModule
     # and thus before the if HAS APYPIE check happens.
@@ -1023,7 +1036,7 @@ def _foreman_spec_helper(spec):
     # So in conclusion, we only have to verify that apypie is available before using it.
     # Lazy evaluation helps there.
     for key, value in spec.items():
-        foreman_value = {k: v for (k, v) in value.items() if k in ['ensure', 'type']}
+        foreman_value = {k: v for (k, v) in value.items() if k in _VALUE_SPEC_KEYS}
         argument_value = {k: v for (k, v) in value.items() if k not in _FILTER_SPEC_KEYS}
 
         foreman_type = value.get('type')
@@ -1032,15 +1045,15 @@ def _foreman_spec_helper(spec):
         if foreman_type == 'entity':
             if not flat_name:
                 flat_name = '{0}_id'.format(key)
-            foreman_value['resource_type'] = value.get('resource_type', HAS_APYPIE and inflector.pluralize(key))
-            foreman_value.update({k: v for (k, v) in value.items() if k in ['failsafe', 'resolve', 'scope', 'search_by', 'search_operator', 'thin']})
+            foreman_value['resource_type'] = HAS_APYPIE and inflector.pluralize(key)
+            foreman_value.update({k: v for (k, v) in value.items() if k in _ENTITY_SPEC_KEYS})
         elif foreman_type == 'entity_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = value.get('elements', 'str')
             if not flat_name:
                 flat_name = '{0}_ids'.format(HAS_APYPIE and inflector.singularize(key))
-            foreman_value['resource_type'] = value.get('resource_type', key)
-            foreman_value.update({k: v for (k, v) in value.items() if k in ['failsafe', 'resolve', 'scope', 'search_by', 'search_operator', 'thin']})
+            foreman_value['resource_type'] = key
+            foreman_value.update({k: v for (k, v) in value.items() if k in _ENTITY_SPEC_KEYS})
         elif foreman_type == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
