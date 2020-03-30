@@ -39,15 +39,15 @@
         scap_content_organizations:
           - "{{ scap_policy.organization }}"
         scap_content_state: present
-    - include_tasks: tasks/tailoring_file.yml
+    - include_tasks: tasks/scap_tailoring_file.yml
       vars:
-        tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
-        tailoring_file_scap_file: "{{ scap_policy.tailoring_file_scap_file }}"
-        tailoring_file_locations:
+        scap_tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
+        scap_tailoring_file_scap_file: "{{ scap_policy.tailoring_file_scap_file }}"
+        scap_tailoring_file_locations:
           - "{{ scap_policy.location }}"
-        scap_content_organizations:
+        scap_tailoring_file_organizations:
           - "{{ scap_policy.organization }}"
-        scap_content_state: present
+        scap_tailoring_file_state: present
 
 - hosts: tests
   gather_facts: false
@@ -111,12 +111,7 @@
           vars:
             scap_policy_state: present
             expected_fail: true
-        - name: delete SCAP policy
-          include: tasks/scap_policy.yml
-          vars:
-            scap_policy_state: absent
-            expected_change: false
-        - name: delete SCAP policy again, no change
+        - name: delete SCAP policy, no change
           include: tasks/scap_policy.yml
           vars:
             scap_policy_state: absent
@@ -148,8 +143,8 @@
       vars:
         scap_content_title: "{{ scap_policy.scap_content_title }}"
         scap_content_state: absent
-    - include_tasks: tasks/tailoring_file.yml
+    - include_tasks: tasks/scap_tailoring_file.yml
       vars:
-        tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
-        scap_content_state: absent
+        scap_tailoring_file_name: "{{ scap_policy.tailoring_file_name }}"
+        scap_tailoring_file_state: absent
 ...

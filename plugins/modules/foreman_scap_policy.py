@@ -231,20 +231,20 @@ def main():
     )
 
     with module.api_connection():
-        entity, module_params = module.resolve_entities()
-
         if not module.desired_absent:
             required_parameters = {'deploy_by', 'period', 'scap_content'}
-            missing_params = required_parameters.difference(module_params)
+            missing_params = required_parameters.difference(module.foreman_params)
+            entity = module.lookup_entity('entity')
             if entity is None and missing_params:
                 module.fail_json(msg="The following parameters are needed "
                                      "while creating a new SCAP policy: {0}".format(", ".join(missing_params)))
-            if 'scap_content_profile' in module_params:
-                module_params['scap_content_profile'] = module.ensure_profile('title', 'scap_contents', 'SCAP content')
-            if 'tailoring_file' in module_params:
-                module_params['tailoring_file_profile'] = module.ensure_profile('name', 'tailoring_files',
-                                                                                'Tailoring file')
-        module.run(module_params=module_params, entity=entity)
+            if 'scap_content_profile' in module.foreman_params:
+                module.foreman_params['scap_content_profile'] = module.ensure_profile('title', 'scap_contents',
+                                                                                      'SCAP content')
+            if 'tailoring_file' in module.foreman_params:
+                module.foreman_params['tailoring_file_profile'] = module.ensure_profile('name', 'tailoring_files',
+                                                                                        'Tailoring file')
+        module.run()
 
 
 if __name__ == '__main__':
