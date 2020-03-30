@@ -40,6 +40,7 @@ TEST_PLAYBOOKS = [
     'product',
     'provisioning_template',
     'ptable',
+    'puppet_autosign',
     'realm',
     'redhat_manifest',
     'repository',

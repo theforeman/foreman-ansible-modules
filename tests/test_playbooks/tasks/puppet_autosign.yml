@@ -1,0 +1,25 @@
+---
+- name: "Ensure Puppet autosign entry '{{ puppet_autosign_id }}' is '{{ puppet_autosign_state }}' }}'"
+  vars:
+    puppet_autosign_id: "*.lab03.example.com"
+    puppet_autosign_puppet_proxy: "{{ foreman_server_url | urlsplit('hostname') }}"
+    puppet_autosign_organization: Test Organization
+    puppet_autosign_location: Test Location
+    puppet_autosign_state: present
+  foreman_puppet_autosign:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    id: "{{ puppet_autosign_id }}"
+    puppet_proxy: "{{ puppet_autosign_puppet_proxy | default(omit) }}"
+    location: "{{ puppet_autosign_location | default(omit) }}"
+    organization: "{{ puppet_autosign_organization | default(omit) }}"
+    state: "{{ puppet_autosign_state }}"
+  register: result
+- assert:
+    fail_msg: "Puppet autosign entry is {{ puppet_autosign_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
