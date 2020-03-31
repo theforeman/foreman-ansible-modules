@@ -1,0 +1,41 @@
+name: docs
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+    branches:
+      - master
+
+jobs:
+  docs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: configure git
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@bots.github.com"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.7"
+      - name: Install dependencies
+        run: make doc-setup
+      - name: Build docs
+        run: make doc
+      - name: commit docs
+        run: |
+          git checkout gh-pages
+          rm -rf $(basename ${GITHUB_REF})
+          mv docs/_build/html $(basename ${GITHUB_REF})
+          dirname */index.html | sort --version-sort | xargs -I@@ -n1 echo '<a href="@@/">@@</a><br/>' > index.html
+          git add $(basename ${GITHUB_REF}) index.html
+          git commit -m "update docs for $(basename ${GITHUB_REF})"
+      - name: push docs
+        run: git push origin gh-pages
