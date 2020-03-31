@@ -83,7 +83,7 @@ def main():
     module = ForemanPuppetAutosignModule(
         foreman_spec=dict(
             id=dict(type='str', required=True),
-            puppet_proxy=dict(type='entity', flat_name='smart_proxy', resource_type='smart_proxies', required=True),
+            smart_proxy=dict(type='entity', required=True, aliases=['puppet_proxy']),
             organization=dict(type='entity'),
             location=dict(type='entity'),
         ),
