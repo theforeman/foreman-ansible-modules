@@ -249,6 +249,9 @@ def main():
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
+    if 'ignore_global_proxy' in module.foreman_params and 'http_proxy_policy' not in module.foreman_params:
+        module.foreman_params['http_proxy_policy'] = 'none' if module.foreman_params['ignore_global_proxy'] else 'global_default_http_proxy'
+
     with module.api_connection():
         module.run()
 
