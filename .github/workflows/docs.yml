@@ -34,7 +34,9 @@ jobs:
           git checkout gh-pages
           rm -rf $(basename ${GITHUB_REF})
           mv docs/_build/html $(basename ${GITHUB_REF})
-          dirname */index.html | sort --version-sort | xargs -I@@ -n1 echo '<a href="@@/">@@</a><br/>' > index.html
+          git show master:docs/_gh_include/header.inc > index.html
+          dirname */index.html | sort --version-sort | xargs -I@@ -n1 echo '<div class="col-md-4 center"><a href="@@/" class="btn-doc btn"><i class="fa fa-newspaper-o"></i><p>@@</p></a></div>' >> index.html
+          git show master:docs/_gh_include/footer.inc >> index.html
           git add $(basename ${GITHUB_REF}) index.html
           git commit -m "update docs for $(basename ${GITHUB_REF})"
       - name: push docs
