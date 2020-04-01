@@ -97,7 +97,7 @@ from requests.auth import HTTPBasicAuth
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     ''' Host inventory parser for ansible using foreman as source. '''
 
-    NAME = 'foreman'
+    NAME = 'theforeman.foreman.foreman'
 
     def __init__(self):
 
