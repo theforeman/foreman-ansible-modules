@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   </head>
 
-  <body>
+  <body style="margin:0px 15px">
     <h1>Foreman Ansible Modules</h1>
 
     <hr />
