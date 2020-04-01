@@ -1,21 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright (c) 2020, Anton Nesterov (@nesanton)
+# (c) 2020 Anton Nesterov (@nesanton)
 #
-# This file is part of Ansible
-#
-# Ansible is free software: you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Ansible is distributed in the hope that it will be useful,
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -37,14 +35,6 @@ description:
 author:
   - "Anton Nesterov (@nesanton)"
 options:
-  location:
-    description: Scope by location
-    required: false
-    type: str
-  organization:
-    description: Scope by organization
-    required: false
-    type: str
   prefix:
     description: Adds specified string to beginning of the template, but only if the template name does not start with the prefix already.
     required: false
@@ -58,7 +48,7 @@ options:
      - new
      - never
   verbose:
-    description: Add template diffs to the output.
+    description: Add template reports to the output.
     required: false
     type: bool
   force:
@@ -91,18 +81,9 @@ options:
     description: The directory within Git repo containing the templates.
     required: false
     type: str
-  locations:
-    description: REPLACE locations with given list.
-    required: false
-    type: list
-    elements: str
-  organizations:
-    description: REPLACE organizations with given list.
-    required: false
-    type: list
-    elements: str
 extends_documentation_fragment:
   - foreman
+  - foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -124,8 +105,6 @@ from ansible.module_utils.foreman_helper import ForemanAnsibleModule
 def main():
     module = ForemanAnsibleModule(
         foreman_spec=dict(
-            location=dict(type='entity', flat_name='location_id'),
-            organization=dict(type='entity', flat_name='organization_id'),
             associate=dict(choices=['always', 'new', 'never']),
             prefix=dict(),
             branch=dict(),
@@ -136,8 +115,8 @@ def main():
             force=dict(type='bool'),
             lock=dict(type='bool'),
             negate=dict(type='bool'),
-            locations=dict(type='entity_list', flat_name='location_ids'),
-            organizations=dict(type='entity_list', flat_name='organization_ids'),
+            locations=dict(type='entity_list'),
+            organizations=dict(type='entity_list'),
         ),
         supports_check_mode=False,
     )
@@ -145,13 +124,15 @@ def main():
     module_params = module.clean_params()
     module.connect()
 
-    if 'template' in module.foremanapi.resources or 'templates' in module.foremanapi.resources:
+    if 'template' in module.foremanapi.resources:
         resource_name = 'template'
+    elif 'templates' in module.foremanapi.resources:
+        resource_name = 'templates'
     else:
         raise Exception('The server does not seem to have the foreman_templates plugin installed.')
 
     # Build a list of all existing templates of all supported types to check if we are adding any new
-    all_templates = []
+    template_report = []
 
     template_types = ['provisioning_templates', 'report_templates', 'ptables']
     if 'job_templates' in module.foremanapi.resources:
@@ -159,26 +140,25 @@ def main():
 
     for template_type in template_types:
         resources = module.list_resource(template_type)
-        for resource in resources:
-            all_templates.append([resource['name'], resource['id']])
+        template_report += [(resource['name'], resource['id']) for resources in module.list_resource(template_type)]
 
     result = module.resource_action(resource_name, 'import', record_change=False, params=module_params)
     msg_templates = result['message'].pop('templates', [])
 
-    diff = {'changed': [], 'new': []}
+    report = {'changed': [], 'new': []}
     templates = {}
 
     for template in msg_templates:
         if template['changed']:
-            diff['changed'].append(template['name'])
+            report['changed'].append(template['name'])
             module.set_changed()
         elif template['imported']:
-            if [template['name'], template['id']] not in all_templates:
-                diff['new'].append(template['name'])
+            if (template['name'], template['id']) not in template_report:
+                report['new'].append(template['name'])
                 module.set_changed()
         templates[template.pop('name')] = template
 
-    module.exit_json(templates=templates, message=result['message'], diff=diff)
+    module.exit_json(templates=templates, message=result['message'], report=report)
 
 
 if __name__ == '__main__':
