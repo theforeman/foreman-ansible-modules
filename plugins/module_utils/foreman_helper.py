@@ -164,6 +164,16 @@ class KatelloMixin():
             _sync_plan_remove_products['params'].append(_organization_parameter)
 
 
+class TaxonomyMixin(object):
+    def __init__(self, **kwargs):
+        foreman_spec = dict(
+            organizations=dict(type='entity_list'),
+            locations=dict(type='entity_list'),
+        )
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        super(TaxonomyMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
+
+
 class NestedParametersMixin(object):
     def __init__(self, **kwargs):
         foreman_spec = dict(
@@ -983,14 +993,12 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         return [key for key, value in self.foreman_spec.items() if value.get('no_log', False)]
 
 
-class ForemanTaxonomicEntityAnsibleModule(ForemanEntityAnsibleModule):
-    def __init__(self, **kwargs):
-        foreman_spec = dict(
-            organizations=dict(type='entity_list'),
-            locations=dict(type='entity_list'),
-        )
-        foreman_spec.update(kwargs.pop('foreman_spec', {}))
-        super(ForemanTaxonomicEntityAnsibleModule, self).__init__(foreman_spec=foreman_spec, **kwargs)
+class ForemanTaxonomicAnsibleModule(TaxonomyMixin, ForemanAnsibleModule):
+    pass
+
+
+class ForemanTaxonomicEntityAnsibleModule(TaxonomyMixin, ForemanEntityAnsibleModule):
+    pass
 
 
 class ForemanScapDataStreamModule(ForemanTaxonomicEntityAnsibleModule):
