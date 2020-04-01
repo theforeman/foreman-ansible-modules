@@ -121,7 +121,7 @@ def main():
         supports_check_mode=False,
     )
 
-    module_params = module.clean_params()
+    module_params = module.foreman_params
     module.connect()
 
     if 'template' in module.foremanapi.resources:
