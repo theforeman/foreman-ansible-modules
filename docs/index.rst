@@ -8,9 +8,18 @@ Welcome to Foreman Ansible Modules's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: User documentation
 
-   modules/list_of_all_modules
+   README
+   List of all modules <modules/list_of_all_modules>
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Developer documentation
+
+   developing
+   testing
+   releasing
 
 Indices and tables
 ==================

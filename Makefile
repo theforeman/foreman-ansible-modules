@@ -88,10 +88,6 @@ build/src/plugins/modules/%.py: plugins/modules/%.py | build
 build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
 	sed -e '/NAME =/ s/foreman/theforeman.foreman.foreman/' $< > $@
 
-# adjust README.md not to point to files that we don't ship in the collection
-build/src/README.md: README.md | build
-	sed -e '/Documentation how to/d' $< > $@
-
 build/src/%: % | build
 	cp $< $@
 

@@ -6,8 +6,6 @@ Ansible modules for interacting with the Foreman API and various plugin APIs suc
 
 A list of all modules and their documentation can be found at [theforeman.org/plugins/foreman-ansible-modules](https://theforeman.org/plugins/foreman-ansible-modules/).
 
-Documentation how to [write](docs/developing.md) and [test](docs/testing.md) modules and [release](docs/releasing.md) the collection is available in the [`docs`](docs/) folder.
-
 ## Support
 
 ### Supported Foreman and plugins versions
