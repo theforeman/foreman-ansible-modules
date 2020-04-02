@@ -121,7 +121,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: Debian 9
+    name: Debian
     release_name: stretch
     family: Debian
     major: 9
@@ -135,7 +135,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: Centos 7
+    name: Centos
     family: Redhat
     major: 7
     password_hash: SHA256
@@ -146,7 +146,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: Debian 9
+    name: Debian
     family: Debian
     major: 9
     state: absent
