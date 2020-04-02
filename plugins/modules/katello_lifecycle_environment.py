@@ -97,11 +97,11 @@ def main():
         if 'prior' not in module.foreman_params and not entity:
             module.foreman_params['prior'] = 'Library'
 
-        if entity:
-            if 'label' in module.foreman_params and module.foreman_params['label'] and entity['label'] != module.foreman_params['label']:
+        if entity and not module.desired_absent:
+            if 'label' in module.foreman_params and entity['label'] != module.foreman_params['label']:
                 module.fail_json(msg="Label cannot be updated on a lifecycle environment.")
 
-            if 'prior' in module.foreman_params and entity['prior']['id'] != module.foreman_params['prior']['id']:
+            if 'prior' in module.foreman_params and entity['prior']['id'] != module.lookup_entity('prior')['id']:
                 module.fail_json(msg="Prior cannot be updated on a lifecycle environment.")
 
         module.run()
