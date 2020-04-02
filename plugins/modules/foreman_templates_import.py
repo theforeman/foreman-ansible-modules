@@ -99,11 +99,11 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule
 
 
 def main():
-    module = ForemanAnsibleModule(
+    module = ForemanTaxonomicAnsibleModule(
         foreman_spec=dict(
             associate=dict(choices=['always', 'new', 'never']),
             prefix=dict(),
@@ -115,8 +115,6 @@ def main():
             force=dict(type='bool'),
             lock=dict(type='bool'),
             negate=dict(type='bool'),
-            locations=dict(type='entity_list'),
-            organizations=dict(type='entity_list'),
         ),
         supports_check_mode=False,
     )
