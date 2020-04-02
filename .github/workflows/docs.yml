@@ -38,6 +38,6 @@ jobs:
           dirname */index.html | sort --version-sort | xargs -I@@ -n1 echo '<div class="col-md-4 center"><a href="@@/" class="btn-doc btn"><i class="fa fa-newspaper-o"></i><p>@@</p></a></div>' >> index.html
           git show origin/master:docs/_gh_include/footer.inc >> index.html
           git add $(basename ${GITHUB_REF}) index.html
-          git commit -m "update docs for $(basename ${GITHUB_REF})"
+          git commit -m "update docs for $(basename ${GITHUB_REF})" || true
       - name: push docs
         run: git push origin gh-pages
