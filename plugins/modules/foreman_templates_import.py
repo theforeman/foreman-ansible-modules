@@ -117,6 +117,7 @@ def main():
             negate=dict(type='bool'),
         ),
         supports_check_mode=False,
+        required_plugins=[('foreman_templates', ['*'])],
     )
 
     module_params = module.foreman_params

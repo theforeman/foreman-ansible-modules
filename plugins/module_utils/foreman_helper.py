@@ -51,6 +51,7 @@ _PLUGIN_RESOURCES = {
     'remote_execution': 'remote_execution_features',
     'scc_manager': 'scc_accounts',
     'snapshot_management': 'snapshots',
+    'foreman_templates': 'templates',
 }
 
 ENTITY_KEYS = dict(
