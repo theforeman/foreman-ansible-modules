@@ -137,8 +137,7 @@ def main():
         template_types.append('job_templates')
 
     for template_type in template_types:
-        resources = module.list_resource(template_type)
-        template_report += [(resource['name'], resource['id']) for resources in module.list_resource(template_type)]
+        template_report += [(resource['name'], resource['id']) for resource in module.list_resource(template_type)]
 
     result = module.resource_action(resource_name, 'import', record_change=False, params=module_params)
     msg_templates = result['message'].pop('templates', [])
