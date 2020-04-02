@@ -34,7 +34,7 @@ author:
 options:
   operatingsystem:
     description:
-      - Name of the Operating System
+      - Title of the Operating System (name or name and major version)
     required: true
     type: str
   template_kind:
