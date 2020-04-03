@@ -89,6 +89,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to write modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#specification-of-the-foreman-spec">Specification of the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entity-lookup">Entity lookup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#required-plugins">required_plugins</a></li>
 </ul>
 </li>
@@ -231,6 +232,14 @@ The sub entities must be described by <code class="docutils literal notranslate"
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">flat_name</span></code> provides a way to translate the name of a module argument as known to Ansible to the name understood by the Foreman API.</p>
 <p>You can add new or override generated Ansible module arguments, by specifying them in the <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> as usual.</p>
+</div>
+<div class="section" id="entity-lookup">
+<h2>Entity lookup<a class="headerlink" href="#entity-lookup" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you need to access entities before <code class="docutils literal notranslate"><span class="pre">module.run()</span></code> can take over.
+You can trigger the automatic lookup of entities via <code class="docutils literal notranslate"><span class="pre">&lt;entity_variable&gt;</span> <span class="pre">=</span> <span class="pre">module.lookup_entity('&lt;entity_name&gt;')</span></code>.
+If you only need the entity to be used as a scope parameter, it is enough to call <code class="docutils literal notranslate"><span class="pre">scope</span> <span class="pre">=</span> <span class="pre">module.scope_for('organization')</span></code>.</p>
+<p>In case, the automatic lookup process is unable perform the proper find for a specific entity type, it must be looked up manually and then set via <code class="docutils literal notranslate"><span class="pre">module.set_entity('&lt;entity_name&gt;',</span> <span class="pre">search_result)</span></code> to prevent the automatism from trying.</p>
+<p>In instances of <code class="docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code> the main entity is references as ‘entity’ in the above context.</p>
 </div>
 <div class="section" id="required-plugins">
 <h2>required_plugins<a class="headerlink" href="#required-plugins" title="Permalink to this headline">¶</a></h2>
