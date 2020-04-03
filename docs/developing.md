@@ -71,6 +71,16 @@ The sub entities must be described by `foreman_spec=<sub_entity>_spec`.
 
 You can add new or override generated Ansible module arguments, by specifying them in the `argument_spec` as usual.
 
+## Entity lookup
+
+Sometimes you need to access entities before `module.run()` can take over.
+You can trigger the automatic lookup of entities via `<entity_variable> = module.lookup_entity('<entity_name>')`.
+If you only need the entity to be used as a scope parameter, it is enough to call `scope = module.scope_for('organization')`.
+
+In case, the automatic lookup process is unable perform the proper find for a specific entity type, it must be looked up manually and then set via `module.set_entity('<entity_name>', search_result)` to prevent the automatism from trying.
+
+In instances of `ForemanEntityAnsibleModule` the main entity is references as 'entity' in the above context.
+
 ## required_plugins
 
 A module can pass an optional `required_plugins` list to `ForemanAnsibleModule`, which will indicate whether the module needs any Foreman plugins to be installed to work.
