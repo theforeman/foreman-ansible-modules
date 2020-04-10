@@ -135,6 +135,10 @@ options:
       - Create an include filter
     default: False
     type: bool
+  solve_dependencies:
+    description:
+      - Solve RPM dependencies by default on Content View publish
+    type: bool
   original_packages:
     description:
       - Include all RPMs with no errata
@@ -247,6 +251,7 @@ def main():
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             version=dict(),
             architecture=dict(),
+            solve_dependencies=dict(type='bool', default=False),
         ),
     )
 

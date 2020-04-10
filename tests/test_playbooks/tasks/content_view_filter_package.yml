@@ -28,6 +28,7 @@
     original_packages: "{{ original_packages | default(omit) }}"
     filter_state: "{{ filter_state }}"
     rule_state: "{{ rule_state | default(omit) }}"
+    solve_dependencies: "{{ solve_dependencies | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
