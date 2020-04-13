@@ -66,7 +66,6 @@ options:
   solve_dependencies:
     description:
       - Solve RPM dependencies by default on Content View publish
-    default: false
     type: bool
   composite:
     description:
@@ -155,7 +154,7 @@ def main():
             description=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
-            solve_dependencies=dict(type='bool', default=False),
+            solve_dependencies=dict(type='bool'),
             components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
