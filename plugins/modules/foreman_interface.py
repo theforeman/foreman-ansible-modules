@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with This program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
@@ -33,6 +32,63 @@ description:
 author:
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"
 options:
+  host:
+    description:
+      - |
+        Name of the host of the interface
+    required: true
+    type: str
+  name:
+    description: (DNS) Name of the interface
+    required: true
+    type: str
+  mac:
+    description: Mac address of the interface
+    type: str
+  ip:
+    description: IP address of the interface
+    type: str
+  type:
+    description: Type of the interface
+   choices:
+      - 'interface'
+      - 'bmc'
+      - 'bond'
+      - 'bridge'
+    default: 'interface'
+    type: str
+    required: false
+  subnet:
+    description: Subnet of the interface
+    type: str
+  domain:
+    description: Domain of the interface
+    type: str
+  identifier:
+    description: Device identifier, e.g. eth0 or eth1.1
+    type: str
+  managed:
+    description: |
+      - Should this interface be managed via DHCP and DNS smart proxy and should it be configured during provisioning?
+    type: boolean
+  primary:
+    description: |
+      - Should this interface be used for constructing the FQDN of the host?
+      - Each managed hosts needs to have one primary interface.
+    type: boolean
+  provision:
+    description: |
+      - Should this interface be used for TFTP of PXELinux (or SSH for image-based hosts)?
+      - Each managed hosts needs to have one provision interface.
+    type: boolean
+  virtual:
+    description: |
+      - Alias or VLAN device
+    type: boolean
+  tag:
+    description: |
+      - VLAN tag, this attribute has precedence over the subnet VLAN ID. Only for virtual interfaces.
+    type: string
 
 extends_documentation_fragment:
   - foreman
@@ -40,13 +96,12 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-   - name: Get interface for a host
-     foreman_interface:
-        name: "centos7.deploy1.dev.atix"
+
 '''
 
 RETURN = ''' # '''
 
+from ansible.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 class ForemanInterfaceModule(ForemanEntityAnsibleModule):
     pass
@@ -55,32 +110,25 @@ class ForemanInterfaceModule(ForemanEntityAnsibleModule):
 def main():
     module = ForemanInterfaceModule(
         foreman_spec=dict(
-            username=dict(type='invisible'),
-            password=dict(type='invisible', no_log=True),
-            host=dict(type='entity', flat_name='host_id', resource_type='hosts', required=True),
-            name=dict(type='entity', flat_name='id', resource_type='interfaces'),
-        ),
-        argument_spec=dict(
-            interface=dict(type='dict', options=dict(
-                mac=dict(type='string'),
-                ip=dict(type='string'),
-                type=dict(choices=['interface','bmc','bond','bridge'], default='interface'),
-                #name=dict(type='string'),
-                subnet=dict(type='entity', flat_name='subnet_id', resource_type='subnets'),
-                domain=dict(type='entity', flat_name='domain_id', resource_type='domains'),
-                identifier=dict(type='string'),
-                managed=dict(type='bool'),
-                primary=dict(type='bool'),
-                provision=dict(type='bool'),
-                virtual=dict(type='bool'),
-                tag=dict(type='string'),
-            )),
-        ),
-        entity_scope=['host', 'domain', 'subnet']
-    )
+            host=dict(type='entity', required=True),
+            name=dict(required=True),
+            mac=dict(),
+            ip=dict(),
+            type=dict(choices=['interface', 'bmc', 'bond', 'bridge'], default='interface'),
+            subnet=dict(type='entity'),
+            domain=dict(type='entity'),
+            identifier=dict(),
+            managed=dict(type='bool'),
+            primary=dict(type='bool'),
+            provision=dict(type='bool'),
+            virtual=dict(type='bool'),
+            tag=dict(),
+            ),
+
+        entity_scope=['host']
+        )
 
     with module.api_connection():
-     #   host = module.lookup_entity('hosts').get('id')
         module.run()
 
 
