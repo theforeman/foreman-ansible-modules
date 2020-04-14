@@ -1,0 +1,95 @@
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_organizations:
+          - "{{ host.organization }}"
+        location_state: present
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "{{ host.domain }}"
+        domain_locations:
+          - "{{ host.location }}"
+        domain_organizations:
+          - "{{ host.organization }}"
+        domain_state: present
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }}"
+        subnet_mask: '255.255.255.224'
+        subnet_domains:
+          - "{{ host.domain }}"
+        subnet_locations:
+          - "{{ host.location }}"
+        subnet_organizations:
+          - "{{ host.organization }}"
+        subnet_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}"
+        hostgroup_domain: "{{ host.domain }}"
+        hostgroup_locations:
+          - "{{ host.location }}"
+        hostgroup_organizations:
+          - "{{ host.organization }}"
+        hostgroup_state: present
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "{{ host.hostgroup }}/child_group"
+        hostgroup_domain: "{{ host.domain }}"
+        hostgroup_locations:
+          - "{{ host.location }}"
+        hostgroup_organizations:
+          - "{{ host.organization }}"
+        hostgroup_state: present
+    - include_tasks: tasks/user.yml
+      vars:
+        user_state: present
+        user_password: password
+    - include_tasks: tasks/usergroup.yml
+      vars:
+        usergroup_state: present
+    - include: tasks/architecture.yml
+      vars:
+        architecture_name: "{{ host.arch }}"
+        architecture_state: present
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "{{ host.os.name }}"
+        operatingsystem_major: "{{ host.os.major }}"
+        operatingsystem_minor: "{{ host.os.minor }}"
+        operatingsystem_family: "{{ host.os.family }}"
+        operatingsystem_architectures:
+          - "{{ host.arch }}"
+        operatingsystem_state: present
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
+        host_managed: false
+
+- hosts: tests
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/interface.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        organization_name: "{{ host.organization }}"
+        location_name: "{{ host.location }}"
+        subnet_name: "{{ host.subnet }}"
+        domain_name: "{{ host.domain }}"
+        expected_change: false
