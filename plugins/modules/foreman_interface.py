@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_image
+module: foreman_interface
 short_description: Manage Host Interfaces using Foreman API
 description:
   - Create and Delete Host Interfaces using Foreman API
@@ -67,25 +67,25 @@ options:
     description: Device identifier, e.g. eth0 or eth1.1
     type: str
   managed:
-    description: |
+    description:
       - Should this interface be managed via DHCP and DNS smart proxy and should it be configured during provisioning?
     type: boolean
   primary:
-    description: |
+    description:
       - Should this interface be used for constructing the FQDN of the host?
       - Each managed hosts needs to have one primary interface.
     type: boolean
   provision:
-    description: |
+    description:
       - Should this interface be used for TFTP of PXELinux (or SSH for image-based hosts)?
       - Each managed hosts needs to have one provision interface.
     type: boolean
   virtual:
-    description: |
+    description:
       - Alias or VLAN device
     type: boolean
   tag:
-    description: |
+    description:
       - VLAN tag, this attribute has precedence over the subnet VLAN ID. Only for virtual interfaces.
     type: string
 
