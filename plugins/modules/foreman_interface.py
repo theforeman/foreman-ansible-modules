@@ -34,8 +34,7 @@ author:
 options:
   host:
     description:
-      - |
-        Name of the host of the interface
+      - Name of the host of the interface
     required: true
     type: str
   name:
@@ -123,10 +122,9 @@ def main():
             provision=dict(type='bool'),
             virtual=dict(type='bool'),
             tag=dict(),
-            ),
-
-        entity_scope=['host']
-        )
+        ),
+        entity_scope=['host'],
+    )
 
     with module.api_connection():
         module.run()
