@@ -108,7 +108,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule
+from ansible.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule, _flatten_entity
 
 
 def main():
@@ -131,7 +131,7 @@ def main():
 
     with module.api_connection():
 
-        module.flatten_entity_params()
+        module.auto_lookup_entities()
 
         # Build a list of all existing templates of all supported types to check if we are adding any new
         template_report = []
@@ -143,7 +143,7 @@ def main():
         for template_type in template_types:
             template_report += [(resource['name'], resource['id']) for resource in module.list_resource(template_type)]
 
-        result = module.resource_action('templates', 'import', record_change=False, params=module.foreman_params)
+        result = module.resource_action('templates', 'import', record_change=False, params=_flatten_entity(module.foreman_params, module.foreman_spec))
         msg_templates = result['message'].pop('templates', [])
 
         report = {'changed': [], 'new': []}

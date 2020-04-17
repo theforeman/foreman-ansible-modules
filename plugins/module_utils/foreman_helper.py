@@ -307,13 +307,6 @@ class ForemanAnsibleModule(AnsibleModule):
     def changed(self):
         return self._changed
 
-    def flatten_entity_params(self):
-        """ Flattens taxonimy and other parameters that are of entity or entity_list type.
-             Will work only after connect()
-        """
-        self.auto_lookup_entities()
-        self.foreman_params = _flatten_entity(self.foreman_params, self.foreman_spec)
-
     def set_changed(self):
         self._changed = True
 
