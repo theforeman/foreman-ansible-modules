@@ -307,8 +307,22 @@ class ForemanAnsibleModule(AnsibleModule):
     def changed(self):
         return self._changed
 
+    def flatten_entity_params(self):
+        """ Flattens taxonimy and other parameters that are of entity or entity_list type.
+             Will work only after connect()
+        """
+        self.auto_lookup_entities()
+        self.foreman_params = _flatten_entity(self.foreman_params, self.foreman_spec)
+
     def set_changed(self):
         self._changed = True
+
+    def _patch_templates_resource_name(self):
+        """ Need to support both singular and plural form. The resource was made plural per
+             https://projects.theforeman.org/issues/28750
+        """
+        if 'template' in self.foremanapi.apidoc['docs']['resources']:
+            self.foremanapi.apidoc['docs']['resources']['templates'] = self.foremanapi.apidoc['docs']['resources']['template']
 
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
@@ -388,6 +402,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self.check_required_plugins()
 
+        self._patch_templates_resource_name
         self._patch_location_api()
         self._patch_subnet_rex_api()
 

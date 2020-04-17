@@ -36,11 +36,13 @@ author:
   - "Anton Nesterov (@nesanton)"
 options:
   prefix:
-    description: Adds specified string to beginning of the template, but only if the template name does not start with the prefix already.
+    description:
+      - Adds specified string to beginning of the template, but only if the template name does not start with the prefix already.
     required: false
     type: str
   associate:
-    description: Associate to OSes, Locations and Organizations based on metadata.
+    description:
+      - Associate to Operatingsystems, Locations and Organizations based on metadata.
     required: false
     type: str
     choices:
@@ -48,23 +50,28 @@ options:
      - new
      - never
   verbose:
-    description: Add template reports to the output.
+    description:
+      - Add template reports to the output.
     required: false
     type: bool
   force:
-    description: Update templates that are locked.
+    description:
+      - Update templates that are locked.
     required: false
     type: bool
   lock:
-    description: Lock imported templates.
+    description:
+      - Lock imported templates.
     required: false
     type: bool
   branch:
-    description: Branch in Git repo.
+    description:
+      - Branch in Git repo.
     required: false
     type: str
   repo:
-    description: Filesystem path or repo (with protocol), for example /tmp/dir or git://example.com/repo.git or https://example.com/repo.git.
+    description:
+      - Filesystem path or repo (with protocol), for example /tmp/dir or git://example.com/repo.git or https://example.com/repo.git.
     required: false
     type: str
   filter:
@@ -74,11 +81,13 @@ options:
     required: false
     type: str
   negate:
-    description: Negate the prefix.
+    description:
+      - Negate the filter condition.
     required: false
     type: bool
   dirname:
-    description: The directory within Git repo containing the templates.
+    description:
+      - The directory within Git repo containing the templates.
     required: false
     type: str
 extends_documentation_fragment:
@@ -120,43 +129,37 @@ def main():
         required_plugins=[('foreman_templates', ['*'])],
     )
 
-    module_params = module.foreman_params
-    module.connect()
+    with module.api_connection():
 
-    if 'template' in module.foremanapi.resources:
-        resource_name = 'template'
-    elif 'templates' in module.foremanapi.resources:
-        resource_name = 'templates'
-    else:
-        raise Exception('The server does not seem to have the foreman_templates plugin installed.')
+        module.flatten_entity_params()
 
-    # Build a list of all existing templates of all supported types to check if we are adding any new
-    template_report = []
+        # Build a list of all existing templates of all supported types to check if we are adding any new
+        template_report = []
 
-    template_types = ['provisioning_templates', 'report_templates', 'ptables']
-    if 'job_templates' in module.foremanapi.resources:
-        template_types.append('job_templates')
+        template_types = ['provisioning_templates', 'report_templates', 'ptables']
+        if 'job_templates' in module.foremanapi.resources:
+            template_types.append('job_templates')
 
-    for template_type in template_types:
-        template_report += [(resource['name'], resource['id']) for resource in module.list_resource(template_type)]
+        for template_type in template_types:
+            template_report += [(resource['name'], resource['id']) for resource in module.list_resource(template_type)]
 
-    result = module.resource_action(resource_name, 'import', record_change=False, params=module_params)
-    msg_templates = result['message'].pop('templates', [])
+        result = module.resource_action('templates', 'import', record_change=False, params=module.foreman_params)
+        msg_templates = result['message'].pop('templates', [])
 
-    report = {'changed': [], 'new': []}
-    templates = {}
+        report = {'changed': [], 'new': []}
+        templates = {}
 
-    for template in msg_templates:
-        if template['changed']:
-            report['changed'].append(template['name'])
-            module.set_changed()
-        elif template['imported']:
-            if (template['name'], template['id']) not in template_report:
-                report['new'].append(template['name'])
+        for template in msg_templates:
+            if template['changed']:
+                report['changed'].append(template['name'])
                 module.set_changed()
-        templates[template.pop('name')] = template
+            elif template['imported']:
+                if (template['name'], template['id']) not in template_report:
+                    report['new'].append(template['name'])
+                    module.set_changed()
+            templates[template.pop('name')] = template
 
-    module.exit_json(templates=templates, message=result['message'], report=report)
+        module.exit_json(templates=templates, message=result['message'], report=report)
 
 
 if __name__ == '__main__':
