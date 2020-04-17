@@ -402,7 +402,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self.check_required_plugins()
 
-        self._patch_templates_resource_name
+        self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
 
