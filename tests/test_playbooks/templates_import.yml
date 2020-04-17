@@ -9,6 +9,14 @@
         provisioning_template_name: "fam_tsync_test_Kickstart default"
         provisioning_template_kind: provision
         provisioning_template_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: present
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
 
 - hosts: tests
   gather_facts: false
@@ -45,6 +53,24 @@
         templates_import_prefix: "fam_tsync_test_"
         templates_import_filter: "^fam_tsync_test_Kickstart default$"
         expected_change: false
+    - include_tasks: tasks/templates_import.yml
+      vars:
+        templates_import_prefix: "fam_tsync_test_"
+        templates_import_filter: "^fam_tsync_test_Kickstart default$"
+        templates_import_locations:
+          - "Test Location"
+        templates_import_organizations:
+          - "Test Organization"
+        expected_change: true
+    - include_tasks: tasks/templates_import.yml
+      vars:
+        templates_import_prefix: "fam_tsync_test_"
+        templates_import_filter: "^fam_tsync_test_Kickstart default$"
+        templates_import_locations:
+          - "Test Location"
+        templates_import_organizations:
+          - "Test Organization"
+        expected_change: false
 
 - hosts: localhost
   gather_facts: false
@@ -56,4 +82,12 @@
         provisioning_template_name: "fam_tsync_test_Kickstart default"
         provisioning_template_kind: provision
         provisioning_template_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
 ...
