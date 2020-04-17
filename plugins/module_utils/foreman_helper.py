@@ -400,11 +400,11 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self.ping()
 
-        self.check_required_plugins()
-
         self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
+
+        self.check_required_plugins()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def ping(self):
