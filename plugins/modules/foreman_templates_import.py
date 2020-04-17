@@ -126,7 +126,7 @@ def main():
             negate=dict(type='bool'),
         ),
         supports_check_mode=False,
-        required_plugins=[('foreman_templates', ['*'])],
+        required_plugins=[('templates', ['*'])],
     )
 
     with module.api_connection():
