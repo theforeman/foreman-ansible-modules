@@ -30,7 +30,6 @@ short_description: Sync templates from a repository
 description:
   - Sync provisioning templates, report_templates, partition tables and job templates from external git repository or file system.
   - Based on foreman_templates plugin U(https://github.com/theforeman/foreman_templates).
-  - Default values for all module options can be set using M(foreman_setting) for TemplateSync category or on the settings page in GUI.
 author:
   - "Anton Nesterov (@nesanton)"
 notes:
@@ -38,6 +37,7 @@ notes:
     Due to a bug in the foreman_templates plugin, this module won't report C(changed=true)
     when the only change is the Organization/Location association of the imported templates.
     Please see U(https://projects.theforeman.org/issues/29534) for details.
+  - Default values for all module options can be set using M(foreman_setting) for TemplateSync category or on the settings page in WebUI.
 options:
   prefix:
     description:
