@@ -1,0 +1,25 @@
+- name: Sync templates in from a git repo
+  foreman_templates_import:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    associate: "{{ templates_import_associate | default(omit) }}"
+    prefix: "{{ templates_import_prefix | default(omit) }}"
+    branch: "{{ templates_import_branch | default(omit) }}"
+    repo: "{{ templates_import_repo | default(omit) }}"
+    filter: "{{ templates_import_filter | default(omit) }}"
+    dirname: "{{ templates_import_dirname | default(omit) }}"
+    verbose: "{{ templates_import_verbose | default(omit) }}"
+    force: "{{ templates_import_force | default(omit) }}"
+    lock: "{{ templates_import_lock | default(omit) }}"
+    negate: "{{ templates_import_negate | default(omit) }}"
+    locations: "{{ templates_import_locations | default(omit) }}"
+    organizations: "{{ templates_import_organizations | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring templates are synced from a git repo has failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...

@@ -51,6 +51,7 @@ _PLUGIN_RESOURCES = {
     'remote_execution': 'remote_execution_features',
     'scc_manager': 'scc_accounts',
     'snapshot_management': 'snapshots',
+    'templates': 'templates',
 }
 
 ENTITY_KEYS = dict(
@@ -309,6 +310,13 @@ class ForemanAnsibleModule(AnsibleModule):
     def set_changed(self):
         self._changed = True
 
+    def _patch_templates_resource_name(self):
+        """ Need to support both singular and plural form. The resource was made plural per
+             https://projects.theforeman.org/issues/28750
+        """
+        if 'template' in self.foremanapi.apidoc['docs']['resources']:
+            self.foremanapi.apidoc['docs']['resources']['templates'] = self.foremanapi.apidoc['docs']['resources']['template']
+
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
             see https://projects.theforeman.org/issues/10359
@@ -385,10 +393,11 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self.ping()
 
-        self.check_required_plugins()
-
+        self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
+
+        self.check_required_plugins()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def ping(self):
