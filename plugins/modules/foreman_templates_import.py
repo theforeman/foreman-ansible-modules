@@ -28,16 +28,20 @@ DOCUMENTATION = '''
 module: foreman_templates_import
 short_description: Sync templates from a repository
 description:
-  - Sync provisioning templates, report_templates, partition tables and job templates from external git repository and/or file system.
+  - Sync provisioning templates, report_templates, partition tables and job templates from external git repository or file system.
   - Based on foreman_templates plugin U(https://github.com/theforeman/foreman_templates).
-  - Some defaults can be set in TemplateSync settings using M(foreman_setting) or GUI.
-  - Module attempts to be idempotent as much as the plugin allows.
+  - Default values for all module options can be set using M(foreman_setting) for TemplateSync category or on the settings page in GUI.
 author:
   - "Anton Nesterov (@nesanton)"
+notes:
+  - |
+    Due to a bug in the foreman_templates plugin, this module won't report C(changed=true)
+    when the only change is the Organization/Location association of the imported templates.
+    Please see U(https://projects.theforeman.org/issues/29534) for details.
 options:
   prefix:
     description:
-      - Adds specified string to beginning of the template, but only if the template name does not start with the prefix already.
+      - Adds specified string to beginning of all imported templates that do not yet have that prefix.
     required: false
     type: str
   associate:
@@ -66,7 +70,7 @@ options:
     type: bool
   branch:
     description:
-      - Branch in Git repo.
+      - Branch of the I(repo). Only for git-based repositories.
     required: false
     type: str
   repo:
