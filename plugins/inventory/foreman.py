@@ -65,6 +65,9 @@ DOCUMENTATION = '''
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
+      exclude_patterns:
+        description: List of regular expressions that will filter out hosts that match
+        type: list
 '''
 
 EXAMPLES = '''
@@ -74,6 +77,8 @@ url: http://localhost:2222
 user: ansible-tester
 password: secure
 validate_certs: False
+exclude_patterns:
+  - '^virt-who'
 '''
 
 from distutils.version import LooseVersion
@@ -82,6 +87,7 @@ from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible.module_utils.common._collections_compat import MutableMapping
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, to_safe_group_name, Constructable
+import re
 
 # 3rd party imports
 try:
@@ -215,6 +221,12 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         for host in self._get_hosts():
 
             if host.get('name'):
+                # Skip any hosts that match exclude_patterns
+                exclude_patterns = self.get_option('exclude_patterns')
+                if exclude_patterns:
+                    if any([ re.search(exclude_pattern, host['name']) for exclude_pattern in exclude_patterns]):
+                        continue
+                        
                 host_name = self.inventory.add_host(host['name'])
 
                 # create directly mapped groups
