@@ -26,19 +26,24 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_ansible_roles_facts
-short_description: Gather names of Ansible Roles that can be imported
+short_description: Gather imported Ansible Roles
 description:
-  - Gather names of Ansible Roles that can be imported
+  - Gather details about imported Ansible Roles
 author:
   - "Brant Evans (@branic)"
 options:
-  proxy:
+  search:
     description:
-      - The Smart Proxy name to use for fetching Ansible Roles
-    required: false
+      - Search query to use
+      - If None, all imported roles are returned
     type: str
-    aliases: 
-      - smart_proxy
+  full_details:
+    description:
+      - If C(True) all details about the found roles are returned
+    type: bool
+    default: false
+    aliases:
+      - info
   organization:
     description:
       - Organization that the role is in
@@ -55,12 +60,21 @@ extends_documentation_fragment:
 
 
 EXAMPLES = '''
-- name: Get Ansible Roles available to import on a proxy
-  foreman_ansible_roles_importable_info:
+- name: Get all imported Ansible Roles
+  foreman_ansible_roles_imported_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    proxy: "foreman.example.com"
+  register: result
+- debug:
+    var: result
+
+- name: Find the imported Ansible Role named example_role
+  foreman_ansible_roles_imported_info:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    search: "name=example_role"
   register: result
 - debug:
     var: result
@@ -68,7 +82,7 @@ EXAMPLES = '''
 
 RETURN = '''
 ansible_roles:
-  description: Roles that are able to be imported on the proxy
+  description: Roles that have been imported
   returned: always
   type: list
 '''
@@ -76,15 +90,16 @@ ansible_roles:
 from ansible.module_utils.foreman_helper import ForemanAnsibleModule, _flatten_entity
 
 
-class ForemanAnsibleRolesImportableInfoModule(ForemanAnsibleModule):
+class ForemanAnsibleRolesImportedInfoModule(ForemanAnsibleModule):
     pass
 
 
 def main():
 
-    module = ForemanAnsibleRolesImportableInfoModule(
+    module = ForemanAnsibleRolesImportedInfoModule(
         foreman_spec=dict(
-            proxy=dict(type='entity', flat_name='proxy_id', aliases=['smart_proxy'], resource_type='smart_proxies', required=True),
+            search=dict(default=""),
+            full_details=dict(type='bool', aliases=['info'], default=False),
             organization=dict(type='entity'),
             location=dict(type='entity'),
         ),
@@ -96,8 +111,24 @@ def main():
         module.auto_lookup_entities()
         params = _flatten_entity(module.foreman_params, module.foreman_spec)
 
-        resources = module.fetch_resource(resource, params)
-        resources = resources['results']['ansible_roles']
+        # According to the APIDoc organization_id and location_id are valid
+        # parameters, but a "500 Internal Server Error" error is returned
+        # when an organization_id or location_id are present in the request
+        # See https://projects.theforeman.org/issues/29583
+        if 'organization_id' in params:
+            del params['organization_id']
+
+        if 'location_id' in params:
+            del params['location_id']
+
+        response = module.list_resource(resource, module.foreman_params.get('search'), params)
+
+        if module.foreman_params['full_details']:
+            resources = []
+            for found_resource in response:
+                resources.append(module.show_resource(resource, found_resource['id'], params))
+        else:
+            resources = response
 
         module.exit_json(ansible_roles=resources)
 
