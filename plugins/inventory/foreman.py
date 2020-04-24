@@ -68,6 +68,8 @@ DOCUMENTATION = '''
       exclude_patterns:
         description: List of regular expressions that will filter out hosts that match
         type: list
+        required: False
+        default: []
 '''
 
 EXAMPLES = '''
