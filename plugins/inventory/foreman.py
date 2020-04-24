@@ -226,9 +226,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 # Skip any hosts that match exclude_patterns
                 exclude_patterns = self.get_option('exclude_patterns')
                 if exclude_patterns:
-                    if any([ re.search(exclude_pattern, host['name']) for exclude_pattern in exclude_patterns]):
+                    if any([re.search(exclude_pattern, host['name']) for exclude_pattern in exclude_patterns]):
                         continue
-                        
+                
                 host_name = self.inventory.add_host(host['name'])
 
                 # create directly mapped groups
