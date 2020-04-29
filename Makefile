@@ -74,19 +74,19 @@ tests/test_playbooks/vars/server.yml:
 	@echo "For recording, please adjust $@ to match your reference server."
 
 dist-test: $(MANIFEST)
-	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible -m theforeman.foreman.foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
-	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc theforeman.foreman.foreman_organization | grep -q "Manage Foreman Organization"
+	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible -m $(NAMESPACE).$(NAME).foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
+	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc $(NAMESPACE).$(NAME).foreman_organization | grep -q "Manage Foreman Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 	ansible-galaxy collection install -p build/collections $< --force
 
 # fix the imports to use the collection namespace
 build/src/plugins/modules/%.py: plugins/modules/%.py | build
-	sed -e '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.theforeman.foreman.plugins.module_utils/g' \
-	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- theforeman.foreman.foreman/; t1}' $< > $@
+	sed -e '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.$(NAMESPACE).$(NAME).plugins.module_utils/g' \
+	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- $(NAMESPACE).$(NAME).foreman/; t1}' $< > $@
 
 build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
-	sed -e '/NAME =/ s/foreman/theforeman.foreman.foreman/' $< > $@
+	sed -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
 
 build/src/%: % | build
 	cp $< $@
