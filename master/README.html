@@ -94,11 +94,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#installation-from-ansible-galaxy">Installation from Ansible Galaxy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#installation-via-rpm">Installation via RPM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#run-from-git">Run from Git</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#branches">Branches</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/list_of_all_modules.html">List of all modules</a></li>
@@ -190,7 +188,7 @@ Some modules have additional features/arguments that are only applied when the c
 </div>
 <div class="section" id="supported-ansible-versions">
 <h3>Supported Ansible Versions<a class="headerlink" href="#supported-ansible-versions" title="Permalink to this headline">¶</a></h3>
-<p>The supported Ansible versions are aligned with currently maintained ansible versions. You can find the list of maintained Ansible versions <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status">here</a>. Older Ansible versions (Ansible &gt;= 2.3) should work but are not tested.</p>
+<p>The supported Ansible versions are aligned with currently maintained Ansible versions. You can find the list of maintained Ansible versions <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status">here</a>. Older Ansible versions (Ansible &gt;= 2.3) should work but are not tested.</p>
 <p>As we’re using Ansible’s <a class="reference external" href="https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments">documentation fragment</a> feature, that was introduced in Ansible 2.8, <code class="docutils literal notranslate"><span class="pre">ansible-doc</span></code> prior to 2.8 won’t be able to display the module documentation, but the modules will still run fine with <code class="docutils literal notranslate"><span class="pre">ansible</span></code> and <code class="docutils literal notranslate"><span class="pre">ansible-playbook</span></code>.</p>
 </div>
 <div class="section" id="supported-python-versions">
@@ -202,7 +200,7 @@ Some modules have additional features/arguments that are only applied when the c
 <ul>
 <li><p>Some modules, e.g. <code class="docutils literal notranslate"><span class="pre">katello_sync</span></code> and <code class="docutils literal notranslate"><span class="pre">katello_content_view_version</span></code>, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
 As Ansible has facilities to do so, the modules will wait unconditionally. See the <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html">Ansible documentation</a> for putting tasks in the background.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">foreman_compute_resource</span></code> can leak sensitive data if used within a loop. According to <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">ansible documentation</a>, using loop over ansible resources can leak sensitive data. You can prevent this by using <code class="docutils literal notranslate"><span class="pre">no_log:</span> <span class="pre">yes</span></code> on the task.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_compute_resource</span></code> can leak sensitive data if used within a loop. According to <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">ansible documentation</a>, using loop over Ansible resources can leak sensitive data. You can prevent this by using <code class="docutils literal notranslate"><span class="pre">no_log:</span> <span class="pre">yes</span></code> on the task.</p>
 <p>eg:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create compute resources</span>
   <span class="nt">foreman_compute_resource</span><span class="p">:</span>
@@ -238,32 +236,6 @@ As Ansible has facilities to do so, the modules will wait unconditionally. See t
 <p>The collection is also available as <code class="docutils literal notranslate"><span class="pre">ansible-collection-theforeman-foreman</span></code> from the <code class="docutils literal notranslate"><span class="pre">client</span></code> repository on <code class="docutils literal notranslate"><span class="pre">yum.theforeman.org</span></code> starting with Foreman 1.24.</p>
 <p>After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.</p>
 </div>
-<div class="section" id="run-from-git">
-<h3>Run from Git<a class="headerlink" href="#run-from-git" title="Permalink to this headline">¶</a></h3>
-<p>If you don’t want to install the collection, or use an Ansible version that does not support collections (&lt; 2.8), you can consume the modules directly from Git.</p>
-<p>Just clone the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules.git">foreman-ansible-modules git repository</a> to your machine and add the path to the modules to <code class="docutils literal notranslate"><span class="pre">ansible.cfg</span></code>.</p>
-<p>Let’s assume you have a directory of playbooks and roles in a git repository for your infrastructure named <code class="docutils literal notranslate"><span class="pre">infra</span></code>:</p>
-<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">infra/</span>
-<span class="l l-Scalar l-Scalar-Plain">├── ansible.cfg</span>
-<span class="l l-Scalar l-Scalar-Plain">├── playbooks</span>
-<span class="l l-Scalar l-Scalar-Plain">└── roles</span>
-</pre></div>
-</div>
-<p>First, clone the repository into <code class="docutils literal notranslate"><span class="pre">infra/</span></code>:</p>
-<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">cd infra/</span>
-<span class="l l-Scalar l-Scalar-Plain">git clone https://github.com/theforeman/foreman-ansible-modules.git</span>
-</pre></div>
-</div>
-<p>Now edit <code class="docutils literal notranslate"><span class="pre">ansible.cfg</span></code> like this:</p>
-<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span><span class="nv">defaults</span><span class="p p-Indicator">]</span>
-<span class="l l-Scalar l-Scalar-Plain">library = foreman-ansible-modules/plugins/modules</span>
-<span class="l l-Scalar l-Scalar-Plain">module_utils = foreman-ansible-modules/plugins/module_utils</span>
-<span class="l l-Scalar l-Scalar-Plain">doc_fragment_plugins = foreman-ansible-modules/plugins/doc_fragments</span>
-<span class="l l-Scalar l-Scalar-Plain">filter_plugins = foreman-ansible-modules/plugins/filter</span>
-</pre></div>
-</div>
-<p>As the modules are not installed inside a collection, you will have to refer to them as <code class="docutils literal notranslate"><span class="pre">&lt;module_name&gt;</span></code> and not as <code class="docutils literal notranslate"><span class="pre">theforeman.foreman.&lt;module_name&gt;</span></code>.</p>
-</div>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
@@ -272,13 +244,8 @@ As Ansible has facilities to do so, the modules will wait unconditionally. See t
 <li><p><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/apypie/"><code class="docutils literal notranslate"><span class="pre">apypie</span></code></a></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/ipaddress/"><code class="docutils literal notranslate"><span class="pre">ipaddress</span></code></a> for the <code class="docutils literal notranslate"><span class="pre">foreman_subnet</span></code> module on Python 2.7</p></li>
-</ul>
-</div>
-<div class="section" id="branches">
-<h2>Branches<a class="headerlink" href="#branches" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">master</span></code> - current development branch, using the <code class="docutils literal notranslate"><span class="pre">apypie</span></code> library</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nailgun</span></code> - the state of the repository before the switch to the <code class="docutils literal notranslate"><span class="pre">apypie</span></code> library started, <code class="docutils literal notranslate"><span class="pre">nailgun</span></code> is the only dependency</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> for the RPM support in the <code class="docutils literal notranslate"><span class="pre">katello_upload</span></code> module</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debian</span></code> for the DEB support in the <code class="docutils literal notranslate"><span class="pre">katello_upload</span></code> module</p></li>
 </ul>
 </div>
 </div>
