@@ -74,6 +74,8 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `foreman_subnet` module on Python 2.7
+* `rpm` for the RPM support in the `katello_upload` module
+* `debian` for the DEB support in the `katello_upload` module
 
 ## Branches
 
