@@ -65,6 +65,9 @@ DOCUMENTATION = '''
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
+      rich_params:
+        description:
+            - Toggle, if true parameters will be interpreted if possible as JSON
 '''
 
 EXAMPLES = '''
@@ -92,6 +95,8 @@ except ImportError:
     raise AnsibleError('This script requires python-requests 1.1 as a minimum version')
 
 from requests.auth import HTTPBasicAuth
+
+import json
 
 
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
@@ -207,7 +212,14 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         hostvars = {}
         for k, v in host.items():
             if k not in omitted_vars:
-                hostvars[vars_prefix + k] = v
+                if self.get_option('rich_params') and type(v) is str:
+                    try:
+                        hostvars[vars_prefix + k] = json.loads(v)
+                    except json.JSONDecodeError:
+                        hostvars[vars_prefix + k] = v
+                else:
+                    hostvars[vars_prefix + k] = v
+
         return hostvars
 
     def _populate(self):
