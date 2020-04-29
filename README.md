@@ -67,40 +67,6 @@ The collection is also available as `ansible-collection-theforeman-foreman` from
 
 After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.
 
-### Run from Git
-
-If you don't want to install the collection, or use an Ansible version that does not support collections (< 2.8), you can consume the modules directly from Git.
-
-Just clone the [foreman-ansible-modules git repository](https://github.com/theforeman/foreman-ansible-modules.git) to your machine and add the path to the modules to `ansible.cfg`.
-
-Let's assume you have a directory of playbooks and roles in a git repository for your infrastructure named `infra`:
-
-```
-infra/
-├── ansible.cfg
-├── playbooks
-└── roles
-```
-
-First, clone the repository into `infra/`:
-
-```
-cd infra/
-git clone https://github.com/theforeman/foreman-ansible-modules.git
-```
-
-Now edit `ansible.cfg` like this:
-
-```
-[defaults]
-library = foreman-ansible-modules/plugins/modules
-module_utils = foreman-ansible-modules/plugins/module_utils
-doc_fragment_plugins = foreman-ansible-modules/plugins/doc_fragments
-filter_plugins = foreman-ansible-modules/plugins/filter
-```
-
-As the modules are not installed inside a collection, you will have to refer to them as `<module_name>` and not as `theforeman.foreman.<module_name>`.
-
 ## Dependencies
 
 These dependencies are required for the Ansible controller, not the Foreman server. 
