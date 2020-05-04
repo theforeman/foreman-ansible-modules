@@ -86,7 +86,8 @@ build/src/plugins/modules/%.py: plugins/modules/%.py | build
 	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- $(NAMESPACE).$(NAME).foreman/; t1}' $< > $@
 
 build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
-	sed -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
+	sed -E -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
+		-e '/(plugin|choices):/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
 
 build/src/plugins/callback/%.py: plugins/callback/%.py | build
 	sed -e '/CALLBACK_NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
