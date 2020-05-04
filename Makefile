@@ -88,6 +88,10 @@ build/src/plugins/modules/%.py: plugins/modules/%.py | build
 build/src/plugins/inventory/%.py: plugins/inventory/%.py | build
 	sed -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
 
+build/src/plugins/callback/%.py: plugins/callback/%.py | build
+	sed -e '/CALLBACK_NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
+		-e '/callback:/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
+
 build/src/%: % | build
 	cp $< $@
 
