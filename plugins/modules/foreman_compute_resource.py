@@ -52,7 +52,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm", "GCE"]
+    choices: ["vmware", "libvirt", "ovirt", "proxmox", "EC2", "AzureRm", "GCE"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -115,6 +115,10 @@ options:
         description:
           - zone for I(provider=GCE)
         type: str
+      ssl_verify_peer:
+        description:
+          - verify ssl from provider I(provider=proxmox)
+        type: bool
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
