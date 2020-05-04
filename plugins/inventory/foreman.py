@@ -19,9 +19,9 @@ DOCUMENTATION = '''
         - constructed
     options:
       plugin:
-        description: the name of this plugin, it should always be set to 'theforeman.foreman.foreman' for this plugin to recognize it as it's own.
+        description: token that ensures this is a source file for the C(foreman) plugin.
         required: True
-        choices: ['theforeman.foreman.foreman']
+        choices: ['foreman']
       url:
         description: url to foreman
         default: 'http://localhost:3000'
@@ -69,7 +69,7 @@ DOCUMENTATION = '''
 
 EXAMPLES = '''
 # my.foreman.yml
-plugin: theforeman.foreman.foreman
+plugin: foreman
 url: http://localhost:2222
 user: ansible-tester
 password: secure
