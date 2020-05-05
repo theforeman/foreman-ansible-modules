@@ -53,7 +53,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 
 ## Installation
 
-There are currently three ways to use the modules in your setup: install from Ansible Galaxy, install via RPM and run directly from Git.
+There are currently two ways to use the modules in your setup: install from Ansible Galaxy or via RPM.
 
 ### Installation from Ansible Galaxy
 
