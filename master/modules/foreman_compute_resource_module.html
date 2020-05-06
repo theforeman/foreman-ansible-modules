@@ -262,6 +262,7 @@
                                                                                                                                                             <li>vmware</li>
                                                                                                                                                                                             <li>libvirt</li>
                                                                                                                                                                                             <li>ovirt</li>
+                                                                                                                                                                                            <li>proxmox</li>
                                                                                                                                                                                             <li>EC2</li>
                                                                                                                                                                                             <li>AzureRm</li>
                                                                                                                                                                                             <li>GCE</li>
@@ -408,6 +409,24 @@
                                                                                                                                                         </td>
                                                             <td>
                                                                     <div>AWS region, AZURE region</div>
+                                                                            </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>ssl_verify_peer</b>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                </td>
+                            <td>
+                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li>yes</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                                                    <div>verify ssl from provider <em>provider=proxmox</em></div>
                                                                             </td>
         </tr>
                             <tr>
@@ -581,7 +600,7 @@
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Update livirt compute resource</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Update libvirt compute resource</span>
   <span class="nt">foreman_compute_resource</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_compute_resource</span>
     <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">updated compute resource</span>
@@ -598,7 +617,7 @@
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
 
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete livirt compute resource</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Delete libvirt compute resource</span>
   <span class="nt">foreman_compute_resource</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_compute_resource</span>
     <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
@@ -639,6 +658,24 @@
       <span class="nt">datacenter</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">aa92fb54-0736-4066-8fa8-b8b9e3bd75ac</span>
       <span class="nt">ovirt_quota</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">24868ab9-c2a1-47c3-87e7-706f17d215ac</span>
       <span class="nt">use_v4</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create proxmox compute resource</span>
+  <span class="nt">foreman_compute_resource</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxmox_compute_resource</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Munich</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ATIX</span>
+    <span class="nt">provider</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxmox</span>
+    <span class="nt">provider_params</span><span class="p">:</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://proxmox.example.com:8006/api2/json</span>
+      <span class="nt">user</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">root@pam</span>
+      <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secretpassword</span>
+      <span class="nt">ssl_verify_peer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
     <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
     <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">secret</span>
