@@ -52,7 +52,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "EC2", "AzureRm", "GCE"]
+    choices: ["vmware", "libvirt", "ovirt", "proxmox", "EC2", "AzureRm", "GCE"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -115,6 +115,10 @@ options:
         description:
           - zone for I(provider=GCE)
         type: str
+      ssl_verify_peer:
+        description:
+          - verify ssl from provider I(provider=proxmox)
+        type: bool
 extends_documentation_fragment:
   - foreman
   - foreman.entity_state_with_defaults
@@ -138,7 +142,7 @@ EXAMPLES = '''
     password: secret
     state: present
 
-- name: Update livirt compute resource
+- name: Update libvirt compute resource
   foreman_compute_resource:
     name: example_compute_resource
     description: updated compute resource
@@ -155,7 +159,7 @@ EXAMPLES = '''
     password: secret
     state: present
 
-- name: Delete livirt compute resource
+- name: Delete libvirt compute resource
   foreman_compute_resource:
     name: example_compute_resource
     server_url: "https://foreman.example.com"
@@ -196,6 +200,24 @@ EXAMPLES = '''
       datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
       ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
       use_v4: true
+    server_url: "https://foreman.example.com"
+    username: admin
+    password: secret
+    state: present
+
+- name: Create proxmox compute resource
+  foreman_compute_resource:
+    name: proxmox_compute_resource
+    locations:
+      - Munich
+    organizations:
+      - ATIX
+    provider: proxmox
+    provider_params:
+      url: https://proxmox.example.com:8006/api2/json
+      user: root@pam
+      password: secretpassword
+      ssl_verify_peer: true
     server_url: "https://foreman.example.com"
     username: admin
     password: secret
@@ -275,6 +297,9 @@ def get_provider_info(provider):
     elif provider_name == 'ovirt':
         return 'Ovirt', ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']
 
+    elif provider_name == 'proxmox':
+        return 'Proxmox', ['url', 'user', 'password', 'ssl_verify_peer']
+
     elif provider_name == 'vmware':
         return 'Vmware', ['url', 'user', 'password', 'datacenter']
 
@@ -301,7 +326,7 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'EC2', 'AzureRm', 'GCE']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'proxmox', 'EC2', 'AzureRm', 'GCE']),
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
@@ -316,6 +341,7 @@ def main():
             email=dict(type='invisible'),
             key_path=dict(type='invisible'),
             zone=dict(type='invisible'),
+            ssl_verify_peer=dict(type='invisible'),
         ),
         argument_spec=dict(
             provider_params=dict(type='dict', options=dict(
@@ -333,6 +359,7 @@ def main():
                 email=dict(),
                 key_path=dict(),
                 zone=dict(),
+                ssl_verify_peer=dict(type='bool'),
             )),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
         ),
