@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to test modules &mdash; Foreman Ansible Modules  documentation</title>
+  <title>Testing Foreman Ansible Modules &mdash; Foreman Ansible Modules  documentation</title>
   
 
   
@@ -88,9 +88,24 @@
 <p class="caption"><span class="caption-text">Developer documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="developing.html">How to write modules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">How to test modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#guideline-to-writing-tests">Guideline to writing tests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#recording-storing-apidoc-json-for-tests">Recording/storing apidoc.json for tests</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing Foreman Ansible Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-tests">Integration tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ansible-sanity">Ansible Sanity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preparation">Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Integration tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Ansible Sanity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-tests">Writing tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recording-storing-apidoc-json-for-tests">Recording/storing apidoc.json for tests</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="releasing.html">Releasing the collection</a></li>
@@ -139,7 +154,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>How to test modules</li>
+      <li>Testing Foreman Ansible Modules</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -158,28 +173,76 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="how-to-test-modules">
-<h1>How to test modules<a class="headerlink" href="#how-to-test-modules" title="Permalink to this headline">¶</a></h1>
-<p>To test, you need a running instance of Foreman, probably with Katello (use <a class="reference external" href="https://github.com/theforeman/forklift">forklift</a> if unsure).
-Also you need to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-setup</span></code> and update <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code>:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make test-setup
-vi tests/test_playbooks/vars/server.yml <span class="c1"># point to your Foreman instance</span>
+  <div class="section" id="testing-foreman-ansible-modules">
+<h1>Testing Foreman Ansible Modules<a class="headerlink" href="#testing-foreman-ansible-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Foreman Ansible Modules are tested in different ways:</p>
+<ol class="simple">
+<li><p>Unit tests</p></li>
+<li><p>Integration tests</p></li>
+<li><p>Ansible Sanity</p></li>
+</ol>
+<div class="section" id="unit-tests">
+<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h3>
+<p>We currently only have unit tests for the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> to <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> translation helpers (see <code class="docutils literal notranslate"><span class="pre">tests/test_foreman_spec_helper.py</span></code>).
+All other code is tested by the integration tests.</p>
+</div>
+<div class="section" id="integration-tests">
+<h3>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this headline">¶</a></h3>
+<p>Every module is tested using a playbook (<code class="docutils literal notranslate"><span class="pre">see</span> <span class="pre">tests/test_playbooks</span></code>) against all supported Ansible versions plus the current <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible.
+Additionally, the modules which support check mode are tested with the latest Ansible release in check mode.</p>
+</div>
+<div class="section" id="ansible-sanity">
+<h3>Ansible Sanity<a class="headerlink" href="#ansible-sanity" title="Permalink to this headline">¶</a></h3>
+<p>Ansible provides <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html">Sanity Tests</a> that ensure the modules are using the current best practices in terms of development and documentantion.
+We run these tests with the <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible to ensure conformability with the latest guidelines.</p>
+</div>
+</div>
+<div class="section" id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preparation">
+<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline">¶</a></h3>
+<p>All tests require you to have run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-setup</span></code>. This will install all test dependencies and prepare a configuration file (<code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code>).</p>
+<p>The configuration file will need updates if you want to run tests against a live Foreman instance (see below).</p>
+</div>
+<div class="section" id="id1">
+<h3>Unit tests<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>To run the unit tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make test-other
 </pre></div>
 </div>
-<p>To run the tests using the <code class="docutils literal notranslate"><span class="pre">foreman_global_parameter</span></code> module as an example:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make <span class="nb">test</span> <span class="c1"># all tests</span>
-make test_global_parameter  <span class="c1"># single test</span>
-make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;-k &#39;organzation or global_parameter&#39;&quot;</span>  <span class="c1"># select tests by expression (see `pytest -h`)</span>
+</div>
+<div class="section" id="id2">
+<h3>Integration tests<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>To run all integration tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make <span class="nb">test</span>
 </pre></div>
 </div>
-<p>The tests are run against prerecorded server-responses.
-You can (re-)record the cassettes for a specific test with</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>make record_global_parameter
+<p>To run a specific test or a set of tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make test_global_parameter  <span class="c1"># single test</span>
+<span class="gp">$</span> make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;-k &#39;organzation or global_parameter&#39;&quot;</span>  <span class="c1"># select tests by expression (see `pytest -h`)</span>
+</pre></div>
+</div>
+<p>By default, tests are run with prerecorded server responses using <a class="reference external" href="https://vcrpy.readthedocs.io/">VCRpy</a>.
+When tests or modules are changed, those responses might not match anymore and you’ll have to re-record the interaction.</p>
+<p>To be able to re-record, you need a running instance of Foreman, probably with Katello (use <a class="reference external" href="https://github.com/theforeman/forklift">forklift</a> if unsure).
+You also need to update <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> with the URL and credentials of said instance.</p>
+<p>To re-record, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make record_global_parameter
 </pre></div>
 </div>
 </div>
-<div class="section" id="guideline-to-writing-tests">
-<h1>Guideline to writing tests<a class="headerlink" href="#guideline-to-writing-tests" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id3">
+<h3>Ansible Sanity<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>To run the Ansible Sanity tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make sanity
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-tests">
+<h2>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
 <p>The tests in this repository run playbooks that can be found in <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks</span></code>.
 To be run, the name of the corresponding playbook must be listed in <code class="docutils literal notranslate"><span class="pre">tests/test_crud.py</span></code>.</p>
 <p>The playbooks should be self contained, target the features of a specific module and be able to run against an actual foreman instance.
@@ -197,11 +260,12 @@ It can also be useful to run ad hoc commands or small playbooks during developme
 For this last step, <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> must be configured to point to a running Foreman or Katello server.
 Then, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">record_&lt;playbook</span> <span class="pre">name&gt;</span></code> must be called, and the resulting vcr files (<code class="docutils literal notranslate"><span class="pre">test_playbook/fixtures/&lt;playbook_name&gt;-*.yml</span></code>) must be checked into git.</p>
 <div class="section" id="recording-storing-apidoc-json-for-tests">
-<h2>Recording/storing apidoc.json for tests<a class="headerlink" href="#recording-storing-apidoc-json-for-tests" title="Permalink to this headline">¶</a></h2>
+<h3>Recording/storing apidoc.json for tests<a class="headerlink" href="#recording-storing-apidoc-json-for-tests" title="Permalink to this headline">¶</a></h3>
 <p>The tests depend on a valid <code class="docutils literal notranslate"><span class="pre">apidoc.json</span></code> being available during execution.
 The easiest way to do so is to provide a <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.json</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests/fixtures/apidoc</span></code> folder.
 Most modules can just use a symlink to either <code class="docutils literal notranslate"><span class="pre">foreman.json</span></code> or <code class="docutils literal notranslate"><span class="pre">katello.json</span></code>, depending on whether they need a plain Foreman or Foreman+Katello to function properly.
 If you need a setup with different plugins enabled, just get <code class="docutils literal notranslate"><span class="pre">https://foreman.example.com/apidoc/v2.json</span></code> from your install and place it in <code class="docutils literal notranslate"><span class="pre">tests/fixtures/apidoc</span></code>.</p>
+</div>
 </div>
 </div>
 

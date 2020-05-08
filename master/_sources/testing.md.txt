@@ -1,29 +1,79 @@
-# How to test modules
+# Testing Foreman Ansible Modules
 
-To test, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
-Also you need to run `make test-setup` and update `tests/test_playbooks/vars/server.yml`:
+## Overview
 
-```sh
-make test-setup
-vi tests/test_playbooks/vars/server.yml # point to your Foreman instance
+Foreman Ansible Modules are tested in different ways:
+1. Unit tests
+2. Integration tests
+3. Ansible Sanity
+
+### Unit tests
+
+We currently only have unit tests for the `foreman_spec` to `argument_spec` translation helpers (see `tests/test_foreman_spec_helper.py`).
+All other code is tested by the integration tests.
+
+### Integration tests
+
+Every module is tested using a playbook (`see tests/test_playbooks`) against all supported Ansible versions plus the current `devel` branch of Ansible.
+Additionally, the modules which support check mode are tested with the latest Ansible release in check mode.
+
+### Ansible Sanity
+
+Ansible provides [Sanity Tests](https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html) that ensure the modules are using the current best practices in terms of development and documentantion.
+We run these tests with the `devel` branch of Ansible to ensure conformability with the latest guidelines.
+
+## Running tests
+
+### Preparation
+
+All tests require you to have run `make test-setup`. This will install all test dependencies and prepare a configuration file (`tests/test_playbooks/vars/server.yml`).
+
+The configuration file will need updates if you want to run tests against a live Foreman instance (see below).
+
+### Unit tests
+
+To run the unit tests, execute:
+
+```console
+$ make test-other
 ```
 
-To run the tests using the `foreman_global_parameter` module as an example:
+### Integration tests
 
-```sh
-make test # all tests
-make test_global_parameter  # single test
-make test TEST="-k 'organzation or global_parameter'"  # select tests by expression (see `pytest -h`)
+To run all integration tests, execute:
+
+```console
+$ make test
 ```
 
-The tests are run against prerecorded server-responses.
-You can (re-)record the cassettes for a specific test with
+To run a specific test or a set of tests, execute:
 
-```sh
-make record_global_parameter
+```console
+$ make test_global_parameter  # single test
+$ make test TEST="-k 'organzation or global_parameter'"  # select tests by expression (see `pytest -h`)
 ```
 
-# Guideline to writing tests
+By default, tests are run with prerecorded server responses using [VCRpy](https://vcrpy.readthedocs.io/).
+When tests or modules are changed, those responses might not match anymore and you'll have to re-record the interaction.
+
+To be able to re-record, you need a running instance of Foreman, probably with Katello (use [forklift](https://github.com/theforeman/forklift) if unsure).
+You also need to update `tests/test_playbooks/vars/server.yml` with the URL and credentials of said instance.
+
+To re-record, execute:
+
+```console
+$ make record_global_parameter
+```
+
+### Ansible Sanity
+
+To run the Ansible Sanity tests, execute:
+
+```console
+$ make sanity
+```
+
+## Writing tests
 
 The tests in this repository run playbooks that can be found in `tests/test_playbooks`.
 To be run, the name of the corresponding playbook must be listed in `tests/test_crud.py`.
@@ -45,7 +95,7 @@ In order to run these tests, the API responses of a running Foreman or Katello s
 For this last step, `tests/test_playbooks/vars/server.yml` must be configured to point to a running Foreman or Katello server.
 Then, `make record_<playbook name>` must be called, and the resulting vcr files (`test_playbook/fixtures/<playbook_name>-*.yml`) must be checked into git.
 
-## Recording/storing apidoc.json for tests
+### Recording/storing apidoc.json for tests
 
 The tests depend on a valid `apidoc.json` being available during execution.
 The easiest way to do so is to provide a `<module>.json` in the `tests/fixtures/apidoc` folder.
