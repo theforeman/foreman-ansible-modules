@@ -71,6 +71,7 @@ DOCUMENTATION = '''
         default: False
       host_filters:
         description: This can be used to restrict the list of returned host
+        type: string
 '''
 
 EXAMPLES = '''
@@ -80,6 +81,7 @@ url: http://localhost:2222
 user: ansible-tester
 password: secure
 validate_certs: False
+host_filters: 'organization="Web Engineering"'
 '''
 
 from distutils.version import LooseVersion
