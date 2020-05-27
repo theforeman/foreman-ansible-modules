@@ -144,7 +144,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             s = self._get_session()
             if params is None:
                 params = {}
-            params['page'] = 1 
+            params['page'] = 1
             params['per_page'] = 250
             while True:
                 ret = s.get(url, params=params)
@@ -188,7 +188,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         if self.get_option('host_filters'):
             params['search'] = self.get_option('host_filters')
         return self._get_json(url, params=params)
-
 
     def _get_all_params_by_id(self, hid):
         url = "%s/api/v2/hosts/%s" % (self.foreman_url, hid)
