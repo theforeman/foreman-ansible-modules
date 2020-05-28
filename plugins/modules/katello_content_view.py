@@ -254,7 +254,9 @@ def main():
                 }
                 module.resource_action('content_view_components', 'remove_components', payload)
 
-                final_cvcs_record = [item for item in final_cvcs_record if item['id'] not in components_to_remove]
+                # some entries in "final" don't have an id yet, as it is only assigned on creation of a cv component,
+                # which didn't happen yet when we record the data
+                final_cvcs_record = [item for item in final_cvcs_record if item.get('id', 'NEW_ID') not in components_to_remove]
 
             module.record_after('content_views/components', {'composite_content_view_id': content_view_entity['id'],
                                                              'content_view_components': final_cvcs_record})
