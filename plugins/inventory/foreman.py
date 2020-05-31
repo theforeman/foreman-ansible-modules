@@ -219,12 +219,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         return hostvars
 
     def _populate(self):
+        host_filters = self.get_option('host_filters')
 
         for host in self._get_hosts():
-
             if host.get('name'):
                 # Skip any hosts that match host_filters
-                host_filters = self.get_option('host_filters')
                 if host_filters:
                     if any([re.search(host_filter, host['name']) for host_filter in host_filters]):
                         continue
