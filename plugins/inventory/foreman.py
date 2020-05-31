@@ -65,7 +65,7 @@ DOCUMENTATION = '''
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
-      exclude_patterns:
+      host_filters:
         description: List of regular expressions that will filter out hosts that match
         type: list
         required: False
@@ -79,7 +79,7 @@ url: http://localhost:2222
 user: ansible-tester
 password: secure
 validate_certs: False
-exclude_patterns:
+host_filters:
   - '^virt-who'
 '''
 
@@ -223,10 +223,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         for host in self._get_hosts():
 
             if host.get('name'):
-                # Skip any hosts that match exclude_patterns
-                exclude_patterns = self.get_option('exclude_patterns')
-                if exclude_patterns:
-                    if any([re.search(exclude_pattern, host['name']) for exclude_pattern in exclude_patterns]):
+                # Skip any hosts that match host_filters
+                host_filters = self.get_option('host_filters')
+                if host_filters:
+                    if any([re.search(host_filter, host['name']) for host_filter in host_filters]):
                         continue
                 host_name = self.inventory.add_host(host['name'])
 
