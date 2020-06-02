@@ -65,10 +65,6 @@ DOCUMENTATION = '''
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
         default: False
-      want_ansible_ssh_host:
-        description: Toggle, if true the plugin will populate the ansible_ssh_host variable to explicitly specify the connection target
-        type: boolean
-        default: False
       host_filters:
         description: This can be used to restrict the list of returned host
         type: string
@@ -288,17 +284,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                                 self.inventory.add_child(hostcollection_group, host_name)
                             except ValueError as e:
                                 self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
-
-                # put ansible_ssh_host as hostvar
-                if self.get_option('want_ansible_ssh_host'):
-                    for key in ('ip', 'ipv4', 'ipv6'):
-                        if host.get(key):
-                            try:
-                                self.inventory.set_variable(host_name, 'ansible_ssh_host', host[key])
-                                break
-                            except ValueError as e:
-                                self.display.warning("Could not set hostvar ansible_ssh_host to '%s' for the '%s' host, skipping: %s" %
-                                                     (host[key], host_name, to_text(e)))
 
                 strict = self.get_option('strict')
 
