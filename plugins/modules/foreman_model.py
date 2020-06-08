@@ -34,7 +34,7 @@ author:
 options:
   name:
     description:
-      - Name of the Foreman hardware model
+      - Name of the hardware model
     required: true
     type: str
   info:

@@ -60,7 +60,7 @@ options:
     required: false
   enabled:
     description:
-      - Include this host within Foreman reporting
+      - Include this host within reporting
     type: bool
     required: false
   managed:

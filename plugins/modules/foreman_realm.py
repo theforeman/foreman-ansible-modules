@@ -34,7 +34,7 @@ author:
 options:
   name:
     description:
-      - Name of the Foreman realm
+      - Name of the realm
     required: true
     type: str
   realm_proxy:

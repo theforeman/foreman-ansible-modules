@@ -27,7 +27,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_scc_product
-short_description: Subscribe Foreman Suse Customer Center Account Product
+short_description: Subscribe Suse Customer Center Account Product
 description:
   - "Manage Suse Customer Center Product Entities"
   - "This module requires the foreman_scc_manager plugin set up in the server"

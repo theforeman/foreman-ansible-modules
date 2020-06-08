@@ -34,7 +34,7 @@ author:
 options:
   name:
     description:
-      - Name or Title of the Foreman Location
+      - Name of the Location
     required: true
     type: str
   parent:
