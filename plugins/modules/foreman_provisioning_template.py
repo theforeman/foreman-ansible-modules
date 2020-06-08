@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_provisioning_template
-short_description: Manage Provisioning Template in Foreman
+short_description: Manage Provisioning Template
 description:
   - "Manage Provisioning Template"
 author:
@@ -79,13 +79,9 @@ options:
     type: bool
   name:
     description:
-      - |
-        The name a template should be assigned with in Foreman.
-        A name must be provided.
-        Possible sources are, ordererd by preference:
-        The "name" parameter, config header (inline or in a file), basename of a file.
-        The special name "*" (only possible as parameter) is used
-        to perform bulk actions (modify, delete) on all existing templates.
+      - The name of the Provisioning Template.
+      - If omited, will be determined from the C(name) header of the template or the filename (in that order).
+      - The special value "*" can be used to perform bulk actions (modify, delete) on all existing templates.
     required: false
     type: str
   updated_name:

@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_ptable
-short_description: Manage Partition Table Template in Foreman
+short_description: Manage Partition Table Template
 description:
     - "Manage Partition Table"
 author:
@@ -55,14 +55,9 @@ options:
     type: bool
   name:
     description:
-      - |
-        The name a template should be assigned with in Foreman.
-        A name must be provided.
-        Possible sources are, ordererd by preference:
-        The "name" parameter, config header (inline or in a file),
-        basename of a file.
-        The special name "*" (only possible as parameter) is used
-        to perform bulk actions (modify, delete) on all existing partition tables.
+      - The name of the Partition Table.
+      - If omited, will be determined from the C(name) header of the template or the filename (in that order).
+      - The special value "*" can be used to perform bulk actions (modify, delete) on all existing Partition Tables.
     required: false
     type: str
   updated_name:
