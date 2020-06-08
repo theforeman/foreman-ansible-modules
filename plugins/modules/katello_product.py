@@ -26,16 +26,16 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_product
-short_description: Create and Manage Katello products
+short_description: Create and manage products
 description:
-    - Create and Manage Katello products
+    - Create and manage products
 author:
     - "Eric D Helms (@ehelms)"
     - "Matthias Dellweg (@mdellweg) ATIX AG"
 options:
   name:
     description:
-      - Name of the Katello product
+      - Name of the product
     required: true
     type: str
   label:

@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_sync
-short_description: Sync a Katello repository or product
+short_description: Sync a repository or product
 description:
-  - Sync a Katello repository or product
+  - Sync a repository or product
 author:
   - "Eric D Helms (@ehelms)"
   - "Matthias M Dellweg (@mdellweg) ATIX AG"

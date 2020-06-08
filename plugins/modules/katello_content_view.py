@@ -26,14 +26,14 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_content_view
-short_description: Create and Manage Katello content views
+short_description: Create and manage content views
 description:
-    - Create and Manage Katello content views
+    - Create and manage content views
 author: "Eric D Helms (@ehelms)"
 options:
   name:
     description:
-      - Name of the Katello Content View
+      - Name of the Content View
     required: true
     type: str
   description:

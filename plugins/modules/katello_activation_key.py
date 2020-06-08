@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_activation_key
-short_description: Create and Manage Katello activation keys
+short_description: Create and manage activation keys
 description:
-  - Create and Manage Katello activation keys
+  - Create and manage activation keys
 author: "Andrew Kofink (@akofink)"
 options:
   name:
@@ -148,12 +148,12 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-- name: "Create katello client activation key"
+- name: "Create client activation key"
   katello_activation_key:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    name: "Katello Clients"
+    name: "Clients"
     organization: "Default Organization"
     lifecycle_environment: "Library"
     content_view: 'client content view'

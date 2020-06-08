@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_manifest
-short_description: Manage Katello manifests
+short_description: Manage manifests
 description:
-    - Upload and Manage Katello manifests
+    - Upload and manage manifests
 author: "Andrew Kofink (@akofink)"
 options:
   manifest_path:

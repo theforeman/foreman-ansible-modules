@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_content_view_filter
-short_description: Create and Manage Katello content View filters
+short_description: Create and manage content View filters
 description:
-    - Create and Manage Katello content View filters
+    - Create and manage content View filters
 author: "Sean O'Keeffe (@sean797)"
 options:
   architecture:

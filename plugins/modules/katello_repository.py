@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_repository
-short_description: Create and manage Katello repository
+short_description: Create and manage repositories
 description:
-    - Crate and manage a Katello repository
+    - Crate and manage repositories
 author: "Eric D Helms (@ehelms)"
 options:
   name:
