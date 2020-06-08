@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_scap_content
 short_description: Manage Foreman SCAP content.
 description:
-  - Create, Update and Delete Foreman SCAP content.
+  - Create, update and delete Foreman SCAP content.
 author:
   - "Jameer Pathan (@jameerpathan111)"
 options:
