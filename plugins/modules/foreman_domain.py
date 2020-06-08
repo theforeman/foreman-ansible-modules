@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_domain
 short_description: Manage Foreman Domains
 description:
-  - Create and Delete Foreman Domains
+  - Create, update and delete Foreman Domains
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 options:

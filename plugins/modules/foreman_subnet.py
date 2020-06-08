@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_subnet
 short_description: Manage Foreman Subnets
 description:
-  - Create and Delete Foreman Subnets
+  - Create, update and delete Foreman Subnets
 author:
   - "Baptiste Agasse (@bagasse)"
 requirements:

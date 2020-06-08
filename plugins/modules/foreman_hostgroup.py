@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_hostgroup
 short_description: Manage Foreman Hostgroups
 description:
-  - Create, Update and Delete Foreman Hostgroups
+  - Create, update and delete Foreman Hostgroups
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
   - "Baptiste Agasse (@bagasse)"

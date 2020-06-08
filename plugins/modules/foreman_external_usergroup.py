@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_external_usergroup
 short_description: Manage external user groups in Foreman
 description:
-  - Create and delete external user groups in Foreman
+  - Create, update and delete external user groups in Foreman
 author:
   - "Kirill Shirinkin (@Fodoj)"
 options:
