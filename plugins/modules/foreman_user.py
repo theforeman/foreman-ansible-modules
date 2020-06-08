@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_user
 short_description: Manage Foreman Users
 description:
-  - Create, update and delete users in Foreman
+  - Create, update and delete users
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 options:

@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_role
 short_description: Manage Foreman Roles
 description:
-  - Create, update and delete Foreman Roles
+  - Create, update and delete Roles
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 options:

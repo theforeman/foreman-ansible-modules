@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_auth_source_ldap
 short_description: Manage Foreman LDAP authentication sources
 description:
-  - Create, update and delete Foreman LDAP authentication sources
+  - Create, update and delete LDAP authentication sources
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 options:
