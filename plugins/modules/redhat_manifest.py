@@ -42,12 +42,12 @@ options:
     type: str
   username:
     description:
-      - Username on Foreman server
+      - Red Hat Portal username
     required: true
     type: str
   password:
     description:
-      - Password for user accessing Foreman server
+      - Red Hat Portal password
     required: true
     type: str
   pool_id:
