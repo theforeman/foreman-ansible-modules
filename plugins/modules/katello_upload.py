@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_upload
-short_description: Upload content to Katello
+short_description: Upload content
 description:
-  - Allows the upload of content to a Katello repository
+  - Allows the upload of content to a repository
 author: "Eric D Helms (@ehelms)"
 requirements:
   - python-debian (For deb Package upload)

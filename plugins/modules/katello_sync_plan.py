@@ -27,21 +27,21 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_sync_plan
-short_description: Manage Katello sync plans
+short_description: Manage sync plans
 description:
-    - Manage Katello sync plans
+    - Manage sync plans
 author:
     - "Andrew Kofink (@akofink)"
     - "Matthis Dellweg (@mdellweg) ATIX-AG"
 options:
   name:
     description:
-      - Name of the Katello sync plan
+      - Name of the sync plan
     required: true
     type: str
   description:
     description:
-      - Description of the Katello sync plan
+      - Description of the sync plan
     type: str
   interval:
     description:

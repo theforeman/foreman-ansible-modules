@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_lifecycle_environment
-short_description: Create and Manage Katello lifecycle environments
+short_description: Create and manage lifecycle environments
 description:
-    - Create and Manage Katello lifecycle environments
+    - Create and manage lifecycle environments
 author:
   - "Andrew Kofink (@akofink)"
   - "Baptiste Agasse (@bagasse)"

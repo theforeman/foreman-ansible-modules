@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_content_view_version
-short_description: Create, remove or interact with a Katello Content View Version
+short_description: Create, remove or interact with a Content View Version
 description:
-  - Publish, Promote or Remove a Katello Content View Version
+  - Publish, Promote or Remove a Content View Version
 author: Sean O'Keeffe (@sean797)
 notes:
   - You cannot use this to remove a Content View Version from a Lifecycle environment, you should promote another version first.

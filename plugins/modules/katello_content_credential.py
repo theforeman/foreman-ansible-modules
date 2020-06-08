@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: katello_content_credential
-short_description: Create and Manage Katello content credentials
+short_description: Create and manage content credentials
 description:
-  - Create and Manage Katello content credentials
+  - Create and manage content credentials
 author: "Baptiste Agasse (@bagasse)"
 options:
   name:
