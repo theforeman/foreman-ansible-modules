@@ -75,7 +75,7 @@ tests/test_playbooks/vars/server.yml:
 
 dist-test: $(MANIFEST)
 	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible -m $(NAMESPACE).$(NAME).foreman_organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
-	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc $(NAMESPACE).$(NAME).foreman_organization | grep -q "Manage Foreman Organization"
+	ANSIBLE_COLLECTIONS_PATHS=build/collections ansible-doc $(NAMESPACE).$(NAME).foreman_organization | grep -q "Manage Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 	ansible-galaxy collection install -p build/collections $< --force
