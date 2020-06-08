@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_bookmark
-short_description: Manage Foreman Bookmarks
+short_description: Manage Bookmarks
 description:
-  - "Manage Foreman Bookmark Entities"
+  - "Manage Bookmark Entities"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"

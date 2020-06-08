@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_hostgroup
-short_description: Manage Foreman Hostgroups
+short_description: Manage Hostgroups
 description:
   - Create, update and delete Hostgroups
 author:

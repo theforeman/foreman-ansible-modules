@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_ptable
 short_description: Manage Partition Table Template in Foreman
 description:
-    - "Manage Foreman Partition Table"
+    - "Manage Partition Table"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

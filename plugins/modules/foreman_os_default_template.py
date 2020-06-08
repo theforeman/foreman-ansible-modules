@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_os_default_template
-short_description: Manage Foreman Default Template Associations To Operating Systems
+short_description: Manage Default Template Associations To Operating Systems
 description:
-  - "Manage Foreman OSDefaultTemplate Entities"
+  - "Manage OSDefaultTemplate Entities"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

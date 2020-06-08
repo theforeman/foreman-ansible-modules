@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_domain
-short_description: Manage Foreman Domains
+short_description: Manage Domains
 description:
   - Create, update and delete Domains
 author:

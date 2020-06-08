@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_operatingsystem
-short_description: Manage Foreman Operating Systems
+short_description: Manage Operating Systems
 description:
-  - "Manage Foreman Operating System Entities"
+  - "Manage Operating System Entities"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"

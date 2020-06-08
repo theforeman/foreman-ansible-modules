@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_host
-short_description: Manage Foreman hosts
+short_description: Manage hosts
 description:
-  - "Manage Foreman host Entities"
+  - "Manage host Entities"
   - "This beta version can create and delete hosts from preexisting host groups"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"

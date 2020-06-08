@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_image
-short_description: Manage Foreman Images
+short_description: Manage Images
 description:
   - Create, update and delete Images
 author:

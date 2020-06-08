@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_global_parameter
-short_description: Manage Foreman Global Parameters
+short_description: Manage Global Parameters
 description:
-  - "Manage Foreman Global Parameter Entities"
+  - "Manage Global Parameter Entities"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

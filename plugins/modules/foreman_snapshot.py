@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_snapshot
-short_description: Manage Foreman Snapshots
+short_description: Manage Snapshots
 description:
-  - "Manage Foreman Snapshots for Host Entities"
+  - "Manage Snapshots for Host Entities"
   - "This module can create, update, revert and delete snapshots"
   - "This module requires the foreman_snapshot_management plugin set up in the server"
   - "See: U(https://github.com/ATIX-AG/foreman_snapshot_management)"

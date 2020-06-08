@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_subnet
-short_description: Manage Foreman Subnets
+short_description: Manage Subnets
 description:
   - Create, update and delete Subnets
 author:

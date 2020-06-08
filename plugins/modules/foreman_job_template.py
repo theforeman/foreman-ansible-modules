@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_job_template
 short_description: Manage Job Templates in Foreman
 description:
-  - "Manage Foreman Remote Execution Job Templates"
+  - "Manage Remote Execution Job Templates"
 author:
   - "Manuel Bonk (@manuelbonk) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

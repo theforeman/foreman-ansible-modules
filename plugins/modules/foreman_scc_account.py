@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_scc_account
-short_description: Manage Foreman SccAccount
+short_description: Manage SccAccount
 description:
-  - "Manage Foreman Suse Customer Center Account Entities"
+  - "Manage Suse Customer Center Account Entities"
   - "This module requires the foreman_scc_manager plugin set up in the server"
   - "See: U(https://github.com/ATIX-AG/foreman_scc_manager)"
 author:
