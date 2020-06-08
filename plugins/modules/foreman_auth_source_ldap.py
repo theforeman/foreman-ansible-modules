@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_auth_source_ldap
-short_description: Manage Foreman LDAP authentication sources using Foreman API
+short_description: Manage Foreman LDAP authentication sources
 description:
-  - Create and Delete Foreman LDAP authentication sources using Foreman API
+  - Create and Delete Foreman LDAP authentication sources
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 options:

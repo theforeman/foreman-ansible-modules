@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_hostgroup
-short_description: Manage Foreman Hostgroups using Foreman API
+short_description: Manage Foreman Hostgroups
 description:
-  - Create, Update and Delete Foreman Hostgroups using Foreman API
+  - Create, Update and Delete Foreman Hostgroups
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
   - "Baptiste Agasse (@bagasse)"

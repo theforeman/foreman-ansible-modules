@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_role
-short_description: Manage Foreman Roles using Foreman API
+short_description: Manage Foreman Roles
 description:
-  - Create and Delete Foreman Roles using Foreman API
+  - Create and Delete Foreman Roles
 author:
   - "Christoffer Reijer (@ephracis) Basalt AB"
 options:

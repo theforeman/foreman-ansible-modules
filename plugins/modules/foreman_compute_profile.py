@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_compute_profile
-short_description: Manage Foreman Compute Profiles using Foreman API
+short_description: Manage Foreman Compute Profiles
 description:
-  - Create and delete Foreman Compute Profiles using Foreman API
+  - Create and delete Foreman Compute Profiles
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"

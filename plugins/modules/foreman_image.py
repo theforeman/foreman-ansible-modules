@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_image
-short_description: Manage Foreman Images using Foreman API
+short_description: Manage Foreman Images
 description:
-  - Create and Delete Foreman Images using Foreman API
+  - Create and Delete Foreman Images
 author:
   - "Mark Hlawatschek (@hlawatschek) ATIX AG"
 options:

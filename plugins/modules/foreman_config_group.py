@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_config_group
-short_description: Manage (Puppet) config groups using Foreman API
+short_description: Manage (Puppet) config groups
 description:
-  - Create and Delete Foreman (Puppet) config groups using Foreman API
+  - Create and Delete Foreman (Puppet) config groups
 author:
   - "Baptiste Agasse (@bagasse)"
 options:

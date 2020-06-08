@@ -28,9 +28,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_compute_resource
-short_description: Manage Foreman Compute resources using Foreman API
+short_description: Manage Foreman Compute resources
 description:
-  - Create, update and delete Foreman Compute Resources using Foreman API
+  - Create, update and delete Foreman Compute Resources
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"
