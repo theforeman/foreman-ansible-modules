@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_scap_tailoring_file
 short_description: Manage SCAP tailoring files.
 description:
-  - Create, update and delete SCAP tailoring files.
+  - Create, update, and delete SCAP tailoring files.
 author:
   - "Evgeni Golov (@evgeni)"
 options:

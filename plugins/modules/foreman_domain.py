@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_domain
 short_description: Manage Domains
 description:
-  - Create, update and delete Domains
+  - Create, update, and delete Domains
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 options:

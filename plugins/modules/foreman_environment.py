@@ -29,7 +29,7 @@ DOCUMENTATION = '''
 module: foreman_environment
 short_description: Manage Environment (Puppet)
 description:
-  - Create, update and delete Environment
+  - Create, update, and delete Environment
 author:
   - "Bernhard Suttner (@_sbernhard) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"

@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_config_group
 short_description: Manage (Puppet) config groups
 description:
-  - Create, update and delete (Puppet) config groups
+  - Create, update, and delete (Puppet) config groups
 author:
   - "Baptiste Agasse (@bagasse)"
 options:
