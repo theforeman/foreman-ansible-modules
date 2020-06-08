@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_subnet
-short_description: Manage Foreman Subnets using Foreman API
+short_description: Manage Foreman Subnets
 description:
-  - Create and Delete Foreman Subnets using Foreman API
+  - Create and Delete Foreman Subnets
 author:
   - "Baptiste Agasse (@bagasse)"
 requirements:

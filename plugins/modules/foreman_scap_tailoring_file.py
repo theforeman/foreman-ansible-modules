@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_scap_tailoring_file
-short_description: Manage Foreman SCAP tailoring files using Foreman API.
+short_description: Manage Foreman SCAP tailoring files.
 description:
-  - Create, Update and Delete Foreman SCAP tailoring files using Foreman API.
+  - Create, Update and Delete Foreman SCAP tailoring files.
 author:
   - "Evgeni Golov (@evgeni)"
 options:

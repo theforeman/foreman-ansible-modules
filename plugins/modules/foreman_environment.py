@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_environment
-short_description: Manage Foreman Environment (Puppet) using Foreman API
+short_description: Manage Foreman Environment (Puppet)
 description:
-  - Create and Delete Foreman Environment using Foreman API
+  - Create and Delete Foreman Environment
 author:
   - "Bernhard Suttner (@_sbernhard) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"

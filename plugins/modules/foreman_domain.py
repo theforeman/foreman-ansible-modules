@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_domain
-short_description: Manage Foreman Domains using Foreman API
+short_description: Manage Foreman Domains
 description:
-  - Create and Delete Foreman Domains using Foreman API
+  - Create and Delete Foreman Domains
 author:
   - "Markus Bucher (@m-bucher) ATIX AG"
 options:

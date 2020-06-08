@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_architecture
-short_description: Manage Foreman Architectures using Foreman API
+short_description: Manage Foreman Architectures
 description:
-  - Create, Update and Delete Foreman Architectures using Foreman API
+  - Create, Update and Delete Foreman Architectures
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
 options:

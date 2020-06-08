@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_installation_medium
-short_description: Manage Foreman Installation Medium using Foreman API
+short_description: Manage Foreman Installation Medium
 description:
-  - Create and Delete Foreman Installation Medium using Foreman API
+  - Create and Delete Foreman Installation Medium
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 options:
