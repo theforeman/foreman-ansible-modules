@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_search_facts
-short_description: Gather facts about Foreman resources
+short_description: Gather facts about resources
 description:
-  - "Gather facts about Foreman resources"
+  - "Gather facts about resources"
 author:
   - "Sean O'Keeffe (@sean797)"
 options:

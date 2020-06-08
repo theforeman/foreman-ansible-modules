@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_smart_class_parameter
 short_description: Manage Smart Class Parameters
 description:
-  - Update Foreman Smart Class Parameters.
+  - Update Smart Class Parameters.
   - Smart Class Paramters are created/deleted at on Puppet classes import and cannot be created or deleted.
 author:
   - "Baptiste Agasse (@bagasse)"
@@ -55,7 +55,7 @@ options:
     type: bool
   omit:
     description:
-      - Foreman will not send this parameter in classification output.
+      - Don't send this parameter in classification output.
       - Puppet will use the value defined in the Puppet manifest for this parameter.
     type: bool
   override_value_order:
@@ -110,7 +110,7 @@ options:
         description: Override value, required if omit is false
         type: raw
       omit:
-        description: Foreman will not send this parameter in classification output, replaces use_puppet_default.
+        description: Don't send this parameter in classification output, replaces use_puppet_default.
         type: bool
   state:
     description: State of the entity.

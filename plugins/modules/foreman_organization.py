@@ -36,17 +36,17 @@ author:
 options:
   name:
     description:
-      - Name of the Foreman organization
+      - Name of the Organization
     required: true
     type: str
   description:
     description:
-      - Description of the Foreman organization
+      - Description of the Organization
     required: false
     type: str
   label:
     description:
-      - Label of the Foreman organization
+      - Label of the Organization
     type: str
 extends_documentation_fragment:
   - foreman

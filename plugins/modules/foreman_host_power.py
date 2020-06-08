@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_host_power
 short_description: Manage hosts power state
 description:
-  - "Manage power state of Foreman host"
+  - "Manage power state of a host"
   - "This beta version can start and stop an existing foreman host and question the current power state."
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
