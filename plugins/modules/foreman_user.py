@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_user
-short_description: Manage Foreman Users
+short_description: Manage Users
 description:
   - Create, update and delete users
 author:

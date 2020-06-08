@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_provisioning_template
 short_description: Manage Provisioning Template in Foreman
 description:
-  - "Manage Foreman Provisioning Template"
+  - "Manage Provisioning Template"
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_role
-short_description: Manage Foreman Roles
+short_description: Manage Roles
 description:
   - Create, update and delete Roles
 author:

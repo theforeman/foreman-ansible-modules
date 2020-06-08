@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_host_power
-short_description: Manage Foreman hosts power state
+short_description: Manage hosts power state
 description:
   - "Manage power state of Foreman host"
   - "This beta version can start and stop an existing foreman host and question the current power state."

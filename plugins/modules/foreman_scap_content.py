@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_scap_content
-short_description: Manage Foreman SCAP content.
+short_description: Manage SCAP content.
 description:
   - Create, update and delete SCAP content.
 author:

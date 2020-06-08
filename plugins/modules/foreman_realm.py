@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_realm
-short_description: Manage Foreman Realms
+short_description: Manage Realms
 description:
-  - Manage Foreman Realms
+  - Manage Realms
 author:
   - "Lester R Claudio (@claudiol1)"
 options:

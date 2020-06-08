@@ -27,7 +27,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_environment
-short_description: Manage Foreman Environment (Puppet)
+short_description: Manage Environment (Puppet)
 description:
   - Create, update and delete Environment
 author:

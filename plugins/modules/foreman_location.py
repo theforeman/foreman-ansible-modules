@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_location
-short_description: Manage Foreman Location
+short_description: Manage Location
 description:
-  - Manage Foreman Location
+  - Manage Location
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_smart_class_parameter
-short_description: Manage Foreman Smart Class Parameters
+short_description: Manage Smart Class Parameters
 description:
   - Update Foreman Smart Class Parameters.
   - Smart Class Paramters are created/deleted at on Puppet classes import and cannot be created or deleted.

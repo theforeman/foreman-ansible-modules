@@ -29,7 +29,7 @@ DOCUMENTATION = '''
 module: foreman_scc_product
 short_description: Subscribe Foreman Suse Customer Center Account Product
 description:
-  - "Manage Foreman Suse Customer Center Product Entities"
+  - "Manage Suse Customer Center Product Entities"
   - "This module requires the foreman_scc_manager plugin set up in the server"
   - "See: U(https://github.com/ATIX-AG/foreman_scc_manager)"
 author:

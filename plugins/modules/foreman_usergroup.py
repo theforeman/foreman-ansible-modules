@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_usergroup
-short_description: Manage Foreman User groups
+short_description: Manage User groups
 description:
   - Create, update and delete user groups
 author:

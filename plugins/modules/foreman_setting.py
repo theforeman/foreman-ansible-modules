@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_setting
-short_description: Manage Foreman Settings
+short_description: Manage Settings
 description:
-  - "Manage Foreman Setting Entities"
+  - "Manage Setting Entities"
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

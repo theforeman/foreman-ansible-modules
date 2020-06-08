@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_model
-short_description: Manage Foreman hardware models
+short_description: Manage hardware models
 description:
-    - Manage Foreman hardware models
+    - Manage hardware models
 author:
     - "Evgeni Golov (@evgeni)"
 options:

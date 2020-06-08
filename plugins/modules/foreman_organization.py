@@ -27,9 +27,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_organization
-short_description: Manage Foreman Organization
+short_description: Manage Organization
 description:
-    - Manage Foreman Organization
+    - Manage Organization
 author:
     - "Eric D Helms (@ehelms)"
     - "Matthias M Dellweg (@mdellweg) ATIX AG"

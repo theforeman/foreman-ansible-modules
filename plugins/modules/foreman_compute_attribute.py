@@ -26,9 +26,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = '''
 ---
 module: foreman_compute_attribute
-short_description: Manage Foreman Compute Attributes
+short_description: Manage Compute Attributes
 description:
-  - "Manage Foreman Compute Attributes"
+  - "Manage Compute Attributes"
   - "This beta version can create, and update compute attributes"
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
