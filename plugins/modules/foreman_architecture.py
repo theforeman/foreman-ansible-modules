@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_architecture
 short_description: Manage Architectures
 description:
-  - Create, update and delete Architectures
+  - Create, update, and delete Architectures
 author:
   - "Manisha Singhal (@Manisha15) ATIX AG"
 options:
