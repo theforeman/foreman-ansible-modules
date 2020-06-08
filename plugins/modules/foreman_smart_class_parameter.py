@@ -29,7 +29,7 @@ module: foreman_smart_class_parameter
 short_description: Manage Smart Class Parameters
 description:
   - Update Smart Class Parameters.
-  - Smart Class Paramters are created/deleted at on Puppet classes import and cannot be created or deleted.
+  - Smart Class Parameters are created/deleted for Puppet classes during import and cannot be created or deleted otherwise.
 author:
   - "Baptiste Agasse (@bagasse)"
 options:
