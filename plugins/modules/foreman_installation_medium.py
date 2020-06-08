@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_installation_medium
 short_description: Manage Foreman Installation Medium
 description:
-  - Create, update and delete Foreman Installation Medium
+  - Create, update and delete Installation Medium
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 options:

@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_image
 short_description: Manage Foreman Images
 description:
-  - Create, update and delete Foreman Images
+  - Create, update and delete Images
 author:
   - "Mark Hlawatschek (@hlawatschek) ATIX AG"
 options:

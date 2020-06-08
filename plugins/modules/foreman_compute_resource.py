@@ -30,7 +30,7 @@ DOCUMENTATION = '''
 module: foreman_compute_resource
 short_description: Manage Foreman Compute resources
 description:
-  - Create, update and delete Foreman Compute Resources
+  - Create, update and delete Compute Resources
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"

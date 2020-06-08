@@ -29,7 +29,7 @@ DOCUMENTATION = '''
 module: foreman_compute_profile
 short_description: Manage Foreman Compute Profiles
 description:
-  - Create, update and delete Foreman Compute Profiles
+  - Create, update and delete Compute Profiles
 author:
   - "Philipp Joos (@philippj)"
   - "Baptiste Agasse (@bagasse)"

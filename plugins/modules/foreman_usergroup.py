@@ -28,7 +28,7 @@ DOCUMENTATION = '''
 module: foreman_usergroup
 short_description: Manage Foreman User groups
 description:
-  - Create, update and delete user groups in Foreman
+  - Create, update and delete user groups
 author:
   - "Baptiste Agasse (@bagasse)"
 options:
