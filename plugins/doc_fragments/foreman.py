@@ -38,7 +38,6 @@ options:
     required: true
     type: str
   validate_certs:
-    aliases: [ verify_ssl ]
     description: Whether or not to verify the TLS certificates of the Foreman server
     default: true
     type: bool
