@@ -268,7 +268,7 @@ class ForemanAnsibleModule(AnsibleModule):
             server_url=dict(required=True),
             username=dict(required=True),
             password=dict(required=True, no_log=True),
-            validate_certs=dict(type='bool', default=True, aliases=['verify_ssl']),
+            validate_certs=dict(type='bool', default=True),
         )
         argument_spec.update(gen_args)
         argument_spec.update(kwargs.pop('argument_spec', {}))
@@ -277,9 +277,6 @@ class ForemanAnsibleModule(AnsibleModule):
         self.required_plugins = kwargs.pop('required_plugins', [])
 
         super(ForemanAnsibleModule, self).__init__(argument_spec=argument_spec, supports_check_mode=supports_check_mode, **kwargs)
-
-        if 'verify_ssl' in self.params:
-            self.warn("Please use 'validate_certs' instead of deprecated 'verify_ssl'.")
 
         aliases = {alias for arg in argument_spec.values() for alias in arg.get('aliases', [])}
         self.foreman_params = {k: v for (k, v) in self.params.items() if v is not None and k not in aliases}
