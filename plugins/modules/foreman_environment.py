@@ -51,7 +51,7 @@ EXAMPLES = '''
     locations:
       - "Munich"
     organizations:
-      - "ATIX"
+      - "ACME"
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "secret"

@@ -132,7 +132,7 @@ EXAMPLES = '''
     locations:
       - Munich
     organizations:
-      - ATIX
+      - ACME
     provider: libvirt
     provider_params:
       url: libvirt.example.com
@@ -149,7 +149,7 @@ EXAMPLES = '''
     locations:
       - Munich
     organizations:
-      - ATIX
+      - ACME
     provider: libvirt
     provider_params:
       url: libvirt.example.com
@@ -173,7 +173,7 @@ EXAMPLES = '''
     locations:
       - Munich
     organizations:
-      - ATIX
+      - ACME
     provider: vmware
     provider_params:
       url: vsphere.example.com
@@ -211,7 +211,7 @@ EXAMPLES = '''
     locations:
       - Munich
     organizations:
-      - ATIX
+      - ACME
     provider: proxmox
     provider_params:
       url: https://proxmox.example.com:8006/api2/json
@@ -230,7 +230,7 @@ EXAMPLES = '''
     locations:
       - AWS
     organizations:
-      - ATIX
+      - ACME
     provider: EC2
     provider_params:
       user: AWS_ACCESS_KEY
@@ -248,7 +248,7 @@ EXAMPLES = '''
     locations:
       - Azure
     organizations:
-      - ATIX
+      - ACME
     provider: AzureRm
     provider_params:
       user: SUBSCRIPTION_ID
@@ -268,7 +268,7 @@ EXAMPLES = '''
     locations:
       - GCE
     organizations:
-      - ATIX
+      - ACME
     provider: GCE
     provider_params:
       project: orcharhino

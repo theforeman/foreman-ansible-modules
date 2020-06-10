@@ -69,7 +69,7 @@ EXAMPLES = '''
     locations:
       - "Uppsala"
     organizations:
-      - "Basalt"
+      - "ACME"
     filters:
       - permissions:
           - view_hosts
