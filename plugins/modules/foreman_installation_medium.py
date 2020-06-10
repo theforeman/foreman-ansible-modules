@@ -68,7 +68,7 @@ EXAMPLES = '''
     locations:
       - "Munich"
     organizations:
-      - "ATIX"
+      - "ACME"
     operatingsystems:
       - "Debian"
     path: "http://debian.org/mirror/"
