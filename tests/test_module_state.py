@@ -26,18 +26,13 @@ def find_all_modules():
 ALL_MODULES = list(find_all_modules())
 
 
-def _strip_module_prefix(module):
-    return module.replace('foreman_', '').replace('katello_', '')
-
-
 def _module_file_path(module):
     module_file_name = "{}.py".format(module)
     return MODULES_PATH / module_file_name
 
 
 def _module_is_tested(module):
-    short_module = _strip_module_prefix(module)
-    return short_module in TEST_PLAYBOOKS or module in TEST_PLAYBOOKS
+    return module in TEST_PLAYBOOKS
 
 
 def _module_framework(module):
