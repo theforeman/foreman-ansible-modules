@@ -4,7 +4,7 @@ VERSION := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml
 MANIFEST := build/collections/ansible_collections/$(NAMESPACE)/$(NAME)/MANIFEST.json
 
 PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
-METADATA := galaxy.yml LICENSE README.md
+METADATA := galaxy.yml LICENSE README.md meta/runtime.yml
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE)))
 
@@ -97,7 +97,7 @@ build/src/%: % | build
 	cp $< $@
 
 build:
-	-mkdir build build/src build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
+	-mkdir build build/src build/src/meta build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
 
 $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build
 	ansible-galaxy collection build build/src --force
