@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_host_collection
+module: host_collection
 short_description: Create and Manage host collections
 description:
     - Create and Manage host collections
@@ -55,7 +55,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create Foo host collection"
-  katello_host_collection:
+  host_collection:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
