@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_usergroup
+module: usergroup
 short_description: Manage User groups
 description:
   - Create, update, and delete user groups
@@ -73,7 +73,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create a user group
-  foreman_usergroup:
+  usergroup:
     name: test
     admin: no
     roles:
