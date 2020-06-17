@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_compute_attribute
+module: compute_attribute
 short_description: Manage Compute Attributes
 description:
   - "Manage Compute Attributes"
@@ -57,7 +57,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create compute attribute"
-  foreman_compute_attribute:
+  compute_attribute:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -69,7 +69,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update compute attribute"
-  foreman_compute_attribute:
+  compute_attribute:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
