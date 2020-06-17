@@ -30,7 +30,7 @@ TEST_PLAYBOOKS = [
     'installation_medium',
     'job_template',
     'katello_manifest',
-    'katello_sync',
+    'repository_sync',
     'lifecycle_environment',
     'location',
     'hardware_model',
