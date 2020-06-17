@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_external_usergroup
+module: external_usergroup
 short_description: Manage external user groups
 description:
   - Create, update, and delete external user groups
@@ -54,7 +54,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create an external user group
-  foreman_external_usergroup:
+  external_usergroup:
     name: test
     auth_source_ldap: "My LDAP server"
     usergroup: "Internal Usergroup"
