@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_repository
+module: repository
 short_description: Create and manage repositories
 description:
     - Crate and manage repositories
@@ -168,7 +168,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create repository"
-  katello_repository:
+  repository:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -182,7 +182,7 @@ EXAMPLES = '''
     download_policy: background
 
 - name: "Create repository with content credentials"
-  katello_repository:
+  repository:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

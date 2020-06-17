@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_repository_set
+module: repository_set
 short_description: Enable/disable repositories in repository sets
 description:
   - Enable/disable repositories in repository sets
