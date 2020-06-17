@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_role
+module: role
 short_description: Manage Roles
 description:
   - Create, update, and delete Roles
@@ -63,7 +63,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: role
-  foreman_role:
+  role:
     name: "Provisioner"
     description: "Only provision on libvirt"
     locations:
