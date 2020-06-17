@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_subnet
+module: subnet
 short_description: Manage Subnets
 description:
   - Create, update, and delete Subnets
@@ -154,7 +154,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: My subnet
-  foreman_subnet:
+  subnet:
     name: "My subnet"
     description: "My description"
     network: "192.168.0.0"
