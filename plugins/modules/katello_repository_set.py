@@ -166,7 +166,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Search for possible repository sets of a product"
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -179,7 +179,7 @@ EXAMPLES = '''
     var: data
 
 - name: "Search for possible repository sets by label"
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

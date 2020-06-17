@@ -61,7 +61,7 @@ EXAMPLES = '''
 
 # Sync all repositories
 - name: Get all repositories
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
