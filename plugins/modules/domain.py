@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_domain
+module: domain
 short_description: Manage Domains
 description:
   - Create, update, and delete Domains
@@ -63,7 +63,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: domain
-  foreman_domain:
+  domain:
     name: "example.org"
     description: "Example Domain"
     locations:
