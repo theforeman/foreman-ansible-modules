@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_content_view
+module: content_view
 short_description: Create and manage content views
 description:
     - Create and manage content views
@@ -103,7 +103,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create or update Fedora content view"
-  katello_content_view:
+  content_view:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -114,7 +114,7 @@ EXAMPLES = '''
         product: 'Fedora'
 
 - name: "Create a composite content view"
-  katello_content_view:
+  content_view:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
