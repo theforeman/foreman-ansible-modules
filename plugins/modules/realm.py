@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_realm
+module: realm
 short_description: Manage Realms
 description:
   - Manage Realms
@@ -59,7 +59,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create EXAMPLE.LOCAL Realm"
-  foreman_realm:
+  realm:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
