@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_product
+module: product
 short_description: Create and manage products
 description:
     - Create and manage products
@@ -81,7 +81,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create Fedora product with a sync plan"
-  katello_product:
+  product:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -91,7 +91,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create CentOS 7 product with content credentials"
-  katello_product:
+  product:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
