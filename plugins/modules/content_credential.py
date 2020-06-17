@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_content_credential
+module: content_credential
 short_description: Create and manage content credentials
 description:
   - Create and manage content credentials
@@ -57,7 +57,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create katello client GPG key"
-  katello_content_credential:
+  content_credential:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
