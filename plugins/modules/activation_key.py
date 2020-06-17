@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_activation_key
+module: activation_key
 short_description: Create and manage activation keys
 description:
   - Create and manage activation keys
@@ -149,7 +149,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create client activation key"
-  katello_activation_key:
+  activation_key:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
