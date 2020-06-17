@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_auth_source_ldap
+module: auth_source_ldap
 short_description: Manage LDAP authentication sources
 description:
   - Create, update, and delete LDAP authentication sources
@@ -125,7 +125,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: LDAP Authentication source
-  foreman_auth_source_ldap:
+  auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
     server_url: "https://foreman.example.com"
@@ -138,7 +138,7 @@ EXAMPLES = '''
     state: present
 
 - name: LDAP Authentication with automatic registration
-  foreman_auth_source_ldap:
+  auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
     onthefly_register: True
