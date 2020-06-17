@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_image
+module: image
 short_description: Manage Images
 description:
   - Create, update, and delete Images
@@ -73,7 +73,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
    - name: create Image for EC2
-     foreman_image:
+     image:
         name: CentOS
         image_uuid: "ami-0ff760d16d9497662"
         image_username: "centos"
