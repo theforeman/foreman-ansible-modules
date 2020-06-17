@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_compute_profile
+module: compute_profile
 short_description: Manage Compute Profiles
 description:
   - Create, update, and delete Compute Profiles
@@ -65,7 +65,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: compute profile
-  foreman_compute_profile:
+  compute_profile:
     name: example_compute_profile
     server_url: "https://foreman.example.com"
     username: admin
@@ -73,7 +73,7 @@ EXAMPLES = '''
     state: present
 
 - name: another compute profile
-  foreman_compute_profile:
+  compute_profile:
     name: another_example_compute_profile
     compute_attributes:
     - compute_resource: ovirt_compute_resource1
@@ -87,7 +87,7 @@ EXAMPLES = '''
     state: present
 
 - name: compute profile2
-  foreman_compute_profile:
+  compute_profile:
     name: example_compute_profile2
     compute_attributes:
     - compute_resource: ovirt_compute_resource01
@@ -131,7 +131,7 @@ EXAMPLES = '''
     state: present
 
 - name: Remove compute profile
-  foreman_compute_profile:
+  compute_profile:
     name: example_compute_profile2
     server_url: "https://foreman.example.com"
     username: admin
