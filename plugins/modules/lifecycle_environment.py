@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_lifecycle_environment
+module: lifecycle_environment
 short_description: Create and manage lifecycle environments
 description:
     - Create and manage lifecycle environments
@@ -59,7 +59,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Add a production lifecycle environment"
-  katello_lifecycle_environment:
+  lifecycle_environment:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
