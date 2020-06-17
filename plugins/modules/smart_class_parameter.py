@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_smart_class_parameter
+module: smart_class_parameter
 short_description: Manage Smart Class Parameters
 description:
   - Update Smart Class Parameters.
@@ -125,7 +125,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Update prometheus::server alertmanagers_config param default value"
-  foreman_smart_class_parameter:
+  smart_class_parameter:
     puppetclass_name: "prometheus::server"
     parameter: alertmanagers_config
     override: true
@@ -137,7 +137,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update prometheus::server alertmanagers_config param default value"
-  foreman_smart_class_parameter:
+  smart_class_parameter:
     puppetclass_name: "prometheus::server"
     parameter: alertmanagers_config
     override: true
