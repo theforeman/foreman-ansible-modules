@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_bookmark
+module: bookmark
 short_description: Manage Bookmarks
 description:
   - "Manage Bookmark Entities"
@@ -60,7 +60,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Bookmark"
-  foreman_bookmark:
+  bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -70,7 +70,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Update a Bookmark"
-  foreman_bookmark:
+  bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -80,7 +80,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a Bookmark"
-  foreman_bookmark:
+  bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
