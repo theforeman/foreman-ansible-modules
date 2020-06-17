@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_organization
+module: organization
 short_description: Manage Organization
 description:
     - Manage Organization
@@ -56,7 +56,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create CI Organization"
-  foreman_organization:
+  organization:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
