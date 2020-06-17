@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_provisioning_template
+module: provisioning_template
 short_description: Manage Provisioning Template
 description:
   - "Manage Provisioning Template"
@@ -102,7 +102,7 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Provisioning Template inline"
-  foreman_provisioning_template:
+  provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -122,7 +122,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Provisioning Template from a file"
-  foreman_provisioning_template:
+  provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -136,7 +136,7 @@ EXAMPLES = '''
 # Due to the module logic, deleting requires a template dummy,
 # either inline or from a file.
 - name: "Delete a Provisioning Template"
-  foreman_provisioning_template:
+  provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -148,7 +148,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Create a Provisioning Template from a file and modify with parameter"
-  foreman_provisioning_template:
+  provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -163,7 +163,7 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of provisioning templates"
-  foreman_provisioning_template:
+  provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -178,7 +178,7 @@ EXAMPLES = '''
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all Provisioning Community Templates
-  foreman_provisioning_template:
+  provisioning_template:
     server_url: "https://foreman.example.com"
     username:  "admin"
     password:  "changeme"
