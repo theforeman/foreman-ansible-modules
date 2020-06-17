@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_host
+module: host
 short_description: Manage hosts
 description:
   - "Manage host Entities"
@@ -122,7 +122,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a host"
-  foreman_host:
+  host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -131,7 +131,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create a host with build context"
-  foreman_host:
+  host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -141,7 +141,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create an unmanaged host"
-  foreman_host:
+  host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -150,7 +150,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a host"
-  foreman_host:
+  host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
