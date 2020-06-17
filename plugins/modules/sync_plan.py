@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_sync_plan
+module: sync_plan
 short_description: Manage sync plans
 description:
     - Manage sync plans
@@ -82,7 +82,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create or update weekly RHEL sync plan"
-  katello_sync_plan:
+  sync_plan:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
