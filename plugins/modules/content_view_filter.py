@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_content_view_filter
+module: content_view_filter
 short_description: Create and manage content View filters
 description:
     - Create and manage content View filters
@@ -146,7 +146,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Exclude csh
-  katello_content_view_filter:
+  content_view_filter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -157,7 +157,7 @@ EXAMPLES = '''
     package_name: tcsh
 
 - name: Include newer csh versions
-  katello_content_view_filter:
+  content_view_filter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
