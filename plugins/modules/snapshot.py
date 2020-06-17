@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_snapshot
+module: snapshot
 short_description: Manage Snapshots
 description:
   - "Manage Snapshots for Host Entities"
@@ -62,7 +62,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Snapshot"
-  foreman_snapshot:
+  snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -71,7 +71,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update a Snapshot"
-  foreman_snapshot:
+  snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -81,7 +81,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Revert a Snapshot"
-  foreman_snapshot:
+  snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -90,7 +90,7 @@ EXAMPLES = '''
     state: reverted
 
 - name: "Delete a Snapshot"
-  foreman_snapshot:
+  snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
