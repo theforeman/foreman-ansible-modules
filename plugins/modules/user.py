@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_user
+module: user
 short_description: Manage Users
 description:
   - Create, update, and delete users
@@ -281,7 +281,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create a user
-  foreman_user:
+  user:
     name: test
     firstname: Test
     lastname: Userson
@@ -303,13 +303,13 @@ EXAMPLES = '''
     state: present
 
 - name: Update a user
-  foreman_user:
+  user:
     name: test
     firstname: Tester
     state: present
 
 - name: Change password
-  foreman_user:
+  user:
     name: test
     user_password: newp@ss
 
