@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_model
+module: hardware_model
 short_description: Manage hardware models
 description:
     - Manage hardware models
@@ -58,7 +58,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create ACME Laptop model"
-  foreman_model:
+  hardware_model:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
