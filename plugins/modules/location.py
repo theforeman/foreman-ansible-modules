@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_location
+module: location
 short_description: Manage Location
 description:
   - Manage Location
@@ -55,7 +55,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 # Create a simple location
 - name: "Create CI Location"
-  foreman_location:
+  location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -66,7 +66,7 @@ EXAMPLES = '''
 
 # Create a nested location
 - name: "Create Nested CI Location"
-  foreman_location:
+  location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -76,7 +76,7 @@ EXAMPLES = '''
 
 # Create a new nested location with parent included in name
 - name: "Create New Nested Location"
-  foreman_location:
+  location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -85,7 +85,7 @@ EXAMPLES = '''
 
 # Move a nested location to another parent
 - name: "Create Nested CI Location"
-  foreman_location:
+  location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
