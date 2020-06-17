@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_ptable
+module: partition_table
 short_description: Manage Partition Table Template
 description:
     - "Manage Partition Table"
@@ -78,7 +78,7 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Partition Table inline"
-  foreman_ptable:
+  partition_table:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -97,7 +97,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Partition Template from a file"
-  foreman_ptable:
+  partition_table:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -109,7 +109,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Delete a Partition Template"
-  foreman_ptable:
+  partition_table:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -121,7 +121,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Create a Partition Template from a file and modify with parameter(s)"
-  foreman_ptable:
+  partition_table:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -136,7 +136,7 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of partition templates"
-  foreman_ptable:
+  partition_table:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -151,7 +151,7 @@ EXAMPLES = '''
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all Ptable Community Templates
-  foreman_ptable:
+  partition_table:
     server_url: "https://foreman.example.com"
     username:  "admin"
     password:  "changeme"

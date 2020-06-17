@@ -39,7 +39,7 @@ TEST_PLAYBOOKS = [
     'os_default_template',
     'product',
     'provisioning_template',
-    'ptable',
+    'partition_table',
     'realm',
     'redhat_manifest',
     'repository',
