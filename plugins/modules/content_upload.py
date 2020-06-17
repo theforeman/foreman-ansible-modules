@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_upload
+module: content_upload
 short_description: Upload content
 description:
   - Allows the upload of content to a repository
@@ -62,7 +62,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Upload my.rpm"
-  katello_upload:
+  content_upload:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

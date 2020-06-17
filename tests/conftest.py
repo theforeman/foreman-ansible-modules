@@ -56,7 +56,7 @@ TEST_PLAYBOOKS = [
     'subnet',
     'sync_plan',
     'templates_import',
-    'upload',
+    'content_upload',
     'user',
     'usergroup',
 ]
