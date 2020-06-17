@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_architecture
+module: architecture
 short_description: Manage Architectures
 description:
   - Create, update, and delete Architectures
@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create an Architecture"
-  foreman_architecture:
+  architecture:
     name: "i386"
     operatingsystems:
       - "TestOS1"
@@ -62,7 +62,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update an Architecture"
-  foreman_architecture:
+  architecture:
     name: "i386"
     operatingsystems:
       - "TestOS3"
@@ -73,7 +73,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete an Architecture"
-  foreman_architecture:
+  architecture:
     name: "i386"
     server_url: "https://foreman.example.com"
     username: "admin"
