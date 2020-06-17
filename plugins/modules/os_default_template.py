@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_os_default_template
+module: os_default_template
 short_description: Manage Default Template Associations To Operating Systems
 description:
   - "Manage OSDefaultTemplate Entities"
@@ -54,7 +54,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create an Association"
-  foreman_os_default_template:
+  os_default_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -64,7 +64,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete an Association"
-  foreman_os_default_template:
+  os_default_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
