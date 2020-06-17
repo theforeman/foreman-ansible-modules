@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_scap_content
+module: scap_content
 short_description: Manage SCAP content.
 description:
   - Create, update, and delete SCAP content.
@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP content
-  foreman_scap_content:
+  scap_content:
     title: "Red Hat firefox default content"
     scap_file: "/home/user/Downloads/ssg-firefox-ds.xml"
     original_filename: "ssg-firefox-ds.xml"
@@ -65,7 +65,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update SCAP content
-  foreman_scap_content:
+  scap_content:
     title: "Red Hat firefox default content"
     updated_title: "Updated scap content title"
     scap_file: "/home/user/Downloads/updated-ssg-firefox-ds.xml"
@@ -82,7 +82,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete SCAP content
-  foreman_scap_content:
+  scap_content:
     title: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"
