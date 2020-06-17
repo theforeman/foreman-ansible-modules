@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_search_facts
+module: resource_info
 short_description: Gather facts about resources
 description:
   - "Gather facts about resources"
@@ -67,7 +67,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Read a Setting"
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -78,7 +78,7 @@ EXAMPLES = '''
     var: result.resources[0].value
 
 - name: "Read all Registries (Katello)"
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -89,7 +89,7 @@ EXAMPLES = '''
   with_items: "{{ result.resources }}"
 
 - name: "Read all Organizations with full details"
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -100,7 +100,7 @@ EXAMPLES = '''
     var: result.resources
 
 - name: Get all existing subscriptions for organization with id 1 (Katello)
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -112,7 +112,7 @@ EXAMPLES = '''
     var: result
 
 - name: Get all existing activation keys for organization ACME (Katello)
-  foreman_search_facts:
+  resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
