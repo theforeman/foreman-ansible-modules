@@ -86,7 +86,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Enable RHEL 7 RPMs repositories"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -105,7 +105,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Enable RHEL 7 RPMs repositories with label"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -123,7 +123,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Disable RHEL 7 Extras RPMs repository"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -135,7 +135,7 @@ EXAMPLES = '''
       - basearch: x86_64
 
 - name: "Enable RHEL 8 BaseOS RPMs repository with label"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -145,7 +145,7 @@ EXAMPLES = '''
       - releasever: "8"
 
 - name: "Enable Red Hat Virtualization Manager RPMs repository with label"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -156,7 +156,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Enable Red Hat Virtualization Manager RPMs repository without specifying basearch"
-  katello_repository_set:
+  repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
