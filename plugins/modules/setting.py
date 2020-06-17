@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_setting
+module: setting
 short_description: Manage Settings
 description:
   - "Manage Setting Entities"
@@ -49,7 +49,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Set a Setting"
-  foreman_setting:
+  setting:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -57,7 +57,7 @@ EXAMPLES = '''
     value: "http://localhost:8088"
 
 - name: "Reset a Setting"
-  foreman_setting:
+  setting:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
