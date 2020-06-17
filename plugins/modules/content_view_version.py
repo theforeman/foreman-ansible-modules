@@ -77,7 +77,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Ensure content view version 2.0 is in Test & Pre Prod"
-  katello_content_view_version:
+  content_view_version:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -89,7 +89,7 @@ EXAMPLES = '''
       - Pre Prod
 
 - name: "Ensure content view version in Test is also in Pre Prod"
-  katello_content_view_version:
+  content_view_version:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -100,7 +100,7 @@ EXAMPLES = '''
       - Pre Prod
 
 - name: "Publish a content view, not idempotent"
-  katello_content_view_version:
+  content_view_version:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -108,7 +108,7 @@ EXAMPLES = '''
     organization: "Default Organization"
 
 - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
-  katello_content_view_version:
+  content_view_version:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -119,7 +119,7 @@ EXAMPLES = '''
       - Dev
 
 - name: "Ensure content view version 1.0 doesn't exist"
-  katello_content_view_version:
+  content_view_version:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
