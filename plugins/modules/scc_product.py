@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_scc_product
+module: scc_product
 short_description: Subscribe Suse Customer Center Account Product
 description:
   - "Manage Suse Customer Center Product Entities"
@@ -52,7 +52,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Subscribe to suse customer center product"
-  foreman_scc_product:
+  scc_product:
     friendly_name: "Product1"
     scc_account: "Test"
     organization: "Test Organization"
