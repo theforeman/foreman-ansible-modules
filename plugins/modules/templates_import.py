@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0',
 
 DOCUMENTATION = '''
 ---
-module: foreman_templates_import
+module: templates_import
 short_description: Sync templates from a repository
 description:
   - Sync provisioning templates, report_templates, partition tables and job templates from external git repository or file system.
@@ -100,7 +100,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Sync templates from git repo
-  foreman_templates_import:
+  templates_import:
     repo: https://github.com/theforeman/community-templates.git
     branch: 1.24-stable
     associate: new
