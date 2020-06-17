@@ -14,7 +14,7 @@ TEST_PLAYBOOKS = [
     'content_view_filter',
     'content_view_version',
     'domain',
-    'environment',
+    'puppet_environment',
     'external_usergroup',
     'config_group',
     'filters',
