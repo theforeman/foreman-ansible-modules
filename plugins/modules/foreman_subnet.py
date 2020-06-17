@@ -185,7 +185,9 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin, missing_required_lib
+from ansible.module_utils.foreman_helper import (
+    ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin, missing_required_lib
+)
 try:
     import ipaddress
     HAS_IPADDRESS = True
