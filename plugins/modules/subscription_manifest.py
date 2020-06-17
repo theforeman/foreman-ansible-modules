@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_manifest
+module: subscription_manifest
 short_description: Manage manifests
 description:
     - Upload and manage manifests
@@ -57,7 +57,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Upload the RHEL developer edition manifest"
-  katello_manifest:
+  subscription_manifest:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
