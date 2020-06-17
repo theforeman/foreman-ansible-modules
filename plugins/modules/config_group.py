@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_config_group
+module: config_group
 short_description: Manage (Puppet) config groups
 description:
   - Create, update, and delete (Puppet) config groups
@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: create new config group
-  foreman_config_group:
+  config_group:
     name: "My config group"
     puppetclasses:
       - ntp
