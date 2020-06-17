@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_host_power
+module: host_power
 short_description: Manage hosts power state
 description:
   - "Manage power state of a host"
@@ -61,7 +61,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Switch a host on"
-  foreman_host_power:
+  host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -69,7 +69,7 @@ EXAMPLES = '''
     state: on
 
 - name: "Switch a host off"
-  foreman_host_power:
+  host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -77,7 +77,7 @@ EXAMPLES = '''
     state: off
 
 - name: "Query host power state"
-  foreman_host_power:
+  host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
