@@ -25,7 +25,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_content_view_version
+module: content_view_version
 short_description: Create, remove or interact with a Content View Version
 description:
   - Publish, Promote or Remove a Content View Version
