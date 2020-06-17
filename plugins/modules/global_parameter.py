@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: foreman_global_parameter
+module: global_parameter
 short_description: Manage Global Parameters
 description:
   - "Manage Global Parameter Entities"
@@ -72,7 +72,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Global Parameter"
-  foreman_global_parameter:
+  global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -81,7 +81,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Update a Global Parameter"
-  foreman_global_parameter:
+  global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -90,7 +90,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a Global Parameter"
-  foreman_global_parameter:
+  global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
