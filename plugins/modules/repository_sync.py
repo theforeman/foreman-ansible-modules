@@ -26,7 +26,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: katello_sync
+module: repository_sync
 short_description: Sync a repository or product
 description:
   - Sync a repository or product
@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Sync repository"
-  katello_sync:
+  repository_sync:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -69,7 +69,7 @@ EXAMPLES = '''
   register: repositories
 
 - name: Kick off repository Sync tasks
-  katello_sync:
+  repository_sync:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
