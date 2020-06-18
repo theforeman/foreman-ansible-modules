@@ -77,7 +77,7 @@ EXAMPLES = '''
 - debug:
     var: result.resources[0].value
 
-- name: "Read all Registries (Katello)"
+- name: "Read all Registries"
   resource_info:
     username: "admin"
     password: "changeme"
@@ -99,7 +99,7 @@ EXAMPLES = '''
 - debug:
     var: result.resources
 
-- name: Get all existing subscriptions for organization with id 1 (Katello)
+- name: Get all existing subscriptions for organization with id 1
   resource_info:
     username: "admin"
     password: "changeme"
@@ -111,7 +111,7 @@ EXAMPLES = '''
 - debug:
     var: result
 
-- name: Get all existing activation keys for organization ACME (Katello)
+- name: Get all existing activation keys for organization ACME
   resource_info:
     username: "admin"
     password: "changeme"
@@ -125,7 +125,7 @@ EXAMPLES = '''
 
 RETURN = '''
 resources:
-  description: Search results from Foreman
+  description: Resource information
   returned: always
   type: list
 '''
