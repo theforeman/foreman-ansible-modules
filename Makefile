@@ -88,19 +88,6 @@ else
 	ansible-galaxy collection install -p build/collections $< --force
 endif
 
-# fix the imports to use the collection namespace
-build/src/plugins/modules/%.py: plugins/modules/%.py | build/src
-	sed -e '/ansible.module_utils.foreman_helper/ s/ansible.module_utils/ansible_collections.$(NAMESPACE).$(NAME).plugins.module_utils/g' \
-	-e '/extends_documentation_fragment/{:1 n; s/- foreman/- $(NAMESPACE).$(NAME).foreman/; t1}' $< > $@
-
-build/src/plugins/inventory/%.py: plugins/inventory/%.py | build/src
-	sed -E -e '/NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
-		-e '/(plugin|choices):/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
-
-build/src/plugins/callback/%.py: plugins/callback/%.py | build/src
-	sed -e '/CALLBACK_NAME =/ s/foreman/$(NAMESPACE).$(NAME).foreman/' \
-		-e '/callback:/ s/foreman/$(NAMESPACE).$(NAME).foreman/' $< > $@
-
 build/src/%: % | build/src
 	cp $< $@
 
