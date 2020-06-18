@@ -119,7 +119,7 @@ options:
 options:
   state:
     description:
-      - State of the entity in Foreman
+      - State of the entity
     default: present
     choices:
       - present
@@ -131,7 +131,7 @@ options:
 options:
   state:
     description:
-      - State of the entity in Foreman
+      - State of the entity
       - C(present_with_defaults) will ensure the entity exists, but won't update existing ones
     default: present
     choices:
@@ -241,27 +241,27 @@ options:
     type: str
   content_source:
     description:
-      - Katello Content source.
+      - Content source.
       - Only available for Katello installations.
     required: false
     type: str
   lifecycle_environment:
     description:
-      - Katello Lifecycle environment.
+      - Lifecycle environment.
       - Only available for Katello installations.
     required: false
     type: str
   kickstart_repository:
     description:
       - Kickstart repository name.
-      - You need to provide this to use the "Synced Content" feature of Katello.
+      - You need to provide this to use the "Synced Content" feature.
       - Mutually exclusive with I(medium).
       - Only available for Katello installations.
     required: false
     type: str
   content_view:
     description:
-      - Katello Content view.
+      - Content view.
       - Only available for Katello installations.
     required: false
     type: str
