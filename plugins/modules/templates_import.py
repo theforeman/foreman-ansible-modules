@@ -94,8 +94,8 @@ options:
     required: false
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.taxonomy
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -111,7 +111,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule, _flatten_entity
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule, _flatten_entity
 
 
 def main():

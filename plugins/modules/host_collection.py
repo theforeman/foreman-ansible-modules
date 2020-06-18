@@ -48,9 +48,9 @@ options:
       - New name of the host collection. When this parameter is set, the module will not be idempotent.
     type: str
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state
-  - foreman.organization
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.organization
 '''
 
 EXAMPLES = '''
@@ -67,7 +67,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
 class KatelloHostCollectionModule(KatelloEntityAnsibleModule):
