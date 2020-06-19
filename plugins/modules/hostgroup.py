@@ -156,14 +156,14 @@ def main():
         argument_spec=dict(
             updated_name=dict(),
         ),
+        required_by=dict(
+            content_source=('organization',),
+            content_view=('organization',),
+            lifecycle_environment=('organization',),
+        ),
     )
 
     module_params = module.foreman_params
-    katello_params = ['content_source', 'lifecycle_environment', 'content_view']
-
-    if 'organization' not in module_params and list(set(katello_params) & set(module_params.keys())):
-        module.fail_json(msg="Please specify the organization when using katello parameters.")
-
     with module.api_connection():
         if not module.desired_absent:
             if 'organization' in module_params:
