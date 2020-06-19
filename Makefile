@@ -109,7 +109,7 @@ clean:
 
 doc-setup:
 	pip install -r docs/requirements.txt
-doc:
+doc: $(MANIFEST)
 	make -C docs html
 
 FORCE:
