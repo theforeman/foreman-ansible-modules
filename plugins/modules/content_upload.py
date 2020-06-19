@@ -56,8 +56,8 @@ notes:
   - Currently only uploading to deb, RPM & file repositories is supported
   - For anything but file repositories, a supporting library must be installed. See Requirements.
 extends_documentation_fragment:
-  - foreman
-  - foreman.organization
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
 '''
 
 EXAMPLES = '''
@@ -78,7 +78,7 @@ import os
 import traceback
 
 from ansible.module_utils._text import to_bytes
-from ansible.module_utils.foreman_helper import KatelloAnsibleModule, missing_required_lib
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, missing_required_lib
 
 try:
     from debian import debfile

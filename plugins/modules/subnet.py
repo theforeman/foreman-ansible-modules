@@ -146,10 +146,10 @@ options:
     description:
       - Subnet specific host parameters
 extends_documentation_fragment:
-  - foreman
-  - foreman.entity_state
-  - foreman.taxonomy
-  - foreman.nested_parameters
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.taxonomy
+  - theforeman.foreman.foreman.nested_parameters
 '''
 
 EXAMPLES = '''
@@ -185,7 +185,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import traceback
-from ansible.module_utils.foreman_helper import (
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin, missing_required_lib
 )
 try:

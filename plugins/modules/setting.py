@@ -44,7 +44,7 @@ options:
     required: false
     type: raw
 extends_documentation_fragment:
-  - foreman
+  - theforeman.foreman.foreman
 '''
 
 EXAMPLES = '''
@@ -72,7 +72,7 @@ foreman_setting:
 '''
 
 
-from ansible.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str, _foreman_spec_helper
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str, _foreman_spec_helper
 
 
 class ForemanSettingModule(ForemanAnsibleModule):

@@ -48,7 +48,7 @@ def _module_framework_from_body(body):
     framework = None
     for entry in body:
         if isinstance(entry, ast.ImportFrom):
-            if entry.module == 'ansible.module_utils.foreman_helper' and not framework:
+            if entry.module == 'ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper' and not framework:
                 framework = 'apypie'
         elif isinstance(entry, ast_try) and not framework:
             framework = _module_framework_from_body(entry.body)

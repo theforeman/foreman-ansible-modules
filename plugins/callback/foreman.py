@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = '''
-    callback: foreman
+    callback: theforeman.foreman.foreman
     type: notification
     short_description: Sends events to Foreman
     description:
@@ -83,7 +83,7 @@ from ansible.plugins.callback import CallbackBase
 class CallbackModule(CallbackBase):
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'notification'
-    CALLBACK_NAME = 'foreman'
+    CALLBACK_NAME = 'theforeman.foreman.foreman'
     CALLBACK_NEEDS_WHITELIST = True
 
     FOREMAN_HEADERS = {
