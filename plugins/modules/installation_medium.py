@@ -34,9 +34,8 @@ author:
 options:
   name:
     description:
-      - |
-        The full installation medium name.
-        The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
+      - The full installation medium name.
+      - The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
     required: true
     type: str
   updated_name:
