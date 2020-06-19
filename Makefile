@@ -108,8 +108,8 @@ build/src:
 
 $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build/src
 ifeq ($(COLLECTION_COMMAND),mazer)
-	mazer build build/src
-	cp releases/$@ .
+	mazer build --collection-path=build/src
+	cp build/src/releases/$@ .
 else
 	ansible-galaxy collection build build/src --force
 endif
