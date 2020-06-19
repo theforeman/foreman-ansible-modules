@@ -295,41 +295,6 @@ If omitted, all repositories in <em>product</em> are synched.</div>
     <span class="nt">repository</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">repository&quot;</span>
     <span class="nt">product</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">Product&quot;</span>
     <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-
-<span class="c1"># Sync all repositories</span>
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Get all repositories</span>
-  <span class="nt">resource_info</span><span class="p">:</span>
-    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
-    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">repositories</span>
-  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">repositories</span>
-
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Kick off repository Sync tasks</span>
-  <span class="nt">repository_sync</span><span class="p">:</span>
-    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
-    <span class="nt">product</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item.product.name</span> <span class="cp">}}</span><span class="s">&quot;</span>
-    <span class="nt">repository</span><span class="p">:</span>  <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item.name</span> <span class="cp">}}</span><span class="s">&quot;</span>
-    <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-  <span class="nt">loop</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">repositories.resources</span> <span class="cp">}}</span><span class="s">&quot;</span>
-  <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">item.url</span>  <span class="c1"># Not all repositories have a URL</span>
-  <span class="nt">async</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">999999</span>
-  <span class="nt">poll</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
-  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">repo_sync_sleeper</span>
-
-<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Wait until all Syncs have finished</span>
-  <span class="nt">async_status</span><span class="p">:</span>
-    <span class="nt">jid</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">repo_sync_sleeper_item.ansible_job_id</span> <span class="cp">}}</span><span class="s">&quot;</span>
-  <span class="nt">loop</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">repo_sync_sleeper.results</span> <span class="cp">}}</span><span class="s">&quot;</span>
-  <span class="nt">loop_control</span><span class="p">:</span>
-    <span class="nt">loop_var</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">repo_sync_sleeper_item</span>
-  <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">repo_sync_sleeper_item.ansible_job_id is defined</span>  <span class="c1"># Skip items that were skipped in the previous task</span>
-  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">async_job_result</span>
-  <span class="nt">until</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">async_job_result.finished</span>
-  <span class="nt">retries</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">999</span>
-  <span class="nt">delay</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
 </pre></div>
 </div>
 </div>
