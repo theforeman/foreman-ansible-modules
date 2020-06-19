@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   tags:
     - setup
   gather_facts: false
@@ -14,6 +16,8 @@
         organization_state: "present"
 
 - hosts: tests
+  collections:
+    - theforeman.foreman
   tags:
     - test
   gather_facts: false
@@ -82,6 +86,8 @@
         expected_change: false
 
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   tags:
     - teardown
   gather_facts: false

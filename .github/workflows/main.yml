@@ -39,6 +39,12 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install Ansible
         run: pip install git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}#egg=ansible
+      - name: Set Environment to use mazer
+        run: |
+          echo "::set-env name=COLLECTION_COMMAND::mazer"
+          echo "::set-env name=COLLECTION_COMMAND_SUFFIX::"
+          pip install mazer
+        if: matrix.ansible == 'stable-2.8'
       - name: Install dependencies
         run: make test-setup
       - name: fake redhat-uep.pem for redhat_manifest module
