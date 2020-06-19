@@ -74,9 +74,8 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>The path of a template file, that shall be imported.
-    Either this or layout is required as a source for
-    the Job Template &quot;content&quot;.</div>
+                                                                        <div>The path of a template file, that shall be imported.</div>
+                                                    <div>Either this or <em>template</em> is required as a source for the Job Template &quot;content&quot;.</div>
                                                                                 </td>
             </tr>
                                 <tr>
@@ -235,8 +234,8 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                                                        <div>The content of the Job Template, either this or file_name
-    is required as a source for the Job Template &quot;content&quot;.</div>
+                                                                        <div>The content of the Job Template.</div>
+                                                    <div>Either this or <em>file_name</em> is required as a source for the Job Template &quot;content&quot;.</div>
                                                                                 </td>
             </tr>
                                 <tr>
@@ -576,7 +575,7 @@ Examples
         username:  "admin"
         password:  "changeme"
         state: present
-        layout: '{{ lookup("file", item.src) }}'
+        template: '{{ lookup("file", item.src) }}'
       with_filetree: '/path/to/job/templates'
       when: item.state == 'file'
 
