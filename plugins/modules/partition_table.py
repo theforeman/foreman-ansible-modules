@@ -35,17 +35,14 @@ author:
 options:
   file_name:
     description:
-      - |
-        The path of a template file, that shall be imported.
-        Either this or layout is required as a source for
-        the Partition Template "content".
+      - The path of a template file, that shall be imported.
+      - Either this or I(layout) is required as a source for the Partition Template "content".
     required: false
     type: path
   layout:
     description:
-      - |
-        The content of the Partitioning Table Template, either this or file_name
-        is required as a source for the Partition Template "content".
+      - The content of the Partitioning Table Template
+      - Either this or I(file_name) is required as a source for the Partition Template "content".
     required: false
     type: str
   locked:

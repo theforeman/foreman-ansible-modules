@@ -59,17 +59,14 @@ options:
     type: str
   template:
     description:
-      - |
-        The content of the provisioning template, either this or file_name
-        is required as a source for the Provisioning Template "content".
+      - The content of the provisioning template.
+      - Either this or I(file_name) is required as a source for the Provisioning Template "content".
     required: false
     type: str
   file_name:
     description:
-      - |
-        The path of a template file, that shall be imported.
-        Either this or template is required as a source for
-        the Provisioning Template "content".
+      - The path of a template file, that shall be imported.
+      - Either this or I(template) is required as a source for the Provisioning Template "content".
     required: false
     type: path
   locked:

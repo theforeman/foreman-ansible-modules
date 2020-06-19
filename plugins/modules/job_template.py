@@ -43,10 +43,8 @@ options:
     type: str
   file_name:
     description:
-      - |
-        The path of a template file, that shall be imported.
-        Either this or layout is required as a source for
-        the Job Template "content".
+      - The path of a template file, that shall be imported.
+      - Either this or I(template) is required as a source for the Job Template "content".
     type: path
   job_category:
     description:
@@ -75,9 +73,8 @@ options:
     type: bool
   template:
     description:
-      - |
-        The content of the Job Template, either this or file_name
-        is required as a source for the Job Template "content".
+      - The content of the Job Template.
+      - Either this or I(file_name) is required as a source for the Job Template "content".
     type: str
   template_inputs:
     description:
@@ -247,7 +244,7 @@ EXAMPLES = '''
     username:  "admin"
     password:  "changeme"
     state: present
-    layout: '{{ lookup("file", item.src) }}'
+    template: '{{ lookup("file", item.src) }}'
   with_filetree: '/path/to/job/templates'
   when: item.state == 'file'
 
