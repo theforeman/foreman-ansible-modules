@@ -82,8 +82,8 @@ $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 ifeq ($(COLLECTION_COMMAND),mazer)
 	# No idea, why this fails. But mazer is old and deprecated so unlikely to beeing fixed...
 	# mazer install --collections-path build/collections $<
-	-mkdir build/collections build/collections/ansible_collections build/collections/ansible_collections/theforeman build/collections/ansible_collections/theforeman/foreman
-	tar xf $< -C build/collections/ansible_collections/theforeman/foreman
+	-mkdir build/collections build/collections/ansible_collections build/collections/ansible_collections/$(NAMESPACE) build/collections/ansible_collections/$(NAMESPACE)/$(NAME)
+	tar xf $< -C build/collections/ansible_collections/$(NAMESPACE)/$(NAME)
 else
 	ansible-galaxy collection install -p build/collections $< --force
 endif
