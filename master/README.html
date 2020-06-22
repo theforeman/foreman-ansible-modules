@@ -202,10 +202,10 @@ Some modules have additional features/arguments that are only applied when the c
 <ul>
 <li><p>Some modules, e.g. <code class="docutils literal notranslate"><span class="pre">katello_sync</span></code> and <code class="docutils literal notranslate"><span class="pre">katello_content_view_version</span></code>, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
 As Ansible has facilities to do so, the modules will wait unconditionally. See the <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html">Ansible documentation</a> for putting tasks in the background.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">foreman_compute_resource</span></code> can leak sensitive data if used within a loop. According to <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">ansible documentation</a>, using loop over Ansible resources can leak sensitive data. You can prevent this by using <code class="docutils literal notranslate"><span class="pre">no_log:</span> <span class="pre">yes</span></code> on the task.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_resource</span></code> can leak sensitive data if used within a loop. According to <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">ansible documentation</a>, using loop over Ansible resources can leak sensitive data. You can prevent this by using <code class="docutils literal notranslate"><span class="pre">no_log:</span> <span class="pre">yes</span></code> on the task.</p>
 <p>eg:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create compute resources</span>
-  <span class="nt">foreman_compute_resource</span><span class="p">:</span>
+  <span class="nt">compute_resource</span><span class="p">:</span>
     <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
     <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">admin</span>
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">changeme</span>
@@ -245,7 +245,7 @@ As Ansible has facilities to do so, the modules will wait unconditionally. See t
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/apypie/"><code class="docutils literal notranslate"><span class="pre">apypie</span></code></a></p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/ipaddress/"><code class="docutils literal notranslate"><span class="pre">ipaddress</span></code></a> for the <code class="docutils literal notranslate"><span class="pre">foreman_subnet</span></code> module on Python 2.7</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/ipaddress/"><code class="docutils literal notranslate"><span class="pre">ipaddress</span></code></a> for the <code class="docutils literal notranslate"><span class="pre">subnet</span></code> module on Python 2.7</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> for the RPM support in the <code class="docutils literal notranslate"><span class="pre">katello_upload</span></code> module</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">debian</span></code> for the DEB support in the <code class="docutils literal notranslate"><span class="pre">katello_upload</span></code> module</p></li>
 </ul>

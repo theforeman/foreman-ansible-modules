@@ -30,12 +30,12 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 * Some modules, e.g. `katello_sync` and `katello_content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
   As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
 
-* `foreman_compute_resource` can leak sensitive data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
+* `compute_resource` can leak sensitive data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
   
   eg:
    ```yaml
    - name: Create compute resources
-     foreman_compute_resource:
+     compute_resource:
        server_url: https://foreman.example.com
        username: admin
        password: changeme
@@ -73,6 +73,6 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
-* [`ipaddress`](https://pypi.org/project/ipaddress/) for the `foreman_subnet` module on Python 2.7
+* [`ipaddress`](https://pypi.org/project/ipaddress/) for the `subnet` module on Python 2.7
 * `rpm` for the RPM support in the `katello_upload` module
 * `debian` for the DEB support in the `katello_upload` module
