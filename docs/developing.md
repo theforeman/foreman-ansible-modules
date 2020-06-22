@@ -2,7 +2,7 @@
 
 First of all, please have a look at the [Ansible module development](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html) guide and get familiar with the general Ansible module layout.
 
-When looking at actual modules in this repository ([`foreman_domain`](../plugins/modules/foreman_domain.py) is a nice short example), you will notice a few differences to a "regular" Ansible module:
+When looking at actual modules in this repository ([`domain`](../plugins/modules/domain.py) is a nice short example), you will notice a few differences to a "regular" Ansible module:
 
 * Instead of `AnsibleModule`, we use `ForemanEntityAnsibleModule` (and a few others, see [`plugins/module_utils/foreman_helper.py`](../plugins/module_utils/foreman_helper.py)) which provides an abstraction layer for talking with the Foreman API
 * Instead of Ansible's `argument_spec`, we provide an enhanced version called `foreman_spec`. It handles the translation from Ansible module arguments to Foreman API parameters, as nobody wants to write `organization_ids` in their playbook when they can write `organizations`
@@ -42,8 +42,8 @@ The rest of the module is usually very minimalistic:
       if __name__ == '__main__':
           main()
   ```
-You can see a complete example of simple module in [`foreman_architecture`](../plugins/modules/foreman_architecture.py)
-In some cases, you will have to handle some custom workflows/validations, you can see some examples in [`foreman_bookmark`](../plugins/modules/foreman_bookmark.py), [`foreman_compute_attribute`](../plugins/modules/foreman_compute_attribute.py), [`foreman_hostgroup`](../plugins/modules/foreman_hostgroup.py), [`foreman_provisioning_template`](../plugins/modules/foreman_provisioning_template.py)...
+You can see a complete example of simple module in [`architecture`](../plugins/modules/architecture.py)
+In some cases, you will have to handle some custom workflows/validations, you can see some examples in [`bookmark`](../plugins/modules/bookmark.py), [`compute_attribute`](../plugins/modules/compute_attribute.py), [`hostgroup`](../plugins/modules/hostgroup.py), [`provisioning_template`](../plugins/modules/provisioning_template.py)...
 
 ## Specification of the `foreman_spec`
 
@@ -57,7 +57,7 @@ This is usually combined with `flat_name=<entity>_id`. If no flat_name is provid
 This is usually combined with `flat_name=<entity>_ids`. If no flat_name is provided, fallback to `singularize(<entity>)_ids` where entity is the foreman_spec key. eg `organizations=dict(type='entity_list')` => `flat_name=organization_ids`.
 * `type='nested_list'` The referenced value is a list of Foreman entities that are not included in the main API call.
 The module must handle the entities separately.
-See domain parameters in [`foreman_domain`](../plugins/modules/foreman_domain.py) for an example.
+See domain parameters in [`domain`](../plugins/modules/domain.py) for an example.
 The sub entities must be described by `foreman_spec=<sub_entity>_spec`.
 * `type='invisible'` The parameter is available to the API call, but it will be excluded from Ansible's `argument_spec`.
 * `search_by='login'`: Used with `type='entity'` or `type='entity_list'`. Field used to search the sub entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
@@ -93,7 +93,7 @@ required_plugins=[
 ]
 ```
 
-Or specific parameters, like the `discovery_proxy` parameter of `foreman_subnet` which needs the Discovery plugin:
+Or specific parameters, like the `discovery_proxy` parameter of `subnet` which needs the Discovery plugin:
 ```python
 required_plugins=[
     ('discovery', ['discovery_proxy']),
