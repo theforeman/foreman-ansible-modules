@@ -27,7 +27,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 
 ### Known issues
 
-* Some modules, e.g. `katello_sync` and `katello_content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
+* Some modules, e.g. `repository_sync` and `content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
   As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
 
 * `compute_resource` can leak sensitive data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
@@ -74,5 +74,5 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `subnet` module on Python 2.7
-* `rpm` for the RPM support in the `katello_upload` module
-* `debian` for the DEB support in the `katello_upload` module
+* `rpm` for the RPM support in the `content_upload` module
+* `debian` for the DEB support in the `content_upload` module
