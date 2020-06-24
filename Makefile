@@ -26,6 +26,7 @@ help:
 	@echo "  test-setup     to install test dependencies"
 	@echo "  test_<test>    to run a specific unittest"
 	@echo "  record_<test>  to (re-)record the server answers for a specific test"
+	@echo "  record-crud    to (re-)record the server answers for crud tests"
 	@echo "  clean_<test>   to run a specific test playbook with the teardown and cleanup tags"
 	@echo "  dist           to build the collection artifact"
 
@@ -56,6 +57,10 @@ test-other:
 
 test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
+
+record-crud: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
+	$(RM) tests/test_playbooks/fixtures/*.yml
+	$(PYTEST) $(TEST) 'tests/test_crud.py::test_crud' --record
 
 record_%: FORCE $(MANIFEST)
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
