@@ -17,9 +17,8 @@ We actively test the modules against the latest stable Foreman release and the m
 
 ### Supported Ansible Versions
 
-The supported Ansible versions are aligned with currently maintained Ansible versions. You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status). Older Ansible versions (Ansible >= 2.3) should work but are not tested.
-
-As we're using Ansible's [documentation fragment](https://docs.ansible.com/ansible/devel/dev_guide/developing_modules_documenting.html#documentation-fragments) feature, that was introduced in Ansible 2.8, `ansible-doc` prior to 2.8 won't be able to display the module documentation, but the modules will still run fine with `ansible` and `ansible-playbook`.
+The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.8+).
+You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status).
 
 ### Supported Python Versions
 
@@ -30,7 +29,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 * Some modules, e.g. `repository_sync` and `content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
   As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
 
-* `compute_resource` can leak sensitive data if used within a loop. According to [ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
+* `compute_resource` can leak sensitive data if used within a loop. According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
   
   eg:
    ```yaml
@@ -57,13 +56,13 @@ There are currently two ways to use the modules in your setup: install from Ansi
 
 ### Installation from Ansible Galaxy
 
-You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `mazer install theforeman.foreman` (Ansible 2.8) or `ansible-galaxy collection install theforeman.foreman` (Ansible 2.9 and later).
+You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `ansible-galaxy collection install theforeman.foreman` (Ansible 2.9 and later) or `mazer install theforeman.foreman` (Ansible 2.8).
 
 After the installation, the modules are available as `theforeman.foreman.<module_name>`. Please see the [Using Ansible collections documentation](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for further details.
 
 ### Installation via RPM
 
-The collection is also available as `ansible-collection-theforeman-foreman` from the `client` repository on `yum.theforeman.org` starting with Foreman 1.24.
+The collection is also available as `ansible-collection-theforeman-foreman` from the `client` repository on `yum.theforeman.org`.
 
 After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.
 
