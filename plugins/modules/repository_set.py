@@ -50,7 +50,7 @@ options:
     description:
       - Release version and base architecture of the repositories to enable.
       - Some reposotory sets require only I(basearch) or only I(releasever) to be set.
-      - See the examples how you can obtain this information using M(foreman_search_facts).
+      - See the examples how you can obtain this information using M(theforeman.foreman.resource_info).
       - Required when I(all_repositories) is unset or C(false).
     required: false
     type: list
