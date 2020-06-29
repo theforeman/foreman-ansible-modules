@@ -93,7 +93,7 @@ def main():
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
         ),
-        entity_scope=['operatingsystem'],
+        entity_opts={'scope': ['operatingsystem']},
     )
 
     if 'provisioning_template' in module.foreman_params and module.desired_absent:

@@ -103,7 +103,7 @@ def main():
             operatingsystem=dict(type='entity', required=True),
             user_data=dict(type='bool')
         ),
-        entity_scope=['compute_resource'],
+        entity_opts={'scope': ['compute_resource']},
     )
 
     module.foreman_params['username'] = module.foreman_params.pop('image_username')
