@@ -168,7 +168,7 @@ EXAMPLES = '''
 
 RETURN = ''' # '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _foreman_spec_helper
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloMixin, ForemanStatelessEntityAnsibleModule
 
 content_filter_spec = {
     'id': {},
@@ -217,7 +217,7 @@ content_filter_rule_docker_spec = {
 }
 
 
-class KatelloContentViewFilterModule(KatelloAnsibleModule):
+class KatelloContentViewFilterModule(KatelloMixin, ForemanStatelessEntityAnsibleModule):
     pass
 
 
@@ -244,16 +244,8 @@ def main():
             version=dict(),
             architecture=dict(),
         ),
+        entity_opts=dict(scope=['content_view']),
     )
-
-    # TODO Maybe refactor this into a EntityMixin
-    module.foreman_spec.update(_foreman_spec_helper(dict(
-        entity=dict(
-            type='entity', flat_name='id', resource_type='content_view_filters', scope=['content_view'],
-            failsafe=True, thin=False, ensure=False,
-        ),
-    ))[0])
-    module.foreman_params['entity'] = module.foreman_params['name']
 
     filter_state = module.foreman_params.pop('filter_state')
     rule_state = module.foreman_params.pop('rule_state')
