@@ -880,7 +880,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
     def __init__(self, **kwargs):
         self.entity_key = kwargs.pop('entity_key', 'name')
         self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
-        self.entity_opts = kwargs.pop('entity_opts', {})
+        entity_opts = kwargs.pop('entity_opts', {})
 
         argument_spec = dict(
             state=dict(choices=['present', 'absent'], default='present'),
@@ -888,28 +888,27 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         argument_spec.update(kwargs.pop('argument_spec', {}))
         super(ForemanEntityAnsibleModule, self).__init__(argument_spec=argument_spec, **kwargs)
 
-        self._entity_resource_name = inflector.pluralize(self.entity_name)
         self.state = self.foreman_params.pop('state')
         self.desired_absent = self.state == 'absent'
         self._thin_default = self.desired_absent
 
-        if 'resource_type' not in self.entity_opts:
-            self.entity_opts['resource_type'] = inflector.pluralize(self.entity_name)
-        if 'thin' not in self.entity_opts:
-            self.entity_opts['thin'] = self._thin_default
-        if 'failsafe' not in self.entity_opts:
-            self.entity_opts['failsafe'] = True
-        if 'search_operator' not in self.entity_opts:
-            self.entity_opts['search_operator'] = '='
-        if 'search_by' not in self.entity_opts:
-            self.entity_opts['search_by'] = ENTITY_KEYS.get(self._entity_resource_name, 'name')
+        if 'resource_type' not in entity_opts:
+            entity_opts['resource_type'] = inflector.pluralize(self.entity_name)
+        if 'thin' not in entity_opts:
+            entity_opts['thin'] = self._thin_default
+        if 'failsafe' not in entity_opts:
+            entity_opts['failsafe'] = True
+        if 'search_operator' not in entity_opts:
+            entity_opts['search_operator'] = '='
+        if 'search_by' not in entity_opts:
+            entity_opts['search_by'] = ENTITY_KEYS.get(entity_opts['resource_type'], 'name')
 
         self.foreman_spec.update(_foreman_spec_helper(dict(
             entity=dict(
                 type='entity',
                 flat_name='id',
                 ensure=False,
-                **self.entity_opts
+                **entity_opts
             ),
         ))[0])
 
@@ -967,7 +966,7 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         if entity_scope:
             for scope in entity_scope:
                 params.update(self.scope_for(scope))
-        new_entity = self.ensure_entity(self._entity_resource_name, self.foreman_params, entity, params=params)
+        new_entity = self.ensure_entity(self.foreman_spec['entity']['resource_type'], self.foreman_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
         return new_entity
