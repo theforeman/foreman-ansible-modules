@@ -118,7 +118,6 @@ def main():
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
         ),
-        entity_resolve=False,
     )
 
     with module.api_connection():
