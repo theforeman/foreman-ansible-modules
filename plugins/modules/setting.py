@@ -68,10 +68,10 @@ foreman_setting:
 '''
 
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanAnsibleModule, parameter_value_to_str, _foreman_spec_helper
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanStatelessEntityAnsibleModule, parameter_value_to_str
 
 
-class ForemanSettingModule(ForemanAnsibleModule):
+class ForemanSettingModule(ForemanStatelessEntityAnsibleModule):
     pass
 
 
@@ -82,12 +82,6 @@ def main():
             value=dict(type='raw'),
         ),
     )
-
-    # TODO Maybe refactor this into a EntityMixin
-    module.foreman_spec.update(_foreman_spec_helper(dict(
-        entity=dict(type='entity', flat_name='id', resource_type='settings', failsafe=False, thin=False, ensure=False),
-    ))[0])
-    module.foreman_params['entity'] = module.foreman_params['name']
 
     with module.api_connection():
         entity = module.lookup_entity('entity')
