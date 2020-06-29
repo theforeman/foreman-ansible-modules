@@ -137,7 +137,7 @@ def main():
     module.task_timeout = 4 * 60
 
     with module.api_connection():
-        module.entity_opts['failsafe'] = (module.state != 'synced')
+        module.foreman_spec['entity']['failsafe'] = (module.state != 'synced')
         entity = module.lookup_entity('entity')
 
         if not module.desired_absent:
