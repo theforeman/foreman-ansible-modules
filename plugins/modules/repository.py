@@ -232,7 +232,7 @@ def main():
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        entity_scope=['product'],
+        entity_opts={'scope': ['product']},
     )
 
     if module.foreman_params['content_type'] != 'docker':

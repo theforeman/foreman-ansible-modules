@@ -116,7 +116,7 @@ def main():
             description=dict(),
         ),
         required_plugins=[('snapshot_management', ['*'])],
-        entity_scope=['host'],
+        entity_opts={'scope': ['host']},
     )
 
     with module.api_connection():
