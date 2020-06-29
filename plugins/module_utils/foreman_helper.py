@@ -876,14 +876,12 @@ class ForemanEntityAnsibleModule(ForemanAnsibleModule):
         * entity_name (str): name of the current entity.
           By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
         * entity_scope (list): List of the entity used to build search scope. Defaults to None.
-        * entity_resolve (boolean): Set it to False to disable base entity resolution.
         * entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in foreman_spec.
     """
 
     def __init__(self, **kwargs):
         self.entity_key = kwargs.pop('entity_key', 'name')
         self.entity_scope = kwargs.pop('entity_scope', None)
-        self.entity_resolve = kwargs.pop('entity_resolve', True)
         self.entity_opts = kwargs.pop('entity_opts', {})
         self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
 

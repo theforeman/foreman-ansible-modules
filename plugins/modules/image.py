@@ -104,7 +104,6 @@ def main():
             user_data=dict(type='bool')
         ),
         entity_scope=['compute_resource'],
-        entity_resolve=False,
     )
 
     module.foreman_params['username'] = module.foreman_params.pop('image_username')

@@ -166,7 +166,6 @@ def main():
             current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope=['organization']),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
-        entity_resolve=False,
     )
 
     module.task_timeout = 60 * 60

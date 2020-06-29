@@ -73,7 +73,6 @@ def main():
             usergroup=dict(required=True),
             auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
         ),
-        entity_resolve=False,
     )
 
     params = {"usergroup_id": module.foreman_params.pop('usergroup')}

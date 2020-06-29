@@ -94,7 +94,6 @@ def main():
             vm_attrs=dict(type='dict', aliases=['vm_attributes']),
         ),
         entity_opts=dict(resolve=False),
-        entity_resolve=False,
     )
 
     with module.api_connection():
