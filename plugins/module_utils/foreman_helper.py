@@ -258,7 +258,7 @@ class ForemanAnsibleModule(AnsibleModule):
     """ Baseclass for all foreman related Ansible modules.
         It handles connection parameters and adds the concept of the `foreman_spec`.
         This adds automatic entities resolution based on provided attributes/ sub entities options.
-        It add following options to foreman_spec 'entity' and 'entity_list' types:
+        It adds the following options to foreman_spec 'entity' and 'entity_list' types:
         * search_by (str): Field used to search the sub entity. Defaults to 'name' unless `parent` was set, in which case it defaults to `title`.
         * search_operator (str): Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
         * resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
@@ -877,7 +877,7 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
         )
         ```
 
-        It add following attributes:
+        It adds the following attributes:
         * entity_key (str): field used to search current entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
         * entity_name (str): name of the current entity.
           By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
