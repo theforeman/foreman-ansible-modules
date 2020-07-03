@@ -68,6 +68,10 @@ DOCUMENTATION = '''
       host_filters:
         description: This can be used to restrict the list of returned host
         type: string
+      per_page:
+        description: Determine the number of hosts returned by Foreman per page
+        type: integer
+        default: 250
 '''
 
 EXAMPLES = '''
@@ -143,7 +147,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             if params is None:
                 params = {}
             params['page'] = 1
-            params['per_page'] = 250
+            params['per_page'] = self.get_option('per_page')
             while True:
                 ret = s.get(url, params=params)
                 if ignore_errors and ret.status_code in ignore_errors:
