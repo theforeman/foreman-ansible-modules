@@ -69,7 +69,7 @@ DOCUMENTATION = '''
         description: This can be used to restrict the list of returned host
         type: string
       batch_size:
-        description: Determine the number of hosts that will be returned by the Foreman API per call
+        description: Number of hosts per batch that will be retrieved from the Foreman API per individual call
         type: integer
         default: 250
 '''
