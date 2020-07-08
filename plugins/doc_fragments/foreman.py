@@ -29,12 +29,14 @@ options:
     description: URL of the Foreman server
     required: true
     type: str
+    env:
+      - name: FOREMAN_SERVER
   username:
     description: Username accessing the Foreman server
     required: true
     type: str
     env:
-      - name: FOREMAN_SERVER
+      - name: FOREMAN_USER
   password:
     description: Password of the user accessing the Foreman server
     required: true
