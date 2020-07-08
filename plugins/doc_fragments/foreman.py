@@ -33,10 +33,14 @@ options:
     description: Username accessing the Foreman server
     required: true
     type: str
+    env:
+      - name: FOREMAN_SERVER
   password:
     description: Password of the user accessing the Foreman server
     required: true
     type: str
+    env:
+            - name: FOREMAN_PASSWORD
   validate_certs:
     description: Whether or not to verify the TLS certificates of the Foreman server
     default: true

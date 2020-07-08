@@ -17,30 +17,12 @@ DOCUMENTATION = '''
     extends_documentation_fragment:
         - inventory_cache
         - constructed
+        - theforeman.foreman.foreman
     options:
       plugin:
         description: token that ensures this is a source file for the C(foreman) plugin.
         required: True
         choices: ['theforeman.foreman.foreman']
-      url:
-        description: url to foreman
-        default: 'http://localhost:3000'
-        env:
-            - name: FOREMAN_SERVER
-      user:
-        description: foreman authentication user
-        required: True
-        env:
-            - name: FOREMAN_USER
-      password:
-        description: foreman authentication password
-        required: True
-        env:
-            - name: FOREMAN_PASSWORD
-      validate_certs:
-        description: verify SSL certificate if using https
-        type: boolean
-        default: False
       group_prefix:
         description: prefix to apply to foreman groups
         default: foreman_
@@ -73,8 +55,8 @@ DOCUMENTATION = '''
 EXAMPLES = '''
 # my.foreman.yml
 plugin: theforeman.foreman.foreman
-url: http://localhost:2222
-user: ansible-tester
+server_url: http://localhost:2222
+username: ansible-tester
 password: secure
 validate_certs: False
 host_filters: 'organization="Web Engineering"'
@@ -127,7 +109,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _get_session(self):
         if not self.session:
             self.session = requests.session()
-            self.session.auth = HTTPBasicAuth(self.get_option('user'), to_bytes(self.get_option('password')))
+            self.session.auth = HTTPBasicAuth(self.get_option('username'), to_bytes(self.get_option('password')))
             self.session.verify = self.get_option('validate_certs')
         return self.session
 
@@ -300,7 +282,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self._read_config_data(path)
 
         # get connection host
-        self.foreman_url = self.get_option('url')
+        self.foreman_url = self.get_option('server_url')
         self.cache_key = self.get_cache_key(path)
         self.use_cache = cache and self.get_option('cache')
 
