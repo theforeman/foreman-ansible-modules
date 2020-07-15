@@ -1,0 +1,23 @@
+---
+- name: "Create/Update/Delete HTTP Proxy"
+  vars:
+    http_proxy_state: "present"
+  http_proxy:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ http_proxy_name }}"
+    url: "{{ http_proxy_url | default(omit) }}"
+    proxy_username: "{{ http_proxy_username | default(omit) }}"
+    proxy_password: "{{ http_proxy_password | default(omit) }}"
+    locations: "{{ http_proxy_locations | default(omit) }}"
+    organizations: "{{ http_proxy_organizations | default(omit) }}"
+    state: "{{ http_proxy_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring http_proxy is {{ http_proxy_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
