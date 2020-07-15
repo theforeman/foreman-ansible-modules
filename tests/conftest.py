@@ -22,6 +22,7 @@ TEST_PLAYBOOKS = [
     'host',
     'host_power',
     'hostgroup',
+    'http_proxy',
     'image',
     'inventory_plugin',
     'katello_hostgroup',

@@ -1,0 +1,118 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: "present"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: create http_proxy
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_url: "http://example.org:3128"
+        expected_change: true
+    - name: create http_proxy again, no change
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_url: "http://example.org:3128"
+        expected_change: false
+    - name: delete http_proxy
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "absent"
+        http_proxy_name: "example.org Proxy"
+        expected_change: true
+    - name: delete http_proxy again, no change
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "absent"
+        http_proxy_name: "example.org Proxy"
+        expected_change: false
+
+    - name: create http_proxy with user/pass
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_url: "http://example.org:3128"
+        http_proxy_username: "proxyuser"
+        http_proxy_password: "proxypass"
+        expected_change: true
+    - name: create http_proxy with user again, no change
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_url: "http://example.org:3128"
+        http_proxy_username: "proxyuser"
+        # don't set http_proxy_password here
+        expected_change: false
+    - name: update http_proxy with org/loc
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_organizations:
+          - "Test Organization"
+        http_proxy_locations:
+          - "Test Location"
+        expected_change: true
+    - name: update http_proxy with org/loc, no change
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "present"
+        http_proxy_name: "example.org Proxy"
+        http_proxy_organizations:
+          - "Test Organization"
+        http_proxy_locations:
+          - "Test Location"
+        expected_change: false
+    - name: delete http_proxy
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "absent"
+        http_proxy_name: "example.org Proxy"
+        expected_change: true
+    - name: delete http_proxy again, no change
+      include_tasks: tasks/http_proxy.yml
+      vars:
+        http_proxy_state: "absent"
+        http_proxy_name: "example.org Proxy"
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: "absent"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "absent"
+...
