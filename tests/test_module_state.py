@@ -1,5 +1,4 @@
 import ast
-import warnings
 import py.path
 import pytest
 import six
@@ -53,42 +52,6 @@ def _module_framework_from_body(body):
     return framework
 
 
-def generate_tested_report():
-    print("# tested modules")
-    for module in ALL_MODULES:
-        if _module_is_tested(module):
-            x = 'x'
-        else:
-            x = ' '
-        extra = []
-        if _module_is_deprecated(module):
-            extra.append('deprecated')
-        if extra:
-            extra = ' ({})'.format(','.join(extra))
-        else:
-            extra = ''
-        print("- [{}] {}{}".format(x, module, extra))
-    print("")
-
-
-def generate_apypie_report():
-    print("# modules migrated to apypie")
-    for module in ALL_MODULES:
-        if _module_framework(module) == 'apypie' or module == 'redhat_manifest':
-            x = 'x'
-        else:
-            x = ' '
-        extra = []
-        if _module_is_deprecated(module):
-            extra.append('deprecated')
-        if extra:
-            extra = ' ({})'.format(','.join(extra))
-        else:
-            extra = ''
-        print("- [{}] {}{}".format(x, module, extra))
-    print("")
-
-
 @pytest.mark.parametrize('module', ALL_MODULES)
 def test_module_framework(module):
     module_framework = _module_framework(module)
@@ -98,8 +61,3 @@ def test_module_framework(module):
 @pytest.mark.parametrize('module', ALL_MODULES)
 def test_module_state(module):
     assert _module_is_tested(module)
-
-
-if __name__ == '__main__':
-    generate_tested_report()
-    generate_apypie_report()
