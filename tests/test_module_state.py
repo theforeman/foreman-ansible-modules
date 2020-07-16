@@ -4,8 +4,6 @@ import py.path
 import pytest
 import six
 
-from ansible.parsing.metadata import extract_metadata
-
 from .conftest import TEST_PLAYBOOKS
 
 if six.PY2:
@@ -55,16 +53,6 @@ def _module_framework_from_body(body):
     return framework
 
 
-def _module_is_deprecated(module):
-    module_file_path = _module_file_path(module)
-    with module_file_path.open() as module_file:
-        metadata = extract_metadata(module_data=module_file.read())
-    if metadata[0]:
-        return 'deprecated' in metadata[0].get('status', [])
-    else:
-        return False
-
-
 def generate_tested_report():
     print("# tested modules")
     for module in ALL_MODULES:
@@ -109,10 +97,7 @@ def test_module_framework(module):
 
 @pytest.mark.parametrize('module', ALL_MODULES)
 def test_module_state(module):
-    if _module_is_deprecated(module):
-        warnings.warn("{} is deprecated".format(module))
-    else:
-        assert _module_is_tested(module)
+    assert _module_is_tested(module)
 
 
 if __name__ == '__main__':
