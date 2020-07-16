@@ -92,7 +92,7 @@ build/src/%: % | build/src
 	cp $< $@
 
 build/src:
-	-mkdir build build/src build/src/meta build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
+	-mkdir -p build build/src build/src/meta build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
 
 $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build/src
 ifeq ($(COLLECTION_COMMAND),mazer)
