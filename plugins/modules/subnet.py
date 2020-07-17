@@ -67,10 +67,10 @@ options:
     required: true
     type: str
   cidr:
-    description: CIDR prefix length; Required if no mask provided
+    description: CIDR prefix length; Required if I(network_type=ipv4) and no I(mask) provided
     type: int
   mask:
-    description: Subnet netmask. Required if no cidr prefix length provided
+    description: Subnet netmask. Required if I(network_type=ipv4) and no I(cidr) prefix length provided
     type: str
   from_ip:
     description: First IP address of the host IP allocation pool
@@ -226,7 +226,6 @@ def main():
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
         ),
-        required_one_of=[['cidr', 'mask']],
         required_plugins=[('discovery', ['discovery_proxy'])],
     )
 
@@ -237,6 +236,8 @@ def main():
 
     if not module.desired_absent:
         if module_params['network_type'] == 'IPv4':
+            if 'mask' not in module_params and 'cidr' not in module_params:
+                module.fail_json('When specifying IPv4 networks, either "mask" or "cidr" is required.')
             IPNetwork = ipaddress.IPv4Network
         else:
             IPNetwork = ipaddress.IPv6Network
