@@ -11,7 +11,14 @@ Welcome to Foreman Ansible Modules's documentation!
    :caption: User documentation
 
    README
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contained plugins
+
    List of all modules <modules/list_of_all_modules>
+   Callback plugin <plugins/callback/foreman>
+   Inventory plugin <plugins/inventory/foreman>
 
 .. toctree::
    :maxdepth: 2
