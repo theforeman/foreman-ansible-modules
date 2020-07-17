@@ -8,11 +8,11 @@ METADATA := galaxy.yml LICENSE README.md meta/runtime.yml requirements.txt requi
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE)))
 
-PYTHON_VERSION = 3.7
+PYTHON_VERSION = $(shell python -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
 COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
-TEST=
-PYTEST=pytest -n 4 --boxed -v
+TEST =
+PYTEST = pytest -n 4 --boxed -v
 
 default: help
 help:
