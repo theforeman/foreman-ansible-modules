@@ -9,6 +9,8 @@ try:
 except ImportError:
     from urllib.parse import urlparse, urlunparse
 
+FILTER_RESPONSE_HEADERS = ['Apipie-Checksum', 'Date', 'ETag', 'Server', 'Set-Cookie', 'Via', 'X-Powered-By', 'X-Request-Id', 'X-Runtime']
+
 
 # We need our own json level2 matcher, because, python2 and python3 do not save
 # dictionaries in the same order
@@ -81,10 +83,11 @@ def host_body_matcher(r1, r2):
     return body_json_l2_matcher(r1, r2)
 
 
-def filter_apipie_checksum(response):
-    # headers should be case insensitive, but for some reason they weren't for me
-    response['headers'].pop('apipie-checksum', None)
-    response['headers'].pop('Apipie-Checksum', None)
+def filter_response(response):
+    for header in FILTER_RESPONSE_HEADERS:
+        # headers should be case insensitive, but for some reason they weren't for me
+        response['headers'].pop(header.lower(), None)
+        response['headers'].pop(header, None)
     return response
 
 
@@ -142,7 +145,7 @@ else:
                               match_on=['method', 'path', query_matcher, body_matcher],
                               filter_headers=['Authorization'],
                               before_record_request=filter_request_uri,
-                              before_record_response=filter_apipie_checksum,
+                              before_record_response=filter_response,
                               decode_compressed_response=True,
                               ):
         with open(sys.argv[0]) as f:
