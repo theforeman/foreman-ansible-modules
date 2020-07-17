@@ -11,27 +11,25 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.com/api/status
+    uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"1.23.1","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.1.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Length:
-      - '63'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 Dec 2019 10:07:57 GMT
+      - Fri, 17 Jul 2020 07:19:21 GMT
       ETag:
-      - W/"f26fab35869f9a602399f2f56dc6b2ef"
+      - W/"8eeb944fdccee712d04e92b9f81fd9c1-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -39,17 +37,19 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.23.1
+      - 2.1.0
       Keep-Alive:
-      - timeout=5, max=100
+      - timeout=15, max=100
       Server:
       - Apache
       Set-Cookie:
-      - _session_id=b6f9651d10bf383a8b4344313c408411; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
+      - _session_id=b278c1de7f0c13c91997ba2b085fd0b0; path=/; secure; HttpOnly; SameSite=Lax
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      Via:
+      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -58,14 +58,14 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
       X-Request-Id:
-      - 3ee9f71e-5243-4681-8c39-ae664ac7ab85
+      - bf8b94b9-5a38-46f7-94e3-50e9ff32bc25
       X-Runtime:
-      - '0.074175'
+      - '0.134544'
       X-XSS-Protection:
       - 1; mode=block
+      content-length:
+      - '62'
     status:
       code: 200
       message: OK
@@ -79,18 +79,26 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - _session_id=b6f9651d10bf383a8b4344313c408411
+      - _session_id=b278c1de7f0c13c91997ba2b085fd0b0
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.com/api/subnets?search=name%3D%22My+new+test+subnet%22&per_page=4294967296
+    uri: https://foreman.example.org/api/subnets?search=name%3D%22My+new+test+subnet%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"My new test subnet\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\":\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\",\"priority\":null,\"vlanid\":null,\"mtu\":1500,\"gateway\":null,\"dns_primary\":null,\"dns_secondary\":null,\"from\":null,\"to\":null,\"created_at\":\"2019-12-04
-        10:07:56 UTC\",\"updated_at\":\"2019-12-04 10:07:56 UTC\",\"ipam\":\"DHCP\",\"boot_mode\":\"DHCP\",\"id\":23,\"name\":\"My
-        new test subnet\",\"description\":null,\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\":null,\"tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\":null,\"dns_id\":null,\"template_id\":null,\"template_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\":null,\"dns\":null,\"template\":null}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"My new test subnet\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\"\
+        :\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\"\
+        ,\"priority\":null,\"vlanid\":null,\"mtu\":1500,\"gateway\":null,\"dns_primary\"\
+        :null,\"dns_secondary\":null,\"from\":null,\"to\":null,\"created_at\":\"2020-07-17\
+        \ 07:19:19 UTC\",\"updated_at\":\"2020-07-17 07:19:20 UTC\",\"ipam\":\"DHCP\"\
+        ,\"boot_mode\":\"DHCP\",\"id\":4,\"name\":\"My new test subnet\",\"description\"\
+        :null,\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\"\
+        :null,\"tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\"\
+        :null,\"externalipam_id\":null,\"externalipam_name\":null,\"dns_id\":null,\"\
+        template_id\":null,\"template_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\"\
+        :null,\"externalipam\":null,\"dns\":null,\"template\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -98,14 +106,14 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 Dec 2019 10:07:57 GMT
+      - Fri, 17 Jul 2020 07:19:21 GMT
       ETag:
-      - W/"9fa7d0b72b7c1b2ad233610da78e20bb-gzip"
+      - W/"ab5961b378584fd64b0f7f1328697139-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -113,17 +121,17 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.23.1
+      - 2.1.0
       Keep-Alive:
-      - timeout=5, max=99
+      - timeout=15, max=99
       Server:
       - Apache
-      Status:
-      - 200 OK
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
+      Via:
+      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -132,16 +140,14 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
       X-Request-Id:
-      - b87e30ed-25c3-49b2-bfcf-0ecb880fcf21
+      - 87194d0a-c373-4f57-a4d4-c45b1d309d52
       X-Runtime:
-      - '0.017070'
+      - '0.017648'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '814'
+      - '881'
     status:
       code: 200
       message: OK
@@ -157,15 +163,15 @@ interactions:
       Content-Length:
       - '0'
       Cookie:
-      - _session_id=b6f9651d10bf383a8b4344313c408411
+      - _session_id=b278c1de7f0c13c91997ba2b085fd0b0
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.com/api/subnets/23
+    uri: https://foreman.example.org/api/subnets/4
   response:
     body:
-      string: '{"id":23,"network":"192.168.200.0","mask":"255.255.255.224","priority":null,"name":"My
-        new test subnet","vlanid":null,"created_at":"2019-12-04T10:07:56.282Z","updated_at":"2019-12-04T10:07:56.829Z","dhcp_id":null,"tftp_id":null,"gateway":null,"dns_primary":null,"dns_secondary":null,"from":null,"to":null,"dns_id":null,"boot_mode":"DHCP","ipam":"DHCP","description":null,"mtu":1500,"template_id":null,"httpboot_id":null,"to_label":"My
+      string: '{"id":4,"network":"192.168.200.0","mask":"255.255.255.224","priority":null,"name":"My
+        new test subnet","vlanid":null,"created_at":"2020-07-17T07:19:19.381Z","updated_at":"2020-07-17T07:19:20.023Z","dhcp_id":null,"tftp_id":null,"gateway":null,"dns_primary":null,"dns_secondary":null,"from":null,"to":null,"dns_id":null,"boot_mode":"DHCP","ipam":"DHCP","description":null,"mtu":1500,"template_id":null,"httpboot_id":null,"nic_delay":null,"externalipam_id":null,"externalipam_group":null,"to_label":"My
         new test subnet (192.168.200.0/27)","type":"Subnet::Ipv4"}'
     headers:
       Cache-Control:
@@ -174,14 +180,14 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 Dec 2019 10:07:57 GMT
+      - Fri, 17 Jul 2020 07:19:21 GMT
       ETag:
-      - W/"bdb793a61840c165ae6e1d1d2407e167-gzip"
+      - W/"18b952c932ba203a0c26b329736e4cd0-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -189,19 +195,17 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.23.1
+      - 2.1.0
       Keep-Alive:
-      - timeout=5, max=98
+      - timeout=15, max=98
       Server:
       - Apache
-      Set-Cookie:
-      - request_method=DELETE; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
+      Via:
+      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -210,16 +214,14 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
       X-Request-Id:
-      - d44d3217-41c8-4248-ae23-419b55f6b8b8
+      - 5bce87f0-888d-4505-937b-34f3e6984597
       X-Runtime:
-      - '0.035686'
+      - '0.037388'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '493'
+      - '558'
     status:
       code: 200
       message: OK
