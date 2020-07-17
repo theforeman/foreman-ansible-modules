@@ -237,7 +237,7 @@ def main():
     if not module.desired_absent:
         if module_params['network_type'] == 'IPv4':
             if 'mask' not in module_params and 'cidr' not in module_params:
-                module.fail_json('When specifying IPv4 networks, either "mask" or "cidr" is required.')
+                module.fail_json(msg='When specifying IPv4 networks, either "mask" or "cidr" is required.')
             IPNetwork = ipaddress.IPv4Network
         else:
             IPNetwork = ipaddress.IPv6Network
