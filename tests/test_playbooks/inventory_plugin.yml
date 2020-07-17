@@ -13,13 +13,13 @@
   tasks:
     - name: fetch Foreman container
       docker_image:
-        name: quay.io/foreman/foreman:2.0-stable
+        name: quay.io/foreman/foreman:2.1-stable
         source: pull
 
     - name: start Foreman container
       docker_container:
         name: foreman
-        image: quay.io/foreman/foreman:2.0-stable
+        image: quay.io/foreman/foreman:2.1-stable
         command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
         env:
           SEED_ADMIN_PASSWORD: changeme
