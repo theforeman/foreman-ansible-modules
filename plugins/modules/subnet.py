@@ -67,7 +67,7 @@ options:
     required: true
     type: str
   cidr:
-    description: CIDR prefix length; Required if I(network_type=ipv4) and no I(mask) provided
+    description: CIDR prefix length; Required if I(network_type=IPv4) and no I(mask) provided
     type: int
   mask:
     description: Subnet netmask. Required if I(network_type=ipv4) and no I(cidr) prefix length provided
