@@ -70,7 +70,7 @@ options:
     description: CIDR prefix length; Required if I(network_type=IPv4) and no I(mask) provided
     type: int
   mask:
-    description: Subnet netmask. Required if I(network_type=ipv4) and no I(cidr) prefix length provided
+    description: Subnet netmask. Required if I(network_type=IPv4) and no I(cidr) prefix length provided
     type: str
   from_ip:
     description: First IP address of the host IP allocation pool
