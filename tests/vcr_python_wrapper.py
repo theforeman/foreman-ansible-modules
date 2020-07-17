@@ -9,6 +9,7 @@ try:
 except ImportError:
     from urllib.parse import urlparse, urlunparse
 
+FILTER_REQUEST_HEADERS = ['Authorization', 'Cookie']
 FILTER_RESPONSE_HEADERS = ['Apipie-Checksum', 'Date', 'ETag', 'Server', 'Set-Cookie', 'Via', 'X-Powered-By', 'X-Request-Id', 'X-Runtime']
 
 
@@ -143,7 +144,7 @@ else:
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
                               match_on=['method', 'path', query_matcher, body_matcher],
-                              filter_headers=['Authorization'],
+                              filter_headers=FILTER_REQUEST_HEADERS,
                               before_record_request=filter_request_uri,
                               before_record_response=filter_response,
                               decode_compressed_response=True,
