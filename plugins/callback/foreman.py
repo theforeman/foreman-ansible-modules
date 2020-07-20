@@ -12,10 +12,7 @@ DOCUMENTATION = '''
     type: notification
     short_description: Sends events to Foreman
     description:
-      - This callback will report facts and task events to Foreman https://theforeman.org/
-      - Before 2.4, if you wanted to use an ini configuration, the file must be placed in the same directory as this plugin and named foreman.ini
-      - In 2.4 and above you can just put it in the main Ansible configuration file.
-    version_added: "2.2"
+      - This callback will report facts and task events to Foreman
     requirements:
       - whitelisting in configuration
       - requests (python library)
