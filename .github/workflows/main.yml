@@ -17,20 +17,27 @@ jobs:
         ansible:
           - stable-2.8
           - stable-2.9
+          - stable-2.10
           - devel
         exclude:
           - python: "2.7"
             ansible: "stable-2.8"
           - python: "2.7"
             ansible: "stable-2.9"
+          - python: "2.7"
+            ansible: "stable-2.10"
           - python: "3.5"
             ansible: "stable-2.8"
           - python: "3.5"
             ansible: "stable-2.9"
+          - python: "3.5"
+            ansible: "stable-2.10"
           - python: "3.6"
             ansible: "stable-2.8"
           - python: "3.6"
             ansible: "stable-2.9"
+          - python: "3.6"
+            ansible: "stable-2.10"
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -51,7 +58,7 @@ jobs:
         run: sudo mkdir -p /etc/rhsm/ca/ && sudo touch /etc/rhsm/ca/redhat-uep.pem
       - name: Install Ansible devel specific dependencies
         run: ansible-galaxy collection install community.general
-        if: matrix.ansible == 'devel'
+        if: matrix.ansible == 'devel' or matrix.ansible == 'stable-2.10'
       - name: Run basic tests
         run: make test-crud test-other
       - name: Run Ansible devel specific tests
