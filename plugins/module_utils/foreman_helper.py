@@ -487,26 +487,14 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_resource_by_id(self, resource, obj_id, **kwargs):
         return self.find_resource_by(resource, 'id', obj_id, **kwargs)
 
-    def find_resources_by(self, resource, search_field, search_list, **kwargs):
-        return [self.find_resource_by(resource, search_field, search_item, **kwargs) for search_item in search_list]
-
     def find_resources_by_name(self, resource, names, **kwargs):
         return [self.find_resource_by_name(resource, name, **kwargs) for name in names]
-
-    def find_resources_by_title(self, resource, titles, **kwargs):
-        return [self.find_resource_by_title(resource, title, **kwargs) for title in titles]
-
-    def find_resources_by_id(self, resource, obj_ids, **kwargs):
-        return [self.find_resource_by_id(resource, obj_id, **kwargs) for obj_id in obj_ids]
 
     def find_operatingsystem(self, name, failsafe=False, **kwargs):
         result = self.find_resource_by_title('operatingsystems', name, failsafe=True, **kwargs)
         if not result:
             result = self.find_resource_by('operatingsystems', 'title', name, search_operator='~', failsafe=failsafe, **kwargs)
         return result
-
-    def find_operatingsystems(self, names, **kwargs):
-        return [self.find_operatingsystem(name, **kwargs) for name in names]
 
     def find_puppetclass(self, name, environment=None, params=None, failsafe=False, thin=None):
         if thin is None:
