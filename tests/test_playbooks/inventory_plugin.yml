@@ -11,10 +11,27 @@
     - community.general
     - theforeman.foreman
   tasks:
+    - name: fetch PostgreSQL container
+      docker_image:
+        name: postgres:12
+        source: pull
+
     - name: fetch Foreman container
       docker_image:
         name: quay.io/foreman/foreman:2.1-stable
         source: pull
+
+    - name: start PostgreSQL container
+      docker_container:
+        name: postgres
+        image: postgres:12
+        env:
+          POSTGRES_USER: foreman
+          POSTGRES_PASSWORD: foreman
+          POSTGRES_DATABASE: foreman
+          PGDATA: /var/lib/postgresql/data/pgdata
+        published_ports:
+          - "0.0.0.0:5432:5432"
 
     - name: start Foreman container
       docker_container:
@@ -24,7 +41,9 @@
         env:
           SEED_ADMIN_PASSWORD: changeme
           RAILS_ENV: production
-          DATABASE_URL: sqlite3:db/production.sqlite3
+          DATABASE_URL: postgres://foreman:foreman@postgres/foreman?pool=5
+        links:
+          - postgres:postgres
         published_ports:
           - "0.0.0.0:3000:3000"
 
