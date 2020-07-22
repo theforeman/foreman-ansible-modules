@@ -205,6 +205,7 @@ class CallbackModule(CallbackBase):
                     "metrics": metrics,
                     "status": status,
                     "logs": log,
+                    "reporter": "ansible",
                 }
             }
             try:
