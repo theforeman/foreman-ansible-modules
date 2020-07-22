@@ -11,7 +11,7 @@ Welcome to Foreman Ansible Modules's documentation!
    :caption: User documentation
 
    README
-   List of all modules <modules/list_of_all_modules>
+   plugins/index
    Filters <filters>
 
 .. toctree::
