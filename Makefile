@@ -105,13 +105,15 @@ endif
 dist: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 
 clean:
-	rm -rf build
+	rm -rf build docs/plugins
 
 doc-setup:
 	pip install -r docs/requirements.txt
 doc: $(MANIFEST)
+	mkdir -p ./docs/plugins
+	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins theforeman.foreman
 	make -C docs html
 
 FORCE:
 
-.PHONY: help dist lint sanity test test-crud test-check-mode test-other setup test-setup FORCE
+.PHONY: help dist lint sanity test test-crud test-check-mode test-other setup test-setup doc-setup doc FORCE
