@@ -76,7 +76,17 @@ EXAMPLES = '''
     state: present
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    roles:
+      description: List of roles.
+      type: list
+      elements: dict
+'''
 
 import copy
 

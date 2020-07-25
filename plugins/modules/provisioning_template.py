@@ -204,7 +204,17 @@ EXAMPLES = '''
 
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    provisioning_templates:
+      description: List of provisioning templates.
+      type: list
+      elements: dict
+'''
 
 
 import os
