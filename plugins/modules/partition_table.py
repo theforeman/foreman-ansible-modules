@@ -177,7 +177,17 @@ EXAMPLES = '''
 
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    ptables:
+      description: List of partition tables.
+      type: list
+      elements: dict
+'''
 
 
 import os

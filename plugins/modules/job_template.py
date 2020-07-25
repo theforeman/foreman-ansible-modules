@@ -268,7 +268,21 @@ EXAMPLES = '''
 
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    job_templates:
+      description: List of job templates.
+      type: list
+      elements: dict
+    template_inputs:
+      description: List of template inputs associated with the job template.
+      type: list
+      elements: dict
+'''
 
 import os
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (

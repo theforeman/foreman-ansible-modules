@@ -86,7 +86,17 @@ EXAMPLES = '''
     state: absent
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    scap_contents:
+      description: List of scap contents.
+      type: list
+      elements: dict
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanScapDataStreamModule
 

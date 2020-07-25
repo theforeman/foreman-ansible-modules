@@ -105,7 +105,34 @@ EXAMPLES = '''
     password: "changeme"
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+message:
+  description: Information about the import.
+  returned: success
+  type: dict
+  contains:
+    repo:
+      description: Repository, the templates were imported from.
+      type: str
+    branch:
+      description: Branch used in the repository.
+      type: str
+report:
+  description: Report of the import.
+  returned: success
+  type: dict
+  contains:
+    changed:
+      description: List of templates that have been updated.
+      type: list
+    new:
+      description: List of templates that have been created.
+      type: list
+templates:
+  description: Final state of the templates.
+  returned: success
+  type: dict
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicAnsibleModule, _flatten_entity
 
