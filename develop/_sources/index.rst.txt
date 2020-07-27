@@ -12,6 +12,7 @@ Welcome to Foreman Ansible Modules's documentation!
 
    README
    List of all modules <modules/list_of_all_modules>
+   Filters <filters>
 
 .. toctree::
    :maxdepth: 2

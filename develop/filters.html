@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Releasing the collection &mdash; Foreman Ansible Modules  documentation</title>
+  <title>Converting strings to Candlepin labels &mdash; Foreman Ansible Modules  documentation</title>
   
 
   
@@ -36,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Testing Foreman Ansible Modules" href="testing.html" /> 
+    <link rel="next" title="How to write modules" href="developing.html" />
+    <link rel="prev" title="All modules" href="modules/list_of_all_modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,16 +83,16 @@
             
             
               <p class="caption"><span class="caption-text">User documentation</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/list_of_all_modules.html">List of all modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Filters</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Developer documentation</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="developing.html">How to write modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing Foreman Ansible Modules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Releasing the collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releasing.html">Releasing the collection</a></li>
 </ul>
 
             
@@ -138,13 +139,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Releasing the collection</li>
+      <li>Converting strings to Candlepin labels</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/releasing.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/filters.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,22 +158,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="releasing-the-collection">
-<h1>Releasing the collection<a class="headerlink" href="#releasing-the-collection" title="Permalink to this headline">¶</a></h1>
-<p>To release the collection the following steps are required:</p>
-<ul>
-<li><p>Create a pull request to update <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code> with:</p>
-<ul>
-<li><p>Version bump</p></li>
-<li><p>Updated list of authors.</p>
-<p>You can generate that list via <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">-e</span> <span class="pre">-s</span> <span class="pre">|</span> <span class="pre">sed</span> <span class="pre">-E</span> <span class="pre">'s/^\s+[[:digit:]]+\s+(.*)$/</span>&#160; <span class="pre">-</span> <span class="pre">&quot;\1&quot;/'</span></code>.</p>
-</li>
-</ul>
-</li>
-<li><p>After merging, tag the merge commit with <code class="docutils literal notranslate"><span class="pre">v&lt;version</span> <span class="pre">number&gt;</span></code> (i.e. v0.1.1).
-Please use signed tags.</p></li>
-</ul>
-<p>Consider filing a packaging PR on <a class="reference external" href="https://github.com/theforeman/foreman-packaging">foreman-packaging</a>.</p>
+  <div class="section" id="converting-strings-to-candlepin-labels">
+<h1>Converting strings to Candlepin labels<a class="headerlink" href="#converting-strings-to-candlepin-labels" title="Permalink to this headline">¶</a></h1>
+<p>This filter will convert arbitrary strings to Candlepin labels:</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="cp">{{</span> <span class="s1">&#39;Default Organization&#39;</span> <span class="o">|</span> <span class="nf">cp_label</span> <span class="cp">}}</span>
+<span class="c1"># =&gt; &#39;Default_Organization&#39;</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -183,8 +175,10 @@ Please use signed tags.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="developing.html" class="btn btn-neutral float-right" title="How to write modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="testing.html" class="btn btn-neutral float-left" title="Testing Foreman Ansible Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="modules/list_of_all_modules.html" class="btn btn-neutral float-left" title="All modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
