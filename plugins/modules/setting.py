@@ -24,7 +24,7 @@ DOCUMENTATION = '''
 module: setting
 short_description: Manage Settings
 description:
-  - "Manage Setting Entities"
+  - Manage Settings
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

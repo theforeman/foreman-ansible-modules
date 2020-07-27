@@ -24,7 +24,7 @@ DOCUMENTATION = '''
 module: job_template
 short_description: Manage Job Templates
 description:
-  - "Manage Remote Execution Job Templates"
+  - Manage Remote Execution Job Templates
 author:
   - "Manuel Bonk (@manuelbonk) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

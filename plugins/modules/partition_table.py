@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: partition_table
-short_description: Manage Partition Table Template
+short_description: Manage Partition Table Templates
 description:
-    - "Manage Partition Table"
+  - Manage Partition Table Templates
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

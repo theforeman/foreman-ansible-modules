@@ -22,11 +22,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: scc_account
-short_description: Manage SccAccount
+short_description: Manage SUSE Customer Center Accounts
 description:
-  - "Manage Suse Customer Center Account Entities"
-  - "This module requires the foreman_scc_manager plugin set up in the server"
-  - "See: U(https://github.com/ATIX-AG/foreman_scc_manager)"
+  - Manage SUSE Customer Center Accounts
+  - This module requires the foreman_scc_manager plugin set up in the server
+  - See U(https://github.com/ATIX-AG/foreman_scc_manager)
 author:
   - "Manisha Singhal (@manisha15) ATIX AG"
 options:

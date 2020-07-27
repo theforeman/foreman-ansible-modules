@@ -24,7 +24,7 @@ DOCUMENTATION = '''
 module: os_default_template
 short_description: Manage Default Template Associations To Operating Systems
 description:
-  - "Manage OSDefaultTemplate Entities"
+  - Manage OSDefaultTemplate Entities
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: host_power
-short_description: Manage hosts power state
+short_description: Manage Power State of Hosts
 description:
   - "Manage power state of a host"
   - "This beta version can start and stop an existing foreman host and question the current power state."

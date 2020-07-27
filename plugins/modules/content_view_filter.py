@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_view_filter
-short_description: Create and manage content View filters
+short_description: Manage Content View Filters
 description:
     - Create and manage content View filters
 author: "Sean O'Keeffe (@sean797)"

@@ -22,12 +22,12 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: product
-short_description: Create and manage products
+short_description: Manage Products
 description:
-    - Create and manage products
+  - Create and manage products
 author:
-    - "Eric D Helms (@ehelms)"
-    - "Matthias Dellweg (@mdellweg) ATIX AG"
+  - "Eric D Helms (@ehelms)"
+  - "Matthias Dellweg (@mdellweg) ATIX AG"
 options:
   name:
     description:

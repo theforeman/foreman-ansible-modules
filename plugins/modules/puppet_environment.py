@@ -23,9 +23,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: puppet_environment
-short_description: Manage Environment (Puppet)
+short_description: Manage Puppet Environments
 description:
-  - Create, update, and delete Environment
+  - Create, update, and delete Puppet Environments
 author:
   - "Bernhard Suttner (@_sbernhard) ATIX AG"
   - "Christoffer Reijer (@ephracis) Basalt AB"

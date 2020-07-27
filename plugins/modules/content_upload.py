@@ -23,7 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_upload
-short_description: Upload content
+short_description: Upload content to a repository
 description:
   - Allows the upload of content to a repository
 author: "Eric D Helms (@ehelms)"

@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: usergroup
-short_description: Manage User groups
+short_description: Manage User Groups
 description:
   - Create, update, and delete user groups
 author:

@@ -24,7 +24,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: compute_resource
-short_description: Manage Compute resources
+short_description: Manage Compute Resources
 description:
   - Create, update, and delete Compute Resources
 author:

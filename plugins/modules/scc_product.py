@@ -22,11 +22,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: scc_product
-short_description: Subscribe Suse Customer Center Account Product
+short_description: Subscribe SUSE Customer Center Account Products
 description:
-  - "Manage Suse Customer Center Product Entities"
-  - "This module requires the foreman_scc_manager plugin set up in the server"
-  - "See: U(https://github.com/ATIX-AG/foreman_scc_manager)"
+  - Manage SUSE Customer Center Products
+  - This module requires the foreman_scc_manager plugin set up in the server
+  - See U(https://github.com/ATIX-AG/foreman_scc_manager)
 author:
   - "Manisha Singhal (@manisha15) ATIX AG"
 options:

@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: hardware_model
-short_description: Manage hardware models
+short_description: Manage Hardware Models
 description:
     - Manage hardware models
 author:
