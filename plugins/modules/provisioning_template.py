@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: provisioning_template
-short_description: Manage Provisioning Template
+short_description: Manage Provisioning Templates
 description:
-  - "Manage Provisioning Template"
+  - Manage Provisioning Templates
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Matthias Dellweg (@mdellweg) ATIX AG"

@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: installation_medium
-short_description: Manage Installation Medium
+short_description: Manage Installation Media
 description:
-  - Create, update, and delete Installation Medium
+  - Create, update, and delete Installation Media
 author:
   - "Manuel Bonk(@manuelbonk) ATIX AG"
 options:

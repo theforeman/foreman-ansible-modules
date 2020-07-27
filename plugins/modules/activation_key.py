@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: activation_key
-short_description: Create and manage activation keys
+short_description: Manage Activation Keys
 description:
   - Create and manage activation keys
 author: "Andrew Kofink (@akofink)"

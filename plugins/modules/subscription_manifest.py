@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: subscription_manifest
-short_description: Manage manifests
+short_description: Manage Subscription Manifests
 description:
-    - Upload and manage manifests
+  - Upload, refresh and delete Subscription Manifests
 author: "Andrew Kofink (@akofink)"
 options:
   manifest_path:

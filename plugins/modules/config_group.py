@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: config_group
-short_description: Manage (Puppet) config groups
+short_description: Manage (Puppet) Config Groups
 description:
   - Create, update, and delete (Puppet) config groups
 author:

@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: resource_info
-short_description: Gather facts about resources
+short_description: Gather information about resources
 description:
-  - "Gather facts about resources"
+  - Gather information about resources
 author:
   - "Sean O'Keeffe (@sean797)"
 options:

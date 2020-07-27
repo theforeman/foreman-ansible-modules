@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: external_usergroup
-short_description: Manage external user groups
+short_description: Manage External User Groups
 description:
   - Create, update, and delete external user groups
 author:

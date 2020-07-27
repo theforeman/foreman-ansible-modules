@@ -22,10 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: host
-short_description: Manage hosts
+short_description: Manage Hosts
 description:
-  - "Manage host Entities"
-  - "This beta version can create and delete hosts from preexisting host groups"
+  - Create, update, and delete Hosts
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
 options:

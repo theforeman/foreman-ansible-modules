@@ -8,11 +8,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
     name: foreman
     plugin_type: inventory
-    short_description: foreman inventory source
+    short_description: Foreman inventory source
     requirements:
         - requests >= 1.1
     description:
-        - Get inventory hosts from the Foreman service.
+        - Get inventory hosts from Foreman.
         - Uses a YAML configuration file that ends with ``foreman.(yml|yaml)``.
     extends_documentation_fragment:
         - inventory_cache

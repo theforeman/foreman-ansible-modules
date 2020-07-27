@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: location
-short_description: Manage Location
+short_description: Manage Locations
 description:
-  - Manage Location
+  - Manage Locations
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:

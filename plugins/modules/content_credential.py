@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_credential
-short_description: Create and manage content credentials
+short_description: Manage Content Credentials
 description:
   - Create and manage content credentials
 author: "Baptiste Agasse (@bagasse)"

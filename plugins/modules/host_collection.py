@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: host_collection
-short_description: Create and Manage host collections
+short_description: Manage Host Collections
 description:
     - Create and Manage host collections
 author:

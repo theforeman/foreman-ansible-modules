@@ -23,12 +23,12 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: sync_plan
-short_description: Manage sync plans
+short_description: Manage Sync Plans
 description:
-    - Manage sync plans
+  - Manage sync plans
 author:
-    - "Andrew Kofink (@akofink)"
-    - "Matthis Dellweg (@mdellweg) ATIX-AG"
+  - "Andrew Kofink (@akofink)"
+  - "Matthis Dellweg (@mdellweg) ATIX-AG"
 options:
   name:
     description:

@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository_set
-short_description: Enable/disable repositories in repository sets
+short_description: Enable/disable Repositories in Repository Sets
 description:
   - Enable/disable repositories in repository sets
 author: "Andrew Kofink (@akofink)"

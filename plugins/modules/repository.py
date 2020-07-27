@@ -22,9 +22,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository
-short_description: Create and manage repositories
+short_description: Manage Repositories
 description:
-    - Crate and manage repositories
+  - Crate and manage repositories
 author: "Eric D Helms (@ehelms)"
 options:
   name:

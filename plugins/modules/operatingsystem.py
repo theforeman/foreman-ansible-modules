@@ -25,7 +25,7 @@ DOCUMENTATION = '''
 module: operatingsystem
 short_description: Manage Operating Systems
 description:
-  - "Manage Operating System Entities"
+  - Manage Operating Systems
 author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
   - "Bernhard Hopfenmüller (@Fobhep) ATIX AG"

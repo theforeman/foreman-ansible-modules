@@ -23,9 +23,9 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: organization
-short_description: Manage Organization
+short_description: Manage Organizations
 description:
-    - Manage Organization
+    - Manage Organizations
 author:
     - "Eric D Helms (@ehelms)"
     - "Matthias M Dellweg (@mdellweg) ATIX AG"

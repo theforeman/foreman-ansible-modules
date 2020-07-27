@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_view
-short_description: Create and manage content views
+short_description: Manage Content Views
 description:
     - Create and manage content views
 author: "Eric D Helms (@ehelms)"
