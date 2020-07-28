@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Foreman Ansible Modules's documentation!
-===================================================
+Welcome to Foreman Ansible Modules' documentation!
+==================================================
 
 .. toctree::
    :maxdepth: 2
