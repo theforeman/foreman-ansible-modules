@@ -1,0 +1,497 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.partition_table_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.partition_table -- Manage Partition Table Templates
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_.
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.partition_table`.
+
+.. version_added
+
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Manage Partition Table Templates
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- apypie
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-file_name"></div>
+                    <b>file_name</b>
+                    <a class="ansibleOptionLink" href="#parameter-file_name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">path</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The path of a template file, that shall be imported.</div>
+                                            <div>Either this or <em>layout</em> is required as a source for the Partition Template &quot;content&quot;.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-layout"></div>
+                    <b>layout</b>
+                    <a class="ansibleOptionLink" href="#parameter-layout" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The content of the Partitioning Table Template</div>
+                                            <div>Either this or <em>file_name</em> is required as a source for the Partition Template &quot;content&quot;.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                    <b>locations</b>
+                    <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of locations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-locked"></div>
+                    <b>locked</b>
+                    <a class="ansibleOptionLink" href="#parameter-locked" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Determines whether the template shall be locked</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The name of the Partition Table.</div>
+                                            <div>If omited, will be determined from the <code>name</code> header of the template or the filename (in that order).</div>
+                                            <div>The special value &quot;*&quot; can be used to perform bulk actions (modify, delete) on all existing Partition Tables.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                    <b>organizations</b>
+                    <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of organizations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-os_family"></div>
+                    <b>os_family</b>
+                    <a class="ansibleOptionLink" href="#parameter-os_family" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>AIX</li>
+                                                                                                                                                                                                <li>Altlinux</li>
+                                                                                                                                                                                                <li>Archlinux</li>
+                                                                                                                                                                                                <li>Coreos</li>
+                                                                                                                                                                                                <li>Debian</li>
+                                                                                                                                                                                                <li>Freebsd</li>
+                                                                                                                                                                                                <li>Gentoo</li>
+                                                                                                                                                                                                <li>Junos</li>
+                                                                                                                                                                                                <li>NXOS</li>
+                                                                                                                                                                                                <li>Rancheros</li>
+                                                                                                                                                                                                <li>Redhat</li>
+                                                                                                                                                                                                <li>Solaris</li>
+                                                                                                                                                                                                <li>Suse</li>
+                                                                                                                                                                                                <li>Windows</li>
+                                                                                                                                                                                                <li>Xenserver</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>The OS family the template shall be assigned with.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password of the user accessing the Foreman server</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                    <b>server_url</b>
+                    <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the Foreman server</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>present_with_defaults</li>
+                                                                                                                                                                                                <li>absent</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>State of the entity</div>
+                                            <div><code>present_with_defaults</code> will ensure the entity exists, but won&#x27;t update existing ones</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+                    <b>updated_name</b>
+                    <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>New name of the template. When this parameter is set, the module will not be idempotent.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                    <b>username</b>
+                    <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username accessing the Foreman server</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                    <b>validate_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to verify the TLS certificates of the Foreman server</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+.. note::
+    These examples assume the ``collections`` keyword is defined in  playbook and do not use the fully qualified collection name.
+
+.. code-block:: yaml+jinja
+
+    
+
+    # Keep in mind, that in this case, the inline parameters will be overwritten
+    - name: "Create a Partition Table inline"
+      partition_table:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: A New Partition Template
+        state: present
+        layout: |
+          <%#
+            name: A Partition Template
+          %>
+            zerombr
+            clearpart --all --initlabel
+            autopart
+        locations:
+          - Gallifrey
+        organizations:
+          - TARDIS INC
+
+    - name: "Create a Partition Template from a file"
+      partition_table:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        file_name: timeywimey_template.erb
+        state: present
+        locations:
+          - Gallifrey
+        organizations:
+          - TARDIS INC
+
+    - name: "Delete a Partition Template"
+      partition_table:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: timeywimey
+        layout: |
+          <%#
+              dummy:
+          %>
+        state: absent
+
+    - name: "Create a Partition Template from a file and modify with parameter(s)"
+      partition_table:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        file_name: timeywimey_template.erb
+        name: Wibbly Wobbly Template
+        state: present
+        locations:
+          - Gallifrey
+        organizations:
+          - TARDIS INC
+
+    # Providing a name in this case wouldn't be very sensible.
+    # Alternatively make use of with_filetree to parse recursively with filter.
+    - name: "Parsing a directory of partition templates"
+      partition_table:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        file_name: "{{ item }}"
+        state: present
+        locations:
+          - SKARO
+        organizations:
+          - DALEK INC
+        with_fileglob:
+           - "./arsenal_templates/*.erb"
+
+    # If the templates are stored locally and the ansible module is executed on a remote host
+    - name: Ensure latest version of all Ptable Community Templates
+      partition_table:
+        server_url: "https://foreman.example.com"
+        username:  "admin"
+        password:  "changeme"
+        state: present
+        layout: '{{ lookup("file", item.src) }}'
+      with_filetree: '/path/to/partition/tables'
+      when: item.state == 'file'
+
+
+    # with name set to "*" bulk actions can be performed
+    - name: "Delete *ALL* partition tables"
+      partition_table:
+        username: "admin"
+        password: "admin"
+        server_url: "https://foreman.example.com"
+        name: "*"
+        state: absent
+
+    - name: "Assign all partition tables to the same organization(s)"
+      partition_table:
+        username: "admin"
+        password: "admin"
+        server_url: "https://foreman.example.com"
+        name: "*"
+        state: present
+        organizations:
+          - DALEK INC
+          - sky.net
+          - Doc Brown's garage
+
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-entity"></div>
+                    <b>entity</b>
+                    <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>Final state of the affected entities grouped by their type.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                        <tr>
+                                    <td class="elbow-placeholder">&nbsp;</td>
+                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-entity/ptables"></div>
+                    <b>ptables</b>
+                    <a class="ansibleOptionLink" href="#return-entity/ptables" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                       / <span style="color: purple">elements=dictionary</span>                    </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>List of partition tables.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                    
+                        </table>
+    <br/><br/>
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Bernhard Hopfenmueller (@Fobhep) ATIX AG
+- Matthias Dellweg (@mdellweg) ATIX AG
+
+
+
+.. Parsing errors
+
