@@ -44,11 +44,6 @@ extensions = [
     'sphinx.ext.intersphinx',
 ]
 
-ansible_extensions_path = os.path.abspath('.tmp/ansible/docs/docsite/_extensions')
-if os.path.exists(ansible_extensions_path):
-    sys.path.append(ansible_extensions_path)
-    extensions.append('pygments_lexer')
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
