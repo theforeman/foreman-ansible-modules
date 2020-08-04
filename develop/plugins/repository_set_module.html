@@ -412,10 +412,6 @@
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>These examples assume the <code class="docutils literal notranslate"><span class="pre">collections</span></code> keyword is defined in  playbook and do not use the fully qualified collection name.</p>
-</div>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Enable</span><span class="nv"> </span><span class="s">RHEL</span><span class="nv"> </span><span class="s">7</span><span class="nv"> </span><span class="s">RPMs</span><span class="nv"> </span><span class="s">repositories&quot;</span>
   <span class="nt">repository_set</span><span class="p">:</span>
     <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
@@ -521,6 +517,23 @@
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Output</span><span class="nv"> </span><span class="s">found</span><span class="nv"> </span><span class="s">repository</span><span class="nv"> </span><span class="s">sets,</span><span class="nv"> </span><span class="s">see</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">contentUrl</span><span class="nv"> </span><span class="s">section</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">possible</span><span class="nv"> </span><span class="s">repository</span><span class="nv"> </span><span class="s">substitutions&quot;</span>
   <span class="nt">debug</span><span class="p">:</span>
     <span class="nt">var</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Enable set with and without all_repositories at the same time</span>
+  <span class="nt">repository_set</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+    <span class="nt">label</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item.label</span> <span class="cp">}}</span><span class="s">&quot;</span>
+    <span class="nt">repositories</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item.repositories</span> <span class="o">|</span> <span class="nf">default</span><span class="o">(</span><span class="nv">omit</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span>
+    <span class="nt">all_repositories</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item.repositories</span> <span class="k">is</span> <span class="k">not</span> <span class="nf">defined</span> <span class="cp">}}</span><span class="s">&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">enabled</span>
+  <span class="nt">loop</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">label</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rhel-7-server-rpms</span>
+      <span class="nt">repositories</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">releasever</span><span class="p">:</span> <span class="s">&quot;7Server&quot;</span>
+          <span class="nt">basearch</span><span class="p">:</span> <span class="s">&quot;x86_64&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">label</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rhel-7-server-rhv-4.2-manager-rpms</span>
 </pre></div>
 </div>
 </div>
