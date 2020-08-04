@@ -186,6 +186,23 @@ EXAMPLES = '''
 - name: "Output found repository sets, see the contentUrl section for possible repository substitutions"
   debug:
     var: data
+
+- name: Enable set with and without all_repositories at the same time
+  repository_set:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    label: "{{ item.label }}"
+    repositories: "{{ item.repositories | default(omit) }}"
+    all_repositories: "{{ item.repositories is not defined }}"
+    state: enabled
+  loop:
+    - label: rhel-7-server-rpms
+      repositories:
+        - releasever: "7Server"
+          basearch: "x86_64"
+    - label: rhel-7-server-rhv-4.2-manager-rpms
 '''
 
 RETURN = '''
