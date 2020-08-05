@@ -7,18 +7,17 @@ on:
 
 jobs:
   release:
-
     runs-on: ubuntu-latest
-
+    if: github.repository == 'theforeman/foreman-ansible-modules'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.7"
+          python-version: "3.8"
       - name: Install Ansible
         run: pip install --upgrade ansible
       - name: Build Ansible Collection
         run: make dist
       - name: Deploy Ansible Collection
-        run: ansible-galaxy collection publish --api-key ${{ secrets.GALAXY_API_KEY }} theforeman-foreman-*.tar.gz
+        run: make publish GALAXY_API_KEY=${{ secrets.GALAXY_API_KEY }}

@@ -3,10 +3,11 @@ NAME := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml"))
 VERSION := $(shell python -c 'import yaml; print(yaml.safe_load(open("galaxy.yml"))["version"])')
 MANIFEST := build/collections/ansible_collections/$(NAMESPACE)/$(NAME)/MANIFEST.json
 
+ROLES := $(wildcard roles/*)
 PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
 METADATA := galaxy.yml LICENSE README.md meta/runtime.yml requirements.txt
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
-DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE)))
+DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*))
 
 PYTHON_VERSION = $(shell python -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
 COLLECTION_COMMAND ?= ansible-galaxy
@@ -31,7 +32,8 @@ help:
 
 info:
 	@echo "Building collection $(NAMESPACE)-$(NAME)-$(VERSION)"
-	@echo $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),"\n  $(PLUGIN_TYPE): $(basename $(notdir $(_$(PLUGIN_TYPE))))")
+	@echo "  roles:\n $(foreach ROLE,$(notdir $(ROLES)),   - $(ROLE)\n)"
+	@echo " $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES), $(PLUGIN_TYPE):\n $(foreach PLUGIN,$(basename $(notdir $(_$(PLUGIN_TYPE)))),   - $(PLUGIN)\n)\n)"
 
 lint: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	yamllint -f parsable tests/test_playbooks
@@ -88,13 +90,10 @@ else
 	ansible-galaxy collection install -p build/collections $< --force
 endif
 
-build/src/%: % | build/src
-	cp $< $@
+build/src/%: %
+	install -m 644 -DT $< $@
 
-build/src:
-	-mkdir -p build build/src build/src/meta build/src/plugins $(addprefix build/src/plugins/,$(PLUGIN_TYPES))
-
-$(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES)) | build/src
+$(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES))
 ifeq ($(COLLECTION_COMMAND),mazer)
 	mazer build --collection-path=build/src
 	cp build/src/releases/$@ .
@@ -103,6 +102,9 @@ else
 endif
 
 dist: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+
+publish: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+	ansible-galaxy collection publish --api-key $(GALAXY_API_KEY) $<
 
 clean:
 	rm -rf build docs/plugins
@@ -116,4 +118,4 @@ doc: $(MANIFEST)
 
 FORCE:
 
-.PHONY: help dist lint sanity test test-crud test-check-mode test-other setup test-setup doc-setup doc FORCE
+.PHONY: help dist lint sanity test test-crud test-check-mode test-other setup test-setup doc-setup doc publish FORCE
