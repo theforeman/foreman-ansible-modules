@@ -121,7 +121,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: LDAP Authentication source
-  auth_source_ldap:
+  theforeman.foreman.auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
     server_url: "https://foreman.example.com"
@@ -134,7 +134,7 @@ EXAMPLES = '''
     state: present
 
 - name: LDAP Authentication with automatic registration
-  auth_source_ldap:
+  theforeman.foreman.auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
     onthefly_register: True

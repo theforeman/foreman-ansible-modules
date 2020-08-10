@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP content
-  scap_content:
+  theforeman.foreman.scap_content:
     title: "Red Hat firefox default content"
     scap_file: "/home/user/Downloads/ssg-firefox-ds.xml"
     original_filename: "ssg-firefox-ds.xml"
@@ -61,7 +61,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update SCAP content
-  scap_content:
+  theforeman.foreman.scap_content:
     title: "Red Hat firefox default content"
     updated_title: "Updated scap content title"
     scap_file: "/home/user/Downloads/updated-ssg-firefox-ds.xml"
@@ -78,7 +78,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete SCAP content
-  scap_content:
+  theforeman.foreman.scap_content:
     title: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"

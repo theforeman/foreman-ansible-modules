@@ -82,7 +82,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Enable RHEL 7 RPMs repositories"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -101,7 +101,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Enable RHEL 7 RPMs repositories with label"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -119,7 +119,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Disable RHEL 7 Extras RPMs repository"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -131,7 +131,7 @@ EXAMPLES = '''
       - basearch: x86_64
 
 - name: "Enable RHEL 8 BaseOS RPMs repository with label"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -141,7 +141,7 @@ EXAMPLES = '''
       - releasever: "8"
 
 - name: "Enable Red Hat Virtualization Manager RPMs repository with label"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -152,7 +152,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Enable Red Hat Virtualization Manager RPMs repository without specifying basearch"
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -162,7 +162,7 @@ EXAMPLES = '''
     state: enabled
 
 - name: "Search for possible repository sets of a product"
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -175,7 +175,7 @@ EXAMPLES = '''
     var: data
 
 - name: "Search for possible repository sets by label"
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -188,7 +188,7 @@ EXAMPLES = '''
     var: data
 
 - name: Enable set with and without all_repositories at the same time
-  repository_set:
+  theforeman.foreman.repository_set:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

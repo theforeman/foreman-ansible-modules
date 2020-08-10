@@ -164,7 +164,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create repository"
-  repository:
+  theforeman.foreman.repository:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -178,7 +178,7 @@ EXAMPLES = '''
     download_policy: background
 
 - name: "Create repository with content credentials"
-  repository:
+  theforeman.foreman.repository:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

@@ -50,7 +50,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create an Association"
-  os_default_template:
+  theforeman.foreman.os_default_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -60,7 +60,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete an Association"
-  os_default_template:
+  theforeman.foreman.os_default_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

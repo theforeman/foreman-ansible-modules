@@ -53,7 +53,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Upload the RHEL developer edition manifest"
-  subscription_manifest:
+  theforeman.foreman.subscription_manifest:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

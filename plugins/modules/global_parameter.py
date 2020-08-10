@@ -67,7 +67,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Global Parameter"
-  global_parameter:
+  theforeman.foreman.global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -76,7 +76,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Update a Global Parameter"
-  global_parameter:
+  theforeman.foreman.global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -85,7 +85,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a Global Parameter"
-  global_parameter:
+  theforeman.foreman.global_parameter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

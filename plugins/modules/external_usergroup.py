@@ -50,7 +50,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create an external user group
-  external_usergroup:
+  theforeman.foreman.external_usergroup:
     name: test
     auth_source_ldap: "My LDAP server"
     usergroup: "Internal Usergroup"

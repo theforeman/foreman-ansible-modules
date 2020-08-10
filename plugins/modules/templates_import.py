@@ -96,7 +96,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Sync templates from git repo
-  templates_import:
+  theforeman.foreman.templates_import:
     repo: https://github.com/theforeman/community-templates.git
     branch: 1.24-stable
     associate: new

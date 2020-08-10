@@ -99,7 +99,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create or update Fedora content view"
-  content_view:
+  theforeman.foreman.content_view:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -110,7 +110,7 @@ EXAMPLES = '''
         product: 'Fedora'
 
 - name: "Create a composite content view"
-  content_view:
+  theforeman.foreman.content_view:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

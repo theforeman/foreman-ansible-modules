@@ -150,7 +150,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: My subnet
-  subnet:
+  theforeman.foreman.subnet:
     name: "My subnet"
     description: "My description"
     network: "192.168.0.0"

@@ -88,7 +88,7 @@ options:
 
 EXAMPLES = '''
 - name: Create foreman.example.com Manifest and add 7 sub
-  redhat_manifest:
+  theforeman.foreman.redhat_manifest:
     name: "foreman.example.com"
     username: "john-smith"
     password: "changeme"
@@ -96,7 +96,7 @@ EXAMPLES = '''
     quantity: 7
 
 - name: Ensure my manifest has 10 of one subs in it and export
-  redhat_manifest:
+  theforeman.foreman.redhat_manifest:
     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
     username: john-smith
     password: changeme
@@ -105,7 +105,7 @@ EXAMPLES = '''
     path: /root/manifest.zip
 
 - name: Remove all of one subs from foreman.example.com
-  redhat_manifest:
+  theforeman.foreman.redhat_manifest:
     name: foreman.example.com
     username: john-smith
     password: changeme

@@ -123,7 +123,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create livirt compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: example_compute_resource
     locations:
       - Munich
@@ -139,7 +139,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update libvirt compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: example_compute_resource
     description: updated compute resource
     locations:
@@ -156,7 +156,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete libvirt compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: example_compute_resource
     server_url: "https://foreman.example.com"
     username: admin
@@ -164,7 +164,7 @@ EXAMPLES = '''
     state: absent
 
 - name: Create vmware compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: example_compute_resource
     locations:
       - Munich
@@ -182,7 +182,7 @@ EXAMPLES = '''
     state: present
 
 - name: Create ovirt compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: ovirt_compute_resource
     locations:
       - France/Toulouse
@@ -202,7 +202,7 @@ EXAMPLES = '''
     state: present
 
 - name: Create proxmox compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: proxmox_compute_resource
     locations:
       - Munich
@@ -220,7 +220,7 @@ EXAMPLES = '''
     state: present
 
 - name: create EC2 compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: EC2_compute_resource
     description: EC2
     locations:
@@ -238,7 +238,7 @@ EXAMPLES = '''
     state: present
 
 - name: create Azure compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: AzureRm_compute_resource
     description: AzureRm
     locations:
@@ -258,7 +258,7 @@ EXAMPLES = '''
     state: present
 
 - name: create GCE compute resource
-  compute_resource:
+  theforeman.foreman.compute_resource:
     name: GCE compute resource
     description: Google Cloud Engine
     locations:

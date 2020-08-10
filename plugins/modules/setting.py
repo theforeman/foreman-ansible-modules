@@ -45,7 +45,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Set a Setting"
-  setting:
+  theforeman.foreman.setting:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -53,7 +53,7 @@ EXAMPLES = '''
     value: "http://localhost:8088"
 
 - name: "Reset a Setting"
-  setting:
+  theforeman.foreman.setting:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

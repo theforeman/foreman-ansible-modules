@@ -59,7 +59,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: domain
-  domain:
+  theforeman.foreman.domain:
     name: "example.org"
     description: "Example Domain"
     locations:

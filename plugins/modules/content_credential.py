@@ -53,7 +53,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create katello client GPG key"
-  content_credential:
+  theforeman.foreman.content_credential:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

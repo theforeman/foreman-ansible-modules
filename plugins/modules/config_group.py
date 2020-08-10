@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: create new config group
-  config_group:
+  theforeman.foreman.config_group:
     name: "My config group"
     puppetclasses:
       - ntp

@@ -79,7 +79,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a suse customer center account"
-  scc_account:
+  theforeman.foreman.scc_account:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -90,7 +90,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update a suse customer center account"
-  scc_account:
+  theforeman.foreman.scc_account:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -98,7 +98,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a suse customer center account"
-  scc_account:
+  theforeman.foreman.scc_account:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

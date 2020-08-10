@@ -145,7 +145,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create client activation key"
-  activation_key:
+  theforeman.foreman.activation_key:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

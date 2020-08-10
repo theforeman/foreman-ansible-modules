@@ -52,7 +52,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create CI Organization"
-  organization:
+  theforeman.foreman.organization:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

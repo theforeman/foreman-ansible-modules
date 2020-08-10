@@ -58,7 +58,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Snapshot"
-  snapshot:
+  theforeman.foreman.snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -67,7 +67,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update a Snapshot"
-  snapshot:
+  theforeman.foreman.snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -77,7 +77,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Revert a Snapshot"
-  snapshot:
+  theforeman.foreman.snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -86,7 +86,7 @@ EXAMPLES = '''
     state: reverted
 
 - name: "Delete a Snapshot"
-  snapshot:
+  theforeman.foreman.snapshot:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

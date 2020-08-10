@@ -95,7 +95,7 @@ EXAMPLES = '''
 
 # Keep in mind, that in this case, the inline parameters will be overwritten
 - name: "Create a Provisioning Template inline"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -115,7 +115,7 @@ EXAMPLES = '''
       - TARDIS INC
 
 - name: "Create a Provisioning Template from a file"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -129,7 +129,7 @@ EXAMPLES = '''
 # Due to the module logic, deleting requires a template dummy,
 # either inline or from a file.
 - name: "Delete a Provisioning Template"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -141,7 +141,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Create a Provisioning Template from a file and modify with parameter"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -156,7 +156,7 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: "Parsing a directory of provisioning templates"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -171,7 +171,7 @@ EXAMPLES = '''
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all Provisioning Community Templates
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     server_url: "https://foreman.example.com"
     username:  "admin"
     password:  "changeme"
@@ -183,7 +183,7 @@ EXAMPLES = '''
 
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* provisioning templates"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"
@@ -191,7 +191,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Assign all provisioning templates to the same organization(s)"
-  provisioning_template:
+  theforeman.foreman.provisioning_template:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"

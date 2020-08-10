@@ -54,7 +54,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create ACME Laptop model"
-  hardware_model:
+  theforeman.foreman.hardware_model:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

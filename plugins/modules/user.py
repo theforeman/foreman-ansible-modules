@@ -277,7 +277,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create a user
-  user:
+  theforeman.foreman.user:
     name: test
     firstname: Test
     lastname: Userson
@@ -299,13 +299,13 @@ EXAMPLES = '''
     state: present
 
 - name: Update a user
-  user:
+  theforeman.foreman.user:
     name: test
     firstname: Tester
     state: present
 
 - name: Change password
-  user:
+  theforeman.foreman.user:
     name: test
     user_password: newp@ss
 

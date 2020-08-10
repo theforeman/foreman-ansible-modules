@@ -62,7 +62,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Read a Setting"
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -73,7 +73,7 @@ EXAMPLES = '''
     var: result.resources[0].value
 
 - name: "Read all Registries"
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -84,7 +84,7 @@ EXAMPLES = '''
   with_items: "{{ result.resources }}"
 
 - name: "Read all Organizations with full details"
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -95,7 +95,7 @@ EXAMPLES = '''
     var: result.resources
 
 - name: Get all existing subscriptions for organization with id 1
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -107,7 +107,7 @@ EXAMPLES = '''
     var: result
 
 - name: Get all existing activation keys for organization ACME
-  resource_info:
+  theforeman.foreman.resource_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

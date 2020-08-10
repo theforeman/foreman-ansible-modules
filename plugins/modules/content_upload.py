@@ -58,7 +58,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Upload my.rpm"
-  content_upload:
+  theforeman.foreman.content_upload:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
