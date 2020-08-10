@@ -51,7 +51,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 # Create a simple location
 - name: "Create CI Location"
-  location:
+  theforeman.foreman.location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -62,7 +62,7 @@ EXAMPLES = '''
 
 # Create a nested location
 - name: "Create Nested CI Location"
-  location:
+  theforeman.foreman.location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -72,7 +72,7 @@ EXAMPLES = '''
 
 # Create a new nested location with parent included in name
 - name: "Create New Nested Location"
-  location:
+  theforeman.foreman.location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -81,7 +81,7 @@ EXAMPLES = '''
 
 # Move a nested location to another parent
 - name: "Create Nested CI Location"
-  location:
+  theforeman.foreman.location:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

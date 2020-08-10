@@ -117,7 +117,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a host"
-  host:
+  theforeman.foreman.host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -126,7 +126,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create a host with build context"
-  host:
+  theforeman.foreman.host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -136,7 +136,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create an unmanaged host"
-  host:
+  theforeman.foreman.host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -145,7 +145,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a host"
-  host:
+  theforeman.foreman.host:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Subscribe to suse customer center product"
-  scc_product:
+  theforeman.foreman.scc_product:
     friendly_name: "Product1"
     scc_account: "Test"
     organization: "Test Organization"

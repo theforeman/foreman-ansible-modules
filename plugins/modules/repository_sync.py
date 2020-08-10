@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Sync repository"
-  repository_sync:
+  theforeman.foreman.repository_sync:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

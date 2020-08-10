@@ -58,7 +58,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: create example.org proxy
-  http_proxy:
+  theforeman.foreman.http_proxy:
     name: "example.org"
     url: "http://example.org:3128"
     locations:

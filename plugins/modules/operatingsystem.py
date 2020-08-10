@@ -113,7 +113,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create an Operating System"
-  operatingsystem:
+  theforeman.foreman.operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -127,7 +127,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Ensure existence of an Operating System (provide default values)"
-  operatingsystem:
+  theforeman.foreman.operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -138,7 +138,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Delete an Operating System"
-  operatingsystem:
+  theforeman.foreman.operatingsystem:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

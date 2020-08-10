@@ -57,7 +57,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Switch a host on"
-  host_power:
+  theforeman.foreman.host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -65,7 +65,7 @@ EXAMPLES = '''
     state: on
 
 - name: "Switch a host off"
-  host_power:
+  theforeman.foreman.host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -73,7 +73,7 @@ EXAMPLES = '''
     state: off
 
 - name: "Query host power state"
-  host_power:
+  theforeman.foreman.host_power:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

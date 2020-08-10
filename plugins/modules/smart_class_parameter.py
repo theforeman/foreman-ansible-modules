@@ -121,7 +121,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Update prometheus::server alertmanagers_config param default value"
-  smart_class_parameter:
+  theforeman.foreman.smart_class_parameter:
     puppetclass_name: "prometheus::server"
     parameter: alertmanagers_config
     override: true
@@ -133,7 +133,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update prometheus::server alertmanagers_config param default value"
-  smart_class_parameter:
+  theforeman.foreman.smart_class_parameter:
     puppetclass_name: "prometheus::server"
     parameter: alertmanagers_config
     override: true

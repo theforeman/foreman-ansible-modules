@@ -55,7 +55,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create EXAMPLE.LOCAL Realm"
-  realm:
+  theforeman.foreman.realm:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

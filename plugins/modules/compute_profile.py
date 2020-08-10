@@ -61,7 +61,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: compute profile
-  compute_profile:
+  theforeman.foreman.compute_profile:
     name: example_compute_profile
     server_url: "https://foreman.example.com"
     username: admin
@@ -69,7 +69,7 @@ EXAMPLES = '''
     state: present
 
 - name: another compute profile
-  compute_profile:
+  theforeman.foreman.compute_profile:
     name: another_example_compute_profile
     compute_attributes:
     - compute_resource: ovirt_compute_resource1
@@ -83,7 +83,7 @@ EXAMPLES = '''
     state: present
 
 - name: compute profile2
-  compute_profile:
+  theforeman.foreman.compute_profile:
     name: example_compute_profile2
     compute_attributes:
     - compute_resource: ovirt_compute_resource01
@@ -127,7 +127,7 @@ EXAMPLES = '''
     state: present
 
 - name: Remove compute profile
-  compute_profile:
+  theforeman.foreman.compute_profile:
     name: example_compute_profile2
     server_url: "https://foreman.example.com"
     username: admin

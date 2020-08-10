@@ -59,7 +59,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: role
-  role:
+  theforeman.foreman.role:
     name: "Provisioner"
     description: "Only provision on libvirt"
     locations:

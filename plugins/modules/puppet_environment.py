@@ -42,7 +42,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: create new environment
-  puppet_environment:
+  theforeman.foreman.puppet_environment:
     name: "testing"
     locations:
       - "Munich"

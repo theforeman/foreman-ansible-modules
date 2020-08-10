@@ -142,7 +142,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Exclude csh
-  content_view_filter:
+  theforeman.foreman.content_view_filter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -153,7 +153,7 @@ EXAMPLES = '''
     package_name: tcsh
 
 - name: Include newer csh versions
-  content_view_filter:
+  theforeman.foreman.content_view_filter:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

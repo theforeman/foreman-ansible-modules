@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create SCAP tailoring file
-  scap_tailoring_file:
+  theforeman.foreman.scap_tailoring_file:
     name: "Red Hat firefox default content"
     scap_file: "/home/user/Downloads/ssg-firefox-ds-tailoring.xml"
     original_filename: "ssg-firefox-ds-tailoring.xml"
@@ -61,7 +61,7 @@ EXAMPLES = '''
     state: present
 
 - name: Update SCAP tailoring file
-  scap_tailoring_file:
+  theforeman.foreman.scap_tailoring_file:
     name: "Red Hat firefox default content"
     updated_name: "Updated tailoring file name"
     scap_file: "/home/user/Downloads/updated-ssg-firefox-ds-tailoring.xml"
@@ -78,7 +78,7 @@ EXAMPLES = '''
     state: present
 
 - name: Delete SCAP tailoring file
-  scap_tailoring_file:
+  theforeman.foreman.scap_tailoring_file:
     name: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"

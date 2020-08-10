@@ -47,7 +47,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create an Architecture"
-  architecture:
+  theforeman.foreman.architecture:
     name: "i386"
     operatingsystems:
       - "TestOS1"
@@ -58,7 +58,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update an Architecture"
-  architecture:
+  theforeman.foreman.architecture:
     name: "i386"
     operatingsystems:
       - "TestOS3"
@@ -69,7 +69,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete an Architecture"
-  architecture:
+  theforeman.foreman.architecture:
     name: "i386"
     server_url: "https://foreman.example.com"
     username: "admin"

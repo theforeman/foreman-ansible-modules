@@ -78,7 +78,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create or update weekly RHEL sync plan"
-  sync_plan:
+  theforeman.foreman.sync_plan:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

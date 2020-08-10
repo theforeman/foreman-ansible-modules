@@ -148,7 +148,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 
 - name: "Create a Job Template inline"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -168,7 +168,7 @@ EXAMPLES = '''
     - TARDIS INC
 
 - name: "Create a Job Template from a file"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -184,7 +184,7 @@ EXAMPLES = '''
     - TARDIS INC
 
 - name: "remove a job template's template inputs"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -197,7 +197,7 @@ EXAMPLES = '''
     - TARDIS INC
 
 - name: "Delete a Job Template"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -205,7 +205,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Create a Job Template from a file and modify with parameter(s)"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -220,7 +220,7 @@ EXAMPLES = '''
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
 - name: Parsing a directory of Job templates
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -235,7 +235,7 @@ EXAMPLES = '''
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all your Job Templates
-  job_template:
+  theforeman.foreman.job_template:
     server_url: "https://foreman.example.com"
     username:  "admin"
     password:  "changeme"
@@ -247,7 +247,7 @@ EXAMPLES = '''
 
 # with name set to "*" bulk actions can be performed
 - name: "Delete *ALL* Job Templates"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"
@@ -255,7 +255,7 @@ EXAMPLES = '''
     state: absent
 
 - name: "Assign all Job Templates to the same organization(s)"
-  job_template:
+  theforeman.foreman.job_template:
     username: "admin"
     password: "admin"
     server_url: "https://foreman.example.com"

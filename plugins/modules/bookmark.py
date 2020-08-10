@@ -56,7 +56,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create a Bookmark"
-  bookmark:
+  theforeman.foreman.bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -66,7 +66,7 @@ EXAMPLES = '''
     state: present_with_defaults
 
 - name: "Update a Bookmark"
-  bookmark:
+  theforeman.foreman.bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -76,7 +76,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Delete a Bookmark"
-  bookmark:
+  theforeman.foreman.bookmark:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

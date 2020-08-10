@@ -58,7 +58,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: create new debian medium
-  installation_medium:
+  theforeman.foreman.installation_medium:
     name: "wheezy"
     locations:
       - "Munich"

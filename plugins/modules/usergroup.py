@@ -69,7 +69,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: Create a user group
-  usergroup:
+  theforeman.foreman.usergroup:
     name: test
     admin: no
     roles:

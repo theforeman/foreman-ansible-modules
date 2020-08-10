@@ -77,7 +77,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create Fedora product with a sync plan"
-  product:
+  theforeman.foreman.product:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -87,7 +87,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Create CentOS 7 product with content credentials"
-  product:
+  theforeman.foreman.product:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

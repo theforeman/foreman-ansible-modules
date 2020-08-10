@@ -55,7 +55,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Add a production lifecycle environment"
-  lifecycle_environment:
+  theforeman.foreman.lifecycle_environment:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

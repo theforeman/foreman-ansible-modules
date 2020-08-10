@@ -53,7 +53,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create compute attribute"
-  compute_attribute:
+  theforeman.foreman.compute_attribute:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -65,7 +65,7 @@ EXAMPLES = '''
     state: present
 
 - name: "Update compute attribute"
-  compute_attribute:
+  theforeman.foreman.compute_attribute:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

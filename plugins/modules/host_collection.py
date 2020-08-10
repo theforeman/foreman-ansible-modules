@@ -51,7 +51,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Create Foo host collection"
-  host_collection:
+  theforeman.foreman.host_collection:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
