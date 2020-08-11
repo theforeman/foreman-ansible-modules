@@ -11,6 +11,7 @@ Welcome to Foreman Ansible Modules' documentation!
    :caption: User documentation
 
    README
+   Changelog <CHANGELOG>
    plugins/index
    Filters <filters>
 
