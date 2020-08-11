@@ -105,8 +105,13 @@ jobs:
           python-version: "3.7"
       - name: Install dependencies
         run: make doc-setup
-      - name: Run tests
+      - name: Build docs
         run: make doc
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docs-html
+          path: docs/_build/html/
 
   lint:
     runs-on: ubuntu-latest
