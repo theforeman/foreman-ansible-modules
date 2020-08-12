@@ -55,6 +55,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+      - name: Install libyaml-dev for PyYAML
+        run: sudo apt-get install -y libyaml-dev
       - name: Install Ansible
         run: pip install git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}
       - name: Set Environment to use mazer
