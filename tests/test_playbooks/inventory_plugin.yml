@@ -82,6 +82,11 @@
         organization: Default Organization
         location: Default Location
         managed: false
+        parameters:
+          - name: testparam1
+            value: testvalue1
+          - name: testparam2
+            value: testvalue2
       with_dict: "{{ foreman_hosts }}"
 
     - name: submit facts for hosts
@@ -136,6 +141,18 @@
       assert:
         that: >
           hostvars['{{ item.key }}']['foreman_operatingsystem_name']  == 'CentOS 7.7'
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: test that all hosts have the testparam1
+      assert:
+        that: >
+          hostvars['{{ item.key }}']['testparam1']  == 'testvalue1'
+      with_dict: "{{ foreman_hosts }}"
+
+    - name: test that all hosts have the testparam2
+      assert:
+        that: >
+          hostvars['{{ item.key }}']['testparam2']  == 'testvalue2'
       with_dict: "{{ foreman_hosts }}"
 
     - name: remove Foreman container
