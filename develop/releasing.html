@@ -84,6 +84,7 @@
               <p class="caption"><span class="caption-text">User documentation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugin Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
 </ul>
@@ -161,12 +162,17 @@
 <h1>Releasing the collection<a class="headerlink" href="#releasing-the-collection" title="Permalink to this headline">¶</a></h1>
 <p>To release the collection the following steps are required:</p>
 <ul>
-<li><p>Create a pull request to update <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code> with:</p>
+<li><p>Create a pull request with the following changes:</p>
+<ul>
+<li><p>Updated <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code>:</p>
 <ul>
 <li><p>Version bump</p></li>
 <li><p>Updated list of authors.</p>
 <p>You can generate that list via <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">-e</span> <span class="pre">-s</span> <span class="pre">|</span> <span class="pre">sed</span> <span class="pre">-E</span> <span class="pre">'s/^\s+[[:digit:]]+\s+(.*)$/</span>&#160; <span class="pre">-</span> <span class="pre">&quot;\1&quot;/'</span></code>.</p>
 </li>
+</ul>
+</li>
+<li><p>Updated changelog by running <code class="docutils literal notranslate"><span class="pre">antsibull-changelog</span> <span class="pre">release</span></code> – it will pick up the version from <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code></p></li>
 </ul>
 </li>
 <li><p>After merging, tag the merge commit with <code class="docutils literal notranslate"><span class="pre">v&lt;version</span> <span class="pre">number&gt;</span></code> (i.e. v0.1.1).
