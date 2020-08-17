@@ -265,10 +265,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     else:
                         for k, v in filtered_params.items():
                             try:
-                                self.inventory.set_variable(host_name, p['name'], p['value'])
+                                self.inventory.set_variable(host_name, k, v)
                             except ValueError as e:
                                 self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
-                                                     (p['name'], to_native(p['value']), host, to_native(e)))
+                                                     (k, to_native(v), host, to_native(e)))
 
                 # set host vars from facts
                 if self.get_option('want_facts'):
