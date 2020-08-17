@@ -32,6 +32,10 @@ options:
       - Name of the activation key
     required: true
     type: str
+  description:
+    description:
+      - Description of the activation key
+    type: str
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
@@ -207,6 +211,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             new_name=dict(),
+            description=dict(),
             lifecycle_environment=dict(type='entity', flat_name='environment_id', scope=['organization']),
             content_view=dict(type='entity', scope=['organization']),
             host_collections=dict(type='entity_list', scope=['organization']),
