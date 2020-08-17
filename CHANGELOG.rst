@@ -6,6 +6,28 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v1.1.0
+======
+
+Minor Changes
+-------------
+
+- activation_key - add ``description`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/915)
+- callback plugin - add reporter to report logs sent to Foreman (https://github.com/theforeman/foreman-ansible-modules/issues/836)
+- document return values of modules (https://github.com/theforeman/foreman-ansible-modules/pull/901)
+- inventory plugin - allow to control batch size when pulling hosts from Foreman (https://github.com/theforeman/foreman-ansible-modules/pull/865)
+- subnet - Require mask/cidr only on ipv4 (https://github.com/theforeman/foreman-ansible-modules/issues/878)
+
+Bugfixes
+--------
+
+- inventory plugin - fix want_params handling (https://github.com/theforeman/foreman-ansible-modules/issues/847)
+
+New Modules
+-----------
+
+- theforeman.foreman.http_proxy - Manage HTTP Proxies
+
 v1.0.1
 ======
 

@@ -182,3 +182,26 @@ releases:
       release_summary: |
         Documentation fixes to reflect the correct module names.
     release_date: '2020-06-29'
+  1.1.0:
+    changes:
+      bugfixes:
+      - inventory plugin - fix want_params handling (https://github.com/theforeman/foreman-ansible-modules/issues/847)
+      minor_changes:
+      - activation_key - add ``description`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/915)
+      - callback plugin - add reporter to report logs sent to Foreman (https://github.com/theforeman/foreman-ansible-modules/issues/836)
+      - document return values of modules (https://github.com/theforeman/foreman-ansible-modules/pull/901)
+      - inventory plugin - allow to control batch size when pulling hosts from Foreman
+        (https://github.com/theforeman/foreman-ansible-modules/pull/865)
+      - subnet - Require mask/cidr only on ipv4 (https://github.com/theforeman/foreman-ansible-modules/issues/878)
+    fragments:
+    - 836-add-reporter-to-callback.yaml
+    - 847-want_params-fix.yaml
+    - 865-limit-inventory-per-host.yaml
+    - 878-cidr-only-v4.yaml
+    - 901-document-return-values.yaml
+    - 915-activation_key-description.yaml
+    modules:
+    - description: Manage HTTP Proxies
+      name: http_proxy
+      namespace: ''
+    release_date: '2020-08-17'
