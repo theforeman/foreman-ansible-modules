@@ -86,6 +86,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-0">v1.1.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#minor-changes">Minor Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bugfixes">Bugfixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-modules">New Modules</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#v1-0-1">v1.0.1</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#release-summary">Release Summary</a></li>
 </ul>
@@ -93,7 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#v1-0-0">v1.0.0</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">Release Summary</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#breaking-changes-porting-guide">Breaking Changes / Porting Guide</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#new-modules">New Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">New Modules</a></li>
 </ul>
 </li>
 </ul>
@@ -172,22 +178,29 @@
            <div itemprop="articleBody">
             
   <div class="section" id="theforeman-foreman-release-notes">
-<h1><a class="toc-backref" href="#id2">theforeman.foreman Release Notes</a><a class="headerlink" href="#theforeman-foreman-release-notes" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id3">theforeman.foreman Release Notes</a><a class="headerlink" href="#theforeman-foreman-release-notes" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="topics">
 <p class="topic-title">Topics</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#theforeman-foreman-release-notes" id="id2">theforeman.foreman Release Notes</a></p>
+<li><p><a class="reference internal" href="#theforeman-foreman-release-notes" id="id3">theforeman.foreman Release Notes</a></p>
 <ul>
-<li><p><a class="reference internal" href="#v1-0-1" id="id3">v1.0.1</a></p>
+<li><p><a class="reference internal" href="#v1-1-0" id="id4">v1.1.0</a></p>
 <ul>
-<li><p><a class="reference internal" href="#release-summary" id="id4">Release Summary</a></p></li>
+<li><p><a class="reference internal" href="#minor-changes" id="id5">Minor Changes</a></p></li>
+<li><p><a class="reference internal" href="#bugfixes" id="id6">Bugfixes</a></p></li>
+<li><p><a class="reference internal" href="#new-modules" id="id7">New Modules</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#v1-0-0" id="id5">v1.0.0</a></p>
+<li><p><a class="reference internal" href="#v1-0-1" id="id8">v1.0.1</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id1" id="id6">Release Summary</a></p></li>
-<li><p><a class="reference internal" href="#breaking-changes-porting-guide" id="id7">Breaking Changes / Porting Guide</a></p></li>
-<li><p><a class="reference internal" href="#new-modules" id="id8">New Modules</a></p></li>
+<li><p><a class="reference internal" href="#release-summary" id="id9">Release Summary</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#v1-0-0" id="id10">v1.0.0</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id11">Release Summary</a></p></li>
+<li><p><a class="reference internal" href="#breaking-changes-porting-guide" id="id12">Breaking Changes / Porting Guide</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id13">New Modules</a></p></li>
 </ul>
 </li>
 </ul>
@@ -195,21 +208,46 @@
 </ul>
 </div>
 <p>This changelog describes changes after version 0.8.1.</p>
+<div class="section" id="v1-1-0">
+<h2><a class="toc-backref" href="#id4">v1.1.0</a><a class="headerlink" href="#v1-1-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="minor-changes">
+<h3><a class="toc-backref" href="#id5">Minor Changes</a><a class="headerlink" href="#minor-changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>activation_key - add <code class="docutils literal notranslate"><span class="pre">description</span></code> parameter (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/issues/915">https://github.com/theforeman/foreman-ansible-modules/issues/915</a>)</p></li>
+<li><p>callback plugin - add reporter to report logs sent to Foreman (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/issues/836">https://github.com/theforeman/foreman-ansible-modules/issues/836</a>)</p></li>
+<li><p>document return values of modules (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/pull/901">https://github.com/theforeman/foreman-ansible-modules/pull/901</a>)</p></li>
+<li><p>inventory plugin - allow to control batch size when pulling hosts from Foreman (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/pull/865">https://github.com/theforeman/foreman-ansible-modules/pull/865</a>)</p></li>
+<li><p>subnet - Require mask/cidr only on ipv4 (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/issues/878">https://github.com/theforeman/foreman-ansible-modules/issues/878</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="bugfixes">
+<h3><a class="toc-backref" href="#id6">Bugfixes</a><a class="headerlink" href="#bugfixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>inventory plugin - fix want_params handling (<a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/issues/847">https://github.com/theforeman/foreman-ansible-modules/issues/847</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="new-modules">
+<h3><a class="toc-backref" href="#id7">New Modules</a><a class="headerlink" href="#new-modules" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>theforeman.foreman.http_proxy - Manage HTTP Proxies</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="v1-0-1">
-<h2><a class="toc-backref" href="#id3">v1.0.1</a><a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">v1.0.1</a><a class="headerlink" href="#v1-0-1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="release-summary">
-<h3><a class="toc-backref" href="#id4">Release Summary</a><a class="headerlink" href="#release-summary" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Release Summary</a><a class="headerlink" href="#release-summary" title="Permalink to this headline">¶</a></h3>
 <p>Documentation fixes to reflect the correct module names.</p>
 </div>
 </div>
 <div class="section" id="v1-0-0">
-<h2><a class="toc-backref" href="#id5">v1.0.0</a><a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id10">v1.0.0</a><a class="headerlink" href="#v1-0-0" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
-<h3><a class="toc-backref" href="#id6">Release Summary</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Release Summary</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>This is the first stable release of the <code class="docutils literal notranslate"><span class="pre">theforeman.foreman</span></code> collection.</p>
 </div>
 <div class="section" id="breaking-changes-porting-guide">
-<h3><a class="toc-backref" href="#id7">Breaking Changes / Porting Guide</a><a class="headerlink" href="#breaking-changes-porting-guide" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Breaking Changes / Porting Guide</a><a class="headerlink" href="#breaking-changes-porting-guide" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>All modules were renamed to drop the <code class="docutils literal notranslate"><span class="pre">foreman_</span></code> and <code class="docutils literal notranslate"><span class="pre">katello_</span></code> prefixes.
 Additionally to the prefix removal, the following modules were further ranamed:</p>
@@ -225,8 +263,8 @@ Additionally to the prefix removal, the following modules were further ranamed:<
 </li>
 </ul>
 </div>
-<div class="section" id="new-modules">
-<h3><a class="toc-backref" href="#id8">New Modules</a><a class="headerlink" href="#new-modules" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id13">New Modules</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>theforeman.foreman.activation_key - Manage Activation Keys</p></li>
 <li><p>theforeman.foreman.architecture - Manage Architectures</p></li>
