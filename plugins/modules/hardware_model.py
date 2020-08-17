@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: hardware_model
+version_added: 1.0.0
 short_description: Manage Hardware Models
 description:
     - Manage hardware models

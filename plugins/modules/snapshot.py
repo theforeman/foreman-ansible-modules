@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: snapshot
+version_added: 1.0.0
 short_description: Manage Snapshots
 description:
   - "Manage Snapshots for Host Entities"

@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: compute_profile
+version_added: 1.0.0
 short_description: Manage Compute Profiles
 description:
   - Create, update, and delete Compute Profiles

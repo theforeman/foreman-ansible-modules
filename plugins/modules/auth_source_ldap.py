@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: auth_source_ldap
+version_added: 1.0.0
 short_description: Manage LDAP Authentication Sources
 description:
   - Create, update, and delete LDAP authentication sources

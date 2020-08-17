@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: user
+version_added: 1.0.0
 short_description: Manage Users
 description:
   - Create, update, and delete users

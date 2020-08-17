@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: global_parameter
+version_added: 1.0.0
 short_description: Manage Global Parameters
 description:
   - "Manage Global Parameter Entities"

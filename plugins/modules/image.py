@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: image
+version_added: 1.0.0
 short_description: Manage Images
 description:
   - Create, update, and delete Images

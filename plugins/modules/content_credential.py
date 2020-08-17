@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_credential
+version_added: 1.0.0
 short_description: Manage Content Credentials
 description:
   - Create and manage content credentials

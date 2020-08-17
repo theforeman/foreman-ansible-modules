@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: sync_plan
+version_added: 1.0.0
 short_description: Manage Sync Plans
 description:
   - Manage sync plans

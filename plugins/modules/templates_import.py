@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: templates_import
+version_added: 1.0.0
 short_description: Sync Templates from a repository
 description:
   - Sync provisioning templates, report_templates, partition tables and job templates from external git repository or file system.

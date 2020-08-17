@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_view_version
+version_added: 1.0.0
 short_description: Manage Content View Versions
 description:
   - Publish, Promote or Remove a Content View Version

@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: installation_medium
+version_added: 1.0.0
 short_description: Manage Installation Media
 description:
   - Create, update, and delete Installation Media

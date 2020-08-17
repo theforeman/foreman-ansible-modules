@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: smart_class_parameter
+version_added: 1.0.0
 short_description: Manage Smart Class Parameters
 description:
   - Update Smart Class Parameters.

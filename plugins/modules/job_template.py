@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: job_template
+version_added: 1.0.0
 short_description: Manage Job Templates
 description:
   - Manage Remote Execution Job Templates
