@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_upload
+version_added: 1.0.0
 short_description: Upload content to a repository
 description:
   - Allows the upload of content to a repository

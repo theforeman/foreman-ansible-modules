@@ -24,6 +24,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: compute_resource
+version_added: 1.0.0
 short_description: Manage Compute Resources
 description:
   - Create, update, and delete Compute Resources

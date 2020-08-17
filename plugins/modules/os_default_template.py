@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: os_default_template
+version_added: 1.0.0
 short_description: Manage Default Template Associations To Operating Systems
 description:
   - Manage OSDefaultTemplate Entities

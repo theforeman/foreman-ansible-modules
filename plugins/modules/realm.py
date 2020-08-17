@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: realm
+version_added: 1.0.0
 short_description: Manage Realms
 description:
   - Manage Realms

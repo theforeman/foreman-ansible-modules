@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: subscription_manifest
+version_added: 1.0.0
 short_description: Manage Subscription Manifests
 description:
   - Upload, refresh and delete Subscription Manifests

@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: organization
+version_added: 1.0.0
 short_description: Manage Organizations
 description:
     - Manage Organizations

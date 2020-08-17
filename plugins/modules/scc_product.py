@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: scc_product
+version_added: 1.0.0
 short_description: Subscribe SUSE Customer Center Account Products
 description:
   - Manage SUSE Customer Center Products

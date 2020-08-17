@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository_sync
+version_added: 1.0.0
 short_description: Sync a Repository or Product
 description:
   - Sync a repository or product

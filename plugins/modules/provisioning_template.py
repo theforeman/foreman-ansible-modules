@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: provisioning_template
+version_added: 1.0.0
 short_description: Manage Provisioning Templates
 description:
   - Manage Provisioning Templates

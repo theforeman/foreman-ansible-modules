@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: compute_attribute
+version_added: 1.0.0
 short_description: Manage Compute Attributes
 description:
   - "Manage Compute Attributes"

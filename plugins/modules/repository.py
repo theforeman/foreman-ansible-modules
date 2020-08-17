@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository
+version_added: 1.0.0
 short_description: Manage Repositories
 description:
   - Crate and manage repositories

@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: scap_tailoring_file
+version_added: 1.0.0
 short_description: Manage SCAP Tailoring Files
 description:
   - Create, update, and delete SCAP Tailoring Files

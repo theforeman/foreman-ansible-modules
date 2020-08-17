@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: scc_account
+version_added: 1.0.0
 short_description: Manage SUSE Customer Center Accounts
 description:
   - Manage SUSE Customer Center Accounts

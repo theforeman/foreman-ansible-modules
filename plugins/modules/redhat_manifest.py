@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: redhat_manifest
+version_added: 1.0.0
 short_description: Interact with a Red Hat Satellite Subscription Manifest
 description:
     - Download and modify a Red Hat Satellite Subscription Manifest

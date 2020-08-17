@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: setting
+version_added: 1.0.0
 short_description: Manage Settings
 description:
   - Manage Settings

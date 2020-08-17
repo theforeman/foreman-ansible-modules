@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository_set
+version_added: 1.0.0
 short_description: Enable/disable Repositories in Repository Sets
 description:
   - Enable/disable repositories in repository sets

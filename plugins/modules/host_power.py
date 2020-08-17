@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: host_power
+version_added: 1.0.0
 short_description: Manage Power State of Hosts
 description:
   - "Manage power state of a host"

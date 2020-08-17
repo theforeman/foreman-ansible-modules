@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: role
+version_added: 1.0.0
 short_description: Manage Roles
 description:
   - Create, update, and delete Roles

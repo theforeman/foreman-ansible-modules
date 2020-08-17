@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: activation_key
+version_added: 1.0.0
 short_description: Manage Activation Keys
 description:
   - Create and manage activation keys

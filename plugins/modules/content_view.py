@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_view
+version_added: 1.0.0
 short_description: Manage Content Views
 description:
     - Create and manage content views

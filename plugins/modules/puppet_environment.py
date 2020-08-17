@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: puppet_environment
+version_added: 1.0.0
 short_description: Manage Puppet Environments
 description:
   - Create, update, and delete Puppet Environments

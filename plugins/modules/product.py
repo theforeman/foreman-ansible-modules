@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: product
+version_added: 1.0.0
 short_description: Manage Products
 description:
   - Create and manage products

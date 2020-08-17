@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: operatingsystem
+version_added: 1.0.0
 short_description: Manage Operating Systems
 description:
   - Manage Operating Systems

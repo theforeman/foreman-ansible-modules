@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: location
+version_added: 1.0.0
 short_description: Manage Locations
 description:
   - Manage Locations

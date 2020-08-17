@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: partition_table
+version_added: 1.0.0
 short_description: Manage Partition Table Templates
 description:
   - Manage Partition Table Templates

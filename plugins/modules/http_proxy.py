@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: http_proxy
+version_added: 1.1.0
 short_description: Manage HTTP Proxies
 description:
   - Create, update, and delete HTTP Proxies

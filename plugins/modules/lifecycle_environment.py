@@ -23,6 +23,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: lifecycle_environment
+version_added: 1.0.0
 short_description: Manage Lifecycle Environments
 description:
     - Create and manage lifecycle environments
