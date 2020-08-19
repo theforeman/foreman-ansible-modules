@@ -33,33 +33,24 @@ options:
     type: str
   bookmark:
     description:
-      - Bookmark ID to infer the search query from
-    choices:
-      - active
-      - disabled
-      - error
-      - list hypervisors
-      - ok hosts
-      - out of sync
-    type: int
-  job_template_id:
+      - Bookmark to infer the search query from
+    type: str
+  job_template:
     description:
-      - ID of the job template
-    choices:
-      - Run Command - SSH Default
-      - Run Command - Ansible Default
+      - Job template to execute
     required: true
-    type: int
+    type: str
   targeting_type:
     description:
       - Dynamic query updates the search results before execution (useful for scheduled jobs)
     choices:
-      - static_query (default)
+      - static_query
       - dynamic_query
+    default: static_query
     type: str
   randomized_ordering:
     description:
-      - Whether to order the selected hosts randomly, default false (alphabetical)
+      - Whether to order the selected hosts randomly
     type: bool
   execution_timeout_interval:
     description:
@@ -71,14 +62,22 @@ options:
     type: dict
     suboptions:
       effective_user:
-      description:
-        - What user should be used to run the script (using sudo-like mechanisms)
-        - Defaults to a template parameter or global setting
-      type: str
+        description:
+          - What user should be used to run the script (using sudo-like mechanisms)
+          - Defaults to a template parameter or global setting
+        type: str
+  feature:
+    description:
+      - Remote execution feature label that should be triggered, job template assigned to this feature will be used
+    type: str
   command:
     description:
       - Command to be executed on host. Required for command templates
     type: str
+  inputs:
+    description:
+      - Inputs to use
+    type: dict
   recurrence:
     description:
       - Schedule a recurring job
@@ -95,7 +94,7 @@ options:
       end_time:
         description:
           - Perform no more executions after this time
-        type: datetime
+        type: str
   scheduling:
     description:
       - Schedule the job to start at a later time
@@ -104,11 +103,11 @@ options:
       start_at:
         description:
           - Schedule the job for a future time
-        type: datetime
+        type: str
       start_before:
         description:
           - Indicates that the action should be cancelled if it cannot be started before this time.
-        type: datetime
+        type: str
   concurrency_control:
     description:
       - Control concurrency level and distribution over time
@@ -136,7 +135,7 @@ EXAMPLES = '''
     command: 'ls'
     job_template: "Run Command - SSH Default"
     ssh:
-      - effective_user: "tester"
+      effective_user: "tester"
 
 - name: "Run ansible commad on active hosts once a day"
   job_invocation:
@@ -144,15 +143,15 @@ EXAMPLES = '''
     command: 'pwd'
     job_template: "Run Command - Ansible Default"
     recurrence:
-      - cron_line: "30 2 * * *"
+      cron_line: "30 2 * * *"
     concurrency_control:
-      - concurrency_level: 2
+      concurrency_level: 2
 '''
 
 RETURN = ''' # '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
-    ForemanEntityAnsibleModule,
+    ForemanTaxonomicEntityAnsibleModule,
 )
 
 ssh_foreman_spec = {
@@ -161,7 +160,7 @@ ssh_foreman_spec = {
 
 recurrence_foreman_spec = {
     'cron_line': dict(),
-    'max_iteration': dict(),
+    'max_iteration': dict(type='int'),
     'end_time': dict(),
 }
 
@@ -171,12 +170,12 @@ scheduling_foreman_spec = {
 }
 
 concurrency_control_foreman_spec = {
-    'time_span': dict(),
-    'concurrency_level': dict(),
+    'time_span': dict(type='int'),
+    'concurrency_level': dict(type='int'),
 }
 
 
-class ForemanJobInvocationModule(ForemanEntityAnsibleModule):
+class ForemanJobInvocationModule(ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -187,7 +186,7 @@ def main():
             bookmark=dict(type='entity'),
             job_template=dict(required=True, type='entity'),
             targeting_type=dict(default='static_query', choices=['static_query', 'dynamic_query']),
-            randomized_ordering=dict(type='bool', default=False),
+            randomized_ordering=dict(type='bool'),
             feature=dict(),
             command=dict(),
             inputs=dict(type='dict'),
