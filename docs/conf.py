@@ -42,6 +42,7 @@ extensions = [
     'recommonmark',
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx_ansible_theme.ext.pygments_lexer',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
