@@ -21,7 +21,8 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: job_invocation
-short_description: Manage Job Invocations in Foreman
+short_description: Manage Job Invocations
+version_added: 1.2.0
 description:
   - "Manage Remote Execution Job Invocations"
 author:
@@ -205,12 +206,11 @@ def main():
     )
 
     # command input required by api
-    if 'command' in module.foreman_params.keys():
-        module.foreman_params['inputs'] = {"command": f"{module.foreman_params['command']}"}
-        module.foreman_params.pop('command')
+    if 'command' in module.foreman_params:
+        module.foreman_params['inputs'] = {"command": module.foreman_params.pop('command')}
 
     with module.api_connection():
-        if 'bookmark' in module.foreman_params.keys():
+        if 'bookmark' in module.foreman_params:
             module.set_entity('bookmark', module.find_resource('bookmarks', search='name="{0}",controller="hosts"'.format(
                 module.foreman_params['bookmark']),
                 failsafe=False,
