@@ -2,11 +2,14 @@
 - hosts: container
   vars:
     foreman_groups:
-      - group_a
-      - group_b
+      - name: group_a
+      - name: group_b
+      - name: group_c
+        label: group_b/group_c
+        parent: group_b
     foreman_hosts:
       testhost1.example.com: group_a
-      testhost2.example.com: group_b
+      testhost2.example.com: group_b/group_c
   collections:
     - community.general
     - theforeman.foreman
@@ -64,7 +67,8 @@
         username: admin
         password: changeme
         server_url: http://127.0.0.1:3000/
-        name: "{{ item }}"
+        name: "{{ item.name }}"
+        parent: "{{ item.parent | default(omit) }}"
         organizations:
           - Default Organization
         locations:
@@ -116,7 +120,7 @@
     - name: test that all groups are present
       assert:
         that: >
-          'foreman_{{ item }}' in groups
+          'foreman_{{ item.label | default(item.name) | regex_replace('/', '_') }}' in groups
       with_items: "{{ foreman_groups }}"
 
     - name: test that all hosts are in the "all" group
@@ -128,7 +132,7 @@
     - name: test that all hosts are in the correct hostgroup
       assert:
         that: >
-          '{{ item.key }}' in groups['foreman_{{ item.value }}']
+          '{{ item.key }}' in groups['foreman_{{ item.value | regex_replace('/', '_') }}']
       with_dict: "{{ foreman_hosts }}"
 
     - name: test that all hosts have the domain fact set
