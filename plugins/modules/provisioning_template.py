@@ -40,15 +40,19 @@ options:
       - The provisioning template kind
     required: false
     choices:
+      - Bootdisk
+      - cloud-init
       - finish
       - iPXE
       - job_template
+      - kexec
       - POAP
       - provision
       - ptable
-      - PXELinux
       - PXEGrub
       - PXEGrub2
+      - PXELinux
+      - registration
       - script
       - snippet
       - user_data
@@ -253,15 +257,19 @@ def main():
         ),
         foreman_spec=dict(
             kind=dict(choices=[
+                'Bootdisk',
+                'cloud-init',
                 'finish',
                 'iPXE',
                 'job_template',
+                'kexec',
                 'POAP',
                 'provision',
                 'ptable',
-                'PXELinux',
                 'PXEGrub',
                 'PXEGrub2',
+                'PXELinux',
+                'registration',
                 'script',
                 'snippet',
                 'user_data',
