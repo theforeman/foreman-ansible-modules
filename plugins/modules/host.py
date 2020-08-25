@@ -109,6 +109,12 @@ options:
       - The image to use when I(provision_method=image).
     type: str
     required: false
+  compute_attributes:
+    description:
+      - Additional compute resource specific attributes.
+      - When this parameter is set, the module will not be idempotent.
+    type: dict
+    required: false
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -143,6 +149,27 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "new_host"
     managed: false
+    state: present
+
+- name: "Create a VM with 2 CPUs and 4GB RAM"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    compute_attributes:
+       cpus: 2
+       memory_mb: 4096
+    state: present
+
+- name: "Create a VM and start it after creation"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    compute_attributes:
+       start: "1"
     state: present
 
 - name: "Delete a host"
@@ -195,6 +222,7 @@ def main():
             owner_type=dict(type='invisible'),
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity'),
+            compute_attributes=dict(type='dict'),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
