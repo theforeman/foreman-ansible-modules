@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # (c) Matthias Dellweg (ATIX AG) 2017
 
+# pylint: disable=raise-missing-from
+# pylint: disable=super-with-arguments
+
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
