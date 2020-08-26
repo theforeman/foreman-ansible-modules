@@ -120,6 +120,22 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-compute_attributes"></div>
+                    <b>compute_attributes</b>
+                    <a class="ansibleOptionLink" href="#parameter-compute_attributes" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Additional compute resource specific attributes.</div>
+                                            <div>When this parameter is set, the module will not be idempotent.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-compute_profile"></div>
                     <b>compute_profile</b>
                     <a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a>
@@ -858,6 +874,27 @@ Examples
         server_url: "https://foreman.example.com"
         name: "new_host"
         managed: false
+        state: present
+
+    - name: "Create a VM with 2 CPUs and 4GB RAM"
+      theforeman.foreman.host:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "new_host"
+        compute_attributes:
+           cpus: 2
+           memory_mb: 4096
+        state: present
+
+    - name: "Create a VM and start it after creation"
+      theforeman.foreman.host:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "new_host"
+        compute_attributes:
+           start: "1"
         state: present
 
     - name: "Delete a host"

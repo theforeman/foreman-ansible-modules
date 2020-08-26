@@ -249,6 +249,22 @@
         </tr>
                             <tr>
                                                             <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-compute_attributes"></div>
+                <b>compute_attributes</b>
+                <a class="ansibleOptionLink" href="#parameter-compute_attributes" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">dictionary</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Additional compute resource specific attributes.</div>
+                                        <div>When this parameter is set, the module will not be idempotent.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
                 <div class="ansibleOptionAnchor" id="parameter-compute_profile"></div>
                 <b>compute_profile</b>
                 <a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a>
@@ -974,6 +990,27 @@
     <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
     <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;new_host&quot;</span>
     <span class="nt">managed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">CPUs</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">4GB</span><span class="nv"> </span><span class="s">RAM&quot;</span>
+  <span class="nt">theforeman.foreman.host</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;new_host&quot;</span>
+    <span class="nt">compute_attributes</span><span class="p">:</span>
+       <span class="nt">cpus</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+       <span class="nt">memory_mb</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4096</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">after</span><span class="nv"> </span><span class="s">creation&quot;</span>
+  <span class="nt">theforeman.foreman.host</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;new_host&quot;</span>
+    <span class="nt">compute_attributes</span><span class="p">:</span>
+       <span class="nt">start</span><span class="p">:</span> <span class="s">&quot;1&quot;</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
 
 <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Delete</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">host&quot;</span>
