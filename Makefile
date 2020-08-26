@@ -13,6 +13,7 @@ PYTHON_VERSION = $(shell python -c 'import sys; print("{}.{}".format(sys.version
 COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST =
+FLAGS =
 PYTEST = pytest -n 4 --boxed -v
 
 default: help
@@ -57,11 +58,11 @@ test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
 test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]'
+	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
 
 record_%: FORCE $(MANIFEST)
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' --record
+	pytest -v 'tests/test_crud.py::test_crud[$*]' --record $(FLAGS)
 
 clean_%: FORCE $(MANIFEST)
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
