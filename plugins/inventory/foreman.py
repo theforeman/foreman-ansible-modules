@@ -2,6 +2,10 @@
 # Copyright (C) 2016 Guido Günther <agx@sigxcpu.org>, Daniel Lobato Garcia <dlobatog@redhat.com>
 # Copyright (c) 2018 Ansible Project
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+# pylint: disable=raise-missing-from
+# pylint: disable=super-with-arguments
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
