@@ -219,7 +219,7 @@ class NestedParametersMixin(object):
                         'parameters', None, current_parameter, state="absent", foreman_spec=parameter_foreman_spec, params=scope)
 
 
-class HostMixin(NestedParametersMixin):
+class HostMixin(object):
     def __init__(self, **kwargs):
         foreman_spec = dict(
             compute_resource=dict(type='entity'),
