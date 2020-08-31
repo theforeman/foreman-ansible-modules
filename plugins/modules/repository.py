@@ -33,6 +33,11 @@ options:
       - Name of the repository
     required: true
     type: str
+  description:
+    description:
+      - Description of the repository
+    required: false
+    type: str
   product:
     description:
       - Product to which the repository lives in
@@ -44,7 +49,7 @@ options:
     type: str
   content_type:
     description:
-      - The content type of the repository (e.g. yum)
+      - The content type of the repository
     required: true
     choices:
       - deb
@@ -53,6 +58,7 @@ options:
       - ostree
       - puppet
       - yum
+      - ansible_collection
     type: str
   url:
     description:
@@ -116,6 +122,11 @@ options:
     default: true
     type: bool
     required: false
+  verify_ssl_on_sync:
+    description:
+      - verify the upstream certifcates are signed by a trusted CA
+    type: bool
+    required: false
   upstream_username:
     description:
       - username to access upstream repository
@@ -156,6 +167,36 @@ options:
       - only available on Orcharhino
       - only available for I(content_type=deb)
     type: str
+    required: false
+  unprotected:
+    description:
+      - publish the repository via HTTP
+    type: bool
+    required: false
+  checksum_type:
+    description:
+      - Checksum of the repository
+    type: str
+    required: false
+    choices:
+      - sha1
+      - sha256
+  ignorable_content:
+    description:
+      - List of content units to ignore while syncing a yum repository.
+      - Must be subset of rpm,drpm,srpm,distribution,erratum.
+    type: list
+    elements: str
+    required: false
+  ansible_collection_requirements:
+    description:
+      - Contents of requirement yaml file to sync from URL
+    type: str
+    required: false
+  auto_enabled:
+    description:
+      - repositories will be automatically enabled on a registered host subscribed to this product
+    type: bool
     required: false
 extends_documentation_fragment:
   - theforeman.foreman.foreman
@@ -220,7 +261,7 @@ def main():
             product=dict(type='entity', scope=['organization'], required=True),
             label=dict(),
             name=dict(required=True),
-            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb']),
+            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb', 'ansible_collection']),
             url=dict(),
             ignore_global_proxy=dict(type='bool'),
             http_proxy_policy=dict(choices=['global_default_http_proxy', 'none', 'use_selected_http_proxy']),
@@ -231,6 +272,7 @@ def main():
             ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
             mirror_on_sync=dict(type='bool', default=True),
+            verify_ssl_on_sync=dict(type='bool'),
             upstream_username=dict(),
             upstream_password=dict(no_log=True),
             docker_upstream_name=dict(),
@@ -239,6 +281,12 @@ def main():
             deb_releases=dict(),
             deb_components=dict(),
             deb_architectures=dict(),
+            description=dict(),
+            unprotected=dict(type='bool'),
+            checksum_type=dict(choices=['sha1', 'sha256']),
+            ignorable_content=dict(type='list', elements='str'),
+            ansible_collection_requirements=dict(),
+            auto_enabled=dict(type='bool'),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -255,6 +303,16 @@ def main():
         invalid_list = [key for key in ['deb_errata_url', 'deb_releases', 'deb_components', 'deb_architectures'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
+
+    if module.foreman_params['content_type'] != 'ansible_collection':
+        invalid_list = [key for key in ['ansible_collection_requirements'] if key in module.foreman_params]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'ansible_collection'".format(",".join(invalid_list)))
+
+    if module.foreman_params['content_type'] != 'yum':
+        invalid_list = [key for key in ['ignorable_content'] if key in module.foreman_params]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'yum'".format(",".join(invalid_list)))
 
     if 'ignore_global_proxy' in module.foreman_params and 'http_proxy_policy' not in module.foreman_params:
         module.foreman_params['http_proxy_policy'] = 'none' if module.foreman_params['ignore_global_proxy'] else 'global_default_http_proxy'
