@@ -173,6 +173,7 @@ EXAMPLES = '''
       - ACME
     provider: vmware
     provider_params:
+      caching_enabled: 0
       url: vsphere.example.com
       user: admin
       password: secret
@@ -308,7 +309,7 @@ def get_provider_info(provider):
         return 'Proxmox', ['url', 'user', 'password', 'ssl_verify_peer']
 
     elif provider_name == 'vmware':
-        return 'Vmware', ['url', 'user', 'password', 'datacenter']
+        return 'Vmware', ['url', 'user', 'password', 'datacenter', 'caching_enabled']
 
     elif provider_name == 'ec2':
         return 'EC2', ['user', 'password', 'region']
@@ -337,6 +338,7 @@ def main():
             display_type=dict(type='invisible'),
             datacenter=dict(type='invisible'),
             url=dict(type='invisible'),
+            caching_enabled=dict(type='invisible'),
             user=dict(type='invisible'),
             password=dict(type='invisible'),
             region=dict(type='invisible'),
@@ -360,6 +362,7 @@ def main():
                 tenant=dict(),
                 app_ident=dict(),
                 datacenter=dict(),
+                caching_enabled=dict(type='bool'),
                 use_v4=dict(type='bool'),
                 ovirt_quota=dict(),
                 project=dict(),
