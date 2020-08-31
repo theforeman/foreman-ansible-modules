@@ -125,7 +125,7 @@ def main():
         operatingsystem_id = module.lookup_entity('operatingsystem')['id']
         module.set_entity('entity', module.find_resource(
             'images',
-            search="name={0},operatingsystem={1}".format(module.foreman_params['name'], operatingsystem_id),
+            search='name="{0}",operatingsystem="{1}"'.format(module.foreman_params['name'], operatingsystem_id),
             params=scope,
             failsafe=True,
         ))
