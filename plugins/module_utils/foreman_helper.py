@@ -11,6 +11,7 @@ __metaclass__ = type
 import hashlib
 import json
 import os
+import operator
 import re
 import time
 import traceback
@@ -46,6 +47,8 @@ parameter_foreman_spec = dict(
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
 )
+
+parameter_ansible_spec = {k: v for (k, v) in parameter_foreman_spec.items() if k != 'id'}
 
 _PLUGIN_RESOURCES = {
     'discovery': 'discovery_rules',
@@ -178,6 +181,27 @@ class TaxonomyMixin(object):
         super(TaxonomyMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
 
+class ParametersMixin(object):
+    def __init__(self, **kwargs):
+        self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
+        foreman_spec = dict(
+            parameters=dict(type='list', elements='dict', options=parameter_ansible_spec, flat_name='{0}_parameters_attributes'.format(self.entity_name)),
+        )
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        super(ParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
+
+    def run(self, **kwargs):
+        entity = self.lookup_entity('entity')
+        if not self.desired_absent:
+            if entity and 'parameters' in entity:
+                entity['parameters'] = parameters_list_to_str_list(entity['parameters'])
+            parameters = self.foreman_params.get('parameters')
+            if parameters is not None:
+                self.foreman_params['parameters'] = parameters_list_to_str_list(parameters)
+
+        return super(ParametersMixin, self).run(**kwargs)
+
+
 class NestedParametersMixin(object):
     def __init__(self, **kwargs):
         foreman_spec = dict(
@@ -219,7 +243,7 @@ class NestedParametersMixin(object):
                         'parameters', None, current_parameter, state="absent", foreman_spec=parameter_foreman_spec, params=scope)
 
 
-class HostMixin(NestedParametersMixin):
+class HostMixin(ParametersMixin):
     def __init__(self, **kwargs):
         foreman_spec = dict(
             compute_resource=dict(type='entity'),
@@ -227,7 +251,6 @@ class HostMixin(NestedParametersMixin):
             domain=dict(type='entity'),
             subnet=dict(type='entity'),
             subnet6=dict(type='entity', resource_type='subnets'),
-            parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
             root_pass=dict(no_log=True),
             realm=dict(type='entity'),
             architecture=dict(type='entity'),
@@ -697,13 +720,25 @@ class ForemanAnsibleModule(AnsibleModule):
         desired_entity = _flatten_entity(desired_entity, foreman_spec)
         current_entity = _flatten_entity(current_entity, foreman_spec)
         for key, value in desired_entity.items():
+            foreman_type = foreman_spec[key].get('type', 'str')
+            new_value = value
+            old_value = current_entity.get(key)
             # String comparison needs extra care in face of unicode
-            if foreman_spec[key].get('type', 'str') == 'str':
-                if to_native(current_entity.get(key)) != to_native(value):
-                    payload[key] = value
-            else:
-                if current_entity.get(key) != value:
-                    payload[key] = value
+            if foreman_type == 'str':
+                old_value = to_native(old_value)
+                new_value = to_native(new_value)
+            # ideally the type check would happen via foreman_spec.elements
+            # however this is not set for flattened entries and setting it
+            # confuses _flatten_entity
+            elif foreman_type == 'list' and value and isinstance(value[0], dict):
+                if 'name' in value[0]:
+                    sort_key = 'name'
+                else:
+                    sort_key = list(value[0].keys())[0]
+                new_value = sorted(new_value, key=operator.itemgetter(sort_key))
+                old_value = sorted(old_value, key=operator.itemgetter(sort_key))
+            if new_value != old_value:
+                payload[key] = value
         if payload:
             payload['id'] = current_entity['id']
             if not self.check_mode:
@@ -1151,6 +1186,10 @@ def _foreman_spec_helper(spec):
         if flat_name:
             foreman_value['flat_name'] = flat_name
             foreman_spec[flat_name] = {}
+            # When translating to a flat name, the flattened entry should get the same "type"
+            # as Ansible expects so that comparison still works for non-strings
+            if argument_value.get('type') is not None:
+                foreman_spec[flat_name]['type'] = argument_value['type']
 
         foreman_spec[key] = foreman_value
 
@@ -1189,6 +1228,16 @@ def parameter_value_to_str(value, parameter_type):
     else:
         parameter_string = value
     return parameter_string
+
+
+# Helper for converting lists of parameters
+def parameters_list_to_str_list(parameters):
+    filtered_params = []
+    for param in parameters:
+        new_param = {k: v for (k, v) in param.items() if k in parameter_ansible_spec.keys()}
+        new_param['value'] = parameter_value_to_str(new_param['value'], new_param['parameter_type'])
+        filtered_params.append(new_param)
+    return filtered_params
 
 
 # Helper for templates
