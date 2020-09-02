@@ -193,7 +193,7 @@ entity:
 
 import traceback
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
-    ForemanTaxonomicEntityAnsibleModule, NestedParametersMixin, missing_required_lib
+    ForemanTaxonomicEntityAnsibleModule, ParametersMixin, missing_required_lib
 )
 try:
     import ipaddress
@@ -203,7 +203,7 @@ except ImportError:
     IPADDRESS_IMP_ERR = traceback.format_exc()
 
 
-class ForemanSubnetModule(NestedParametersMixin, ForemanTaxonomicEntityAnsibleModule):
+class ForemanSubnetModule(ParametersMixin, ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
