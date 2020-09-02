@@ -177,7 +177,7 @@ EXAMPLES = '''
       - ACME
     provider: vmware
     provider_params:
-      caching_enabled: 0
+      caching_enabled: false
       url: vsphere.example.com
       user: admin
       password: secret
