@@ -116,6 +116,10 @@ options:
         description:
           - verify ssl from provider I(provider=proxmox)
         type: bool
+      caching_enabled:
+        description:
+          - enable caching for I(provider=vmware)
+        type: bool
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
