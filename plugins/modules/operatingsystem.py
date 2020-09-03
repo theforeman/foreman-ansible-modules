@@ -164,12 +164,13 @@ entity:
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanEntityAnsibleModule,
-    NestedParametersMixin,
+    ParametersMixin,
     OS_LIST,
+    parameter_ansible_spec,
 )
 
 
-class ForemanOperatingsystemModule(NestedParametersMixin, ForemanEntityAnsibleModule):
+class ForemanOperatingsystemModule(ParametersMixin, ForemanEntityAnsibleModule):
     pass
 
 
@@ -187,6 +188,8 @@ def main():
             ptables=dict(type='entity_list'),
             provisioning_templates=dict(type='entity_list'),
             password_hash=dict(choices=['MD5', 'SHA256', 'SHA512', 'Base64', 'Base64-Windows']),
+            # parameters is already in the ParametersMixin, but the flat_name detection does not work for operatingsystems
+            parameters=dict(type='list', elements='dict', options=parameter_ansible_spec, flat_name='os_parameters_attributes'),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
