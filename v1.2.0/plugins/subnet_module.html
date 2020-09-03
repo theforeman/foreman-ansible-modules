@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>theforeman.foreman.subnet – Manage Subnets &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Plugin Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>theforeman.foreman.subnet – Manage Subnets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/subnet_module.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="ansible-collections-theforeman-foreman-subnet-module"></span><div class="section" id="theforeman-foreman-subnet-manage-subnets">
+<h1>theforeman.foreman.subnet – Manage Subnets<a class="headerlink" href="#theforeman-foreman-subnet-manage-subnets" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a>.</p>
+<p>To install it use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.subnet</span></code>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
+</ul>
+</div>
+<div class="section" id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Create, update, and delete Subnets</p></li>
+</ul>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>apypie</p></li>
+<li><p>ipaddress</p></li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<table  border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="2">Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+                    <th width="100%">Comments</th>
+    </tr>
+                <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-boot_mode"></div>
+                <b>boot_mode</b>
+                <a class="ansibleOptionLink" href="#parameter-boot_mode" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>DHCP</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>Static</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Boot mode used by hosts in this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-cidr"></div>
+                <b>cidr</b>
+                <a class="ansibleOptionLink" href="#parameter-cidr" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>CIDR prefix length; Required if <em>network_type=IPv4</em> and no <em>mask</em> provided</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-description"></div>
+                <b>description</b>
+                <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Description of the subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-dhcp_proxy"></div>
+                <b>dhcp_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-dhcp_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>DHCP Smart proxy for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-discovery_proxy"></div>
+                <b>discovery_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-discovery_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Discovery Smart proxy for this subnet</div>
+                                        <div>This option is only available if the discovery plugin is installed.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-dns_primary"></div>
+                <b>dns_primary</b>
+                <a class="ansibleOptionLink" href="#parameter-dns_primary" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Primary DNS server for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-dns_proxy"></div>
+                <b>dns_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-dns_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>DNS Smart proxy for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-dns_secondary"></div>
+                <b>dns_secondary</b>
+                <a class="ansibleOptionLink" href="#parameter-dns_secondary" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Secondary DNS server for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-domains"></div>
+                <b>domains</b>
+                <a class="ansibleOptionLink" href="#parameter-domains" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of DNS domains the subnet should assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-from_ip"></div>
+                <b>from_ip</b>
+                <a class="ansibleOptionLink" href="#parameter-from_ip" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>First IP address of the host IP allocation pool</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-gateway"></div>
+                <b>gateway</b>
+                <a class="ansibleOptionLink" href="#parameter-gateway" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Subnet gateway IP address</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-httpboot_proxy"></div>
+                <b>httpboot_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-httpboot_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>HTTP Boot Smart proxy for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-ipam"></div>
+                <b>ipam</b>
+                <a class="ansibleOptionLink" href="#parameter-ipam" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>DHCP</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>Internal DB</li>
+                                                                                                                                                                                            <li>Random DB</li>
+                                                                                                                                                                                            <li>EUI-64</li>
+                                                                                                                                                                                            <li>None</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>IPAM mode for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                <b>locations</b>
+                <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of locations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-mask"></div>
+                <b>mask</b>
+                <a class="ansibleOptionLink" href="#parameter-mask" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Subnet netmask. Required if <em>network_type=IPv4</em> and no <em>cidr</em> prefix length provided</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-mtu"></div>
+                <b>mtu</b>
+                <a class="ansibleOptionLink" href="#parameter-mtu" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>MTU</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                <b>name</b>
+                <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Subnet name</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-network"></div>
+                <b>network</b>
+                <a class="ansibleOptionLink" href="#parameter-network" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Subnet IP address</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-network_type"></div>
+                <b>network_type</b>
+                <a class="ansibleOptionLink" href="#parameter-network_type" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>IPv4</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>IPv6</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Subnet type</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                <b>organizations</b>
+                <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of organizations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-parameters"></div>
+                <b>parameters</b>
+                <a class="ansibleOptionLink" href="#parameter-parameters" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=dictionary</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Subnet specific host parameters</div>
+                                                    </td>
+        </tr>
+                                    <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-parameters/name"></div>
+                <b>name</b>
+                <a class="ansibleOptionLink" href="#parameter-parameters/name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Name of the parameter</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-parameters/parameter_type"></div>
+                <b>parameter_type</b>
+                <a class="ansibleOptionLink" href="#parameter-parameters/parameter_type" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>string</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>boolean</li>
+                                                                                                                                                                                            <li>integer</li>
+                                                                                                                                                                                            <li>real</li>
+                                                                                                                                                                                            <li>array</li>
+                                                                                                                                                                                            <li>hash</li>
+                                                                                                                                                                                            <li>yaml</li>
+                                                                                                                                                                                            <li>json</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Type of the parameter</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-parameters/value"></div>
+                <b>value</b>
+                <a class="ansibleOptionLink" href="#parameter-parameters/value" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">raw</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Value of the parameter</div>
+                                                    </td>
+        </tr>
+
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                <b>password</b>
+                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Password of the user accessing the Foreman server</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-remote_execution_proxies"></div>
+                <b>remote_execution_proxies</b>
+                <a class="ansibleOptionLink" href="#parameter-remote_execution_proxies" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Remote execution Smart proxies for this subnet</div>
+                                        <div>This option is only available if the remote_execution plugin is installed.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                <b>server_url</b>
+                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>URL of the Foreman server</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                <b>state</b>
+                <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>absent</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>State of the entity</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-template_proxy"></div>
+                <b>template_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-template_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Template Smart proxy for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-tftp_proxy"></div>
+                <b>tftp_proxy</b>
+                <a class="ansibleOptionLink" href="#parameter-tftp_proxy" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>TFTP Smart proxy for this subnet</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-to_ip"></div>
+                <b>to_ip</b>
+                <a class="ansibleOptionLink" href="#parameter-to_ip" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Last IP address of the host IP allocation pool</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+                <b>updated_name</b>
+                <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>New subnet name. When this parameter is set, the module will not be idempotent.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                <b>username</b>
+                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Username accessing the Foreman server</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                <b>validate_certs</b>
+                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Whether or not to verify the TLS certificates of the Foreman server</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="parameter-vlanid"></div>
+                <b>vlanid</b>
+                <a class="ansibleOptionLink" href="#parameter-vlanid" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">integer</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>VLAN ID</div>
+                                                    </td>
+        </tr>
+                    </table>
+<br/></div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">My subnet</span>
+  <span class="nt">theforeman.foreman.subnet</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">subnet&quot;</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">description&quot;</span>
+    <span class="nt">network</span><span class="p">:</span> <span class="s">&quot;192.168.0.0&quot;</span>
+    <span class="nt">mask</span><span class="p">:</span> <span class="s">&quot;255.255.255.192&quot;</span>
+    <span class="nt">gateway</span><span class="p">:</span> <span class="s">&quot;192.168.0.1&quot;</span>
+    <span class="nt">from_ip</span><span class="p">:</span> <span class="s">&quot;192.168.0.2&quot;</span>
+    <span class="nt">to_ip</span><span class="p">:</span> <span class="s">&quot;192.168.0.42&quot;</span>
+    <span class="nt">boot_mode</span><span class="p">:</span> <span class="s">&quot;Static&quot;</span>
+    <span class="nt">dhcp_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy1.foo.example.com&quot;</span>
+    <span class="nt">tftp_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy1.foo.example.com&quot;</span>
+    <span class="nt">dns_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy2.foo.example.com&quot;</span>
+    <span class="nt">template_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy2.foo.example.com&quot;</span>
+    <span class="nt">vlanid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">452</span>
+    <span class="nt">mtu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9000</span>
+    <span class="nt">domains</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;foo.example.com&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;bar.example.com&quot;</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;Example</span><span class="nv"> </span><span class="s">Org&quot;</span>
+    <span class="nt">locations</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="s">&quot;Toulouse&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;secret&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-values">
+<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v2.9)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="2">Key</th>
+        <th>Returned</th>
+        <th width="100%">Description</th>
+    </tr>
+                <tr>
+                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="return-entity"></div>
+                <b>entity</b>
+                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">dictionary</span>
+                                      </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>Final state of the affected entities grouped by their type.</div>
+                                    <br/>
+                                </td>
+        </tr>
+                                    <tr>
+                                <td class="elbow-placeholder">&nbsp;</td>
+                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="return-entity/subnets"></div>
+                <b>subnets</b>
+                <a class="ansibleOptionLink" href="#return-entity/subnets" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">list</span>
+                   / <span style="color: purple">elements=dictionary</span>                    </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>List of subnets.</div>
+                                    <br/>
+                                </td>
+        </tr>
+
+                    </table>
+<br/><br/><div class="section" id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Baptiste Agasse (&#64;bagasse)</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, The Foreman Project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
