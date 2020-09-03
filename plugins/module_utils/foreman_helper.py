@@ -184,8 +184,9 @@ class TaxonomyMixin(object):
 class ParametersMixin(object):
     def __init__(self, **kwargs):
         self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
+        parameters_flat_name = getattr(self, "PARAMETERS_FLAT_NAME", None) or '{0}_parameters_attributes'.format(self.entity_name)
         foreman_spec = dict(
-            parameters=dict(type='list', elements='dict', options=parameter_ansible_spec, flat_name='{0}_parameters_attributes'.format(self.entity_name)),
+            parameters=dict(type='list', elements='dict', options=parameter_ansible_spec, flat_name=parameters_flat_name),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(ParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
