@@ -26,10 +26,6 @@ interactions:
         style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 17 Jul 2020 07:19:09 GMT
-      ETag:
-      - W/"8eeb944fdccee712d04e92b9f81fd9c1-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -40,16 +36,10 @@ interactions:
       - 2.1.0
       Keep-Alive:
       - timeout=15, max=100
-      Server:
-      - Apache
-      Set-Cookie:
-      - _session_id=52106e5e8d03dde888c8002c41afdeef; path=/; secure; HttpOnly; SameSite=Lax
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
-      Via:
-      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -58,10 +48,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Request-Id:
-      - e49f49a3-dcca-4a98-8a68-506292756f57
-      X-Runtime:
-      - '0.137823'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -78,15 +64,13 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=52106e5e8d03dde888c8002c41afdeef
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
     uri: https://foreman.example.org/api/subnets?search=name%3D%22Test+Subnet%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 0,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Subnet\\\"\",\n  \"sort\": {\n\
         \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
     headers:
@@ -100,10 +84,6 @@ interactions:
         style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 17 Jul 2020 07:19:09 GMT
-      ETag:
-      - W/"073f3aef59c83a0aed48443e2dc9e982-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -114,14 +94,10 @@ interactions:
       - 2.1.0
       Keep-Alive:
       - timeout=15, max=99
-      Server:
-      - Apache
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
-      Via:
-      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -130,10 +106,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Request-Id:
-      - c960739d-6989-41bc-8149-adf8da2861c4
-      X-Runtime:
-      - '0.015413'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -143,7 +115,10 @@ interactions:
       message: OK
 - request:
     body: '{"subnet": {"name": "Test Subnet", "network_type": "IPv4", "network": "192.168.200.0",
-      "cidr": 27, "mask": "255.255.255.224", "ipam": "DHCP", "boot_mode": "DHCP"}}'
+      "cidr": 27, "mask": "255.255.255.224", "ipam": "DHCP", "boot_mode": "DHCP",
+      "subnet_parameters_attributes": [{"name": "subnet_param1", "value": "value1",
+      "parameter_type": "string"}, {"name": "subnet_param2", "value": "value2", "parameter_type":
+      "string"}]}}'
     headers:
       Accept:
       - application/json;version=2
@@ -152,20 +127,20 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '163'
+      - '345'
       Content-Type:
       - application/json
-      Cookie:
-      - _session_id=52106e5e8d03dde888c8002c41afdeef
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
     uri: https://foreman.example.org/api/subnets
   response:
     body:
-      string: '{"network":"192.168.200.0","network_type":"IPv4","cidr":27,"mask":"255.255.255.224","priority":null,"vlanid":null,"mtu":1500,"gateway":null,"dns_primary":null,"dns_secondary":null,"from":null,"to":null,"created_at":"2020-07-17
-        07:19:09 UTC","updated_at":"2020-07-17 07:19:09 UTC","ipam":"DHCP","boot_mode":"DHCP","id":1,"name":"Test
-        Subnet","description":null,"network_address":"192.168.200.0/27","dhcp_id":null,"dhcp_name":null,"tftp_id":null,"tftp_name":null,"httpboot_id":null,"httpboot_name":null,"externalipam_id":null,"externalipam_name":null,"dns_id":null,"template_id":null,"template_name":null,"dhcp":null,"tftp":null,"httpboot":null,"externalipam":null,"dns":null,"template":null,"domains":[],"interfaces":[],"parameters":[],"locations":[],"organizations":[]}'
+      string: '{"network":"192.168.200.0","network_type":"IPv4","cidr":27,"mask":"255.255.255.224","priority":null,"vlanid":null,"mtu":1500,"gateway":null,"dns_primary":null,"dns_secondary":null,"from":null,"to":null,"created_at":"2020-09-03
+        06:57:10 UTC","updated_at":"2020-09-03 06:57:10 UTC","ipam":"DHCP","boot_mode":"DHCP","id":30,"name":"Test
+        Subnet","description":null,"network_address":"192.168.200.0/27","dhcp_id":null,"dhcp_name":null,"tftp_id":null,"tftp_name":null,"httpboot_id":null,"httpboot_name":null,"externalipam_id":null,"externalipam_name":null,"dns_id":null,"template_id":null,"template_name":null,"dhcp":null,"tftp":null,"httpboot":null,"externalipam":null,"dns":null,"template":null,"domains":[],"interfaces":[],"parameters":[{"priority":40,"created_at":"2020-09-03
+        06:57:10 UTC","updated_at":"2020-09-03 06:57:10 UTC","id":47,"name":"subnet_param1","parameter_type":"string","value":"value1"},{"priority":40,"created_at":"2020-09-03
+        06:57:10 UTC","updated_at":"2020-09-03 06:57:10 UTC","id":48,"name":"subnet_param2","parameter_type":"string","value":"value2"}],"locations":[],"organizations":[]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -177,10 +152,6 @@ interactions:
         style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 17 Jul 2020 07:19:09 GMT
-      ETag:
-      - W/"4a1f48804cfd945a200b58a4b10a657f"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -191,14 +162,10 @@ interactions:
       - 2.1.0
       Keep-Alive:
       - timeout=15, max=98
-      Server:
-      - Apache
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Transfer-Encoding:
       - chunked
-      Via:
-      - 1.1 centos7-foreman-2-1.yatsu.example.com
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -207,158 +174,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Request-Id:
-      - 57d866da-6e3f-4353-810f-1bc3c462fc48
-      X-Runtime:
-      - '0.054328'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 201
-      message: Created
-- request:
-    body: '{"parameter": {"name": "subnet_param1", "value": "value1", "parameter_type":
-      "string"}}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '87'
-      Content-Type:
-      - application/json
-      Cookie:
-      - _session_id=52106e5e8d03dde888c8002c41afdeef
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/api/subnets/1/parameters
-  response:
-    body:
-      string: '{"priority":40,"created_at":"2020-07-17 07:19:09 UTC","updated_at":"2020-07-17
-        07:19:09 UTC","id":1,"name":"subnet_param1","parameter_type":"string","value":"value1"}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 17 Jul 2020 07:19:09 GMT
-      ETag:
-      - W/"f07594ca92728d693944d05c405d6380"
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.1.0
-      Keep-Alive:
-      - timeout=15, max=97
-      Server:
-      - Apache
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
-      Via:
-      - 1.1 centos7-foreman-2-1.yatsu.example.com
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Request-Id:
-      - c4b39def-ea09-4f31-990d-1e62fc765272
-      X-Runtime:
-      - '0.042314'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 201
-      message: Created
-- request:
-    body: '{"parameter": {"name": "subnet_param2", "value": "value2", "parameter_type":
-      "string"}}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '87'
-      Content-Type:
-      - application/json
-      Cookie:
-      - _session_id=52106e5e8d03dde888c8002c41afdeef
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/api/subnets/1/parameters
-  response:
-    body:
-      string: '{"priority":40,"created_at":"2020-07-17 07:19:09 UTC","updated_at":"2020-07-17
-        07:19:09 UTC","id":2,"name":"subnet_param2","parameter_type":"string","value":"value2"}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 17 Jul 2020 07:19:09 GMT
-      ETag:
-      - W/"03c1cf51e29ef2ce2fdaa4b3e9690dfd"
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.1.0
-      Keep-Alive:
-      - timeout=15, max=96
-      Server:
-      - Apache
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
-      Via:
-      - 1.1 centos7-foreman-2-1.yatsu.example.com
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Request-Id:
-      - 7d2d89b3-8cbe-43dd-a8a3-c92272f6f859
-      X-Runtime:
-      - '0.035841'
       X-XSS-Protection:
       - 1; mode=block
     status:
