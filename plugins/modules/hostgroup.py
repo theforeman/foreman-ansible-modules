@@ -145,6 +145,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
     ensure_puppetclasses,
     HostMixin,
     ForemanTaxonomicEntityAnsibleModule,
+    parameter_ansible_spec,
 )
 
 
@@ -159,6 +160,8 @@ def main():
             description=dict(),
             parent=dict(type='entity'),
             organization=dict(type='entity', required=False, ensure=False),
+            # parameters is already in the HostMixin, but the flat_name detection does not work for hostgroups
+            parameters=dict(type='list', elements='dict', options=parameter_ansible_spec, flat_name='group_parameters_attributes'),
         ),
         argument_spec=dict(
             updated_name=dict(),
