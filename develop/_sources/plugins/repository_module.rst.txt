@@ -71,6 +71,59 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-ansible_collection_requirements"></div>
+                    <b>ansible_collection_requirements</b>
+                    <a class="ansibleOptionLink" href="#parameter-ansible_collection_requirements" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Contents of requirement yaml file to sync from URL</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-auto_enabled"></div>
+                    <b>auto_enabled</b>
+                    <a class="ansibleOptionLink" href="#parameter-auto_enabled" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>repositories will be automatically enabled on a registered host subscribed to this product</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-checksum_type"></div>
+                    <b>checksum_type</b>
+                    <a class="ansibleOptionLink" href="#parameter-checksum_type" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>sha1</li>
+                                                                                                                                                                                                <li>sha256</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Checksum of the repository</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-content_type"></div>
                     <b>content_type</b>
                     <a class="ansibleOptionLink" href="#parameter-content_type" title="Permalink to this option"></a>
@@ -86,10 +139,11 @@ Parameters
                                                                                                                                                                                                 <li>ostree</li>
                                                                                                                                                                                                 <li>puppet</li>
                                                                                                                                                                                                 <li>yum</li>
+                                                                                                                                                                                                <li>ansible_collection</li>
                                                                                     </ul>
                                                                             </td>
                                                                 <td>
-                                            <div>The content type of the repository (e.g. yum)</div>
+                                            <div>The content type of the repository</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -155,6 +209,21 @@ Parameters
                                                                 <td>
                                             <div>comma separated list of releases to be synced from deb-archive</div>
                                             <div>only available for <em>content_type=deb</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Description of the repository</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -258,6 +327,22 @@ Parameters
                                                                             </td>
                                                                 <td>
                                             <div>Which proxy to use for content synching</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-ignorable_content"></div>
+                    <b>ignorable_content</b>
+                    <a class="ansibleOptionLink" href="#parameter-ignorable_content" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of content units to ignore while syncing a yum repository.</div>
+                                            <div>Must be subset of rpm,drpm,srpm,distribution,erratum.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -458,6 +543,25 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-unprotected"></div>
+                    <b>unprotected</b>
+                    <a class="ansibleOptionLink" href="#parameter-unprotected" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>publish the repository via HTTP</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-upstream_password"></div>
                     <b>upstream_password</b>
                     <a class="ansibleOptionLink" href="#parameter-upstream_password" title="Permalink to this option"></a>
@@ -533,6 +637,25 @@ Parameters
                                                                             </td>
                                                                 <td>
                                             <div>Whether or not to verify the TLS certificates of the Foreman server</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-verify_ssl_on_sync"></div>
+                    <b>verify_ssl_on_sync</b>
+                    <a class="ansibleOptionLink" href="#parameter-verify_ssl_on_sync" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>verify the upstream certifcates are signed by a trusted CA</div>
                                                         </td>
             </tr>
                         </table>
