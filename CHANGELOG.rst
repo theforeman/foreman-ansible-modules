@@ -6,6 +6,23 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v1.2.0
+======
+
+Minor Changes
+-------------
+
+- compute_resource - added ``caching_enabled`` option for VMware compute resources
+- domain, host, hostgroup, operatingsystem, subnet - manage parameters in a single API call (https://bugzilla.redhat.com/show_bug.cgi?id=1855008)
+- host - add ``compute_attributes`` parameter to module (https://bugzilla.redhat.com/show_bug.cgi?id=1871815)
+- provisioning_template - update list of possible template kinds (https://bugzilla.redhat.com/show_bug.cgi?id=1871978)
+- repository - update supported parameters (https://github.com/theforeman/foreman-ansible-modules/issues/935)
+
+Bugfixes
+--------
+
+- image - fix quoting of search values (https://github.com/theforeman/foreman-ansible-modules/issues/927)
+
 v1.1.0
 ======
 
