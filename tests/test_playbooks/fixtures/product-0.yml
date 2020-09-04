@@ -11,86 +11,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://127.0.0.1:4433/api/status
+    uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"1.24.0","api_version":2}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Length:
-      - '63'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 10 Jan 2020 09:16:29 GMT
-      ETag:
-      - W/"53b0d6d0bf9fce118840f03bbd316797"
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 1.24.0
-      Keep-Alive:
-      - timeout=5, max=10000
-      Server:
-      - Apache
-      Set-Cookie:
-      - _session_id=64476df845e2da1df9db446196336d88; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - f4be272c-869c-41eb-bef8-512a0f17a294
-      X-Runtime:
-      - '0.069298'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - _session_id=64476df845e2da1df9db446196336d88
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://127.0.0.1:4433/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2020-01-10
-        09:16:23 UTC\",\"updated_at\":\"2020-01-10 09:16:23 UTC\",\"id\":6,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -98,14 +22,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 10 Jan 2020 09:16:29 GMT
-      ETag:
-      - W/"681e0aa090293bc5c8b8e80d2cd24d19-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -113,13 +33,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.1.2
       Keep-Alive:
-      - timeout=5, max=9999
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -132,12 +48,67 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - dd778e43-f5d4-48f1-b470-b4b19c5763f8
-      X-Runtime:
-      - '0.013729'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '62'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
+        :\"Test_Organization\",\"created_at\":\"2020-09-04 12:59:16 UTC\",\"updated_at\"\
+        :\"2020-09-04 12:59:16 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
+        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.1.2
+      Keep-Alive:
+      - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -154,12 +125,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=64476df845e2da1df9db446196336d88
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://127.0.0.1:4433/katello/api/organizations/6/products?search=name%3D%22Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
       string: '{"total":0,"subtotal":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
@@ -173,28 +142,20 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 10 Jan 2020 09:16:29 GMT
-      ETag:
-      - W/"779af0631e7209158cdad7b50370f608-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 6; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 1.24.0
+      - 2.1.2
       Keep-Alive:
-      - timeout=5, max=9998
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -207,12 +168,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - cecccebb-cb80-4fd5-ba94-3bcbc70d3a72
-      X-Runtime:
-      - '0.011929'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -221,7 +176,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"organization_id": 6, "description": "A happy little test product", "name":
+    body: '{"organization_id": 3, "description": "A happy little test product", "name":
       "Test Product"}'
     headers:
       Accept:
@@ -234,18 +189,16 @@ interactions:
       - '92'
       Content-Type:
       - application/json
-      Cookie:
-      - _session_id=64476df845e2da1df9db446196336d88
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://127.0.0.1:4433/katello/api/products
+    uri: https://foreman.example.org/katello/api/products
   response:
     body:
-      string: '  {"redhat":false,"id":9,"cp_id":"629477517971","name":"Test Product","label":"Test_Product","description":"A
-        happy little test product","provider_id":9,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":6,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":6},"sync_plan":null,"repository_count":0,"created_at":"2020-01-10
-        09:16:29 UTC","updated_at":"2020-01-10 09:16:29 UTC","product_content":[],"available_content":[],"repositories":[],"provider":{"name":"Anonymous"},"sync_status":{"id":null,"product_id":null,"progress":null,"sync_id":null,"state":null,"raw_state":null,"start_time":null,"finish_time":null,"duration":null,"display_size":null,"size":null,"is_running":null,"error_details":null},"permissions":{"view_products":true,"edit_products":true,"destroy_products":true,"sync_products":true},"published_content_view_ids":[],"active_task_count":0}
+      string: '  {"sync_state_aggregated":null,"redhat":false,"id":2,"cp_id":"412578979589","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":0,"created_at":"2020-09-04
+        12:59:21 UTC","updated_at":"2020-09-04 12:59:21 UTC","product_content":[],"available_content":[],"repositories":[],"provider":{"name":"Anonymous"},"sync_status":{"id":null,"product_id":null,"progress":null,"sync_id":null,"state":null,"raw_state":null,"start_time":null,"finish_time":null,"duration":null,"display_size":null,"size":null,"is_running":null,"error_details":null},"permissions":{"view_products":true,"edit_products":true,"destroy_products":true,"sync_products":true},"published_content_view_ids":[],"active_task_count":0}
 
         '
     headers:
@@ -255,34 +208,24 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 10 Jan 2020 09:16:29 GMT
-      ETag:
-      - W/"7810b9056c91362d47753327006a74c7-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 6; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 1.24.0
+      - 2.1.2
       Keep-Alive:
-      - timeout=5, max=9997
-      Server:
-      - Apache
-      Set-Cookie:
-      - request_method=POST; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
+      - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -291,17 +234,9 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - a3df5052-be57-4f9c-9f55-57190f02c2df
-      X-Runtime:
-      - '0.430751'
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1036'
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
 version: 1
