@@ -238,7 +238,7 @@ EXAMPLES = '''
 - name: Ensure latest version of all your Job Templates
   theforeman.foreman.job_template:
     server_url: "https://foreman.example.com"
-    username:  "admin"
+    username: "admin"
     password:  "changeme"
     state: present
     template: '{{ lookup("file", item.src) }}'

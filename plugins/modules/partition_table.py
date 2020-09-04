@@ -147,7 +147,7 @@ EXAMPLES = '''
 - name: Ensure latest version of all Ptable Community Templates
   theforeman.foreman.partition_table:
     server_url: "https://foreman.example.com"
-    username:  "admin"
+    username: "admin"
     password:  "changeme"
     state: present
     layout: '{{ lookup("file", item.src) }}'

@@ -139,7 +139,7 @@ EXAMPLES = '''
       url: libvirt.example.com
       display_type: vnc
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -156,7 +156,7 @@ EXAMPLES = '''
       url: libvirt.example.com
       display_type: vnc
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -164,7 +164,7 @@ EXAMPLES = '''
   theforeman.foreman.compute_resource:
     name: example_compute_resource
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: absent
 
@@ -183,7 +183,7 @@ EXAMPLES = '''
       password: secret
       datacenter: ax01
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -203,7 +203,7 @@ EXAMPLES = '''
       ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
       use_v4: true
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -221,7 +221,7 @@ EXAMPLES = '''
       password: secretpassword
       ssl_verify_peer: true
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -239,7 +239,7 @@ EXAMPLES = '''
       password: AWS_SECRET_KEY
       region: eu-west-1
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -259,7 +259,7 @@ EXAMPLES = '''
       password: CLIENT_SECRET
       region: westeurope
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
@@ -278,7 +278,7 @@ EXAMPLES = '''
       key_path: "/usr/share/foreman/gce_orcharhino_key.json"
       zone: europe-west3-b
     server_url: "https://foreman.example.com"
-    username: admin
+    username: "admin"
     password: "changeme"
     state: present
 
