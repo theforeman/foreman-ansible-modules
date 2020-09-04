@@ -159,7 +159,7 @@ EXAMPLES = '''
 - name: "Delete *ALL* partition tables"
   theforeman.foreman.partition_table:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: absent
@@ -167,7 +167,7 @@ EXAMPLES = '''
 - name: "Assign all partition tables to the same organization(s)"
   theforeman.foreman.partition_table:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: present

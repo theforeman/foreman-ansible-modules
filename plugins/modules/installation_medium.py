@@ -70,7 +70,7 @@ EXAMPLES = '''
     path: "http://debian.org/mirror/"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 '''
 

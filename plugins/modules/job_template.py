@@ -250,7 +250,7 @@ EXAMPLES = '''
 - name: "Delete *ALL* Job Templates"
   theforeman.foreman.job_template:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: absent
@@ -258,7 +258,7 @@ EXAMPLES = '''
 - name: "Assign all Job Templates to the same organization(s)"
   theforeman.foreman.job_template:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: present

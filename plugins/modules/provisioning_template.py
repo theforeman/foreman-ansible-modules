@@ -190,7 +190,7 @@ EXAMPLES = '''
 - name: "Delete *ALL* provisioning templates"
   theforeman.foreman.provisioning_template:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: absent
@@ -198,7 +198,7 @@ EXAMPLES = '''
 - name: "Assign all provisioning templates to the same organization(s)"
   theforeman.foreman.provisioning_template:
     username: "admin"
-    password: "admin"
+    password: "changeme"
     server_url: "https://foreman.example.com"
     name: "*"
     state: present

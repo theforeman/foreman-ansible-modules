@@ -130,7 +130,7 @@ EXAMPLES = '''
     default_value: /etc/prometheus/alert.yml
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 
 - name: "Update prometheus::server alertmanagers_config param default value"
@@ -146,7 +146,7 @@ EXAMPLES = '''
     default_value: /etc/prometheus/alert.yml
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     override_values:
       - match: domain=example.com
         value: foo

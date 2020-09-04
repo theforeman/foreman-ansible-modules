@@ -73,7 +73,7 @@ EXAMPLES = '''
         search: "owner_type = Usergroup and owner_id = 4"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 '''
 
