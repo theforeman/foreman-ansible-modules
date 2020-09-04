@@ -31,11 +31,13 @@ DOCUMENTATION = '''
         default: 'http://localhost:3000'
         env:
             - name: FOREMAN_SERVER
+            - name: FOREMAN_SERVER_URL
       user:
         description: foreman authentication user
         required: True
         env:
             - name: FOREMAN_USER
+            - name: FOREMAN_USERNAME
       password:
         description: foreman authentication password
         required: True
@@ -45,6 +47,8 @@ DOCUMENTATION = '''
         description: verify SSL certificate if using https
         type: boolean
         default: False
+        env:
+            - name: FOREMAN_VALIDATE_CERTS
       group_prefix:
         description: prefix to apply to foreman groups
         default: foreman_

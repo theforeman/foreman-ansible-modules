@@ -78,7 +78,7 @@ tests/test_playbooks/vars/server.yml:
 	@echo "For recording, please adjust $@ to match your reference server."
 
 dist-test: $(MANIFEST)
-	ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme server_url=https://foreman.example.test name=collectiontest" localhost | grep -q "Failed to connect to Foreman server"
+	FOREMAN_SERVER_URL=https://foreman.example.test ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme name=collectiontest" localhost | grep -q "Failed to connect to Foreman server.*foreman.example.test"
 	ansible-doc $(NAMESPACE).$(NAME).organization | grep -q "Manage Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz

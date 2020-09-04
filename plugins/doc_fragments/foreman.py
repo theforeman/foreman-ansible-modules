@@ -26,19 +26,27 @@ requirements:
   - apypie
 options:
   server_url:
-    description: URL of the Foreman server
+    description:
+      - URL of the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_SERVER_URL) will be used instead.
     required: true
     type: str
   username:
-    description: Username accessing the Foreman server
+    description:
+      - Username accessing the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_USERNAME) will be used instead.
     required: true
     type: str
   password:
-    description: Password of the user accessing the Foreman server
+    description:
+      - Password of the user accessing the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_PASSWORD) will be used instead.
     required: true
     type: str
   validate_certs:
-    description: Whether or not to verify the TLS certificates of the Foreman server
+    description:
+      - Whether or not to verify the TLS certificates of the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_VALIDATE_CERTS) will be used instead.
     default: true
     type: bool
 '''
