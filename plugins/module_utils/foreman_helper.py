@@ -21,7 +21,7 @@ from contextlib import contextmanager
 from collections import defaultdict
 from functools import wraps
 
-from ansible.module_utils.basic import AnsibleModule, missing_required_lib
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
 from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils import six
 
@@ -302,10 +302,10 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self.foreman_spec, gen_args = _foreman_spec_helper(kwargs.pop('foreman_spec', {}))
         argument_spec = dict(
-            server_url=dict(required=True),
-            username=dict(required=True),
-            password=dict(required=True, no_log=True),
-            validate_certs=dict(type='bool', default=True),
+            server_url=dict(required=True, fallback=(env_fallback, ['FOREMAN_SERVER_URL', 'FOREMAN_SERVER'])),
+            username=dict(required=True, fallback=(env_fallback, ['FOREMAN_USERNAME', 'FOREMAN_USER'])),
+            password=dict(required=True, no_log=True, fallback=(env_fallback, ['FOREMAN_PASSWORD'])),
+            validate_certs=dict(type='bool', default=True, fallback=(env_fallback, ['FOREMAN_VALIDATE_CERTS'])),
         )
         argument_spec.update(gen_args)
         argument_spec.update(kwargs.pop('argument_spec', {}))
