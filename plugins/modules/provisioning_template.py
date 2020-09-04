@@ -179,7 +179,7 @@ EXAMPLES = '''
   theforeman.foreman.provisioning_template:
     server_url: "https://foreman.example.com"
     username: "admin"
-    password:  "changeme"
+    password: "changeme"
     state: present
     template: '{{ lookup("file", item.src) }}'
   with_filetree: '/path/to/provisioning/templates'

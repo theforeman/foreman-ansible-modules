@@ -148,7 +148,7 @@ EXAMPLES = '''
   theforeman.foreman.partition_table:
     server_url: "https://foreman.example.com"
     username: "admin"
-    password:  "changeme"
+    password: "changeme"
     state: present
     layout: '{{ lookup("file", item.src) }}'
   with_filetree: '/path/to/partition/tables'
