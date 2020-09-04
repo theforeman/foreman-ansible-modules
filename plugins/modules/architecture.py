@@ -55,7 +55,7 @@ EXAMPLES = '''
       - "TestOS2"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 
 - name: "Update an Architecture"
@@ -66,7 +66,7 @@ EXAMPLES = '''
       - "TestOS4"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 
 - name: "Delete an Architecture"
@@ -74,7 +74,7 @@ EXAMPLES = '''
     name: "i386"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: absent
 '''
 

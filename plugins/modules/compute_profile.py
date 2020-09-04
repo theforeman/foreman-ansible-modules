@@ -66,7 +66,7 @@ EXAMPLES = '''
     name: example_compute_profile
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: another compute profile
@@ -80,7 +80,7 @@ EXAMPLES = '''
         instance_type: 'cb8927e7-a404-40fb-a6c1-06cbfc92e077'
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: compute profile2
@@ -124,7 +124,7 @@ EXAMPLES = '''
             format_type: raw
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: Remove compute profile
@@ -132,7 +132,7 @@ EXAMPLES = '''
     name: example_compute_profile2
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: absent
 '''
 

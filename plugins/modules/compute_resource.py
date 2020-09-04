@@ -140,7 +140,7 @@ EXAMPLES = '''
       display_type: vnc
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: Update libvirt compute resource
@@ -157,7 +157,7 @@ EXAMPLES = '''
       display_type: vnc
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: Delete libvirt compute resource
@@ -165,7 +165,7 @@ EXAMPLES = '''
     name: example_compute_resource
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: absent
 
 - name: Create vmware compute resource
@@ -184,7 +184,7 @@ EXAMPLES = '''
       datacenter: ax01
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: Create ovirt compute resource
@@ -204,7 +204,7 @@ EXAMPLES = '''
       use_v4: true
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: Create proxmox compute resource
@@ -222,7 +222,7 @@ EXAMPLES = '''
       ssl_verify_peer: true
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: create EC2 compute resource
@@ -240,7 +240,7 @@ EXAMPLES = '''
       region: eu-west-1
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: create Azure compute resource
@@ -260,7 +260,7 @@ EXAMPLES = '''
       region: westeurope
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 - name: create GCE compute resource
@@ -279,7 +279,7 @@ EXAMPLES = '''
       zone: europe-west3-b
     server_url: "https://foreman.example.com"
     username: admin
-    password: secret
+    password: "changeme"
     state: present
 
 '''

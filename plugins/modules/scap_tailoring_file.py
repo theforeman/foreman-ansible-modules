@@ -58,7 +58,7 @@ EXAMPLES = '''
       - "Default Location"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 
 - name: Update SCAP tailoring file
@@ -75,7 +75,7 @@ EXAMPLES = '''
       - "Loc Two"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: present
 
 - name: Delete SCAP tailoring file
@@ -83,7 +83,7 @@ EXAMPLES = '''
     name: "Red Hat firefox default content"
     server_url: "https://foreman.example.com"
     username: "admin"
-    password: "secret"
+    password: "changeme"
     state: absent
 '''
 
