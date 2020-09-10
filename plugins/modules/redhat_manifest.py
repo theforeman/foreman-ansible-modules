@@ -85,6 +85,15 @@ options:
       - Red Hat Portal subscription access address
     default: https://subscription.rhsm.redhat.com
     type: str
+  content_access_mode:
+    description:
+      - Content Access Mode of the Subscription Manifest.
+      - Setting I(content_access_mode=org_enviroment) enables Simple Content Access.
+    type: str
+    choices:
+      - org_environment
+      - entitlement
+    default: entitlement
 '''
 
 EXAMPLES = '''
@@ -159,6 +168,7 @@ def create_manifest(module):
     path = "/subscription/consumers"
     data = {'name': module.params['name'],
             'type': "satellite",
+            'contentAccessMode': module.params['content_access_mode'],
             # TODO: Make these 2 configurable, we need to work out which horribly
             # undocumented API to use.
             'facts': {'distributor_version': 'sat-6.3',
@@ -275,6 +285,7 @@ def main():
             uuid=dict(type='str'),
             username=dict(required=True, no_log=True),
             password=dict(required=True, no_log=True),
+            content_access_mode=dict(choices=['org_environment', 'entitlement'], default='entitlement'),
             pool_id=dict(type='str'),
             quantity=dict(type='int'),
             pool_state=dict(choices=['present', 'absent'], default='present'),
