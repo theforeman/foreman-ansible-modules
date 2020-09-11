@@ -27,25 +27,29 @@ DOCUMENTATION = '''
         required: True
         choices: ['theforeman.foreman.foreman']
       url:
-        description: url to foreman
+        description:
+          - URL of the Foreman server.
         default: 'http://localhost:3000'
         env:
             - name: FOREMAN_SERVER
             - name: FOREMAN_SERVER_URL
             - name: FOREMAN_URL
       user:
-        description: foreman authentication user
+        description:
+          - Username accessing the Foreman server.
         required: True
         env:
             - name: FOREMAN_USER
             - name: FOREMAN_USERNAME
       password:
-        description: foreman authentication password
+        description:
+          - Password of the user accessing the Foreman server.
         required: True
         env:
             - name: FOREMAN_PASSWORD
       validate_certs:
-        description: verify SSL certificate if using https
+        description:
+          - Whether or not to verify the TLS certificates of the Foreman server.
         type: boolean
         default: False
         env:
