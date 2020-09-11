@@ -32,6 +32,7 @@ DOCUMENTATION = '''
         env:
             - name: FOREMAN_SERVER
             - name: FOREMAN_SERVER_URL
+            - name: FOREMAN_URL
       user:
         description: foreman authentication user
         required: True

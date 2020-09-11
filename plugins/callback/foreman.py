@@ -20,16 +20,20 @@ DOCUMENTATION = '''
       - requests (python library)
     options:
       url:
-        description: URL to the Foreman server
+        description:
+          - URL of the Foreman server.
         env:
           - name: FOREMAN_URL
+          - name: FOREMAN_SERVER_URL
+          - name: FOREMAN_SERVER
         required: True
         default: http://localhost:3000
         ini:
           - section: callback_foreman
             key: url
       client_cert:
-        description: X509 certificate to authenticate to Foreman if https is used
+        description:
+          - X509 certificate to authenticate to Foreman if https is used
         env:
             - name: FOREMAN_SSL_CERT
         default: /etc/foreman/client_cert.pem
@@ -40,7 +44,8 @@ DOCUMENTATION = '''
             key: client_cert
         aliases: [ ssl_cert ]
       client_key:
-        description: the corresponding private key
+        description:
+          - the corresponding private key
         env:
           - name: FOREMAN_SSL_KEY
         default: /etc/foreman/client_key.pem
