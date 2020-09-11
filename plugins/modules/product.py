@@ -67,7 +67,7 @@ options:
     type: str
   description:
     description:
-      - Possibly long descriptionto show the user in detail view
+      - Possibly long description to show the user in detail view
     required: false
     type: str
 extends_documentation_fragment:
