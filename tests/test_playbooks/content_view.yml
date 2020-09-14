@@ -199,6 +199,16 @@
         composite: true
         auto_publish: true
 
+    # Remove the original CV again
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+        expected_change: true
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+        expected_change: false
+
 - hosts: localhost
   collections:
     - theforeman.foreman
