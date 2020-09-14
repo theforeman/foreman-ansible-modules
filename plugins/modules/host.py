@@ -107,6 +107,7 @@ options:
   image:
     description:
       - The image to use when I(provision_method=image).
+      - The I(compute_resource) parameter is required to find the correct image.
     type: str
     required: false
   compute_attributes:
@@ -221,12 +222,15 @@ def main():
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
             owner_type=dict(type='invisible'),
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
-            image=dict(type='entity'),
+            image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
         ],
+        required_by=dict(
+            image=('compute_resource',),
+        ),
     )
 
     # additional param validation
