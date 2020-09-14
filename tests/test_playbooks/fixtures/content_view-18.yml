@@ -132,11 +132,13 @@ interactions:
   response:
     body:
       string: '{"total":2,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":0,"latest_version":null,"auto_publish":false,"solve_dependencies":false,"repository_ids":[30],"id":31,"name":"Test
+        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":1,"latest_version":"1.0","auto_publish":false,"solve_dependencies":false,"repository_ids":[30],"id":31,"name":"Test
         Content View","label":"Test_Content_View","description":null,"organization_id":14,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":14},"created_at":"2020-09-14
-        10:19:43 UTC","updated_at":"2020-09-14 10:19:43 UTC","environments":[],"repositories":[{"id":30,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum"}],"puppet_modules":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"1.0","last_published":null,"permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}}]}
+        10:19:43 UTC","updated_at":"2020-09-14 10:19:44 UTC","environments":[{"id":13,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[{"id":30,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"puppet_modules":[],"versions":[{"id":19,"version":"1.0","published":"2020-09-14
+        10:19:44 UTC","environment_ids":[13]}],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"2.0","last_published":"2020-09-14
+        10:19:44 UTC","permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}}]}
 
         '
     headers:
@@ -175,7 +177,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1040'
+      - '1224'
     status:
       code: 200
       message: OK
@@ -191,10 +193,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_versions?search=content_view_id%3D31%2Cversion%3D1.0&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_views/31
   response:
     body:
-      string: '{"total":3,"subtotal":0,"page":1,"per_page":"4294967296","error":null,"search":"content_view_id=31,version=1.0","sort":{"by":"version","order":"desc"},"results":[]}
+      string: '  {"content_host_count":0,"composite":false,"component_ids":[],"default":false,"force_puppet_environment":false,"version_count":1,"latest_version":"1.0","auto_publish":false,"solve_dependencies":false,"repository_ids":[30],"id":31,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":14,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":14},"created_at":"2020-09-14
+        10:19:43 UTC","updated_at":"2020-09-14 10:19:44 UTC","environments":[{"id":13,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[{"id":30,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"puppet_modules":[],"versions":[{"id":19,"version":"1.0","published":"2020-09-14
+        10:19:44 UTC","environment_ids":[13]}],"components":[],"content_view_components":[],"activation_keys":[],"next_version":"2.0","last_published":"2020-09-14
+        10:19:44 UTC","permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true},"duplicate_repositories_to_publish":[]}
 
         '
     headers:
@@ -233,7 +241,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '165'
+      - '1132'
     status:
       code: 200
       message: OK
@@ -246,85 +254,23 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/organizations/14/environments?search=name%3D%22Library%22&per_page=4294967296
-  response:
-    body:
-      string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":13,"name":"Library","label":"Library","description":null,"organization_id":14,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":14},"created_at":"2020-09-14
-        10:19:22 UTC","updated_at":"2020-09-14 10:19:22 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":0,"packages":0,"puppet_modules":0,"module_streams":0,"errata":{"security":null,"bugfix":0,"enhancement":0,"total":null},"yum_repositories":2,"docker_repositories":0,"ostree_repositories":0,"products":2},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true}}]}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - 14; Test Organization
-      Foreman_version:
-      - 2.1.2
-      Keep-Alive:
-      - timeout=15, max=96
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '965'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"major": 1, "minor": 0}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
       Content-Length:
-      - '24'
-      Content-Type:
-      - application/json
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/content_views/31/publish
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/content_views/31/environments/13
   response:
     body:
-      string: '  {"id":"dce95aeb-7d0d-49d1-829f-8c263c4bbc47","label":"Actions::Katello::ContentView::Publish","pending":true,"action":"Publish
-        content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
-        10:19:44 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"content_view":{"id":31,"name":"Test
+      string: '  {"id":"c37fd5ef-a2ab-48e6-b832-9d857012b371","label":"Actions::Katello::ContentView::RemoveFromEnvironment","pending":true,"action":"Remove
+        from Environment content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
+        10:20:06 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"content_view":{"id":31,"name":"Test
         Content View","label":"Test_Content_View"},"organization":{"id":14,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3","pulp","pulp_auth"],"history_id":24,"content_view_id":31,"auto_publish_composite_ids":[],"content_view_version_name":"Test
-        Content View 1.0","content_view_version_id":19,"environment_id":13,"user_id":4,"skip_promotion":null,"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
-        view ''Test Content View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":25,"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Remove
+        from Environment","input":[["content_view",{"text":"content view ''Test Content
+        View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
         ''Test Organization''","link":"/organizations/14/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2020-09-14
-        10:19:44 UTC","available_actions":{"cancellable":false,"resumable":false}}
+        10:20:06 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -347,7 +293,7 @@ interactions:
       Foreman_version:
       - 2.1.2
       Keep-Alive:
-      - timeout=15, max=95
+      - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Transfer-Encoding:
@@ -377,18 +323,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/dce95aeb-7d0d-49d1-829f-8c263c4bbc47
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/c37fd5ef-a2ab-48e6-b832-9d857012b371
   response:
     body:
-      string: '{"id":"dce95aeb-7d0d-49d1-829f-8c263c4bbc47","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
-        content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
-        10:19:44 UTC","ended_at":"2020-09-14 10:19:47 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":31,"name":"Test
+      string: '{"id":"c37fd5ef-a2ab-48e6-b832-9d857012b371","label":"Actions::Katello::ContentView::RemoveFromEnvironment","pending":false,"action":"Remove
+        from Environment content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
+        10:20:06 UTC","ended_at":"2020-09-14 10:20:06 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":31,"name":"Test
         Content View","label":"Test_Content_View"},"organization":{"id":14,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3","pulp","pulp_auth"],"history_id":24,"content_view_id":31,"auto_publish_composite_ids":[],"content_view_version_name":"Test
-        Content View 1.0","content_view_version_id":19,"environment_id":13,"user_id":4,"skip_promotion":null,"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"content_view_id":31,"content_view_version_id":19,"skip_promotion":null},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
-        view ''Test Content View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":25,"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Remove
+        from Environment","input":[["content_view",{"text":"content view ''Test Content
+        View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
         ''Test Organization''","link":"/organizations/14/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2020-09-14
-        10:19:44 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+        10:20:06 UTC","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -409,7 +355,7 @@ interactions:
       Foreman_version:
       - 2.1.2
       Keep-Alive:
-      - timeout=15, max=94
+      - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -425,7 +371,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1379'
+      - '1147'
     status:
       code: 200
       message: OK
@@ -438,27 +384,85 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/content_views/31
+  response:
+    body:
+      string: '  {"id":"8f3a3c07-2e46-48ff-9faa-75d2a0a70269","label":"Actions::Katello::ContentView::Destroy","pending":true,"action":"Delete
+        content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
+        10:20:10 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"content_view":{"id":31,"name":"Test
+        Content View","label":"Test_Content_View"},"organization":{"id":14,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","pulp","pulp_auth"],"remote_user":"admin","remote_cp_user":"admin","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Delete","input":[["content_view",{"text":"content
+        view ''Test Content View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/14/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2020-09-14
+        10:20:10 UTC","available_actions":{"cancellable":false,"resumable":false}}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.1.2
+      Keep-Alive:
+      - timeout=15, max=94
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 202
+      message: Accepted
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_versions/19
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/8f3a3c07-2e46-48ff-9faa-75d2a0a70269
   response:
     body:
-      string: '  {"version":"1.0","major":1,"minor":0,"composite_content_view_ids":[],"published_in_composite_content_view_ids":[],"content_view_id":31,"default":false,"description":null,"id":19,"name":"Test
-        Content View 1.0","created_at":"2020-09-14 10:19:44 UTC","updated_at":"2020-09-14
-        10:19:47 UTC","content_view":{"id":31,"name":"Test Content View","label":"Test_Content_View"},"composite_content_views":[],"composite_content_view_versions":[],"published_in_composite_content_views":[],"environments":[{"id":13,"name":"Library","label":"Library","puppet_environment_id":null,"permissions":{"readable":true,"promotable_or_removable":true,"all_hosts_editable":true,"all_keys_editable":true},"host_count":0,"activation_key_count":0}],"repositories":[{"id":32,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum","library_instance_id":30}],"last_event":{"user":"admin","status":"successful","description":null,"action":"publish","created_at":"2020-09-14
-        10:19:44 UTC","updated_at":"2020-09-14 10:19:47 UTC","environment":null,"task":{"id":"dce95aeb-7d0d-49d1-829f-8c263c4bbc47","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
+      string: '{"id":"8f3a3c07-2e46-48ff-9faa-75d2a0a70269","label":"Actions::Katello::ContentView::Destroy","pending":false,"action":"Delete
         content view ''Test Content View''; organization ''Test Organization''","username":"admin","started_at":"2020-09-14
-        10:19:44 UTC","ended_at":"2020-09-14 10:19:47 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":31,"name":"Test
+        10:20:10 UTC","ended_at":"2020-09-14 10:20:12 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":31,"name":"Test
         Content View","label":"Test_Content_View"},"organization":{"id":14,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3","pulp","pulp_auth"],"history_id":24,"content_view_id":31,"auto_publish_composite_ids":[],"content_view_version_name":"Test
-        Content View 1.0","content_view_version_id":19,"environment_id":13,"user_id":4,"skip_promotion":null,"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"content_view_id":31,"content_view_version_id":19,"skip_promotion":null},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","pulp","pulp_auth"],"remote_user":"admin","remote_cp_user":"admin","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Delete","input":[["content_view",{"text":"content
         view ''Test Content View''","link":"/content_views/31/versions"}],["organization",{"text":"organization
         ''Test Organization''","link":"/organizations/14/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2020-09-14
-        10:19:44 UTC","available_actions":{"cancellable":false,"resumable":false}},"version":"1.0","publish":true,"version_id":19,"triggered_by":null,"triggered_by_id":null},"active_history":[],"deb_count":0,"docker_manifest_count":0,"docker_manifest_list_count":0,"docker_tag_count":0,"file_count":0,"puppet_module_count":0,"rpm_count":0,"modulemd_count":0,"erratum_count":0,"package_group_count":0,"srpm_count":0,"module_stream_count":0,"package_count":0,"ostree_branch_count":null,"errata_counts":{"security":null,"bugfix":0,"enhancement":0,"total":null},"permissions":{"deletable":true},"puppet_modules":[]}
-
-        '
+        10:20:10 UTC","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -495,7 +499,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2948'
+      - '1120'
     status:
       code: 200
       message: OK
