@@ -88,7 +88,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
-            auth_source=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
+            auth_source=dict(required=True, aliases=['auth_source_ldap'], type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
         ),
     )
 
