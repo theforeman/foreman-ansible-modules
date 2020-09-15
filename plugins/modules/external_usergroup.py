@@ -39,7 +39,7 @@ options:
       - Name of the linked usergroup
     required: true
     type: str
-  auth_source_ldap:
+  auth_source:
     description:
       - Name of the authentication source to be used for this group
     required: true
@@ -53,7 +53,13 @@ EXAMPLES = '''
 - name: Create an external user group
   theforeman.foreman.external_usergroup:
     name: test
-    auth_source_ldap: "My LDAP server"
+    auth_source: "My LDAP server"
+    usergroup: "Internal Usergroup"
+    state: present
+- name: Link a group from FreeIPA
+  theforeman.foreman.external_usergroup:
+    name: ipa_users
+    auth_source: External
     usergroup: "Internal Usergroup"
     state: present
 '''
@@ -82,7 +88,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
-            auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
+            auth_source=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
         ),
     )
 
