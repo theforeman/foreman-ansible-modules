@@ -15,6 +15,7 @@ Welcome to Foreman Ansible Modules' documentation!
    plugins/index
    Filters <filters>
    roles/index
+   cvmanager
 
 .. toctree::
    :maxdepth: 2
