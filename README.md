@@ -71,6 +71,16 @@ After installing the RPM, you can use the modules in the same way as when they a
 Please see [the Plugin Index](https://theforeman.org/plugins/foreman-ansible-modules/) for the list of plugins in the theforeman.foreman collection.
 You'll find examples on the individual plugin pages.
 
+## Switching from katello-cvmanager
+
+In case you are looking for an alternative to [cvmanager](https://github.com/RedHatSatellite/katello-cvmanager),
+then you probably want to start with
+
+* content_view – Manage Content Views
+* content_view_version – Manage Content View Versions
+
+But be sure to check out the other plugins too, this collection can do much much more than `cvmanager`.
+
 ## Dependencies
 
 These dependencies are required for the Ansible controller, not the Foreman server. 
