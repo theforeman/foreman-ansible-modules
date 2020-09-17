@@ -42,7 +42,7 @@ except ImportError:
     PYYAML_IMP_ERR = traceback.format_exc()
 
 parameter_foreman_spec = dict(
-    id=dict(type='invisible'),
+    id=dict(invisible=True),
     name=dict(required=True),
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
@@ -494,11 +494,8 @@ class ForemanAnsibleModule(AnsibleModule):
             else:
                 error_msg = "no"
             self.fail_json(msg="Found {0} results while searching for {1} with {2}".format(error_msg, resource, search))
-        if result:
-            if thin:
-                result = {'id': result['id']}
-            else:
-                result = self.show_resource(resource, result['id'], params=params)
+        if result and not thin:
+            result = self.show_resource(resource, result['id'], params=params)
         return result
 
     def find_resource_by(self, resource, search_field, value, **kwargs):
@@ -1124,6 +1121,7 @@ def _foreman_spec_helper(spec):
         'failsafe',
         'flat_name',
         'foreman_spec',
+        'invisible',
         'resolve',
         'resource_type',
         'scope',
@@ -1162,6 +1160,7 @@ def _foreman_spec_helper(spec):
         argument_value = {k: v for (k, v) in value.items() if k not in _FILTER_SPEC_KEYS}
 
         foreman_type = value.get('type')
+        ansible_invisible = value.get('invisible', False)
         flat_name = value.get('flat_name')
 
         if foreman_type == 'entity':
@@ -1194,7 +1193,7 @@ def _foreman_spec_helper(spec):
 
         foreman_spec[key] = foreman_value
 
-        if foreman_type != 'invisible':
+        if not ansible_invisible:
             argument_spec[key] = argument_value
 
     return foreman_spec, argument_spec

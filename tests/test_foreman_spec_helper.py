@@ -20,7 +20,7 @@ def test_full_entity():
         'prices': {'type': 'nested_list', 'foreman_spec': {
             'value': {'type': 'int'},
         }},
-        'tenant': {'type': 'invisible'},
+        'tenant': {'invisible': True},
     }
     foreman_spec, argument_spec = _foreman_spec_helper(spec)
     assert spec == {
@@ -33,7 +33,7 @@ def test_full_entity():
         'prices': {'type': 'nested_list', 'foreman_spec': {
             'value': {'type': 'int'},
         }},
-        'tenant': {'type': 'invisible'},
+        'tenant': {'invisible': True},
     }
     assert foreman_spec == {
         'name': {},
@@ -46,7 +46,7 @@ def test_full_entity():
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids', 'resource_type': 'houses'},
         'house_ids': {'type': 'list'},
         'prices': {'type': 'nested_list', 'ensure': False},
-        'tenant': {'type': 'invisible'},
+        'tenant': {},
     }
     assert argument_spec == {
         'name': {},

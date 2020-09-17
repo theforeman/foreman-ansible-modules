@@ -39,11 +39,13 @@ options:
       - Name of the linked usergroup
     required: true
     type: str
-  auth_source_ldap:
+  auth_source:
     description:
       - Name of the authentication source to be used for this group
     required: true
     type: str
+    aliases:
+      - auth_source_ldap
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -53,7 +55,13 @@ EXAMPLES = '''
 - name: Create an external user group
   theforeman.foreman.external_usergroup:
     name: test
-    auth_source_ldap: "My LDAP server"
+    auth_source: "My LDAP server"
+    usergroup: "Internal Usergroup"
+    state: present
+- name: Link a group from FreeIPA
+  theforeman.foreman.external_usergroup:
+    name: ipa_users
+    auth_source: "External"
     usergroup: "Internal Usergroup"
     state: present
 '''
@@ -82,7 +90,9 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             usergroup=dict(required=True),
-            auth_source_ldap=dict(required=True, type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
+            auth_source=dict(required=True, aliases=['auth_source_ldap'], type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
+            auth_source_ldap=dict(type='entity', invisible=True, flat_name='auth_source_id'),
+            auth_source_external=dict(type='entity', invisible=True, flat_name='auth_source_id'),
         ),
     )
 
@@ -97,8 +107,16 @@ def main():
                 entity = external_usergroup
 
         module.set_entity('entity', entity)
-        module.auto_lookup_entities()
-        module.ensure_entity('external_usergroups', module.foreman_params, entity, params)
+
+        auth_source = module.lookup_entity('auth_source')
+        if auth_source.get('type') == 'AuthSourceExternal':
+            module.set_entity('auth_source_external', auth_source)
+        elif auth_source.get('type') == 'AuthSourceLdap':
+            module.set_entity('auth_source_ldap', auth_source)
+        else:
+            module.fail_json(msg="Unsupported authentication source type: {0}".format(auth_source.get('type')))
+
+        module.run(params=params)
 
 
 if __name__ == '__main__':

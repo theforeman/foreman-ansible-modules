@@ -143,7 +143,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 
 
 cvc_foreman_spec = {
-    'id': {'type': 'invisible'},
+    'id': {'invisible': True},
     'content_view': {'type': 'entity', 'required': True},
     'latest': {'type': 'bool', 'default': False},
     'content_view_version': {'type': 'entity', 'aliases': ['version']},

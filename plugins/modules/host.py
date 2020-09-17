@@ -220,7 +220,7 @@ def main():
             comment=dict(),
             owner=dict(type='entity', resource_type='users', flat_name='owner_id'),
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
-            owner_type=dict(type='invisible'),
+            owner_type=dict(invisible=True),
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),

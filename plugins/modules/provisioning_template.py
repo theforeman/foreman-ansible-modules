@@ -279,7 +279,7 @@ def main():
             locked=dict(type='bool'),
             name=dict(),
             operatingsystems=dict(type='entity_list'),
-            snippet=dict(type='invisible'),
+            snippet=dict(invisible=True),
         ),
         mutually_exclusive=[
             ['file_name', 'template'],
