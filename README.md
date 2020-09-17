@@ -33,6 +33,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 * According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. This applies to all modules, but especially those which require more secrets than the API credentials (`auth_source_ldap`, `compute_resource`, `host`, `hostgroup`, `http_proxy`, `image`, `repository`, `scc_account`, `user`). You can prevent this by using `no_log: yes` on the task.
   
   eg:
+
    ```yaml
    - name: Create compute resources
      theforeman.foreman.compute_resource:
@@ -69,7 +70,7 @@ After installing the RPM, you can use the modules in the same way as when they a
 
 ## Dependencies
 
-These dependencies are required for the Ansible controller, not the Foreman server. 
+These dependencies are required for the Ansible controller, not the Foreman server.
 
 * [`PyYAML`](https://pypi.org/project/PyYAML/)
 * [`requests`](https://pypi.org/project/requests/)
