@@ -59,7 +59,7 @@ This is usually combined with `flat_name=<entity>_ids`. If no flat_name is provi
 The module must handle the entities separately.
 See domain parameters in [`domain`](../plugins/modules/domain.py) for an example.
 The sub entities must be described by `foreman_spec=<sub_entity>_spec`.
-* `type='invisible'` The parameter is available to the API call, but it will be excluded from Ansible's `argument_spec`.
+* `invisible=True` The parameter is available to the API call, but it will be excluded from Ansible's `argument_spec`.
 * `search_by='login'`: Used with `type='entity'` or `type='entity_list'`. Field used to search the sub entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
 * `search_operator='~'`: Used with `type='entity'` or `type='entity_list'`. Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
 * `resource_type='organizations'`: Used with `type='entity'` or `type='entity_list'`. Resource type used to build API resource PATH. Defaults to pluralized entity key.

@@ -200,9 +200,9 @@
     </tr>
                 <tr>
                                                             <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-auth_source_ldap"></div>
-                <b>auth_source_ldap</b>
-                <a class="ansibleOptionLink" href="#parameter-auth_source_ldap" title="Permalink to this option"></a>
+                <div class="ansibleOptionAnchor" id="parameter-auth_source"></div>
+                <b>auth_source</b>
+                <a class="ansibleOptionLink" href="#parameter-auth_source" title="Permalink to this option"></a>
                 <div style="font-size: small">
                     <span style="color: purple">string</span>
                                              / <span style="color: red">required</span>                    </div>
@@ -211,7 +211,8 @@
                                                                                                                                                         </td>
                                                             <td>
                                         <div>Name of the authentication source to be used for this group</div>
-                                                    </td>
+                                                            <div style="font-size: small; color: darkgreen"><br/>aliases: auth_source_ldap</div>
+                                </td>
         </tr>
                             <tr>
                                                             <td colspan="1">
@@ -337,7 +338,13 @@
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create an external user group</span>
   <span class="nt">theforeman.foreman.external_usergroup</span><span class="p">:</span>
     <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">auth_source_ldap</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">LDAP</span><span class="nv"> </span><span class="s">server&quot;</span>
+    <span class="nt">auth_source</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">LDAP</span><span class="nv"> </span><span class="s">server&quot;</span>
+    <span class="nt">usergroup</span><span class="p">:</span> <span class="s">&quot;Internal</span><span class="nv"> </span><span class="s">Usergroup&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Link a group from FreeIPA</span>
+  <span class="nt">theforeman.foreman.external_usergroup</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ipa_users</span>
+    <span class="nt">auth_source</span><span class="p">:</span> <span class="s">&quot;External&quot;</span>
     <span class="nt">usergroup</span><span class="p">:</span> <span class="s">&quot;Internal</span><span class="nv"> </span><span class="s">Usergroup&quot;</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
 </pre></div>
