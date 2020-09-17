@@ -42,7 +42,7 @@ except ImportError:
     PYYAML_IMP_ERR = traceback.format_exc()
 
 parameter_foreman_spec = dict(
-    id=dict(type='invisible'),
+    id=dict(invisible=True),
     name=dict(required=True),
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
@@ -1121,6 +1121,7 @@ def _foreman_spec_helper(spec):
         'failsafe',
         'flat_name',
         'foreman_spec',
+        'invisible',
         'resolve',
         'resource_type',
         'scope',
@@ -1159,9 +1160,10 @@ def _foreman_spec_helper(spec):
         argument_value = {k: v for (k, v) in value.items() if k not in _FILTER_SPEC_KEYS}
 
         foreman_type = value.get('type')
+        ansible_invisible = value.get('invisible', False)
         flat_name = value.get('flat_name')
 
-        if foreman_type in ['entity', 'invisible-entity']:
+        if foreman_type == 'entity':
             if not flat_name:
                 flat_name = '{0}_id'.format(key)
             foreman_value['resource_type'] = HAS_APYPIE and inflector.pluralize(key)
@@ -1191,7 +1193,7 @@ def _foreman_spec_helper(spec):
 
         foreman_spec[key] = foreman_value
 
-        if foreman_type not in ['invisible', 'invisible-entity']:
+        if not ansible_invisible:
             argument_spec[key] = argument_value
 
     return foreman_spec, argument_spec
@@ -1207,7 +1209,7 @@ def _flatten_entity(entity, foreman_spec):
             spec = foreman_spec[key]
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
-            if property_type in ['entity', 'invisible-entity']:
+            if property_type == 'entity':
                 result[flat_name] = value['id']
             elif property_type == 'entity_list':
                 result[flat_name] = sorted(val['id'] for val in value)

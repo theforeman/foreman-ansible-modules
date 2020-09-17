@@ -91,8 +91,8 @@ def main():
             name=dict(required=True),
             usergroup=dict(required=True),
             auth_source=dict(required=True, aliases=['auth_source_ldap'], type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
-            auth_source_ldap=dict(type='invisible-entity', flat_name='auth_source_id'),
-            auth_source_external=dict(type='invisible-entity', flat_name='auth_source_id'),
+            auth_source_ldap=dict(type='entity', invisible=True, flat_name='auth_source_id'),
+            auth_source_external=dict(type='entity', invisible=True, flat_name='auth_source_id'),
         ),
     )
 

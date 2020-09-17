@@ -106,9 +106,9 @@ def main():
         ),
         foreman_spec=dict(
             name=dict(required=True),
-            username=dict(type='invisible'),
+            username=dict(invisible=True),
             uuid=dict(required=True, aliases=['image_uuid']),
-            password=dict(type='invisible', no_log=True),
+            password=dict(invisible=True, no_log=True),
             compute_resource=dict(type='entity', required=True),
             architecture=dict(type='entity', required=True),
             operatingsystem=dict(type='entity', required=True),
