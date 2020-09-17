@@ -107,14 +107,15 @@ def main():
                 entity = external_usergroup
 
         module.set_entity('entity', entity)
-        module.auto_lookup_entities()
-        auth_source = module.foreman_params.pop('auth_source')
+
+        auth_source = module.lookup_entity('auth_source')
         if auth_source.get('type') == 'AuthSourceExternal':
             module.set_entity('auth_source_external', auth_source)
         elif auth_source.get('type') == 'AuthSourceLdap':
             module.set_entity('auth_source_ldap', auth_source)
         else:
             module.fail_json(msg="Unsupported authentication source type: {0}".format(auth_source.get('type')))
+
         module.ensure_entity('external_usergroups', module.foreman_params, entity, params)
 
 
