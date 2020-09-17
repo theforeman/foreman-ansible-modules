@@ -116,7 +116,7 @@ def main():
         else:
             module.fail_json(msg="Unsupported authentication source type: {0}".format(auth_source.get('type')))
 
-        module.ensure_entity('external_usergroups', module.foreman_params, entity, params)
+        module.run(params=params)
 
 
 if __name__ == '__main__':
