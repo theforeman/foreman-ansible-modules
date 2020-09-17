@@ -66,6 +66,11 @@ The collection is also available as `ansible-collection-theforeman-foreman` from
 
 After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.
 
+## Using the modules
+
+Please see [the Plugin Index](https://theforeman.org/plugins/foreman-ansible-modules/) for the list of plugins in the theforeman.foreman collection.
+You'll find examples on the individual plugin pages.
+
 ## Dependencies
 
 These dependencies are required for the Ansible controller, not the Foreman server. 
