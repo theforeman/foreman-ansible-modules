@@ -52,9 +52,7 @@ options:
     required: false
     type: str
   operatingsystem:
-    description: Operating system that will be deployed using the image
     required: true
-    type: str
   architecture:
     description: architecture of the image
     required: true
@@ -66,6 +64,7 @@ options:
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.operatingsystem
 '''
 
 EXAMPLES = '''

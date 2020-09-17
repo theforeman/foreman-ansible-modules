@@ -30,10 +30,7 @@ author:
   - "Matthias M Dellweg (@mdellweg) ATIX AG"
 options:
   operatingsystem:
-    description:
-      - Title of the Operating System (name, or name and major version, that uniquely identifies the OS)
     required: true
-    type: str
   template_kind:
     description:
       - name of the template kind
@@ -47,6 +44,7 @@ options:
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
+  - theforeman.foreman.foreman.operatingsystem
 '''
 
 EXAMPLES = '''

@@ -121,6 +121,7 @@ extends_documentation_fragment:
   - theforeman.foreman.foreman.entity_state
   - theforeman.foreman.foreman.host_options
   - theforeman.foreman.foreman.nested_parameters
+  - theforeman.foreman.foreman.operatingsystem
 '''
 
 EXAMPLES = '''

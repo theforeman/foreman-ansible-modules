@@ -85,15 +85,11 @@ options:
   updated_name:
     description: New provisioning template name. When this parameter is set, the module will not be idempotent.
     type: str
-  operatingsystems:
-    description: The Operatingsystems the template shall be assigned to
-    required: false
-    type: list
-    elements: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
   - theforeman.foreman.foreman.taxonomy
+  - theforeman.foreman.foreman.operatingsystems
 '''
 
 EXAMPLES = '''
