@@ -32,6 +32,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 * `compute_resource` can leak sensitive data if used within a loop. According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. You can prevent this by using `no_log: yes` on the task.
   
   eg:
+
    ```yaml
    - name: Create compute resources
      compute_resource:
@@ -83,7 +84,7 @@ But be sure to check out the other plugins too, this collection can do much much
 
 ## Dependencies
 
-These dependencies are required for the Ansible controller, not the Foreman server. 
+These dependencies are required for the Ansible controller, not the Foreman server.
 
 * `PyYAML`
 * [`apypie`](https://pypi.org/project/apypie/)
