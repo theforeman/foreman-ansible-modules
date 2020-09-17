@@ -61,6 +61,7 @@ extends_documentation_fragment:
   - theforeman.foreman.foreman.taxonomy
   - theforeman.foreman.foreman.nested_parameters
   - theforeman.foreman.foreman.host_options
+  - theforeman.foreman.foreman.operatingsystem
 '''
 
 EXAMPLES = '''

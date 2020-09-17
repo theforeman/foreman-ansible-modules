@@ -36,14 +36,10 @@ options:
   updated_name:
     description: New architecture name. When this parameter is set, the module will not be idempotent.
     type: str
-  operatingsystems:
-    description: List of operating systems the architecture should be assigned to
-    required: false
-    type: list
-    elements: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.operatingsystems
 '''
 
 EXAMPLES = '''
