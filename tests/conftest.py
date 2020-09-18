@@ -55,6 +55,7 @@ TEST_PLAYBOOKS = [
     'setting',
     'smart_class_parameter',
     'snapshot',
+    'status_info',
     'subnet',
     'sync_plan',
     'templates_import',
