@@ -425,7 +425,7 @@ class ForemanAnsibleModule(AnsibleModule):
             verify_ssl=self._foremanapi_validate_certs,
         )
 
-        self.ping()
+        self.status()
 
         self._patch_templates_resource_name()
         self._patch_location_api()
@@ -434,7 +434,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self.check_required_plugins()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
-    def ping(self):
+    def status(self):
         return self.foremanapi.resource('home').call('status')
 
     def _resource(self, resource):
