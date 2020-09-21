@@ -96,6 +96,7 @@ options:
       - "Internal DB"
       - "Random DB"
       - "EUI-64"
+      - "External IPAM"
       - "None"
     type: str
   dhcp_proxy:
@@ -131,6 +132,10 @@ options:
     required: false
     type: list
     elements: str
+  externalipam_proxy:
+    description: External IPAM proxy for this subnet
+    required: false
+    type: str
   vlanid:
     description: VLAN ID
     required: false
@@ -226,7 +231,7 @@ def main():
             from_ip=dict(flat_name='from'),
             to_ip=dict(flat_name='to'),
             boot_mode=dict(choices=['DHCP', 'Static'], default='DHCP'),
-            ipam=dict(choices=['DHCP', 'Internal DB', 'Random DB', 'EUI-64', 'None'], default='DHCP'),
+            ipam=dict(choices=['DHCP', 'Internal DB', 'Random DB', 'EUI-64', 'External IPAM', 'None'], default='DHCP'),
             dhcp_proxy=dict(type='entity', flat_name='dhcp_id', resource_type='smart_proxies'),
             httpboot_proxy=dict(type='entity', flat_name='httpboot_id', resource_type='smart_proxies'),
             tftp_proxy=dict(type='entity', flat_name='tftp_id', resource_type='smart_proxies'),
@@ -234,6 +239,7 @@ def main():
             dns_proxy=dict(type='entity', flat_name='dns_id', resource_type='smart_proxies'),
             template_proxy=dict(type='entity', flat_name='template_id', resource_type='smart_proxies'),
             remote_execution_proxies=dict(type='entity_list', resource_type='smart_proxies'),
+            externalipam_proxy=dict(type='entity', flat_name='externalipam_id', resource_type='smart_proxies'),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
         ),
