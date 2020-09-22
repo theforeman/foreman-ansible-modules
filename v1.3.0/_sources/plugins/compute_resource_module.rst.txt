@@ -1,0 +1,788 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.compute_resource_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.compute_resource -- Manage Compute Resources
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_.
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.compute_resource`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create, update, and delete Compute Resources
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- apypie
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>compute resource description</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                    <b>locations</b>
+                    <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of locations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>compute resource name</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                    <b>organizations</b>
+                    <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of organizations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password of the user accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-provider"></div>
+                    <b>provider</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>vmware</li>
+                                                                                                                                                                                                <li>libvirt</li>
+                                                                                                                                                                                                <li>ovirt</li>
+                                                                                                                                                                                                <li>proxmox</li>
+                                                                                                                                                                                                <li>EC2</li>
+                                                                                                                                                                                                <li>AzureRm</li>
+                                                                                                                                                                                                <li>GCE</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Compute resource provider. Required if <em>state=present_with_defaults</em>.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params"></div>
+                    <b>provider_params</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Parameter specific to compute resource provider. Required if <em>state=present_with_defaults</em>.</div>
+                                                        </td>
+            </tr>
+                                        <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/app_ident"></div>
+                    <b>app_ident</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/app_ident" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>AzureRM client id</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/caching_enabled"></div>
+                    <b>caching_enabled</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/caching_enabled" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>enable caching for <em>provider=vmware</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/datacenter"></div>
+                    <b>datacenter</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/datacenter" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Datacenter the compute resource is in, not valid for <em>provider=libvirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/display_type"></div>
+                    <b>display_type</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/display_type" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Display type to use for the remote console, only valid for <em>provider=libvirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/email"></div>
+                    <b>email</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/email" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Email for <em>provider=GCE</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/key_path"></div>
+                    <b>key_path</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/key_path" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Certificate path for <em>provider=GCE</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/ovirt_quota"></div>
+                    <b>ovirt_quota</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/ovirt_quota" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>oVirt quota ID, only valid for <em>provider=ovirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password for the compute resource connection, not valid for <em>provider=libvirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/project"></div>
+                    <b>project</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/project" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Project id for <em>provider=GCE</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/region"></div>
+                    <b>region</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/region" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>AWS region, AZURE region</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/ssl_verify_peer"></div>
+                    <b>ssl_verify_peer</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/ssl_verify_peer" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>verify ssl from provider <em>provider=proxmox</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/tenant"></div>
+                    <b>tenant</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/tenant" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>AzureRM tenant</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/url"></div>
+                    <b>url</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the compute resource</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/use_v4"></div>
+                    <b>use_v4</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/use_v4" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Use oVirt API v4, only valid for <em>provider=ovirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/user"></div>
+                    <b>user</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/user" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username for the compute resource connection, not valid for <em>provider=libvirt</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provider_params/zone"></div>
+                    <b>zone</b>
+                    <a class="ansibleOptionLink" href="#parameter-provider_params/zone" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>zone for <em>provider=GCE</em></div>
+                                                        </td>
+            </tr>
+                    
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                    <b>server_url</b>
+                    <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>present_with_defaults</li>
+                                                                                                                                                                                                <li>absent</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>State of the entity</div>
+                                            <div><code>present_with_defaults</code> will ensure the entity exists, but won&#x27;t update existing ones</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+                    <b>updated_name</b>
+                    <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>new compute resource name</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                    <b>username</b>
+                    <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                    <b>validate_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create livirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: libvirt
+        provider_params:
+          url: libvirt.example.com
+          display_type: vnc
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Update libvirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        description: updated compute resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: libvirt
+        provider_params:
+          url: libvirt.example.com
+          display_type: vnc
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Delete libvirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: absent
+
+    - name: Create vmware compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: vmware
+        provider_params:
+          caching_enabled: false
+          url: vsphere.example.com
+          user: admin
+          password: secret
+          datacenter: ax01
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Create ovirt compute resource
+      theforeman.foreman.compute_resource:
+        name: ovirt_compute_resource
+        locations:
+          - France/Toulouse
+        organizations:
+          - Example Org
+        provider: ovirt
+        provider_params:
+          url: ovirt.example.com
+          user: ovirt-admin@example.com
+          password: ovirtsecret
+          datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
+          ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
+          use_v4: true
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Create proxmox compute resource
+      theforeman.foreman.compute_resource:
+        name: proxmox_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: proxmox
+        provider_params:
+          url: https://proxmox.example.com:8006/api2/json
+          user: root@pam
+          password: secretpassword
+          ssl_verify_peer: true
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create EC2 compute resource
+      theforeman.foreman.compute_resource:
+        name: EC2_compute_resource
+        description: EC2
+        locations:
+          - AWS
+        organizations:
+          - ACME
+        provider: EC2
+        provider_params:
+          user: AWS_ACCESS_KEY
+          password: AWS_SECRET_KEY
+          region: eu-west-1
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create Azure compute resource
+      theforeman.foreman.compute_resource:
+        name: AzureRm_compute_resource
+        description: AzureRm
+        locations:
+          - Azure
+        organizations:
+          - ACME
+        provider: AzureRm
+        provider_params:
+          user: SUBSCRIPTION_ID
+          tenant: TENANT_ID
+          app_ident: CLIENT_ID
+          password: CLIENT_SECRET
+          region: westeurope
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create GCE compute resource
+      theforeman.foreman.compute_resource:
+        name: GCE compute resource
+        description: Google Cloud Engine
+        locations:
+          - GCE
+        organizations:
+          - ACME
+        provider: GCE
+        provider_params:
+          project: orcharhino
+          email: myname@atix.de
+          key_path: "/usr/share/foreman/gce_orcharhino_key.json"
+          zone: europe-west3-b
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-entity"></div>
+                    <b>entity</b>
+                    <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>Final state of the affected entities grouped by their type.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                        <tr>
+                                    <td class="elbow-placeholder">&nbsp;</td>
+                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-entity/compute_resources"></div>
+                    <b>compute_resources</b>
+                    <a class="ansibleOptionLink" href="#return-entity/compute_resources" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                       / <span style="color: purple">elements=dictionary</span>                    </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>List of compute resources.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                    
+                        </table>
+    <br/><br/>
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Philipp Joos (@philippj)
+- Baptiste Agasse (@bagasse)
+- Manisha Singhal (@Manisha15) ATIX AG
+- Mark Hlawatschek (@hlawatschek) ATIX AG
+
+
+
+.. Parsing errors
+

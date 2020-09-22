@@ -1,0 +1,683 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>theforeman.foreman.provisioning_template – Manage Provisioning Templates &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Plugin Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>theforeman.foreman.provisioning_template – Manage Provisioning Templates</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/provisioning_template_module.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="ansible-collections-theforeman-foreman-provisioning-template-module"></span><div class="section" id="theforeman-foreman-provisioning-template-manage-provisioning-templates">
+<h1>theforeman.foreman.provisioning_template – Manage Provisioning Templates<a class="headerlink" href="#theforeman-foreman-provisioning-template-manage-provisioning-templates" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a>.</p>
+<p>To install it use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.provisioning_template</span></code>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
+</ul>
+</div>
+<div class="section" id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Manage Provisioning Templates</p></li>
+</ul>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>apypie</p></li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<table  border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="1">Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+                    <th width="100%">Comments</th>
+    </tr>
+                <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-audit_comment"></div>
+                <b>audit_comment</b>
+                <a class="ansibleOptionLink" href="#parameter-audit_comment" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Content of the audit comment field</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-file_name"></div>
+                <b>file_name</b>
+                <a class="ansibleOptionLink" href="#parameter-file_name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">path</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>The path of a template file, that shall be imported.</div>
+                                        <div>Either this or <em>template</em> is required as a source for the Provisioning Template &quot;content&quot;.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-kind"></div>
+                <b>kind</b>
+                <a class="ansibleOptionLink" href="#parameter-kind" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>Bootdisk</li>
+                                                                                                                                                                                            <li>cloud-init</li>
+                                                                                                                                                                                            <li>finish</li>
+                                                                                                                                                                                            <li>iPXE</li>
+                                                                                                                                                                                            <li>job_template</li>
+                                                                                                                                                                                            <li>kexec</li>
+                                                                                                                                                                                            <li>POAP</li>
+                                                                                                                                                                                            <li>provision</li>
+                                                                                                                                                                                            <li>ptable</li>
+                                                                                                                                                                                            <li>PXEGrub</li>
+                                                                                                                                                                                            <li>PXEGrub2</li>
+                                                                                                                                                                                            <li>PXELinux</li>
+                                                                                                                                                                                            <li>registration</li>
+                                                                                                                                                                                            <li>script</li>
+                                                                                                                                                                                            <li>snippet</li>
+                                                                                                                                                                                            <li>user_data</li>
+                                                                                                                                                                                            <li>ZTP</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>The provisioning template kind</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                <b>locations</b>
+                <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of locations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-locked"></div>
+                <b>locked</b>
+                <a class="ansibleOptionLink" href="#parameter-locked" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li>yes</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Determines whether the template shall be locked</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                <b>name</b>
+                <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>The name of the Provisioning Template.</div>
+                                        <div>If omited, will be determined from the <code>name</code> header of the template or the filename (in that order).</div>
+                                        <div>The special value &quot;*&quot; can be used to perform bulk actions (modify, delete) on all existing templates.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-operatingsystems"></div>
+                <b>operatingsystems</b>
+                <a class="ansibleOptionLink" href="#parameter-operatingsystems" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of operating systems the entity should be assigned to.</div>
+                                        <div>Operating systems are looked up by their title which is composed as &quot;&lt;name&gt; &lt;major&gt;.&lt;minor&gt;&quot;.</div>
+                                        <div>You can omit the version part as long as you only have one operating system by that name.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                <b>organizations</b>
+                <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of organizations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                <b>password</b>
+                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Password of the user accessing the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                <b>server_url</b>
+                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>URL of the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                <b>state</b>
+                <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>present_with_defaults</li>
+                                                                                                                                                                                            <li>absent</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>State of the entity</div>
+                                        <div><code>present_with_defaults</code> will ensure the entity exists, but won&#x27;t update existing ones</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-template"></div>
+                <b>template</b>
+                <a class="ansibleOptionLink" href="#parameter-template" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>The content of the provisioning template.</div>
+                                        <div>Either this or <em>file_name</em> is required as a source for the Provisioning Template &quot;content&quot;.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+                <b>updated_name</b>
+                <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>New provisioning template name. When this parameter is set, the module will not be idempotent.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                <b>username</b>
+                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Username accessing the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                <b>validate_certs</b>
+                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                    </table>
+<br/></div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep in mind, that in this case, the inline parameters will be overwritten</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Provisioning</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">inline&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A New Finish Template</span>
+    <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">finish</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">&lt;%#</span>
+          <span class="no">name: Finish timetravel</span>
+          <span class="no">kind: finish</span>
+      <span class="no">%&gt;</span>
+      <span class="no">cd /</span>
+      <span class="no">rm -rf *</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Gallifrey</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TARDIS INC</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Provisioning</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">file&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">file_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">timeywimey_template.erb</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Gallifrey</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TARDIS INC</span>
+
+<span class="c1"># Due to the module logic, deleting requires a template dummy,</span>
+<span class="c1"># either inline or from a file.</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Delete</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Provisioning</span><span class="nv"> </span><span class="s">Template&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">timeywimey_template</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+      <span class="no">&lt;%#</span>
+          <span class="no">dummy:</span>
+      <span class="no">%&gt;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Provisioning</span><span class="nv"> </span><span class="s">Template</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">file</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">modify</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">parameter&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">file_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">timeywimey_template.erb</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Wibbly Wobbly Template</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Gallifrey</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">TARDIS INC</span>
+
+<span class="c1"># Providing a name in this case wouldn&#39;t be very sensible.</span>
+<span class="c1"># Alternatively make use of with_filetree to parse recursively with filter.</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Parsing</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">directory</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">provisioning</span><span class="nv"> </span><span class="s">templates&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">file_name</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item</span> <span class="cp">}}</span><span class="s">&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">SKARO</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DALEK INC</span>
+    <span class="nt">with_fileglob</span><span class="p">:</span>
+       <span class="p p-Indicator">-</span> <span class="s">&quot;./arsenal_templates/*.erb&quot;</span>
+
+<span class="c1"># If the templates are stored locally and the ansible module is executed on a remote host</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Ensure latest version of all Provisioning Community Templates</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">template</span><span class="p">:</span> <span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s2">&quot;file&quot;</span><span class="o">,</span> <span class="nv">item.src</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&#39;</span>
+  <span class="nt">with_filetree</span><span class="p">:</span> <span class="s">&#39;/path/to/provisioning/templates&#39;</span>
+  <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">item.state == &#39;file&#39;</span>
+
+
+<span class="c1"># with name set to &quot;*&quot; bulk actions can be performed</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Delete</span><span class="nv"> </span><span class="s">*ALL*</span><span class="nv"> </span><span class="s">provisioning</span><span class="nv"> </span><span class="s">templates&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;*&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Assign</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">provisioning</span><span class="nv"> </span><span class="s">templates</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">organization(s)&quot;</span>
+  <span class="nt">theforeman.foreman.provisioning_template</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;*&quot;</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DALEK INC</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">sky.net</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Doc Brown&#39;s garage</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-values">
+<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v2.9)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="2">Key</th>
+        <th>Returned</th>
+        <th width="100%">Description</th>
+    </tr>
+                <tr>
+                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="return-entity"></div>
+                <b>entity</b>
+                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">dictionary</span>
+                                      </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>Final state of the affected entities grouped by their type.</div>
+                                    <br/>
+                                </td>
+        </tr>
+                                    <tr>
+                                <td class="elbow-placeholder">&nbsp;</td>
+                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="return-entity/provisioning_templates"></div>
+                <b>provisioning_templates</b>
+                <a class="ansibleOptionLink" href="#return-entity/provisioning_templates" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">list</span>
+                   / <span style="color: purple">elements=dictionary</span>                    </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>List of provisioning templates.</div>
+                                    <br/>
+                                </td>
+        </tr>
+
+                    </table>
+<br/><br/><div class="section" id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Bernhard Hopfenmueller (&#64;Fobhep) ATIX AG</p></li>
+<li><p>Matthias Dellweg (&#64;mdellweg) ATIX AG</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, The Foreman Project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
