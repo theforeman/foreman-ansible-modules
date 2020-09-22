@@ -210,6 +210,7 @@ options:
       - iPXE UEFI HTTP
       - iPXE Chain BIOS
       - iPXE Chain UEFI
+      - None
     type: str
   ptable:
     description: Partition table name
