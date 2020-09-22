@@ -6,6 +6,29 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v1.3.0
+======
+
+Minor Changes
+-------------
+
+- external_usergroup - rename the ``auth_source_ldap`` parameter to ``auth_source`` (``auth_source_ldap`` is still supported via an alias)
+- server URL and credentials can now also be specified using environment variables (https://github.com/theforeman/foreman-ansible-modules/issues/837)
+- subnet - add support for external IPAM (https://github.com/theforeman/foreman-ansible-modules/issues/966)
+
+Bugfixes
+--------
+
+- content_view - remove CVs from lifecycle environments before deleting them (https://bugzilla.redhat.com/show_bug.cgi?id=1875314)
+- external_usergroup - support non-LDAP external groups (https://github.com/theforeman/foreman-ansible-modules/issues/956)
+- host - properly scope image lookups by the compute resource (https://bugzilla.redhat.com/show_bug.cgi?id=1878693)
+- inventory plugin - include empty parent groups in the inventory (https://github.com/theforeman/foreman-ansible-modules/issues/919)
+
+New Modules
+-----------
+
+- theforeman.foreman.status_info - Get status info
+
 v1.2.0
 ======
 
