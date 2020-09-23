@@ -22,7 +22,7 @@ DOCUMENTATION = '''
 ---
 module: job_invocation
 short_description: Manage Job Invocations
-version_added: 1.2.0
+version_added: 1.4.0
 description:
   - "Manage Remote Execution Job Invocations"
 author:
@@ -67,10 +67,6 @@ options:
           - What user should be used to run the script (using sudo-like mechanisms)
           - Defaults to a template parameter or global setting
         type: str
-  feature:
-    description:
-      - Remote execution feature label that should be triggered, job template assigned to this feature will be used
-    type: str
   command:
     description:
       - Command to be executed on host. Required for command templates
@@ -124,7 +120,6 @@ options:
         type: int
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.entity_state
   - theforeman.foreman.foreman.taxonomy
 '''
 
@@ -149,10 +144,20 @@ EXAMPLES = '''
       concurrency_level: 2
 '''
 
-RETURN = ''' # '''
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    job_invocations:
+      description: List of job invocations
+      type: list
+      elements: dict
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
-    ForemanTaxonomicEntityAnsibleModule,
+    ForemanTaxonomicAnsibleModule,
 )
 
 ssh_foreman_spec = {
@@ -176,7 +181,7 @@ concurrency_control_foreman_spec = {
 }
 
 
-class ForemanJobInvocationModule(ForemanTaxonomicEntityAnsibleModule):
+class ForemanJobInvocationModule(ForemanTaxonomicAnsibleModule):
     pass
 
 
@@ -188,7 +193,6 @@ def main():
             job_template=dict(required=True, type='entity'),
             targeting_type=dict(default='static_query', choices=['static_query', 'dynamic_query']),
             randomized_ordering=dict(type='bool'),
-            feature=dict(),
             command=dict(),
             inputs=dict(type='dict'),
             execution_timeout_interval=dict(type='int'),
@@ -202,7 +206,6 @@ def main():
             ['job_template', 'Run Command - SSH Default', ['command']],
             ['job_template', 'Run Command - Ansible Default', ['command']],
         ],
-        entity_opts={'search_by': 'description'}
     )
 
     # command input required by api
@@ -215,7 +218,12 @@ def main():
                 module.foreman_params['bookmark']),
                 failsafe=False,
             ))
-        module.run()
+        module.auto_lookup_entities()
+        entity = module.lookup_entity('entity')
+        if entity is None:
+            module.ensure_entity('job_invocations', module.foreman_params, entity, state='present')
+        else:
+            module.fail_json(msg="You cannot update an existing job_invocation")
 
 
 if __name__ == '__main__':
