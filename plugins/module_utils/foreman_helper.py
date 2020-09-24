@@ -680,6 +680,25 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return updated_entity
 
+    def _validate_supported_payload(self, resource, action, payload):
+        """Check whether the payload only contains supported keys.
+            Emits a warning for keys that are not part of the apidoc.
+
+            Parameters:
+                resource (string): Plural name of the api resource to check
+                action (string): Name of the action to check payload against
+                payload (dict): API paylod to be checked
+            Return value:
+                The payload as it can be submitted to the API
+        """
+        filtered_payload = self._resource_prepare_params(resource, action, payload)
+        # On Python 2 dict.keys() is just a list, but we need a set here.
+        unsupported_parameters = set(payload.keys()) - set(filtered_payload.keys())
+        if unsupported_parameters:
+            warn_msg = "The following parameters are not supported by your server when performing {0} on {1}: {2}. They were ignored."
+            self.warn(warn_msg.format(action, resource, unsupported_parameters))
+        return filtered_payload
+
     def _create_entity(self, resource, desired_entity, params, foreman_spec):
         """Create entity with given properties
 
@@ -692,6 +711,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 The new current state if the entity
         """
         payload = _flatten_entity(desired_entity, foreman_spec)
+        self._validate_supported_payload(resource, 'create', payload)
         if not self.check_mode:
             if params:
                 payload.update(params)
@@ -737,7 +757,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 old_value = sorted(old_value, key=operator.itemgetter(sort_key))
             if new_value != old_value:
                 payload[key] = value
-        if payload:
+        if self._validate_supported_payload(resource, 'update', payload):
             payload['id'] = current_entity['id']
             if not self.check_mode:
                 if params:
