@@ -103,6 +103,7 @@ class KatelloMixin():
         self._patch_organization_update_api()
         self._patch_subscription_index_api()
         self._patch_sync_plan_api()
+        self._patch_cv_filter_rule_api()
 
     def _patch_content_uploads_update_api(self):
         """This is a workaround for the broken content_uploads update apidoc in katello.
@@ -169,6 +170,22 @@ class KatelloMixin():
         _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
         if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
             _sync_plan_remove_products['params'].append(_organization_parameter)
+
+    def _patch_cv_filter_rule_api(self):
+        """This is a workaround for missing params of CV Filter Rule update controller in Katello.
+           See https://projects.theforeman.org/issues/30908
+        """
+
+        _content_view_filter_rule_methods = self.foremanapi.apidoc['docs']['resources']['content_view_filter_rules']['methods']
+
+        _content_view_filter_rule_create = next(x for x in _content_view_filter_rule_methods if x['name'] == 'create')
+        _content_view_filter_rule_update = next(x for x in _content_view_filter_rule_methods if x['name'] == 'update')
+
+        for param_name in ['uuid', 'errata_ids', 'date_type', 'module_stream_ids']:
+            create_param = next((x for x in _content_view_filter_rule_create['params'] if x['name'] == param_name), None)
+            update_param = next((x for x in _content_view_filter_rule_update['params'] if x['name'] == param_name), None)
+            if create_param is not None and update_param is None:
+                _content_view_filter_rule_update['params'].append(create_param)
 
 
 class TaxonomyMixin(object):
