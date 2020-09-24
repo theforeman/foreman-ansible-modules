@@ -710,7 +710,7 @@ class ForemanAnsibleModule(AnsibleModule):
         """
         filtered_payload = self._resource_prepare_params(resource, action, payload)
         # On Python 2 dict.keys() is just a list, but we need a set here.
-        unsupported_parameters = set(payload.keys()) - set(filtered_payload.keys())
+        unsupported_parameters = set(payload.keys()) - set(_recursive_dict_keys(filtered_payload))
         if unsupported_parameters:
             warn_msg = "The following parameters are not supported by your server when performing {0} on {1}: {2}. They were ignored."
             self.warn(warn_msg.format(action, resource, unsupported_parameters))
@@ -1253,6 +1253,15 @@ def _flatten_entity(entity, foreman_spec):
             else:
                 result[flat_name] = value
     return result
+
+
+def _recursive_dict_keys(a_dict):
+    """Find all keys of a nested dictionary"""
+    keys = set(a_dict.keys())
+    for _k, v in a_dict.items():
+        if isinstance(v, dict):
+            keys.update(_recursive_dict_keys(v))
+    return keys
 
 
 # Helper for (global, operatingsystem, ...) parameters
