@@ -114,7 +114,7 @@ doc-setup:
 	pip install -r docs/requirements.txt
 doc: $(MANIFEST)
 	mkdir -p ./docs/plugins
-	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins theforeman.foreman
+	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins $(NAMESPACE).$(NAME)
 	make -C docs html
 
 FORCE:
