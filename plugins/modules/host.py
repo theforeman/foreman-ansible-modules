@@ -116,6 +116,126 @@ options:
       - When this parameter is set, the module will not be idempotent.
     type: dict
     required: false
+  interfaces_attributes:
+    description:
+      - Additional interfaces specific attributes.
+    required: false
+    type: list
+    elements: dict
+    suboptions:
+      mac:
+        description:
+          - MAC address of interface. Required for managed interfaces on bare metal.
+        type: str
+      ip:
+        description:
+          - IPv4 address of interface
+        type: str
+      ip6:
+        description:
+          - IPv6 address of interface
+        type: str
+      type:
+        description:
+          - Interface type.
+        type: str
+        choices:
+          - 'interface'
+          - 'bmc'
+          - 'bond'
+          - 'bridge'
+      name:
+        description:
+          - Interface's DNS name
+        type: str
+      subnet_id:
+        description:
+          - Foreman subnet ID of IPv4 interface
+        type: int
+      subnet6_id:
+        description:
+          - Foreman subnet ID of IPv6 interface
+        type: int
+      domain_id:
+        description:
+          - Foreman domain ID of interface. Required for primary interfaces on managed hosts.
+        type: int
+      identifier:
+        description:
+          - Device identifier, e.g. eth0 or eth1.1
+        type: str
+      managed:
+        description:
+          - Should this interface be managed via DHCP and DNS smart proxy and should it be configured during provisioning?
+        type: bool
+      primary:
+        description:
+          - Should this interface be used for constructing the FQDN of the host?
+          - Each managed hosts needs to have one primary interface.
+        type: bool
+      provision:
+        description:
+          - Should this interface be used for TFTP of PXELinux (or SSH for image-based hosts)?
+          - Each managed hosts needs to have one provision interface.
+        type: bool
+      username:
+        description:
+          - Only for BMC interfaces.
+        type: str
+      password:
+        description:
+          - Only for BMC interfaces.
+        type: str
+      provider:
+        description:
+          - Interface provider, e.g. IPMI. Only for BMC interfaces.
+        type: str
+        choices:
+          - 'IPMI'
+          - 'SSH'
+      virtual:
+        description:
+          - Alias or VLAN device
+        type: bool
+      tag:
+        description:
+          - VLAN tag, this attribute has precedence over the subnet VLAN ID. Only for virtual interfaces.
+        type: str
+      mtu:
+        description:
+          - MTU, this attribute has precedence over the subnet MTU.
+        type: int
+      attached_to:
+        description:
+          - Identifier of the interface to which this interface belongs, e.g. eth1. Only for virtual interfaces.
+        type: str
+      mode:
+        description:
+          - Bond mode of the interface, e.g. balance-rr. Only for bond interfaces.
+        type: str
+        choices:
+          - 'balance-rr'
+          - 'active-backup'
+          - 'balance-xor'
+          - 'broadcast'
+          - '802.3ad'
+          - 'balance-tlb'
+          - 'balance-alb'
+      attached_devices:
+        description:
+          - Identifiers of attached interfaces, e.g. ['eth1', 'eth2'].
+          - For bond interfaces those are the slaves. Only for bond and bridges interfaces.
+        type: list
+        elements: str
+      bond_options:
+        description:
+          - Space separated options, e.g. miimon=100. Only for bond interfaces.
+        type: str
+      compute_attributes:
+        description:
+          - Additional compute resource specific attributes for the interface.
+          - When this parameter is set, the module will not be idempotent.
+        type: dict
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -174,6 +294,42 @@ EXAMPLES = '''
       start: "1"
     state: present
 
+- name: "Create a VM on specific ovirt network"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    interfaces_attributes:
+    - type: "interface"
+      compute_attributes:
+        name: "nic1"
+        network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
+        interface: "virtio"
+    state: present
+
+- name: "Create a VM with 2 NICs on specific ovirt networks"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    interfaces_attributes:
+    - type: "interface"
+      primary: true
+      compute_attributes:
+        name: "nic1"
+        network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
+        interface: "virtio"
+    - type: "interface"
+      name: "new_host_nic2"
+      managed: true
+      compute_attributes:
+        name: "nic2"
+        network: "969efbe6-f9e0-4383-a19a-a7ee65ad5008"
+        interface: "e1000"
+    state: present
+
 - name: "Delete a host"
   theforeman.foreman.host:
     username: "admin"
@@ -225,6 +381,39 @@ def main():
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
+            interfaces_attributes=dict(type='list', elements='dict', options=dict(
+                mac=dict(),
+                ip=dict(),
+                ip6=dict(),
+                type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
+                name=dict(),
+                subnet_id=dict(type='int'),
+                subnet6_id=dict(type='int'),
+                domain_id=dict(type='int'),
+                identifier=dict(),
+                managed=dict(type='bool'),
+                primary=dict(type='bool'),
+                provision=dict(type='bool'),
+                username=dict(),
+                password=dict(no_log=True),
+                provider=dict(choices=['IPMI', 'SSH']),
+                virtual=dict(type='bool'),
+                tag=dict(),
+                mtu=dict(type='int'),
+                attached_to=dict(),
+                mode=dict(choices=[
+                    'balance-rr',
+                    'active-backup',
+                    'balance-xor',
+                    'broadcast',
+                    '802.3ad',
+                    'balance-tlb',
+                    'balance-alb',
+                ]),
+                attached_devices=dict(type='list', elements='str'),
+                bond_options=dict(),
+                compute_attributes=dict(type='dict'),
+            )),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
@@ -255,6 +444,10 @@ def main():
             module.foreman_params['owner_type'] = 'User'
         elif 'owner_group' in module.foreman_params:
             module.foreman_params['owner_type'] = 'Usergroup'
+
+        if 'interfaces_attributes' in module.foreman_params:
+            filtered = [nic for nic in ({k: v for k, v in obj.items() if v} for obj in module.foreman_params['interfaces_attributes']) if nic]
+            module.foreman_params['interfaces_attributes'] = filtered
 
     with module.api_connection():
         if not module.desired_absent:
