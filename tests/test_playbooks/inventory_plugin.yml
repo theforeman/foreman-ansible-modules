@@ -10,6 +10,7 @@
     foreman_hosts:
       testhost1.example.com: group_a
       testhost2.example.com: group_b/group_c
+    foreman_version: '2.1.2'
   collections:
     - community.general
     - theforeman.foreman
@@ -21,7 +22,7 @@
 
     - name: fetch Foreman container
       docker_image:
-        name: quay.io/foreman/foreman:2.1-stable
+        name: quay.io/foreman/foreman:{{ foreman_version }}
         source: pull
 
     - name: start PostgreSQL container
@@ -39,7 +40,7 @@
     - name: start Foreman container
       docker_container:
         name: foreman
-        image: quay.io/foreman/foreman:2.1-stable
+        image: quay.io/foreman/foreman:{{ foreman_version }}
         command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
         env:
           SEED_ADMIN_PASSWORD: changeme
