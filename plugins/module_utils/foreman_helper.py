@@ -302,7 +302,9 @@ class ForemanAnsibleModule(AnsibleModule):
     """ Baseclass for all foreman related Ansible modules.
         It handles connection parameters and adds the concept of the `foreman_spec`.
         This adds automatic entities resolution based on provided attributes/ sub entities options.
+
         It adds the following options to foreman_spec 'entity' and 'entity_list' types:
+
         * search_by (str): Field used to search the sub entity. Defaults to 'name' unless `parent` was set, in which case it defaults to `title`.
         * search_operator (str): Operator used to search the sub entity. Defaults to '='. For fuzzy search use '~'.
         * resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
@@ -649,17 +651,24 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @_exception2fail_json(msg='Failed to ensure entity state: {0}')
     def ensure_entity(self, resource, desired_entity, current_entity, params=None, state=None, foreman_spec=None):
-        """Ensure that a given entity has a certain state
+        """
+        Ensure that a given entity has a certain state
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                desired_entity (dict): Desired properties of the entity
-                current_entity (dict, None): Current properties of the entity or None if nonexistent
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-                state (dict): Desired state of the entity (optionally taken from the module)
-                foreman_spec (dict): Description of the entity structure (optionally taken from module)
-            Return value:
-                The new current state of the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param desired_entity: Desired properties of the entity
+        :type desired_entity: dict
+        :param current_entity: Current properties of the entity or None if nonexistent
+        :type current_entity: Union[dict,None]
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+        :param state: Desired state of the entity (optionally taken from the module)
+        :type state: str, optional
+        :param foreman_spec: Description of the entity structure (optionally taken from module)
+        :type foreman_spec: dict, optional
+
+        :return: The new current state of the entity
+        :rtype: Union[dict,None]
         """
         if state is None:
             state = self.state
@@ -698,15 +707,19 @@ class ForemanAnsibleModule(AnsibleModule):
         return updated_entity
 
     def _validate_supported_payload(self, resource, action, payload):
-        """Check whether the payload only contains supported keys.
-            Emits a warning for keys that are not part of the apidoc.
+        """
+        Check whether the payload only contains supported keys.
+        Emits a warning for keys that are not part of the apidoc.
 
-            Parameters:
-                resource (string): Plural name of the api resource to check
-                action (string): Name of the action to check payload against
-                payload (dict): API paylod to be checked
-            Return value:
-                The payload as it can be submitted to the API
+        :param resource: Plural name of the api resource to check
+        :type resource: str
+        :param action: Name of the action to check payload against
+        :type action: str
+        :param payload: API paylod to be checked
+        :type payload: dict
+
+        :return: The payload as it can be submitted to the API
+        :rtype: dict
         """
         filtered_payload = self._resource_prepare_params(resource, action, payload)
         # On Python 2 dict.keys() is just a list, but we need a set here.
@@ -717,15 +730,20 @@ class ForemanAnsibleModule(AnsibleModule):
         return filtered_payload
 
     def _create_entity(self, resource, desired_entity, params, foreman_spec):
-        """Create entity with given properties
+        """
+        Create entity with given properties
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                desired_entity (dict): Desired properties of the entity
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-                foreman_spec (dict): Description of the entity structure
-            Return value:
-                The new current state if the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param desired_entity: Desired properties of the entity
+        :type desired_entity: dict
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+        :param foreman_spec: Description of the entity structure
+        :type foreman_spec: dict
+
+        :return: The new current state of the entity
+        :rtype: dict
         """
         payload = _flatten_entity(desired_entity, foreman_spec)
         self._validate_supported_payload(resource, 'create', payload)
@@ -740,16 +758,22 @@ class ForemanAnsibleModule(AnsibleModule):
             return fake_entity
 
     def _update_entity(self, resource, desired_entity, current_entity, params, foreman_spec):
-        """Update a given entity with given properties if any diverge
+        """
+        Update a given entity with given properties if any diverge
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                desired_entity (dict): Desired properties of the entity
-                current_entity (dict): Current properties of the entity
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-                foreman_spec (dict): Description of the entity structure
-            Return value:
-                The new current state if the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param desired_entity: Desired properties of the entity
+        :type desired_entity: dict
+        :param current_entity: Current properties of the entity
+        :type current_entity: dict
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+        :param foreman_spec: Description of the entity structure
+        :type foreman_spec: dict
+
+        :return: The new current state of the entity
+        :rtype: dict
         """
         payload = {}
         desired_entity = _flatten_entity(desired_entity, foreman_spec)
@@ -791,14 +815,20 @@ class ForemanAnsibleModule(AnsibleModule):
             return current_entity
 
     def _copy_entity(self, resource, desired_entity, current_entity, params):
-        """Copy a given entity
+        """
+        Copy a given entity
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                current_entity (dict): Current properties of the entity
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-            Return value:
-                The new current state of the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param desired_entity: Desired properties of the entity
+        :type desired_entity: dict
+        :param current_entity: Current properties of the entity
+        :type current_entity: dict
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+
+        :return: The new current state of the entity
+        :rtype: dict
         """
         payload = {
             'id': current_entity['id'],
@@ -809,14 +839,18 @@ class ForemanAnsibleModule(AnsibleModule):
         return self.resource_action(resource, 'copy', payload)
 
     def _revert_entity(self, resource, current_entity, params):
-        """Revert a given entity
+        """
+        Revert a given entity
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                current_entity (dict): Current properties of the entity
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-            Return value:
-                The new current state of the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param current_entity: Current properties of the entity
+        :type current_entity: dict
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+
+        :return: The new current state of the entity
+        :rtype: dict
         """
         payload = {'id': current_entity['id']}
         if params:
@@ -824,14 +858,18 @@ class ForemanAnsibleModule(AnsibleModule):
         return self.resource_action(resource, 'revert', payload)
 
     def _delete_entity(self, resource, current_entity, params):
-        """Delete a given entity
+        """
+        Delete a given entity
 
-            Parameters:
-                resource (string): Plural name of the api resource to manipulate
-                current_entity (dict): Current properties of the entity
-                params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-            Return value:
-                The new current state of the entity
+        :param resource: Plural name of the api resource to manipulate
+        :type resource: str
+        :param current_entity: Current properties of the entity
+        :type current_entity: dict
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: dict, optional
+
+        :return: The new current state of the entity
+        :rtype: Union[dict,None]
         """
         payload = {'id': current_entity['id']}
         if params:
@@ -918,31 +956,29 @@ class ForemanAnsibleModule(AnsibleModule):
 
 class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
     """ Base class for Foreman entities without a state. To use it, subclass it with the following convention:
-        To manage my_entity entity, create the following sub class:
+        To manage my_entity entity, create the following sub class::
 
-        ```
-        class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule):
-            pass
-        ```
+            class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule):
+                pass
 
-        and use that class to instanciate module:
+        and use that class to instanciate module::
 
-        ```
-        module = ForemanMyEntityModule(
-            argument_spec=dict(
-                [...]
-            ),
-            foreman_spec=dict(
-                [...]
-            ),
-        )
-        ```
+            module = ForemanMyEntityModule(
+                argument_spec=dict(
+                    [...]
+                ),
+                foreman_spec=dict(
+                    [...]
+                ),
+            )
 
         It adds the following attributes:
+
         * entity_key (str): field used to search current entity. Defaults to value provided by `ENTITY_KEYS` or 'name' if no value found.
         * entity_name (str): name of the current entity.
           By default deduce the entity name from the class name (eg: 'ForemanProvisioningTemplateModule' class will produce 'provisioning_template').
         * entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in foreman_spec.
+
         The main entity is referenced with the key `entity` in the `foreman_spec`.
     """
 
@@ -1010,25 +1046,21 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
 
 class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
     """ Base class for Foreman entities. To use it, subclass it with the following convention:
-        To manage my_entity entity, create the following sub class:
+        To manage my_entity entity, create the following sub class::
 
-        ```
-        class ForemanMyEntityModule(ForemanEntityAnsibleModule):
-            pass
-        ```
+            class ForemanMyEntityModule(ForemanEntityAnsibleModule):
+                pass
 
-        and use that class to instanciate module:
+        and use that class to instanciate module::
 
-        ```
-        module = ForemanMyEntityModule(
-            argument_spec=dict(
-                [...]
-            ),
-            foreman_spec=dict(
-                [...]
-            ),
-        )
-        ```
+            module = ForemanMyEntityModule(
+                argument_spec=dict(
+                    [...]
+                ),
+                foreman_spec=dict(
+                    [...]
+                ),
+            )
 
         This adds a `state` parameter to the module and provides the `run` method for the most
         common usecases.
