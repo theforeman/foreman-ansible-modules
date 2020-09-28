@@ -1028,7 +1028,7 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
     @property
     def entity_name_from_class(self):
         """
-       The entity name derived from the class name.
+        The entity name derived from the class name.
 
         The class name must follow the following name convention:
 
