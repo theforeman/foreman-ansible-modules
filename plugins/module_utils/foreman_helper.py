@@ -1027,16 +1027,21 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
 
     @property
     def entity_name_from_class(self):
-        """ Convert class name to entity name. The class name must follow folowing name convention:
-            * Starts with Foreman or Katello
-            * Ends with Module
+        """
+        Convert class name to entity name.
 
-            This will concert ForemanMyEntityModule class name to my_entity entity name.
-            eg:
-            * ForemanArchitectureModule => architecture
-            * ForemanProvisioningTemplateModule => provisioning_template
-            * KatelloProductMudule => product
-            * ...
+        The class name must follow following name convention:
+
+        * Starts with ``Foreman`` or ``Katello``
+        * Ends with ``Module``
+
+        This will convert ``ForemanMyEntityModule`` class name to ``my_entity`` entity name.
+
+        Examples:
+
+        * ``ForemanArchitectureModule`` => ``architecture``
+        * ``ForemanProvisioningTemplateModule`` => ``provisioning_template``
+        * ``KatelloProductMudule`` => ``product``
         """
         # Convert current class name from CamelCase to snake_case
         class_name = re.sub(r'(?<=[a-z])[A-Z]|[A-Z](?=[^A-Z])', r'_\g<0>', self.__class__.__name__).lower().strip('_')
