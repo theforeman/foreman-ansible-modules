@@ -160,30 +160,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="foreman-helper-module">
-<span id="api"></span><h1><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module<a class="headerlink" href="#foreman-helper-module" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-plugins.module_utils.foreman_helper"></span><dl class="py class">
+  <div class="section" id="module-plugins.module_utils.foreman_helper">
+<span id="foreman-helper-module"></span><span id="api"></span><h1><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module<a class="headerlink" href="#module-plugins.module_utils.foreman_helper" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule">
 <em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Baseclass for all foreman related Ansible modules.
 It handles connection parameters and adds the concept of the <cite>foreman_spec</cite>.
-This adds automatic entities resolution based on provided attributes/ sub entities options.
-It adds the following options to foreman_spec ‘entity’ and ‘entity_list’ types:
-* search_by (str): Field used to search the sub entity. Defaults to ‘name’ unless <cite>parent</cite> was set, in which case it defaults to <cite>title</cite>.
-* search_operator (str): Operator used to search the sub entity. Defaults to ‘=’. For fuzzy search use ‘~’.
-* resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
-* resolve (boolean): Defaults to ‘True’. If set to false, the sub entity will not be resolved automatically
-* ensure (boolean): Defaults to ‘True’. If set to false, it will be removed before sending data to the foreman server.</p>
+This adds automatic entities resolution based on provided attributes/ sub entities options.</p>
+<p>It adds the following options to foreman_spec ‘entity’ and ‘entity_list’ types:</p>
+<ul class="simple">
+<li><p>search_by (str): Field used to search the sub entity. Defaults to ‘name’ unless <cite>parent</cite> was set, in which case it defaults to <cite>title</cite>.</p></li>
+<li><p>search_operator (str): Operator used to search the sub entity. Defaults to ‘=’. For fuzzy search use ‘~’.</p></li>
+<li><p>resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.</p></li>
+<li><p>resolve (boolean): Defaults to ‘True’. If set to false, the sub entity will not be resolved automatically</p></li>
+<li><p>ensure (boolean): Defaults to ‘True’. If set to false, it will be removed before sending data to the foreman server.</p></li>
+</ul>
 <dl class="py method">
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._copy_entity">
 <code class="sig-name descname">_copy_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._copy_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy a given entity</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-current_entity (dict): Current properties of the entity
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>desired_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Desired properties of the entity</p></li>
+<li><p><strong>current_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Current properties of the entity</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -192,13 +202,20 @@ params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._create_entity">
 <code class="sig-name descname">_create_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">foreman_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._create_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create entity with given properties</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-desired_entity (dict): Desired properties of the entity
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-foreman_spec (dict): Description of the entity structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>desired_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Desired properties of the entity</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+<li><p><strong>foreman_spec</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Description of the entity structure</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state if the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,12 +224,19 @@ foreman_spec (dict): Description of the entity structure</p>
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._delete_entity">
 <code class="sig-name descname">_delete_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._delete_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a given entity</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-current_entity (dict): Current properties of the entity
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>current_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Current properties of the entity</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>,<a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)">None</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -242,12 +266,19 @@ see <a class="reference external" href="https://projects.theforeman.org/issues/1
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._revert_entity">
 <code class="sig-name descname">_revert_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._revert_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Revert a given entity</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-current_entity (dict): Current properties of the entity
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>current_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Current properties of the entity</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,14 +287,21 @@ params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._update_entity">
 <code class="sig-name descname">_update_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">foreman_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._update_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update a given entity with given properties if any diverge</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-desired_entity (dict): Desired properties of the entity
-current_entity (dict): Current properties of the entity
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-foreman_spec (dict): Description of the entity structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>desired_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Desired properties of the entity</p></li>
+<li><p><strong>current_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Current properties of the entity</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+<li><p><strong>foreman_spec</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Description of the entity structure</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state if the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -273,12 +311,19 @@ foreman_spec (dict): Description of the entity structure</p>
 <code class="sig-name descname">_validate_supported_payload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">action</span></em>, <em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._validate_supported_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the payload only contains supported keys.
 Emits a warning for keys that are not part of the apidoc.</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to check
-action (string): Name of the action to check payload against
-payload (dict): API paylod to be checked</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to check</p></li>
+<li><p><strong>action</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Name of the action to check payload against</p></li>
+<li><p><strong>payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – API paylod to be checked</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The payload as it can be submitted to the API</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The payload as it can be submitted to the API</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -287,15 +332,22 @@ payload (dict): API paylod to be checked</p>
 <dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule.ensure_entity">
 <code class="sig-name descname">ensure_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">foreman_spec</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule.ensure_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensure that a given entity has a certain state</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
-desired_entity (dict): Desired properties of the entity
-current_entity (dict, None): Current properties of the entity or None if nonexistent
-params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
-state (dict): Desired state of the entity (optionally taken from the module)
-foreman_spec (dict): Description of the entity structure (optionally taken from module)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to manipulate</p></li>
+<li><p><strong>desired_entity</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Desired properties of the entity</p></li>
+<li><p><strong>current_entity</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>,</em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em>]</em>) – Current properties of the entity or None if nonexistent</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – Desired state of the entity (optionally taken from the module)</p></li>
+<li><p><strong>foreman_spec</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>, </em><em>optional</em>) – Description of the entity structure (optionally taken from module)</p></li>
+</ul>
 </dd>
-<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The new current state of the entity</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a>,<a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)">None</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -313,27 +365,21 @@ foreman_spec (dict): Description of the entity structure (optionally taken from 
 <em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for Foreman entities. To use it, subclass it with the following convention:
 To manage my_entity entity, create the following sub class:</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-class ForemanMyEntityModule(ForemanEntityAnsibleModule):</p>
-<blockquote>
-<div><p>pass</p>
-</div></blockquote>
-<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="nt">class ForemanMyEntityModule(ForemanEntityAnsibleModule)</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">pass</span>
+</pre></div>
+</div>
 <p>and use that class to instanciate module:</p>
-<p><a href="#id7"><span class="problematic" id="id8">``</span></a>`
-module = ForemanMyEntityModule(</p>
-<blockquote>
-<div><dl class="simple">
-<dt>argument_spec=dict(</dt><dd><p>[…]</p>
-</dd>
-</dl>
-<p>),
-foreman_spec=dict(</p>
-<blockquote>
-<div><p>[…]</p>
-</div></blockquote>
-<p>),</p>
-</div></blockquote>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">module = ForemanMyEntityModule(</span>
+    <span class="l l-Scalar l-Scalar-Plain">argument_spec=dict(</span>
+        <span class="l l-Scalar l-Scalar-Plain">[...]</span>
+    <span class="l l-Scalar l-Scalar-Plain">),</span>
+    <span class="l l-Scalar l-Scalar-Plain">foreman_spec=dict(</span>
+        <span class="l l-Scalar l-Scalar-Plain">[...]</span>
+    <span class="l l-Scalar l-Scalar-Plain">),</span>
+<span class="l l-Scalar l-Scalar-Plain">)</span>
+</pre></div>
+</div>
 <p>This adds a <cite>state</cite> parameter to the module and provides the <cite>run</cite> method for the most
 common usecases.</p>
 <dl class="py method">
@@ -372,34 +418,26 @@ common usecases.</p>
 <em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanStatelessEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanStatelessEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for Foreman entities without a state. To use it, subclass it with the following convention:
 To manage my_entity entity, create the following sub class:</p>
-<p><a href="#id9"><span class="problematic" id="id10">``</span></a>`
-class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule):</p>
-<blockquote>
-<div><p>pass</p>
-</div></blockquote>
-<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="nt">class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule)</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">pass</span>
+</pre></div>
+</div>
 <p>and use that class to instanciate module:</p>
-<p><a href="#id15"><span class="problematic" id="id16">``</span></a>`
-module = ForemanMyEntityModule(</p>
-<blockquote>
-<div><dl class="simple">
-<dt>argument_spec=dict(</dt><dd><p>[…]</p>
-</dd>
-</dl>
-<p>),
-foreman_spec=dict(</p>
-<blockquote>
-<div><p>[…]</p>
-</div></blockquote>
-<p>),</p>
-</div></blockquote>
-<p>It adds the following attributes:
-* entity_key (str): field used to search current entity. Defaults to value provided by <cite>ENTITY_KEYS</cite> or ‘name’ if no value found.
-* entity_name (str): name of the current entity.</p>
-<blockquote>
-<div><p>By default deduce the entity name from the class name (eg: ‘ForemanProvisioningTemplateModule’ class will produce ‘provisioning_template’).</p>
-</div></blockquote>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">module = ForemanMyEntityModule(</span>
+    <span class="l l-Scalar l-Scalar-Plain">argument_spec=dict(</span>
+        <span class="l l-Scalar l-Scalar-Plain">[...]</span>
+    <span class="l l-Scalar l-Scalar-Plain">),</span>
+    <span class="l l-Scalar l-Scalar-Plain">foreman_spec=dict(</span>
+        <span class="l l-Scalar l-Scalar-Plain">[...]</span>
+    <span class="l l-Scalar l-Scalar-Plain">),</span>
+<span class="l l-Scalar l-Scalar-Plain">)</span>
+</pre></div>
+</div>
+<p>It adds the following attributes:</p>
 <ul class="simple">
+<li><p>entity_key (str): field used to search current entity. Defaults to value provided by <cite>ENTITY_KEYS</cite> or ‘name’ if no value found.</p></li>
+<li><p>entity_name (str): name of the current entity.
+By default deduce the entity name from the class name (eg: ‘ForemanProvisioningTemplateModule’ class will produce ‘provisioning_template’).</p></li>
 <li><p>entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in foreman_spec.</p></li>
 </ul>
 <p>The main entity is referenced with the key <cite>entity</cite> in the <cite>foreman_spec</cite>.</p>
