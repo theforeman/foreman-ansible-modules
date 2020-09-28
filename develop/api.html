@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>foreman_helper module &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing Foreman Ansible Modules" href="testing.html" />
+    <link rel="prev" title="How to write modules" href="developing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugin Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developing.html">How to write modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="foreman-helper-module">
+<span id="api"></span><h1><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module<a class="headerlink" href="#foreman-helper-module" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-plugins.module_utils.foreman_helper"></span><dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Baseclass for all foreman related Ansible modules.
+It handles connection parameters and adds the concept of the <cite>foreman_spec</cite>.
+This adds automatic entities resolution based on provided attributes/ sub entities options.
+It adds the following options to foreman_spec ‘entity’ and ‘entity_list’ types:
+* search_by (str): Field used to search the sub entity. Defaults to ‘name’ unless <cite>parent</cite> was set, in which case it defaults to <cite>title</cite>.
+* search_operator (str): Operator used to search the sub entity. Defaults to ‘=’. For fuzzy search use ‘~’.
+* resource_type (str): Resource type used to build API resource PATH. Defaults to pluralized entity key.
+* resolve (boolean): Defaults to ‘True’. If set to false, the sub entity will not be resolved automatically
+* ensure (boolean): Defaults to ‘True’. If set to false, it will be removed before sending data to the foreman server.</p>
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._copy_entity">
+<code class="sig-name descname">_copy_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._copy_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a given entity</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+current_entity (dict): Current properties of the entity
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._create_entity">
+<code class="sig-name descname">_create_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">foreman_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._create_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create entity with given properties</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+desired_entity (dict): Desired properties of the entity
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+foreman_spec (dict): Description of the entity structure</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state if the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._delete_entity">
+<code class="sig-name descname">_delete_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._delete_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a given entity</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+current_entity (dict): Current properties of the entity
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_location_api">
+<code class="sig-name descname">_patch_location_api</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_location_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a workaround for the broken taxonomies apidoc in foreman.
+see <a class="reference external" href="https://projects.theforeman.org/issues/10359">https://projects.theforeman.org/issues/10359</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_subnet_rex_api">
+<code class="sig-name descname">_patch_subnet_rex_api</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_subnet_rex_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a workaround for the broken subnet apidoc in foreman remote execution.
+see <a class="reference external" href="https://projects.theforeman.org/issues/19086">https://projects.theforeman.org/issues/19086</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_templates_resource_name">
+<code class="sig-name descname">_patch_templates_resource_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._patch_templates_resource_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Need to support both singular and plural form. The resource was made plural per
+<a class="reference external" href="https://projects.theforeman.org/issues/28750">https://projects.theforeman.org/issues/28750</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._revert_entity">
+<code class="sig-name descname">_revert_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._revert_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revert a given entity</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+current_entity (dict): Current properties of the entity
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._update_entity">
+<code class="sig-name descname">_update_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">foreman_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._update_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a given entity with given properties if any diverge</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+desired_entity (dict): Desired properties of the entity
+current_entity (dict): Current properties of the entity
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+foreman_spec (dict): Description of the entity structure</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state if the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule._validate_supported_payload">
+<code class="sig-name descname">_validate_supported_payload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">action</span></em>, <em class="sig-param"><span class="n">payload</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule._validate_supported_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether the payload only contains supported keys.
+Emits a warning for keys that are not part of the apidoc.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to check
+action (string): Name of the action to check payload against
+payload (dict): API paylod to be checked</p>
+</dd>
+<dt>Return value:</dt><dd><p>The payload as it can be submitted to the API</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule.ensure_entity">
+<code class="sig-name descname">ensure_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">foreman_spec</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule.ensure_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that a given entity has a certain state</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>resource (string): Plural name of the api resource to manipulate
+desired_entity (dict): Desired properties of the entity
+current_entity (dict, None): Current properties of the entity or None if nonexistent
+params (dict): Lookup parameters (i.e. parent_id for nested entities) (optional)
+state (dict): Desired state of the entity (optionally taken from the module)
+foreman_spec (dict): Description of the entity structure (optionally taken from module)</p>
+</dd>
+<dt>Return value:</dt><dd><p>The new current state of the entity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanAnsibleModule.exit_json">
+<code class="sig-name descname">exit_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">changed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanAnsibleModule.exit_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>return from the module, without error</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for Foreman entities. To use it, subclass it with the following convention:
+To manage my_entity entity, create the following sub class:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+class ForemanMyEntityModule(ForemanEntityAnsibleModule):</p>
+<blockquote>
+<div><p>pass</p>
+</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>and use that class to instanciate module:</p>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a>`
+module = ForemanMyEntityModule(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>argument_spec=dict(</dt><dd><p>[…]</p>
+</dd>
+</dl>
+<p>),
+foreman_spec=dict(</p>
+<blockquote>
+<div><p>[…]</p>
+</div></blockquote>
+<p>),</p>
+</div></blockquote>
+<p>This adds a <cite>state</cite> parameter to the module and provides the <cite>run</cite> method for the most
+common usecases.</p>
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.exit_json">
+<code class="sig-name descname">exit_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.exit_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>return from the module, without error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.remove_sensitive_fields">
+<code class="sig-name descname">remove_sensitive_fields</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.remove_sensitive_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set fields with ‘no_log’ option to None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanEntityAnsibleModule.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup entities, ensure entity, remove sensitive data, manage parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanScapDataStreamModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanScapDataStreamModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanScapDataStreamModule" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanScapDataStreamModule.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanScapDataStreamModule.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup entities, ensure entity, remove sensitive data, manage parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanStatelessEntityAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanStatelessEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanStatelessEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for Foreman entities without a state. To use it, subclass it with the following convention:
+To manage my_entity entity, create the following sub class:</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a>`
+class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule):</p>
+<blockquote>
+<div><p>pass</p>
+</div></blockquote>
+<p><a href="#id11"><span class="problematic" id="id12">``</span></a><a href="#id13"><span class="problematic" id="id14">`</span></a></p>
+<p>and use that class to instanciate module:</p>
+<p><a href="#id15"><span class="problematic" id="id16">``</span></a>`
+module = ForemanMyEntityModule(</p>
+<blockquote>
+<div><dl class="simple">
+<dt>argument_spec=dict(</dt><dd><p>[…]</p>
+</dd>
+</dl>
+<p>),
+foreman_spec=dict(</p>
+<blockquote>
+<div><p>[…]</p>
+</div></blockquote>
+<p>),</p>
+</div></blockquote>
+<p>It adds the following attributes:
+* entity_key (str): field used to search current entity. Defaults to value provided by <cite>ENTITY_KEYS</cite> or ‘name’ if no value found.
+* entity_name (str): name of the current entity.</p>
+<blockquote>
+<div><p>By default deduce the entity name from the class name (eg: ‘ForemanProvisioningTemplateModule’ class will produce ‘provisioning_template’).</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>entity_opts (dict): Dict of options for base entity. Same options can be provided for subentities described in foreman_spec.</p></li>
+</ul>
+<p>The main entity is referenced with the key <cite>entity</cite> in the <cite>foreman_spec</cite>.</p>
+<dl class="py method">
+<dt id="plugins.module_utils.foreman_helper.ForemanStatelessEntityAnsibleModule.entity_name_from_class">
+<em class="property">property </em><code class="sig-name descname">entity_name_from_class</code><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanStatelessEntityAnsibleModule.entity_name_from_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert class name to entity name. The class name must follow folowing name convention:
+* Starts with Foreman or Katello
+* Ends with Module</p>
+<p>This will concert ForemanMyEntityModule class name to my_entity entity name.
+eg:
+* ForemanArchitectureModule =&gt; architecture
+* ForemanProvisioningTemplateModule =&gt; provisioning_template
+* KatelloProductMudule =&gt; product
+* …</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanTaxonomicAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanTaxonomicAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanTaxonomicAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.ForemanTaxonomicEntityAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">ForemanTaxonomicEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.ForemanTaxonomicEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.KatelloAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">KatelloAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.KatelloAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="plugins.module_utils.foreman_helper.KatelloEntityAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">KatelloEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.KatelloEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="plugins.module_utils.foreman_helper._flatten_entity">
+<code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">_flatten_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">foreman_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper._flatten_entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten entity according to spec</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plugins.module_utils.foreman_helper._foreman_spec_helper">
+<code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">_foreman_spec_helper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper._foreman_spec_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend an entity spec by adding entries for all flat_names.
+Extract ansible compatible argument_spec on the way.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plugins.module_utils.foreman_helper._recursive_dict_keys">
+<code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">_recursive_dict_keys</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a_dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper._recursive_dict_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all keys of a nested dictionary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plugins.module_utils.foreman_helper.parameter_value_to_str">
+<code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">parameter_value_to_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">parameter_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.parameter_value_to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper to convert the value of parameters to string according to their parameter_type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="plugins.module_utils.foreman_helper.split_fqn">
+<code class="sig-prename descclassname">plugins.module_utils.foreman_helper.</code><code class="sig-name descname">split_fqn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em><span class="sig-paren">)</span><a class="headerlink" href="#plugins.module_utils.foreman_helper.split_fqn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split fully qualified name (title) in name and parent title</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing Foreman Ansible Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="developing.html" class="btn btn-neutral float-left" title="How to write modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, The Foreman Project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

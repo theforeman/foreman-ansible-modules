@@ -20,6 +20,7 @@ Welcome to Foreman Ansible Modules' documentation!
    :caption: Developer documentation
 
    developing
+   api
    testing
    releasing
 
