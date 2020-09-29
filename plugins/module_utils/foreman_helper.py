@@ -64,7 +64,7 @@ ENTITY_KEYS = dict(
     hostgroups='title',
     locations='title',
     operatingsystems='title',
-    # TODO: Organizations should be search by title (as foreman allow nested orgs) but that's not the case ATM.
+    # TODO: Organizations should be search by title (as foreman allows nested orgs) but that's not the case ATM.
     #       Applying this will need to record a lot of tests that is out of scope for the moment.
     # organizations='title',
     scap_contents='title',
@@ -116,8 +116,9 @@ class KatelloMixin():
         self._patch_cv_filter_rule_api()
 
     def _patch_content_uploads_update_api(self):
-        """This is a workaround for the broken content_uploads update apidoc in katello.
-            see https://projects.theforeman.org/issues/27590
+        """
+        This is a workaround for the broken content_uploads update apidoc in Katello.
+        See https://projects.theforeman.org/issues/27590
         """
 
         _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
@@ -131,8 +132,9 @@ class KatelloMixin():
         _content_upload_destroy_params_id['expected_type'] = 'string'
 
     def _patch_organization_update_api(self):
-        """This is a workaround for the broken organization update apidoc in katello.
-            see https://projects.theforeman.org/issues/27538
+        """
+        This is a workaround for the broken organization update apidoc in Katello.
+        See https://projects.theforeman.org/issues/27538
         """
 
         _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
@@ -142,8 +144,9 @@ class KatelloMixin():
         _organization_update_params_organization['required'] = False
 
     def _patch_subscription_index_api(self):
-        """This is a workaround for the broken subscriptions apidoc in katello.
-        https://projects.theforeman.org/issues/27575
+        """
+        This is a workaround for the broken subscriptions apidoc in Katello.
+        See https://projects.theforeman.org/issues/27575
         """
 
         _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
@@ -153,8 +156,9 @@ class KatelloMixin():
         _subscription_index_params_organization_id['required'] = False
 
     def _patch_sync_plan_api(self):
-        """This is a workaround for the broken sync_plan apidoc in katello.
-            see https://projects.theforeman.org/issues/27532
+        """
+        This is a workaround for the broken sync_plan apidoc in Katello.
+        See https://projects.theforeman.org/issues/27532
         """
 
         _organization_parameter = {
@@ -182,8 +186,9 @@ class KatelloMixin():
             _sync_plan_remove_products['params'].append(_organization_parameter)
 
     def _patch_cv_filter_rule_api(self):
-        """This is a workaround for missing params of CV Filter Rule update controller in Katello.
-           See https://projects.theforeman.org/issues/30908
+        """
+        This is a workaround for missing params of CV Filter Rule update controller in Katello.
+        See https://projects.theforeman.org/issues/30908
         """
 
         _content_view_filter_rule_methods = self.foremanapi.apidoc['docs']['resources']['content_view_filter_rules']['methods']
@@ -1005,7 +1010,7 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
             class ForemanMyEntityModule(ForemanStatelessEntityAnsibleModule):
                 pass
 
-        and use that class to instanciate module::
+        and use that class to instantiate module::
 
             module = ForemanMyEntityModule(
                 argument_spec=dict(
@@ -1100,7 +1105,7 @@ class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
             class ForemanMyEntityModule(ForemanEntityAnsibleModule):
                 pass
 
-        and use that class to instanciate module::
+        and use that class to instantiate module::
 
             module = ForemanMyEntityModule(
                 argument_spec=dict(
@@ -1247,7 +1252,7 @@ class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
 
 def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
-    Extract ansible compatible argument_spec on the way.
+    Extract Ansible compatible argument_spec on the way.
     """
     foreman_spec = {}
     argument_spec = {}
@@ -1285,7 +1290,7 @@ def _foreman_spec_helper(spec):
     # We have to ensure that apypie is available before using it.
     # There is two cases where we can call _foreman_spec_helper() without apypie available:
     # * When the user calls the module but doesn't have the right Python libraries installed.
-    #   In this case nothing will works and the module will warn teh user to install the required library.
+    #   In this case nothing will works and the module will warn the user to install the required library.
     # * When Ansible generates docs from the argument_spec. As the inflector is only used to build foreman_spec and not argument_spec,
     #   This is not a problem.
     #
