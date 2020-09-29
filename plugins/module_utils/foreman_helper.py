@@ -109,9 +109,8 @@ class KatelloMixin():
         required_plugins.append(('katello', ['*']))
         super(KatelloMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, **kwargs)
 
-    @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
-    def connect(self):
-        super(KatelloMixin, self).connect()
+    def apply_apidoc_patches(self):
+        super(KatelloMixin, self).apply_apidoc_patches()
 
         self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
@@ -513,12 +512,19 @@ class ForemanAnsibleModule(AnsibleModule):
         )
 
         self.status()
+        self.apply_apidoc_patches()
+        self.check_required_plugins()
+
+    def apply_apidoc_patches(self):
+        """
+        Apply patches to the local apidoc representation.
+        When adding another patch, consider that the endpoint in question may depend on a plugin to be available.
+        If possible, make the patch only execute on specific server/plugin versions.
+        """
 
         self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
-
-        self.check_required_plugins()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def status(self):
