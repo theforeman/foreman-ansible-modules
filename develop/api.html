@@ -329,6 +329,23 @@ Emits a warning for keys that are not part of the apidoc.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule.api_connection">
+<code class="sig-name descname">api_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.api_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a given code block after connecting to the API.</p>
+<p>When the block has finished, call <a class="reference internal" href="#foreman_helper.ForemanAnsibleModule.exit_json" title="foreman_helper.ForemanAnsibleModule.exit_json"><code class="xref py py-func docutils literal notranslate"><span class="pre">exit_json()</span></code></a> to report that the module has finished to Ansible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the Foreman API.</p>
+<p>This will create a new <code class="docutils literal notranslate"><span class="pre">apypie.Api</span></code> instance using the provided server information,
+check that the API is actually reachable (by calling <a class="reference internal" href="#foreman_helper.ForemanAnsibleModule.status" title="foreman_helper.ForemanAnsibleModule.status"><code class="xref py py-func docutils literal notranslate"><span class="pre">status()</span></code></a>),
+apply any required patches to the apidoc and ensure the server has all the plugins installed
+that are required by the module.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="foreman_helper.ForemanAnsibleModule.ensure_entity">
 <code class="sig-name descname">ensure_entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">desired_entity</span></em>, <em class="sig-param"><span class="n">current_entity</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">foreman_spec</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.ensure_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensure that a given entity has a certain state</p>
@@ -356,6 +373,50 @@ Emits a warning for keys that are not part of the apidoc.</p>
 <dt id="foreman_helper.ForemanAnsibleModule.exit_json">
 <code class="sig-name descname">exit_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">changed</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.exit_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>return from the module, without error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule.list_resource">
+<code class="sig-name descname">list_resource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">search</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.list_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the <code class="docutils literal notranslate"><span class="pre">index</span></code> action on an resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to show</p></li>
+<li><p><strong>search</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – Search string as accepted by the API to limit the results</p></li>
+<li><p><strong>params</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>,</em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule.show_resource">
+<code class="sig-name descname">show_resource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">resource</span></em>, <em class="sig-param"><span class="n">resource_id</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.show_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the <code class="docutils literal notranslate"><span class="pre">show</span></code> action on an entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Plural name of the api resource to show</p></li>
+<li><p><strong>resource_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – The ID of the entity to show</p></li>
+<li><p><strong>params</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a><em>,</em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em>]</em><em>, </em><em>optional</em>) – Lookup parameters (i.e. parent_id for nested entities)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule.status">
+<code class="sig-name descname">status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule.status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the <code class="docutils literal notranslate"><span class="pre">status</span></code> API endpoint to ensure the server is reachable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The full API response</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -567,6 +628,12 @@ provided parameters.</p>
 <em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">TaxonomyMixin</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.TaxonomyMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Taxonomy Mixin to extend a <a class="reference internal" href="#foreman_helper.ForemanAnsibleModule" title="foreman_helper.ForemanAnsibleModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForemanAnsibleModule</span></code></a> (or any subclass) to work with taxonomic entities.</p>
 <p>This adds optional <code class="docutils literal notranslate"><span class="pre">organizations</span></code> and <code class="docutils literal notranslate"><span class="pre">locations</span></code> parameters to the module.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="foreman_helper._exception2fail_json">
+<code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">_exception2fail_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span><span class="o">=</span><span class="default_value">'Generic failure: {0}'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper._exception2fail_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to convert Python exceptions into Ansible errors that can be reported to the user.</p>
 </dd></dl>
 
 <dl class="py function">
