@@ -3,6 +3,6 @@
 ``foreman_helper`` module
 =========================
 
-.. automodule:: plugins.module_utils.foreman_helper
+.. automodule:: foreman_helper
    :members:
    :private-members:
