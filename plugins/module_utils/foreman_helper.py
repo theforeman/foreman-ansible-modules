@@ -86,6 +86,16 @@ def _exception2fail_json(msg='Generic failure: {0}'):
 
 
 class KatelloMixin():
+    """
+    Katello Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with Katello entities.
+
+    This includes:
+
+    * add a required ``organization`` parameter to the module
+    * add Katello to the list of required plugins
+    * apply Katello specific API patches
+    """
+
     def __init__(self, **kwargs):
         foreman_spec = dict(
             organization=dict(type='entity', required=True),
@@ -189,6 +199,12 @@ class KatelloMixin():
 
 
 class TaxonomyMixin(object):
+    """
+    Taxonomy Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with taxonomic entities.
+
+    This adds optional ``organizations`` and ``locations`` parameters to the module.
+    """
+
     def __init__(self, **kwargs):
         foreman_spec = dict(
             organizations=dict(type='entity_list'),
@@ -199,6 +215,19 @@ class TaxonomyMixin(object):
 
 
 class ParametersMixin(object):
+    """
+    Parameters Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with entities that support parameters.
+
+    This allows to submit parameters to Foreman in the same request as modifying the main entity, thus making the parameters
+    available to any action that might be triggered when the entity is saved.
+
+    By default, parametes are submited to the API using the ``<entity_name>_parameters_attributes`` key.
+    If you need to override this, set the ``PARAMETERS_FLAT_NAME`` attribute to the key that shall be used instead.
+
+    This adds optional ``parameters`` parameter to the module. It also enhances the ``run()`` method to properly handle the
+    provided parameters.
+    """
+
     def __init__(self, **kwargs):
         self.entity_name = kwargs.pop('entity_name', self.entity_name_from_class)
         parameters_flat_name = getattr(self, "PARAMETERS_FLAT_NAME", None) or '{0}_parameters_attributes'.format(self.entity_name)
@@ -221,6 +250,14 @@ class ParametersMixin(object):
 
 
 class NestedParametersMixin(object):
+    """
+    Nested Parameters Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with entities that support parameters,
+    but require them to be managed in separate API requests.
+
+    This adds optional ``parameters`` parameter to the module. It also enhances the ``run()`` method to properly handle the
+    provided parameters.
+    """
+
     def __init__(self, **kwargs):
         foreman_spec = dict(
             parameters=dict(type='nested_list', foreman_spec=parameter_foreman_spec),
@@ -262,6 +299,13 @@ class NestedParametersMixin(object):
 
 
 class HostMixin(ParametersMixin):
+    """
+    Host Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with host-related entities (Hosts, Hostgroups).
+
+    This adds many optional parameters that are specific to Hosts and Hostgroups to the module.
+    It also includes :class:`ParametersMixin`.
+    """
+
     def __init__(self, **kwargs):
         foreman_spec = dict(
             compute_resource=dict(type='entity'),
@@ -1129,10 +1173,18 @@ class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
 
 
 class ForemanTaxonomicAnsibleModule(TaxonomyMixin, ForemanAnsibleModule):
+    """
+    Combine :class:`ForemanAnsibleModule` with the :class:`TaxonomyMixin` Mixin.
+    """
+
     pass
 
 
 class ForemanTaxonomicEntityAnsibleModule(TaxonomyMixin, ForemanEntityAnsibleModule):
+    """
+    Combine :class:`ForemanEntityAnsibleModule` with the :class:`TaxonomyMixin` Mixin.
+    """
+
     pass
 
 
@@ -1170,10 +1222,20 @@ class ForemanScapDataStreamModule(ForemanTaxonomicEntityAnsibleModule):
 
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
+    """
+    Combine :class:`ForemanAnsibleModule` with the :class:`KatelloMixin` Mixin.
+    """
+
     pass
 
 
 class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
+    """
+    Combine :class:`ForemanEntityAnsibleModule` with the :class:`KatelloMixin` Mixin.
+
+    Enforces scoping of entities by ``organization`` as required by Katello.
+    """
+
     def __init__(self, **kwargs):
         entity_opts = kwargs.pop('entity_opts', {})
         if 'scope' not in entity_opts:
