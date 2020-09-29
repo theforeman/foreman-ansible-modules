@@ -74,6 +74,10 @@ ENTITY_KEYS = dict(
 
 
 def _exception2fail_json(msg='Generic failure: {0}'):
+    """
+    Decorator to convert Python exceptions into Ansible errors that can be reported to the user.
+    """
+
     def decor(f):
         @wraps(f)
         def inner(self, *args, **kwargs):
@@ -401,6 +405,12 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @contextmanager
     def api_connection(self):
+        """
+        Execute a given code block after connecting to the API.
+
+        When the block has finished, call :func:`exit_json` to report that the module has finished to Ansible.
+        """
+
         self.connect()
         yield
         self.exit_json()
@@ -485,6 +495,15 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):
+        """
+        Connect to the Foreman API.
+
+        This will create a new ``apypie.Api`` instance using the provided server information,
+        check that the API is actually reachable (by calling :func:`status`),
+        apply any required patches to the apidoc and ensure the server has all the plugins installed
+        that are required by the module.
+        """
+
         self.foremanapi = apypie.Api(
             uri=self._foremanapi_server_url,
             username=to_bytes(self._foremanapi_username),
@@ -503,6 +522,13 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def status(self):
+        """
+        Call the ``status`` API endpoint to ensure the server is reachable.
+
+        :return: The full API response
+        :rtype: dict
+        """
+
         return self.foremanapi.resource('home').call('status')
 
     def _resource(self, resource):
@@ -518,6 +544,17 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @_exception2fail_json(msg='Failed to show resource: {0}')
     def show_resource(self, resource, resource_id, params=None):
+        """
+        Execute the ``show`` action on an entity.
+
+        :param resource: Plural name of the api resource to show
+        :type resource: str
+        :param resource_id: The ID of the entity to show
+        :type resource_id: int
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: Union[dict,None], optional
+        """
+
         if params is None:
             params = {}
         else:
@@ -531,6 +568,17 @@ class ForemanAnsibleModule(AnsibleModule):
 
     @_exception2fail_json(msg='Failed to list resource: {0}')
     def list_resource(self, resource, search=None, params=None):
+        """
+        Execute the ``index`` action on an resource.
+
+        :param resource: Plural name of the api resource to show
+        :type resource: str
+        :param search: Search string as accepted by the API to limit the results
+        :type search: str, optional
+        :param params: Lookup parameters (i.e. parent_id for nested entities)
+        :type params: Union[dict,None], optional
+        """
+
         if params is None:
             params = {}
         else:
