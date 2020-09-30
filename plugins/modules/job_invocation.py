@@ -24,7 +24,7 @@ module: job_invocation
 short_description: Manage Job Invocations
 version_added: 1.4.0
 description:
-  - "Manage Remote Execution Job Invocations"
+  - "Invoke and schedule Remote Execution Jobs"
 author:
   - "Peter Ondrejka (@pondrejk)"
 options:
