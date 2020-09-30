@@ -25,6 +25,8 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils import six
 
+from distutils.version import LooseVersion
+
 try:
     import apypie
     import requests.exceptions
@@ -422,6 +424,17 @@ class ForemanAnsibleModule(AnsibleModule):
     def set_changed(self):
         self._changed = True
 
+    def _check_patch_needed(self, fixed_version=None, plugins=None):
+        if plugins is not None:
+            for plugin in plugins:
+                if not self.has_plugin(plugin):
+                    return False
+
+        if fixed_version is not None and self.foreman_version >= LooseVersion(fixed_version):
+            return False
+
+        return True
+
     def _patch_templates_resource_name(self):
         """ Need to support both singular and plural form. The resource was made plural per
              https://projects.theforeman.org/issues/28750
@@ -462,7 +475,7 @@ class ForemanAnsibleModule(AnsibleModule):
             see https://projects.theforeman.org/issues/19086
         """
 
-        if not self.has_plugin('remote_execution'):
+        if not self._check_patch_needed(plugins=['remote_execution']):
             # the system has no foreman_remote_execution installed, no need to patch
             return
 
@@ -512,7 +525,8 @@ class ForemanAnsibleModule(AnsibleModule):
             verify_ssl=self._foremanapi_validate_certs,
         )
 
-        self.status()
+        _status = self.status()
+        self.foreman_version = LooseVersion(_status.get('version', '0.0.0'))
         self.apply_apidoc_patches()
         self.check_required_plugins()
 
