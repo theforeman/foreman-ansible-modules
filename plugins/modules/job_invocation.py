@@ -21,7 +21,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: job_invocation
-short_description: Manage Job Invocations
+short_description: Invoke Remote Execution Jobs
 version_added: 1.4.0
 description:
   - "Invoke and schedule Remote Execution Jobs"
