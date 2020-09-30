@@ -129,6 +129,7 @@ options:
     description:
       - Remote execution Smart proxies for this subnet
       - This option is only available if the remote_execution plugin is installed.
+      - This will always report changed when used with remote_execution < 4.1.0, due to a bug in plugin.
     required: false
     type: list
     elements: str
