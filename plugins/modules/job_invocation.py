@@ -219,11 +219,7 @@ def main():
                 failsafe=False,
             ))
         module.auto_lookup_entities()
-        entity = module.lookup_entity('entity')
-        if entity is None:
-            module.ensure_entity('job_invocations', module.foreman_params, entity, state='present')
-        else:
-            module.fail_json(msg="You cannot update an existing job_invocation")
+        module.ensure_entity('job_invocations', module.foreman_params, None, state='present')
 
 
 if __name__ == '__main__':
