@@ -243,7 +243,10 @@ def main():
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
         ),
-        required_plugins=[('discovery', ['discovery_proxy'])],
+        required_plugins=[
+            ('discovery', ['discovery_proxy']),
+            ('remote_execution', ['remote_execution_proxies']),
+        ],
     )
 
     if not HAS_IPADDRESS:
