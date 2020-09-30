@@ -133,7 +133,7 @@ EXAMPLES = '''
     ssh:
       effective_user: "tester"
 
-- name: "Run ansible commad on active hosts once a day"
+- name: "Run ansible command on active hosts once a day"
   job_invocation:
     bookmark: 'active'
     command: 'pwd'
