@@ -1035,6 +1035,11 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def exit_json(self, changed=False, **kwargs):
         kwargs['changed'] = changed or self.changed
+        if 'diff' not in kwargs and (self._before or self._after):
+            kwargs['diff'] = {'before': self._before,
+                              'after': self._after}
+        if 'entity' not in kwargs and self._after_full:
+            kwargs['entity'] = self._after_full
         super(ForemanAnsibleModule, self).exit_json(**kwargs)
 
     def has_plugin(self, plugin_name):
@@ -1217,14 +1222,6 @@ class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
             for blacklisted_field in self.blacklisted_fields:
                 entity[blacklisted_field] = None
         return entity
-
-    def exit_json(self, **kwargs):
-        if 'diff' not in kwargs and (self._before or self._after):
-            kwargs['diff'] = {'before': self._before,
-                              'after': self._after}
-        if 'entity' not in kwargs and self._after_full:
-            kwargs['entity'] = self._after_full
-        super(ForemanEntityAnsibleModule, self).exit_json(**kwargs)
 
     @property
     def blacklisted_fields(self):
