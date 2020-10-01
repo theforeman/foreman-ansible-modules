@@ -120,7 +120,6 @@ options:
         type: int
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.taxonomy
 '''
 
 EXAMPLES = '''
@@ -157,7 +156,7 @@ entity:
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
-    ForemanTaxonomicAnsibleModule,
+    ForemanAnsibleModule,
 )
 
 ssh_foreman_spec = {
@@ -181,7 +180,7 @@ concurrency_control_foreman_spec = {
 }
 
 
-class ForemanJobInvocationModule(ForemanTaxonomicAnsibleModule):
+class ForemanJobInvocationModule(ForemanAnsibleModule):
     pass
 
 
