@@ -28,7 +28,7 @@ help:
 	@echo "  setup            to set up test, lint"
 	@echo "  test-setup       to install test dependencies"
 	@echo "  test_<test>      to run a specific unittest"
-	@echo "  livetest_<test>  to run a specific unittest"
+	@echo "  livetest_<test>  to run a specific unittest live (without vcr)"
 	@echo "  record_<test>    to (re-)record the server answers for a specific test"
 	@echo "  clean_<test>     to run a specific test playbook with the teardown and cleanup tags"
 	@echo "  dist             to build the collection artifact"
@@ -66,7 +66,7 @@ test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
 
 livetest_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' --vcrmode live
+	pytest -v 'tests/test_crud.py::test_crud[$*]' --vcrmode live $(FLAGS)
 
 record_%: FORCE $(MANIFEST)
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
