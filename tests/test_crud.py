@@ -78,7 +78,7 @@ def run_playbook(module, extra_vars=None, limit=None, check_mode=False):
 
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
-def test_crud(tmpdir, module, record):
+def test_crud(tmpdir, module, vcrmode):
     if module == 'inventory_plugin':
         try:
             ansible_version = pkg_resources.get_distribution('ansible').version
@@ -86,7 +86,12 @@ def test_crud(tmpdir, module, record):
             ansible_version = pkg_resources.get_distribution('ansible-base').version
         if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
             pytest.skip("This module should not be tested on Ansible before 2.9")
-    run = run_playbook_vcr(tmpdir, module, record=record)
+
+    if vcrmode == "live":
+        run = run_playbook(module)
+    else:
+        record = vcrmode == "record"
+        run = run_playbook_vcr(tmpdir, module, record=record)
     assert run.rc == 0
 
 
