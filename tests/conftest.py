@@ -28,6 +28,7 @@ TEST_PLAYBOOKS = [
     'image',
     'installation_medium',
     'inventory_plugin',
+    'job_invocation',
     'job_template',
     'katello_hostgroup',
     'katello_manifest',

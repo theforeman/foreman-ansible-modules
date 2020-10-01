@@ -1,0 +1,44 @@
+# registered host expected
+
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch status
+      include_tasks: tasks/status_info.yml
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  vars:
+  tasks:
+    - name: "Run remote command on a single host once"
+      job_invocation:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        search_query: "{{ foreman_host }}"
+        command: 'ls'
+        job_template: 'Run Command - SSH Default'
+        validate_certs: "{{ foreman_validate_certs }}"
+
+    - name: "Run Ansible command on active hosts once a day"
+      job_invocation:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        command: 'pwd'
+        bookmark: 'ok hosts'
+        job_template: 'Run Command - Ansible Default'
+        validate_certs: "{{ foreman_validate_certs }}"
+        recurrence:
+          cron_line: "30 2 * * *"
+        concurrency_control:
+          concurrency_level: 2

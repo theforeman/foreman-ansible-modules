@@ -84,6 +84,19 @@ def host_body_matcher(r1, r2):
     return body_json_l2_matcher(r1, r2)
 
 
+def job_invocation_body_matcher(r1, r2):
+    if r1.path == r2.path == '/api/job_invocations':
+        r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
+        r2_copy = vcr.request.Request(r2.method, r2.uri, r2.body, r2.headers)
+        body1 = json.loads(r1_copy.body.decode('utf8'))
+        body2 = json.loads(r2_copy.body.decode('utf8'))
+        if 'search_query' in body1['job_invocation']:
+            body1['job_invocation']['search_query'] = body2['job_invocation']['search_query']
+        r1_copy.body = json.dumps(body1)
+        return body_json_l2_matcher(r1_copy, r2_copy)
+    return body_json_l2_matcher(r1, r2)
+
+
 def filter_response(response):
     for header in FILTER_RESPONSE_HEADERS:
         # headers should be case insensitive, but for some reason they weren't for me
@@ -140,6 +153,9 @@ else:
     elif test_params['test_name'] == 'katello_manifest':
         fam_vcr.register_matcher('katello_manifest_body', katello_manifest_body_matcher)
         body_matcher = 'katello_manifest_body'
+    elif test_params['test_name'] == 'job_invocation':
+        fam_vcr.register_matcher('job_invocation_body', job_invocation_body_matcher)
+        body_matcher = 'job_invocation_body'
 
     with fam_vcr.use_cassette(cassette_file,
                               record_mode=test_params['record_mode'],
