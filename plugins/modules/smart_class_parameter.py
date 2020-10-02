@@ -170,6 +170,7 @@ entity:
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule, parameter_value_to_str
 
 override_value_foreman_spec = dict(
+    id=dict(invisible=True),
     match=dict(required=True),
     value=dict(type='raw'),
     omit=dict(type='bool'),

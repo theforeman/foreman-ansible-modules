@@ -304,6 +304,7 @@ template_defaults = {
 
 
 template_input_foreman_spec = {
+    'id': dict(invisible=True),
     'name': dict(required=True),
     'description': dict(),
     'required': dict(type='bool'),
