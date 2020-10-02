@@ -546,7 +546,13 @@ class ForemanAnsibleModule(AnsibleModule):
         return self._resource(resource).call(*args, **kwargs)
 
     def _resource_prepare_params(self, resource, action, params):
-        return self._resource(resource).action(action).prepare_params(params)
+        api_action = self._resource(resource).action(action)
+        prepared_params = api_action.prepare_params(params)
+        api_route = api_action.find_route(params)
+        for url_param in api_route.params_in_path:
+            if url_param in params:
+                prepared_params[url_param] = params[url_param]
+        return prepared_params
 
     @_exception2fail_json(msg='Failed to show resource: {0}')
     def show_resource(self, resource, resource_id, params=None):
