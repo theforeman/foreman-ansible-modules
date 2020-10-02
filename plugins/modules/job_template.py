@@ -90,7 +90,8 @@ options:
         type: str
       fact_name:
         description:
-          - Fact name, used when input type is fact
+          - Fact name to use.
+          - Required when I(input_type=fact).
         type: str
       input_type:
         description:
@@ -114,11 +115,13 @@ options:
         elements: raw
       puppet_class_name:
         description:
-          - Puppet class name, used when input type is puppet_parameter
+          - Puppet class name.
+          - Required when I(input_type=puppet_parameter).
         type: str
       puppet_parameter_name:
         description:
-          - Puppet parameter name, used when input type is puppet_parameter
+          - Puppet parameter name.
+          - Required when I(input_type=puppet_parameter).
         type: str
       required:
         description:
@@ -126,7 +129,8 @@ options:
         type: bool
       variable_name:
         description:
-          - Variable name, used when input type is variable
+          - Variable name to use.
+          - Required when I(input_type=variable).
         type: str
       value_type:
         description:
@@ -338,7 +342,15 @@ def main():
             provider_type=dict(),
             snippet=dict(type='bool'),
             template=dict(),
-            template_inputs=dict(type='nested_list', foreman_spec=template_input_foreman_spec),
+            template_inputs=dict(
+                type='nested_list',
+                foreman_spec=template_input_foreman_spec,
+                required_if=(
+                    ['input_type', 'fact', ('fact_name',)],
+                    ['input_type', 'variable', ('variable_name',)],
+                    ['input_type', 'puppet_parameter', ('puppet_class_name', 'puppet_parameter_name')],
+                ),
+            ),
         ),
         argument_spec=dict(
             audit_comment=dict(),
