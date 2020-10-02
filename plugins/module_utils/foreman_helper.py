@@ -84,7 +84,8 @@ def _exception2fail_json(msg='Generic failure: {0}'):
             try:
                 return f(self, *args, **kwargs)
             except Exception as e:
-                self.fail_from_exception(e, msg.format(to_native(e)))
+                err_msg = "{0}: {1}".format(e.__class__.__name__, to_native(e))
+                self.fail_from_exception(e, msg.format(err_msg))
         return inner
     return decor
 
