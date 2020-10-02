@@ -75,6 +75,22 @@
     - include: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
+        compute_profile_attributes:
+          - compute_resource: "{{ libvirt.compute_resource.name }}"
+            vm_attrs: "{{ libvirt.compute_profile.attrs | combine({'cpus':2}) }}"
+        compute_profile_state: present
+        expected_change: true
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_name: app-small
+        compute_profile_attributes:
+          - compute_resource: "{{ libvirt.compute_resource.name }}"
+            vm_attrs: "{{ libvirt.compute_profile.attrs | combine({'cpus':2}) }}"
+        compute_profile_state: present
+        expected_change: false
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_name: app-small
         compute_profile_state: absent
         expected_change: true
 

@@ -67,14 +67,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_profiles?search=name%3D%22Test+Compute+Profile%22&per_page=4294967296
+    uri: https://foreman.example.org/api/compute_profiles?search=name%3D%22app-small%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Compute Profile\\\"\",\n  \"\
-        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
-        created_at\":\"2020-10-02 06:28:23 UTC\",\"updated_at\":\"2020-10-02 06:28:23\
-        \ UTC\",\"id\":5,\"name\":\"Test Compute Profile\"}]\n}\n"
+        : 4294967296,\n  \"search\": \"name=\\\"app-small\\\"\",\n  \"sort\": {\n\
+        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\"\
+        :\"2020-10-02 06:28:25 UTC\",\"updated_at\":\"2020-10-02 06:28:25 UTC\",\"\
+        id\":6,\"name\":\"app-small\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -111,7 +111,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '302'
+      - '280'
     status:
       code: 200
       message: OK
@@ -124,14 +124,15 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/compute_profiles/5
+    method: DELETE
+    uri: https://foreman.example.org/api/compute_profiles/6
   response:
     body:
-      string: '{"created_at":"2020-10-02 06:28:23 UTC","updated_at":"2020-10-02 06:28:23
-        UTC","id":5,"name":"Test Compute Profile","compute_attributes":[]}'
+      string: '{"id":6,"name":"app-small","created_at":"2020-10-02T06:28:25.896Z","updated_at":"2020-10-02T06:28:25.896Z"}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -168,7 +169,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '140'
+      - '107'
     status:
       code: 200
       message: OK
