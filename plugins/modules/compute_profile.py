@@ -162,6 +162,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 
 
 compute_attribute_foreman_spec = {
+    'id': {'invisible': True},
     'compute_resource': {'type': 'entity'},
     'vm_attrs': {'type': 'dict', 'aliases': ['vm_attributes']},
 }
