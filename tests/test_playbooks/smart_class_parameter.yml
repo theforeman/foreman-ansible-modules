@@ -244,6 +244,26 @@
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
               - match: "domain=example.com"
+                value: "/etc/ntpd/foonew"
+              - match: "hostgroup=test_hostgroup"
+                omit: true
+            smart_class_parameter_state: present
+            expected_change: true
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_default_value: "/etc/ntpd"
+            smart_class_parameter_override_values:
+              - match: "domain=example.com"
+                value: "/etc/ntpd/foonew"
+              - match: "hostgroup=test_hostgroup"
+                omit: true
+            smart_class_parameter_state: present
+            expected_change: false
+        - include: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_default_value: "/etc/ntpd"
+            smart_class_parameter_override_values:
+              - match: "domain=example.com"
                 value: "/etc/ntpd/foo"
             smart_class_parameter_state: present
             expected_change: true
