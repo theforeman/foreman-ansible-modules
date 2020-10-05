@@ -29,12 +29,6 @@ about: Create a report to help us improve
 
 ```
 
-##### APYPIE VERSION
-<!-- Paste, BELOW THIS COMMENT, verbatim output from "pip show apypie | grep Version"-->
-```
-
-```
-
 ##### STEPS TO REPRODUCE
 <!-- For bugs, show exactly how to reproduce the problem, using a minimal test-case. -->
 
