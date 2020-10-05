@@ -28,7 +28,7 @@ from ansible.module_utils import six
 from distutils.version import LooseVersion
 
 try:
-    import apypie
+    from ansible_collections.theforeman.foreman.plugins.module_utils import _apypie as apypie
     import requests.exceptions
     HAS_APYPIE = True
     inflector = apypie.Inflector()
@@ -513,7 +513,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def check_requirements(self):
         if not HAS_APYPIE:
-            self.fail_json(msg=missing_required_lib("apypie"), exception=APYPIE_IMP_ERR)
+            self.fail_json(msg=missing_required_lib("requests"), exception=APYPIE_IMP_ERR)
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def connect(self):

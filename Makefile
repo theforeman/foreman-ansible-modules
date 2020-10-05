@@ -16,6 +16,8 @@ TEST =
 FLAGS =
 PYTEST = pytest -n 4 --boxed -v
 
+APIPIE_VERSION ?= v0.3.0
+
 default: help
 help:
 	@echo "Please use \`make <target>' where <target> is one of:"
@@ -124,6 +126,10 @@ doc: $(MANIFEST)
 	mkdir -p ./docs/plugins
 	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins $(NAMESPACE).$(NAME)
 	make -C docs html
+
+vendor:
+	git clone --depth=1 --branch=$(APIPIE_VERSION) https://github.com/Apipie/apypie/ build/apypie-git
+	python vendor.py build/apypie-git/apypie/*.py > plugins/module_utils/_apypie.py
 
 FORCE:
 

@@ -23,7 +23,7 @@ class ModuleDocFragment(object):
     # Foreman documentation fragment
     DOCUMENTATION = '''
 requirements:
-  - apypie
+  - requests
 options:
   server_url:
     description:
