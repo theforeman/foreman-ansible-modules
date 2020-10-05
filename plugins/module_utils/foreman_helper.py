@@ -92,6 +92,32 @@ def _exception2fail_json(msg='Generic failure: {0}'):
     return decor
 
 
+def _check_patch_needed(fixed_version=None, plugins=None):
+    """
+    Decorator to check whether a specific apidoc patch is required.
+
+    :param fixed_version: The version of Foreman the API bug was fixed.
+    :type fixed_version: str, optional
+    :param plugins: Which plugins are required for this patch.
+    :type plugins: list, optional
+    """
+
+    def decor(f):
+        @wraps(f)
+        def inner(self, *args, **kwargs):
+            if plugins is not None:
+                for plugin in plugins:
+                    if not self.has_plugin(plugin):
+                        return
+
+            if fixed_version is not None and self.foreman_version >= LooseVersion(fixed_version):
+                return
+
+            return f(self, *args, **kwargs)
+        return inner
+    return decor
+
+
 class KatelloMixin():
     """
     Katello Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with Katello entities.
@@ -121,6 +147,7 @@ class KatelloMixin():
         self._patch_sync_plan_api()
         self._patch_cv_filter_rule_api()
 
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
     def _patch_content_uploads_update_api(self):
         """
         This is a workaround for the broken content_uploads update apidoc in Katello.
@@ -137,6 +164,7 @@ class KatelloMixin():
         _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
         _content_upload_destroy_params_id['expected_type'] = 'string'
 
+    @_check_patch_needed(plugins=['katello'])
     def _patch_organization_update_api(self):
         """
         This is a workaround for the broken organization update apidoc in Katello.
@@ -149,6 +177,7 @@ class KatelloMixin():
         _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
         _organization_update_params_organization['required'] = False
 
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
     def _patch_subscription_index_api(self):
         """
         This is a workaround for the broken subscriptions apidoc in Katello.
@@ -161,6 +190,7 @@ class KatelloMixin():
         _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
         _subscription_index_params_organization_id['required'] = False
 
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
     def _patch_sync_plan_api(self):
         """
         This is a workaround for the broken sync_plan apidoc in Katello.
@@ -191,6 +221,7 @@ class KatelloMixin():
         if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
             _sync_plan_remove_products['params'].append(_organization_parameter)
 
+    @_check_patch_needed(plugins=['katello'])
     def _patch_cv_filter_rule_api(self):
         """
         This is a workaround for missing params of CV Filter Rule update controller in Katello.
@@ -424,24 +455,17 @@ class ForemanAnsibleModule(AnsibleModule):
     def set_changed(self):
         self._changed = True
 
-    def _check_patch_needed(self, fixed_version=None, plugins=None):
-        if plugins is not None:
-            for plugin in plugins:
-                if not self.has_plugin(plugin):
-                    return False
-
-        if fixed_version is not None and self.foreman_version >= LooseVersion(fixed_version):
-            return False
-
-        return True
-
+    @_check_patch_needed(fixed_version='2.0.0')
     def _patch_templates_resource_name(self):
-        """ Need to support both singular and plural form. The resource was made plural per
-             https://projects.theforeman.org/issues/28750
+        """
+        Need to support both singular and plural form.
+        Not checking for the templates plugin here, as the check relies on the new name.
+        The resource was made plural per https://projects.theforeman.org/issues/28750
         """
         if 'template' in self.foremanapi.apidoc['docs']['resources']:
             self.foremanapi.apidoc['docs']['resources']['templates'] = self.foremanapi.apidoc['docs']['resources']['template']
 
+    @_check_patch_needed(fixed_version='1.23.0')
     def _patch_location_api(self):
         """This is a workaround for the broken taxonomies apidoc in foreman.
             see https://projects.theforeman.org/issues/10359
@@ -470,14 +494,11 @@ class ForemanAnsibleModule(AnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
+    @_check_patch_needed(plugins=['remote_execution'])
     def _patch_subnet_rex_api(self):
         """This is a workaround for the broken subnet apidoc in foreman remote execution.
             see https://projects.theforeman.org/issues/19086
         """
-
-        if not self._check_patch_needed(plugins=['remote_execution']):
-            # the system has no foreman_remote_execution installed, no need to patch
-            return
 
         _subnet_rex_proxies_parameter = {
             u'validations': [],
