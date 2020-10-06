@@ -28,7 +28,10 @@ from ansible.module_utils import six
 from distutils.version import LooseVersion
 
 try:
-    from ansible_collections.theforeman.foreman.plugins.module_utils import _apypie as apypie
+    try:
+        from ansible_collections.theforeman.foreman.plugins.module_utils import _apypie as apypie
+    except ImportError:
+        from plugins.module_utils import _apypie as apypie
     import requests.exceptions
     HAS_APYPIE = True
     inflector = apypie.Inflector()
