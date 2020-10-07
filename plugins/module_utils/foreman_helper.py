@@ -661,6 +661,8 @@ class ForemanAnsibleModule(AnsibleModule):
         return result
 
     def find_resource_by(self, resource, search_field, value, **kwargs):
+        if not value:
+            return None
         search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
         return self.find_resource(resource, search, **kwargs)
 
@@ -1440,12 +1442,15 @@ def _flatten_entity(entity, foreman_spec):
     if entity is None:
         entity = {}
     for key, value in entity.items():
-        if key in foreman_spec and foreman_spec[key].get('ensure', True) and value is not None:
+        if key in foreman_spec and foreman_spec[key].get('ensure', True) and (value is not None or foreman_spec[key].get('type', 'str') == 'entity'):
             spec = foreman_spec[key]
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
             if property_type == 'entity':
-                result[flat_name] = value['id']
+                if value:
+                    result[flat_name] = value['id']
+                else:
+                    result[flat_name] = None
             elif property_type == 'entity_list':
                 result[flat_name] = sorted(val['id'] for val in value)
             else:
