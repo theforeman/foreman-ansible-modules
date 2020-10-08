@@ -105,10 +105,8 @@ def _check_patch_needed(fixed_version=None, plugins=None):
     def decor(f):
         @wraps(f)
         def inner(self, *args, **kwargs):
-            if plugins is not None:
-                for plugin in plugins:
-                    if not self.has_plugin(plugin):
-                        return
+            if plugins is not None and not all(self.has_plugin(plugin) for plugin in plugins):
+                return
 
             if fixed_version is not None and self.foreman_version >= LooseVersion(fixed_version):
                 return
