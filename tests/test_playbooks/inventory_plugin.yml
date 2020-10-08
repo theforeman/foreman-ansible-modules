@@ -52,14 +52,12 @@
           - "0.0.0.0:3000:3000"
 
     - name: wait for foreman to start
-      uri:
-        url: http://127.0.0.1:3000/api/status
-        url_username: admin
-        url_password: changeme
-        force_basic_auth: true
-        status_code: 200
+      status_info:
+        username: admin
+        password: changeme
+        server_url: http://127.0.0.1:3000/
       register: result
-      until: result.status == 200
+      until: result.status is defined and result.status.status == 200
       retries: 10
       delay: 10
 
