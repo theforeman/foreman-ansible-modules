@@ -124,7 +124,6 @@ class KatelloMixin():
 
     * add a required ``organization`` parameter to the module
     * add Katello to the list of required plugins
-    * apply Katello specific API patches
     """
 
     def __init__(self, **kwargs):
@@ -135,107 +134,6 @@ class KatelloMixin():
         required_plugins = kwargs.pop('required_plugins', [])
         required_plugins.append(('katello', ['*']))
         super(KatelloMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, **kwargs)
-
-    def apply_apidoc_patches(self):
-        super(KatelloMixin, self).apply_apidoc_patches()
-
-        self._patch_content_uploads_update_api()
-        self._patch_organization_update_api()
-        self._patch_subscription_index_api()
-        self._patch_sync_plan_api()
-        self._patch_cv_filter_rule_api()
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_content_uploads_update_api(self):
-        """
-        This is a workaround for the broken content_uploads update apidoc in Katello.
-        See https://projects.theforeman.org/issues/27590
-        """
-
-        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
-
-        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
-        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
-        _content_upload_update_params_id['expected_type'] = 'string'
-
-        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
-        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
-        _content_upload_destroy_params_id['expected_type'] = 'string'
-
-    @_check_patch_needed(plugins=['katello'])
-    def _patch_organization_update_api(self):
-        """
-        This is a workaround for the broken organization update apidoc in Katello.
-        See https://projects.theforeman.org/issues/27538
-        """
-
-        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
-
-        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
-        _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
-        _organization_update_params_organization['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_subscription_index_api(self):
-        """
-        This is a workaround for the broken subscriptions apidoc in Katello.
-        See https://projects.theforeman.org/issues/27575
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
-        _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
-        _subscription_index_params_organization_id['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_sync_plan_api(self):
-        """
-        This is a workaround for the broken sync_plan apidoc in Katello.
-        See https://projects.theforeman.org/issues/27532
-        """
-
-        _organization_parameter = {
-            u'validations': [],
-            u'name': u'organization_id',
-            u'show': True,
-            u'description': u'\n<p>Filter sync plans by organization name or label</p>\n',
-            u'required': False,
-            u'allow_nil': False,
-            u'allow_blank': False,
-            u'full_name': u'organization_id',
-            u'expected_type': u'numeric',
-            u'metadata': None,
-            u'validator': u'Must be a number.',
-        }
-
-        _sync_plan_methods = self.foremanapi.apidoc['docs']['resources']['sync_plans']['methods']
-
-        _sync_plan_add_products = next(x for x in _sync_plan_methods if x['name'] == 'add_products')
-        if next((x for x in _sync_plan_add_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_add_products['params'].append(_organization_parameter)
-
-        _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
-        if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_remove_products['params'].append(_organization_parameter)
-
-    @_check_patch_needed(plugins=['katello'])
-    def _patch_cv_filter_rule_api(self):
-        """
-        This is a workaround for missing params of CV Filter Rule update controller in Katello.
-        See https://projects.theforeman.org/issues/30908
-        """
-
-        _content_view_filter_rule_methods = self.foremanapi.apidoc['docs']['resources']['content_view_filter_rules']['methods']
-
-        _content_view_filter_rule_create = next(x for x in _content_view_filter_rule_methods if x['name'] == 'create')
-        _content_view_filter_rule_update = next(x for x in _content_view_filter_rule_methods if x['name'] == 'update')
-
-        for param_name in ['uuid', 'errata_ids', 'date_type', 'module_stream_ids']:
-            create_param = next((x for x in _content_view_filter_rule_create['params'] if x['name'] == param_name), None)
-            update_param = next((x for x in _content_view_filter_rule_update['params'] if x['name'] == param_name), None)
-            if create_param is not None and update_param is None:
-                _content_view_filter_rule_update['params'].append(create_param)
 
 
 class TaxonomyMixin(object):
@@ -521,6 +419,98 @@ class ForemanAnsibleModule(AnsibleModule):
         _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
         _subnet_update_params_subnet['params'].append(_subnet_rex_proxies_parameter)
 
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
+    def _patch_content_uploads_update_api(self):
+        """
+        This is a workaround for the broken content_uploads update apidoc in Katello.
+        See https://projects.theforeman.org/issues/27590
+        """
+
+        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
+
+        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
+        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
+        _content_upload_update_params_id['expected_type'] = 'string'
+
+        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
+        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
+        _content_upload_destroy_params_id['expected_type'] = 'string'
+
+    @_check_patch_needed(plugins=['katello'])
+    def _patch_organization_update_api(self):
+        """
+        This is a workaround for the broken organization update apidoc in Katello.
+        See https://projects.theforeman.org/issues/27538
+        """
+
+        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
+
+        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
+        _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
+        _organization_update_params_organization['required'] = False
+
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
+    def _patch_subscription_index_api(self):
+        """
+        This is a workaround for the broken subscriptions apidoc in Katello.
+        See https://projects.theforeman.org/issues/27575
+        """
+
+        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
+
+        _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
+        _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
+        _subscription_index_params_organization_id['required'] = False
+
+    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
+    def _patch_sync_plan_api(self):
+        """
+        This is a workaround for the broken sync_plan apidoc in Katello.
+        See https://projects.theforeman.org/issues/27532
+        """
+
+        _organization_parameter = {
+            u'validations': [],
+            u'name': u'organization_id',
+            u'show': True,
+            u'description': u'\n<p>Filter sync plans by organization name or label</p>\n',
+            u'required': False,
+            u'allow_nil': False,
+            u'allow_blank': False,
+            u'full_name': u'organization_id',
+            u'expected_type': u'numeric',
+            u'metadata': None,
+            u'validator': u'Must be a number.',
+        }
+
+        _sync_plan_methods = self.foremanapi.apidoc['docs']['resources']['sync_plans']['methods']
+
+        _sync_plan_add_products = next(x for x in _sync_plan_methods if x['name'] == 'add_products')
+        if next((x for x in _sync_plan_add_products['params'] if x['name'] == 'organization_id'), None) is None:
+            _sync_plan_add_products['params'].append(_organization_parameter)
+
+        _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
+        if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
+            _sync_plan_remove_products['params'].append(_organization_parameter)
+
+    @_check_patch_needed(plugins=['katello'])
+    def _patch_cv_filter_rule_api(self):
+        """
+        This is a workaround for missing params of CV Filter Rule update controller in Katello.
+        See https://projects.theforeman.org/issues/30908
+        """
+
+        _content_view_filter_rule_methods = self.foremanapi.apidoc['docs']['resources']['content_view_filter_rules']['methods']
+
+        _content_view_filter_rule_create = next(x for x in _content_view_filter_rule_methods if x['name'] == 'create')
+        _content_view_filter_rule_update = next(x for x in _content_view_filter_rule_methods if x['name'] == 'update')
+
+        for param_name in ['uuid', 'errata_ids', 'date_type', 'module_stream_ids']:
+            create_param = next((x for x in _content_view_filter_rule_create['params'] if x['name'] == param_name), None)
+            update_param = next((x for x in _content_view_filter_rule_update['params'] if x['name'] == param_name), None)
+            if create_param is not None and update_param is None:
+                _content_view_filter_rule_update['params'].append(create_param)
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg=missing_required_lib("apypie"), exception=APYPIE_IMP_ERR)
@@ -559,6 +549,13 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
+
+        # Katello
+        self._patch_content_uploads_update_api()
+        self._patch_organization_update_api()
+        self._patch_subscription_index_api()
+        self._patch_sync_plan_api()
+        self._patch_cv_filter_rule_api()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def status(self):
