@@ -62,7 +62,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 # Create a local Smart Proxy
 - name: "Create Smart Proxy"
-  theforeman.foreman.foreman_smart_proxy:
+  theforeman.foreman.smart_proxy:
     username: "admin"
     password: "changeme"
     server_url: "https://{{ ansible_fqdn }}"
