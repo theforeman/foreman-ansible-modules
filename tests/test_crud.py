@@ -9,7 +9,7 @@ import py.path
 import pytest
 import yaml
 
-from .conftest import TEST_PLAYBOOKS
+from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS
 
 
 if sys.version_info[0] == 2:
@@ -28,7 +28,7 @@ def get_foreman_url():
     return server_yml_content['foreman_server_url']
 
 
-def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False, check_mode=False):
+def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=False, check_mode=False):
     if extra_vars is None:
         extra_vars = {}
     limit = None
@@ -58,15 +58,17 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, record=False, check_mode=F
     fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
     fixture_dir.join(apidoc).copy(json_cache)
 
-    return run_playbook(module, extra_vars=extra_vars, limit=limit, check_mode=check_mode)
+    return run_playbook(module, extra_vars=extra_vars, limit=limit, inventory=inventory, check_mode=check_mode)
 
 
-def run_playbook(module, extra_vars=None, limit=None, check_mode=False):
+def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode=False):
     # Assemble parameters for playbook call
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
     kwargs = {}
     kwargs['playbook'] = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
-    kwargs['inventory'] = os.path.join(os.getcwd(), 'tests', 'inventory')
+    if inventory is None:
+        inventory = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
+    kwargs['inventory'] = inventory
     kwargs['verbosity'] = 4
     if extra_vars:
         kwargs['extravars'] = extra_vars
@@ -79,14 +81,6 @@ def run_playbook(module, extra_vars=None, limit=None, check_mode=False):
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_crud(tmpdir, module, vcrmode):
-    if module == 'inventory_plugin':
-        try:
-            ansible_version = pkg_resources.get_distribution('ansible').version
-        except pkg_resources.DistributionNotFound:
-            ansible_version = pkg_resources.get_distribution('ansible-base').version
-        if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
-            pytest.skip("This module should not be tested on Ansible before 2.9")
-
     if vcrmode == "live":
         run = run_playbook(module)
     else:
@@ -97,7 +91,20 @@ def test_crud(tmpdir, module, vcrmode):
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_check_mode(tmpdir, module):
-    if module in ['katello_manifest', 'inventory_plugin', 'templates_import']:
+    if module in ['katello_manifest', 'templates_import']:
         pytest.skip("This module does not support check_mode.")
     run = run_playbook_vcr(tmpdir, module, check_mode=True)
+    assert run.rc == 0
+
+
+@pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
+def test_inventory(tmpdir, module):
+    try:
+        ansible_version = pkg_resources.get_distribution('ansible').version
+    except pkg_resources.DistributionNotFound:
+        ansible_version = pkg_resources.get_distribution('ansible-base').version
+    if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
+        pytest.skip("This module should not be tested on Ansible before 2.9")
+    inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
+    run = run_playbook(module, inventory=inventory)
     assert run.rc == 0
