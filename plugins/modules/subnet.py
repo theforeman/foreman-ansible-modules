@@ -134,7 +134,15 @@ options:
     type: list
     elements: str
   externalipam_proxy:
-    description: External IPAM proxy for this subnet
+    description:
+      - External IPAM proxy for this subnet.
+      - Only relevant if I(ipam=External IPAM).
+    required: false
+    type: str
+  externalipam_group:
+    description:
+      - External IPAM group for this subnet.
+      - Only relevant if I(ipam=External IPAM).
     required: false
     type: str
   vlanid:
@@ -241,6 +249,7 @@ def main():
             template_proxy=dict(type='entity', flat_name='template_id', resource_type='smart_proxies'),
             remote_execution_proxies=dict(type='entity_list', resource_type='smart_proxies'),
             externalipam_proxy=dict(type='entity', flat_name='externalipam_id', resource_type='smart_proxies'),
+            externalipam_group=dict(),
             vlanid=dict(type='int'),
             mtu=dict(type='int'),
         ),

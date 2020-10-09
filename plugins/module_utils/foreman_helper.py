@@ -99,10 +99,12 @@ def _exception2fail_json(msg='Generic failure: {0}'):
     return decor
 
 
-def _check_patch_needed(fixed_version=None, plugins=None):
+def _check_patch_needed(introduced_version=None, fixed_version=None, plugins=None):
     """
     Decorator to check whether a specific apidoc patch is required.
 
+    :param introduced_version: The version of Foreman the API bug was introduced.
+    :type introduced_version: str, optional
     :param fixed_version: The version of Foreman the API bug was fixed.
     :type fixed_version: str, optional
     :param plugins: Which plugins are required for this patch.
@@ -116,6 +118,9 @@ def _check_patch_needed(fixed_version=None, plugins=None):
                 return
 
             if fixed_version is not None and self.foreman_version >= LooseVersion(fixed_version):
+                return
+
+            if introduced_version is not None and self.foreman_version < LooseVersion(introduced_version):
                 return
 
             return f(self, *args, **kwargs)
@@ -427,6 +432,36 @@ class ForemanAnsibleModule(AnsibleModule):
         _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
         _subnet_update_params_subnet['params'].append(_subnet_rex_proxies_parameter)
 
+    @_check_patch_needed(introduced_version='2.1.0', fixed_version='2.3.0')
+    def _patch_subnet_externalipam_group_api(self):
+        """
+        This is a workaround for the broken subnet apidoc for External IPAM.
+        See https://projects.theforeman.org/issues/30890
+        """
+
+        _subnet_externalipam_group_parameter = {
+            u'validations': [],
+            u'name': u'externalipam_group',
+            u'show': True,
+            u'description': u'\n<p>External IPAM group - only relevant when IPAM is set to external</p>\n',
+            u'required': False,
+            u'allow_nil': True,
+            u'allow_blank': False,
+            u'full_name': u'subnet[externalipam_group]',
+            u'expected_type': u'string',
+            u'metadata': None,
+            u'validator': u'',
+        }
+        _subnet_methods = self.foremanapi.apidoc['docs']['resources']['subnets']['methods']
+
+        _subnet_create = next(x for x in _subnet_methods if x['name'] == 'create')
+        _subnet_create_params_subnet = next(x for x in _subnet_create['params'] if x['name'] == 'subnet')
+        _subnet_create_params_subnet['params'].append(_subnet_externalipam_group_parameter)
+
+        _subnet_update = next(x for x in _subnet_methods if x['name'] == 'update')
+        _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
+        _subnet_update_params_subnet['params'].append(_subnet_externalipam_group_parameter)
+
     @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
     def _patch_content_uploads_update_api(self):
         """
@@ -557,6 +592,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
+        self._patch_subnet_externalipam_group_api()
 
         # Katello
         self._patch_content_uploads_update_api()
