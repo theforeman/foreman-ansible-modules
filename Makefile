@@ -51,7 +51,7 @@ test: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) $(TEST)
 
 test-crud: $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	$(PYTEST) 'tests/test_crud.py::test_crud'
+	$(PYTEST) 'tests/test_crud.py::test_crud' 'tests/test_crud.py::test_inventory'
 
 test-check-mode: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	$(PYTEST) 'tests/test_crud.py::test_check_mode'
