@@ -43,11 +43,18 @@
     - include: tasks/global_parameter.yml
       vars:
         global_parameter_type: integer
+        global_parameter_hidden_value: true
         expected_change: true
     - include: tasks/global_parameter.yml
       vars:
         global_parameter_type: integer
+        global_parameter_hidden_value: true
         expected_change: false
+    - include: tasks/global_parameter.yml
+      vars:
+        global_parameter_type: integer
+        global_parameter_hidden_value: false
+        expected_change: true
     - include: tasks/global_parameter.yml
       vars:
         global_parameter_type: real
@@ -57,6 +64,7 @@
       vars:
         global_parameter_type: real
         global_parameter_value: 3.14
+        global_parameter_hidden_value: false
         expected_change: false
     - include: tasks/global_parameter.yml
       vars:

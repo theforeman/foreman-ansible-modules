@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint: disable=super-with-arguments
+
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
@@ -45,6 +47,11 @@ options:
       - Value of the Global Parameter
     required: false
     type: raw
+  hidden_value:
+    description:
+      - Whether the value should be hidden in the GUI
+    required: false
+    type: bool
   parameter_type:
     description:
       - Type of value
@@ -111,7 +118,12 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 
 
 class ForemanCommonParameterModule(ForemanEntityAnsibleModule):
-    pass
+    def remove_sensitive_fields(self, entity):
+        if entity and 'hidden_value?' in entity:
+            entity['hidden_value'] = entity.pop('hidden_value?')
+            if entity['hidden_value']:
+                entity['value'] = None
+        return super(ForemanCommonParameterModule, self).remove_sensitive_fields(entity)
 
 
 def main():
@@ -119,6 +131,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             value=dict(type='raw'),
+            hidden_value=dict(type='bool'),
             parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
         ),
         argument_spec=dict(
@@ -132,7 +145,7 @@ def main():
     )
 
     with module.api_connection():
-        entity = module.lookup_entity('entity')
+        entity = module.lookup_entity('entity', params={'show_hidden': "true"})
 
         if not module.desired_absent:
             # Convert values according to their corresponding parameter_type
@@ -141,6 +154,8 @@ def main():
             module.foreman_params['value'] = parameter_value_to_str(module.foreman_params['value'], module.foreman_params['parameter_type'])
             if entity and 'value' in entity:
                 entity['value'] = parameter_value_to_str(entity['value'], entity.get('parameter_type', 'string'))
+            if entity and 'hidden_value?' in entity:
+                entity['hidden_value'] = entity.pop('hidden_value?')
 
         module.run()
 

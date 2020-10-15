@@ -514,6 +514,24 @@ class ForemanAnsibleModule(AnsibleModule):
             if create_param is not None and update_param is None:
                 _content_view_filter_rule_update['params'].append(create_param)
 
+    @_check_patch_needed()
+    def _patch_common_parameter_index_show_api(self):
+        """
+        This is a workaround for wrong validation of the 'show_hidden' querystring in 'common_parameter' index and show.
+        """
+
+        _common_parameter_methods = self.foremanapi.apidoc['docs']['resources']['common_parameters']['methods']
+
+        _common_parameter_index = next(x for x in _common_parameter_methods if x['name'] == 'index')
+        _common_parameter_show = next(x for x in _common_parameter_methods if x['name'] == 'show')
+
+        _index_param = next((x for x in _common_parameter_index['params'] if x['name'] == 'show_hidden'), None)
+        _show_param = next((x for x in _common_parameter_show['params'] if x['name'] == 'show_hidden'), None)
+        if _index_param is not None:
+            _index_param['expected_type'] = 'string'
+        if _show_param is not None:
+            _show_param['expected_type'] = 'string'
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg=missing_required_lib("requests"), exception=APYPIE_IMP_ERR)
@@ -552,6 +570,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_templates_resource_name()
         self._patch_location_api()
         self._patch_subnet_rex_api()
+        self._patch_common_parameter_index_show_api()
 
         # Katello
         self._patch_content_uploads_update_api()
@@ -719,7 +738,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self.foreman_params[key] = entity
         self.foreman_spec[key]['resolved'] = True
 
-    def lookup_entity(self, key):
+    def lookup_entity(self, key, params=None):
         if key not in self.foreman_params:
             return None
 
@@ -731,7 +750,10 @@ class ForemanAnsibleModule(AnsibleModule):
         resource_type = entity_spec['resource_type']
         failsafe = entity_spec.get('failsafe', False)
         thin = entity_spec.get('thin', True)
-        params = {}
+        if params:
+            params = params.copy()
+        else:
+            params = {}
         try:
             if 'scope' in entity_spec:
                 for scope in entity_spec['scope']:
