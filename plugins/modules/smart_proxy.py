@@ -110,7 +110,7 @@ def main():
     with module.api_connection():
         entity = module.lookup_entity('entity')
 
-        handle_lifecycle_environments = not (module.desired_absent or module.state == 'present_with_defaults') and 'lifecycle_environments' in module.foreman_params
+        handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
             module.lookup_entity('lifecycle_environments')
 
