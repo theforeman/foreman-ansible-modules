@@ -28,12 +28,18 @@ description:
 author:
   - "James Stuart (@jstuart)"
   - "Matthias M Dellweg (@mdellweg)"
+  - "Jeffrey van Pelt (@Thulium-Drake)"
 options:
   name:
     description:
       - Name of the Smart Proxy
     required: true
     type: str
+  lifecycle_environments:
+    description:
+      - Lifecycle Environments synced to the Smart Proxy
+    required: false
+    type: list
   url:
     description:
       - URL of the Smart Proxy
@@ -69,6 +75,8 @@ EXAMPLES = '''
     name: "{{ ansible_fqdn }}"
     url: "https://{{ ansible_fqdn }}:9090"
     download_policy: "immediate"
+    lifecycle_environments:
+      - "Development"
     organizations:
       - "Default Organization"
     locations:
