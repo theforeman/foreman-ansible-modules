@@ -39,6 +39,7 @@ options:
     description:
       - Lifecycle Environments synced to the Smart Proxy
     required: false
+    elements: str
     type: list
   url:
     description:
