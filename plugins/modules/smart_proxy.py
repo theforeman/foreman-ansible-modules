@@ -109,15 +109,13 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             url=dict(required=True),
-            lifecycle_environments=dict(required=False, type='entity_list', resource_type='capsule_content', resolve=False),
+            lifecycle_environments=dict(required=False, type='entity_list'),
             download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand']),
         ),
         required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
     )
 
     with module.api_connection():
-        entity = module.lookup_entity('entity')
-
         handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
             module.lookup_entity('lifecycle_environments')
@@ -125,9 +123,14 @@ def main():
         lifecycle_environments = module.foreman_params.pop('lifecycle_environments', None)
         smart_proxy = module.run()
 
+        payload = {
+                'id': smart_proxy['id'],
+        }
+        entity = module.resource_action('capsule_content', 'lifecycle_environments', payload)
+
         if handle_lifecycle_environments:
             desired_lifecycle_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
-            current_lifecycle_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in entity['lifecycle_environments']) if entity else set()
+            current_lifecycle_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in entity['results']) if entity else set()
 
             module.record_before('smart_proxies/lifecycle_environments', {'id': smart_proxy['id'], 'lifecycle_environment_ids': current_lifecycle_environment_ids})
             module.record_after('smart_proxies/lifecycle_environments', {'id': smart_proxy['id'], 'lifecycle_environment_ids': desired_lifecycle_environment_ids})
