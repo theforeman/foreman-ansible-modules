@@ -127,7 +127,7 @@ def main():
         payload = {
             'id': smart_proxy['id'],
         }
-        entity = module.resource_action('capsule_content', 'lifecycle_environments', payload)
+        entity = module.resource_action('capsule_content', 'lifecycle_environments', payload, record_change=False)
 
         if handle_lifecycle_environments:
             desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
