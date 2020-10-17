@@ -125,7 +125,7 @@ def main():
         smart_proxy = module.run()
 
         payload = {
-                'id': smart_proxy['id'],
+            'id': smart_proxy['id'],
         }
         entity = module.resource_action('capsule_content', 'lifecycle_environments', payload)
 
@@ -140,7 +140,7 @@ def main():
             if desired_environment_ids != current_environment_ids:
                 if not module.check_mode:
                     environment_ids_to_add = desired_environment_ids - current_environment_ids
-                    if lifecycle_environment_ids_to_add:
+                    if environment_ids_to_add:
                         for environment_id_to_add in environment_ids_to_add:
                             payload = {
                                 'id': smart_proxy['id'],
