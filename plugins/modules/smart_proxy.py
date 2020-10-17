@@ -130,29 +130,29 @@ def main():
         entity = module.resource_action('capsule_content', 'lifecycle_environments', payload)
 
         if handle_lifecycle_environments:
-            desired_lifecycle_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
-            current_lifecycle_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in entity['results']) if entity else set()
+            desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
+            current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in entity['results']) if entity else set()
 
-            module.record_before('smart_proxies/lifecycle_environments', {'id': smart_proxy['id'], 'lifecycle_environment_ids': current_lifecycle_environment_ids})
-            module.record_after('smart_proxies/lifecycle_environments', {'id': smart_proxy['id'], 'lifecycle_environment_ids': desired_lifecycle_environment_ids})
-            module.record_after_full('smart_proxies/lifecycle_environments', {'id': smart_proxy['id'], 'lifecycle_environment_ids': desired_lifecycle_environment_ids})
+            module.record_before('smart_proxy_content/lifecycle_environment_ids', current_environment_ids)
+            module.record_after('smart_proxy_content/lifecycle_environment_ids', desired_environment_ids)
+            module.record_after_full('smart_proxy_content/lifecycle_environment_ids', desired_environment_ids)
 
-            if desired_lifecycle_environment_ids != current_lifecycle_environment_ids:
+            if desired_environment_ids != current_environment_ids:
                 if not module.check_mode:
-                    lifecycle_environment_ids_to_add = desired_lifecycle_environment_ids - current_lifecycle_environment_ids
+                    environment_ids_to_add = desired_environment_ids - current_environment_ids
                     if lifecycle_environment_ids_to_add:
-                        for lifecycle_environment_id_to_add in lifecycle_environment_ids_to_add:
+                        for environment_id_to_add in environment_ids_to_add:
                             payload = {
                                 'id': smart_proxy['id'],
-                                'environment_id': lifecycle_environment_id_to_add,
+                                'environment_id': environment_id_to_add,
                             }
                             module.resource_action('capsule_content', 'add_lifecycle_environment', payload)
-                    lifecycle_environment_ids_to_remove = current_lifecycle_environment_ids - desired_lifecycle_environment_ids
-                    if lifecycle_environment_ids_to_remove:
-                        for lifecycle_environment_id_to_remove in lifecycle_environment_ids_to_remove:
+                    environment_ids_to_remove = current_environment_ids - desired_environment_ids
+                    if environment_ids_to_remove:
+                        for environment_id_to_remove in environment_ids_to_remove:
                             payload = {
                                 'id': smart_proxy['id'],
-                                'environment_id': lifecycle_environment_id_to_remove,
+                                'environment_id': environment_id_to_remove,
                             }
                             module.resource_action('capsule_content', 'remove_lifecycle_environment', payload)
                 else:
