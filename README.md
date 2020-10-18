@@ -75,3 +75,19 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `subnet` module on Python 2.7
 * `rpm` for the RPM support in the `content_upload` module
 * `debian` for the DEB support in the `content_upload` module
+
+# Foreman Ansible Roles
+
+Roles using the Foreman Ansible Modules to configure Foreman and its plugins.
+
+## Documentation
+
+For individual role documentation, check the README defined at `roles/rolename/README.md`.
+
+### Common Role Variables
+
+- `server_url`: URL of the Foreman server.
+- `username`: Username accessing the Foreman server.
+- `password`: Password of the user accessing the Foreman server.
+- `validate_certs`: Whether or not to verify the TLS certificates of the Foreman server.
+- `organization`: Organization where configuration will be applied.
