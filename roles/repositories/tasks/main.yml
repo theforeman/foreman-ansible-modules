@@ -1,0 +1,84 @@
+---
+- name: 'Enable Red Hat Repositories'
+  theforeman.foreman.repository_set:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    product: "{{ item.0.name }}"
+    name: "{{ item.1.name }}"
+    all_repositories: false
+    state: enabled
+    repositories:
+      - releasever: "{{ item.1.releasever | default(omit) }}"
+        basearch: "{{ item.1.basearch | default(omit) }}"
+  with_subelements:
+    - "{{ products | selectattr('repository_sets', 'defined') | list }}"
+    - repository_sets
+
+- name: 'Enable Red Hat Repository Sets'
+  theforeman.foreman.repository_set:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    label: "{{ item.1 }}"
+    all_repositories: true
+    state: enabled
+  with_subelements:
+    - "{{ products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
+    - labels
+
+- name: 'Create Products'
+  theforeman.foreman.product:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    name: "{{ item.name }}"
+    state: present
+  with_items:
+    - "{{ products | selectattr('repositories', 'defined') | list }}"
+
+- name: 'Create Repositories'
+  theforeman.foreman.repository:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    name: "{{ item.1.name }}"
+    url: "{{ item.1.url }}"
+    product: "{{ item.0.name }}"
+    auto_enabled: "{{ item.1.auto_enabled | default(omit) }}"
+    checksum_type: "{{ item.1.checksum_type | default(omit) }}"
+    content_type: "{{ item.1.content_type }}"
+    deb_architectures: "{{ item.1.deb_architectures | default(omit) }}"
+    deb_components: "{{ item.1.deb_components | default(omit) }}"
+    deb_errata_url: "{{ item.1.deb_errata_url | default(omit) }}"
+    deb_releases: "{{ item.1.deb_releases | default(omit) }}"
+    description: "{{ item.1.description | default(omit) }}"
+    docker_tags_whitelist: "{{ item.1.docker_tags_whitelist | default(omit) }}"
+    docker_upstream_name: "{{ item.1.docker_upstream_name | default(omit) }}"
+    download_policy: "{{ item.1.download_policy | default(omit) }}"
+    gpg_key: "{{ item.1.gpg_key | default(omit) }}"
+    http_proxy: "{{ item.1.http_proxy | default(omit) }}"
+    http_proxy_policy: "{{ item.1.http_proxy_policy | default(omit) }}"
+    ignorable_content: "{{ item.1.ignorable_content | default(omit) }}"
+    ignore_global_proxy: "{{ item.1.ignore_global_proxy | default(omit) }}"
+    label: "{{ item.1.label | default(omit) }}"
+    mirror_on_sync: "{{ item.1.mirror_on_sync | default(true) }}"
+    ssl_ca_cert: "{{ item.1.ssl_ca_cert | default(omit) }}"
+    ssl_client_cert: "{{ item.1.ssl_client_cert | default(omit) }}"
+    ssl_client_key: "{{ item.1.ssl_client_key | default(omit) }}"
+    state: present
+    unprotected: "{{ item.1.unprotected | default(omit) }}"
+    upstream_password: "{{ item.1.upstream_password | default(omit) }}"
+    upstream_username: "{{ item.1.upstream_username | default(omit) }}"
+    verify_ssl_on_sync: "{{ item.1.verify_ssl_on_sync | default(omit) }}"
+  with_subelements:
+    - "{{ products | selectattr('repositories', 'defined') | list }}"
+    - repositories
