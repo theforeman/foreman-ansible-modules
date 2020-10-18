@@ -145,7 +145,7 @@ def main():
     )
 
     with module.api_connection():
-        entity = module.lookup_entity('entity', params={'show_hidden': "true"})
+        entity = module.lookup_entity('entity', params={'show_hidden': True})
 
         if not module.desired_absent:
             # Convert values according to their corresponding parameter_type
