@@ -78,6 +78,10 @@ ENTITY_KEYS = dict(
 )
 
 
+class NoEntity(object):
+    pass
+
+
 def _exception2fail_json(msg='Generic failure: {0}'):
     """
     Decorator to convert Python exceptions into Ansible errors that can be reported to the user.
@@ -661,6 +665,8 @@ class ForemanAnsibleModule(AnsibleModule):
         return result
 
     def find_resource_by(self, resource, search_field, value, **kwargs):
+        if not value:
+            return NoEntity
         search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
         return self.find_resource(resource, search, **kwargs)
 
@@ -1445,7 +1451,10 @@ def _flatten_entity(entity, foreman_spec):
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
             if property_type == 'entity':
-                result[flat_name] = value['id']
+                if value is not NoEntity:
+                    result[flat_name] = value['id']
+                else:
+                    result[flat_name] = None
             elif property_type == 'entity_list':
                 result[flat_name] = sorted(val['id'] for val in value)
             else:
