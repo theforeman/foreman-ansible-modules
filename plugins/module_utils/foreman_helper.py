@@ -79,9 +79,7 @@ ENTITY_KEYS = dict(
 
 
 class NoEntity(object):
-    @staticmethod
-    def __bool__():
-        return False
+    pass
 
 
 def _exception2fail_json(msg='Generic failure: {0}'):
@@ -1453,7 +1451,7 @@ def _flatten_entity(entity, foreman_spec):
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
             if property_type == 'entity':
-                if value:
+                if not isinstance(value, NoEntity):
                     result[flat_name] = value['id']
                 else:
                     result[flat_name] = None
