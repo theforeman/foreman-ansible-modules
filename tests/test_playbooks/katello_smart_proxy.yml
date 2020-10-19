@@ -34,6 +34,19 @@
       vars:
         smart_proxy_state: present
         expected_change: false
+    - include: tasks/lifecycle_environment.yml # Required for smart_proxy_lifecycle_environments tests below
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Dev
+          label: dev
+          prior: Library
+        - name: Test
+          label: test
+          prior: Dev
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
@@ -46,6 +59,17 @@
         smart_proxy_lifecycle_environments:
           - 'Dev'
         expected_change: false
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Test'
+        expected_change: true
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Test'
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_download_policy: background

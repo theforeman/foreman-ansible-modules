@@ -37,7 +37,8 @@ options:
     type: str
   lifecycle_environments:
     description:
-      - Lifecycle Environments synced to the Smart Proxy
+      - Lifecycle Environments synced to the Smart Proxy.
+      - Only available for Katello installations.
     required: false
     elements: str
     type: list
@@ -121,15 +122,14 @@ def main():
         if handle_lifecycle_environments:
             module.lookup_entity('lifecycle_environments')
 
-        lifecycle_environments = module.foreman_params.pop('lifecycle_environments', None)
+        lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
         smart_proxy = module.run()
 
-        payload = {
-            'id': smart_proxy['id'],
-        }
-        current_lces = module.resource_action('capsule_content', 'lifecycle_environments', payload, record_change=False)
-
         if handle_lifecycle_environments:
+            payload = {
+                'id': smart_proxy['id'],
+            }
+            current_lces = module.resource_action('capsule_content', 'lifecycle_environments', payload, record_change=False)
             desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
             current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in current_lces['results']) if current_lces else set()
 
