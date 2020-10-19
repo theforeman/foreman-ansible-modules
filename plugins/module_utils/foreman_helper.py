@@ -719,7 +719,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self.foreman_params[key] = entity
         self.foreman_spec[key]['resolved'] = True
 
-    def lookup_entity(self, key):
+    def lookup_entity(self, key, params=None):
         if key not in self.foreman_params:
             return None
 
@@ -731,7 +731,10 @@ class ForemanAnsibleModule(AnsibleModule):
         resource_type = entity_spec['resource_type']
         failsafe = entity_spec.get('failsafe', False)
         thin = entity_spec.get('thin', True)
-        params = {}
+        if params:
+            params = params.copy()
+        else:
+            params = {}
         try:
             if 'scope' in entity_spec:
                 for scope in entity_spec['scope']:

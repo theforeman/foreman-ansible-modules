@@ -73,9 +73,10 @@ interactions:
       string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"TheAnswer\\\"\",\n  \"sort\": {\n\
         \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\"\
-        :\"2020-10-16 13:53:30 UTC\",\"updated_at\":\"2020-10-16 13:53:35 UTC\",\"\
-        hidden_value?\":false,\"hidden_value\":\"*****\",\"id\":11,\"name\":\"TheAnswer\"\
-        ,\"parameter_type\":\"boolean\",\"value\":true}]\n}\n"
+        :\"2020-10-16 13:53:41 UTC\",\"updated_at\":\"2020-10-16 13:53:41 UTC\",\"\
+        hidden_value?\":false,\"hidden_value\":\"*****\",\"id\":13,\"name\":\"TheAnswer\"\
+        ,\"parameter_type\":\"json\",\"value\":{\"name\":\"test\",\"tags\":[\"a\"\
+        ,\"b\",\"c\"],\"value\":4}}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -112,7 +113,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '366'
+      - '405'
     status:
       code: 200
       message: OK
@@ -125,14 +126,15 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/common_parameters/11?show_hidden=true
+    method: DELETE
+    uri: https://foreman.example.org/api/common_parameters/13
   response:
     body:
-      string: '{"created_at":"2020-10-16 13:53:30 UTC","updated_at":"2020-10-16 13:53:35
-        UTC","hidden_value?":false,"hidden_value":"*****","id":11,"name":"TheAnswer","parameter_type":"boolean","value":true}'
+      string: '{"id":13,"name":"TheAnswer","value":{"name":"test","tags":["a","b","c"],"value":4},"reference_id":null,"created_at":"2020-10-16T13:53:41.158Z","updated_at":"2020-10-16T13:53:41.158Z","priority":0,"hidden_value":"*****","key_type":"json","searchable_value":"{\"name\":\"test\",\"tags\":[\"a\",\"b\",\"c\"],\"value\":4}"}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -169,68 +171,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '191'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"common_parameter": {"value": "''", "parameter_type": "string"}}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '64'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: PUT
-    uri: https://foreman.example.org/api/common_parameters/11
-  response:
-    body:
-      string: '{"created_at":"2020-10-16 13:53:30 UTC","updated_at":"2020-10-16 13:53:36
-        UTC","hidden_value?":false,"hidden_value":"*****","id":11,"name":"TheAnswer","parameter_type":"string","value":"''"}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.2.0-rc3
-      Keep-Alive:
-      - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '189'
+      - '319'
     status:
       code: 200
       message: OK
