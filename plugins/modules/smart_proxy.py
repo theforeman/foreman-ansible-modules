@@ -127,11 +127,11 @@ def main():
         payload = {
             'id': smart_proxy['id'],
         }
-        smart_proxy_content = module.resource_action('capsule_content', 'lifecycle_environments', payload, record_change=False)
+        capsule_content = module.resource_action('capsule_content', 'lifecycle_environments', payload, record_change=False)
 
         if handle_lifecycle_environments:
             desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
-            current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in smart_proxy_content['results']) if smart_proxy_content else set()
+            current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in capsule_content['results']) if capsule_content else set()
 
             module.record_before('smart_proxy_content/lifecycle_environment_ids', current_environment_ids)
             module.record_after('smart_proxy_content/lifecycle_environment_ids', desired_environment_ids)
