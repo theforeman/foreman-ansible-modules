@@ -49,6 +49,7 @@ about: Create a report to help us improve
 ##### ACTUAL RESULTS
 <!-- What actually happened? If possible run with extra verbosity (-vvvv) and diff (--diff) -->
 <!-- Please also include check mode (--check --diff) output if the API returns an error -->
+<!-- Be sure to mask any sensitive information -->
 
 <!--- Paste verbatim command output between quotes below -->
 ```
