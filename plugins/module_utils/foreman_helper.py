@@ -666,7 +666,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def find_resource_by(self, resource, search_field, value, **kwargs):
         if not value:
-            return NoEntity()
+            return NoEntity
         search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
         return self.find_resource(resource, search, **kwargs)
 
@@ -1451,7 +1451,7 @@ def _flatten_entity(entity, foreman_spec):
             flat_name = spec.get('flat_name', key)
             property_type = spec.get('type', 'str')
             if property_type == 'entity':
-                if not isinstance(value, NoEntity):
+                if value is not NoEntity:
                     result[flat_name] = value['id']
                 else:
                     result[flat_name] = None
