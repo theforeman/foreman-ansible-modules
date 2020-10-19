@@ -14,3 +14,9 @@ To release the collection the following steps are required:
   Please use signed tags.
 
 Consider filing a packaging PR on [foreman-packaging](https://github.com/theforeman/foreman-packaging).
+
+## Vendoring `apypie`
+
+To make installations easier, we vendor a copy of `apypie` in our `module_utils`.
+
+To update the copy, call `make vendor` and either pass `APYPIE_VERSION=vX.Y.Z` to the `make` invocation or update the `Makefile`.
