@@ -127,7 +127,7 @@ def main():
 
         if handle_lifecycle_environments:
             if smart_proxy['id'] == -1:
-                current_lces = {'results': [] }
+                current_lces = {'results': []}
             else:
                 payload = {
                     'id': smart_proxy['id'],

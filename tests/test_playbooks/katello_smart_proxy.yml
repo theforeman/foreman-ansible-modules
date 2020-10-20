@@ -28,6 +28,27 @@
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: "present"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Dev
+          label: dev
+          prior: Library
+        - name: Test
+          label: test
+          prior: Dev
 
 - hosts: tests
   collections:
@@ -44,27 +65,6 @@
       vars:
         smart_proxy_state: present
         expected_change: false
-    - include_tasks: tasks/location.yml
-      vars:
-        location_name: "Test Location"
-        location_state: "present"
-    - include_tasks: tasks/organization.yml
-      vars:
-        organization_name: "Test Organization"
-        organization_state: "present"
-    - include: tasks/lifecycle_environment.yml # Required for smart_proxy_lifecycle_environments tests below
-      vars:
-        lifecycle_environment_state: present
-        lifecycle_environment_name: "{{ item.name }}"
-        lifecycle_environment_label: "{{ item.label }}"
-        lifecycle_environment_prior: "{{ item.prior }}"
-      loop:
-        - name: Dev
-          label: dev
-          prior: Library
-        - name: Test
-          label: test
-          prior: Dev
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
