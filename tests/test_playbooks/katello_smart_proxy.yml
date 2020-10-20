@@ -36,6 +36,14 @@
       vars:
         organization_name: "Test Organization"
         organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
     - include: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
@@ -49,14 +57,6 @@
         - name: Test
           label: test
           prior: Dev
-
-- hosts: tests
-  collections:
-    - theforeman.foreman
-  gather_facts: false
-  vars_files:
-    - vars/server.yml
-  tasks:
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
