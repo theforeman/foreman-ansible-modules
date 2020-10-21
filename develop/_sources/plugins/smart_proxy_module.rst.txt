@@ -92,6 +92,22 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-lifecycle_environments"></div>
+                    <b>lifecycle_environments</b>
+                    <a class="ansibleOptionLink" href="#parameter-lifecycle_environments" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Lifecycle Environments synced to the Smart Proxy.</div>
+                                            <div>Only available for Katello installations.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-locations"></div>
                     <b>locations</b>
                     <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
@@ -270,6 +286,8 @@ Examples
         name: "{{ ansible_fqdn }}"
         url: "https://{{ ansible_fqdn }}:9090"
         download_policy: "immediate"
+        lifecycle_environments:
+          - "Development"
         organizations:
           - "Default Organization"
         locations:
@@ -341,6 +359,7 @@ Authors
 
 - James Stuart (@jstuart)
 - Matthias M Dellweg (@mdellweg)
+- Jeffrey van Pelt (@Thulium-Drake)
 
 
 
