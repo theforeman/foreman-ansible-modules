@@ -118,21 +118,21 @@ def main():
     )
 
     with module.api_connection():
+        smart_proxy = module.lookup_entity('entity')
+        new_smart_proxy = module.run()
+
         handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
             module.lookup_entity('lifecycle_environments')
             lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
 
-        smart_proxy = module.run()
-
-        if handle_lifecycle_environments:
-            if smart_proxy['id'] == -1:
-                current_lces = {'results': []}
-            else:
+            if smart_proxy:
                 payload = {
-                    'id': smart_proxy['id'],
+                    'id': new_smart_proxy['id'],
                 }
                 current_lces = module.resource_action('capsule_content', 'lifecycle_environments', payload, ignore_check_mode=True, record_change=False)
+            else:
+                current_lces = {'results': []}
 
             desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
             current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in current_lces['results']) if current_lces else set()
@@ -146,7 +146,7 @@ def main():
                 if environment_ids_to_add:
                     for environment_id_to_add in environment_ids_to_add:
                         payload = {
-                            'id': smart_proxy['id'],
+                            'id': new_smart_proxy['id'],
                             'environment_id': environment_id_to_add,
                         }
                         module.resource_action('capsule_content', 'add_lifecycle_environment', payload)
