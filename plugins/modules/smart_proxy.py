@@ -118,13 +118,15 @@ def main():
     )
 
     with module.api_connection():
+        handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
+        if handle_lifecycle_environments:
+            lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
+            module.lookup_entity('lifecycle_environments')
+
         smart_proxy = module.lookup_entity('entity')
         new_smart_proxy = module.run()
 
-        handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
-            module.lookup_entity('lifecycle_environments')
-            lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
 
             if smart_proxy:
                 payload = {
