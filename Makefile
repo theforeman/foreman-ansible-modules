@@ -81,7 +81,7 @@ setup: test-setup
 
 test-setup: | tests/test_playbooks/vars/server.yml
 	pip install --upgrade 'pip<20'
-	pip install -r requirements-dev.txt
+	pip install --upgrade -r requirements-dev.txt
 
 tests/test_playbooks/vars/server.yml:
 	cp $@.example $@
@@ -121,7 +121,7 @@ clean:
 	rm -rf build docs/plugins
 
 doc-setup:
-	pip install -r docs/requirements.txt
+	pip install --upgrade -r docs/requirements.txt
 doc: $(MANIFEST)
 	mkdir -p ./docs/plugins
 	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins $(NAMESPACE).$(NAME)
