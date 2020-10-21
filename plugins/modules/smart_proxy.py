@@ -28,12 +28,20 @@ description:
 author:
   - "James Stuart (@jstuart)"
   - "Matthias M Dellweg (@mdellweg)"
+  - "Jeffrey van Pelt (@Thulium-Drake)"
 options:
   name:
     description:
       - Name of the Smart Proxy
     required: true
     type: str
+  lifecycle_environments:
+    description:
+      - Lifecycle Environments synced to the Smart Proxy.
+      - Only available for Katello installations.
+    required: false
+    elements: str
+    type: list
   url:
     description:
       - URL of the Smart Proxy
@@ -69,6 +77,8 @@ EXAMPLES = '''
     name: "{{ ansible_fqdn }}"
     url: "https://{{ ansible_fqdn }}:9090"
     download_policy: "immediate"
+    lifecycle_environments:
+      - "Development"
     organizations:
       - "Default Organization"
     locations:
@@ -101,13 +111,55 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             url=dict(required=True),
+            lifecycle_environments=dict(required=False, type='entity_list'),
             download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand']),
         ),
-        required_plugins=[('katello', ['download_policy'])],
+        required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
     )
 
     with module.api_connection():
-        module.run()
+        handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
+        if handle_lifecycle_environments:
+            module.lookup_entity('lifecycle_environments')
+            lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
+
+        smart_proxy = module.lookup_entity('entity')
+        new_smart_proxy = module.run()
+
+        if handle_lifecycle_environments:
+
+            if smart_proxy:
+                payload = {
+                    'id': new_smart_proxy['id'],
+                }
+                current_lces = module.resource_action('capsule_content', 'lifecycle_environments', payload, ignore_check_mode=True, record_change=False)
+            else:
+                current_lces = {'results': []}
+
+            desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
+            current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in current_lces['results']) if current_lces else set()
+
+            module.record_before('smart_proxy_content/lifecycle_environment_ids', current_environment_ids)
+            module.record_after('smart_proxy_content/lifecycle_environment_ids', desired_environment_ids)
+            module.record_after_full('smart_proxy_content/lifecycle_environment_ids', desired_environment_ids)
+
+            if desired_environment_ids != current_environment_ids:
+                environment_ids_to_add = desired_environment_ids - current_environment_ids
+                if environment_ids_to_add:
+                    for environment_id_to_add in environment_ids_to_add:
+                        payload = {
+                            'id': new_smart_proxy['id'],
+                            'environment_id': environment_id_to_add,
+                        }
+                        module.resource_action('capsule_content', 'add_lifecycle_environment', payload)
+                environment_ids_to_remove = current_environment_ids - desired_environment_ids
+                if environment_ids_to_remove:
+                    for environment_id_to_remove in environment_ids_to_remove:
+                        payload = {
+                            'id': smart_proxy['id'],
+                            'environment_id': environment_id_to_remove,
+                        }
+                        module.resource_action('capsule_content', 'remove_lifecycle_environment', payload)
 
 
 if __name__ == '__main__':

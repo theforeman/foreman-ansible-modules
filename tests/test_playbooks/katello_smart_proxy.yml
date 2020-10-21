@@ -1,10 +1,20 @@
 ---
+# Do not do this on a production machine!
+#
 # To run recording for this test, you need to:
-#   - configure your primary smart proxy to listen to http on 8000
-#   - configure your primary smart proxy to trust localhost
-#   - restart your primary smart proxy
+#   - run a smart proxy box (e.g. centos7-foreman-proxy-3.17)
+#   - configure /etc/hosts on both machines
+#     o foreman.example.com -> main foreman server
+#     o foreman-proxy.example.com -> smart proxy
+#   - configure your smart proxy to listen to http on 8000
+#   - configure your smart proxy to trust anything
+#   - restart your smart proxy
 #   - disable selinux enforcing
 #   - record before puppet takes back those changes
+#
+# setenforce 0
+# foreman-installer --foreman-proxy-http true --foreman-proxy-http-port 8000 --disable-system-checks \
+#   --foreman-proxy-trusted-hosts=EMPTY_ARRAY
 #
 # Do not do this on a production machine!
 
@@ -18,6 +28,27 @@
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: "present"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Dev
+          label: dev
+          prior: Library
+        - name: Test
+          label: test
+          prior: Dev
 
 - hosts: tests
   collections:
@@ -29,11 +60,26 @@
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Dev'
         expected_change: true
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Dev'
         expected_change: false
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Test'
+        expected_change: true
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - 'Test'
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_download_policy: background

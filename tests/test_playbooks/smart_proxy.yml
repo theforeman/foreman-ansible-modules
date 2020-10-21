@@ -1,10 +1,20 @@
 ---
+# Do not do this on a production machine!
+#
 # To run recording for this test, you need to:
-#   - configure your primary smart proxy to listen to http on 8000
-#   - configure your primary smart proxy to trust localhost
-#   - restart your primary smart proxy
+#   - run a smart proxy box (e.g. centos7-foreman-proxy-3.17)
+#   - configure /etc/hosts on both machines
+#     o foreman.example.com -> main foreman server
+#     o foreman-proxy.example.com -> smart proxy
+#   - configure your smart proxy to listen to http on 8000
+#   - configure your smart proxy to trust anything
+#   - restart your smart proxy
 #   - disable selinux enforcing
 #   - record before puppet takes back those changes
+#
+# setenforce 0
+# foreman-installer --foreman-proxy-http true --foreman-proxy-http-port 8000 --disable-system-checks \
+#   --foreman-proxy-trusted-hosts=EMPTY_ARRAY
 #
 # Do not do this on a production machine!
 
@@ -32,7 +42,7 @@
         expected_change: true
         expected_diff: true
         expected_diff_before: "{}"
-        expected_diff_after: "localhost"
+        expected_diff_after: "foreman-proxy.example.com"
     - include_tasks: tasks/smart_proxy.yml
       vars:
         smart_proxy_state: present
@@ -42,7 +52,7 @@
         smart_proxy_state: absent
         expected_change: true
         expected_diff: true
-        expected_diff_before: "localhost"
+        expected_diff_before: "foreman-proxy.example.com"
         expected_diff_after: "{}"
     - include_tasks: tasks/smart_proxy.yml
       vars:

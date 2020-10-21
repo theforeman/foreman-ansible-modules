@@ -2,7 +2,7 @@
 - name: "Ensure Smart Proxy '{{ smart_proxy_name }}' is {{ smart_proxy_state }}"
   vars:
     - smart_proxy_name: "Smart Proxy"
-    - smart_proxy_url: "http://localhost:8000"
+    - smart_proxy_url: "http://foreman-proxy.example.com:8000"
   smart_proxy:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -10,6 +10,7 @@
     validate_certs: "{{ foreman_validate_certs }}"
     name: "{{ smart_proxy_name }}"
     url: "{{ smart_proxy_url }}"
+    lifecycle_environments: "{{ smart_proxy_lifecycle_environments | default(omit) }}"
     download_policy: "{{ smart_proxy_download_policy | default(omit) }}"
     state: "{{ smart_proxy_state }}"
   register: result
