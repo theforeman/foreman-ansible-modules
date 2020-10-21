@@ -1,0 +1,329 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.os_default_template_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.os_default_template -- Manage Default Template Associations To Operating Systems
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_.
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.os_default_template`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Manage OSDefaultTemplate Entities
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div>
+                    <b>operatingsystem</b>
+                    <a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Operating systems are looked up by their title which is composed as &quot;&lt;name&gt; &lt;major&gt;.&lt;minor&gt;&quot;.</div>
+                                            <div>You can omit the version part as long as you only have one operating system by that name.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password of the user accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-provisioning_template"></div>
+                    <b>provisioning_template</b>
+                    <a class="ansibleOptionLink" href="#parameter-provisioning_template" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>name of provisioning template</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                    <b>server_url</b>
+                    <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>present_with_defaults</li>
+                                                                                                                                                                                                <li>absent</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>State of the entity</div>
+                                            <div><code>present_with_defaults</code> will ensure the entity exists, but won&#x27;t update existing ones</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-template_kind"></div>
+                    <b>template_kind</b>
+                    <a class="ansibleOptionLink" href="#parameter-template_kind" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>Bootdisk</li>
+                                                                                                                                                                                                <li>cloud-init</li>
+                                                                                                                                                                                                <li>finish</li>
+                                                                                                                                                                                                <li>iPXE</li>
+                                                                                                                                                                                                <li>job_template</li>
+                                                                                                                                                                                                <li>kexec</li>
+                                                                                                                                                                                                <li>POAP</li>
+                                                                                                                                                                                                <li>provision</li>
+                                                                                                                                                                                                <li>ptable</li>
+                                                                                                                                                                                                <li>PXEGrub</li>
+                                                                                                                                                                                                <li>PXEGrub2</li>
+                                                                                                                                                                                                <li>PXELinux</li>
+                                                                                                                                                                                                <li>registration</li>
+                                                                                                                                                                                                <li>script</li>
+                                                                                                                                                                                                <li>user_data</li>
+                                                                                                                                                                                                <li>ZTP</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>name of the template kind</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                    <b>username</b>
+                    <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                    <b>validate_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Create an Association"
+      theforeman.foreman.os_default_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        operatingsystem: "CoolOS"
+        template_kind: "finish"
+        provisioning_template: "CoolOS finish"
+        state: present
+
+    - name: "Delete an Association"
+      theforeman.foreman.os_default_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        operatingsystem: "CoolOS"
+        template_kind: "finish"
+        state: absent
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-entity"></div>
+                    <b>entity</b>
+                    <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>Final state of the affected entities grouped by their type.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                        <tr>
+                                    <td class="elbow-placeholder">&nbsp;</td>
+                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-entity/os_default_templates"></div>
+                    <b>os_default_templates</b>
+                    <a class="ansibleOptionLink" href="#return-entity/os_default_templates" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                       / <span style="color: purple">elements=dictionary</span>                    </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>List of operatingsystem default templates.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                    
+                        </table>
+    <br/><br/>
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Matthias M Dellweg (@mdellweg) ATIX AG
+
+
+
+.. Parsing errors
+
