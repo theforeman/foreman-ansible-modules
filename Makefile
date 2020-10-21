@@ -16,7 +16,7 @@ TEST =
 FLAGS =
 PYTEST = pytest -n 4 --boxed -v
 
-APIPIE_VERSION ?= v0.3.0
+APIPIE_VERSION ?= v0.3.1
 
 default: help
 help:

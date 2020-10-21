@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 try:
-    from typing import Any, Tuple, List, Optional, Iterable  # pylint: disable=unused-import
+    from typing import Any, Iterable, List, Optional, Tuple  # pylint: disable=unused-import
 except ImportError:
     pass
 
@@ -246,11 +246,15 @@ Apypie Api module
 import errno
 import glob
 import json
-import os
 try:
     import requests
 except ImportError:
     pass
+try:
+    from json.decoder import JSONDecodeError  # type: ignore
+except ImportError:
+    JSONDecodeError = ValueError  # type: ignore
+import os
 try:
     from urlparse import urljoin  # type: ignore
 except ImportError:
@@ -407,7 +411,7 @@ class Api(object):
         try:
             with open(self.apidoc_cache_file, 'r') as apidoc_file:
                 api_doc = json.load(apidoc_file)
-        except IOError:
+        except (IOError, JSONDecodeError):
             api_doc = self._retrieve_apidoc()
         return api_doc
 
