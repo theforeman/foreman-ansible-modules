@@ -224,6 +224,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
     ForemanTaxonomicEntityAnsibleModule,
     parse_template,
     parse_template_from_file,
+    TEMPLATE_KIND_LIST,
 )
 
 
@@ -252,25 +253,7 @@ def main():
             updated_name=dict(),
         ),
         foreman_spec=dict(
-            kind=dict(choices=[
-                'Bootdisk',
-                'cloud-init',
-                'finish',
-                'iPXE',
-                'job_template',
-                'kexec',
-                'POAP',
-                'provision',
-                'ptable',
-                'PXEGrub',
-                'PXEGrub2',
-                'PXELinux',
-                'registration',
-                'script',
-                'snippet',
-                'user_data',
-                'ZTP',
-            ], type='entity', flat_name='template_kind_id', resolve=False),
+            kind=dict(choices=TEMPLATE_KIND_LIST + ['snippet'], type='entity', flat_name='template_kind_id', resolve=False),
             template=dict(),
             locked=dict(type='bool'),
             name=dict(),

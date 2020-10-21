@@ -36,6 +36,23 @@ options:
       - name of the template kind
     required: true
     type: str
+    choices:
+      - Bootdisk
+      - cloud-init
+      - finish
+      - iPXE
+      - job_template
+      - kexec
+      - POAP
+      - provision
+      - ptable
+      - PXEGrub
+      - PXEGrub2
+      - PXELinux
+      - registration
+      - script
+      - user_data
+      - ZTP
   provisioning_template:
     description:
       - name of provisioning template
@@ -81,7 +98,7 @@ entity:
 '''
 
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule, TEMPLATE_KIND_LIST
 
 
 class ForemanOsDefaultTemplateModule(ForemanEntityAnsibleModule):
@@ -95,7 +112,7 @@ def main():
         ),
         foreman_spec=dict(
             operatingsystem=dict(required=True, type='entity'),
-            template_kind=dict(required=True, type='entity'),
+            template_kind=dict(required=True, choices=TEMPLATE_KIND_LIST, type='entity'),
             provisioning_template=dict(type='entity', thin=False),
         ),
         required_if=(

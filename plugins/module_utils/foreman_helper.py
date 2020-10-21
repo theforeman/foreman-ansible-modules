@@ -1577,3 +1577,22 @@ OS_LIST = ['AIX',
            'Windows',
            'Xenserver',
            ]
+
+TEMPLATE_KIND_LIST = [
+    'Bootdisk',
+    'cloud-init',
+    'finish',
+    'iPXE',
+    'job_template',
+    'kexec',
+    'POAP',
+    'provision',
+    'ptable',
+    'PXEGrub',
+    'PXEGrub2',
+    'PXELinux',
+    'registration',
+    'script',
+    'user_data',
+    'ZTP',
+]
