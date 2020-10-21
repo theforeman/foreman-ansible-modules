@@ -48,14 +48,21 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
+      - name: Restore pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install libyaml-dev for PyYAML
         run: sudo apt-get install -y libyaml-dev
       - name: Install Ansible
-        run: pip install git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}
+        run: pip install --upgrade git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}
       - name: Set Environment to use mazer
         run: |
           echo "COLLECTION_COMMAND=mazer" >> $GITHUB_ENV
-          pip install mazer
+          pip install --upgrade mazer
         if: matrix.ansible == 'stable-2.8'
       - name: Install dependencies
         run: make test-setup
@@ -82,8 +89,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
+      - name: Restore pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install Ansible
-        run: pip install ansible
+        run: pip install --upgrade ansible
       - name: Install dependencies
         run: make test-setup
       - name: Run check_mode tests
@@ -97,6 +111,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
+      - name: Restore pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install dependencies
         run: make doc-setup
       - name: Build docs
@@ -115,8 +136,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
+      - name: Restore pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install dependencies
-        run: pip install flake8 yamllint
+        run: pip install --upgrade -r requirements-lint.txt
       - name: Run lint
         run: make lint
       - name: Upload collection artifact
