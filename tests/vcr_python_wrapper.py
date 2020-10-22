@@ -159,7 +159,7 @@ else:
     if test_params['test_name'] == 'host':
         fam_vcr.register_matcher('host_body', host_body_matcher)
         body_matcher = 'host_body'
-    elif test_params['test_name'] == 'katello_manifest':
+    elif test_params['test_name'] in ['katello_manifest', 'manifest_role']:
         fam_vcr.register_matcher('katello_manifest_body', katello_manifest_body_matcher)
         body_matcher = 'katello_manifest_body'
     elif test_params['test_name'] == 'job_invocation':
