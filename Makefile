@@ -124,7 +124,12 @@ clean:
 doc-setup:
 	pip install --upgrade -r docs/requirements.txt
 doc: $(MANIFEST)
-	mkdir -p ./docs/plugins
+	mkdir -p ./docs/plugins ./docs/roles
+	cat ./docs/roles.rst.template > ./docs/roles/index.rst
+	for role_readme in roles/*/README.md; do \
+		ln -f -s ../../$$role_readme ./docs/roles/$$(basename $$(dirname $$role_readme)).md; \
+		echo " * :doc:\`$$(basename $$(dirname $$role_readme))\`" >> ./docs/roles/index.rst; \
+	done
 	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins $(NAMESPACE).$(NAME)
 	make -C docs html
 
