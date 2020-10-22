@@ -14,6 +14,7 @@ Welcome to Foreman Ansible Modules' documentation!
    Changelog <CHANGELOG>
    plugins/index
    Filters <filters>
+   roles/index
 
 .. toctree::
    :maxdepth: 2
