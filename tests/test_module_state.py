@@ -22,8 +22,6 @@ def _module_file_path(module):
 
 
 def _module_is_tested(module):
-    if module == 'subscription_manifest':
-        module = 'katello_manifest'
     return module in TEST_PLAYBOOKS
 
 
