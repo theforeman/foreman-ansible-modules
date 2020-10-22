@@ -91,7 +91,7 @@ def test_crud(tmpdir, module, vcrmode):
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_check_mode(tmpdir, module):
-    if module in ['katello_manifest', 'templates_import']:
+    if module in ['subscription_manifest', 'templates_import']:
         pytest.skip("This module does not support check_mode.")
     run = run_playbook_vcr(tmpdir, module, check_mode=True)
     assert run.rc == 0

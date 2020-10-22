@@ -61,7 +61,7 @@ def query_matcher_ignore_proxy(r1, r2):
     _query_without_search_matcher(r1, r2, '/api/smart_proxies')
 
 
-def katello_manifest_body_matcher(r1, r2):
+def subscription_manifest_body_matcher(r1, r2):
     if r1.path.endswith('/subscriptions/upload') and r2.path.endswith('/subscriptions/upload'):
         if r1.headers.get('content-type').startswith('multipart/form-data') and r2.headers.get('content-type').startswith('multipart/form-data'):
             r1_copy = vcr.request.Request(r1.method, r1.uri, r1.body, r1.headers)
@@ -159,9 +159,9 @@ else:
     if test_params['test_name'] == 'host':
         fam_vcr.register_matcher('host_body', host_body_matcher)
         body_matcher = 'host_body'
-    elif test_params['test_name'] in ['katello_manifest', 'manifest_role']:
-        fam_vcr.register_matcher('katello_manifest_body', katello_manifest_body_matcher)
-        body_matcher = 'katello_manifest_body'
+    elif test_params['test_name'] in ['subscription_manifest', 'manifest_role']:
+        fam_vcr.register_matcher('subscription_manifest_body', subscription_manifest_body_matcher)
+        body_matcher = 'subscription_manifest_body'
     elif test_params['test_name'] == 'job_invocation':
         fam_vcr.register_matcher('job_invocation_body', job_invocation_body_matcher)
         body_matcher = 'job_invocation_body'
