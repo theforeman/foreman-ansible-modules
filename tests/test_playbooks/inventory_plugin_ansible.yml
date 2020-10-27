@@ -1,0 +1,23 @@
+---
+- hosts: container
+  vars:
+    foreman_groups:
+      - name: group_a
+      - name: group_b
+      - name: group_c
+        label: group_b/group_c
+        parent: group_b
+    foreman_hosts:
+      testhost1.example.com: group_a
+      testhost2.example.com: group_b/group_c
+    _foreman_container: "{{ foreman_container | default('quay.io/evgeni/foreman-ansible') }}"
+    _foreman_version: "{{ foreman_version | default('ansible-container') }}"
+    _foreman_host: "{{ foreman_host | default('foremanansible') }}"
+    _foreman_port: "{{ foreman_port | default('3001') }}"
+    _postgres_version: "{{ postgres_version | default('12') }}"
+    _postgres_host: "{{ postgres_host | default('postgresansible') }}"
+  collections:
+    - community.general
+    - theforeman.foreman
+  tasks:
+    - include_tasks: tasks/inventory_plugin.yml
