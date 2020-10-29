@@ -83,7 +83,7 @@ DOCUMENTATION = '''
         type: string
       batch_size:
         description: Number of hosts per batch that will be retrieved from the Foreman API per individual call
-        type: integer
+        type: int
         default: 250
       foreman:
         description: foreman server related configuration
@@ -97,7 +97,7 @@ DOCUMENTATION = '''
         type: dict
         poll_interval:
             description: The polling interval between 2 calls to the report_data endpoint while polling.
-            type: integer
+            type: int
             default: 10
         want_organization:
             description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
@@ -299,18 +299,23 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _fetch_params(self):
         options = ("no", "yes")
         params = dict()
-        self.want_location = self.get_option('report').get('want_location')
-        self.want_organization = self.get_option('report').get('want_organization')
-        self.want_IPv4 = self.get_option('report').get('want_ipv4')
-        self.want_IPv6 = self.get_option('report').get('want_ipv6')
-        self.want_facts = self.get_option('report').get('want_facts')
-        self.want_host_group = self.get_option('report').get('want_host_group')
-        self.want_hostcollections = self.get_option('report').get('want_hostcollections')
-        self.want_subnet = self.get_option('report').get('want_subnet')
-        self.want_subnet_v6 = self.get_option('report').get('want_subnet_v6')
-        self.want_smart_proxies = self.get_option('report').get('want_smart_proxies')
-        self.want_content_facet_attributes = self.get_option('report').get('want_content_facet_attributes')
-        self.want_host_params = self.get_option('report').get('want_host_params')
+        report_options = {'want_location': True, 'want_organization': True, 'want_ipv4': True, 'want_ipv6': True,
+                          'want_host_group': True, 'want_hostcollections': False, 'want_subnet': True, 'want_subnet_v6': True, 'want_smart_proxies': True,
+                          'want_content_facet_attributes': False, 'want_host_params': True}
+        report_options.update(self.get_option('report') or {})
+
+        self.want_location = report_options['want_location']
+        self.want_organization = report_options['want_organization']
+        self.want_IPv4 = report_options['want_ipv4']
+        self.want_IPv6 = report_options['want_ipv6']
+        self.want_host_group = report_options['want_host_group']
+        self.want_hostcollections = report_options['want_hostcollections']
+        self.want_subnet = report_options['want_subnet']
+        self.want_subnet_v6 = report_options['want_subnet_v6']
+        self.want_smart_proxies = report_options['want_smart_proxies']
+        self.want_content_facet_attributes = report_options['want_content_facet_attributes']
+        self.want_host_params = report_options['want_host_params']
+        self.want_facts = self.get_option('want_facts')
         self.host_filters = self.get_option('host_filters')
 
         params["Organization"] = options[self.want_organization]
@@ -330,7 +335,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         return params
 
     def _use_inventory_report(self):
-        use_inventory_report = self.get_option('foreman').get('use_reports_api')
+        try:
+            use_inventory_report = self.get_option('foreman').get('use_reports_api')
+        except Exception:
+            use_inventory_report = False
         if not use_inventory_report:
             return False
         status_url = "%s/api/v2/status" % self.foreman_url
@@ -342,7 +350,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         url = "%s/ansible/api/v2/ansible_inventories/schedule" % self.foreman_url
         session = self._get_session()
         params = {'input_values': self._fetch_params()}
-        self.poll_interval = self.get_option('report').get('poll_interval')
+        try:
+            self.poll_interval = self.get_option('report').get('poll_interval')
+        except Exception:
+            self.poll_interval = 10
         ret = session.post(url, json=params)
         if not ret:
             raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
