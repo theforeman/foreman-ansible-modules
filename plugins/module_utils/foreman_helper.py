@@ -397,10 +397,11 @@ class ForemanAnsibleModule(AnsibleModule):
         _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
         _location_update_params_location['params'].append(_location_organizations_parameter)
 
-    @_check_patch_needed(plugins=['remote_execution'])
+    @_check_patch_needed(fixed_version='2.2.0', plugins=['remote_execution'])
     def _patch_subnet_rex_api(self):
-        """This is a workaround for the broken subnet apidoc in foreman remote execution.
-            see https://projects.theforeman.org/issues/19086
+        """
+        This is a workaround for the broken subnet apidoc in foreman remote execution.
+        See https://projects.theforeman.org/issues/19086 and https://projects.theforeman.org/issues/30651
         """
 
         _subnet_rex_proxies_parameter = {
