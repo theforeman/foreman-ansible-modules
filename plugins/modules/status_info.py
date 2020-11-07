@@ -34,7 +34,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: status
-  theforeman.foreman.status:
+  theforeman.foreman.status_info:
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
