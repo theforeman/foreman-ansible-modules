@@ -129,6 +129,11 @@
       '{{ item.key }}' in groups['foreman_{{ item.value | regex_replace('/', '_') }}']
   with_dict: "{{ foreman_hosts }}"
 
+- name: dump all host details
+  debug:
+    var: "hostvars['{{ item.key }}']"
+  with_dict: "{{ foreman_hosts }}"
+
 - name: test that all hosts have the domain fact set
   assert:
     that: >
