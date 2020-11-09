@@ -45,6 +45,17 @@
   retries: 10
   delay: 10
 
+- name: start dynflow container
+  docker_container:
+    name: "{{ _foreman_host }}dynflow"
+    image: "{{ _foreman_container }}:{{ _foreman_version }}"
+    command: bash -c "bundle exec rake dynflow:executor"
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: postgres://foreman:foreman@{{ _postgres_host }}/foreman?pool=5
+    links:
+      - "{{ _postgres_host }}:{{ _postgres_host }}"
+
 - name: create test hostgroups
   hostgroup:
     username: admin
