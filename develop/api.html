@@ -273,6 +273,13 @@ See <a class="reference external" href="https://projects.theforeman.org/issues/2
 </dd></dl>
 
 <dl class="py method">
+<dt id="foreman_helper.ForemanAnsibleModule._patch_subnet_externalipam_group_api">
+<code class="sig-name descname">_patch_subnet_externalipam_group_api</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule._patch_subnet_externalipam_group_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a workaround for the broken subnet apidoc for External IPAM.
+See <a class="reference external" href="https://projects.theforeman.org/issues/30890">https://projects.theforeman.org/issues/30890</a></p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="foreman_helper.ForemanAnsibleModule._patch_subnet_rex_api">
 <code class="sig-name descname">_patch_subnet_rex_api</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanAnsibleModule._patch_subnet_rex_api" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is a workaround for the broken subnet apidoc in foreman remote execution.
@@ -637,11 +644,12 @@ provided parameters.</p>
 
 <dl class="py function">
 <dt id="foreman_helper._check_patch_needed">
-<code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">_check_patch_needed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fixed_version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plugins</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper._check_patch_needed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">_check_patch_needed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">introduced_version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fixed_version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plugins</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper._check_patch_needed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to check whether a specific apidoc patch is required.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>introduced_version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – The version of Foreman the API bug was introduced.</p></li>
 <li><p><strong>fixed_version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – The version of Foreman the API bug was fixed.</p></li>
 <li><p><strong>plugins</strong> (<em>list</em><em>, </em><em>optional</em>) – Which plugins are required for this patch.</p></li>
 </ul>
