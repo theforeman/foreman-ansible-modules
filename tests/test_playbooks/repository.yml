@@ -110,46 +110,6 @@
             expected_change: false
             repository_name: "Test Repository 2"
 
-    - name: Test Debian Repository
-      block:
-        - include: tasks/repository.yml
-          vars:
-            repository_state: present
-            repository_label: "just_a_test_repo3"
-            repository_name: Test Debian Repository
-            repository_content_type: deb
-            repository_url: https://ftp.debian.org
-            repository_deb_releases: buster
-            repository_deb_components: main
-            repository_deb_architectures: i386
-            expected_change: true
-        - include: tasks/repository.yml
-          vars:
-            repository_state: present
-            repository_name: Test Debian Repository
-            repository_content_type: deb
-            repository_url: https://ftp.debian.org
-            repository_deb_releases: buster
-            repository_deb_components: main
-            repository_deb_architectures: i386
-            expected_change: false
-        - include: tasks/repository.yml
-          vars:
-            repository_state: present
-            repository_name: Test Debian Repository
-            repository_content_type: deb
-            repository_url: https://ftp.debian.org
-            repository_deb_releases: buster
-            repository_deb_components: main
-            repository_deb_architectures: amd64
-            expected_change: true
-        - include: tasks/repository.yml
-          vars:
-            repository_state: absent
-            repository_name: Test Debian Repository
-            repository_content_type: deb
-            expected_change: true
-
     - name: Test Docker Repository
       block:
         - include: tasks/repository.yml

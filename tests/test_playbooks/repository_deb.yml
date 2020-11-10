@@ -1,0 +1,92 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_state: present
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_name: "Test SSL Cert"
+        content_credential_type: "cert"
+        content_credential_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Test Debian Repository
+      block:
+        - include: tasks/repository.yml
+          vars:
+            repository_state: present
+            repository_label: "just_a_test_repo3"
+            repository_name: Test Debian Repository
+            repository_content_type: deb
+            repository_url: https://ftp.debian.org
+            repository_deb_releases: buster
+            repository_deb_components: main
+            repository_deb_architectures: i386
+            expected_change: true
+        - include: tasks/repository.yml
+          vars:
+            repository_state: present
+            repository_name: Test Debian Repository
+            repository_content_type: deb
+            repository_url: https://ftp.debian.org
+            repository_deb_releases: buster
+            repository_deb_components: main
+            repository_deb_architectures: i386
+            expected_change: false
+        - include: tasks/repository.yml
+          vars:
+            repository_state: present
+            repository_name: Test Debian Repository
+            repository_content_type: deb
+            repository_url: https://ftp.debian.org
+            repository_deb_releases: buster
+            repository_deb_components: main
+            repository_deb_architectures: amd64
+            expected_change: true
+        - include: tasks/repository.yml
+          vars:
+            repository_state: absent
+            repository_name: Test Debian Repository
+            repository_content_type: deb
+            expected_change: true
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_name: "Test SSL Cert"
+        content_credential_type: "cert"
+        content_credential_state: absent
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_state: absent
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

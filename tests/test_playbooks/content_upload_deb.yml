@@ -15,19 +15,13 @@
     - include: tasks/repository.yml
       vars:
         repository_state: absent
+        repository_name: "Test Deb Repository"
+        repository_content_type: "deb"
     - include: tasks/repository.yml
       vars:
         repository_state: present
-    - include: tasks/repository.yml
-      vars:
-        repository_state: absent
-        repository_name: "Test File Repository"
-        repository_content_type: "file"
-    - include: tasks/repository.yml
-      vars:
-        repository_state: present
-        repository_name: "Test File Repository"
-        repository_content_type: "file"
+        repository_name: "Test Deb Repository"
+        repository_content_type: "deb"
 
 - hosts: tests
   collections:
@@ -36,28 +30,19 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: upload RPM
-      include: tasks/upload.yml
-      vars:
-        expected_change: true
-    - name: upload RPM again, no change
-      include: tasks/upload.yml
-      vars:
-        expected_change: false
 
-    - name: upload File
+    - name: upload deb package
       include: tasks/upload.yml
       vars:
-        upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
-        upload_repository: "Test File Repository"
+        upload_src: "{{ playbook_dir }}/data/odin_1.0_ppc64.deb"
+        upload_repository: "Test Deb Repository"
         expected_change: true
-    - name: upload File again, no change
+    - name: upload deb package again, no change
       include: tasks/upload.yml
       vars:
-        upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
-        upload_repository: "Test File Repository"
+        upload_src: "{{ playbook_dir }}/data/odin_1.0_ppc64.deb"
+        upload_repository: "Test Deb Repository"
         expected_change: false
-
 
 - hosts: localhost
   collections:
@@ -69,11 +54,8 @@
     - include: tasks/repository.yml
       vars:
         repository_state: absent
-    - include: tasks/repository.yml
-      vars:
-        repository_state: absent
-        repository_name: "Test File Repository"
-        repository_content_type: "file"
+        repository_name: "Test Deb Repository"
+        repository_content_type: "deb"
     - include: tasks/product.yml
       vars:
         product_state: absent
