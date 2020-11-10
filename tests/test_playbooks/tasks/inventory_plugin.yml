@@ -137,13 +137,13 @@
 - name: test that all hosts have the domain fact set
   assert:
     that: >
-      hostvars['{{ item.key }}']['foreman_domain_name']  == 'example.com'
+      hostvars['{{ item.key }}']['foreman_facts']['domain']  == 'example.com'
   with_dict: "{{ foreman_hosts }}"
 
 - name: test that all hosts have the OS fact set
   assert:
     that: >
-      hostvars['{{ item.key }}']['foreman_operatingsystem_name']  == 'CentOS 7.7'
+      hostvars['{{ item.key }}']['foreman_facts']['operatingsystem']  == 'CentOS'
   with_dict: "{{ foreman_hosts }}"
 
 - name: test that all hosts have the testparam1
