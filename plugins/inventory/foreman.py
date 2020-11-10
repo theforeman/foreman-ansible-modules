@@ -99,6 +99,10 @@ DOCUMENTATION = '''
             description: The polling interval between 2 calls to the report_data endpoint while polling.
             type: int
             default: 10
+        max_timeout:
+            description: Timeout before falling back to old host API when using report_data endpoint while polling.
+            type: int
+            default: 600
         want_organization:
             description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
             type: boolean
@@ -133,10 +137,6 @@ DOCUMENTATION = '''
             default: True
         want_content_facet_attributes:
             description: Toggle, if true the inventory will fetch content view details that the host is tied to.
-            type: boolean
-            default: True
-        want_host_params:
-            description: Toggle, if true the inventory will fetch host parameters.
             type: boolean
             default: True
         want_hostcollections:
@@ -301,7 +301,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         params = dict()
         report_options = {'want_location': True, 'want_organization': True, 'want_ipv4': True, 'want_ipv6': True,
                           'want_host_group': True, 'want_hostcollections': False, 'want_subnet': True, 'want_subnet_v6': True, 'want_smart_proxies': True,
-                          'want_content_facet_attributes': False, 'want_host_params': True}
+                          'want_content_facet_attributes': False}
         report_options.update(self.get_option('report') or {})
 
         self.want_location = report_options['want_location']
@@ -314,7 +314,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.want_subnet_v6 = report_options['want_subnet_v6']
         self.want_smart_proxies = report_options['want_smart_proxies']
         self.want_content_facet_attributes = report_options['want_content_facet_attributes']
-        self.want_host_params = report_options['want_host_params']
+        self.want_params = self.get_option('want_params')
         self.want_facts = self.get_option('want_facts')
         self.host_filters = self.get_option('host_filters')
 
@@ -329,7 +329,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         params["Subnet v6"] = options[self.want_subnet_v6]
         params["Smart Proxies"] = options[self.want_smart_proxies]
         params["Content Attributes"] = options[self.want_content_facet_attributes]
-        params["Host Parameters"] = options[self.want_host_params]
+        params["Host Parameters"] = options[self.want_params]
         if self.host_filters:
             params["Hosts"] = self.host_filters
         return params
@@ -351,21 +351,28 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         session = self._get_session()
         params = {'input_values': self._fetch_params()}
         try:
-            self.poll_interval = self.get_option('report').get('poll_interval')
+            self.poll_interval = int(self.get_option('report').get('poll_interval'))
+            self.max_timeout = int(self.get_option('report').get('max_timeout'))
+            max_polls = int(self.max_timeout / self.poll_interval)
         except Exception:
             self.poll_interval = 10
+            max_polls = 60
         ret = session.post(url, json=params)
         if not ret:
             raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
         url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
+        polls = 0
         response = session.get(url)
         while response:
-            if response.status_code != 204:
+            if response.status_code != 204 or polls > max_polls:
                 break
             sleep(self.poll_interval)
+            polls += 1
             response = session.get(url)
         if not response:
             raise Exception("Error receiving inventory report from foreman. Please check foreman logs!")
+        elif (response.status_code == 204 and polls > max_polls):
+            raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
         else:
             return response.json()
 
@@ -380,7 +387,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.hosts = dict()
         try:
             inventory_report_response = self._post_request()
-        except Exception:
+        except Exception as exc:
+            self.display.warning("Failed to use Reports API, falling back to Hosts API: {0}".format(exc))
             self._populate_host_api()
             return
         self.group_prefix = self.get_option('group_prefix')
@@ -395,6 +403,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 group_name = self.inventory.add_group(group_name)
                 self.inventory.add_child(group_name, host_name)
 
+            host_params = host.pop('host_parameters', {})
+            fact_list = host.pop('facts', {})
+
             if self.get_option('legacy_hostvars'):
                 hostvars = self._get_hostvars(host)
                 self.inventory.set_variable(host_name, 'foreman', hostvars)
@@ -407,8 +418,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                         self.inventory.set_variable(host_name, k, v)
                     except ValueError as e:
                         self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
-            host_params = host.pop('host_parameters', {})
-            fact_list = host.pop('facts', {})
+
             content_facet_attributes = host.get('content_attributes', {}) or {}
             if self.get_option('want_facts'):
                 self.inventory.set_variable(host_name, 'foreman_facts', fact_list)
@@ -469,22 +479,16 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                             self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
 
             # set host vars from params
-                if self.get_option('want_params'):
-                    filtered_params = {}
-                    for p in params:
-                        if 'name' in p and 'value' in p:
-                            filtered_params[p['name']] = p['value']
-
-                    if self.get_option('legacy_hostvars'):
-                        self.inventory.set_variable(host_name, 'foreman_params', filtered_params)
-                    else:
-                        for k, v in filtered_params.items():
-                            try:
-                                self.inventory.set_variable(host_name, k, v)
-                            except ValueError as e:
-                                self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
-                                                     (k, to_native(v), host, to_native(e)))
-
+            if self.get_option('want_params'):
+                if self.get_option('legacy_hostvars'):
+                    self.inventory.set_variable(host_name, 'foreman_params', params)
+                else:
+                    for k, v in params.items():
+                        try:
+                            self.inventory.set_variable(host_name, k, v)
+                        except ValueError as e:
+                            self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
+                                                 (k, to_native(v), host, to_native(e)))
             strict = self.get_option('strict')
             hostvars = self.inventory.get_host(host_name).get_vars()
             self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
