@@ -11,86 +11,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-14/api/status
+    uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"1.24.0","api_version":2}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Length:
-      - '63'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:25 GMT
-      ETag:
-      - W/"53b0d6d0bf9fce118840f03bbd316797"
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 1.24.0
-      Keep-Alive:
-      - timeout=5, max=10000
-      Server:
-      - Apache
-      Set-Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - e7fe9f9d-bd42-485b-a5b1-f24bba41b567
-      X-Runtime:
-      - '0.091317'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://centos7-katello-3-14/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2019-12-12
-        14:14:23 UTC\",\"updated_at\":\"2019-12-12 14:14:23 UTC\",\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"result":"ok","status":200,"version":"2.4.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -98,14 +22,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:25 GMT
-      ETag:
-      - W/"136897b33db42d4a8cf47f7cb8f4e360-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -113,13 +33,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9999
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -132,12 +48,66 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 642edc9c-d6e3-4d5c-b496-b4aadb7f60b3
-      X-Runtime:
-      - '0.020218'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '70'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2020-11-10
+        13:31:13 UTC\",\"updated_at\":\"2020-11-10 13:31:13 UTC\",\"id\":4,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -154,18 +124,17 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-14/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/4/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"436622062008","name":"Test
-        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":3}]}
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":2,"cp_id":"38569475827","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":5,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2020-11-10
+        13:31:24 UTC","last_sync_words":"less than a minute","organization_id":4,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":4},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -175,28 +144,20 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:25 GMT
-      ETag:
-      - W/"8b05cd1f73dcf78129a6e2cdf4a19613-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 4; Test Organization
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9998
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -209,16 +170,10 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 33695b10-6626-49ff-8e6f-8867072a98ee
-      X-Runtime:
-      - '0.053080'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '612'
+      - '648'
     status:
       code: 200
       message: OK
@@ -231,18 +186,17 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-14/katello/api/products/1/repositories?search=name%3D%22Test+Deb+Repository%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/2/repositories?search=name%3D%22Test+Deb+Repository%22&per_page=4294967296
   response:
     body:
-      string: '{"total":3,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Deb Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"02dbe5f3-1f5e-44b2-ab2d-d13771842b07","relative_path":"Test_Organization/Library/custom/Test_Product/Test_Deb_Repository","container_repository_name":null,"full_path":"http://centos7-katello-3-14.anubis.example.com/pulp/deb/Test_Organization/Library/custom/Test_Product/Test_Deb_Repository/","library_instance_id":null,"id":8,"name":"Test
-        Deb Repository","label":"Test_Deb_Repository","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
-        Organization View"},"content_type":"deb","url":null,"arch":"noarch","content_id":"1576160771126","major":null,"minor":null,"product":{"id":1,"cp_id":"436622062008","name":"Test
+      string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Deb Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"7457d5c7-f3a5-4b2e-a543-75c4e2193ccd","relative_path":"Test_Organization/Library/custom/Test_Product/Test_Deb_Repository","container_repository_name":null,"full_path":"http://foreman.example.com/pulp/deb/Test_Organization/Library/custom/Test_Product/Test_Deb_Repository/","library_instance_id":null,"version_href":null,"remote_href":null,"publication_href":null,"id":2,"name":"Test
+        Deb Repository","label":"Test_Deb_Repository","description":null,"last_sync":null,"content_view":{"id":3,"name":"Default
+        Organization View"},"content_view_version":{"id":3,"name":"Default Organization
+        View 1.0","content_view_id":3},"kt_environment":{"id":3,"name":"Library"},"content_type":"deb","url":null,"arch":"noarch","os_versions":null,"content_id":"1605015084624","major":null,"minor":null,"product":{"id":2,"cp_id":"38569475827","name":"Test
         Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Deb_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null}]}
 
         '
@@ -253,14 +207,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:25 GMT
-      ETag:
-      - W/"3ffb5573efbf515ddefeb6d53d4dac29-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -268,13 +218,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9997
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -287,16 +233,10 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - b9ff791c-fe93-4c46-973c-ee9012b0ea5e
-      X-Runtime:
-      - '1.105184'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1202'
+      - '1411'
     status:
       code: 200
       message: OK
@@ -309,20 +249,19 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-14/katello/api/repositories/8
+    uri: https://foreman.example.org/katello/api/repositories/2
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Test_Product/Test_Deb_Repository","promoted":false,"content_view_version_id":2,"library_instance_id":null,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2019-12-12
-        14:26:10 UTC","updated_at":"2019-12-12 14:26:11 UTC","backend_identifier":"02dbe5f3-1f5e-44b2-ab2d-d13771842b07","container_repository_name":null,"full_path":"http://centos7-katello-3-14.anubis.example.com/pulp/deb/Test_Organization/Library/custom/Test_Product/Test_Deb_Repository/","id":8,"name":"Test
-        Deb Repository","label":"Test_Deb_Repository","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
-        Organization View"},"content_type":"deb","url":null,"arch":"noarch","content_id":"1576160771126","major":null,"minor":null,"product":{"id":1,"cp_id":"436622062008","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Deb_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
+      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Test_Product/Test_Deb_Repository","promoted":false,"content_view_version_id":3,"library_instance_id":null,"organization_id":4,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":4},"created_at":"2020-11-10
+        13:31:24 UTC","updated_at":"2020-11-10 13:31:24 UTC","backend_identifier":"7457d5c7-f3a5-4b2e-a543-75c4e2193ccd","container_repository_name":null,"full_path":"http://foreman.example.com/pulp/deb/Test_Organization/Library/custom/Test_Product/Test_Deb_Repository/","version_href":null,"remote_href":null,"publication_href":null,"id":2,"name":"Test
+        Deb Repository","label":"Test_Deb_Repository","description":null,"last_sync":null,"content_view":{"id":3,"name":"Default
+        Organization View"},"content_view_version":{"id":3,"name":"Default Organization
+        View 1.0","content_view_id":3},"kt_environment":{"id":3,"name":"Library"},"content_type":"deb","url":null,"arch":"noarch","os_versions":null,"content_id":"1605015084624","major":null,"minor":null,"product":{"id":2,"cp_id":"38569475827","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_Test_Deb_Repository","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":3,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":"env-proxy-02.infra.sat.rdu2.redhat.com","ignorable_content":null,"gpg_key":null,"http_proxy":{"id":1,"name":"env-proxy-02.infra.sat.rdu2.redhat.com","policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
     headers:
@@ -332,14 +271,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:26 GMT
-      ETag:
-      - W/"792127e716cbc54cf75f8f700436f2cf-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -347,13 +282,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9996
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -366,16 +297,10 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - a1438403-a0d4-42bc-b171-d41a923a5951
-      X-Runtime:
-      - '0.060061'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2191'
+      - '2549'
     status:
       code: 200
       message: OK
@@ -388,12 +313,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://centos7-katello-3-14/katello/api/repositories/8/debs?search=name+%3D+%22odin%22+and+version+%3D+%221.0%22+and+architecture+%3D+%22ppc64%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/repositories/2/debs?search=name+%3D+%22odin%22+and+version+%3D+%221.0%22+and+architecture+%3D+%22ppc64%22&per_page=4294967296
   response:
     body:
       string: '{"total":0,"subtotal":0,"page":1,"per_page":"4294967296","error":null,"search":"name
@@ -407,14 +330,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:26 GMT
-      ETag:
-      - W/"85e471b52210767fe34c1a60ad984d41-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -422,13 +341,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9995
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -441,12 +356,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 41fb6f85-0755-411d-bc80-9a1ff81debfc
-      X-Runtime:
-      - '0.038544'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -467,15 +376,13 @@ interactions:
       - '14'
       Content-Type:
       - application/json
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://centos7-katello-3-14/katello/api/repositories/8/content_uploads
+    uri: https://foreman.example.org/katello/api/repositories/2/content_uploads
   response:
     body:
-      string: '{"upload_id":"99270c7c-2dd8-40e2-b808-014f75985f45","_href":"/pulp/api/v2/content/uploads/99270c7c-2dd8-40e2-b808-014f75985f45/"}'
+      string: '{"upload_id":"01d76cd3-4b86-4607-bc19-8bbd628883f2","_href":"/pulp/api/v2/content/uploads/01d76cd3-4b86-4607-bc19-8bbd628883f2/"}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -483,14 +390,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:26 GMT
-      ETag:
-      - W/"46662de4ff1e78bb5b52b5a3b1a68f75-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -498,15 +401,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9994
-      Server:
-      - Apache
-      Set-Cookie:
-      - request_method=POST; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
+      - timeout=15, max=94
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -519,12 +416,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 941de3ff-8533-46a4-b730-d2869e93b933
-      X-Runtime:
-      - '0.038835'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -545,12 +436,10 @@ interactions:
       - '5213'
       Content-Type:
       - application/x-www-form-urlencoded
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70; request_method=POST
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://centos7-katello-3-14/katello/api/repositories/8/content_uploads/99270c7c-2dd8-40e2-b808-014f75985f45
+    uri: https://foreman.example.org/katello/api/repositories/2/content_uploads/01d76cd3-4b86-4607-bc19-8bbd628883f2
   response:
     body:
       string: ''
@@ -561,10 +450,8 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      Date:
-      - Thu, 12 Dec 2019 14:26:26 GMT
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -572,15 +459,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9993
-      Server:
-      - Apache
-      Set-Cookie:
-      - request_method=PUT; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 204 No Content
+      - timeout=15, max=93
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       X-Content-Type-Options:
@@ -591,19 +472,13 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 47704f50-f9ca-4f15-9539-2ccbe4b53ba9
-      X-Runtime:
-      - '0.036584'
       X-XSS-Protection:
       - 1; mode=block
     status:
       code: 204
       message: No Content
 - request:
-    body: '{"uploads": [{"id": "99270c7c-2dd8-40e2-b808-014f75985f45", "name": "odin_1.0_ppc64.deb",
+    body: '{"uploads": [{"id": "01d76cd3-4b86-4607-bc19-8bbd628883f2", "name": "odin_1.0_ppc64.deb",
       "size": 2192, "checksum": "52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05"}]}'
     headers:
       Accept:
@@ -616,31 +491,30 @@ interactions:
       - '185'
       Content-Type:
       - application/json
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70; request_method=PUT
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://centos7-katello-3-14/katello/api/repositories/8/import_uploads
+    uri: https://foreman.example.org/katello/api/repositories/2/import_uploads
   response:
     body:
-      string: '  {"id":"6ad58a28-8f91-461e-8955-b4d9cbafcfbe","label":"Actions::Katello::Repository::ImportUpload","pending":false,"action":"Upload
+      string: '  {"id":"e6e2b0ee-4ee6-4923-9721-3ff03fa85e20","label":"Actions::Katello::Repository::ImportUpload","pending":false,"action":"Upload
         into repository ''Test Deb Repository''; product ''Test Product''; organization
-        ''Test Organization''","username":"admin","started_at":"2019-12-12 14:26:26
-        UTC","ended_at":"2019-12-12 14:26:28 UTC","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":8,"name":"Test
-        Deb Repository","label":"Test_Deb_Repository"},"product":{"id":1,"name":"Test
-        Product","label":"Test_Product","cp_id":"436622062008"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp","pulp_auth"],"repository_id":8,"sync_capsule":true,"upload_results":[{"pulp_tasks":[{"exception":null,"task_type":"pulp.server.managers.content.upload.import_uploaded_unit","_href":"/pulp/api/v2/tasks/2d8596a6-5b3b-48a9-b2b3-945b97fab077/","task_id":"2d8596a6-5b3b-48a9-b2b3-945b97fab077","tags":["pulp:repository:02dbe5f3-1f5e-44b2-ab2d-d13771842b07","pulp:action:import_upload"],"finish_time":"2019-12-12T14:26:27Z","_ns":"task_status","start_time":"2019-12-12T14:26:27Z","traceback":null,"spawned_tasks":[],"progress_report":{},"queue":"reserved_resource_worker-0@centos7-katello-3-14.anubis.example.com.dq2","state":"finished","worker_name":"reserved_resource_worker-0@centos7-katello-3-14.anubis.example.com","result":{"details":{"unit":{"unit_key":{"checksum":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","version":"1.0","architecture":"ppc64","name":"odin","checksumtype":"sha256"},"metadata":{"enhances":null,"maintainer":"Matthias
-        Dellweg <dellweg@atix.de>","depends":null,"pulp_user_metadata":{},"id":"50072a78-1dec-4c0c-b4e6-36c5af5bec84","size":2192,"installed_size":"9","multi_arch":"foreign","section":"misc","filename":"odin_1.0_ppc64.deb","priority":"optional","source":null,"version":"1.0","provides":null,"sha256":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","homepage":null,"recommends":null,"description":"Odin\n
+        ''Test Organization''","username":"admin","started_at":"2020-11-10 13:31:28
+        UTC","ended_at":"2020-11-10 13:31:29 UTC","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":2,"name":"Test
+        Deb Repository","label":"Test_Deb_Repository"},"product":{"id":2,"name":"Test
+        Product","label":"Test_Product","cp_id":"38569475827"},"provider":{"id":5,"name":"Anonymous"},"organization":{"id":4,"name":"Test
+        Organization","label":"Test_Organization"},"repository_id":2,"sync_capsule":true,"upload_results":[{"pulp_tasks":[{"exception":null,"task_type":"pulp.server.managers.content.upload.import_uploaded_unit","_href":"/pulp/api/v2/tasks/63014207-46ca-4e4c-b66a-594a81ee1579/","task_id":"63014207-46ca-4e4c-b66a-594a81ee1579","tags":["pulp:repository:7457d5c7-f3a5-4b2e-a543-75c4e2193ccd","pulp:action:import_upload"],"finish_time":"2020-11-10T13:31:28Z","_ns":"task_status","start_time":"2020-11-10T13:31:28Z","traceback":null,"spawned_tasks":[],"progress_report":{},"queue":"reserved_resource_worker-4@foreman.example.com.dq2","state":"finished","worker_name":"reserved_resource_worker-4@foreman.example.com","result":{"details":{"unit":{"unit_key":{"checksum":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","version":"1.0","architecture":"ppc64","name":"odin","checksumtype":"sha256"},"metadata":{"enhances":null,"maintainer":"Matthias
+        Dellweg <dellweg@atix.de>","depends":null,"pulp_user_metadata":{},"id":"8996179d-a611-46c8-8e3e-4668ebdd955b","size":2192,"installed_size":"9","multi_arch":"foreign","section":"misc","filename":"odin_1.0_ppc64.deb","priority":"optional","source":null,"version":"1.0","provides":null,"sha256":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","homepage":null,"recommends":null,"description":"Odin\n
         Odin is associated with wisdom, healing, death, royalty, the gallows,\n knowledge,
         battle, sorcery, poetry, frenzy, and the runic alphabet, and is\n the husband
         of the goddess Frigg.","control_fields":{"Maintainer":"Matthias Dellweg <dellweg@atix.de>","Description":"Odin\n
         Odin is associated with wisdom, healing, death, royalty, the gallows,\n knowledge,
         battle, sorcery, poetry, frenzy, and the runic alphabet, and is\n the husband
-        of the goddess Frigg.","Package":"odin","Section":"misc","Priority":"optional","Installed-Size":"9","Version":"1.0","Architecture":"ppc64","Multi-Arch":"foreign"},"breaks":null,"downloaded":true,"replaces":null,"pre_depends":null,"conflicts":null,"original_maintainer":null,"checksumtype":"sha256","sha1":"7b86a9939ffe4c6956c493f28875ef2a14f58a29","name":"odin","checksum":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","md5sum":"cbaa64ddd328a27c4046bfa8a60201f5","suggests":null,"architecture":"ppc64","relativepath":null}}},"success_flag":true,"summary":""},"error":null,"_id":{"$oid":"5df24e13fb042e97430b7526"},"id":"5df24e13fb042e97430b7526"}],"poll_attempts":{"total":1,"failed":0}}],"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"upload_results":[{"type":"file"}]},"humanized":{"action":"Upload
+        of the goddess Frigg.","Package":"odin","Section":"misc","Priority":"optional","Installed-Size":"9","Version":"1.0","Architecture":"ppc64","Multi-Arch":"foreign"},"breaks":null,"downloaded":true,"replaces":null,"pre_depends":null,"conflicts":null,"original_maintainer":null,"checksumtype":"sha256","sha1":"7b86a9939ffe4c6956c493f28875ef2a14f58a29","name":"odin","checksum":"52b8ef90538c3dd2ff9306664311ec6fce085c31a6e7a51fa7241990b870fb05","md5sum":"cbaa64ddd328a27c4046bfa8a60201f5","suggests":null,"architecture":"ppc64","relativepath":null}}},"success_flag":true,"summary":""},"error":null,"_id":{"$oid":"5faa9630d292d6071d03f0fd"},"id":"5faa9630d292d6071d03f0fd"}],"poll_attempts":{"total":1,"failed":0}}],"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"upload_results":[{"type":"file"}]},"humanized":{"action":"Upload
         into","input":[["repository",{"text":"repository ''Test Deb Repository''","link":null}],["product",{"text":"product
-        ''Test Product''","link":"/products/1/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"available_actions":{"cancellable":false,"resumable":false}}
+        ''Test Product''","link":"/products/2/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2020-11-10
+        13:31:28 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -650,12 +524,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Thu, 12 Dec 2019 14:26:26 GMT
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -663,13 +535,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9992
-      Server:
-      - Apache
-      Status:
-      - 202 Accepted
+      - timeout=15, max=92
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Transfer-Encoding:
@@ -682,12 +550,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - dfd700d3-56c0-43ca-9951-611db50b13da
-      X-Runtime:
-      - '1.904089'
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -704,12 +566,10 @@ interactions:
       - keep-alive
       Content-Length:
       - '0'
-      Cookie:
-      - _session_id=54fb29143e151ae2fa1eee2568d5ee70; request_method=PUT
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://centos7-katello-3-14/katello/api/repositories/8/content_uploads/99270c7c-2dd8-40e2-b808-014f75985f45
+    uri: https://foreman.example.org/katello/api/repositories/2/content_uploads/01d76cd3-4b86-4607-bc19-8bbd628883f2
   response:
     body:
       string: ''
@@ -720,10 +580,8 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      Date:
-      - Thu, 12 Dec 2019 14:26:28 GMT
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -731,15 +589,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.0
+      - 2.4.0-develop
       Keep-Alive:
-      - timeout=5, max=9991
-      Server:
-      - Apache
-      Set-Cookie:
-      - request_method=DELETE; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 204 No Content
+      - timeout=15, max=91
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       X-Content-Type-Options:
@@ -750,12 +602,6 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - db065150-8e7d-445c-be57-e1453cf7d319
-      X-Runtime:
-      - '0.040824'
       X-XSS-Protection:
       - 1; mode=block
     status:
