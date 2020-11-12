@@ -97,7 +97,70 @@
             identifier: "fam01"
             ip: "192.0.2.23"
             mac: "EE:FF:00:00:00:01"
-        # this is a bug
+        expected_change: false
+
+    - name: update host, add new interface
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - type: "interface"
+            identifier: "fam01"
+            ip: "192.0.2.23"
+            mac: "EE:FF:00:00:00:01"
+          - type: "interface"
+            identifier: "fam02"
+            ip: "192.0.2.42"
+            mac: "EE:FF:00:00:00:02"
+        expected_change: true
+
+    - name: update host, add new interface again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - type: "interface"
+            identifier: "fam01"
+            ip: "192.0.2.23"
+            mac: "EE:FF:00:00:00:01"
+          - type: "interface"
+            identifier: "fam02"
+            ip: "192.0.2.42"
+            mac: "EE:FF:00:00:00:02"
+        expected_change: false
+
+    - name: update host, delete interface
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - type: "interface"
+            identifier: "fam02"
+            ip: "192.0.2.42"
+            mac: "EE:FF:00:00:00:02"
+        expected_change: true
+
+    - name: update host, delete interface again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - type: "interface"
+            identifier: "fam02"
+            ip: "192.0.2.42"
+            mac: "EE:FF:00:00:00:02"
         expected_change: false
 
     - name: delete host
