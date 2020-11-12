@@ -126,6 +126,7 @@ options:
       mac:
         description:
           - MAC address of interface. Required for managed interfaces on bare metal.
+          - You need to set one of I(identifier), I(name) or I(mac) to be able to update existing interfaces and make execution idempotent.
         type: str
       ip:
         description:
@@ -147,6 +148,7 @@ options:
       name:
         description:
           - Interface's DNS name
+          - You need to set one of I(identifier), I(name) or I(mac) to be able to update existing interfaces and make execution idempotent.
         type: str
       subnet_id:
         description:
@@ -163,6 +165,7 @@ options:
       identifier:
         description:
           - Device identifier, e.g. eth0 or eth1.1
+          - You need to set one of I(identifier), I(name) or I(mac) to be able to update existing interfaces and make execution idempotent.
         type: str
       managed:
         description:
@@ -353,9 +356,52 @@ entity:
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ensure_puppetclasses,
+    interfaces_foreman_spec, interfaces_ansible_spec,
     ForemanEntityAnsibleModule,
     HostMixin,
 )
+
+
+def ensure_host_interfaces(module, entity, interfaces):
+    scope = {'host_id': entity['id']}
+
+    current_interfaces = module.list_resource('interfaces', params=scope)
+    current_interfaces_ids = {x['id'] for x in current_interfaces}
+    expected_interfaces_ids = set()
+
+    for interface in interfaces:
+        if 1 == len(current_interfaces) == len(interfaces):
+            existing_interface = current_interfaces[0]
+        else:
+            for possible_identifier in ['identifier', 'name', 'mac']:
+                if possible_identifier in interface:
+                    unique_identifier = possible_identifier
+                    break
+            else:
+                unique_identifier = None
+                warning_msg = "The provided interface definition has no unique identifier and thus cannot be matched against existing interfaces. " \
+                    "This will always create a new interface and might not be the desired behaviour."
+                module.warn(warning_msg)
+
+            existing_interface = next((x for x in current_interfaces if unique_identifier and x.get(unique_identifier) == interface[unique_identifier]), None)
+
+        if 'mac' in interface:
+            interface['mac'] = interface['mac'].lower()
+
+        # workaround for https://projects.theforeman.org/issues/31390
+        if existing_interface is not None and 'attached_devices' in existing_interface:
+            existing_interface['attached_devices'] = existing_interface['attached_devices'].split(',')
+
+        updated_interface = (existing_interface or {}).copy()
+        updated_interface.update(interface)
+
+        module.ensure_entity('interfaces', updated_interface, existing_interface, params=scope, state='present', foreman_spec=interfaces_foreman_spec)
+
+        if 'id' in updated_interface:
+            expected_interfaces_ids.add(updated_interface['id'])
+
+    for leftover_interface in current_interfaces_ids - expected_interfaces_ids:
+        module.ensure_entity('interfaces', {}, {'id': leftover_interface}, params=scope, state='absent', foreman_spec=interfaces_foreman_spec)
 
 
 class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
@@ -381,39 +427,7 @@ def main():
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
-            interfaces_attributes=dict(type='list', elements='dict', options=dict(
-                mac=dict(),
-                ip=dict(),
-                ip6=dict(),
-                type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
-                name=dict(),
-                subnet_id=dict(type='int'),
-                subnet6_id=dict(type='int'),
-                domain_id=dict(type='int'),
-                identifier=dict(),
-                managed=dict(type='bool'),
-                primary=dict(type='bool'),
-                provision=dict(type='bool'),
-                username=dict(),
-                password=dict(no_log=True),
-                provider=dict(choices=['IPMI', 'SSH']),
-                virtual=dict(type='bool'),
-                tag=dict(),
-                mtu=dict(type='int'),
-                attached_to=dict(),
-                mode=dict(choices=[
-                    'balance-rr',
-                    'active-backup',
-                    'balance-xor',
-                    'broadcast',
-                    '802.3ad',
-                    'balance-tlb',
-                    'balance-alb',
-                ]),
-                attached_devices=dict(type='list', elements='str'),
-                bond_options=dict(),
-                compute_attributes=dict(type='dict'),
-            )),
+            interfaces_attributes=dict(type='list', elements='dict', options=interfaces_ansible_spec),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
@@ -452,10 +466,24 @@ def main():
     with module.api_connection():
         if not module.desired_absent:
             module.auto_lookup_entities()
+        entity = module.lookup_entity('entity')
+
+        # We use different APIs for creating a host with interfaces
+        # and updating it, so let's differentiate based on entity being present or not
+        if entity and 'interfaces_attributes' in module.foreman_params:
+            interfaces = module.foreman_params.pop('interfaces_attributes')
+        else:
+            interfaces = None
+
         expected_puppetclasses = module.foreman_params.pop('puppetclasses', None)
+
         entity = module.run()
-        if not module.desired_absent and 'environment_id' in entity:
-            ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
+
+        if not module.desired_absent:
+            if 'environment_id' in entity:
+                ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
+            if interfaces is not None:
+                ensure_host_interfaces(module, entity, interfaces)
 
 
 if __name__ == '__main__':

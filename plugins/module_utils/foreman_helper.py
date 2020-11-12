@@ -1649,3 +1649,40 @@ TEMPLATE_KIND_LIST = [
     'user_data',
     'ZTP',
 ]
+
+# interface specs
+interfaces_spec = dict(
+    id=dict(invisible=True),
+    mac=dict(),
+    ip=dict(),
+    ip6=dict(),
+    type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
+    name=dict(),
+    subnet_id=dict(type='int'),
+    subnet6_id=dict(type='int'),
+    domain_id=dict(type='int'),
+    identifier=dict(),
+    managed=dict(type='bool'),
+    primary=dict(type='bool'),
+    provision=dict(type='bool'),
+    username=dict(),
+    password=dict(no_log=True),
+    provider=dict(choices=['IPMI', 'SSH']),
+    virtual=dict(type='bool'),
+    tag=dict(),
+    mtu=dict(type='int'),
+    attached_to=dict(),
+    mode=dict(choices=[
+        'balance-rr',
+        'active-backup',
+        'balance-xor',
+        'broadcast',
+        '802.3ad',
+        'balance-tlb',
+        'balance-alb',
+    ]),
+    attached_devices=dict(type='list', elements='str'),
+    bond_options=dict(),
+    compute_attributes=dict(type='dict'),
+)
+interfaces_foreman_spec, interfaces_ansible_spec = _foreman_spec_helper(interfaces_spec)
