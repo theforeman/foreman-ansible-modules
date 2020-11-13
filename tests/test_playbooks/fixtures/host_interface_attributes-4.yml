@@ -67,15 +67,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
+    uri: https://foreman.example.org/api/hosts?thin=false&search=name%3D%22test-host.example.net%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
-        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-11-12\
-        \ 12:41:34 UTC\",\"updated_at\":\"2020-11-12 12:41:34 UTC\",\"id\":12,\"name\"\
-        :\"Test Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+        : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
+        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
+        id\":37,\"name\":\"test-host.example.net\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -97,6 +95,130 @@ interactions:
       - 2.2.0
       Keep-Alive:
       - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '227'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/hosts/37
+  response:
+    body:
+      string: '{"ip":"192.0.2.23","ip6":null,"environment_id":null,"environment_name":null,"last_report":null,"mac":"ee:ff:00:00:00:01","realm_id":null,"realm_name":null,"sp_mac":null,"sp_ip":null,"sp_name":null,"domain_id":7,"domain_name":"example.net","architecture_id":null,"architecture_name":null,"operatingsystem_id":null,"operatingsystem_name":null,"subnet_id":6,"subnet_name":"Test
+        subnet4","subnet6_id":null,"subnet6_name":null,"sp_subnet_id":null,"ptable_id":null,"ptable_name":null,"medium_id":null,"medium_name":null,"pxe_loader":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_name":"Admin
+        User","owner_type":"User","enabled":true,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"compute_resource_name":null,"compute_profile_id":null,"compute_profile_name":null,"capabilities":["build"],"provision_method":"build","certname":"test-host.example.net","image_id":null,"image_name":null,"created_at":"2020-11-13
+        14:56:52 UTC","updated_at":"2020-11-13 14:56:52 UTC","last_compile":null,"global_status":0,"global_status_label":"OK","uptime_seconds":null,"organization_id":13,"organization_name":"Test
+        Organization","location_id":14,"location_name":"Test Location","puppet_status":0,"model_name":null,"name":"test-host.example.net","id":37,"puppet_proxy_id":null,"puppet_proxy_name":null,"puppet_ca_proxy_id":null,"puppet_ca_proxy_name":null,"puppet_proxy":null,"puppet_ca_proxy":null,"hostgroup_name":null,"hostgroup_title":null,"parameters":[],"all_parameters":[],"interfaces":[{"subnet_id":6,"subnet_name":"Test
+        subnet4","subnet6_id":null,"subnet6_name":null,"domain_id":7,"domain_name":"example.net","created_at":"2020-11-13
+        14:56:52 UTC","updated_at":"2020-11-13 14:56:52 UTC","managed":true,"identifier":"fam01","id":41,"name":"test-host.example.net","ip":"192.0.2.23","ip6":null,"mac":"ee:ff:00:00:00:01","mtu":1500,"fqdn":"test-host.example.net","primary":true,"provision":true,"type":"interface","virtual":false},{"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"domain_id":null,"domain_name":null,"created_at":"2020-11-13
+        14:56:53 UTC","updated_at":"2020-11-13 14:56:53 UTC","managed":true,"identifier":"fam02","id":42,"name":null,"ip":"192.0.2.42","ip6":null,"mac":"ee:ff:00:00:00:02","mtu":null,"fqdn":null,"primary":false,"provision":false,"type":"interface","virtual":false}],"puppetclasses":[],"config_groups":[],"all_puppetclasses":[],"permissions":{"view_hosts":true,"create_hosts":true,"edit_hosts":true,"destroy_hosts":true,"build_hosts":true,"power_hosts":true,"console_hosts":true,"ipmi_boot_hosts":true,"forget_status_hosts":true}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.2.0
+      Keep-Alive:
+      - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '2684'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
+        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-11-13\
+        \ 13:28:42 UTC\",\"updated_at\":\"2020-11-13 13:28:42 UTC\",\"id\":14,\"name\"\
+        :\"Test Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.2.0
+      Keep-Alive:
+      - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -134,130 +256,10 @@ interactions:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
-        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-11-12\
-        \ 12:41:32 UTC\",\"updated_at\":\"2020-11-12 12:41:32 UTC\",\"id\":11,\"name\"\
+        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-11-13\
+        \ 13:28:40 UTC\",\"updated_at\":\"2020-11-13 13:28:40 UTC\",\"id\":13,\"name\"\
         :\"Test Organization\",\"title\":\"Test Organization\",\"description\":\"\
         A test organization\"}]\n}\n"
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.2.0
-      Keep-Alive:
-      - timeout=15, max=98
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '413'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/hosts?thin=false&search=name%3D%22test-host.example.net%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
-        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
-        id\":22,\"name\":\"test-host.example.net\"}]\n}\n"
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.2.0
-      Keep-Alive:
-      - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '227'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/hosts/22
-  response:
-    body:
-      string: '{"ip":"192.0.2.23","ip6":null,"environment_id":null,"environment_name":null,"last_report":null,"mac":"ee:ff:00:00:00:01","realm_id":null,"realm_name":null,"sp_mac":null,"sp_ip":null,"sp_name":null,"domain_id":6,"domain_name":"example.net","architecture_id":null,"architecture_name":null,"operatingsystem_id":null,"operatingsystem_name":null,"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"sp_subnet_id":null,"ptable_id":null,"ptable_name":null,"medium_id":null,"medium_name":null,"pxe_loader":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_name":"Admin
-        User","owner_type":"User","enabled":true,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"compute_resource_name":null,"compute_profile_id":null,"compute_profile_name":null,"capabilities":["build"],"provision_method":"build","certname":"test-host.example.net","image_id":null,"image_name":null,"created_at":"2020-11-12
-        13:41:03 UTC","updated_at":"2020-11-12 13:41:03 UTC","last_compile":null,"global_status":0,"global_status_label":"OK","uptime_seconds":null,"organization_id":11,"organization_name":"Test
-        Organization","location_id":12,"location_name":"Test Location","puppet_status":0,"model_name":null,"name":"test-host.example.net","id":22,"puppet_proxy_id":null,"puppet_proxy_name":null,"puppet_ca_proxy_id":null,"puppet_ca_proxy_name":null,"puppet_proxy":null,"puppet_ca_proxy":null,"hostgroup_name":null,"hostgroup_title":null,"parameters":[],"all_parameters":[],"interfaces":[{"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"domain_id":6,"domain_name":"example.net","created_at":"2020-11-12
-        13:41:03 UTC","updated_at":"2020-11-12 13:41:03 UTC","managed":true,"identifier":"fam01","id":25,"name":"test-host.example.net","ip":"192.0.2.23","ip6":null,"mac":"ee:ff:00:00:00:01","mtu":null,"fqdn":"test-host.example.net","primary":true,"provision":true,"type":"interface","virtual":false},{"subnet_id":null,"subnet_name":null,"subnet6_id":null,"subnet6_name":null,"domain_id":null,"domain_name":null,"created_at":"2020-11-12
-        13:41:04 UTC","updated_at":"2020-11-12 13:41:04 UTC","managed":true,"identifier":"fam02","id":26,"name":null,"ip":"192.0.2.42","ip6":null,"mac":"ee:ff:00:00:00:02","mtu":null,"fqdn":null,"primary":false,"provision":false,"type":"interface","virtual":false}],"puppetclasses":[],"config_groups":[],"all_puppetclasses":[],"permissions":{"view_hosts":true,"create_hosts":true,"edit_hosts":true,"destroy_hosts":true,"build_hosts":true,"power_hosts":true,"console_hosts":true,"ipmi_boot_hosts":true,"forget_status_hosts":true}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -294,7 +296,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2670'
+      - '413'
     status:
       code: 200
       message: OK
@@ -310,22 +312,22 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/hosts/22/interfaces?per_page=4294967296
+    uri: https://foreman.example.org/api/hosts/37/interfaces?per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 2,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": null,\n  \"sort\": {\n    \"by\": null,\n   \
-        \ \"order\": null\n  },\n  \"results\": [{\"subnet_id\":null,\"subnet_name\"\
-        :null,\"subnet6_id\":null,\"subnet6_name\":null,\"domain_id\":6,\"domain_name\"\
-        :\"example.net\",\"created_at\":\"2020-11-12 13:41:03 UTC\",\"updated_at\"\
-        :\"2020-11-12 13:41:03 UTC\",\"managed\":true,\"identifier\":\"fam01\",\"\
-        id\":25,\"name\":\"test-host.example.net\",\"ip\":\"192.0.2.23\",\"ip6\":null,\"\
-        mac\":\"ee:ff:00:00:00:01\",\"mtu\":null,\"fqdn\":\"test-host.example.net\"\
+        \ \"order\": null\n  },\n  \"results\": [{\"subnet_id\":6,\"subnet_name\"\
+        :\"Test subnet4\",\"subnet6_id\":null,\"subnet6_name\":null,\"domain_id\"\
+        :7,\"domain_name\":\"example.net\",\"created_at\":\"2020-11-13 14:56:52 UTC\"\
+        ,\"updated_at\":\"2020-11-13 14:56:52 UTC\",\"managed\":true,\"identifier\"\
+        :\"fam01\",\"id\":41,\"name\":\"test-host.example.net\",\"ip\":\"192.0.2.23\"\
+        ,\"ip6\":null,\"mac\":\"ee:ff:00:00:00:01\",\"mtu\":1500,\"fqdn\":\"test-host.example.net\"\
         ,\"primary\":true,\"provision\":true,\"type\":\"interface\",\"virtual\":false},{\"\
         subnet_id\":null,\"subnet_name\":null,\"subnet6_id\":null,\"subnet6_name\"\
-        :null,\"domain_id\":null,\"domain_name\":null,\"created_at\":\"2020-11-12\
-        \ 13:41:04 UTC\",\"updated_at\":\"2020-11-12 13:41:04 UTC\",\"managed\":true,\"\
-        identifier\":\"fam02\",\"id\":26,\"name\":null,\"ip\":\"192.0.2.42\",\"ip6\"\
+        :null,\"domain_id\":null,\"domain_name\":null,\"created_at\":\"2020-11-13\
+        \ 14:56:53 UTC\",\"updated_at\":\"2020-11-13 14:56:53 UTC\",\"managed\":true,\"\
+        identifier\":\"fam02\",\"id\":42,\"name\":null,\"ip\":\"192.0.2.42\",\"ip6\"\
         :null,\"mac\":\"ee:ff:00:00:00:02\",\"mtu\":null,\"fqdn\":null,\"primary\"\
         :false,\"provision\":false,\"type\":\"interface\",\"virtual\":false}]\n}\n"
     headers:
@@ -364,7 +366,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '986'
+      - '993'
     status:
       code: 200
       message: OK
@@ -382,10 +384,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/hosts/22/interfaces/25
+    uri: https://foreman.example.org/api/hosts/37/interfaces/41
   response:
     body:
-      string: '{"id":25,"mac":"ee:ff:00:00:00:01","ip":"192.0.2.23","name":"test-host.example.net","host_id":22,"subnet_id":null,"domain_id":6,"attrs":{},"created_at":"2020-11-12T13:41:03.300Z","updated_at":"2020-11-12T13:41:03.300Z","provider":null,"username":null,"password":null,"virtual":false,"link":true,"identifier":"fam01","tag":"","attached_to":"","managed":true,"mode":"balance-rr","attached_devices":"","bond_options":"","primary":true,"provision":true,"compute_attributes":{},"ip6":null,"subnet6_id":null}'
+      string: '{"id":41,"mac":"ee:ff:00:00:00:01","ip":"192.0.2.23","name":"test-host.example.net","host_id":37,"subnet_id":6,"domain_id":7,"attrs":{},"created_at":"2020-11-13T14:56:52.430Z","updated_at":"2020-11-13T14:56:52.430Z","provider":null,"username":null,"password":null,"virtual":false,"link":true,"identifier":"fam01","tag":"","attached_to":"","managed":true,"mode":"balance-rr","attached_devices":"","bond_options":"","primary":true,"provision":true,"compute_attributes":{},"ip6":null,"subnet6_id":null}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -422,7 +424,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '502'
+      - '499'
     status:
       code: 200
       message: OK
