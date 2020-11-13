@@ -28,7 +28,8 @@
     - include: tasks/subnet.yml
       vars:
         subnet_name: "{{ host.subnet }}"
-        subnet_mask: '255.255.255.224'
+        subnet_network: '192.0.2.0'
+        subnet_mask: '255.255.255.0'
         subnet_domains:
           - "{{ host.domain }}"
         subnet_locations:
@@ -83,6 +84,7 @@
             identifier: "fam01"
             ip: "192.0.2.23"
             mac: "EE:FF:00:00:00:01"
+            subnet: "{{ host.subnet }}"
         expected_change: true
 
     - name: create host again, no change
@@ -97,6 +99,7 @@
             identifier: "fam01"
             ip: "192.0.2.23"
             mac: "EE:FF:00:00:00:01"
+            subnet: "{{ host.subnet }}"
         expected_change: false
 
     - name: update host, add new interface
@@ -111,6 +114,7 @@
             identifier: "fam01"
             ip: "192.0.2.23"
             mac: "EE:FF:00:00:00:01"
+            subnet: "{{ host.subnet }}"
           - type: "interface"
             identifier: "fam02"
             ip: "192.0.2.42"
@@ -129,6 +133,7 @@
             identifier: "fam01"
             ip: "192.0.2.23"
             mac: "EE:FF:00:00:00:01"
+            subnet: "{{ host.subnet }}"
           - type: "interface"
             identifier: "fam02"
             ip: "192.0.2.42"
