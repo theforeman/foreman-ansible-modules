@@ -150,18 +150,18 @@ options:
           - Interface's DNS name
           - You need to set one of I(identifier), I(name) or I(mac) to be able to update existing interfaces and make execution idempotent.
         type: str
-      subnet_id:
+      subnet:
         description:
-          - Foreman subnet ID of IPv4 interface
-        type: int
-      subnet6_id:
+          - Foreman subnet of IPv4 interface
+        type: str
+      subnet6:
         description:
-          - Foreman subnet ID of IPv6 interface
-        type: int
-      domain_id:
+          - Foreman subnet of IPv6 interface
+        type: str
+      domain:
         description:
-          - Foreman domain ID of interface. Required for primary interfaces on managed hosts.
-        type: int
+          - Foreman domain of interface. Required for primary interfaces on managed hosts.
+        type: str
       identifier:
         description:
           - Device identifier, e.g. eth0 or eth1.1
@@ -356,7 +356,7 @@ entity:
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ensure_puppetclasses,
-    interfaces_foreman_spec, interfaces_ansible_spec,
+    interfaces_spec,
     ForemanEntityAnsibleModule,
     HostMixin,
 )
@@ -395,13 +395,15 @@ def ensure_host_interfaces(module, entity, interfaces):
         updated_interface = (existing_interface or {}).copy()
         updated_interface.update(interface)
 
-        module.ensure_entity('interfaces', updated_interface, existing_interface, params=scope, state='present', foreman_spec=interfaces_foreman_spec)
+        module.ensure_entity('interfaces', updated_interface, existing_interface, params=scope, state='present',
+                             foreman_spec=module.foreman_spec['interfaces_attributes']['foreman_spec'])
 
         if 'id' in updated_interface:
             expected_interfaces_ids.add(updated_interface['id'])
 
     for leftover_interface in current_interfaces_ids - expected_interfaces_ids:
-        module.ensure_entity('interfaces', {}, {'id': leftover_interface}, params=scope, state='absent', foreman_spec=interfaces_foreman_spec)
+        module.ensure_entity('interfaces', {}, {'id': leftover_interface}, params=scope, state='absent',
+                             foreman_spec=module.foreman_spec['interfaces_attributes']['foreman_spec'])
 
 
 class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
@@ -427,7 +429,7 @@ def main():
             provision_method=dict(choices=['build', 'image', 'bootdisk']),
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
-            interfaces_attributes=dict(type='list', elements='dict', options=interfaces_ansible_spec),
+            interfaces_attributes=dict(type='nested_list', foreman_spec=interfaces_spec, ensure=True),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
@@ -464,9 +466,10 @@ def main():
             module.foreman_params['interfaces_attributes'] = filtered
 
     with module.api_connection():
+        entity = module.lookup_entity('entity')
+
         if not module.desired_absent:
             module.auto_lookup_entities()
-        entity = module.lookup_entity('entity')
 
         # We use different APIs for creating a host with interfaces
         # and updating it, so let's differentiate based on entity being present or not

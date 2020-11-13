@@ -45,7 +45,7 @@ def test_full_entity():
         'quarter_id': {},
         'houses': {'type': 'entity_list', 'flat_name': 'house_ids', 'resource_type': 'houses'},
         'house_ids': {'type': 'list'},
-        'prices': {'type': 'nested_list', 'ensure': False},
+        'prices': {'type': 'nested_list', 'foreman_spec': {'value': {'type': 'int'}}, 'ensure': False},
         'tenant': {},
     }
     assert argument_spec == {
