@@ -766,6 +766,11 @@ class ForemanAnsibleModule(AnsibleModule):
             # Already looked up or not an entity(_list) so nothing to do
             return self.foreman_params[key]
 
+        result = self._lookup_entity(self.foreman_params[key], entity_spec, params)
+        self.set_entity(key, result)
+        return result
+
+    def _lookup_entity(self, identifier, entity_spec, params=None):
         resource_type = entity_spec['resource_type']
         failsafe = entity_spec.get('failsafe', False)
         thin = entity_spec.get('thin', True)
@@ -782,26 +787,26 @@ class ForemanAnsibleModule(AnsibleModule):
                 if entity_spec.get('type') == 'entity':
                     result = None
                 else:
-                    result = [None for value in self.foreman_params[key]]
+                    result = [None for value in identifier]
             else:
                 self.fail_json(msg="Failed to lookup scope {0} while searching for {1}.".format(entity_spec['scope'], resource_type))
         else:
             # No exception happend => scope is in place
             if resource_type == 'operatingsystems':
                 if entity_spec.get('type') == 'entity':
-                    result = self.find_operatingsystem(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                    result = self.find_operatingsystem(identifier, params=params, failsafe=failsafe, thin=thin)
                 else:
-                    result = [self.find_operatingsystem(value, params=params, failsafe=failsafe, thin=thin) for value in self.foreman_params[key]]
+                    result = [self.find_operatingsystem(value, params=params, failsafe=failsafe, thin=thin) for value in identifier]
             elif resource_type == 'puppetclasses':
                 if entity_spec.get('type') == 'entity':
-                    result = self.find_puppetclass(self.foreman_params[key], params=params, failsafe=failsafe, thin=thin)
+                    result = self.find_puppetclass(identifier, params=params, failsafe=failsafe, thin=thin)
                 else:
-                    result = [self.find_puppetclass(value, params=params, failsafe=failsafe, thin=thin) for value in self.foreman_params[key]]
+                    result = [self.find_puppetclass(value, params=params, failsafe=failsafe, thin=thin) for value in identifier]
             else:
                 if entity_spec.get('type') == 'entity':
                     result = self.find_resource_by(
                         resource=resource_type,
-                        value=self.foreman_params[key],
+                        value=identifier,
                         search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
                         search_operator=entity_spec.get('search_operator', '='),
                         failsafe=failsafe, thin=thin, params=params,
@@ -813,16 +818,26 @@ class ForemanAnsibleModule(AnsibleModule):
                         search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
                         search_operator=entity_spec.get('search_operator', '='),
                         failsafe=failsafe, thin=thin, params=params,
-                    ) for value in self.foreman_params[key]]
-        self.set_entity(key, result)
+                    ) for value in identifier]
         return result
 
     def auto_lookup_entities(self):
+        self.auto_lookup_nested_entities()
         return [
             self.lookup_entity(key)
             for key, entity_spec in self.foreman_spec.items()
             if entity_spec.get('resolve', True) and entity_spec.get('type') in {'entity', 'entity_list'}
         ]
+
+    def auto_lookup_nested_entities(self):
+        for key, entity_spec in self.foreman_spec.items():
+            if entity_spec.get('type') in {'nested_list'}:
+                for nested_key, nested_spec in self.foreman_spec[key]['foreman_spec'].items():
+                    for item in self.foreman_params.get(key, []):
+                        if (nested_key in item and nested_spec.get('resolve', True) and not nested_spec.get('resolved', False)
+                                and nested_spec.get('type') in {'entity', 'entity_list'}):
+                            item[nested_key] = self._lookup_entity(item[nested_key], nested_spec)
+                            nested_spec['resolved'] = True
 
     def record_before(self, resource, entity):
         self._before[resource].append(entity)
@@ -1451,7 +1466,7 @@ def _foreman_spec_helper(spec):
         elif foreman_type == 'nested_list':
             argument_value['type'] = 'list'
             argument_value['elements'] = 'dict'
-            _dummy, argument_value['options'] = _foreman_spec_helper(value['foreman_spec'])
+            foreman_value['foreman_spec'], argument_value['options'] = _foreman_spec_helper(value['foreman_spec'])
             foreman_value['ensure'] = value.get('ensure', False)
         elif foreman_type:
             argument_value['type'] = foreman_type
@@ -1489,6 +1504,8 @@ def _flatten_entity(entity, foreman_spec):
                     result[flat_name] = None
             elif property_type == 'entity_list':
                 result[flat_name] = sorted(val['id'] for val in value)
+            elif property_type == 'nested_list':
+                result[flat_name] = [_flatten_entity(ent, foreman_spec[key]['foreman_spec']) for ent in value]
             else:
                 result[flat_name] = value
     return result
@@ -1658,9 +1675,9 @@ interfaces_spec = dict(
     ip6=dict(),
     type=dict(choices=['interface', 'bmc', 'bond', 'bridge']),
     name=dict(),
-    subnet_id=dict(type='int'),
-    subnet6_id=dict(type='int'),
-    domain_id=dict(type='int'),
+    subnet=dict(type='entity'),
+    subnet6=dict(type='entity', resource_type='subnets'),
+    domain=dict(type='entity'),
     identifier=dict(),
     managed=dict(type='bool'),
     primary=dict(type='bool'),
@@ -1685,4 +1702,3 @@ interfaces_spec = dict(
     bond_options=dict(),
     compute_attributes=dict(type='dict'),
 )
-interfaces_foreman_spec, interfaces_ansible_spec = _foreman_spec_helper(interfaces_spec)
