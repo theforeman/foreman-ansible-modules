@@ -30,7 +30,7 @@
     - include: tasks/content_view_version.yml
       vars:
         state: absent
-        version: 1.0
+        version: "1.0"
       ignore_errors: true
     - include: tasks/content_view.yml
       vars:
@@ -84,7 +84,7 @@
 
     - include: tasks/content_view_version.yml
       vars:
-        version: 1.0
+        version: "1.0"
 
     # Composite Content Views
     - include: tasks/content_view.yml
@@ -95,7 +95,7 @@
         composite: true
         components:
           - content_view: Test Content View
-            version: 1.0
+            version: "1.0"
         expected_diff: true
         expected_diff_before: "content_view_components.*\\[\\]"
         expected_diff_after: "content_view_version_id"
@@ -107,7 +107,7 @@
         composite: true
         components:
           - content_view: Test Content View
-            version: 1.0
+            version: "1.0"
     - include: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
@@ -117,7 +117,7 @@
         auto_publish: true
         components:
           - content_view: Test Content View
-            version: 1.0
+            version: "1.0"
     - include: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
@@ -127,7 +127,7 @@
         auto_publish: true
         components:
           - content_view: Test Content View
-            version: 1.0
+            version: "1.0"
     - include: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
