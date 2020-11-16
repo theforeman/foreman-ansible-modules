@@ -88,6 +88,10 @@ def test_crud(tmpdir, module, vcrmode):
         run = run_playbook_vcr(tmpdir, module, record=record)
     assert run.rc == 0
 
+    for event in run.events:
+        event_warnings = event.get('event_data', {}).get('res', {}).get('warnings', [])
+        assert [] == event_warnings, str(event_warnings)
+
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_check_mode(tmpdir, module):
