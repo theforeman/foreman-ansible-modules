@@ -186,7 +186,7 @@ def main():
             media=dict(type='entity_list', flat_name='medium_ids', resource_type='media'),
             ptables=dict(type='entity_list'),
             provisioning_templates=dict(type='entity_list'),
-            password_hash=dict(choices=['MD5', 'SHA256', 'SHA512', 'Base64', 'Base64-Windows']),
+            password_hash=dict(choices=['MD5', 'SHA256', 'SHA512', 'Base64', 'Base64-Windows'], no_log=False),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
