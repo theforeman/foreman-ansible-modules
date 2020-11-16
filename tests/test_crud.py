@@ -11,6 +11,9 @@ import yaml
 
 from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS
 
+IGNORED_WARNINGS = [
+    "Activation Key 'Test Activation Key Copy' already exists.",
+]
 
 if sys.version_info[0] == 2:
     for envvar in os.environ.keys():
@@ -89,7 +92,7 @@ def test_crud(tmpdir, module, vcrmode):
     assert run.rc == 0
 
     for event in run.events:
-        event_warnings = event.get('event_data', {}).get('res', {}).get('warnings', [])
+        event_warnings = [warning for warning in event.get('event_data', {}).get('res', {}).get('warnings', []) if warning not in IGNORED_WARNINGS]
         assert [] == event_warnings, str(event_warnings)
 
 
