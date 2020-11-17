@@ -74,9 +74,7 @@ options:
   mac:
     description:
       - MAC address of the primary interface of the host.
-      - Please include leading zeros and separate nibbles by colons, otherwise the execution will not be idempotent.
-      - Example EE:BB:01:02:03:04
-    type: str
+    type: mac
     required: false
   comment:
     description:
@@ -383,6 +381,8 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
     ForemanEntityAnsibleModule,
     HostMixin,
 )
+from ansible.module_utils.common.validation import check_type_str
+import re
 
 
 def ensure_host_interfaces(module, entity, interfaces):
@@ -433,6 +433,26 @@ class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
     pass
 
 
+MAC_REGEXP = r'([a-f0-9]{1,2}:){5}[a-f0-9]{1,2}'
+MAC_REGEXP_64BIT = r'([a-f0-9]{1,2}:){19}[a-f0-9]{1,2}'
+
+
+def mac(value):
+    final_value = check_type_str(value)
+    if ':' in final_value:
+        split_by = ':'
+    elif '-' in final_value:
+        split_by = '-'
+    else:
+        raise TypeError("'{0}' is not a valid MAC address".format(value))
+    mac_parts = final_value.split(split_by)
+    final_value = ':'.join([part.zfill(2) for part in mac_parts])
+    final_value = final_value.lower()
+    if (len(final_value) == 17 and re.match(MAC_REGEXP, final_value, re.IGNORECASE)) or (len(final_value) == 59 and re.match(MAC_REGEXP_64BIT, final_value)):
+        return final_value
+    raise TypeError("'{0}' is not a valid MAC address".format(value))
+
+
 def main():
     module = ForemanHostModule(
         foreman_spec=dict(
@@ -444,7 +464,7 @@ def main():
             managed=dict(type='bool'),
             build=dict(type='bool'),
             ip=dict(),
-            mac=dict(),
+            mac=dict(type=mac),
             comment=dict(),
             owner=dict(type='entity', resource_type='users', flat_name='owner_id'),
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
@@ -475,9 +495,6 @@ def main():
         elif 'build' not in module.foreman_params and 'managed' in module.foreman_params and not module.foreman_params['managed']:
             # When 'build' is not given and 'managed'=False, have to clear 'build' context that might exist on the server.
             module.foreman_params['build'] = False
-
-        if 'mac' in module.foreman_params:
-            module.foreman_params['mac'] = module.foreman_params['mac'].lower()
 
         if 'owner' in module.foreman_params:
             module.foreman_params['owner_type'] = 'User'
