@@ -27,6 +27,11 @@ short_description: Manage Repositories
 description:
   - Crate and manage repositories
 author: "Eric D Helms (@ehelms)"
+notes:
+  - You can configure certain aspects of existing Red Hat Repositories (like I(download_policy)) using this module,
+    but you can't create (enable) or delete (disable) them.
+  - If you want to enable or disable Red Hat Repositories available through your subscription,
+    please use the M(theforeman.foreman.repository_set) module instead.
 options:
   name:
     description:
