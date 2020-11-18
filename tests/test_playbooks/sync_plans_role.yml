@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+  roles:
+    - role: repositories
+      vars:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{  foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        products:
+          - name: Red Hat Enterprise Linux Server
+            repository_sets:
+              - name: Red Hat Satellite Tools 6.7 (for RHEL 7 Server) (RPMs)
+                basearch: x86_64
+              - name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
+                basearch: x86_64
+          - name: Red Hat Enterprise Linux for x86_64
+            repository_sets:
+              - name: Red Hat Satellite Tools 6.7 for RHEL 8 x86_64 (RPMs)
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: sync_plans
+      vars:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        sync_plans:
+          - name: Weekly Sync
+            interval: weekly
+            sync_date: 2020-11-19 00:00:00 UTC
+            products:
+              - Red Hat Enterprise Linux Server
+              - Red Hat Enterprise Linux for x86_64
