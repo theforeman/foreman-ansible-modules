@@ -275,9 +275,9 @@ def main():
             if subscriptions is not None:
                 desired_subscriptions = []
                 for subscription in subscriptions:
-                    if subscription['name'] is not None and subscription['pool_id'] is None:
+                    if subscription.get('name') is not None and subscription.get('pool_id') is None:
                         desired_subscriptions.append(module.find_resource_by_name('subscriptions', subscription['name'], params=scope, thin=True))
-                    if subscription['pool_id'] is not None:
+                    if subscription.get('pool_id') is not None:
                         desired_subscriptions.append(module.find_resource_by_id('subscriptions', subscription['pool_id'], params=scope, thin=True))
                 desired_subscription_ids = set(item['id'] for item in desired_subscriptions)
                 current_subscriptions = module.list_resource('subscriptions', params=ak_scope) if entity else []
