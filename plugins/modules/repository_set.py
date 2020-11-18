@@ -268,7 +268,7 @@ def main():
         ],
     )
 
-    repositories = [{k: v for (k, v) in sub.items() if v is not None} for sub in module.foreman_params.get('repositories', [])]
+    repositories = module.foreman_params.get('repositories', [])
 
     with module.api_connection():
         scope = module.scope_for('organization')

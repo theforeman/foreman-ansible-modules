@@ -329,7 +329,14 @@ class ForemanAnsibleModule(AnsibleModule):
         super(ForemanAnsibleModule, self).__init__(argument_spec=argument_spec, supports_check_mode=supports_check_mode, **kwargs)
 
         aliases = {alias for arg in argument_spec.values() for alias in arg.get('aliases', [])}
-        self.foreman_params = {k: v for (k, v) in self.params.items() if v is not None and k not in aliases}
+        self.foreman_params = {}
+        for (k, v) in self.params.items():
+            if v is not None and k not in aliases:
+                if isinstance(v, dict):
+                    v = {subk: subv for (subk, subv) in v.items() if subv is not None}
+                elif isinstance(v, list) and v and isinstance(v[0], dict):
+                    v = [{subk: subv for (subk, subv) in element.items() if subv is not None} for element in v]
+                self.foreman_params[k] = v
 
         self.check_requirements()
 
