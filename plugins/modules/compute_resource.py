@@ -385,7 +385,7 @@ def main():
     if not module.desired_absent:
         if 'provider' in module.foreman_params:
             module.foreman_params['provider'], provider_param_keys = get_provider_info(provider=module.foreman_params['provider'])
-            provider_params = {k: v for k, v in module.foreman_params.pop('provider_params', dict()).items() if v is not None}
+            provider_params = module.foreman_params.pop('provider_params', {})
 
             for key in provider_param_keys:
                 if key in provider_params:
