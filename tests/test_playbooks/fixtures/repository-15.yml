@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2.19","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.0.3","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '65'
+      - '62'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -35,7 +35,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=100
       Status:
@@ -70,11 +70,12 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2020-11-10
-        11:16:59 UTC\",\"updated_at\":\"2020-11-10 11:16:59 UTC\",\"id\":5,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
+        :\"Test_Organization\",\"created_at\":\"2020-11-18 07:52:13 UTC\",\"updated_at\"\
+        :\"2020-11-18 07:52:13 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
+        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -93,7 +94,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=99
       Status:
@@ -129,14 +130,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/products?search=name%3D%22Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":2,"cp_id":"167098595041","name":"Test
-        Product","label":"Test_Product","description":"A happy little test product","provider_id":5,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2020-11-10
-        11:17:50 UTC","last_sync_words":"less than a minute","organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"sync_plan":null,"repository_count":1}]}
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"789384450132","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2020-11-18
+        07:52:49 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -155,9 +156,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=98
       Status:
@@ -193,14 +194,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/repositories?product_id=2&search=name%3D%22Test+Docker+Repository%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Docker+Repository%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Docker Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"c23e715a-59c3-4e9f-ae99-b99230638161","relative_path":"test_organization-test_product-just_a_test_repo","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"foreman.example.com:5000/test_organization-test_product-just_a_test_repo","library_instance_id":null,"id":8,"name":"Test
-        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":9,"name":"Default
-        Organization View"},"content_view_version":{"id":3,"name":"Default Organization
-        View 1.0","content_view_id":9},"kt_environment":{"id":9,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605007070670","major":null,"minor":null,"product":{"id":2,"cp_id":"167098595041","name":"Test
+        Docker Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"a1529c26-e911-4d23-9b5e-6eab4cdcc98d","relative_path":"test_organization-test_product-just_a_test_repo","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"centos7-katello-3-15.yatsu.example.com:5000/test_organization-test_product-just_a_test_repo","library_instance_id":null,"id":3,"name":"Test
+        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605685969422","major":null,"minor":null,"product":{"id":1,"cp_id":"789384450132","name":"Test
         Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null}]}
 
         '
@@ -220,9 +221,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=97
       Status:
@@ -242,7 +243,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1346'
+      - '1350'
     status:
       code: 200
       message: OK
@@ -258,16 +259,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/repositories/8?organization_id=5
+    uri: https://foreman.example.org/katello/api/repositories/3
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"test_organization-test_product-just_a_test_repo","promoted":false,"content_view_version_id":3,"library_instance_id":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2020-11-10
-        11:17:50 UTC","updated_at":"2020-11-10 11:17:51 UTC","backend_identifier":"c23e715a-59c3-4e9f-ae99-b99230638161","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"foreman.example.com:5000/test_organization-test_product-just_a_test_repo","id":8,"name":"Test
-        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":9,"name":"Default
-        Organization View"},"content_view_version":{"id":3,"name":"Default Organization
-        View 1.0","content_view_id":9},"kt_environment":{"id":9,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605007070670","major":null,"minor":null,"product":{"id":2,"cp_id":"167098595041","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":9,"registry_unauthenticated_pull":false},"docker_upstream_name":"busybox","docker_tags_whitelist":["latest"],"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
+      string: '  {"ostree_branches":[],"relative_path":"test_organization-test_product-just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2020-11-18
+        07:52:48 UTC","updated_at":"2020-11-18 07:52:49 UTC","backend_identifier":"a1529c26-e911-4d23-9b5e-6eab4cdcc98d","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"centos7-katello-3-15.yatsu.example.com:5000/test_organization-test_product-just_a_test_repo","id":3,"name":"Test
+        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605685969422","major":null,"minor":null,"product":{"id":1,"cp_id":"789384450132","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":"busybox","docker_tags_whitelist":["latest"],"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
     headers:
@@ -286,9 +287,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=96
       Status:
@@ -308,7 +309,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2423'
+      - '2407'
     status:
       code: 200
       message: OK
@@ -328,16 +329,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://foreman.example.org/katello/api/repositories/8
+    uri: https://foreman.example.org/katello/api/repositories/3
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"test_organization-test_product-just_a_test_repo","promoted":false,"content_view_version_id":3,"library_instance_id":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2020-11-10
-        11:17:50 UTC","updated_at":"2020-11-10 11:17:56 UTC","backend_identifier":"c23e715a-59c3-4e9f-ae99-b99230638161","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"foreman.example.com:5000/test_organization-test_product-just_a_test_repo","id":8,"name":"Test
-        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":9,"name":"Default
-        Organization View"},"content_view_version":{"id":3,"name":"Default Organization
-        View 1.0","content_view_id":9},"kt_environment":{"id":9,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605007070670","major":null,"minor":null,"product":{"id":2,"cp_id":"167098595041","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":9,"registry_unauthenticated_pull":false},"docker_upstream_name":"busybox","docker_tags_whitelist":["latest"],"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":"dockeruser","ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":true,"upstream_auth_exists":true}
+      string: '  {"ostree_branches":[],"relative_path":"test_organization-test_product-just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2020-11-18
+        07:52:48 UTC","updated_at":"2020-11-18 07:52:52 UTC","backend_identifier":"a1529c26-e911-4d23-9b5e-6eab4cdcc98d","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"centos7-katello-3-15.yatsu.example.com:5000/test_organization-test_product-just_a_test_repo","id":3,"name":"Test
+        Docker Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","content_id":"1605685969422","major":null,"minor":null,"product":{"id":1,"cp_id":"789384450132","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"puppet_module":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":"busybox","docker_tags_whitelist":["latest"],"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":null,"ansible_collection_requirements":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":"dockeruser","ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":true,"upstream_auth_exists":true}
 
         '
     headers:
@@ -358,7 +359,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=95
       Status:
@@ -378,7 +379,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2429'
+      - '2413'
     status:
       code: 200
       message: OK

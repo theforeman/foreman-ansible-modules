@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2.19","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.0.3","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '65'
+      - '62'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -35,7 +35,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=100
       Status:
@@ -70,11 +70,12 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2020-11-10
-        11:16:59 UTC\",\"updated_at\":\"2020-11-10 11:16:59 UTC\",\"id\":5,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
+        :\"Test_Organization\",\"created_at\":\"2020-11-18 07:52:13 UTC\",\"updated_at\"\
+        :\"2020-11-18 07:52:13 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
+        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -93,7 +94,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=99
       Status:
@@ -129,13 +130,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/products?search=name%3D%22Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":2,"cp_id":"167098595041","name":"Test
-        Product","label":"Test_Product","description":"A happy little test product","provider_id":5,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"sync_plan":null,"repository_count":0}]}
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"789384450132","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":0}]}
 
         '
     headers:
@@ -154,9 +155,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=98
       Status:
@@ -192,7 +193,7 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/repositories?product_id=2&search=name%3D%22Test+Repository%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Repository%22&per_page=4294967296
   response:
     body:
       string: '{"total":0,"subtotal":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
@@ -215,9 +216,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - ; ANY
       Foreman_version:
-      - 2.1.2.19
+      - 2.0.3
       Keep-Alive:
       - timeout=15, max=97
       Status:
