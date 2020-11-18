@@ -131,8 +131,8 @@ def main():
             for desired_filter in desired_filters:
                 # search for an existing filter
                 for current_filter in current_filters:
-                    if desired_filter['search'] == current_filter['search']:
-                        if set(desired_filter['permissions']) == set(perm['name'] for perm in current_filter['permissions']):
+                    if desired_filter.get('search') == current_filter['search']:
+                        if set(desired_filter.get('permissions', [])) == set(perm['name'] for perm in current_filter['permissions']):
                             current_filters.remove(current_filter)
                             break
                 else:
