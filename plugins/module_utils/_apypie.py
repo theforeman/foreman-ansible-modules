@@ -217,7 +217,8 @@ class Action(object):
 
         for param in action_params:
             if param.expected_type == 'hash' and param.params:
-                nested_result = self._prepare_params(param.params, input_dict)
+                nested_dict = input_dict.get(param.name, input_dict)
+                nested_result = self._prepare_params(param.params, nested_dict)
                 if nested_result:
                     result[param.name] = nested_result
             elif param.name in input_dict:
