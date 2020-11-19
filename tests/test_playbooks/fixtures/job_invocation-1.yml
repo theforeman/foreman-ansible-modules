@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2.12","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.2.1","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.12
+      - 2.2.1
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -51,7 +51,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '65'
+      - '62'
     status:
       code: 200
       message: OK
@@ -70,12 +70,13 @@ interactions:
     uri: https://foreman.example.org/api/bookmarks?search=name%3D%22ok+hosts%22%2Ccontroller%3D%22hosts%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 18,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"ok hosts\\\",controller=\\\"hosts\\\"\",\n
-        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"name\":\"ok hosts\",\"controller\":\"hosts\",\"query\":\"last_report >
-        \\\"35 minutes ago\\\" and status.enabled = true and status.applied = 0 and
-        status.failed = 0 and status.pending = 0\",\"public\":true,\"id\":10,\"owner_id\":1,\"owner_type\":\"User\"}]\n}\n"
+      string: "{\n  \"total\": 18,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"ok hosts\\\",controller=\\\"hosts\\\
+        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
+        : [{\"name\":\"ok hosts\",\"controller\":\"hosts\",\"query\":\"last_report\
+        \ > \\\"35 minutes ago\\\" and status.enabled = true and status.applied =\
+        \ 0 and status.failed = 0 and status.pending = 0\",\"public\":true,\"id\"\
+        :10,\"owner_id\":1,\"owner_type\":\"User\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -94,7 +95,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.12
+      - 2.2.1
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -152,7 +153,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.12
+      - 2.2.1
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -189,13 +190,13 @@ interactions:
     uri: https://foreman.example.org/api/job_templates?search=name%3D%22Run+Command+-+Ansible+Default%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 42,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Run Command - Ansible Default\\\"\",\n
-        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"id\":177,\"name\":\"Run Command - Ansible Default\",\"job_category\":\"Ansible
-        Commands\",\"provider_type\":\"Ansible\",\"snippet\":false,\"description_format\":\"Run
-        %{command}\",\"created_at\":\"2020-09-21 09:29:09 UTC\",\"updated_at\":\"2020-09-21
-        09:29:09 UTC\"}]\n}\n"
+      string: "{\n  \"total\": 41,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Run Command - Ansible Default\\\"\"\
+        ,\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
+        : [{\"id\":179,\"name\":\"Run Command - Ansible Default\",\"job_category\"\
+        :\"Ansible Commands\",\"provider_type\":\"Ansible\",\"snippet\":false,\"description_format\"\
+        :\"Run %{command}\",\"created_at\":\"2020-11-19 11:25:26 UTC\",\"updated_at\"\
+        :\"2020-11-19 11:25:26 UTC\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -214,7 +215,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.12
+      - 2.2.1
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
@@ -237,8 +238,9 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"job_invocation": {"job_template_id": 177, "targeting_type": "static_query",
-      "inputs": {"command": "pwd"}, "bookmark_id": 10}}'
+    body: '{"job_invocation": {"job_template_id": 179, "targeting_type": "static_query",
+      "inputs": {"command": "pwd"}, "recurrence": {"cron_line": "30 2 * * *"}, "concurrency_control":
+      {"concurrency_level": 2}, "bookmark_id": 10}}'
     headers:
       Accept:
       - application/json;version=2
@@ -247,7 +249,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '127'
+      - '219'
       Content-Type:
       - application/json
       User-Agent:
@@ -256,10 +258,11 @@ interactions:
     uri: https://foreman.example.org/api/job_invocations
   response:
     body:
-      string: '{"id":28,"description":"Run pwd","job_category":"Ansible Commands","targeting_id":28,"status":3,"start_at":"2020-09-23
-        09:52:41 UTC","status_label":"running","dynflow_task":{"id":"5021ef49-ee87-4d1f-b3a7-5c72153db4cb","state":"planned"},"succeeded":"N/A","failed":"N/A","pending":"N/A","total":1,"targeting":{"bookmark_id":10,"search_query":"last_report
+      string: '{"id":2,"description":"Run pwd","job_category":"Ansible Commands","targeting_id":2,"status":2,"start_at":"2020-11-20
+        02:30:00 UTC","status_label":"queued","dynflow_task":{"id":"a205dd1c-7fa9-4f93-84a3-9cb00c6501ea","state":"scheduled"},"succeeded":"N/A","failed":"N/A","pending":"N/A","total":"N/A","missing":0,"targeting":{"bookmark_id":10,"search_query":"last_report
         > \"35 minutes ago\" and status.enabled = true and status.applied = 0 and
-        status.failed = 0 and status.pending = 0","targeting_type":"static_query","user_id":4,"randomized_ordering":null,"hosts":[{"name":"foreman.example.com","id":1}]},"task":{"id":"5021ef49-ee87-4d1f-b3a7-5c72153db4cb","state":"planned"}}'
+        status.failed = 0 and status.pending = 0","targeting_type":"static_query","user_id":4,"randomized_ordering":null,"hosts":[{"name":"centos7-luna-3-17.yatsu.example.com","id":1}]},"task":{"id":"a205dd1c-7fa9-4f93-84a3-9cb00c6501ea","state":"scheduled"},"mode":"recurring","recurrence":{"id":1,"cron_line":"30
+        2 * * *","end_time":null,"iteration":1,"task_group_id":3,"state":"active","max_iteration":null}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -278,7 +281,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2.12
+      - 2.2.1
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
