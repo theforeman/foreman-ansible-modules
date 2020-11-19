@@ -1506,7 +1506,7 @@ def _recursive_dict_keys(a_dict):
 def _recursive_dict_without_none(a_dict, exclude=None):
     """
     Remove all entries with `None` value from a dict, recursively.
-    Also drops all entries with keys in `exclude`
+    Also drops all entries with keys in `exclude` in the top level.
     """
     if exclude is None:
         exclude = []
