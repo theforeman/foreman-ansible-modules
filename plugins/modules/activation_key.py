@@ -47,21 +47,27 @@ options:
     type: str
   subscriptions:
     description:
-      - List of subscriptions that include either Name or Pool ID.
-      - Pool IDs are preferred since Names are not unique and the module will fail if it finds more than one subscription with the same name.
+      - List of subscriptions that include either Name, Pool ID, or Upstream Pool ID.
+      - Pool IDs are preferred since Names and Upstream Pool IDs are not guaranteed to be unique. The module will fail if it finds more than one match.
     type: list
     elements: dict
     suboptions:
       name:
         description:
           - Name of the Subscription to be added.
-          - Mutually exclusive with I(pool_id).
+          - Mutually exclusive with I(pool_id) and I(upstream_pool_id).
         type: str
         required: false
       pool_id:
         description:
           - Pool ID of the Subscription to be added.
-          - Mutually exclusive with I(name).
+          - Mutually exclusive with I(name) and I(upstream_pool_id).
+        type: str
+        required: false
+      upstream_pool_id:
+        description:
+          - Upstream Pool ID of the Subscription to be added.
+          - Mutually exclusive with I(name) and I(pool_id).
         type: str
         required: false
   host_collections:
@@ -229,9 +235,10 @@ def main():
             subscriptions=dict(type='list', elements='dict', options=dict(
                 name=dict(),
                 pool_id=dict(),
+                upstream_pool_id=dict(),
             ),
-                required_one_of=[['name', 'pool_id']],
-                mutually_exclusive=[['name', 'pool_id']],
+                required_one_of=[['name', 'pool_id', 'upstream_pool_id']],
+                mutually_exclusive=[['name', 'pool_id', 'upstream_pool_id']],
             ),
             content_overrides=dict(type='list', elements='dict', options=dict(
                 label=dict(required=True),
@@ -275,10 +282,14 @@ def main():
             if subscriptions is not None:
                 desired_subscriptions = []
                 for subscription in subscriptions:
-                    if subscription.get('name') is not None and subscription.get('pool_id') is None:
+                    if subscription.get('name') is not None:
                         desired_subscriptions.append(module.find_resource_by_name('subscriptions', subscription['name'], params=scope, thin=True))
                     if subscription.get('pool_id') is not None:
                         desired_subscriptions.append(module.find_resource_by_id('subscriptions', subscription['pool_id'], params=scope, thin=True))
+                    if subscription.get('upstream_pool_id') is not None:
+                        desired_subscriptions.append(
+                            module.find_resource_by('subscriptions', 'upstream_pool_id', subscription['upstream_pool_id'], params=scope, thin=True)
+                        )
                 desired_subscription_ids = set(item['id'] for item in desired_subscriptions)
                 current_subscriptions = module.list_resource('subscriptions', params=ak_scope) if entity else []
                 current_subscription_ids = set(item['id'] for item in current_subscriptions)
