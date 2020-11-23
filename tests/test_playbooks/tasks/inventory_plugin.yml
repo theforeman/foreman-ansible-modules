@@ -1,18 +1,18 @@
 ---
 - name: fetch PostgreSQL container
   docker_image:
-    name: postgres:{{ _postgres_version }}
+    name: postgres:{{ postgres_version }}
     source: pull
 
 - name: fetch Foreman container
   docker_image:
-    name: "{{ _foreman_container }}:{{ _foreman_version }}"
+    name: "{{ foreman_container }}:{{ foreman_version }}"
     source: pull
 
 - name: start PostgreSQL container
   docker_container:
-    name: "{{ _postgres_host }}"
-    image: postgres:{{ _postgres_version }}
+    name: "{{ postgres_host }}"
+    image: postgres:{{ postgres_version }}
     env:
       POSTGRES_USER: foreman
       POSTGRES_PASSWORD: foreman
@@ -21,23 +21,23 @@
 
 - name: start Foreman container
   docker_container:
-    name: "{{ _foreman_host }}"
-    image: "{{ _foreman_container }}:{{ _foreman_version }}"
+    name: "{{ foreman_host }}"
+    image: "{{ foreman_container }}:{{ foreman_version }}"
     command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
     env:
       SEED_ADMIN_PASSWORD: changeme
       RAILS_ENV: production
-      DATABASE_URL: postgres://foreman:foreman@{{ _postgres_host }}/foreman?pool=5
+      DATABASE_URL: postgres://foreman:foreman@{{ postgres_host }}/foreman?pool=5
     links:
-      - "{{ _postgres_host }}:{{ _postgres_host }}"
+      - "{{ postgres_host }}:{{ postgres_host }}"
     published_ports:
-      - "0.0.0.0:{{ _foreman_port }}:3000"
+      - "0.0.0.0:{{ foreman_port }}:3000"
 
 - name: wait for foreman to start
   status_info:
     username: admin
     password: changeme
-    server_url: http://127.0.0.1:{{ _foreman_port }}/
+    server_url: http://127.0.0.1:{{ foreman_port }}/
   register: result
   until:
     - result is success
@@ -47,20 +47,20 @@
 
 - name: start dynflow container
   docker_container:
-    name: "{{ _foreman_host }}dynflow"
-    image: "{{ _foreman_container }}:{{ _foreman_version }}"
+    name: "{{ foreman_host }}dynflow"
+    image: "{{ foreman_container }}:{{ foreman_version }}"
     command: bash -c "bundle exec rake dynflow:executor"
     env:
       RAILS_ENV: production
-      DATABASE_URL: postgres://foreman:foreman@{{ _postgres_host }}/foreman?pool=5
+      DATABASE_URL: postgres://foreman:foreman@{{ postgres_host }}/foreman?pool=5
     links:
-      - "{{ _postgres_host }}:{{ _postgres_host }}"
+      - "{{ postgres_host }}:{{ postgres_host }}"
 
 - name: create test hostgroups
   hostgroup:
     username: admin
     password: changeme
-    server_url: http://127.0.0.1:{{ _foreman_port }}/
+    server_url: http://127.0.0.1:{{ foreman_port }}/
     name: "{{ item.name }}"
     parent: "{{ item.parent | default(omit) }}"
     organizations:
@@ -73,7 +73,7 @@
   host:
     username: admin
     password: changeme
-    server_url: http://127.0.0.1:{{ _foreman_port }}/
+    server_url: http://127.0.0.1:{{ foreman_port }}/
     name: "{{ item.key }}"
     hostgroup: "{{ item.value }}"
     build: false
@@ -89,7 +89,7 @@
 
 - name: submit facts for hosts
   uri:
-    url: http://127.0.0.1:{{ _foreman_port }}/api/hosts/facts
+    url: http://127.0.0.1:{{ foreman_port }}/api/hosts/facts
     url_username: admin
     url_password: changeme
     validate_certs: false
@@ -165,6 +165,6 @@
         name: "{{ item }}"
         state: absent
       loop:
-        - "{{ _foreman_host }}"
-        - "{{ _foreman_host }}dynflow"
-        - "{{ _postgres_host }}"
+        - "{{ foreman_host }}"
+        - "{{ foreman_host }}dynflow"
+        - "{{ postgres_host }}"
