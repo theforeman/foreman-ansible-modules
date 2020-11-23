@@ -83,8 +83,66 @@ DOCUMENTATION = '''
         type: string
       batch_size:
         description: Number of hosts per batch that will be retrieved from the Foreman API per individual call
-        type: integer
+        type: int
         default: 250
+      foreman:
+        description: foreman server related configuration
+        type: dict
+        use_reports_api:
+            description: Use Reporting API.
+            type: boolean
+            default: False
+      report:
+        description: report API specific configuration
+        type: dict
+        poll_interval:
+            description: The polling interval between 2 calls to the report_data endpoint while polling.
+            type: int
+            default: 10
+        max_timeout:
+            description: Timeout before falling back to old host API when using report_data endpoint while polling.
+            type: int
+            default: 600
+        want_organization:
+            description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
+            type: boolean
+            default: True
+        want_location:
+            description: Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
+            type: boolean
+            default: True
+        want_ipv4:
+            description: Toggle, if true the inventory will fetch ipv4 address of the host.
+            type: boolean
+            default: True
+        want_ipv6:
+            description: Toggle, if true the inventory will fetch ipv6 address of the host.
+            type: boolean
+            default: True
+        want_host_group:
+            description: Toggle, if true the inventory will fetch host_groups and create groupings for the same.
+            type: boolean
+            default: True
+        want_subnet:
+            description: Toggle, if true the inventory will fetch subnet.
+            type: boolean
+            default: True
+        want_subnet_v6:
+            description:  Toggle, if true the inventory will fetch ipv6 subnet.
+            type: boolean
+            default: True
+        want_smart_proxies:
+            description: Toggle, if true the inventory will fetch smart proxy that the host is registered to.
+            type: boolean
+            default: True
+        want_content_facet_attributes:
+            description: Toggle, if true the inventory will fetch content view details that the host is tied to.
+            type: boolean
+            default: True
+        want_hostcollections:
+            description: Toggle, if true the inventory will fetch host collections for a hosts and create groupings for the same.
+            type: boolean
+            default: True
 '''
 
 EXAMPLES = '''
@@ -96,9 +154,9 @@ password: secure
 validate_certs: False
 host_filters: 'organization="Web Engineering"'
 '''
-
+import json
 from distutils.version import LooseVersion
-
+from time import sleep
 from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible.module_utils.common._collections_compat import MutableMapping
@@ -123,7 +181,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def __init__(self):
 
         super(InventoryModule, self).__init__()
-
+        self.MINIMUM_FOREMAN_VERSION_FOR_REPORTING_API = '1.24.0'
         # from config
         self.foreman_url = None
 
@@ -238,10 +296,207 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 hostvars[vars_prefix + k] = v
         return hostvars
 
+    def _fetch_params(self):
+        options = ("no", "yes")
+        params = dict()
+        report_options = {'want_location': True, 'want_organization': True, 'want_ipv4': True, 'want_ipv6': True,
+                          'want_host_group': True, 'want_hostcollections': False, 'want_subnet': True, 'want_subnet_v6': True, 'want_smart_proxies': True,
+                          'want_content_facet_attributes': False}
+        report_options.update(self.get_option('report') or {})
+
+        self.want_location = report_options['want_location']
+        self.want_organization = report_options['want_organization']
+        self.want_IPv4 = report_options['want_ipv4']
+        self.want_IPv6 = report_options['want_ipv6']
+        self.want_host_group = report_options['want_host_group']
+        self.want_hostcollections = report_options['want_hostcollections']
+        self.want_subnet = report_options['want_subnet']
+        self.want_subnet_v6 = report_options['want_subnet_v6']
+        self.want_smart_proxies = report_options['want_smart_proxies']
+        self.want_content_facet_attributes = report_options['want_content_facet_attributes']
+        self.want_params = self.get_option('want_params')
+        self.want_facts = self.get_option('want_facts')
+        self.host_filters = self.get_option('host_filters')
+
+        params["Organization"] = options[self.want_organization]
+        params["Location"] = options[self.want_location]
+        params["IPv4"] = options[self.want_IPv4]
+        params["IPv6"] = options[self.want_IPv6]
+        params["Facts"] = options[self.want_facts]
+        params["Host Group"] = options[self.want_host_group]
+        params["Host Collections"] = options[self.want_hostcollections]
+        params["Subnet"] = options[self.want_subnet]
+        params["Subnet v6"] = options[self.want_subnet_v6]
+        params["Smart Proxies"] = options[self.want_smart_proxies]
+        params["Content Attributes"] = options[self.want_content_facet_attributes]
+        params["Host Parameters"] = options[self.want_params]
+        if self.host_filters:
+            params["Hosts"] = self.host_filters
+        return params
+
+    def _use_inventory_report(self):
+        try:
+            use_inventory_report = self.get_option('foreman').get('use_reports_api')
+        except Exception:
+            use_inventory_report = False
+        if not use_inventory_report:
+            return False
+        status_url = "%s/api/v2/status" % self.foreman_url
+        result = self._get_json(status_url)
+        foreman_version = (LooseVersion(result.get('version')) >= LooseVersion(self.MINIMUM_FOREMAN_VERSION_FOR_REPORTING_API))
+        return foreman_version
+
+    def _post_request(self):
+        url = "%s/ansible/api/v2/ansible_inventories/schedule" % self.foreman_url
+        session = self._get_session()
+        params = {'input_values': self._fetch_params()}
+        try:
+            self.poll_interval = int(self.get_option('report').get('poll_interval'))
+            self.max_timeout = int(self.get_option('report').get('max_timeout'))
+            max_polls = int(self.max_timeout / self.poll_interval)
+        except Exception:
+            self.poll_interval = 10
+            max_polls = 60
+        ret = session.post(url, json=params)
+        if not ret:
+            raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
+        url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
+        polls = 0
+        response = session.get(url)
+        while response:
+            if response.status_code != 204 or polls > max_polls:
+                break
+            sleep(self.poll_interval)
+            polls += 1
+            response = session.get(url)
+        if not response:
+            raise Exception("Error receiving inventory report from foreman. Please check foreman logs!")
+        elif (response.status_code == 204 and polls > max_polls):
+            raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
+        else:
+            return response.json()
+
     def _populate(self):
+        if self._use_inventory_report():
+            self._populate_report_api()
+        else:
+            self._populate_host_api()
 
+    def _populate_report_api(self):
+        self.groups = dict()
+        self.hosts = dict()
+        try:
+            inventory_report_response = self._post_request()
+        except Exception as exc:
+            self.display.warning("Failed to use Reports API, falling back to Hosts API: {0}".format(exc))
+            self._populate_host_api()
+            return
+        self.group_prefix = self.get_option('group_prefix')
+        host_data = json.loads(inventory_report_response)
+        for host in host_data:
+            if not(host) or (host["name"] in self.cache.keys()):
+                continue
+            host_name = self.inventory.add_host(host['name'])
+            group_name = host.get('hostgroup_title', host.get('hostgroup_name'))
+            if group_name:
+                group_name = to_safe_group_name('%s%s' % (self.get_option('group_prefix'), group_name.lower().replace(" ", "")))
+                group_name = self.inventory.add_group(group_name)
+                self.inventory.add_child(group_name, host_name)
+
+            host_params = host.pop('host_parameters', {})
+            fact_list = host.pop('facts', {})
+
+            if self.get_option('legacy_hostvars'):
+                hostvars = self._get_hostvars(host)
+                self.inventory.set_variable(host_name, 'foreman', hostvars)
+            else:
+                omitted_vars = ('name', 'hostgroup_title', 'hostgroup_name')
+                hostvars = self._get_hostvars(host, self.get_option('vars_prefix'), omitted_vars)
+
+                for k, v in hostvars.items():
+                    try:
+                        self.inventory.set_variable(host_name, k, v)
+                    except ValueError as e:
+                        self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
+
+            content_facet_attributes = host.get('content_attributes', {}) or {}
+            if self.get_option('want_facts'):
+                self.inventory.set_variable(host_name, 'foreman_facts', fact_list)
+
+            # Create ansible groups for hostgroup
+            group = 'host_group'
+            group_name = host.get(group)
+            if group_name:
+                parent_name = None
+                group_label_parts = []
+                for part in group_name.split('/'):
+                    group_label_parts.append(part.lower().replace(" ", ""))
+                    gname = to_safe_group_name('%s%s' % (self.get_option('group_prefix'), '/'.join(group_label_parts)))
+                    result_gname = self.inventory.add_group(gname)
+                    if parent_name:
+                        self.inventory.add_child(parent_name, result_gname)
+                    parent_name = result_gname
+                self.inventory.add_child(result_gname, host_name)
+
+            # Create ansible groups for environment, location and organization
+            for group in ['environment', 'location', 'organization']:
+                val = host.get('%s' % group)
+                if val:
+                    safe_key = to_safe_group_name('%s%s_%s' % (
+                        to_text(self.group_prefix),
+                        group,
+                        to_text(val).lower()
+                    ))
+                    env_lo_org = self.inventory.add_group(safe_key)
+                    self.inventory.add_child(env_lo_org, host_name)
+
+            for group in ['lifecycle_environment', 'content_view']:
+                val = content_facet_attributes.get('%s_name' % group)
+                if val:
+                    safe_key = to_safe_group_name('%s%s_%s' % (
+                        to_text(self.group_prefix),
+                        group,
+                        to_text(val).lower()
+                    ))
+                    le_cv_group = self.inventory.add_group(safe_key)
+                    self.inventory.add_child(le_cv_group, host_name)
+            params = host_params
+
+            if self.want_hostcollections:
+                hostcollections = host.get('host_collections')
+
+                if hostcollections:
+                    # Create Ansible groups for host collections
+                    for hostcollection in hostcollections:
+                        try:
+                            host_collection_group_name = to_safe_group_name('%shostcollection_%s' % (
+                                to_text(self.group_prefix),
+                                to_text(hostcollection).lower()
+                            ))
+                            hostcollection_group = self.inventory.add_group(host_collection_group_name)
+                            self.inventory.add_child(hostcollection_group, host_name)
+                        except ValueError as e:
+                            self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
+
+            # set host vars from params
+            if self.get_option('want_params'):
+                if self.get_option('legacy_hostvars'):
+                    self.inventory.set_variable(host_name, 'foreman_params', params)
+                else:
+                    for k, v in params.items():
+                        try:
+                            self.inventory.set_variable(host_name, k, v)
+                        except ValueError as e:
+                            self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
+                                                 (k, to_native(v), host, to_native(e)))
+            strict = self.get_option('strict')
+            hostvars = self.inventory.get_host(host_name).get_vars()
+            self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
+            self._add_host_to_composed_groups(self.get_option('groups'), hostvars, host_name, strict)
+            self._add_host_to_keyed_groups(self.get_option('keyed_groups'), hostvars, host_name, strict)
+
+    def _populate_host_api(self):
         for host in self._get_hosts():
-
             if host.get('name'):
                 host_name = self.inventory.add_host(host['name'])
 

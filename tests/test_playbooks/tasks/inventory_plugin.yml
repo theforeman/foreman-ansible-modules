@@ -45,6 +45,17 @@
   retries: 10
   delay: 10
 
+- name: start dynflow container
+  docker_container:
+    name: "{{ _foreman_host }}dynflow"
+    image: "{{ _foreman_container }}:{{ _foreman_version }}"
+    command: bash -c "bundle exec rake dynflow:executor"
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: postgres://foreman:foreman@{{ _postgres_host }}/foreman?pool=5
+    links:
+      - "{{ _postgres_host }}:{{ _postgres_host }}"
+
 - name: create test hostgroups
   hostgroup:
     username: admin
@@ -118,16 +129,21 @@
       '{{ item.key }}' in groups['foreman_{{ item.value | regex_replace('/', '_') }}']
   with_dict: "{{ foreman_hosts }}"
 
+- name: dump all host details
+  debug:
+    var: "hostvars['{{ item.key }}']"
+  with_dict: "{{ foreman_hosts }}"
+
 - name: test that all hosts have the domain fact set
   assert:
     that: >
-      hostvars['{{ item.key }}']['foreman_domain_name']  == 'example.com'
+      hostvars['{{ item.key }}']['foreman_facts']['domain']  == 'example.com'
   with_dict: "{{ foreman_hosts }}"
 
 - name: test that all hosts have the OS fact set
   assert:
     that: >
-      hostvars['{{ item.key }}']['foreman_operatingsystem_name']  == 'CentOS 7.7'
+      hostvars['{{ item.key }}']['foreman_facts']['operatingsystem']  == 'CentOS'
   with_dict: "{{ foreman_hosts }}"
 
 - name: test that all hosts have the testparam1
