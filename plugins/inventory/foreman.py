@@ -85,64 +85,65 @@ DOCUMENTATION = '''
         description: Number of hosts per batch that will be retrieved from the Foreman API per individual call
         type: int
         default: 250
+      use_reports_api:
+        description: Use Reporting API.
+        type: boolean
+        default: False
       foreman:
-        description: foreman server related configuration
-        type: dict
-        use_reports_api:
-            description: Use Reporting API.
-            type: boolean
-            default: False
+        description:
+          - Foreman server related configuration, deprecated.
+          - You can pass I(use_reports_api) in this dict to enable the Reporting API.
+          - Only for backward compatibility.
       report:
-        description: report API specific configuration
+        description:
+          - Report API specific configuration, deprecated.
+          - You can pass the Report API specific params as part of this dict, instead of the main configuration.
+          - Only for backward compatibility.
         type: dict
-        poll_interval:
-            description: The polling interval between 2 calls to the report_data endpoint while polling.
-            type: int
-            default: 10
-        max_timeout:
-            description: Timeout before falling back to old host API when using report_data endpoint while polling.
-            type: int
-            default: 600
-        want_organization:
-            description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
-            type: boolean
-            default: True
-        want_location:
-            description: Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
-            type: boolean
-            default: True
-        want_ipv4:
-            description: Toggle, if true the inventory will fetch ipv4 address of the host.
-            type: boolean
-            default: True
-        want_ipv6:
-            description: Toggle, if true the inventory will fetch ipv6 address of the host.
-            type: boolean
-            default: True
-        want_host_group:
-            description: Toggle, if true the inventory will fetch host_groups and create groupings for the same.
-            type: boolean
-            default: True
-        want_subnet:
-            description: Toggle, if true the inventory will fetch subnet.
-            type: boolean
-            default: True
-        want_subnet_v6:
-            description:  Toggle, if true the inventory will fetch ipv6 subnet.
-            type: boolean
-            default: True
-        want_smart_proxies:
-            description: Toggle, if true the inventory will fetch smart proxy that the host is registered to.
-            type: boolean
-            default: True
-        want_content_facet_attributes:
-            description: Toggle, if true the inventory will fetch content view details that the host is tied to.
-            type: boolean
-            default: True
-        want_hostcollections:
-            description: Toggle, if true the inventory will fetch host collections for a hosts and create groupings for the same.
-            type: boolean
-            default: True
+      poll_interval:
+        description: The polling interval between 2 calls to the report_data endpoint while polling.
+        type: int
+        default: 10
+      max_timeout:
+        description: Timeout before falling back to old host API when using report_data endpoint while polling.
+        type: int
+        default: 600
+      want_organization:
+        description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
+        type: boolean
+        default: True
+      want_location:
+        description: Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
+        type: boolean
+        default: True
+      want_ipv4:
+        description: Toggle, if true the inventory will fetch ipv4 address of the host.
+        type: boolean
+        default: True
+      want_ipv6:
+        description: Toggle, if true the inventory will fetch ipv6 address of the host.
+        type: boolean
+        default: True
+      want_host_group:
+        description: Toggle, if true the inventory will fetch host_groups and create groupings for the same.
+        type: boolean
+        default: True
+      want_subnet:
+        description: Toggle, if true the inventory will fetch subnet.
+        type: boolean
+        default: True
+      want_subnet_v6:
+        description:  Toggle, if true the inventory will fetch ipv6 subnet.
+        type: boolean
+        default: True
+      want_smart_proxies:
+        description: Toggle, if true the inventory will fetch smart proxy that the host is registered to.
+        type: boolean
+        default: True
+      want_content_facet_attributes:
+        description: Toggle, if true the inventory will fetch content view details that the host is tied to.
+        type: boolean
+        default: True
 '''
 
 EXAMPLES = '''
@@ -299,21 +300,19 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _fetch_params(self):
         options = ("no", "yes")
         params = dict()
-        report_options = {'want_location': True, 'want_organization': True, 'want_ipv4': True, 'want_ipv6': True,
-                          'want_host_group': True, 'want_hostcollections': False, 'want_subnet': True, 'want_subnet_v6': True, 'want_smart_proxies': True,
-                          'want_content_facet_attributes': False}
-        report_options.update(self.get_option('report') or {})
 
-        self.want_location = report_options['want_location']
-        self.want_organization = report_options['want_organization']
-        self.want_IPv4 = report_options['want_ipv4']
-        self.want_IPv6 = report_options['want_ipv6']
-        self.want_host_group = report_options['want_host_group']
-        self.want_hostcollections = report_options['want_hostcollections']
-        self.want_subnet = report_options['want_subnet']
-        self.want_subnet_v6 = report_options['want_subnet_v6']
-        self.want_smart_proxies = report_options['want_smart_proxies']
-        self.want_content_facet_attributes = report_options['want_content_facet_attributes']
+        report_options = self.get_option('report') or {}
+
+        self.want_location = report_options.get('want_location', self.get_option('want_location'))
+        self.want_organization = report_options.get('want_organization', self.get_option('want_organization'))
+        self.want_IPv4 = report_options.get('want_ipv4', self.get_option('want_ipv4'))
+        self.want_IPv6 = report_options.get('want_ipv6', self.get_option('want_ipv6'))
+        self.want_host_group = report_options.get('want_host_group', self.get_option('want_host_group'))
+        self.want_hostcollections = report_options.get('want_hostcollections', self.get_option('want_hostcollections'))
+        self.want_subnet = report_options.get('want_subnet', self.get_option('want_subnet'))
+        self.want_subnet_v6 = report_options.get('want_subnet_v6', self.get_option('want_subnet_v6'))
+        self.want_smart_proxies = report_options.get('want_smart_proxies', self.get_option('want_smart_proxies'))
+        self.want_content_facet_attributes = report_options.get('want_content_facet_attributes', self.get_option('want_content_facet_attributes'))
         self.want_params = self.get_option('want_params')
         self.want_facts = self.get_option('want_facts')
         self.host_filters = self.get_option('host_filters')
@@ -335,10 +334,12 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         return params
 
     def _use_inventory_report(self):
+        use_inventory_report = self.get_option('use_reports_api')
+        # backward compatibility
         try:
             use_inventory_report = self.get_option('foreman').get('use_reports_api')
         except Exception:
-            use_inventory_report = False
+            pass
         if not use_inventory_report:
             return False
         status_url = "%s/api/v2/status" % self.foreman_url
@@ -350,13 +351,15 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         url = "%s/ansible/api/v2/ansible_inventories/schedule" % self.foreman_url
         session = self._get_session()
         params = {'input_values': self._fetch_params()}
+        self.poll_interval = self.get_option('poll_interval')
+        self.max_timeout = self.get_option('max_timeout')
+        # backward compatibility
         try:
             self.poll_interval = int(self.get_option('report').get('poll_interval'))
             self.max_timeout = int(self.get_option('report').get('max_timeout'))
-            max_polls = int(self.max_timeout / self.poll_interval)
         except Exception:
-            self.poll_interval = 10
-            max_polls = 60
+            pass
+        max_polls = self.max_timeout / self.poll_interval
         ret = session.post(url, json=params)
         if not ret:
             raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
