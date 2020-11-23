@@ -158,7 +158,11 @@
       hostvars['{{ item.key }}']['testparam2']  == 'testvalue2'
   with_dict: "{{ foreman_hosts }}"
 
-- name: remove Foreman container
+- name: remove containers
   docker_container:
-    name: "{{ _foreman_host }}"
+    name: "{{ item }}"
     state: absent
+  loop:
+    - "{{ _foreman_host }}"
+    - "{{ _foreman_host }}dynflow"
+    - "{{ _postgres_host }}"
