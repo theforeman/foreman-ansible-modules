@@ -8,7 +8,12 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `content_view_version_cleanup_keep`: How many versions to keep uncleaned (default: 5).
+### Required
+
+- `content_view_version_cleanup_keep`: How many unused versions to keep.
+
+### Optional
+
 - `content_view_version_cleanup_search`: Limit the cleaned content views using a search string (example: `name ~ SOE`).
 
 Example Playbook
