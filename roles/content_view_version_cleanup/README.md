@@ -3,11 +3,6 @@ theforeman.foreman.content_view_version_cleanup
 
 Clean up unused Content View Versions.
 
-Requirements
-------------
-
-- `jmespath` Python library
-
 Role Variables
 --------------
 
