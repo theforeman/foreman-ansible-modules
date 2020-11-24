@@ -8,7 +8,19 @@ Please note that `cvmanager` configuration refers to Content Views by their labe
 
 ## Cleanup of old Content Views
 
-[TBD](https://github.com/theforeman/foreman-ansible-modules/pull/958)
+To ease cleanup of old Content Views, we ship the `content_view_version_cleanup` role which will identify unused Content View Versions and remove them, much like `cvmanager` did:
+
+```yaml
+- hosts: localhost
+  roles:
+    - role: theforeman.foreman.content_view_version_cleanup
+      vars:
+        server_url: https://foreman.example.com
+        username: "admin"
+        password: "changeme"
+        organization: "Default Organization"
+        content_view_version_cleanup_keep: 10
+```
 
 ## Automated Updates
 

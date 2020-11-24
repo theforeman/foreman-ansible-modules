@@ -1,0 +1,30 @@
+---
+- name: "find all content views"
+  theforeman.foreman.resource_info:
+    server_url: "{{ server_url | default(omit) }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    resource: content_views
+    search: "{{ content_view_version_cleanup_search | default(omit) }}"
+  register: all_cvs
+
+- name: "delete unused composite content view versions"
+  include_tasks: delete_cv_versions.yml
+  vars:
+    cv_name: "{{ ccv.name }}"
+    cv_versions: "{{ (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | list)[:-content_view_version_cleanup_keep] }}"
+  loop: "{{ all_cvs.resources | selectattr('composite') | list }}"
+  loop_control:
+    label: "{{ ccv.label }}"
+    loop_var: "ccv"
+  when: (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | list)[:-content_view_version_cleanup_keep]
+
+- name: "find and delete unused content view versions"
+  include_tasks: find_and_delete_unused_cv_versions.yml
+  loop: "{{ all_cvs.resources | rejectattr('composite') | list }}"
+  loop_control:
+    label: "{{ cv.label }}"
+    loop_var: "cv"
+  when: (cv.versions | rejectattr('environment_ids') | map(attribute='version') | list)[:-content_view_version_cleanup_keep]
