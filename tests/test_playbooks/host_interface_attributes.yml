@@ -168,6 +168,74 @@
             mac: "EE:FF:00:00:00:02"
         expected_change: false
 
+    - name: update host, make interfaces bond
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - identifier: eth0
+            mac: aa:bb:cc:dd:ee:ff
+            type: interface
+            managed: true
+            primary: false
+            provision: false
+          - identifier: eth1
+            mac: aa:bb:cc:dd:ee:ee
+            type: interface
+            managed: true
+            primary: false
+            provision: false
+          - identifier: bond0
+            mac: aa:bb:cc:dd:ee:ff
+            type: bond
+            managed: true
+            primary: true
+            provision: true
+            mode: 802.3ad
+            attached_devices:
+              - eth0
+              - eth1
+            bond_options: "miimon=100 lacp_rate=1"
+            ip: "192.0.2.100"
+        expected_change: true
+
+    - name: update host, make interfaces bond again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_interfaces_attributes:
+          - identifier: eth0
+            mac: aa:bb:cc:dd:ee:ff
+            type: interface
+            managed: true
+            primary: false
+            provision: false
+          - identifier: eth1
+            mac: aa:bb:cc:dd:ee:ee
+            type: interface
+            managed: true
+            primary: false
+            provision: false
+          - identifier: bond0
+            mac: aa:bb:cc:dd:ee:ff
+            type: bond
+            managed: true
+            primary: true
+            provision: true
+            mode: 802.3ad
+            attached_devices:
+              - eth0
+              - eth1
+            bond_options: "miimon=100 lacp_rate=1"
+            ip: "192.0.2.100"
+        expected_change: false
+
     - name: delete host
       include_tasks: tasks/host.yml
       vars:
