@@ -119,6 +119,7 @@ options:
   interfaces_attributes:
     description:
       - Additional interfaces specific attributes.
+    version_added: 1.5.0
     required: false
     type: list
     elements: dict
@@ -126,6 +127,8 @@ options:
       mac:
         description:
           - MAC address of interface. Required for managed interfaces on bare metal.
+          - Please include leading zeros and separate nibbles by colons, otherwise the execution will not be idempotent.
+          - Example EE:BB:01:02:03:04
           - You need to set one of I(identifier), I(name) or I(mac) to be able to update existing interfaces and make execution idempotent.
         type: str
       ip:
@@ -152,15 +155,16 @@ options:
         type: str
       subnet:
         description:
-          - Foreman subnet of IPv4 interface
+          - IPv4 Subnet name
         type: str
       subnet6:
         description:
-          - Foreman subnet of IPv6 interface
+          - IPv6 Subnet name
         type: str
       domain:
         description:
-          - Foreman domain of interface. Required for primary interfaces on managed hosts.
+          - Domain name
+          - Required for primary interfaces on managed hosts.
         type: str
       identifier:
         description:
@@ -183,15 +187,18 @@ options:
         type: bool
       username:
         description:
+          - Username for BMC authentication.
           - Only for BMC interfaces.
         type: str
       password:
         description:
+          - Password for BMC authentication.
           - Only for BMC interfaces.
         type: str
       provider:
         description:
-          - Interface provider, e.g. IPMI. Only for BMC interfaces.
+          - Interface provider, e.g. IPMI.
+          - Only for BMC interfaces.
         type: str
         choices:
           - 'IPMI'
@@ -202,7 +209,8 @@ options:
         type: bool
       tag:
         description:
-          - VLAN tag, this attribute has precedence over the subnet VLAN ID. Only for virtual interfaces.
+          - VLAN tag, this attribute has precedence over the subnet VLAN ID.
+          - Only for virtual interfaces.
         type: str
       mtu:
         description:
@@ -210,11 +218,13 @@ options:
         type: int
       attached_to:
         description:
-          - Identifier of the interface to which this interface belongs, e.g. eth1. Only for virtual interfaces.
+          - Identifier of the interface to which this interface belongs, e.g. eth1.
+          - Only for virtual interfaces.
         type: str
       mode:
         description:
-          - Bond mode of the interface, e.g. balance-rr. Only for bond interfaces.
+          - Bond mode of the interface.
+          - Only for bond interfaces.
         type: str
         choices:
           - 'balance-rr'
@@ -227,12 +237,14 @@ options:
       attached_devices:
         description:
           - Identifiers of attached interfaces, e.g. ['eth1', 'eth2'].
-          - For bond interfaces those are the slaves. Only for bond and bridges interfaces.
+          - For bond interfaces those are the slaves.
+          - Only for bond and bridges interfaces.
         type: list
         elements: str
       bond_options:
         description:
-          - Space separated options, e.g. miimon=100. Only for bond interfaces.
+          - Space separated options, e.g. miimon=100.
+          - Only for bond interfaces.
         type: str
       compute_attributes:
         description:
