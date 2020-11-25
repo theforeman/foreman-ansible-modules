@@ -143,6 +143,7 @@ options:
     description:
       - External IPAM group for this subnet.
       - Only relevant if I(ipam=External IPAM).
+    version_added: 1.5.0
     required: false
     type: str
   vlanid:
