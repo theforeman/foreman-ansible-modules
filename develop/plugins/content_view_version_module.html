@@ -486,6 +486,29 @@
     <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
     <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>
     <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">absent</span>
+
+<span class="c1"># Obtain information about a Content View and its versions</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">find all CVs</span>
+  <span class="nt">theforeman.foreman.resource_info</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">content_views</span>
+    <span class="nt">search</span><span class="p">:</span> <span class="s">&#39;name=&quot;Example</span><span class="nv"> </span><span class="s">Content&quot;&#39;</span>
+  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example_content</span>
+
+<span class="c1"># Obtain more details about all versions of a specific Content View</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;find</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">view</span><span class="nv"> </span><span class="s">versions</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="cp">{{</span> <span class="nv">cv_id</span> <span class="cp">}}</span><span class="s">&quot;</span>
+  <span class="nt">theforeman.foreman.resource_info</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+    <span class="nt">server_url</span><span class="p">:</span> <span class="s">&quot;https://foreman.example.com&quot;</span>
+    <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+    <span class="nt">resource</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">content_view_versions</span>
+    <span class="nt">params</span><span class="p">:</span>
+      <span class="nt">content_view_id</span><span class="p">:</span> <span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">example_content.resources</span><span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="nv">.id</span> <span class="cp">}}</span><span class="s">&quot;</span>
+  <span class="nt">register</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">version_information</span>
 </pre></div>
 </div>
 </div>
