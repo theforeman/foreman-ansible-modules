@@ -144,16 +144,29 @@ DOCUMENTATION = '''
         description: Toggle, if true the inventory will fetch content view details that the host is tied to.
         type: boolean
         default: True
+      hostnames:
+        description:
+          - A list of templates in order of precedence to compose inventory_hostname.
+          - If the template results in an empty string or None value it is ignored.
+        type: list
+        default: ['name']
 '''
 
 EXAMPLES = '''
 # my.foreman.yml
 plugin: theforeman.foreman.foreman
-url: http://localhost:2222
-user: ansible-tester
-password: secure
-validate_certs: False
+url: https://foreman.example.com
+user: ansibleinventory
+password: changeme
 host_filters: 'organization="Web Engineering"'
+
+# shortname.foreman.yml
+plugin: theforeman.foreman.foreman
+url: https://foreman.example.com
+user: ansibleinventory
+password: changeme
+hostnames:
+  - name.split('.')[0]
 '''
 import json
 from distutils.version import LooseVersion
@@ -385,6 +398,29 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         else:
             self._populate_host_api()
 
+    def _get_hostname(self, properties, hostnames, strict=False):
+        hostname = None
+        errors = []
+
+        for preference in hostnames:
+            try:
+                hostname = self._compose(preference, properties)
+            except Exception as e:  # pylint: disable=broad-except
+                if strict:
+                    raise AnsibleError("Could not compose %s as hostnames - %s" % (preference, to_native(e)))
+                else:
+                    errors.append(
+                        (preference, str(e))
+                    )
+            if hostname:
+                return to_text(hostname)
+
+        raise AnsibleError(
+            'Could not template any hostname for host, errors for each preference: %s' % (
+                ', '.join(['%s: %s' % (pref, err) for pref, err in errors])
+            )
+        )
+
     def _populate_report_api(self):
         self.groups = dict()
         self.hosts = dict()
@@ -395,11 +431,22 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             self._populate_host_api()
             return
         self.group_prefix = self.get_option('group_prefix')
+
+        hostnames = self.get_option('hostnames')
+        strict = self.get_option('strict')
+
         host_data = json.loads(inventory_report_response)
         for host in host_data:
-            if not(host) or (host["name"] in self._cache.keys()):
+            if not(host):
                 continue
-            host_name = self.inventory.add_host(host['name'])
+
+            composed_host_name = self._get_hostname(host, hostnames, strict=strict)
+
+            if (composed_host_name in self._cache.keys()):
+                continue
+
+            host_name = self.inventory.add_host(composed_host_name)
+
             group_name = host.get('hostgroup_title', host.get('hostgroup_name'))
             if group_name:
                 group_name = to_safe_group_name('%s%s' % (self.get_option('group_prefix'), group_name.lower().replace(" ", "")))
@@ -492,87 +539,93 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                         except ValueError as e:
                             self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
                                                  (k, to_native(v), host, to_native(e)))
-            strict = self.get_option('strict')
             hostvars = self.inventory.get_host(host_name).get_vars()
             self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
             self._add_host_to_composed_groups(self.get_option('groups'), hostvars, host_name, strict)
             self._add_host_to_keyed_groups(self.get_option('keyed_groups'), hostvars, host_name, strict)
 
     def _populate_host_api(self):
+        hostnames = self.get_option('hostnames')
+        strict = self.get_option('strict')
         for host in self._get_hosts():
-            if host.get('name'):
-                host_name = self.inventory.add_host(host['name'])
+            if not(host):
+                continue
 
-                # create directly mapped groups
-                group_name = host.get('hostgroup_title', host.get('hostgroup_name'))
-                if group_name:
-                    parent_name = None
-                    group_label_parts = []
-                    for part in group_name.split('/'):
-                        group_label_parts.append(part.lower().replace(" ", ""))
-                        gname = to_safe_group_name('%s%s' % (self.get_option('group_prefix'), '/'.join(group_label_parts)))
-                        result_gname = self.inventory.add_group(gname)
-                        if parent_name:
-                            self.inventory.add_child(parent_name, result_gname)
-                        parent_name = result_gname
-                    self.inventory.add_child(result_gname, host_name)
+            composed_host_name = self._get_hostname(host, hostnames, strict=strict)
+
+            if (composed_host_name in self._cache.keys()):
+                continue
+
+            host_name = self.inventory.add_host(composed_host_name)
+
+            # create directly mapped groups
+            group_name = host.get('hostgroup_title', host.get('hostgroup_name'))
+            if group_name:
+                parent_name = None
+                group_label_parts = []
+                for part in group_name.split('/'):
+                    group_label_parts.append(part.lower().replace(" ", ""))
+                    gname = to_safe_group_name('%s%s' % (self.get_option('group_prefix'), '/'.join(group_label_parts)))
+                    result_gname = self.inventory.add_group(gname)
+                    if parent_name:
+                        self.inventory.add_child(parent_name, result_gname)
+                    parent_name = result_gname
+                self.inventory.add_child(result_gname, host_name)
+
+            if self.get_option('legacy_hostvars'):
+                hostvars = self._get_hostvars(host)
+                self.inventory.set_variable(host_name, 'foreman', hostvars)
+            else:
+                omitted_vars = ('name', 'hostgroup_title', 'hostgroup_name')
+                hostvars = self._get_hostvars(host, self.get_option('vars_prefix'), omitted_vars)
+
+                for k, v in hostvars.items():
+                    try:
+                        self.inventory.set_variable(host_name, k, v)
+                    except ValueError as e:
+                        self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
+
+            # set host vars from params
+            if self.get_option('want_params'):
+                params = self._get_all_params_by_id(host['id'])
+                filtered_params = {}
+                for p in params:
+                    if 'name' in p and 'value' in p:
+                        filtered_params[p['name']] = p['value']
 
                 if self.get_option('legacy_hostvars'):
-                    hostvars = self._get_hostvars(host)
-                    self.inventory.set_variable(host_name, 'foreman', hostvars)
+                    self.inventory.set_variable(host_name, 'foreman_params', filtered_params)
                 else:
-                    omitted_vars = ('name', 'hostgroup_title', 'hostgroup_name')
-                    hostvars = self._get_hostvars(host, self.get_option('vars_prefix'), omitted_vars)
-
-                    for k, v in hostvars.items():
+                    for k, v in filtered_params.items():
                         try:
                             self.inventory.set_variable(host_name, k, v)
                         except ValueError as e:
-                            self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (host, k, to_text(e)))
+                            self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
+                                                 (k, to_native(v), host, to_native(e)))
 
-                # set host vars from params
-                if self.get_option('want_params'):
-                    params = self._get_all_params_by_id(host['id'])
-                    filtered_params = {}
-                    for p in params:
-                        if 'name' in p and 'value' in p:
-                            filtered_params[p['name']] = p['value']
+            # set host vars from facts
+            if self.get_option('want_facts'):
+                self.inventory.set_variable(host_name, 'foreman_facts', self._get_facts(host))
 
-                    if self.get_option('legacy_hostvars'):
-                        self.inventory.set_variable(host_name, 'foreman_params', filtered_params)
-                    else:
-                        for k, v in filtered_params.items():
-                            try:
-                                self.inventory.set_variable(host_name, k, v)
-                            except ValueError as e:
-                                self.display.warning("Could not set hostvar %s to '%s' for the '%s' host, skipping:  %s" %
-                                                     (k, to_native(v), host, to_native(e)))
+            # create group for host collections
+            if self.get_option('want_hostcollections'):
+                host_data = self._get_host_data_by_id(host['id'])
+                hostcollections = host_data.get('host_collections')
+                if hostcollections:
+                    # Create Ansible groups for host collections
+                    for hostcollection in hostcollections:
+                        try:
+                            hostcollection_group = to_safe_group_name('%shostcollection_%s' % (self.get_option('group_prefix'),
+                                                                      hostcollection['name'].lower().replace(" ", "")))
+                            hostcollection_group = self.inventory.add_group(hostcollection_group)
+                            self.inventory.add_child(hostcollection_group, host_name)
+                        except ValueError as e:
+                            self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
 
-                # set host vars from facts
-                if self.get_option('want_facts'):
-                    self.inventory.set_variable(host_name, 'foreman_facts', self._get_facts(host))
-
-                # create group for host collections
-                if self.get_option('want_hostcollections'):
-                    host_data = self._get_host_data_by_id(host['id'])
-                    hostcollections = host_data.get('host_collections')
-                    if hostcollections:
-                        # Create Ansible groups for host collections
-                        for hostcollection in hostcollections:
-                            try:
-                                hostcollection_group = to_safe_group_name('%shostcollection_%s' % (self.get_option('group_prefix'),
-                                                                          hostcollection['name'].lower().replace(" ", "")))
-                                hostcollection_group = self.inventory.add_group(hostcollection_group)
-                                self.inventory.add_child(hostcollection_group, host_name)
-                            except ValueError as e:
-                                self.display.warning("Could not create groups for host collections for %s, skipping: %s" % (host_name, to_text(e)))
-
-                strict = self.get_option('strict')
-
-                hostvars = self.inventory.get_host(host_name).get_vars()
-                self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
-                self._add_host_to_composed_groups(self.get_option('groups'), hostvars, host_name, strict)
-                self._add_host_to_keyed_groups(self.get_option('keyed_groups'), hostvars, host_name, strict)
+            hostvars = self.inventory.get_host(host_name).get_vars()
+            self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
+            self._add_host_to_composed_groups(self.get_option('groups'), hostvars, host_name, strict)
+            self._add_host_to_keyed_groups(self.get_option('keyed_groups'), hostvars, host_name, strict)
 
     def parse(self, inventory, loader, path, cache=True):
 
