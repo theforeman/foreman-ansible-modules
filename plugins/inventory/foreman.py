@@ -397,7 +397,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.group_prefix = self.get_option('group_prefix')
         host_data = json.loads(inventory_report_response)
         for host in host_data:
-            if not(host) or (host["name"] in self.cache.keys()):
+            if not(host) or (host["name"] in self._cache.keys()):
                 continue
             host_name = self.inventory.add_host(host['name'])
             group_name = host.get('hostgroup_title', host.get('hostgroup_name'))
