@@ -1,0 +1,64 @@
+---
+# defaults file for or_usermanagement
+# answers for tasks
+create_users: true
+create_usergroups: true
+enable_ldap_auth: false
+map_external_usergroups: false
+
+# users
+# to create multiple users copy
+# from  - username: to organizations: - "ORG" and paste it below.
+# The indentation must be correct
+or_users:
+  - username: "Gandalf"
+    firstname: "White"
+    lastname: "Gray"
+    email: "gandalf@haven.hell"
+    description: "tall old man"
+    admin_rights: false
+    user_password: "magic_stick"
+    default_location: "{{ or_location }}"
+    default_organization: "{{ or_organization }}"
+    auth_source: Internal    # or "{{ ldap_name }}"
+    timezone: "Berlin"
+    user_locale: "en"
+    roles:
+      - "Viewer"
+    locations:
+      - "{{ or_location }}"
+    organizations:
+      - "{{ or_organization }}"
+
+# Usergroups
+# For multiple usergroups it is to proceed as before with the previous example
+or_usergroups:
+  - usergroupname: "Hobbits"
+    admin_rights: false
+    roles:
+      - "Viewer"
+    users:
+      - "{{ or_users.0.username }}"
+    usergroups: ""     # nested group
+
+#  LDAP data
+# ldap_name: "IPA"
+# #port: default port 389 is set
+# ldap_host: "XXXX"
+# onthefly_register: true
+# ldap_account: uid=XXX,cn=XXX,cn=XXX,dc=XXX,dc=de
+# ldap_password: XXXX
+# ldap_base_dn: cn=XXX,dc=XXX,dc=de
+# ldap_groups_base: dc=XXX,dc=de
+# ldapserver_type: posix
+# attr_login: uid
+# attr_firstname: givenName
+# attr_lastname: sn
+# attr_mail: mail
+# attr_photo: ""
+
+# link external usergroup with or_usergroup
+# linked_groups:
+#   external_usergroupname: "users"
+#   or_usergroup: "{{ or_usergroups.0.usergroupname }}"
+#   auth_source_ldap: "{{ ldap_name }}"

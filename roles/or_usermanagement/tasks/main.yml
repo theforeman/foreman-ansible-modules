@@ -1,0 +1,80 @@
+---
+# tasks file for or_usermanagement
+- name: set auth params
+  set_fact:
+    auth_params: &auth_params
+      server_url: "https://{{ or_fqdn }}"
+      username: "{{ or_admin_user }}"
+      password: "{{ or_admin_password }}"
+      validate_certs: false
+
+# task for user creation
+- name: Create user
+  theforeman.foreman.user:
+    <<: *auth_params
+    name: "{{ item.username }}"
+    firstname: "{{ item.firstname | default(omit) }}"
+    lastname: "{{ item.lastname | default(omit) }}"
+    mail: " {{ item.email | default(omit) }}"
+    description: "{{ item.description | default(omit) }}"
+    admin: "{{ item.admin_rights | default(omit) }}"
+    user_password: "{{ item.user_password }}"
+    default_location: "{{ item.default_location | default(omit) }}"
+    default_organization: "{{ item.default_organization | default(omit) }}"
+    auth_source: "{{ item.auth_source | default(omit) }}"
+    timezone: "{{ item.timezone | default(omit) }}"
+    locale: "{{ item.user_locale | default(omit) }}"
+    roles: "{{ item.roles | default(omit) }}"
+    locations: "{{ item.locations | default(omit) }}"
+    organizations: "{{ item.organizations | default(omit) }}"
+    state: present
+  loop: "{{ or_users }}"
+  when: create_users |bool
+
+# task for usergroup creation
+- name: Create usergroup
+  theforeman.foreman.usergroup:
+    <<: *auth_params
+    name: "{{ item.usergroupname }}"
+    admin: "{{ item.admin_rights | default(omit) }}"
+    roles: "{{ item.roles | default(omit) }}"
+    users: "{{ item.users | default(omit) }}"
+    state: present
+  loop: "{{ or_usergroups }}"
+  when: create_usergroups |bool
+
+# tasks for ldap
+- name: Connect with LDAP Authentication
+  theforeman.foreman.auth_source_ldap:
+    <<: *auth_params
+    name: "{{ ldap_name }}"
+    port: "{{ port | default(omit) }}"
+    host: "{{ ldap_host }}"
+    # on the fly value must be boolean
+    onthefly_register: "{{ onthefly_register | default(omit) }}"
+    account: "{{ ldap_account | default(omit) }}"
+    account_password: "{{ ldap_password | default(omit) }}"
+    base_dn: "{{ ldap_base_dn | default(omit) }} "
+    groups_base: "{{ ldap_groups_base | default(omit) }}"
+    server_type: "{{ ldap_server_type | default(omit) }}"
+    # attr login are hardcoded
+    attr_login: "{{ attr_login | default(omit) }}"
+    attr_firstname: "{{ attr_firstname | default(omit) }}"
+    attr_lastname: "{{ attr_lastname | default(omit) }}"
+    attr_mail: "{{ attr_mail | default(omit) }}"
+    attr_photo: "{{ attr_photo | default(omit) }}"
+    state: present
+  when: enable_ldap_auth |bool
+
+# tasks for ext_usergroup
+- name: Create external user group
+  theforeman.foreman.external_usergroup:
+    <<: *auth_params
+    # name of the external userg.
+    name: "{{ item.external_usergroupname }}"
+    auth_source_ldap: "{{ item.auth_source_ldap }}"
+    # name of the group listed in OR
+    usergroup: "{{ item.or_usergroup }}"
+    state: present
+  when: map_external_usergroups
+  loop: "{{ linked_groups }}"
