@@ -1,0 +1,17 @@
+---
+- name: Import Puppet Classes
+  puppetclasses_import:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    smart_proxy: "{{ puppetclasses_smart_proxy }}"
+    environment: "{{ puppetclasses_environment | default(omit) }}"
+    except: "{{ puppetclasses_except | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Importing Puppet Classes failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...

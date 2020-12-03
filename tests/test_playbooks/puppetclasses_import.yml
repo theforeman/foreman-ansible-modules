@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: present
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/puppetclasses_import.yml
+      vars:
+        expected_change: true
+        puppetclasses_smart_proxy: "{{ foreman_proxy }}"
+    - include_tasks: tasks/puppetclasses_import.yml
+      vars:
+        puppetclasses_smart_proxy: "{{ foreman_proxy }}"
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
+...
