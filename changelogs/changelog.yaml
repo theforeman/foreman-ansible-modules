@@ -290,3 +290,41 @@ releases:
       name: smart_proxy
       namespace: ''
     release_date: '2020-10-21'
+  1.5.0:
+    changes:
+      bugfixes:
+      - content_upload - Fix upload of files bigger than 2MB in Pulp3-based setups
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1043)
+      - job_invocation - properly submit ``ssh``, ``recurrence``, ``scheduling`` and
+        ``concurrency_control`` to the server
+      - repository - don't emit a false warning about ``organization_id`` not being
+        supported by the server (https://github.com/theforeman/foreman-ansible-modules/issues/1055)
+      - repository_set, repository - clarify documentation which module should be
+        used for Red Hat Repositories (https://github.com/theforeman/foreman-ansible-modules/issues/1059)
+      minor_changes:
+      - content_upload - use ``to_native`` to decode RPM headers if needed (RPM 4.15+
+        returns strings)
+      - content_view_version - provide examples how to obtain detailed information
+        about content view versions (https://bugzilla.redhat.com/show_bug.cgi?id=1868145)
+      - content_view_version_cleanup - new role for cleaning up unused content view
+        versions (https://github.com/theforeman/foreman-ansible-modules/issues/497)
+      - host - allow management of interfaces (https://github.com/theforeman/foreman-ansible-modules/issues/757)
+      - inventory plugin - add support for the Report API present in Foreman 1.24
+        and later
+      - inventory plugin - allow to compose the ``inventory_hostname`` (https://github.com/theforeman/foreman-ansible-modules/issues/1070)
+      - manifest - new role for easier handling of subscription manifest workflows
+      - subnet - add new ``externalipam_group`` parameter
+      - update vendored ``apypie`` to 0.3.2
+    fragments:
+    - 1043-chunked_content_upload.yml
+    - 1059-repository_set-docs.yml
+    - 1062-warnings.yml
+    - 1070-compose_inventory_hostname.yml
+    - 757-host_interfaces.yml
+    - bz1868145-cv_version_examples.yml
+    - content_upload-decode-old-rpm.yml
+    - inventory_plugin_report_api.yml
+    - subnet-externalipam_group.yml
+    - theforeman.foreman.content_view_version_cleanup_role.yml
+    - theforeman.foreman.manifest_role.yml
+    release_date: '2020-12-03'

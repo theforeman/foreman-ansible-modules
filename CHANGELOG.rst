@@ -6,6 +6,30 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v1.5.0
+======
+
+Minor Changes
+-------------
+
+- content_upload - use ``to_native`` to decode RPM headers if needed (RPM 4.15+ returns strings)
+- content_view_version - provide examples how to obtain detailed information about content view versions (https://bugzilla.redhat.com/show_bug.cgi?id=1868145)
+- content_view_version_cleanup - new role for cleaning up unused content view versions (https://github.com/theforeman/foreman-ansible-modules/issues/497)
+- host - allow management of interfaces (https://github.com/theforeman/foreman-ansible-modules/issues/757)
+- inventory plugin - add support for the Report API present in Foreman 1.24 and later
+- inventory plugin - allow to compose the ``inventory_hostname`` (https://github.com/theforeman/foreman-ansible-modules/issues/1070)
+- manifest - new role for easier handling of subscription manifest workflows
+- subnet - add new ``externalipam_group`` parameter
+- update vendored ``apypie`` to 0.3.2
+
+Bugfixes
+--------
+
+- content_upload - Fix upload of files bigger than 2MB in Pulp3-based setups (https://github.com/theforeman/foreman-ansible-modules/issues/1043)
+- job_invocation - properly submit ``ssh``, ``recurrence``, ``scheduling`` and ``concurrency_control`` to the server
+- repository - don't emit a false warning about ``organization_id`` not being supported by the server (https://github.com/theforeman/foreman-ansible-modules/issues/1055)
+- repository_set, repository - clarify documentation which module should be used for Red Hat Repositories (https://github.com/theforeman/foreman-ansible-modules/issues/1059)
+
 v1.4.0
 ======
 
