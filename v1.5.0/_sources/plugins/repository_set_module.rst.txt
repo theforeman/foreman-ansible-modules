@@ -1,0 +1,499 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.repository_set_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.repository_set -- Enable/disable Red Hat Repositories available through subscriptions
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 1.5.0).
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.repository_set`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Enable/disable Red Hat Repositories that are available through subscriptions
+
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-all_repositories"></div>
+                    <b>all_repositories</b>
+                    <a class="ansibleOptionLink" href="#parameter-all_repositories" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Affect all available repositories in the repository set instead of listing them in <em>repositories</em>.</div>
+                                            <div>Required when <em>repositories</em> is unset or an empty list.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-label"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-label" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Label of the repository set, can be used in place of <em>name</em> &amp; <em>product</em></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Name of the repository set</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+                    <b>organization</b>
+                    <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Organization that the entity is in</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password of the user accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-product"></div>
+                    <b>product</b>
+                    <a class="ansibleOptionLink" href="#parameter-product" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Name of the parent product</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-repositories"></div>
+                    <b>repositories</b>
+                    <a class="ansibleOptionLink" href="#parameter-repositories" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=dictionary</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Release version and base architecture of the repositories to enable.</div>
+                                            <div>Some reposotory sets require only <em>basearch</em> or only <em>releasever</em> to be set.</div>
+                                            <div>See the examples how you can obtain this information using <span class='module'>theforeman.foreman.resource_info</span>.</div>
+                                            <div>Required when <em>all_repositories</em> is unset or <code>false</code>.</div>
+                                                        </td>
+            </tr>
+                                        <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-repositories/basearch"></div>
+                    <b>basearch</b>
+                    <a class="ansibleOptionLink" href="#parameter-repositories/basearch" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Basearch of the repository to enable.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-repositories/releasever"></div>
+                    <b>releasever</b>
+                    <a class="ansibleOptionLink" href="#parameter-repositories/releasever" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Releasever of the repository to enable.</div>
+                                                        </td>
+            </tr>
+                    
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                    <b>server_url</b>
+                    <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>enabled</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>disabled</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether the repositories are enabled or not</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                    <b>username</b>
+                    <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                    <b>validate_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Enable RHEL 7 RPMs repositories"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+        organization: "Default Organization"
+        product: "Red Hat Enterprise Linux Server"
+        repositories:
+        - releasever: "7.0"
+          basearch: "x86_64"
+        - releasever: "7.1"
+          basearch: "x86_64"
+        - releasever: "7.2"
+          basearch: "x86_64"
+        - releasever: "7.3"
+          basearch: "x86_64"
+        state: enabled
+
+    - name: "Enable RHEL 7 RPMs repositories with label"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        label: rhel-7-server-rpms
+        repositories:
+        - releasever: "7.0"
+          basearch: "x86_64"
+        - releasever: "7.1"
+          basearch: "x86_64"
+        - releasever: "7.2"
+          basearch: "x86_64"
+        - releasever: "7.3"
+          basearch: "x86_64"
+        state: enabled
+
+    - name: "Disable RHEL 7 Extras RPMs repository"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
+        organization: "Default Organization"
+        product: Red Hat Enterprise Linux Server
+        state: disabled
+        repositories:
+          - basearch: x86_64
+
+    - name: "Enable RHEL 8 BaseOS RPMs repository with label"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        label: rhel-8-for-x86_64-baseos-rpms
+        repositories:
+          - releasever: "8"
+
+    - name: "Enable Red Hat Virtualization Manager RPMs repository with label"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        label: "rhel-7-server-rhv-4.2-manager-rpms"
+        repositories:
+          - basearch: x86_64
+        state: enabled
+
+    - name: "Enable Red Hat Virtualization Manager RPMs repository without specifying basearch"
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        label: "rhel-7-server-rhv-4.2-manager-rpms"
+        all_repositories: true
+        state: enabled
+
+    - name: "Search for possible repository sets of a product"
+      theforeman.foreman.resource_info:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        resource: repository_sets
+        search: product_name="Red Hat Virtualization Manager"
+      register: data
+    - name: "Output found repository sets, see the contentUrl section for possible repository substitutions"
+      debug:
+        var: data
+
+    - name: "Search for possible repository sets by label"
+      theforeman.foreman.resource_info:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        resource: repository_sets
+        search: label=rhel-7-server-rhv-4.2-manager-rpms
+      register: data
+    - name: "Output found repository sets, see the contentUrl section for possible repository substitutions"
+      debug:
+        var: data
+
+    - name: Enable set with and without all_repositories at the same time
+      theforeman.foreman.repository_set:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        organization: "Default Organization"
+        label: "{{ item.label }}"
+        repositories: "{{ item.repositories | default(omit) }}"
+        all_repositories: "{{ item.repositories is not defined }}"
+        state: enabled
+      loop:
+        - label: rhel-7-server-rpms
+          repositories:
+            - releasever: "7Server"
+              basearch: "x86_64"
+        - label: rhel-7-server-rhv-4.2-manager-rpms
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-entity"></div>
+                    <b>entity</b>
+                    <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>Final state of the affected entities grouped by their type.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                        <tr>
+                                    <td class="elbow-placeholder">&nbsp;</td>
+                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-entity/repository_sets"></div>
+                    <b>repository_sets</b>
+                    <a class="ansibleOptionLink" href="#return-entity/repository_sets" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                       / <span style="color: purple">elements=dictionary</span>                    </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>List of repository sets.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                    
+                        </table>
+    <br/><br/>
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Andrew Kofink (@akofink)
+
+
+
+.. Parsing errors
+

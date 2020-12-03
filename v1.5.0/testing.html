@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Testing Foreman Ansible Modules &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/ansible-basic-sphinx-ext.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Releasing the collection" href="releasing.html" />
+    <link rel="prev" title="foreman_helper module" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing Foreman Ansible Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-tests">Integration tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ansible-sanity">Ansible Sanity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preparation">Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Integration tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Ansible Sanity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-tests">Writing tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#recording-storing-apidoc-json-for-tests">Recording/storing apidoc.json for tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Testing Foreman Ansible Modules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/testing.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testing-foreman-ansible-modules">
+<h1>Testing Foreman Ansible Modules<a class="headerlink" href="#testing-foreman-ansible-modules" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Foreman Ansible Modules are tested in different ways:</p>
+<ol class="simple">
+<li><p>Unit tests</p></li>
+<li><p>Integration tests</p></li>
+<li><p>Ansible Sanity</p></li>
+</ol>
+<div class="section" id="unit-tests">
+<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h3>
+<p>We currently only have unit tests for the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> to <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> translation helpers (see <code class="docutils literal notranslate"><span class="pre">tests/test_foreman_spec_helper.py</span></code>).
+All other code is tested by the integration tests.</p>
+</div>
+<div class="section" id="integration-tests">
+<h3>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this headline">¶</a></h3>
+<p>Every module is tested using a playbook (<code class="docutils literal notranslate"><span class="pre">see</span> <span class="pre">tests/test_playbooks</span></code>) against all supported Ansible versions plus the current <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible.
+Additionally, the modules which support check mode are tested with the latest Ansible release in check mode.</p>
+</div>
+<div class="section" id="ansible-sanity">
+<h3>Ansible Sanity<a class="headerlink" href="#ansible-sanity" title="Permalink to this headline">¶</a></h3>
+<p>Ansible provides <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html">Sanity Tests</a> that ensure the modules are using the current best practices in terms of development and documentantion.
+We run these tests with the <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible to ensure conformability with the latest guidelines.</p>
+</div>
+</div>
+<div class="section" id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="preparation">
+<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline">¶</a></h3>
+<p>All tests require you to have run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-setup</span></code>. This will install all test dependencies and prepare a configuration file (<code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code>).</p>
+<p>The configuration file will need updates if you want to run tests against a live Foreman instance (see below).</p>
+</div>
+<div class="section" id="id1">
+<h3>Unit tests<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>To run the unit tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make test-other
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Integration tests<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>To run all integration tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make <span class="nb">test</span>
+</pre></div>
+</div>
+<p>To run a specific test or a set of tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make test_global_parameter  <span class="c1"># single test</span>
+<span class="gp">$</span> make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;-k &#39;organzation or global_parameter&#39;&quot;</span>  <span class="c1"># select tests by expression (see `pytest -h`)</span>
+</pre></div>
+</div>
+<p>By default, tests are run with prerecorded server responses using <a class="reference external" href="https://vcrpy.readthedocs.io/">VCRpy</a>.
+When tests or modules are changed, those responses might not match anymore and you’ll have to re-record the interaction.</p>
+<p>To be able to re-record, you need a running instance of Foreman, probably with Katello (use <a class="reference external" href="https://github.com/theforeman/forklift">forklift</a> if unsure).
+You also need to update <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> with the URL and credentials of said instance.</p>
+<p>To re-record, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make record_global_parameter
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Ansible Sanity<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>To run the Ansible Sanity tests, execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> make sanity
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-tests">
+<h2>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
+<p>The tests in this repository run playbooks that can be found in <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks</span></code>.
+To be run, the name of the corresponding playbook must be listed in <code class="docutils literal notranslate"><span class="pre">tests/test_crud.py</span></code>.</p>
+<p>The playbooks should be self contained, target the features of a specific module and be able to run against an actual foreman instance.
+The structure would usually be something like setup -&gt; run tests -&gt; clean up.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/tasks</span></code>, preconfigured tasks for individual entities / actions can be found.
+They can be reused, to create common dependent resources, as well as to manipulate the entities in the actual test.
+If the boolean variable <code class="docutils literal notranslate"><span class="pre">expected_change</span></code> is set, such a task fails if the result does not meet this expectation.</p>
+<p>The ansible inventory contains two hosts:</p>
+<ul class="simple">
+<li><p>localhost: This host runs locally without modification it is meant to setup (and teardown) dependent resources, only when (re-)recording.
+It can also be useful to run ad hoc commands or small playbooks during development.</p></li>
+<li><p>tests: This host should run the actual tests. It is used to record the vcr-yaml-files, or to run isolated against those files.</p></li>
+</ul>
+<p>In order to run these tests, the API responses of a running Foreman or Katello server must be recorded.
+For this last step, <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> must be configured to point to a running Foreman or Katello server.
+Then, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">record_&lt;playbook</span> <span class="pre">name&gt;</span></code> must be called, and the resulting vcr files (<code class="docutils literal notranslate"><span class="pre">test_playbook/fixtures/&lt;playbook_name&gt;-*.yml</span></code>) must be checked into git.</p>
+<div class="section" id="recording-storing-apidoc-json-for-tests">
+<h3>Recording/storing apidoc.json for tests<a class="headerlink" href="#recording-storing-apidoc-json-for-tests" title="Permalink to this headline">¶</a></h3>
+<p>The tests depend on a valid <code class="docutils literal notranslate"><span class="pre">apidoc.json</span></code> being available during execution.
+The easiest way to do so is to provide a <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.json</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests/fixtures/apidoc</span></code> folder.
+Most modules can just use a symlink to either <code class="docutils literal notranslate"><span class="pre">foreman.json</span></code> or <code class="docutils literal notranslate"><span class="pre">katello.json</span></code>, depending on whether they need a plain Foreman or Foreman+Katello to function properly.
+If you need a setup with different plugins enabled, just get <code class="docutils literal notranslate"><span class="pre">https://foreman.example.com/apidoc/v2.json</span></code> from your install and place it in <code class="docutils literal notranslate"><span class="pre">tests/fixtures/apidoc</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="releasing.html" class="btn btn-neutral float-right" title="Releasing the collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api.html" class="btn btn-neutral float-left" title="foreman_helper module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, The Foreman Project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
