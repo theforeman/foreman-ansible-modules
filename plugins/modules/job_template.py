@@ -66,7 +66,6 @@ options:
   snippet:
     description:
       - Determines whether the template shall be a snippet
-    default: false
     type: bool
   template:
     description:
@@ -82,7 +81,6 @@ options:
       advanced:
         description:
           - Template Input is advanced
-        default: false
         type: bool
       description:
         description:
