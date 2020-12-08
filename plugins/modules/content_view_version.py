@@ -80,7 +80,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     content_view: "CV 1"
     organization: "Default Organization"
-    version: 2.0
+    version: "2.0"
     lifecycle_environments:
       - Test
       - Pre Prod
@@ -122,7 +122,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     content_view: "Web Servers"
     organization: "Default Organization"
-    version: 1.0
+    version: "1.0"
     state: absent
 
 # Obtain information about a Content View and its versions
@@ -162,6 +162,7 @@ entity:
 '''
 
 
+import re
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 
@@ -203,6 +204,13 @@ def main():
     )
 
     module.task_timeout = 60 * 60
+
+    if 'version' in module.foreman_params and not re.match(r'^\d+\.\d+$', module.foreman_params['version']):
+        try:
+            major_version = int(module.foreman_params['version'])
+            module.foreman_params['version'] = "{0}.0".format(major_version)
+        except ValueError:
+            module.fail_json("The 'version' needs to be in the format 'X.Y', not '{0}'".format(module.foreman_params['version']))
 
     with module.api_connection():
         scope = module.scope_for('organization')
