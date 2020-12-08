@@ -85,6 +85,7 @@ options:
   owner:
     description:
       - Owner (user) of the host.
+      - Users are looked up by their C(login).
       - Mutually exclusive with I(owner_group).
     type: str
     required: false
