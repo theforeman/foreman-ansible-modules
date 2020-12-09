@@ -28,6 +28,7 @@ Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher)
 
 * Some modules, e.g. `repository_sync` and `content_view_version`, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
   As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
+  Please make sure to set a high enough `async` value, as otherwise Ansible might abort the execution of the module while there is still a task running on the server, making status reporting fail.
 
 * According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. This applies to all modules, but especially those which require more secrets than the API credentials (`auth_source_ldap`, `compute_resource`, `host`, `hostgroup`, `http_proxy`, `image`, `repository`, `scc_account`, `user`). You can prevent this by using `no_log: yes` on the task.
   
