@@ -32,7 +32,10 @@ author:
   - "Manisha Singhal (@manisha15) ATIX AG"
 options:
   scc_product:
-    description: Full name of the product of suse customer center account
+    description:
+    - Full name of the product of suse customer center account.
+    - The I(friendly_name) alias is deprecated as it refers to an attribute that does not
+      uniquely identify a product and not used for product lookups since SCC Manager 1.8.6.
     required: true
     type: str
     aliases:
@@ -49,7 +52,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 - name: "Subscribe to suse customer center product"
   theforeman.foreman.scc_product:
-    friendly_name: "Product1"
+    scc_product: "Product1"
     scc_account: "Test"
     organization: "Test Organization"
 '''
@@ -58,6 +61,7 @@ RETURN = ''' # '''
 
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule
+from distutils.version import LooseVersion
 
 
 def main():
@@ -72,6 +76,22 @@ def main():
     module.task_timeout = 4 * 60
 
     with module.api_connection():
+        scc_version = '1.0.0'  # fallback
+        try:
+            statuses = module.foremanapi.resource('ping').call('statuses')
+            plugins = statuses['results']['foreman']['plugins']
+            for plugin in plugins:
+                if 'foreman_scc_manager' in plugin:
+                    scc_version = plugin.split(',')[1]
+        except Exception:
+            pass
+
+        if LooseVersion(scc_version.strip()) < LooseVersion('1.8.6'):
+            scc_search_by = 'friendly_name'
+        else:
+            scc_search_by = 'name'
+
+        module.foreman_spec['scc_product']['search_by'] = scc_search_by
         scc_product = module.lookup_entity('scc_product')
 
         if not scc_product.get('product_id'):
