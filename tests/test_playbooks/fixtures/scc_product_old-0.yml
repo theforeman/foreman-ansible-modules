@@ -78,22 +78,22 @@ interactions:
         \ The locking allows dealing with preventing multiple colliding tasks to be\
         \ run on the\\nsame resource. It also optionally provides Dynflow infrastructure\
         \ for using it for managing the tasks.\\n\",\"Foreman plugin: foreman_scc_manager,\
-        \ 1.8.6, ATIX AG, Foreman plugin to sync SUSE Customer Center products and\
+        \ 1.8.5, ATIX AG, Foreman plugin to sync SUSE Customer Center products and\
         \ repositories into Katello.\",\"Foreman plugin: katello, 4.0.0.pre.master,\
         \ N/A, Katello adds Content and Subscription Management to Foreman. For this\
         \ it relies on Candlepin and Pulp.\"],\"smart_proxies\":[{\"name\":\"centos7-katello-devel-stable.example.com\"\
-        ,\"status\":\"ok\",\"duration_ms\":\"84\",\"version\":\"2.4.0-develop\",\"\
+        ,\"status\":\"ok\",\"duration_ms\":\"168\",\"version\":\"2.4.0-develop\",\"\
         features\":{\"pulp\":\"2.1.0\",\"pulpcore\":\"2.1.0\",\"puppetca\":\"2.4.0\"\
         ,\"puppet\":\"2.4.0\",\"logs\":\"2.4.0\",\"registration\":\"2.4.0\"},\"failed_features\"\
         :{}}],\"compute_resources\":[],\"database\":{\"active\":true,\"duration_ms\"\
-        :\"0\"}},\"katello\":{\"version\":\"4.0.0-master\",\"timeUTC\":\"2020-12-23\
-        \ 13:21:29 UTC\",\"services\":{\"candlepin\":{\"status\":\"ok\",\"duration_ms\"\
-        :\"20\"},\"candlepin_auth\":{\"status\":\"ok\",\"duration_ms\":\"20\"},\"\
+        :\"1\"}},\"katello\":{\"version\":\"4.0.0-master\",\"timeUTC\":\"2020-12-29\
+        \ 12:16:34 UTC\",\"services\":{\"candlepin\":{\"status\":\"ok\",\"duration_ms\"\
+        :\"33\"},\"candlepin_auth\":{\"status\":\"ok\",\"duration_ms\":\"26\"},\"\
         foreman_tasks\":{\"status\":\"ok\",\"duration_ms\":\"4\"},\"katello_events\"\
         :{\"status\":\"ok\",\"message\":\"0 Processed, 0 Failed\",\"duration_ms\"\
-        :\"0\"},\"candlepin_events\":{\"status\":\"ok\",\"message\":\"7 Processed,\
+        :\"0\"},\"candlepin_events\":{\"status\":\"ok\",\"message\":\"0 Processed,\
         \ 0 Failed\",\"duration_ms\":\"0\"},\"pulp3\":{\"status\":\"ok\",\"duration_ms\"\
-        :\"55\"},\"pulp\":{\"status\":\"ok\",\"duration_ms\":\"69\"},\"pulp_auth\"\
+        :\"61\"},\"pulp\":{\"status\":\"ok\",\"duration_ms\":\"74\"},\"pulp_auth\"\
         :{\"status\":\"FAIL\",\"message\":\"SSL_connect returned=1 errno=0 state=error:\
         \ certificate verify failed (error number 1)\"}},\"status\":\"FAIL\"}}}"
     headers:
@@ -132,7 +132,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1811'
+      - '1812'
     status:
       code: 200
       message: OK
@@ -154,8 +154,8 @@ interactions:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2020-12-23 13:11:47 UTC\",\"updated_at\"\
-        :\"2020-12-23 13:11:47 UTC\",\"id\":4,\"name\":\"Test Organization\",\"title\"\
+        :\"Test_Organization\",\"created_at\":\"2020-12-24 09:07:17 UTC\",\"updated_at\"\
+        :\"2020-12-24 09:07:17 UTC\",\"id\":5,\"name\":\"Test Organization\",\"title\"\
         :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -209,15 +209,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts?organization_id=4&search=name%3D%22testaccount%22&per_page=4294967296
+    uri: https://foreman.example.org/api/v2/scc_accounts?organization_id=5&search=name%3D%22testaccount%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"testaccount\\\"\",\n  \"sort\": {\n\
         \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"organization_id\"\
-        :4,\"organization_name\":\"Test Organization\",\"login\":\"UC3993\",\"base_url\"\
-        :\"https://scc.suse.com\",\"interval\":\"never\",\"sync_date\":\"2020-12-23\
-        \ 13:12:48 UTC\",\"id\":3,\"name\":\"testaccount\"}]\n}\n"
+        :5,\"organization_name\":\"Test Organization\",\"login\":\"UC3993\",\"base_url\"\
+        :\"https://scc.suse.com\",\"interval\":\"never\",\"sync_date\":\"2020-12-24\
+        \ 09:07:33 UTC\",\"id\":5,\"name\":\"testaccount\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -234,7 +234,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 5; Test Organization
       Foreman_version:
       - 2.4.0-develop
       Keep-Alive:
@@ -270,16 +270,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts/3/scc_products?search=name%3D%22SUSE+Linux+Enterprise+Server+10+SP1+i586+%28id%3A+673%29%22&per_page=4294967296
+    uri: https://foreman.example.org/api/v2/scc_accounts/5/scc_products?search=friendly_name%3D%22SUSE+Linux+Enterprise+Client+Tools+10+SP3+i586%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 372,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"SUSE Linux Enterprise Server 10 SP1\
-        \ i586 (id: 673)\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\":\
-        \ null\n  },\n  \"results\": [{\"scc_account_id\":3,\"name\":\"SUSE Linux\
-        \ Enterprise Server 10 SP1 i586 (id: 673)\",\"arch\":\"i586\",\"friendly_name\"\
-        :\"SUSE Linux Enterprise Server 10 SP1 i586\",\"description\":null,\"product_id\"\
-        :4,\"id\":747}]\n}\n"
+        : 4294967296,\n  \"search\": \"friendly_name=\\\"SUSE Linux Enterprise Client\
+        \ Tools 10 SP3 i586\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\"\
+        : null\n  },\n  \"results\": [{\"scc_account_id\":5,\"name\":\"SUSE Linux\
+        \ Enterprise Client Tools\",\"arch\":\"i586\",\"friendly_name\":\"SUSE Linux\
+        \ Enterprise Client Tools 10 SP3 i586\",\"description\":\"SUSE Linux Enterprise\
+        \ Client Tools 10\",\"product_id\":null,\"id\":1760}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -316,7 +316,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '414'
+      - '448'
     status:
       code: 200
       message: OK
@@ -332,12 +332,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts/3/scc_products/747
+    uri: https://foreman.example.org/api/v2/scc_accounts/5/scc_products/1760
   response:
     body:
-      string: '{"scc_account_id":3,"name":"SUSE Linux Enterprise Server 10 SP1 i586
-        (id: 673)","arch":"i586","friendly_name":"SUSE Linux Enterprise Server 10
-        SP1 i586","description":null,"product_id":4,"id":747}'
+      string: '{"scc_account_id":5,"name":"SUSE Linux Enterprise Client Tools","arch":"i586","friendly_name":"SUSE
+        Linux Enterprise Client Tools 10 SP3 i586","description":"SUSE Linux Enterprise
+        Client Tools 10","product_id":null,"id":1760}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -374,7 +374,129 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '196'
+      - '225'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: PUT
+    uri: https://foreman.example.org/api/v2/scc_accounts/5/scc_products/1760/subscribe
+  response:
+    body:
+      string: '{"id":"cf10c7a4-2de2-4a46-9e2d-4bd6d28301e2","label":"Actions::SccManager::SubscribeProduct","started_at":"2020-12-29T12:16:35.622Z","ended_at":null,"state":"planned","result":"pending","external_id":"17b598fd-3425-4d11-b6d1-261205953693","parent_task_id":null,"start_at":"2020-12-29T12:16:35.605Z","start_before":null,"action":"Subscribe
+        SCC Product","user_id":4,"state_updated_at":"2020-12-29T12:16:35.726Z"}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=94
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '410'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/cf10c7a4-2de2-4a46-9e2d-4bd6d28301e2
+  response:
+    body:
+      string: '{"id":"cf10c7a4-2de2-4a46-9e2d-4bd6d28301e2","label":"Actions::SccManager::SubscribeProduct","pending":false,"action":"Subscribe
+        SCC Product","username":"admin","started_at":"2020-12-29 12:16:35 UTC","ended_at":"2020-12-29
+        12:16:39 UTC","state":"stopped","result":"success","progress":1.0,"input":{"scc_product":{"id":1760,"name":"SUSE
+        Linux Enterprise Client Tools"},"product_id":7,"locale":"en","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Subscribe
+        SCC Product","input":[],"output":"","errors":[]},"cli_example":null,"start_at":"2020-12-29
+        12:16:35 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=93
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '737'
     status:
       code: 200
       message: OK

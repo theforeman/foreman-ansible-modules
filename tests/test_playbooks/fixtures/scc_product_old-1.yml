@@ -78,22 +78,22 @@ interactions:
         \ The locking allows dealing with preventing multiple colliding tasks to be\
         \ run on the\\nsame resource. It also optionally provides Dynflow infrastructure\
         \ for using it for managing the tasks.\\n\",\"Foreman plugin: foreman_scc_manager,\
-        \ 1.8.6, ATIX AG, Foreman plugin to sync SUSE Customer Center products and\
+        \ 1.8.5, ATIX AG, Foreman plugin to sync SUSE Customer Center products and\
         \ repositories into Katello.\",\"Foreman plugin: katello, 4.0.0.pre.master,\
         \ N/A, Katello adds Content and Subscription Management to Foreman. For this\
         \ it relies on Candlepin and Pulp.\"],\"smart_proxies\":[{\"name\":\"centos7-katello-devel-stable.example.com\"\
-        ,\"status\":\"ok\",\"duration_ms\":\"84\",\"version\":\"2.4.0-develop\",\"\
+        ,\"status\":\"ok\",\"duration_ms\":\"81\",\"version\":\"2.4.0-develop\",\"\
         features\":{\"pulp\":\"2.1.0\",\"pulpcore\":\"2.1.0\",\"puppetca\":\"2.4.0\"\
         ,\"puppet\":\"2.4.0\",\"logs\":\"2.4.0\",\"registration\":\"2.4.0\"},\"failed_features\"\
         :{}}],\"compute_resources\":[],\"database\":{\"active\":true,\"duration_ms\"\
-        :\"0\"}},\"katello\":{\"version\":\"4.0.0-master\",\"timeUTC\":\"2020-12-23\
-        \ 13:21:29 UTC\",\"services\":{\"candlepin\":{\"status\":\"ok\",\"duration_ms\"\
-        :\"20\"},\"candlepin_auth\":{\"status\":\"ok\",\"duration_ms\":\"20\"},\"\
-        foreman_tasks\":{\"status\":\"ok\",\"duration_ms\":\"4\"},\"katello_events\"\
+        :\"0\"}},\"katello\":{\"version\":\"4.0.0-master\",\"timeUTC\":\"2020-12-29\
+        \ 12:16:40 UTC\",\"services\":{\"candlepin\":{\"status\":\"ok\",\"duration_ms\"\
+        :\"18\"},\"candlepin_auth\":{\"status\":\"ok\",\"duration_ms\":\"18\"},\"\
+        foreman_tasks\":{\"status\":\"ok\",\"duration_ms\":\"2\"},\"katello_events\"\
         :{\"status\":\"ok\",\"message\":\"0 Processed, 0 Failed\",\"duration_ms\"\
-        :\"0\"},\"candlepin_events\":{\"status\":\"ok\",\"message\":\"7 Processed,\
+        :\"0\"},\"candlepin_events\":{\"status\":\"ok\",\"message\":\"0 Processed,\
         \ 0 Failed\",\"duration_ms\":\"0\"},\"pulp3\":{\"status\":\"ok\",\"duration_ms\"\
-        :\"55\"},\"pulp\":{\"status\":\"ok\",\"duration_ms\":\"69\"},\"pulp_auth\"\
+        :\"56\"},\"pulp\":{\"status\":\"ok\",\"duration_ms\":\"68\"},\"pulp_auth\"\
         :{\"status\":\"FAIL\",\"message\":\"SSL_connect returned=1 errno=0 state=error:\
         \ certificate verify failed (error number 1)\"}},\"status\":\"FAIL\"}}}"
     headers:
@@ -154,8 +154,8 @@ interactions:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2020-12-23 13:11:47 UTC\",\"updated_at\"\
-        :\"2020-12-23 13:11:47 UTC\",\"id\":4,\"name\":\"Test Organization\",\"title\"\
+        :\"Test_Organization\",\"created_at\":\"2020-12-24 09:07:17 UTC\",\"updated_at\"\
+        :\"2020-12-24 09:07:17 UTC\",\"id\":5,\"name\":\"Test Organization\",\"title\"\
         :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -209,15 +209,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts?organization_id=4&search=name%3D%22testaccount%22&per_page=4294967296
+    uri: https://foreman.example.org/api/v2/scc_accounts?organization_id=5&search=name%3D%22testaccount%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"testaccount\\\"\",\n  \"sort\": {\n\
         \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"organization_id\"\
-        :4,\"organization_name\":\"Test Organization\",\"login\":\"UC3993\",\"base_url\"\
-        :\"https://scc.suse.com\",\"interval\":\"never\",\"sync_date\":\"2020-12-23\
-        \ 13:12:48 UTC\",\"id\":3,\"name\":\"testaccount\"}]\n}\n"
+        :5,\"organization_name\":\"Test Organization\",\"login\":\"UC3993\",\"base_url\"\
+        :\"https://scc.suse.com\",\"interval\":\"never\",\"sync_date\":\"2020-12-24\
+        \ 09:07:33 UTC\",\"id\":5,\"name\":\"testaccount\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -234,7 +234,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 5; Test Organization
       Foreman_version:
       - 2.4.0-develop
       Keep-Alive:
@@ -270,16 +270,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts/3/scc_products?search=name%3D%22SUSE+Linux+Enterprise+Server+10+SP1+i586+%28id%3A+673%29%22&per_page=4294967296
+    uri: https://foreman.example.org/api/v2/scc_accounts/5/scc_products?search=friendly_name%3D%22SUSE+Linux+Enterprise+Client+Tools+10+SP3+i586%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 372,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"SUSE Linux Enterprise Server 10 SP1\
-        \ i586 (id: 673)\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\":\
-        \ null\n  },\n  \"results\": [{\"scc_account_id\":3,\"name\":\"SUSE Linux\
-        \ Enterprise Server 10 SP1 i586 (id: 673)\",\"arch\":\"i586\",\"friendly_name\"\
-        :\"SUSE Linux Enterprise Server 10 SP1 i586\",\"description\":null,\"product_id\"\
-        :4,\"id\":747}]\n}\n"
+        : 4294967296,\n  \"search\": \"friendly_name=\\\"SUSE Linux Enterprise Client\
+        \ Tools 10 SP3 i586\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\"\
+        : null\n  },\n  \"results\": [{\"scc_account_id\":5,\"name\":\"SUSE Linux\
+        \ Enterprise Client Tools\",\"arch\":\"i586\",\"friendly_name\":\"SUSE Linux\
+        \ Enterprise Client Tools 10 SP3 i586\",\"description\":\"SUSE Linux Enterprise\
+        \ Client Tools 10\",\"product_id\":7,\"id\":1760}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -316,7 +316,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '414'
+      - '445'
     status:
       code: 200
       message: OK
@@ -332,12 +332,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/v2/scc_accounts/3/scc_products/747
+    uri: https://foreman.example.org/api/v2/scc_accounts/5/scc_products/1760
   response:
     body:
-      string: '{"scc_account_id":3,"name":"SUSE Linux Enterprise Server 10 SP1 i586
-        (id: 673)","arch":"i586","friendly_name":"SUSE Linux Enterprise Server 10
-        SP1 i586","description":null,"product_id":4,"id":747}'
+      string: '{"scc_account_id":5,"name":"SUSE Linux Enterprise Client Tools","arch":"i586","friendly_name":"SUSE
+        Linux Enterprise Client Tools 10 SP3 i586","description":"SUSE Linux Enterprise
+        Client Tools 10","product_id":7,"id":1760}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -374,7 +374,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '196'
+      - '222'
     status:
       code: 200
       message: OK

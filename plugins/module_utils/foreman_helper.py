@@ -73,7 +73,6 @@ ENTITY_KEYS = dict(
     #       Applying this will need to record a lot of tests that is out of scope for the moment.
     # organizations='title',
     scap_contents='title',
-    scc_products='friendly_name',
     users='login',
 )
 
