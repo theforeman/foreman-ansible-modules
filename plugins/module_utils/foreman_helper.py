@@ -363,6 +363,14 @@ class ForemanAnsibleModule(AnsibleModule):
     def set_changed(self):
         self._changed = True
 
+    def _patch_host_update(self):
+        _host_methods = self.foremanapi.apidoc['docs']['resources']['hosts']['methods']
+
+        _host_update = next(x for x in _host_methods if x['name'] == 'update')
+        for param in ['location_id', 'organization_id']:
+            _host_update_taxonomy_param = next(x for x in _host_update['params'] if x['name'] == param)
+            _host_update['params'].remove(_host_update_taxonomy_param)
+
     @_check_patch_needed(fixed_version='2.0.0')
     def _patch_templates_resource_name(self):
         """
@@ -588,6 +596,8 @@ class ForemanAnsibleModule(AnsibleModule):
         When adding another patch, consider that the endpoint in question may depend on a plugin to be available.
         If possible, make the patch only execute on specific server/plugin versions.
         """
+
+        self._patch_host_update()
 
         self._patch_templates_resource_name()
         self._patch_location_api()
