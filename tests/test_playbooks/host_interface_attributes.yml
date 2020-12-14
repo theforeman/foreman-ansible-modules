@@ -37,6 +37,18 @@
         subnet_organizations:
           - "{{ host.organization }}"
         subnet_state: present
+    - include: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }} Secondary"
+        subnet_network: '198.51.100.0'
+        subnet_mask: '255.255.255.0'
+        subnet_domains:
+          - "{{ host.domain }}"
+        subnet_locations:
+          - "{{ host.location }}"
+        subnet_organizations:
+          - "{{ host.organization }}"
+        subnet_state: present
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "{{ host.hostgroup }}"
@@ -117,8 +129,9 @@
             subnet: "{{ host.subnet }}"
           - type: "interface"
             identifier: "fam02"
-            ip: "192.0.2.42"
+            ip: "198.51.100.42"
             mac: "EE:FF:00:00:00:02"
+            subnet: "{{ host.subnet }} Secondary"
         expected_change: true
 
     - name: update host, add new interface again, no change
@@ -136,8 +149,9 @@
             subnet: "{{ host.subnet }}"
           - type: "interface"
             identifier: "fam02"
-            ip: "192.0.2.42"
+            ip: "198.51.100.42"
             mac: "EE:FF:00:00:00:02"
+            subnet: "{{ host.subnet }} Secondary"
         expected_change: false
 
     - name: update host, delete interface
@@ -150,8 +164,9 @@
         host_interfaces_attributes:
           - type: "interface"
             identifier: "fam02"
-            ip: "192.0.2.42"
+            ip: "198.51.100.42"
             mac: "EE:FF:00:00:00:02"
+            subnet: "{{ host.subnet }} Secondary"
         expected_change: true
 
     - name: update host, delete interface again, no change
@@ -164,8 +179,9 @@
         host_interfaces_attributes:
           - type: "interface"
             identifier: "fam02"
-            ip: "192.0.2.42"
+            ip: "198.51.100.42"
             mac: "EE:FF:00:00:00:02"
+            subnet: "{{ host.subnet }} Secondary"
         expected_change: false
 
     - name: update host, make interfaces bond
@@ -270,7 +286,18 @@
         subnet_state: present
     - include_tasks: tasks/subnet.yml
       vars:
+        subnet_name: "{{ host.subnet }} Secondary"
+        subnet_mask: '255.255.255.224'
+        subnet_domains: []
+        subnet_state: present
+    - include_tasks: tasks/subnet.yml
+      vars:
         subnet_name: "{{ host.subnet }}"
+        subnet_mask: '255.255.255.224'
+        subnet_state: absent
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "{{ host.subnet }} Secondary"
         subnet_mask: '255.255.255.224'
         subnet_state: absent
     - include_tasks: tasks/domain.yml

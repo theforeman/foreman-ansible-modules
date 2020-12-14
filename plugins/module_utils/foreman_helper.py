@@ -834,10 +834,10 @@ class ForemanAnsibleModule(AnsibleModule):
             if entity_spec.get('type') in {'nested_list'}:
                 for nested_key, nested_spec in self.foreman_spec[key]['foreman_spec'].items():
                     for item in self.foreman_params.get(key, []):
-                        if (nested_key in item and nested_spec.get('resolve', True) and not nested_spec.get('resolved', False)
+                        if (nested_key in item and nested_spec.get('resolve', True)
+                                and item[nested_key] is not None and not isinstance(item[nested_key], (dict, list))
                                 and nested_spec.get('type') in {'entity', 'entity_list'}):
                             item[nested_key] = self._lookup_entity(item[nested_key], nested_spec)
-                            nested_spec['resolved'] = True
 
     def record_before(self, resource, entity):
         self._before[resource].append(entity)
