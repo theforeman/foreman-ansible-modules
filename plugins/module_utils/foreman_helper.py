@@ -755,14 +755,13 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def set_entity(self, key, entity):
         self.foreman_params[key] = entity
-        self.foreman_spec[key]['resolved'] = True
 
     def lookup_entity(self, key, params=None):
         if key not in self.foreman_params:
             return None
 
         entity_spec = self.foreman_spec[key]
-        if entity_spec.get('resolved') or entity_spec.get('type') not in ('entity', 'entity_list'):
+        if _is_resolved(entity_spec, self.foreman_params[key]):
             # Already looked up or not an entity(_list) so nothing to do
             return self.foreman_params[key]
 
@@ -835,8 +834,7 @@ class ForemanAnsibleModule(AnsibleModule):
                 for nested_key, nested_spec in self.foreman_spec[key]['foreman_spec'].items():
                     for item in self.foreman_params.get(key, []):
                         if (nested_key in item and nested_spec.get('resolve', True)
-                                and item[nested_key] is not None and not isinstance(item[nested_key], (dict, list))
-                                and nested_spec.get('type') in {'entity', 'entity_list'}):
+                                and not _is_resolved(nested_spec, item[nested_key])):
                             item[nested_key] = self._lookup_entity(item[nested_key], nested_spec)
 
     def record_before(self, resource, entity):
@@ -1539,6 +1537,19 @@ def _recursive_dict_without_none(a_dict, exclude=None):
             result[k] = v
 
     return result
+
+
+def _is_resolved(spec, what):
+    if spec.get('type') not in ('entity', 'entity_list'):
+        return True
+
+    if spec.get('type') == 'entity' and (what is None or isinstance(what, dict)):
+        return True
+
+    if spec.get('type') == 'entity_list' and isinstance(what, list) and what and (what[0] is None or isinstance(what[0], dict)):
+        return True
+
+    return False
 
 
 # Helper for (global, operatingsystem, ...) parameters
