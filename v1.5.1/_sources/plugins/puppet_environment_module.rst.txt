@@ -1,0 +1,303 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.puppet_environment_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.puppet_environment -- Manage Puppet Environments
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 1.5.1).
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.puppet_environment`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create, update, and delete Puppet Environments
+
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                    <b>locations</b>
+                    <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of locations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
+                    <b>name</b>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The full environment name</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                    <b>organizations</b>
+                    <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>List of organizations the entity should be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                    <b>password</b>
+                    <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Password of the user accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                    <b>server_url</b>
+                    <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>URL of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>absent</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>State of the entity</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                    <b>username</b>
+                    <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Username accessing the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                    <b>validate_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>no</li>
+                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                            <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: create new environment
+      theforeman.foreman.puppet_environment:
+        name: "testing"
+        locations:
+          - "Munich"
+        organizations:
+          - "ACME"
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <table border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="2">Key</th>
+            <th>Returned</th>
+            <th width="100%">Description</th>
+        </tr>
+                    <tr>
+                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="return-entity"></div>
+                    <b>entity</b>
+                    <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">dictionary</span>
+                                          </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>Final state of the affected entities grouped by their type.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                                        <tr>
+                                    <td class="elbow-placeholder">&nbsp;</td>
+                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="return-entity/puppet_environments"></div>
+                    <b>puppet_environments</b>
+                    <a class="ansibleOptionLink" href="#return-entity/puppet_environments" title="Permalink to this return value"></a>
+                    <div style="font-size: small">
+                      <span style="color: purple">list</span>
+                       / <span style="color: purple">elements=dictionary</span>                    </div>
+                                    </td>
+                <td>success</td>
+                <td>
+                                            <div>List of puppet environments.</div>
+                                        <br/>
+                                    </td>
+            </tr>
+                    
+                        </table>
+    <br/><br/>
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Bernhard Suttner (@_sbernhard) ATIX AG
+- Christoffer Reijer (@ephracis) Basalt AB
+
+
+
+.. Parsing errors
+

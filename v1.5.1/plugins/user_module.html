@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>theforeman.foreman.user – Manage Users &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>theforeman.foreman.user – Manage Users</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/user_module.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="ansible-collections-theforeman-foreman-user-module"></span><div class="section" id="theforeman-foreman-user-manage-users">
+<h1>theforeman.foreman.user – Manage Users<a class="headerlink" href="#theforeman-foreman-user-manage-users" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 1.5.1).</p>
+<p>To install it use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.user</span></code>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
+</ul>
+</div>
+<div class="section" id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Create, update, and delete users</p></li>
+</ul>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>requests</p></li>
+</ul>
+</div>
+<div class="section" id="parameters">
+<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<table  border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="1">Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+                    <th width="100%">Comments</th>
+    </tr>
+                <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-admin"></div>
+                <b>admin</b>
+                <a class="ansibleOptionLink" href="#parameter-admin" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>yes</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Whether or not the user is an administrator</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-auth_source"></div>
+                <b>auth_source</b>
+                <a class="ansibleOptionLink" href="#parameter-auth_source" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Authentication source where the user exists</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-default_location"></div>
+                <b>default_location</b>
+                <a class="ansibleOptionLink" href="#parameter-default_location" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>The location that the user uses by default</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-default_organization"></div>
+                <b>default_organization</b>
+                <a class="ansibleOptionLink" href="#parameter-default_organization" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>The organizxation that the user uses by default</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-description"></div>
+                <b>description</b>
+                <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Description of the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-firstname"></div>
+                <b>firstname</b>
+                <a class="ansibleOptionLink" href="#parameter-firstname" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>First name of the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-lastname"></div>
+                <b>lastname</b>
+                <a class="ansibleOptionLink" href="#parameter-lastname" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Last name of the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-locale"></div>
+                <b>locale</b>
+                <a class="ansibleOptionLink" href="#parameter-locale" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>ca</li>
+                                                                                                                                                                                            <li>de</li>
+                                                                                                                                                                                            <li>en</li>
+                                                                                                                                                                                            <li>en_GB</li>
+                                                                                                                                                                                            <li>es</li>
+                                                                                                                                                                                            <li>fr</li>
+                                                                                                                                                                                            <li>gl</li>
+                                                                                                                                                                                            <li>it</li>
+                                                                                                                                                                                            <li>ja</li>
+                                                                                                                                                                                            <li>ko</li>
+                                                                                                                                                                                            <li>nl_NL</li>
+                                                                                                                                                                                            <li>pl</li>
+                                                                                                                                                                                            <li>pt_BR</li>
+                                                                                                                                                                                            <li>ru</li>
+                                                                                                                                                                                            <li>sv_SE</li>
+                                                                                                                                                                                            <li>zh_CN</li>
+                                                                                                                                                                                            <li>zh_TW</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>The language locale for the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+                <b>locations</b>
+                <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of locations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-login"></div>
+                <b>login</b>
+                <a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Name of the user</div>
+                                                            <div style="font-size: small; color: darkgreen"><br/>aliases: name</div>
+                                </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-mail"></div>
+                <b>mail</b>
+                <a class="ansibleOptionLink" href="#parameter-mail" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Email address of the user</div>
+                                        <div>Required when creating a new user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+                <b>organizations</b>
+                <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of organizations the entity should be assigned to</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-password"></div>
+                <b>password</b>
+                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Password of the user accessing the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-roles"></div>
+                <b>roles</b>
+                <a class="ansibleOptionLink" href="#parameter-roles" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">list</span>
+                     / <span style="color: purple">elements=string</span>                                            </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>List of roles assigned to the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+                <b>server_url</b>
+                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>URL of the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-state"></div>
+                <b>state</b>
+                <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                            <li>absent</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>State of the entity</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-timezone"></div>
+                <b>timezone</b>
+                <a class="ansibleOptionLink" href="#parameter-timezone" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>International Date Line West</li>
+                                                                                                                                                                                            <li>American Samoa</li>
+                                                                                                                                                                                            <li>Midway Island</li>
+                                                                                                                                                                                            <li>Hawaii</li>
+                                                                                                                                                                                            <li>Alaska</li>
+                                                                                                                                                                                            <li>Pacific Time (US &amp; Canada)</li>
+                                                                                                                                                                                            <li>Tijuana</li>
+                                                                                                                                                                                            <li>Arizona</li>
+                                                                                                                                                                                            <li>Chihuahua</li>
+                                                                                                                                                                                            <li>Mazatlan</li>
+                                                                                                                                                                                            <li>Mountain Time (US &amp; Canada)</li>
+                                                                                                                                                                                            <li>Central America</li>
+                                                                                                                                                                                            <li>Central Time (US &amp; Canada)</li>
+                                                                                                                                                                                            <li>Guadalajara</li>
+                                                                                                                                                                                            <li>Mexico City</li>
+                                                                                                                                                                                            <li>Monterrey</li>
+                                                                                                                                                                                            <li>Saskatchewan</li>
+                                                                                                                                                                                            <li>Bogota</li>
+                                                                                                                                                                                            <li>Eastern Time (US &amp; Canada)</li>
+                                                                                                                                                                                            <li>Indiana (East)</li>
+                                                                                                                                                                                            <li>Lima</li>
+                                                                                                                                                                                            <li>Quito</li>
+                                                                                                                                                                                            <li>Atlantic Time (Canada)</li>
+                                                                                                                                                                                            <li>Caracas</li>
+                                                                                                                                                                                            <li>Georgetown</li>
+                                                                                                                                                                                            <li>La Paz</li>
+                                                                                                                                                                                            <li>Puerto Rico</li>
+                                                                                                                                                                                            <li>Santiago</li>
+                                                                                                                                                                                            <li>Newfoundland</li>
+                                                                                                                                                                                            <li>Brasilia</li>
+                                                                                                                                                                                            <li>Buenos Aires</li>
+                                                                                                                                                                                            <li>Greenland</li>
+                                                                                                                                                                                            <li>Montevideo</li>
+                                                                                                                                                                                            <li>Mid-Atlantic</li>
+                                                                                                                                                                                            <li>Azores</li>
+                                                                                                                                                                                            <li>Cape Verde Is.</li>
+                                                                                                                                                                                            <li>Dublin</li>
+                                                                                                                                                                                            <li>Edinburgh</li>
+                                                                                                                                                                                            <li>Lisbon</li>
+                                                                                                                                                                                            <li>London</li>
+                                                                                                                                                                                            <li>Monrovia</li>
+                                                                                                                                                                                            <li>UTC</li>
+                                                                                                                                                                                            <li>Amsterdam</li>
+                                                                                                                                                                                            <li>Belgrade</li>
+                                                                                                                                                                                            <li>Berlin</li>
+                                                                                                                                                                                            <li>Bern</li>
+                                                                                                                                                                                            <li>Bratislava</li>
+                                                                                                                                                                                            <li>Brussels</li>
+                                                                                                                                                                                            <li>Budapest</li>
+                                                                                                                                                                                            <li>Casablanca</li>
+                                                                                                                                                                                            <li>Copenhagen</li>
+                                                                                                                                                                                            <li>Ljubljana</li>
+                                                                                                                                                                                            <li>Madrid</li>
+                                                                                                                                                                                            <li>Paris</li>
+                                                                                                                                                                                            <li>Prague</li>
+                                                                                                                                                                                            <li>Rome</li>
+                                                                                                                                                                                            <li>Sarajevo</li>
+                                                                                                                                                                                            <li>Skopje</li>
+                                                                                                                                                                                            <li>Stockholm</li>
+                                                                                                                                                                                            <li>Vienna</li>
+                                                                                                                                                                                            <li>Warsaw</li>
+                                                                                                                                                                                            <li>West Central Africa</li>
+                                                                                                                                                                                            <li>Zagreb</li>
+                                                                                                                                                                                            <li>Zurich</li>
+                                                                                                                                                                                            <li>Athens</li>
+                                                                                                                                                                                            <li>Bucharest</li>
+                                                                                                                                                                                            <li>Cairo</li>
+                                                                                                                                                                                            <li>Harare</li>
+                                                                                                                                                                                            <li>Helsinki</li>
+                                                                                                                                                                                            <li>Jerusalem</li>
+                                                                                                                                                                                            <li>Kaliningrad</li>
+                                                                                                                                                                                            <li>Kyiv</li>
+                                                                                                                                                                                            <li>Pretoria</li>
+                                                                                                                                                                                            <li>Riga</li>
+                                                                                                                                                                                            <li>Sofia</li>
+                                                                                                                                                                                            <li>Tallinn</li>
+                                                                                                                                                                                            <li>Vilnius</li>
+                                                                                                                                                                                            <li>Baghdad</li>
+                                                                                                                                                                                            <li>Istanbul</li>
+                                                                                                                                                                                            <li>Kuwait</li>
+                                                                                                                                                                                            <li>Minsk</li>
+                                                                                                                                                                                            <li>Moscow</li>
+                                                                                                                                                                                            <li>Nairobi</li>
+                                                                                                                                                                                            <li>Riyadh</li>
+                                                                                                                                                                                            <li>St. Petersburg</li>
+                                                                                                                                                                                            <li>Tehran</li>
+                                                                                                                                                                                            <li>Abu Dhabi</li>
+                                                                                                                                                                                            <li>Baku</li>
+                                                                                                                                                                                            <li>Muscat</li>
+                                                                                                                                                                                            <li>Samara</li>
+                                                                                                                                                                                            <li>Tbilisi</li>
+                                                                                                                                                                                            <li>Volgograd</li>
+                                                                                                                                                                                            <li>Yerevan</li>
+                                                                                                                                                                                            <li>Kabul</li>
+                                                                                                                                                                                            <li>Ekaterinburg</li>
+                                                                                                                                                                                            <li>Islamabad</li>
+                                                                                                                                                                                            <li>Karachi</li>
+                                                                                                                                                                                            <li>Tashkent</li>
+                                                                                                                                                                                            <li>Chennai</li>
+                                                                                                                                                                                            <li>Kolkata</li>
+                                                                                                                                                                                            <li>Mumbai</li>
+                                                                                                                                                                                            <li>New Delhi</li>
+                                                                                                                                                                                            <li>Sri Jayawardenepura</li>
+                                                                                                                                                                                            <li>Kathmandu</li>
+                                                                                                                                                                                            <li>Almaty</li>
+                                                                                                                                                                                            <li>Astana</li>
+                                                                                                                                                                                            <li>Dhaka</li>
+                                                                                                                                                                                            <li>Urumqi</li>
+                                                                                                                                                                                            <li>Rangoon</li>
+                                                                                                                                                                                            <li>Bangkok</li>
+                                                                                                                                                                                            <li>Hanoi</li>
+                                                                                                                                                                                            <li>Jakarta</li>
+                                                                                                                                                                                            <li>Krasnoyarsk</li>
+                                                                                                                                                                                            <li>Novosibirsk</li>
+                                                                                                                                                                                            <li>Beijing</li>
+                                                                                                                                                                                            <li>Chongqing</li>
+                                                                                                                                                                                            <li>Hong Kong</li>
+                                                                                                                                                                                            <li>Irkutsk</li>
+                                                                                                                                                                                            <li>Kuala Lumpur</li>
+                                                                                                                                                                                            <li>Perth</li>
+                                                                                                                                                                                            <li>Singapore</li>
+                                                                                                                                                                                            <li>Taipei</li>
+                                                                                                                                                                                            <li>Ulaanbaatar</li>
+                                                                                                                                                                                            <li>Osaka</li>
+                                                                                                                                                                                            <li>Sapporo</li>
+                                                                                                                                                                                            <li>Seoul</li>
+                                                                                                                                                                                            <li>Tokyo</li>
+                                                                                                                                                                                            <li>Yakutsk</li>
+                                                                                                                                                                                            <li>Adelaide</li>
+                                                                                                                                                                                            <li>Darwin</li>
+                                                                                                                                                                                            <li>Brisbane</li>
+                                                                                                                                                                                            <li>Canberra</li>
+                                                                                                                                                                                            <li>Guam</li>
+                                                                                                                                                                                            <li>Hobart</li>
+                                                                                                                                                                                            <li>Melbourne</li>
+                                                                                                                                                                                            <li>Port Moresby</li>
+                                                                                                                                                                                            <li>Sydney</li>
+                                                                                                                                                                                            <li>Vladivostok</li>
+                                                                                                                                                                                            <li>Magadan</li>
+                                                                                                                                                                                            <li>New Caledonia</li>
+                                                                                                                                                                                            <li>Solomon Is.</li>
+                                                                                                                                                                                            <li>Srednekolymsk</li>
+                                                                                                                                                                                            <li>Auckland</li>
+                                                                                                                                                                                            <li>Fiji</li>
+                                                                                                                                                                                            <li>Kamchatka</li>
+                                                                                                                                                                                            <li>Marshall Is.</li>
+                                                                                                                                                                                            <li>Wellington</li>
+                                                                                                                                                                                            <li>Chatham Is.</li>
+                                                                                                                                                                                            <li>Nuku&#39;alofa</li>
+                                                                                                                                                                                            <li>Samoa</li>
+                                                                                                                                                                                            <li>Tokelau Is.</li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Timezone for the user</div>
+                                        <div>If blank it will use the browser timezone.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-user_password"></div>
+                <b>user_password</b>
+                <a class="ansibleOptionLink" href="#parameter-user_password" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Password for the user</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-username"></div>
+                <b>username</b>
+                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">string</span>
+                                             / <span style="color: red">required</span>                    </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Username accessing the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+                <b>validate_certs</b>
+                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+                <div style="font-size: small">
+                    <span style="color: purple">boolean</span>
+                                                                </div>
+                                                    </td>
+                            <td>
+                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
+                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
+                                                    </td>
+        </tr>
+                    </table>
+<br/></div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create a user</span>
+  <span class="nt">theforeman.foreman.user</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="nt">firstname</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Test</span>
+    <span class="nt">lastname</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Userson</span>
+    <span class="nt">mail</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test.userson@example.com</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Dr. Test Userson</span>
+    <span class="nt">admin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no</span>
+    <span class="nt">user_password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">s3cret</span>
+    <span class="nt">default_location</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Test Location</span>
+    <span class="nt">default_organization</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Test Organization</span>
+    <span class="nt">auth_source</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Internal</span>
+    <span class="nt">timezone</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Stockholm</span>
+    <span class="nt">locale</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sv_SE</span>
+    <span class="nt">roles</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Manager</span>
+    <span class="nt">locations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Test Location</span>
+    <span class="nt">organizations</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">Test Organization</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Update a user</span>
+  <span class="nt">theforeman.foreman.user</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="nt">firstname</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Tester</span>
+    <span class="nt">state</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">present</span>
+
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Change password</span>
+  <span class="nt">theforeman.foreman.user</span><span class="p">:</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="nt">user_password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">newp@ss</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-values">
+<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v2.10)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table border=0 cellpadding=0 class="documentation-table">
+    <tr>
+        <th colspan="2">Key</th>
+        <th>Returned</th>
+        <th width="100%">Description</th>
+    </tr>
+                <tr>
+                            <td colspan="2">
+                <div class="ansibleOptionAnchor" id="return-entity"></div>
+                <b>entity</b>
+                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">dictionary</span>
+                                      </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>Final state of the affected entities grouped by their type.</div>
+                                    <br/>
+                                </td>
+        </tr>
+                                    <tr>
+                                <td class="elbow-placeholder">&nbsp;</td>
+                            <td colspan="1">
+                <div class="ansibleOptionAnchor" id="return-entity/users"></div>
+                <b>users</b>
+                <a class="ansibleOptionLink" href="#return-entity/users" title="Permalink to this return value"></a>
+                <div style="font-size: small">
+                  <span style="color: purple">list</span>
+                   / <span style="color: purple">elements=dictionary</span>                    </div>
+                                </td>
+            <td>success</td>
+            <td>
+                                        <div>List of users.</div>
+                                    <br/>
+                                </td>
+        </tr>
+
+                    </table>
+<br/><br/><div class="section" id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Christoffer Reijer (&#64;ephracis) Basalt AB</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, The Foreman Project
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
