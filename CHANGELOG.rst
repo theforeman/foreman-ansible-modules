@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v1.5.1
+======
+
+Bugfixes
+--------
+
+- content_view_version - make the ``version`` parameter not fail when the version was entered without a minor part (https://github.com/theforeman/foreman-ansible-modules/issues/1087)
+- host - fix subnet/domain assignment when multiple interfaces are defined (https://github.com/theforeman/foreman-ansible-modules/issues/1095)
+
 v1.5.0
 ======
 
