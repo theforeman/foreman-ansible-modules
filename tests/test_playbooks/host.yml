@@ -27,6 +27,16 @@
         location_organizations:
           - "{{ host.organization }}"
         location_state: present
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }} Secondary"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }} Secondary"
+        location_organizations:
+          - "{{ host.organization }} Secondary"
+        location_state: present
     - include_tasks: tasks/domain.yml
       vars:
         domain_name: "{{ host.domain }}"
@@ -376,6 +386,43 @@
         host_state: absent
         expected_change: true
 
+    - name: create host in first org/loc
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        expected_change: true
+
+    - name: move host to second org/loc
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }} Secondary"
+        host_location: "{{ host.location }} Secondary"
+        host_managed: false
+        host_build: false
+        expected_change: true
+
+    - name: move host to second org/loc again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }} Secondary"
+        host_location: "{{ host.location }} Secondary"
+        host_managed: false
+        host_build: false
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
 - hosts: localhost
   collections:
     - theforeman.foreman
@@ -421,6 +468,14 @@
       vars:
         architecture_name: "{{ host.arch }}"
         architecture_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }} Secondary"
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }} Secondary"
+        organization_state: absent
     - include_tasks: tasks/location.yml
       vars:
         location_name: "{{ host.location }}"
