@@ -14,82 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"1.24.2","api_version":2}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Length:
-      - '63'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 27 Mar 2020 13:16:49 GMT
-      ETag:
-      - W/"39b73f2292fd196be82f6d5e7da4a321"
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 1.24.2
-      Keep-Alive:
-      - timeout=5, max=100
-      Server:
-      - Apache
-      Set-Cookie:
-      - _session_id=6f10b31c19a8579803de5e90a7f415c7; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 32e75b3a-bb31-4ea7-a8a8-b934961b8f90
-      X-Runtime:
-      - '0.101039'
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Cookie:
-      - _session_id=6f10b31c19a8579803de5e90a7f415c7
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/hosts?thin=true&search=name%3D%22test-host.example.net%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 7,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
-        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
-        id\":64,\"name\":\"test-host.example.net\"}]\n}\n"
+      string: '{"result":"ok","status":200,"version":"2.3.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -97,14 +22,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 27 Mar 2020 13:16:49 GMT
-      ETag:
-      - W/"92d6abcc5b2a54595687c032be02996f-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -112,13 +33,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.2
+      - 2.3.0
       Keep-Alive:
-      - timeout=5, max=99
-      Server:
-      - Apache
-      Status:
-      - 200 OK
+      - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -131,12 +48,65 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - e8cf9fb3-44e3-4610-a8b0-42dc6ce52e75
-      X-Runtime:
-      - '0.016417'
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '62'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/hosts?thin=true&search=name%3D%22test-host.example.net%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
+        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
+        id\":10,\"name\":\"test-host.example.net\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.3.0
+      Keep-Alive:
+      - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
       X-XSS-Protection:
       - 1; mode=block
       content-length:
@@ -155,15 +125,13 @@ interactions:
       - keep-alive
       Content-Length:
       - '0'
-      Cookie:
-      - _session_id=6f10b31c19a8579803de5e90a7f415c7
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/hosts/64
+    uri: https://foreman.example.org/api/hosts/10
   response:
     body:
-      string: '{"id":64,"name":"test-host.example.net","last_compile":null,"last_report":null,"updated_at":"2020-03-27T13:16:47.827Z","created_at":"2020-03-27T13:16:47.827Z","root_pass":null,"architecture_id":null,"operatingsystem_id":null,"environment_id":null,"ptable_id":null,"medium_id":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_type":"User","enabled":true,"puppet_ca_proxy_id":null,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"puppet_proxy_id":null,"certname":"test-host.example.net","image_id":null,"organization_id":15,"location_id":16,"otp":null,"realm_id":null,"compute_profile_id":null,"provision_method":"build","grub_pass":"","global_status":0,"lookup_value_matcher":"fqdn=test-host.example.net","pxe_loader":null,"initiated_at":null,"build_errors":null}'
+      string: '{"id":10,"name":"test-host.example.net","last_compile":null,"last_report":null,"updated_at":"2020-12-15T08:55:32.323Z","created_at":"2020-12-15T08:55:32.323Z","root_pass":null,"architecture_id":null,"operatingsystem_id":null,"environment_id":null,"ptable_id":null,"medium_id":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_type":"User","enabled":true,"puppet_ca_proxy_id":null,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"puppet_proxy_id":null,"certname":"test-host.example.net","image_id":null,"organization_id":5,"location_id":6,"otp":null,"realm_id":null,"compute_profile_id":null,"provision_method":"build","grub_pass":"","global_status":0,"lookup_value_matcher":"fqdn=test-host.example.net","pxe_loader":null,"initiated_at":null,"build_errors":null,"registration_facet_attributes":{"id":9,"host_id":10,"jwt_secret":"RvCHgClIcY6/ljSOM3V+2Q==","created_at":"2020-12-15T08:55:32.406Z","updated_at":"2020-12-15T08:55:32.406Z"}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -171,14 +139,10 @@ interactions:
       - Keep-Alive
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Fri, 27 Mar 2020 13:16:49 GMT
-      ETag:
-      - W/"711ede4794d58b62863e058a7b4ff5c5-gzip"
       Foreman_api_version:
       - '2'
       Foreman_current_location:
@@ -186,15 +150,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 1.24.2
+      - 2.3.0
       Keep-Alive:
-      - timeout=5, max=98
-      Server:
-      - Apache
-      Set-Cookie:
-      - request_method=DELETE; path=/; secure; HttpOnly; SameSite=Lax
-      Status:
-      - 200 OK
+      - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -207,16 +165,10 @@ interactions:
       - sameorigin
       X-Permitted-Cross-Domain-Policies:
       - none
-      X-Powered-By:
-      - Phusion Passenger 4.0.53
-      X-Request-Id:
-      - 8339339c-6097-4257-b21d-5b56c9155ff3
-      X-Runtime:
-      - '0.086857'
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '875'
+      - '1047'
     status:
       code: 200
       message: OK
