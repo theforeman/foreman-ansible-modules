@@ -1,0 +1,15 @@
+---
+- name: 'Create Sync Plans'
+  theforeman.foreman.sync_plan:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    name: "{{ item.name }}"
+    sync_date: "{{ item.sync_date }}"
+    interval: "{{ item.interval }}"
+    cron_expression: "{{ item.cron_expression | default(omit) }}"
+    enabled: "{{ item.enabled | default(true) }}"
+    products: "{{ item.products }}"
+  with_items: "{{ sync_plans | default([]) }}"
