@@ -187,6 +187,11 @@ class ParametersMixin(object):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(ParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
+        parameters = self.foreman_params.get('parameters')
+        if parameters is not None:
+            if len(parameters) != len(set(param['name'] for param in parameters)):
+                self.fail_json(msg="There are duplicate keys in 'parameters'.")
+
     def run(self, **kwargs):
         entity = self.lookup_entity('entity')
         if not self.desired_absent:
@@ -214,6 +219,11 @@ class NestedParametersMixin(object):
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(NestedParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
+
+        parameters = self.foreman_params.get('parameters')
+        if parameters is not None:
+            if len(parameters) != len(set(param['name'] for param in parameters)):
+                self.fail_json(msg="There are duplicate keys in 'parameters'.")
 
     def run(self, **kwargs):
         new_entity = super(NestedParametersMixin, self).run(**kwargs)
