@@ -1,0 +1,20 @@
+--- 
+# based on method defined here: https://coderwall.com/p/8yfuva/how-to-develop-ansible-roles-w-unit-test-and-ci
+- name: add organizations to foreman
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files: 
+    - ../tests/vars/foreman_secrets.yml
+  tasks:
+    - name: add organizations
+      include_role: 
+        name: ../..
+      vars: 
+        foreman_organizations: 
+          - name: raleigh
+            label: rdu
+          - name: lanai 
+            description: pacific datacenter 
+          - name: default
+            label: boring
