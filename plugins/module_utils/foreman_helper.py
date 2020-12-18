@@ -292,14 +292,21 @@ class HostMixin(ParametersMixin):
             lifecycle_environment=dict(type='entity', scope=['organization']),
             kickstart_repository=dict(type='entity', scope=['organization'], resource_type='repositories'),
             content_view=dict(type='entity', scope=['organization']),
+            activation_keys=dict(),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', []) + [
-            ('katello', ['content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
+            ('katello', ['activation_keys', 'content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
             ('openscap', ['openscap_proxy']),
         ]
         mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
         super(HostMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
+
+        if 'activation_keys' in self.foreman_params:
+            if 'parameters' not in self.foreman_params:
+                self.foreman_params['parameters'] = []
+            ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
+            self.foreman_params['parameters'].append(ak_param)
 
 
 class ForemanAnsibleModule(AnsibleModule):
@@ -1388,7 +1395,7 @@ class ForemanScapDataStreamModule(ForemanTaxonomicEntityAnsibleModule):
                 if entity['digest'] in [digest, digest_stripped]:
                     self.foreman_params.pop('scap_file')
 
-        super(ForemanScapDataStreamModule, self).run(**kwargs)
+        return super(ForemanScapDataStreamModule, self).run(**kwargs)
 
 
 class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
