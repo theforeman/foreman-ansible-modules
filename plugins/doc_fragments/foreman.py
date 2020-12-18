@@ -270,6 +270,13 @@ options:
       - Only available for Katello installations.
     required: false
     type: str
+  activation_keys:
+    description:
+      - Activation Keys used for deployment.
+      - Comma separated list.
+      - Only available for Katello installations.
+    required: false
+    type: str
 '''
 
     ORGANIZATION = '''
