@@ -1287,6 +1287,38 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
         return '_'.join(class_name.split('_')[1:-1])
 
 
+class ForemanInfoAnsibleModule(ForemanStatelessEntityAnsibleModule):
+    """
+    Base class for Foreman info modules that fetch information about entities
+    """
+    def __init__(self, **kwargs):
+        self._resources = []
+        foreman_spec = dict(
+            name=dict(),
+            search=dict(),
+            organization=dict(type='entity'),
+            location=dict(type='entity'),
+        )
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        super(ForemanInfoAnsibleModule, self).__init__(foreman_spec=foreman_spec, **kwargs)
+
+    def run(self, **kwargs):
+        """
+        lookup entities
+        """
+        self.auto_lookup_entities()
+
+        resource = self.foreman_spec['entity']['resource_type']
+
+        if 'name' in self.foreman_params:
+            self._resources = self.lookup_entity('entity')
+        else:
+            self._resources = self.list_resource(resource, self.foreman_params['search'], _flatten_entity(self.foreman_params, self.foreman_spec))
+
+    def exit_json(self, **kwargs):
+        super(ForemanInfoAnsibleModule, self).exit_json(resources=self._resources, **kwargs)
+
+
 class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
     """ Base class for Foreman entities. To use it, subclass it with the following convention:
         To manage my_entity entity, create the following sub class::
