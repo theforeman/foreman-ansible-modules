@@ -351,3 +351,9 @@ options:
       - Mutually exclusive with I(name).
     type: str
 '''
+
+    KATELLOINFOMODULE = '''
+options:
+  organization:
+    required: true
+'''

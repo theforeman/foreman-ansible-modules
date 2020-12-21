@@ -1447,11 +1447,9 @@ class KatelloAnsibleModule(KatelloMixin, ForemanAnsibleModule):
     pass
 
 
-class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
+class KatelloScopedMixin(KatelloMixin):
     """
-    Combine :class:`ForemanEntityAnsibleModule` with the :class:`KatelloMixin` Mixin.
-
-    Enforces scoping of entities by ``organization`` as required by Katello.
+    Enhances :class:`KatelloMixin` with scoping by ``organization`` as required by Katello.
     """
 
     def __init__(self, **kwargs):
@@ -1460,7 +1458,23 @@ class KatelloEntityAnsibleModule(KatelloMixin, ForemanEntityAnsibleModule):
             entity_opts['scope'] = ['organization']
         elif 'organization' not in entity_opts['scope']:
             entity_opts['scope'].append('organization')
-        super(KatelloEntityAnsibleModule, self).__init__(entity_opts=entity_opts, **kwargs)
+        super(KatelloScopedMixin, self).__init__(entity_opts=entity_opts, **kwargs)
+
+
+class KatelloInfoAnsibleModule(KatelloScopedMixin, ForemanInfoAnsibleModule):
+    """
+    Combine :class:`ForemanInfoAnsibleModule` with the :class:`KatelloScopedMixin` Mixin.
+    """
+
+    pass
+
+
+class KatelloEntityAnsibleModule(KatelloScopedMixin, ForemanEntityAnsibleModule):
+    """
+    Combine :class:`ForemanEntityAnsibleModule` with the :class:`KatelloScopedMixin` Mixin.
+    """
+
+    pass
 
 
 def _foreman_spec_helper(spec):
