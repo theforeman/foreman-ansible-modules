@@ -1,0 +1,76 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_label: "just_a_test_repo"
+        repository_mirror_on_sync: false
+        repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch repository info
+      repository_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        product: "Test Product"
+        name: "Test Repository"
+      register: repository_info
+    - name: check repository details
+      assert:
+        that:
+          - repository_info['resources']['name'] == "Test Repository"
+
+    - name: search repository info
+      repository_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        product: "Test Product"
+        search: "label = just_a_test_repo"
+      register: repository_info
+    - name: check repository details
+      assert:
+        that:
+          - repository_info['resources'][0]['name'] == "Test Repository"
+
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
