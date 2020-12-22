@@ -164,7 +164,21 @@ class TaxonomyMixin(object):
         super(TaxonomyMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
 
-class ParametersMixin(object):
+class ParametersMixinBase(object):
+    """
+    Base Class for the Parameters Mixins.
+
+    Provides a function to verify no duplicate parameters are set.
+    """
+
+    def validate_parameters(self):
+        parameters = self.foreman_params.get('parameters')
+        if parameters is not None:
+            if len(parameters) != len(set(param['name'] for param in parameters)):
+                self.fail_json(msg="There are duplicate keys in 'parameters'.")
+
+
+class ParametersMixin(ParametersMixinBase):
     """
     Parameters Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with entities that support parameters.
 
@@ -187,10 +201,7 @@ class ParametersMixin(object):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(ParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
-        parameters = self.foreman_params.get('parameters')
-        if parameters is not None:
-            if len(parameters) != len(set(param['name'] for param in parameters)):
-                self.fail_json(msg="There are duplicate keys in 'parameters'.")
+        self.validate_parameters()
 
     def run(self, **kwargs):
         entity = self.lookup_entity('entity')
@@ -204,7 +215,7 @@ class ParametersMixin(object):
         return super(ParametersMixin, self).run(**kwargs)
 
 
-class NestedParametersMixin(object):
+class NestedParametersMixin(ParametersMixinBase):
     """
     Nested Parameters Mixin to extend a :class:`ForemanAnsibleModule` (or any subclass) to work with entities that support parameters,
     but require them to be managed in separate API requests.
@@ -220,10 +231,7 @@ class NestedParametersMixin(object):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         super(NestedParametersMixin, self).__init__(foreman_spec=foreman_spec, **kwargs)
 
-        parameters = self.foreman_params.get('parameters')
-        if parameters is not None:
-            if len(parameters) != len(set(param['name'] for param in parameters)):
-                self.fail_json(msg="There are duplicate keys in 'parameters'.")
+        self.validate_parameters()
 
     def run(self, **kwargs):
         new_entity = super(NestedParametersMixin, self).run(**kwargs)
@@ -307,6 +315,8 @@ class HostMixin(ParametersMixin):
                 self.foreman_params['parameters'] = []
             ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
             self.foreman_params['parameters'].append(ak_param)
+
+        self.validate_parameters()
 
 
 class ForemanAnsibleModule(AnsibleModule):
