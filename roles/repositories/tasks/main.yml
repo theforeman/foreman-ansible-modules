@@ -1,9 +1,9 @@
 ---
 - name: 'Enable Red Hat Repositories'
   theforeman.foreman.repository_set:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     product: "{{ item.0.name }}"
@@ -19,9 +19,9 @@
 
 - name: 'Enable Red Hat Repository Sets'
   theforeman.foreman.repository_set:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     label: "{{ item.1 }}"
@@ -33,9 +33,9 @@
 
 - name: 'Create Products'
   theforeman.foreman.product:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     name: "{{ item.name }}"
@@ -45,9 +45,9 @@
 
 - name: 'Create Repositories'
   theforeman.foreman.repository:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     name: "{{ item.1.name }}"

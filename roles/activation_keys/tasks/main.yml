@@ -1,9 +1,9 @@
 ---
 - name: 'Create Activation Keys'
   theforeman.foreman.activation_key:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     name: "{{ item.name }}"
