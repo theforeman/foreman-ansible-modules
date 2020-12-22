@@ -153,14 +153,18 @@ def main():
         if 'organization' in module_params:
             params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
 
-        response = module.list_resource(resource, search, params)
+        if 'id' not in params:
+            response = module.list_resource(resource, search, params)
 
-        if module_params['full_details']:
-            resources = []
-            for found_resource in response:
-                resources.append(module.show_resource(resource, found_resource['id'], params))
+            if module_params['full_details']:
+                resources = []
+                for found_resource in response:
+                    resources.append(module.show_resource(resource, found_resource['id'], params))
+            else:
+                resources = response
         else:
-            resources = response
+            res_id = params.pop('id')
+            resources = [module.show_resource(resource, res_id, params)]
 
         module.exit_json(resources=resources)
 
