@@ -9,9 +9,9 @@
 
 - name: Upload Subscription Manifest to Foreman
   theforeman.foreman.subscription_manifest:
-    username: "{{ username }}"
-    password: "{{ password }}"
-    server_url: "{{ server_url }}"
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
     validate_certs: "{{ validate_certs | default(omit) }}"
     organization: "{{ organization }}"
     manifest_path: "{{ manifest_path }}"
