@@ -1,23 +1,20 @@
 # foreman.organizations
+
 ## Description
 An Ansible Role to create Organizations in Foreman.
-
-## Requirements
 
 ## Variables
 |Variable Name|Default Value|Required|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|
-|`tower_state`|"present"|no|The state all objects will take unless overridden by object default|'absent'|
-|`tower_hostname`|""|yes|URL to the Ansible Tower Server.|127.0.0.1|
-|`validate_certs`|`False`|no|Whether or not to validate the Ansible Tower Server's SSL certificate.||
-|`tower_username`|""|yes|Admin User on the Ansible Tower Server.||
-|`tower_password`|""|yes|Tower Admin User's password on the Ansible Tower Server.  This should be stored in an Ansible Vault at vars/tower-secrets.yml or elsewhere and called from a parent playbook.||
-|`tower_oauthtoken`|""|yes|Tower Admin User's token on the Ansible Tower Server.  This should be stored in an Ansible Vault at or elsewhere and called from a parent playbook.||
-|`tower_organizations`|`see below`|yes|Data structure describing your organzation or organizations Described below.||
+|`foreman_server_url`|"present"|no|URL of the Foreman server
+|`foreman_username`|""|yes|Username accessing the Foreman Server.||
+|`foreman_password`|""|yes|Password of user accessing the Foreman Server.  This should be stored at vars/foreman-secrets.yml or elsewhere 
+|`validate_certs` |""|no|Whether or not to verify the TLS certificates of the Foreman server.
+|`foreman_description` |""|no|Description of named organization
 
 ### Secure Logging Variables
 The following Variables compliment each other.
-If Both variables are not set, secure logging defaults to false.
+If both variables are not set, secure logging defaults to false.
 The role defaults to False as normally the add organization task does not include sensitive information.
 foreman_configuration_organizations_secure_logging defaults to the value of foreman_configuration_secure_logging if it is not explicitly called. This allows for secure logging to be toggled for the entire suite of configuration roles with a single variable, or for the user to selectively use it.
 
@@ -33,52 +30,9 @@ This role accepts two data models. A simple straightforward easy to maintain mod
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
 |`name`|""|yes|Name of Organization|
-|`description`|`False`|no|Description of Organization.|
-|`custom_virtualenv`|""|no|Local absolute file path containing a custom Python virtualenv to use.|
-|`max_hosts`|""|no|The max hosts allowed in this organization.|
-|`notification_templates_started`|""|no|The notifications on started to use for this organization in a list.|
-|`notification_templates_success`|""|no|The notifications on success to use for this organization in a list.|
-|`notification_templates_error`|""|no|The notifications on error to use for this organization in a list.|
-|`notification_templates_approvals`|""|no|The notifications for approval to use for this organization in a list.|
-|`state`|`present`|no|Desired state of the resource.|
-
-#### Yaml Example
-```yaml
----
-tower_organizations:
-- name: Default
-  description: This is the Default Group
-- name: Automation Group
-  description: This is the Automation Group
-  custom_virtualenv: "/opt/cust/enviroment/"
-  max_hosts: 10
-```
-
-#### Tower Export Data structure model
-##### Yaml Example
-```yaml
----
-tower_organizations:
-- name: Satellite
-  description: Satellite
-  max_hosts: 0
-  custom_virtualenv:
-  related:
-    notification_templates_started: []
-    notification_templates_success: []
-    notification_templates_error:
-    - name: irc-satqe-chat-notification
-    notification_templates_approvals: []
-- name: Default
-  description: Default
-  max_hosts: 0
-  custom_virtualenv:
-  related:
-    notification_templates_started: []
-    notification_templates_success: []
-    notification_templates_error: []
-    notification_templates_approvals: []
-```
+|`foreman_description` |""|no|Description of Named Organization|
+|`label`|`False`|no|Custom Label|
+|`state`|`present`|no|Desired State of the Resource.|
 
 ## Playbook Examples
 ### Standard Role Usage
@@ -95,13 +49,19 @@ tower_organizations:
       include_role: 
         name: ../..
       vars: 
-        foreman_organizations: 
-          - name: raleigh
-            label: rdu
-          - name: lanai 
-            description: pacific datacenter 
-          - name: default
-            label: boring
+            foreman_server_url: url
+            foreman_username: user
+            foreman_password: pass
+            foreman_validate_certs: no
+            foreman_organizations: 
+              - name: raleigh
+                label: rdu
+                state: present
+              - name: default
+                label: boring
+                state: absent
+              - name: lanai 
+                description: pacific datacenter 
 ```
 ## Author
 [Chris Hindman](https://github.com/hindman-redhat)
