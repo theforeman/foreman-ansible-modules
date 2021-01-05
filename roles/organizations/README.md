@@ -1,4 +1,4 @@
-# foreman.organizations
+# theforeman.foreman.organizations
 
 ## Description
 An Ansible Role to create Organizations in Foreman.
@@ -6,11 +6,10 @@ An Ansible Role to create Organizations in Foreman.
 ## Variables
 |Variable Name|Default Value|Required|Description|Example|
 |:---:|:---:|:---:|:---:|:---:|
-|`foreman_server_url`|"present"|no|URL of the Foreman server
-|`foreman_username`|""|yes|Username accessing the Foreman Server.||
-|`foreman_password`|""|yes|Password of user accessing the Foreman Server.  This should be stored at vars/foreman-secrets.yml or elsewhere 
-|`validate_certs` |""|no|Whether or not to verify the TLS certificates of the Foreman server.
-|`foreman_description` |""|no|Description of named organization
+|`foreman_server_url`|""|no|URL of the Foreman server.|
+|`foreman_username`|""|no|Username accessing the Foreman Server.|
+|`foreman_password`|""|no|Password of user accessing the Foreman Server.  This should be stored at vars/foreman-secrets.yml or elsewhere.|
+|`foreman_prefix` |"foreman_"|no|Whether or not to verify the TLS certificates of the Foreman server.|
 
 ### Secure Logging Variables
 The following Variables compliment each other.
@@ -29,9 +28,9 @@ This role accepts two data models. A simple straightforward easy to maintain mod
 ### Variables
 |Variable Name|Default Value|Required|Description|
 |:---:|:---:|:---:|:---:|
-|`name`|""|yes|Name of Organization|
-|`foreman_description` |""|no|Description of Named Organization|
-|`label`|`False`|no|Custom Label|
+|`name`|""|yes|Name of Organization.|
+|`description`|""|no|Description of Named Organization.|
+|`label`|``|no|Custom Label.|
 |`state`|`present`|no|Desired State of the Resource.|
 
 ## Playbook Examples
