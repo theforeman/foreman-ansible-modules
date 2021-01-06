@@ -72,7 +72,7 @@ products:
         deb_architectures: amd64
         deb_releases: stable
       - name: Foreman Client CentOS 7
-        url: https://yum.theforeman.org/client/latest
+        url: https://yum.theforeman.org/client/latest/el7/x86_64/
         content_type: yum
 ```
 
