@@ -30,7 +30,7 @@
     state: present
   loop: "{{ users }}"
   when: create_users |bool
-  no_log: "{{ hide_password_in_log | default (true) }}"
+  no_log: "{{ hide_password_in_log }}"
 
 # task for usergroup creation
 - name: Create usergroup
@@ -66,7 +66,7 @@
     attr_photo: "{{ attr_photo | default(omit) }}"
     state: present
   when: enable_ldap_auth |bool
-  no_log: "{{ hide_password_in_log | default (true) }}"
+  no_log: "{{ hide_password_in_log }}"
 
 # tasks for ext_usergroup
 - name: Create external user group
