@@ -1,0 +1,71 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false  
+  vars_files:
+    - vars/server.yml
+  vars:
+    vars:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "Test Organization"
+    or_users:
+      - username: "Gandalf"
+        firstname: "Weiß"
+        lastname: "Grau"
+        email: "gandalf@mordor.auen"
+        description: "Großer alter Mann"
+        admin_rights: true
+        user_password: "PASSWORD"
+        default_location: "Minga"
+        default_organization: "Atix"
+        auth_source: Internal    # or "{{ ldap_name }}"
+        timezone: "Berlin"
+        user_locale: "de"
+        roles:
+          - "Viewer"
+        locations:
+          - "{{ or_location }}"
+        organizations:
+          - "{{ or_organization }}"
+    or_usergroups:
+      - usergroupname: "Lemminge"
+        admin_rights: true
+        users:
+          - "{{ or_users.0.username }}"
+        usergroups: ""     # nested group
+    ldap_name: "IPA"
+    ldap_host: "test.ldap.server"
+    onthefly_register: true
+    ldap_account: dc=foreman,dc=de
+    ldap_password: PASSWORD
+    ldap_base_dn: cn=base,dc=de
+    ldap_groups_base: dc=group,dc=de
+    ldap_server_type: posix
+    attr_login: uid
+    attr_firstname: givenName
+    attr_lastname: sn
+    attr_mail: mail
+    attr_photo: ""
+    linked_groups:
+      - external_usergroupname: "users"
+        or_usergroup: "{{ or_usergroups.0.usergroupname }}"
+        auth_source_ldap: "{{ ldap_name }}"
+  roles:
+    - "theforeman.foreman.users"
