@@ -1,4 +1,4 @@
-# theforeman.foreman.users
+# foreman_users
 
 ## This role can be used to create users, user groups, LDAP-Auth and to link external and internal user groups
 
@@ -131,7 +131,7 @@ linked_groups:
     enable_ldap_auth: false
     map_external_usergroups: false
   roles:
-     - { role: theforeman.foreman.users }
+     - { role: foreman_users }
   gather_facts: no
 ```
 
