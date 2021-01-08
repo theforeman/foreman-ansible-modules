@@ -1,4 +1,4 @@
-# foreman_users
+# users
 
 ## This role can be used to create users, user groups, LDAP-Auth and to link external and internal user groups
 
@@ -37,7 +37,7 @@ map_external_usergroups: bool defualt (true)
 For user creation use:
 
 ``` yaml
-or_users:
+users:
   - username: string **required**
     firstname: string
     lastname: string
@@ -61,7 +61,7 @@ or_users:
 For usergroup creation use:
 
 ``` yaml
-or_usergroups:
+usergroups:
   - usergroupname: string **required**
     admin_rights: bool
     roles:
@@ -95,7 +95,7 @@ For linking external groups with internal groups
 ``` yaml
 linked_groups:
   external_usergroupname: string **required**
-  or_usergroup: string **required**
+  usergroup: string **required**
   auth_source_ldap: string **required**
 ```
 
@@ -121,17 +121,18 @@ linked_groups:
 ---
 - hosts: orcharhinos
   vars:
-    or_url: https://orcharhino.fqdn
-    or_admin_user: admin
-    or_admin_password: password
-    or_organization: organization
-    or_location: World
+    url: https://orcharhino.fqdn
+    admin_user: admin
+    admin_password: password
+    organization: organization
+    location: World
     create_users: false
     create_usergroups: false
     enable_ldap_auth: false
     map_external_usergroups: false
+    hide_password_in_log: true
   roles:
-     - { role: foreman_users }
+     - { role: users }
   gather_facts: no
 ```
 

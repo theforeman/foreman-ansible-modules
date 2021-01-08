@@ -25,7 +25,7 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     organization: "Test Organization"
-    or_users:
+    users:
       - username: "Gandalf"
         firstname: "Weiß"
         lastname: "Grau"
@@ -41,14 +41,14 @@
         roles:
           - "Viewer"
         locations:
-          - "{{ or_location }}"
+          - "{{ location }}"
         organizations:
-          - "{{ or_organization }}"
-    or_usergroups:
+          - "{{ organization }}"
+    usergroups:
       - usergroupname: "Lemminge"
         admin_rights: true
         users:
-          - "{{ or_users.0.username }}"
+          - "{{ users.0.username }}"
         usergroups: ""     # nested group
     ldap_name: "IPA"
     ldap_host: "test.ldap.server"
@@ -65,7 +65,7 @@
     attr_photo: ""
     linked_groups:
       - external_usergroupname: "users"
-        or_usergroup: "{{ or_usergroups.0.usergroupname }}"
+        usergroup: "{{ usergroups.0.usergroupname }}"
         auth_source_ldap: "{{ ldap_name }}"
   roles:
-    - role: foreman_users
+    - role: users

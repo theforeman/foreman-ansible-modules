@@ -1,16 +1,16 @@
 ---
-# defaults file for foreman_users
+# defaults file for users
 # answers for tasks
 create_users: true
 create_usergroups: true
 enable_ldap_auth: false
 map_external_usergroups: false
-
+hide_password_in_log: true
 # users
 # to create multiple users copy
 # from  - username: to organizations: - "ORG" and paste it below.
 # The indentation must be correct
-or_users:
+users:
   - username: "Gandalf"
     firstname: "White"
     lastname: "Gray"
@@ -18,27 +18,27 @@ or_users:
     description: "tall old man"
     admin_rights: false
     user_password: "magic_stick"
-    default_location: "{{ or_location }}"
-    default_organization: "{{ or_organization }}"
+    default_location: "{{ location }}"
+    default_organization: "{{ organization }}"
     auth_source: Internal    # or "{{ ldap_name }}"
     timezone: "Berlin"
     user_locale: "en"
     roles:
       - "Viewer"
     locations:
-      - "{{ or_location }}"
+      - "{{ location }}"
     organizations:
-      - "{{ or_organization }}"
+      - "{{ organization }}"
 
 # Usergroups
 # For multiple usergroups it is to proceed as before with the previous example
-or_usergroups:
+usergroups:
   - usergroupname: "Hobbits"
     admin_rights: false
     roles:
       - "Viewer"
     users:
-      - "{{ or_users.0.username }}"
+      - "{{ users.0.username }}"
     usergroups: ""     # nested group
 
 #  LDAP data
@@ -57,8 +57,8 @@ or_usergroups:
 # attr_mail: mail
 # attr_photo: ""
 
-# link external usergroup with or_usergroup
+# link external usergroup with usergroup
 # linked_groups:
 #   external_usergroupname: "users"
-#   or_usergroup: "{{ or_usergroups.0.usergroupname }}"
+#   usergroup: "{{ usergroups.0.usergroupname }}"
 #   auth_source_ldap: "{{ ldap_name }}"

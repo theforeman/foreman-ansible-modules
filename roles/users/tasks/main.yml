@@ -1,11 +1,11 @@
 ---
-# tasks file for foreman_users
+# tasks file for users
 - name: set auth params
   set_fact:
     auth_params: &auth_params
-      server_url: "https://{{ or_fqdn }}"
-      username: "{{ or_admin_user }}"
-      password: "{{ or_admin_password }}"
+      server_url: "https://{{ fqdn }}"
+      username: "{{ admin_user }}"
+      password: "{{ admin_password }}"
       validate_certs: false
 
 # task for user creation
@@ -28,8 +28,9 @@
     locations: "{{ item.locations | default(omit) }}"
     organizations: "{{ item.organizations | default(omit) }}"
     state: present
-  loop: "{{ or_users }}"
+  loop: "{{ users }}"
   when: create_users |bool
+  no_log: "{{ hide_password_in_log | default (true) }}"
 
 # task for usergroup creation
 - name: Create usergroup
@@ -40,7 +41,7 @@
     roles: "{{ item.roles | default(omit) }}"
     users: "{{ item.users | default(omit) }}"
     state: present
-  loop: "{{ or_usergroups }}"
+  loop: "{{ usergroups }}"
   when: create_usergroups |bool
 
 # tasks for ldap
@@ -65,6 +66,7 @@
     attr_photo: "{{ attr_photo | default(omit) }}"
     state: present
   when: enable_ldap_auth |bool
+  no_log: "{{ hide_password_in_log | default (true) }}"
 
 # tasks for ext_usergroup
 - name: Create external user group
@@ -74,7 +76,7 @@
     name: "{{ item.external_usergroupname }}"
     auth_source_ldap: "{{ item.auth_source_ldap }}"
     # name of the group listed in OR
-    usergroup: "{{ item.or_usergroup }}"
+    usergroup: "{{ item.usergroup }}"
     state: present
   when: map_external_usergroups
   loop: "{{ linked_groups }}"
