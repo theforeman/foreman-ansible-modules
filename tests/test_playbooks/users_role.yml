@@ -17,7 +17,10 @@
       vars:
         organization_name: "Test Organization"
         organization_state: "present"
-
+    - name: ensure test location
+      include_tasks: tasks/location.yml
+      vars:
+        location_state: present
 - hosts: tests
   collections:
     - theforeman.foreman
@@ -31,7 +34,7 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     organization: "Test Organization"
-    location: Minga
+    location: "Test Location"
     users:
       - username: "Gandalf"
         firstname: "Weiß"
@@ -40,7 +43,7 @@
         description: "Großer alter Mann"
         admin_rights: true
         user_password: "PASSWORD"
-        default_location: "Minga"
+        default_location: "Test Location"
         default_organization: "Test Organization"
         auth_source: Internal    # or "{{ ldap_name }}"
         timezone: "Berlin"
