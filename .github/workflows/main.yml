@@ -86,7 +86,7 @@ jobs:
         run: make dist-test
       - name: Run sanity tests
         run: make SANITY_OPTS="--local" sanity
-        if: matrix.ansible == 'devel' || (matrix.ansible == 'stable-2.10' && matrix.python != '3.8')
+        if: matrix.ansible == 'devel' || matrix.ansible == 'stable-2.10'
 
   checkmode:
     runs-on: ubuntu-latest
