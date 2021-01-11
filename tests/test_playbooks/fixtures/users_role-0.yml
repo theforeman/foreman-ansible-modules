@@ -14,7 +14,8 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.2.1","api_version":2}'
+      string: '{"result": "ok", "status": 200, "version": "2.2.1", "api_version":
+        2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -70,13 +71,18 @@ interactions:
     uri: https://foreman.example.org/api/users?search=login%3D%22Gandalf%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"login=\\\"Gandalf\\\"\",\n  \"sort\": {\n    \"by\":
-        null,\n    \"order\": null\n  },\n  \"results\": [{\"firstname\":\"Wei\xDF\",\"lastname\":\"Grau\",\"mail\":\"gandalf@mordor.auen\",\"admin\":true,\"auth_source_id\":1,\"disabled\":false,\"auth_source_name\":\"Internal\",\"timezone\":\"Berlin\",\"locale\":\"de\",\"last_login_on\":null,\"created_at\":\"2021-01-08
-        14:59:45 UTC\",\"updated_at\":\"2021-01-11 10:19:47 UTC\",\"id\":6,\"login\":\"Gandalf\",\"description\":\"Gro\xDFer
-        alter Mann\",\"ssh_keys\":[],\"default_location\":{\"id\":2,\"name\":\"Minga\",\"title\":\"Minga\",\"description\":null},\"locations\":[{\"id\":2,\"name\":\"Minga\"}],\"default_organization\":{\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"},\"organizations\":[{\"id\":3,\"name\":\"Test
-        Organization\"}],\"effective_admin\":true}]\n}\n"
+      string: '{"total": 2, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "login=\"Gandalf\"", "sort": {"by": null, "order": null}, "results": [{"firstname":
+        "Wei\u00df", "lastname": "Grau", "mail": "gandalf@mordor.auen", "admin": true,
+        "auth_source_id": 1, "disabled": false, "auth_source_name": "Internal", "timezone":
+        "Berlin", "locale": "de", "last_login_on": null, "created_at": "2021-01-08
+        14:59:45 UTC", "updated_at": "2021-01-11 15:15:46 UTC", "id": 6, "login":
+        "Gandalf", "description": "Gro\u00dfer alter Mann", "ssh_keys": [], "default_location":
+        {"id": 4, "name": "Test Location", "title": "Test Location", "description":
+        null}, "locations": [{"id": 4, "name": "Test Location"}], "default_organization":
+        {"id": 3, "name": "Test Organization", "title": "Test Organization", "description":
+        "A test organization"}, "organizations": [{"id": 3, "name": "Test Organization"}],
+        "effective_admin": true}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -113,7 +119,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '844'
+      - '868'
     status:
       code: 200
       message: OK
@@ -132,15 +138,25 @@ interactions:
     uri: https://foreman.example.org/api/users/6
   response:
     body:
-      string: "{\"firstname\":\"Wei\xDF\",\"lastname\":\"Grau\",\"mail\":\"gandalf@mordor.auen\",\"admin\":true,\"auth_source_id\":1,\"disabled\":false,\"auth_source_name\":\"Internal\",\"timezone\":\"Berlin\",\"locale\":\"de\",\"last_login_on\":null,\"created_at\":\"2021-01-08
-        14:59:45 UTC\",\"updated_at\":\"2021-01-11 10:19:47 UTC\",\"id\":6,\"login\":\"Gandalf\",\"description\":\"Gro\xDFer
-        alter Mann\",\"ssh_keys\":[],\"default_location\":{\"id\":2,\"name\":\"Minga\",\"title\":\"Minga\",\"description\":null},\"locations\":[{\"id\":2,\"name\":\"Minga\",\"title\":\"Minga\",\"description\":null}],\"default_organization\":{\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"},\"organizations\":[{\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}],\"effective_admin\":true,\"cached_usergroups\":[{\"name\":\"Lemminge\",\"id\":2,\"created_at\":\"2021-01-08
-        14:59:47 UTC\",\"updated_at\":\"2021-01-08 14:59:47 UTC\",\"roles\":[]}],\"auth_source_internal\":{\"id\":1,\"type\":\"AuthSourceInternal\",\"name\":\"Internal\"},\"mail_notifications\":[],\"roles\":[{\"name\":\"Viewer\",\"id\":8,\"description\":\"Role
-        granting read only access. Users with this role can see all data but can not
-        do any modifications\",\"origin\":\"foreman\"}],\"usergroups\":[{\"name\":\"Lemminge\",\"id\":2,\"created_at\":\"2021-01-08
-        14:59:47 UTC\",\"updated_at\":\"2021-01-08 14:59:47 UTC\",\"roles\":[]}]}"
+      string: '{"firstname": "Wei\u00df", "lastname": "Grau", "mail": "gandalf@mordor.auen",
+        "admin": true, "auth_source_id": 1, "disabled": false, "auth_source_name":
+        "Internal", "timezone": "Berlin", "locale": "de", "last_login_on": null, "created_at":
+        "2021-01-08 14:59:45 UTC", "updated_at": "2021-01-11 15:15:46 UTC", "id":
+        6, "login": "Gandalf", "description": "Gro\u00dfer alter Mann", "ssh_keys":
+        [], "default_location": {"id": 4, "name": "Test Location", "title": "Test
+        Location", "description": null}, "locations": [{"id": 4, "name": "Test Location",
+        "title": "Test Location", "description": null}], "default_organization": {"id":
+        3, "name": "Test Organization", "title": "Test Organization", "description":
+        "A test organization"}, "organizations": [{"id": 3, "name": "Test Organization",
+        "title": "Test Organization", "description": "A test organization"}], "effective_admin":
+        true, "cached_usergroups": [{"name": "Lemminge", "id": 2, "created_at": "2021-01-08
+        14:59:47 UTC", "updated_at": "2021-01-08 14:59:47 UTC", "roles": []}], "auth_source_internal":
+        {"id": 1, "type": "AuthSourceInternal", "name": "Internal"}, "mail_notifications":
+        [], "roles": [{"name": "Viewer", "id": 8, "description": "Role granting read
+        only access. Users with this role can see all data but can not do any modifications",
+        "origin": "foreman"}], "usergroups": [{"name": "Lemminge", "id": 2, "created_at":
+        "2021-01-08 14:59:47 UTC", "updated_at": "2021-01-08 14:59:47 UTC", "roles":
+        []}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -177,7 +193,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1313'
+      - '1345'
     status:
       code: 200
       message: OK
@@ -196,11 +212,11 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-01-08
-        14:46:05 UTC\",\"updated_at\":\"2021-01-08 14:46:05 UTC\",\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"total": 2, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "name=\"Test Organization\"", "sort": {"by": null, "order": null}, "results":
+        [{"label": "Test_Organization", "created_at": "2021-01-08 14:46:05 UTC", "updated_at":
+        "2021-01-08 14:46:05 UTC", "id": 3, "name": "Test Organization", "title":
+        "Test Organization", "description": "A test organization"}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -256,11 +272,11 @@ interactions:
     uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-01-11
-        10:51:48 UTC\",\"updated_at\":\"2021-01-11 10:51:48 UTC\",\"id\":4,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+      string: '{"total": 2, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "title=\"Test Location\"", "sort": {"by": null, "order": null}, "results":
+        [{"ancestry": null, "parent_id": null, "parent_name": null, "created_at":
+        "2021-01-11 10:51:48 UTC", "updated_at": "2021-01-11 10:51:48 UTC", "id":
+        4, "name": "Test Location", "title": "Test Location", "description": null}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -316,11 +332,11 @@ interactions:
     uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-01-11
-        10:51:48 UTC\",\"updated_at\":\"2021-01-11 10:51:48 UTC\",\"id\":4,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+      string: '{"total": 2, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "title=\"Test Location\"", "sort": {"by": null, "order": null}, "results":
+        [{"ancestry": null, "parent_id": null, "parent_name": null, "created_at":
+        "2021-01-11 10:51:48 UTC", "updated_at": "2021-01-11 10:51:48 UTC", "id":
+        4, "name": "Test Location", "title": "Test Location", "description": null}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -376,11 +392,11 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-01-08
-        14:46:05 UTC\",\"updated_at\":\"2021-01-08 14:46:05 UTC\",\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"total": 2, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "name=\"Test Organization\"", "sort": {"by": null, "order": null}, "results":
+        [{"label": "Test_Organization", "created_at": "2021-01-08 14:46:05 UTC", "updated_at":
+        "2021-01-08 14:46:05 UTC", "id": 3, "name": "Test Organization", "title":
+        "Test Organization", "description": "A test organization"}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -436,10 +452,12 @@ interactions:
     uri: https://foreman.example.org/api/auth_sources?search=name%3D%22Internal%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Internal\\\"\",\n  \"sort\": {\n    \"by\":
-        null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\":\"2020-11-26
-        16:24:59 UTC\",\"updated_at\":\"2020-11-26 16:24:59 UTC\",\"id\":1,\"type\":\"AuthSourceInternal\",\"name\":\"Internal\",\"locations\":[{\"id\":2,\"name\":\"Minga\",\"title\":\"Minga\",\"description\":null}],\"organizations\":[{\"id\":1,\"name\":\"ACMELAB\",\"title\":\"ACMELAB\",\"description\":\"\"}]}]\n}\n"
+      string: '{"total": 3, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "name=\"Internal\"", "sort": {"by": null, "order": null}, "results": [{"created_at":
+        "2020-11-26 16:24:59 UTC", "updated_at": "2020-11-26 16:24:59 UTC", "id":
+        1, "type": "AuthSourceInternal", "name": "Internal", "locations": [{"id":
+        2, "name": "Minga", "title": "Minga", "description": null}], "organizations":
+        [{"id": 1, "name": "ACMELAB", "title": "ACMELAB", "description": ""}]}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -495,11 +513,11 @@ interactions:
     uri: https://foreman.example.org/api/roles?search=name%3D%22Viewer%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 31,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Viewer\\\"\",\n  \"sort\": {\n    \"by\":
-        \"name\",\n    \"order\": \"ASC\"\n  },\n  \"results\": [{\"builtin\":0,\"cloned_from_id\":null,\"name\":\"Viewer\",\"id\":8,\"description\":\"Role
+      string: '{"total": 31, "subtotal": 1, "page": 1, "per_page": 4294967296, "search":
+        "name=\"Viewer\"", "sort": {"by": "name", "order": "ASC"}, "results": [{"builtin":
+        0, "cloned_from_id": null, "name": "Viewer", "id": 8, "description": "Role
         granting read only access. Users with this role can see all data but can not
-        do any modifications\",\"origin\":\"foreman\"}]\n}\n"
+        do any modifications", "origin": "foreman"}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -541,8 +559,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"user": {"mail": " gandalf@mordor.auen", "password": "PASSWORD", "default_location_id":
-      4, "location_ids": [4]}}'
+    body: '{"user": {"mail": " gandalf@mordor.auen", "password": "PASSWORD"}}'
     headers:
       Accept:
       - application/json;version=2
@@ -551,7 +568,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '113'
+      - '66'
       Content-Type:
       - application/json
       User-Agent:
@@ -560,17 +577,25 @@ interactions:
     uri: https://foreman.example.org/api/users/6
   response:
     body:
-      string: "{\"firstname\":\"Wei\xDF\",\"lastname\":\"Grau\",\"mail\":\"gandalf@mordor.auen\",\"admin\":true,\"auth_source_id\":1,\"disabled\":false,\"auth_source_name\":\"Internal\",\"timezone\":\"Berlin\",\"locale\":\"de\",\"last_login_on\":null,\"created_at\":\"2021-01-08
-        14:59:45 UTC\",\"updated_at\":\"2021-01-11 10:51:52 UTC\",\"id\":6,\"login\":\"Gandalf\",\"description\":\"Gro\xDFer
-        alter Mann\",\"ssh_keys\":[],\"default_location\":{\"id\":4,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null},\"locations\":[{\"id\":4,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null}],\"default_organization\":{\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"},\"organizations\":[{\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}],\"effective_admin\":true,\"cached_usergroups\":[{\"name\":\"Lemminge\",\"id\":2,\"created_at\":\"2021-01-08
-        14:59:47 UTC\",\"updated_at\":\"2021-01-08 14:59:47 UTC\",\"roles\":[]}],\"auth_source_internal\":{\"id\":1,\"type\":\"AuthSourceInternal\",\"name\":\"Internal\"},\"mail_notifications\":[],\"roles\":[{\"name\":\"Viewer\",\"id\":8,\"description\":\"Role
-        granting read only access. Users with this role can see all data but can not
-        do any modifications\",\"origin\":\"foreman\"}],\"usergroups\":[{\"name\":\"Lemminge\",\"id\":2,\"created_at\":\"2021-01-08
-        14:59:47 UTC\",\"updated_at\":\"2021-01-08 14:59:47 UTC\",\"roles\":[]}]}"
+      string: '{"firstname": "Wei\u00df", "lastname": "Grau", "mail": "gandalf@mordor.auen",
+        "admin": true, "auth_source_id": 1, "disabled": false, "auth_source_name":
+        "Internal", "timezone": "Berlin", "locale": "de", "last_login_on": null, "created_at":
+        "2021-01-08 14:59:45 UTC", "updated_at": "2021-01-11 15:18:04 UTC", "id":
+        6, "login": "Gandalf", "description": "Gro\u00dfer alter Mann", "ssh_keys":
+        [], "default_location": {"id": 4, "name": "Test Location", "title": "Test
+        Location", "description": null}, "locations": [{"id": 4, "name": "Test Location",
+        "title": "Test Location", "description": null}], "default_organization": {"id":
+        3, "name": "Test Organization", "title": "Test Organization", "description":
+        "A test organization"}, "organizations": [{"id": 3, "name": "Test Organization",
+        "title": "Test Organization", "description": "A test organization"}], "effective_admin":
+        true, "cached_usergroups": [{"name": "Lemminge", "id": 2, "created_at": "2021-01-08
+        14:59:47 UTC", "updated_at": "2021-01-08 14:59:47 UTC", "roles": []}], "auth_source_internal":
+        {"id": 1, "type": "AuthSourceInternal", "name": "Internal"}, "mail_notifications":
+        [], "roles": [{"name": "Viewer", "id": 8, "description": "Role granting read
+        only access. Users with this role can see all data but can not do any modifications",
+        "origin": "foreman"}], "usergroups": [{"name": "Lemminge", "id": 2, "created_at":
+        "2021-01-08 14:59:47 UTC", "updated_at": "2021-01-08 14:59:47 UTC", "roles":
+        []}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate

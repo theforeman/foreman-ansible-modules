@@ -107,11 +107,46 @@ def filter_response(response):
         # headers should be case insensitive, but for some reason they weren't for me
         response['headers'].pop(header.lower(), None)
         response['headers'].pop(header, None)
+    try:
+        json_sbody = json.loads(response['body']['string'])
+        if "host" in json_sbody:
+            json_sbody['host'] = 'FILTERED'
+        if "account" in json_sbody:
+            json_sbody['account'] = 'FILTERED'
+        if "base_dn" in json_sbody:
+            json_sbody['base_dn'] = 'FILTERED'
+        if "groups_base" in json_sbody:
+            json_sbody['groups_base'] = 'FILTERED'
+        response['body']['string'] = json.dumps(json_sbody)
+    except:
+        pass
+    # another for the search result
+    try:
+        json_sbody = json.loads(response['body']['string'])
+        if "host" in json_sbody['results'][0]:
+            json_sbody['results'][0]['host'] = 'FILTERED'
+        if "account" in json_sbody['results'][0]:
+            json_sbody['results'][0]['account'] = 'FILTERED'
+        if "base_dn" in json_sbody['results'][0]:
+            json_sbody['results'][0]['base_dn'] = 'FILTERED'
+        if "groups_base" in json_sbody['results'][0]:
+            json_sbody['results'][0]['groups_base'] = 'FILTERED'
+            response['body']['string'] = json.dumps(json_sbody)
+    except:
+        pass
     return response
 
 
 def filter_request_uri(request):
     request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
+    if request.body is not None:
+        try:
+            json_qbody = json.loads(request.body)
+            if json_qbody['auth_source_ldap']:
+                json_qbody['auth_source_ldap'] = 'FILTERED'
+                request.body = json.dumps(json_qbody)
+        except:
+            pass
     return request
 
 
