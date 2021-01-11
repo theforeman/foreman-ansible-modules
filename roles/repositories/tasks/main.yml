@@ -95,7 +95,7 @@
   with_subelements:
     - "{{ products | selectattr('repository_sets', 'defined') | list }}"
     - repository_sets
-  when: "{{ item.0.sync | default(false) | bool }}"
+  when: item.0.sync | default(false) | bool
   async: 999999
   poll: 0
   register: repo_sync_sleeper
