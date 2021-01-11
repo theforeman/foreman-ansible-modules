@@ -12,7 +12,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
   Each product is represented as a dictionary and can include `repository_sets` which represent Red Hat Repositories and should be used when the product name matches an existing Red Hat Product.
   Each element of `repository_sets` must have a `name` and should specify the `basearch` and/or `releasever` only when multiple versions are available for that Product.
   All repository sets for a Red Hat Product can be enabled by omitting `repository_sets` and instead specifying that the Product has `all_repositories: True`. When using this option it is also necessary to specify a list of repository `label`s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
-  Custom (i.e. non Red Hat) Products can also be defined, with associated `repositories` which represent custom repositories, and are required to have a `name`, `url`, and `content_type`; they may require additional fields and can take any parameter supported by [theforeman.foreman.repository](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html).
+  Custom (i.e. non Red Hat) Products can also be defined, with associated `repositories` which represent custom repositories, and are required to have a `name`, `url`, and `content_type`; they may require additional fields and can take any parameter supported by [theforeman.foreman.repository](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html). Repositories will not be synced automatically when enabled. Specify the `sync` option on the product to run an initial sync of all repositories in the product.
   A variety of examples are demonstrated in the data structure below:
 
 ```yaml
@@ -83,6 +83,7 @@ This example enables several Red Hat Repositories. There are a few important poi
 - RHEL 8 repos have a different product name than previous RHEL versions.
 - The RHEL 8 product already contains the `basearch` so it should not be specified on the RHEL 8 `repository_sets`, and the naming convention for `releasever` changed with RHEL 8 since system purpose removes the need for separate distributions like `Server` and `Workstation`.
 - The optional and extras repositories do not have point releases so `releasever` should be omitted.
+- RHEL 8 repos will be synced after being enabled. Without the `sync` parameter, the RHEL 6 and 7 repositories will only be enabled.
 
 ```yaml
 - hosts: localhost
@@ -107,6 +108,7 @@ This example enables several Red Hat Repositories. There are a few important poi
               - name: Red Hat Enterprise Linux 7 Server - Optional (RPMs)
                 basearch: x86_64
           - name: Red Hat Enterprise Linux for x86_64
+            sync: true
             repository_sets:
               - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
                 releasever: 8

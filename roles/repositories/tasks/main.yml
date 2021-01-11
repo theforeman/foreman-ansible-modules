@@ -82,3 +82,32 @@
   with_subelements:
     - "{{ products | selectattr('repositories', 'defined') | list }}"
     - repositories
+
+- name: Sync repository
+  theforeman.foreman.repository_sync:
+    username: "{{ username }}"
+    password: "{{ password }}"
+    server_url: "{{ server_url }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    product: "{{ item.0.name }}"
+    repository: "{{ item.1.name }}"
+  with_subelements:
+    - "{{ products | selectattr('repository_sets', 'defined') | list }}"
+    - repository_sets
+  when: "{{ item.0.sync | default(false) | bool }}"
+  async: 999999
+  poll: 0
+  register: repo_sync_sleeper
+
+- name: Wait until all Syncs have finished
+  async_status:
+    jid: "{{ repo_sync_sleeper_item.ansible_job_id }}"
+  loop: "{{ repo_sync_sleeper.results }}"
+  loop_control:
+    loop_var: repo_sync_sleeper_item
+  when: repo_sync_sleeper_item.ansible_job_id is defined
+  register: async_job_result
+  until: async_job_result.finished
+  retries: 999
+  delay: 20
