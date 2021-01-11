@@ -118,7 +118,7 @@ def filter_response(response):
         if "groups_base" in json_sbody:
             json_sbody['groups_base'] = 'FILTERED'
         response['body']['string'] = json.dumps(json_sbody)
-    except:
+    except Exception:
         pass
     # another for the search result
     try:
@@ -132,7 +132,7 @@ def filter_response(response):
         if "groups_base" in json_sbody['results'][0]:
             json_sbody['results'][0]['groups_base'] = 'FILTERED'
             response['body']['string'] = json.dumps(json_sbody)
-    except:
+    except Exception:
         pass
     return response
 
@@ -145,7 +145,7 @@ def filter_request_uri(request):
             if json_qbody['auth_source_ldap']:
                 json_qbody['auth_source_ldap'] = 'FILTERED'
                 request.body = json.dumps(json_qbody)
-        except:
+        except Exception:
             pass
     return request
 
