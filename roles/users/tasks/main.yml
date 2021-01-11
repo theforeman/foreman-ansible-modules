@@ -3,10 +3,11 @@
 - name: set auth params
   set_fact:
     auth_params: &auth_params
-      server_url: "https://{{ fqdn }}"
-      username: "{{ admin_user }}"
-      password: "{{ admin_password }}"
-      validate_certs: false
+      server_url: "{{ server_url }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      validate_certs: "{{ foreman_validate_certs }}"
+  no_log: true
 
 # task for user creation
 - name: Create user
@@ -58,7 +59,6 @@
     base_dn: "{{ ldap_base_dn | default(omit) }} "
     groups_base: "{{ ldap_groups_base | default(omit) }}"
     server_type: "{{ ldap_server_type | default(omit) }}"
-    # attr login are hardcoded
     attr_login: "{{ attr_login | default(omit) }}"
     attr_firstname: "{{ attr_firstname | default(omit) }}"
     attr_lastname: "{{ attr_lastname | default(omit) }}"
@@ -75,7 +75,7 @@
     # name of the external userg.
     name: "{{ item.external_usergroupname }}"
     auth_source_ldap: "{{ item.auth_source_ldap }}"
-    # name of the group listed in OR
+    # name of the group listed in Foreman
     usergroup: "{{ item.usergroup }}"
     state: present
   when: map_external_usergroups
