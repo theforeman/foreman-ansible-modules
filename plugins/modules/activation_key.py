@@ -62,12 +62,15 @@ options:
         description:
           - Pool ID of the Subscription to be added.
           - Mutually exclusive with I(name) and I(upstream_pool_id).
+          - Also named C(Candlepin Id) in the CSV export of the subscriptions,
+          - it is as well the C(UUID) as output by C(hammer subscription list).
         type: str
         required: false
       upstream_pool_id:
         description:
           - Upstream Pool ID of the Subscription to be added.
           - Mutually exclusive with I(name) and I(pool_id).
+          - Also named C(Master Pools) in the Red Hat Portal.
         type: str
         required: false
   host_collections:
