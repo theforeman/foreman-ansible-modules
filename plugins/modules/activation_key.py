@@ -62,8 +62,8 @@ options:
         description:
           - Pool ID of the Subscription to be added.
           - Mutually exclusive with I(name) and I(upstream_pool_id).
-          - Also named I(Candlepin Id) in the CSV export of the subscriptions,
-          - it is as well the UUID as output by I(hammer subscription list).
+          - Also named C(Candlepin Id) in the CSV export of the subscriptions,
+          - it is as well the C(UUID) as output by C(hammer subscription list).
         type: str
         required: false
       upstream_pool_id:
