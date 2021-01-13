@@ -70,7 +70,7 @@ options:
         description:
           - Upstream Pool ID of the Subscription to be added.
           - Mutually exclusive with I(name) and I(pool_id).
-          - Also named I(Master Pools) at access.redhat.com.
+          - Also named C(Master Pools) in the Red Hat Portal.
         type: str
         required: false
   host_collections:
