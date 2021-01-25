@@ -297,8 +297,9 @@ class HostMixin(ParametersMixin):
             openscap_proxy=dict(type='entity', resource_type='smart_proxies'),
             content_source=dict(type='entity', scope=['organization'], resource_type='smart_proxies'),
             lifecycle_environment=dict(type='entity', scope=['organization']),
-            kickstart_repository=dict(type='entity', scope=['organization'], resource_type='repositories'),
-            content_view=dict(type='entity', scope=['organization']),
+            kickstart_repository=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment', 'content_view'],
+                                      resource_type='repositories'),
+            content_view=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment']),
             activation_keys=dict(),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
@@ -786,8 +787,13 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_puppetclasses(self, names, **kwargs):
         return [self.find_puppetclass(name, **kwargs) for name in names]
 
-    def scope_for(self, key):
-        return {'{0}_id'.format(key): self.lookup_entity(key)['id']}
+    def scope_for(self, key, scoped_resource=None):
+        # workaround for https://projects.theforeman.org/issues/31714
+        if scoped_resource in ['content_views', 'repositories'] and key == 'lifecycle_environment':
+            scope_key = 'environment'
+        else:
+            scope_key = key
+        return {'{0}_id'.format(scope_key): self.lookup_entity(key)['id']}
 
     def set_entity(self, key, entity):
         self.foreman_params[key] = entity
@@ -814,9 +820,12 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             params = {}
         try:
-            if 'scope' in entity_spec:
-                for scope in entity_spec['scope']:
-                    params.update(self.scope_for(scope))
+            for scope in entity_spec.get('scope', []):
+                params.update(self.scope_for(scope, resource_type))
+            for optional_scope in entity_spec.get('optional_scope', []):
+                if optional_scope in self.foreman_params:
+                    params.update(self.scope_for(optional_scope, resource_type))
+
         except TypeError:
             if failsafe:
                 if entity_spec.get('type') == 'entity':
@@ -1371,10 +1380,11 @@ class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
                 self.foreman_params[self.entity_key] = self.foreman_params.pop(updated_key)
 
         params = kwargs.get('params', {})
-        entity_scope = self.foreman_spec['entity'].get('scope')
-        if entity_scope:
-            for scope in entity_scope:
-                params.update(self.scope_for(scope))
+        for scope in self.foreman_spec['entity'].get('scope', []):
+            params.update(self.scope_for(scope))
+        for optional_scope in self.foreman_spec['entity'].get('optional_scope', []):
+            if optional_scope in self.foreman_params:
+                params.update(self.scope_for(optional_scope))
         new_entity = self.ensure_entity(self.foreman_spec['entity']['resource_type'], self.foreman_params, entity, params=params)
         new_entity = self.remove_sensitive_fields(new_entity)
 
@@ -1492,6 +1502,7 @@ def _foreman_spec_helper(spec):
         'flat_name',
         'foreman_spec',
         'invisible',
+        'optional_scope',
         'resolve',
         'resource_type',
         'scope',
@@ -1506,6 +1517,7 @@ def _foreman_spec_helper(spec):
     }
     _ENTITY_SPEC_KEYS = {
         'failsafe',
+        'optional_scope',
         'resolve',
         'resource_type',
         'scope',
