@@ -39,7 +39,7 @@
     - name: check repository details
       assert:
         that:
-          - repository_info['resources']['name'] == "Test Repository"
+          - repository_info['repository']['name'] == "Test Repository"
 
     - name: search repository info
       repository_info:
@@ -54,7 +54,7 @@
     - name: check repository details
       assert:
         that:
-          - repository_info['resources'][0]['name'] == "Test Repository"
+          - repository_info['repositories'][0]['name'] == "Test Repository"
 
 
 - hosts: localhost

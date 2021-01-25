@@ -1311,12 +1311,14 @@ class ForemanInfoAnsibleModule(ForemanStatelessEntityAnsibleModule):
         resource = self.foreman_spec['entity']['resource_type']
 
         if 'name' in self.foreman_params:
-            self._resources = self.lookup_entity('entity')
+            self._info_result = {self.entity_name: self.lookup_entity('entity')}
         else:
-            self._resources = self.list_resource(resource, self.foreman_params['search'], _flatten_entity(self.foreman_params, self.foreman_spec))
+            _flat_entity = _flatten_entity(self.foreman_params, self.foreman_spec)
+            self._info_result = {resource: self.list_resource(resource, self.foreman_params['search'], _flat_entity)}
 
     def exit_json(self, **kwargs):
-        super(ForemanInfoAnsibleModule, self).exit_json(resources=self._resources, **kwargs)
+        kwargs.update(self._info_result)
+        super(ForemanInfoAnsibleModule, self).exit_json(**kwargs)
 
 
 class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
