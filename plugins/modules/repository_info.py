@@ -60,9 +60,13 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-resources:
-  description: List of repositories.
-  returned: success
+repository:
+  description: Details about the found repository
+  returned: success and I(name) was passed
+  type: dict
+repositories:
+  description: List of all found repositories and their details
+  returned: success and I(search) was passed
   type: list
   elements: dict
 '''

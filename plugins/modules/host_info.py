@@ -50,9 +50,13 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-resources:
-  description: List of all found resources and their details
-  returned: success
+host:
+  description: Details about the found host
+  returned: success and I(name) was passed
+  type: dict
+hosts:
+  description: List of all found hosts and their details
+  returned: success and I(search) was passed
   type: list
   elements: dict
 '''
