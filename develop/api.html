@@ -517,6 +517,24 @@ common usecases.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="foreman_helper.ForemanInfoAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">ForemanInfoAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanInfoAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for Foreman info modules that fetch information about entities</p>
+<dl class="py method">
+<dt id="foreman_helper.ForemanInfoAnsibleModule.exit_json">
+<code class="sig-name descname">exit_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanInfoAnsibleModule.exit_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>return from the module, without error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="foreman_helper.ForemanInfoAnsibleModule.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanInfoAnsibleModule.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>lookup entities</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="foreman_helper.ForemanScapDataStreamModule">
 <em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">ForemanScapDataStreamModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.ForemanScapDataStreamModule" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
@@ -604,8 +622,13 @@ It also includes <a class="reference internal" href="#foreman_helper.ParametersM
 <dl class="py class">
 <dt id="foreman_helper.KatelloEntityAnsibleModule">
 <em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">KatelloEntityAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.KatelloEntityAnsibleModule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Combine <a class="reference internal" href="#foreman_helper.ForemanEntityAnsibleModule" title="foreman_helper.ForemanEntityAnsibleModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code></a> with the <a class="reference internal" href="#foreman_helper.KatelloMixin" title="foreman_helper.KatelloMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">KatelloMixin</span></code></a> Mixin.</p>
-<p>Enforces scoping of entities by <code class="docutils literal notranslate"><span class="pre">organization</span></code> as required by Katello.</p>
+<dd><p>Combine <a class="reference internal" href="#foreman_helper.ForemanEntityAnsibleModule" title="foreman_helper.ForemanEntityAnsibleModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code></a> with the <a class="reference internal" href="#foreman_helper.KatelloScopedMixin" title="foreman_helper.KatelloScopedMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">KatelloScopedMixin</span></code></a> Mixin.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="foreman_helper.KatelloInfoAnsibleModule">
+<em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">KatelloInfoAnsibleModule</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.KatelloInfoAnsibleModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine <a class="reference internal" href="#foreman_helper.ForemanInfoAnsibleModule" title="foreman_helper.ForemanInfoAnsibleModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForemanInfoAnsibleModule</span></code></a> with the <a class="reference internal" href="#foreman_helper.KatelloScopedMixin" title="foreman_helper.KatelloScopedMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">KatelloScopedMixin</span></code></a> Mixin.</p>
 </dd></dl>
 
 <dl class="py class">
@@ -617,6 +640,12 @@ It also includes <a class="reference internal" href="#foreman_helper.ParametersM
 <li><p>add a required <code class="docutils literal notranslate"><span class="pre">organization</span></code> parameter to the module</p></li>
 <li><p>add Katello to the list of required plugins</p></li>
 </ul>
+</dd></dl>
+
+<dl class="py class">
+<dt id="foreman_helper.KatelloScopedMixin">
+<em class="property">class </em><code class="sig-prename descclassname">foreman_helper.</code><code class="sig-name descname">KatelloScopedMixin</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#foreman_helper.KatelloScopedMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enhances <a class="reference internal" href="#foreman_helper.KatelloMixin" title="foreman_helper.KatelloMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">KatelloMixin</span></code></a> with scoping by <code class="docutils literal notranslate"><span class="pre">organization</span></code> as required by Katello.</p>
 </dd></dl>
 
 <dl class="py class">
