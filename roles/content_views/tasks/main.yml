@@ -1,0 +1,6 @@
+---
+- name: create content views
+  include_tasks: '_create_content_view.yml'
+  with_items: "{{ foreman_content_views | default([]) }}"
+  loop_control:
+    loop_var: content_view
