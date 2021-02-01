@@ -1,0 +1,20 @@
+---
+- name: create content views
+  include_tasks: '_create_content_view.yml'
+  with_items: "{{ foreman_content_views }}"
+  loop_control:
+    loop_var: content
+
+- name: "Ensure content view version is in all environments"
+  theforeman.foreman.content_view_version:
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    content_view: "{{ item.content_view }}"
+    organization: "{{ organization }}"
+    version: "{{ item.content_view_update | d(false) | ternary(omit, 1.0) }}"
+    lifecycle_environments: "{{ lifecycle_environments | map(attribute='name') | list }}"
+  with_items: "{{ foreman_content_views }}"
+  when: lifecycle_environments is defined
+  no_log: "{{ foreman_configuration_content_views_secure_logging }}"
