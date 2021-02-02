@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: content_rhel
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_validate_certs: false
+        foreman_manifest_download: false
+        foreman_manifest_path: "{{ subscription_manifest_path }}"
+        foreman_sync_plan_name: "RHEL Sync Plan"
+        foreman_sync_plan_interval: daily
+        foreman_sync_plan_sync_date: 2021-02-02 00:00:00 UTC
+        foreman_activation_key_name: "basic_rhel_key"
+        foreman_content_rhel_wait_for_syncs: "{{ ansible_version['full'] is version('2.9', '>=') }}"
