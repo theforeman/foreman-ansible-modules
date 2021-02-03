@@ -787,6 +787,40 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_puppetclasses(self, names, **kwargs):
         return [self.find_puppetclass(name, **kwargs) for name in names]
 
+    def find_cluster(self, name, compute_resource):
+        if compute_resource['provider'].lower() not in ['ovirt', 'vmware']:
+            return {'id': name, 'name': name}
+
+        avc_params = {'id': compute_resource['id']}
+        available_clusters = self.resource_action('compute_resources', 'available_clusters', params=avc_params,
+                                                  ignore_check_mode=True, record_change=False)['results']
+        cluster = next((cluster for cluster in available_clusters if cluster['name'] == name or cluster['id'] == name), None)
+        if cluster is None:
+            err_msg = "Could not find cluster '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
+            self.fail_json(msg=err_msg)
+        return cluster
+
+    def find_network(self, name, compute_resource, cluster=None):
+        compute_provider = compute_resource.get('provider').lower()
+        if compute_provider not in ['ovirt', 'vmware', 'google', 'azurerm']:
+            return {'id': name, 'name': name}
+
+        avn_params = {'id': compute_resource['id']}
+        if cluster is not None:
+            # workaround for https://projects.theforeman.org/issues/31874
+            if compute_provider == 'vmware':
+                avn_params['cluster_id'] = cluster['name']
+            else:
+                avn_params['cluster_id'] = cluster['id']
+        available_networks = self.resource_action('compute_resources', 'available_networks', params=avn_params,
+                                                  ignore_check_mode=True, record_change=False)['results']
+        network = next((network for network in available_networks if network['name'] == name or network['id'] == name), None)
+        if network is None:
+            cr_name = compute_resource.get('name')
+            err_msg = "Could not find network '{0}' on compute resource '{1}'.".format(name, cr_name)
+            self.fail_json(msg=err_msg)
+        return network
+
     def scope_for(self, key, scoped_resource=None):
         # workaround for https://projects.theforeman.org/issues/31714
         if scoped_resource in ['content_views', 'repositories'] and key == 'lifecycle_environment':
