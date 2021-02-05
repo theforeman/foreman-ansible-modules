@@ -171,7 +171,7 @@ else:
     if test_params['test_name'] == 'host':
         fam_vcr.register_matcher('host_body', host_body_matcher)
         body_matcher = 'host_body'
-    elif test_params['test_name'] in ['subscription_manifest', 'manifest_role']:
+    elif test_params['test_name'] in ['subscription_manifest', 'manifest_role', 'content_rhel_role']:
         fam_vcr.register_matcher('subscription_manifest_body', subscription_manifest_body_matcher)
         body_matcher = 'subscription_manifest_body'
     elif test_params['test_name'] == 'job_invocation':
