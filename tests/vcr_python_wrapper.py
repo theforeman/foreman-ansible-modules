@@ -115,6 +115,18 @@ def filter_request_uri(request):
     return request
 
 
+def filter_request_manifest(request):
+    if request.method == 'POST' and request.path.endswith('/subscriptions/upload'):
+        request.body = 'FAKE_MANIFEST'
+    return request
+
+
+def filter_request(request):
+    request = filter_request_uri(request)
+    request = filter_request_manifest(request)
+    return request
+
+
 VCR_PARAMS_FILE = os.environ.get('FAM_TEST_VCR_PARAMS_FILE')
 
 # Remove the name of the wrapper from argv
@@ -170,7 +182,7 @@ else:
                               record_mode=test_params['record_mode'],
                               match_on=[method_matcher, 'path', query_matcher, body_matcher],
                               filter_headers=FILTER_REQUEST_HEADERS,
-                              before_record_request=filter_request_uri,
+                              before_record_request=filter_request,
                               before_record_response=filter_response,
                               decode_compressed_response=True,
                               ):
