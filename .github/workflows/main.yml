@@ -151,7 +151,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: Install dependencies
-        run: pip install --upgrade -r requirements-lint.txt
+        run: |
+          pip install ansible
+          pip install --upgrade -r requirements-lint.txt
       - name: Run lint
         run: make lint
       - name: Upload collection artifact
