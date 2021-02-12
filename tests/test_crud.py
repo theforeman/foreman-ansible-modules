@@ -106,10 +106,14 @@ def test_check_mode(tmpdir, module):
 
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
 def test_inventory(tmpdir, module):
-    try:
-        ansible_version = pkg_resources.get_distribution('ansible').version
-    except pkg_resources.DistributionNotFound:
-        ansible_version = pkg_resources.get_distribution('ansible-base').version
+    ansible_version = None
+    for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
+        try:
+            ansible_version = pkg_resources.get_distribution(ansible_name).version
+        except pkg_resources.DistributionNotFound:
+            pass
+    if ansible_version is None:
+        pytest.skip("Couldn't figure out Ansible version?!")
     if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
         pytest.skip("This module should not be tested on Ansible before 2.9")
     inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
