@@ -181,10 +181,10 @@ try:
     import requests
     if LooseVersion(requests.__version__) < LooseVersion('1.1.0'):
         raise ImportError
+    from requests.auth import HTTPBasicAuth
+    HAS_REQUESTS = True
 except ImportError:
-    raise AnsibleError('This script requires python-requests 1.1 as a minimum version')
-
-from requests.auth import HTTPBasicAuth
+    HAS_REQUESTS = False
 
 
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
@@ -202,6 +202,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.session = None
         self.cache_key = None
         self.use_cache = None
+
+        if not HAS_REQUESTS:
+            raise AnsibleError('This script requires python-requests 1.1 as a minimum version')
 
     def verify_file(self, path):
 
