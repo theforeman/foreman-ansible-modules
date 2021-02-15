@@ -195,6 +195,21 @@ def main():
             for ca_module_params in compute_attributes:
                 ca_module_params['compute_resource'] = module.find_resource_by_name(
                     'compute_resources', name=ca_module_params['compute_resource'], failsafe=False, thin=False)
+
+                if 'vm_attrs' in ca_module_params:
+                    if 'cluster' in ca_module_params['vm_attrs']:
+                        cluster = module.find_cluster(ca_module_params['vm_attrs']['cluster'], ca_module_params['compute_resource'])
+                        if ca_module_params['compute_resource'].get('provider').lower() != 'vmware':
+                            ca_module_params['vm_attrs']['cluster'] = cluster['id']
+                    else:
+                        cluster = None
+
+                    if 'interfaces_attributes' in ca_module_params['vm_attrs']:
+                        for interface in ca_module_params['vm_attrs']['interfaces_attributes'].values():
+                            if 'network' in interface:
+                                network = module.find_network(interface['network'], ca_module_params['compute_resource'], cluster)
+                                interface['network'] = network['id']
+
                 ca_entities = ca_module_params['compute_resource'].get('compute_attributes', [])
                 ca_entity = next((item for item in ca_entities if item.get('compute_profile_id') == entity['id']), None)
                 module.ensure_entity('compute_attributes', ca_module_params, ca_entity, foreman_spec=compute_attribute_foreman_spec, params=scope)
