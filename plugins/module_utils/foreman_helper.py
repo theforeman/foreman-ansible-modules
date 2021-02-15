@@ -726,9 +726,11 @@ class ForemanAnsibleModule(AnsibleModule):
         else:
             if len(results) > 1:
                 error_msg = "too many ({0})".format(len(results))
+                user_msg = ""
             else:
                 error_msg = "no"
-            self.fail_json(msg="Found {0} results while searching for {1} with {2}".format(error_msg, resource, search))
+                user_msg = "Does the '{0}' user have sufficient permissions to see those?".format(self._foremanapi_username)
+            self.fail_json(msg="Found {0} results while searching for {1} with {2}. {3}".format(error_msg, resource, search, user_msg))
         if result and not thin:
             result = self.show_resource(resource, result['id'], params=params)
         return result
