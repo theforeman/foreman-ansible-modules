@@ -491,7 +491,7 @@ def main():
             compute_resource = module.foreman_params['compute_resource']
             if 'compute_attributes' in module.foreman_params and 'cluster' in module.foreman_params['compute_attributes']:
                 cluster = module.find_cluster(module.foreman_params['compute_attributes']['cluster'], compute_resource)
-                module.foreman_params['compute_attributes']['cluster'] = cluster['id']
+                module.foreman_params['compute_attributes']['cluster'] = cluster['_api_identifier']
             else:
                 cluster = None
 

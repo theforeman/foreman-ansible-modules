@@ -199,8 +199,7 @@ def main():
                 if 'vm_attrs' in ca_module_params:
                     if 'cluster' in ca_module_params['vm_attrs']:
                         cluster = module.find_cluster(ca_module_params['vm_attrs']['cluster'], ca_module_params['compute_resource'])
-                        if ca_module_params['compute_resource'].get('provider').lower() != 'vmware':
-                            ca_module_params['vm_attrs']['cluster'] = cluster['id']
+                        ca_module_params['vm_attrs']['cluster'] = cluster['_api_identifier']
                     else:
                         cluster = None
 

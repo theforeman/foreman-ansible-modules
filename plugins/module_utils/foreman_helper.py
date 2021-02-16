@@ -789,7 +789,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def find_cluster(self, name, compute_resource):
         if compute_resource['provider'].lower() not in ['ovirt', 'vmware']:
-            return {'id': name, 'name': name}
+            return {'id': name, 'name': name, '_api_identifier': name}
 
         avc_params = {'id': compute_resource['id']}
         available_clusters = self.resource_action('compute_resources', 'available_clusters', params=avc_params,
@@ -798,26 +798,25 @@ class ForemanAnsibleModule(AnsibleModule):
         if cluster is None:
             err_msg = "Could not find cluster '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
             self.fail_json(msg=err_msg)
+        # workaround for https://projects.theforeman.org/issues/31874
+        if compute_resource['provider'].lower() == 'vmware':
+            cluster['_api_identifier'] = cluster['name']
+        else:
+            cluster['_api_identifier'] = cluster['id']
         return cluster
 
     def find_network(self, name, compute_resource, cluster=None):
-        compute_provider = compute_resource.get('provider').lower()
-        if compute_provider not in ['ovirt', 'vmware', 'google', 'azurerm']:
+        if compute_resource['provider'].lower() not in ['ovirt', 'vmware', 'google', 'azurerm']:
             return {'id': name, 'name': name}
 
         avn_params = {'id': compute_resource['id']}
         if cluster is not None:
-            # workaround for https://projects.theforeman.org/issues/31874
-            if compute_provider == 'vmware':
-                avn_params['cluster_id'] = cluster['name']
-            else:
-                avn_params['cluster_id'] = cluster['id']
+            avn_params['cluster_id'] = cluster['_api_identifier']
         available_networks = self.resource_action('compute_resources', 'available_networks', params=avn_params,
                                                   ignore_check_mode=True, record_change=False)['results']
         network = next((network for network in available_networks if network['name'] == name or network['id'] == name), None)
         if network is None:
-            cr_name = compute_resource.get('name')
-            err_msg = "Could not find network '{0}' on compute resource '{1}'.".format(name, cr_name)
+            err_msg = "Could not find network '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
             self.fail_json(msg=err_msg)
         return network
 
