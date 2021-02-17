@@ -94,7 +94,7 @@ options:
         type: bool
       ovirt_quota:
         description:
-          - oVirt quota ID, only valid for I(provider=ovirt)
+          - oVirt quota ID or name, only valid for I(provider=ovirt)
         type: str
       project:
         description:
@@ -199,8 +199,8 @@ EXAMPLES = '''
       url: ovirt.example.com
       user: ovirt-admin@example.com
       password: ovirtsecret
-      datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
-      ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
+      datacenter: Example-Datacenter
+      ovirt_quota: Default
       use_v4: true
     server_url: "https://foreman.example.com"
     username: "admin"
