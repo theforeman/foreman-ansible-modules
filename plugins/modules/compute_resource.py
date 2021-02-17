@@ -120,6 +120,55 @@ options:
         description:
           - enable caching for I(provider=vmware)
         type: bool
+      set_console_password:
+        description:
+          - Set a randomly generated password on the display connection for I(provider=vmware) and I(provider=libvirt)
+        type: bool
+        version_added: 1.6.0
+      keyboard_layout:
+        description:
+          - Default VNC Keyboard for I(provider=ovirt)
+        type: str
+        version_added: 1.6.0
+        choices:
+          - 'ar'
+          - 'da'
+          - 'de'
+          - 'de-ch'
+          - 'en-gb'
+          - 'en-us'
+          - 'es'
+          - 'et'
+          - 'fi'
+          - 'fo'
+          - 'fr'
+          - 'fr-be'
+          - 'fr-ca'
+          - 'fr-ch'
+          - 'hr'
+          - 'hu'
+          - 'is'
+          - 'it'
+          - 'ja'
+          - 'lt'
+          - 'lv'
+          - 'mk'
+          - 'nl'
+          - 'nl-be'
+          - 'no'
+          - 'pl'
+          - 'pt'
+          - 'pt-br'
+          - 'ru'
+          - 'sl'
+          - 'sv'
+          - 'th'
+          - 'tr'
+      public_key:
+        description:
+          - X509 Certification Authorities, only valid for I(provider=ovirt)
+        type: str
+        version_added: 1.6.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -304,16 +353,16 @@ def get_provider_info(provider):
     provider_name = provider.lower()
 
     if provider_name == 'libvirt':
-        return 'Libvirt', ['url', 'display_type']
+        return 'Libvirt', ['url', 'display_type', 'set_console_password']
 
     elif provider_name == 'ovirt':
-        return 'Ovirt', ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota']
+        return 'Ovirt', ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota', 'keyboard_layout', 'public_key']
 
     elif provider_name == 'proxmox':
         return 'Proxmox', ['url', 'user', 'password', 'ssl_verify_peer']
 
     elif provider_name == 'vmware':
-        return 'Vmware', ['url', 'user', 'password', 'datacenter', 'caching_enabled']
+        return 'Vmware', ['url', 'user', 'password', 'datacenter', 'caching_enabled', 'set_console_password']
 
     elif provider_name == 'ec2':
         return 'EC2', ['user', 'password', 'region']
@@ -355,6 +404,9 @@ def main():
             key_path=dict(invisible=True),
             zone=dict(invisible=True),
             ssl_verify_peer=dict(invisible=True),
+            set_console_password=dict(invisible=True),
+            keyboard_layout=dict(invisible=True),
+            public_key=dict(invisible=True),
         ),
         argument_spec=dict(
             provider_params=dict(type='dict', options=dict(
@@ -374,6 +426,10 @@ def main():
                 key_path=dict(),
                 zone=dict(),
                 ssl_verify_peer=dict(type='bool'),
+                set_console_password=dict(type='bool'),
+                keyboard_layout=dict(choices=['ar', 'de-ch', 'es', 'fo', 'fr-ca', 'hu', 'ja', 'mk', 'no', 'pt-br', 'sv', 'da', 'en-gb', 'et', 'fr', 'fr-ch',
+                                              'is', 'lt', 'nl', 'pl', 'ru', 'th', 'de', 'en-us', 'fi', 'fr-be', 'hr', 'it', 'lv', 'nl-be', 'pt', 'sl', 'tr']),
+                public_key=dict(),
             )),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
         ),
