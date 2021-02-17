@@ -1,0 +1,77 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/location.yml
+      vars:
+        location_state: present
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "{{ ovirt.compute_resource.name }}"
+        compute_resource_organizations: "{{ ovirt.compute_resource.organizations }}"
+        compute_resource_locations: "{{ ovirt.compute_resource.locations }}"
+        compute_resource_provider: 'ovirt'
+        compute_resource_provider_params: "{{ ovirt.compute_resource.params }}"
+        compute_resource_state: present_with_defaults
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
+  tasks:
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_state: present
+        compute_profile_attributes:
+          - compute_resource: "{{ ovirt.compute_resource.name }}"
+            vm_attrs: "{{ ovirt.compute_profile.attrs }}"
+        expected_change: true
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_state: present
+        compute_profile_attributes:
+          - compute_resource: "{{ ovirt.compute_resource.name }}"
+            vm_attrs: "{{ ovirt.compute_profile.attrs }}"
+        expected_change: false
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_state: absent
+        expected_change: true
+    - include: tasks/compute_profile.yml
+      vars:
+        compute_profile_state: absent
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/compute_profile.yml
+  tasks:
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "{{ ovirt.compute_resource.name }}"
+        compute_resource_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
