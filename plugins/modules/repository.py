@@ -25,7 +25,7 @@ module: repository
 version_added: 1.0.0
 short_description: Manage Repositories
 description:
-  - Crate and manage repositories
+  - Create and manage repositories
 author: "Eric D Helms (@ehelms)"
 notes:
   - You can configure certain aspects of existing Red Hat Repositories (like I(download_policy)) using this module,
