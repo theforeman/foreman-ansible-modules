@@ -1,0 +1,13 @@
+---
+- name: sync product
+  theforeman.foreman.repository_sync:
+    username: "{{ username | default(omit) }}"
+    password: "{{ password | default(omit) }}"
+    server_url: "{{ server_url | default(omit) }}"
+    validate_certs: "{{ validate_certs | default(omit) }}"
+    organization: "{{ organization }}"
+    product: "{{ item.0.name }}"
+  with_subelements:
+    - "{{ products | selectattr('repository_sets', 'defined') | list }}"
+    - repository_sets
+  when: item.0.sync | default(false) | bool
