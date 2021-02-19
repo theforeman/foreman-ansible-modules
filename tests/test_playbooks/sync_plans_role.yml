@@ -14,12 +14,8 @@
   roles:
     - role: repositories
       vars:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{  foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "Test Organization"
-        products:
+        foreman_organization: "Test Organization"
+        foreman_products:
           - name: Red Hat Enterprise Linux Server
             repository_sets:
               - name: Red Hat Satellite Tools 6.7 (for RHEL 7 Server) (RPMs)
@@ -39,12 +35,8 @@
   roles:
     - role: sync_plans
       vars:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "Test Organization"
-        sync_plans:
+        foreman_organization: "Test Organization"
+        foreman_sync_plans:
           - name: Weekly Sync
             interval: weekly
             sync_date: 2020-11-19 00:00:00 UTC
