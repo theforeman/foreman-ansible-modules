@@ -8,7 +8,7 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `products`: List of products to manage.
+- `foreman_products`: List of products to manage.
   Each product is represented as a dictionary and can include `repository_sets` which represent Red Hat Repositories and should be used when the product name matches an existing Red Hat Product.
   Each element of `repository_sets` must have a `name` and should specify the `basearch` and/or `releasever` only when multiple versions are available for that Product.
   All repository sets for a Red Hat Product can be enabled by omitting `repository_sets` and instead specifying that the Product has `all_repositories: True`. When using this option it is also necessary to specify a list of repository `label`s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
@@ -16,7 +16,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
   A variety of examples are demonstrated in the data structure below:
 
 ```yaml
-products:
+foreman_products:
   - name: Red Hat Enterprise Linux Server
     repository_sets:
       - name: Red Hat Enterprise Linux 7 Server (RPMs)
@@ -89,11 +89,11 @@ This example enables several Red Hat Repositories. There are a few important poi
   roles:
     - role: theforeman.foreman.repositories
       vars:
-        server_url: https://foreman.example.com
-        username: "admin"
-        password: "changeme"
-        organization: "Default Organization"
-        products:
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "Default Organization"
+        foreman_products:
           - name: Red Hat Enterprise Linux Server
             repository_sets:
               - name: Red Hat Enterprise Linux 7 Server (RPMs)

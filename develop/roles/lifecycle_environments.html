@@ -172,7 +172,7 @@
 <div class="section" id="role-variables">
 <h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
 <p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
-<p>The main data structure for this role is the list of <code class="docutils literal notranslate"><span class="pre">lifecycle_environments</span></code>. Each <code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code> requires the following fields:</p>
+<p>The main data structure for this role is the list of <code class="docutils literal notranslate"><span class="pre">foreman_lifecycle_environments</span></code>. Each <code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code> requires the following fields:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the lifecycle environment.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">prior</span></code>: The name of the previous lifecycle environment to attach to in sequence. For the first lifecycle environment in a new path, set the prior lifecycle environment to Library. The order of definition matters, ensure that the environments are listed in the order the path would exist.</p></li>
@@ -190,11 +190,11 @@
   <span class="nt">roles</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.lifecycle_environments</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">lifecycle_environments</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_lifecycle_environments</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
             <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Library&quot;</span>
           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Test&quot;</span>
@@ -208,11 +208,11 @@
   <span class="nt">roles</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.lifecycle_environments</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">lifecycle_environments</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_lifecycle_environments</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
             <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Library&quot;</span>
           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Test&quot;</span>

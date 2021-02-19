@@ -173,11 +173,11 @@
 <h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
 <p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">manifest_path</span></code>: Path to subscription Manifest file on Ansible target host. When using <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code>, it is first downloaded to this location from the Red Hat Customer Portal before being uploaded to the Foreman server.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">manifest_download</span></code>: Whether to first download the Manifest from the Red Hat Customer Portal. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">manifest_uuid</span></code>: UUID of the Manifest to download, corresponding to a <a class="reference external" href="https://access.redhat.com/management/subscription_allocations">Subscription Allocation</a> defined on your Red Hat account. Required when <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rhsm_username</span></code>: Your username for the Red Hat Customer Portal. Required when <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rhsm_password</span></code>: Your password for the Red Hat Customer Portal. Required when <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_manifest_path</span></code>: Path to subscription Manifest file on Ansible target host. When using <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code>, it is first downloaded to this location from the Red Hat Customer Portal before being uploaded to the Foreman server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_manifest_download</span></code>: Whether to first download the Manifest from the Red Hat Customer Portal. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_manifest_uuid</span></code>: UUID of the Manifest to download, corresponding to a <a class="reference external" href="https://access.redhat.com/management/subscription_allocations">Subscription Allocation</a> defined on your Red Hat account. Required when <code class="docutils literal notranslate"><span class="pre">manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_rhsm_username</span></code>: Your username for the Red Hat Customer Portal. Required when <code class="docutils literal notranslate"><span class="pre">foreman_manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_rhsm_password</span></code>: Your password for the Red Hat Customer Portal. Required when <code class="docutils literal notranslate"><span class="pre">foreman_manifest_download</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="example-playbooks">
@@ -187,11 +187,11 @@
   <span class="nt">roles</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.manifest</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">manifest_path</span><span class="p">:</span> <span class="s">&quot;~/manifest.zip&quot;</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_manifest_path</span><span class="p">:</span> <span class="s">&quot;~/manifest.zip&quot;</span>
 </pre></div>
 </div>
 <p>Download the Subscription Manifest from the Red Hat Customer Portal to localhost before uploading to Foreman server:</p>
@@ -199,15 +199,15 @@
   <span class="nt">roles</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.manifest</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">manifest_path</span><span class="p">:</span> <span class="s">&quot;~/manifest.zip&quot;</span>
-        <span class="nt">manifest_download</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-        <span class="nt">rhsm_username</span><span class="p">:</span> <span class="s">&quot;happycustomer&quot;</span>
-        <span class="nt">rhsm_password</span><span class="p">:</span> <span class="s">&quot;$ecur3p4$$w0rd&quot;</span>
-        <span class="nt">manifest_uuid</span><span class="p">:</span> <span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_manifest_path</span><span class="p">:</span> <span class="s">&quot;~/manifest.zip&quot;</span>
+        <span class="nt">foreman_manifest_download</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
+        <span class="nt">foreman_rhsm_username</span><span class="p">:</span> <span class="s">&quot;happycustomer&quot;</span>
+        <span class="nt">foreman_rhsm_password</span><span class="p">:</span> <span class="s">&quot;$ecur3p4$$w0rd&quot;</span>
+        <span class="nt">foreman_manifest_uuid</span><span class="p">:</span> <span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span>
 </pre></div>
 </div>
 </div>

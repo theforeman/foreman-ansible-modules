@@ -173,14 +173,14 @@
 <h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
 <p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">products</span></code>: List of products to manage.
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_products</span></code>: List of products to manage.
 Each product is represented as a dictionary and can include <code class="docutils literal notranslate"><span class="pre">repository_sets</span></code> which represent Red Hat Repositories and should be used when the product name matches an existing Red Hat Product.
 Each element of <code class="docutils literal notranslate"><span class="pre">repository_sets</span></code> must have a <code class="docutils literal notranslate"><span class="pre">name</span></code> and should specify the <code class="docutils literal notranslate"><span class="pre">basearch</span></code> and/or <code class="docutils literal notranslate"><span class="pre">releasever</span></code> only when multiple versions are available for that Product.
 All repository sets for a Red Hat Product can be enabled by omitting <code class="docutils literal notranslate"><span class="pre">repository_sets</span></code> and instead specifying that the Product has <code class="docutils literal notranslate"><span class="pre">all_repositories:</span> <span class="pre">True</span></code>. When using this option it is also necessary to specify a list of repository <code class="docutils literal notranslate"><span class="pre">label</span></code>s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
 Custom (i.e. non Red Hat) Products can also be defined, with associated <code class="docutils literal notranslate"><span class="pre">repositories</span></code> which represent custom repositories, and are required to have a <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">url</span></code>, and <code class="docutils literal notranslate"><span class="pre">content_type</span></code>; they may require additional fields and can take any parameter supported by <a class="reference external" href="https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html">theforeman.foreman.repository</a>.
 A variety of examples are demonstrated in the data structure below:</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">products</span><span class="p">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_products</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
     <span class="nt">repository_sets</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span>
@@ -253,11 +253,11 @@ A variety of examples are demonstrated in the data structure below:</p></li>
   <span class="nt">roles</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.repositories</span>
       <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">products</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_products</span><span class="p">:</span>
           <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
             <span class="nt">repository_sets</span><span class="p">:</span>
               <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span>
