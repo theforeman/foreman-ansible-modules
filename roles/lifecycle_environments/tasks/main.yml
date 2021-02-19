@@ -1,15 +1,15 @@
 ---
 - name: 'Create Lifecycle Environments'
   theforeman.foreman.lifecycle_environment:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
     description: "{{ item.description | default(omit) }}"
     prior: "{{ item.prior }}"
     label: "{{ item.label | default(omit) }}"
     state: present
   with_items:
-    - "{{ lifecycle_environments }}"
+    - "{{ foreman_lifecycle_environments }}"
