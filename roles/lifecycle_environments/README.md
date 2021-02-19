@@ -8,7 +8,7 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-The main data structure for this role is the list of `lifecycle_environments`. Each `lifecycle_environment` requires the following fields:
+The main data structure for this role is the list of `foreman_lifecycle_environments`. Each `lifecycle_environment` requires the following fields:
 
 - `name`: The name of the lifecycle environment.
 - `prior`: The name of the previous lifecycle environment to attach to in sequence. For the first lifecycle environment in a new path, set the prior lifecycle environment to Library. The order of definition matters, ensure that the environments are listed in the order the path would exist.
@@ -28,11 +28,11 @@ Create a lifecycle environment path with three environments: Library -> Dev -> T
   roles:
     - role: theforeman.foreman.lifecycle_environments
       vars:
-        server_url: https://foreman.example.com
-        username: "admin"
-        password: "changeme"
-        organization: "Default Organization"
-        lifecycle_environments:
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "Default Organization"
+        foreman_lifecycle_environments:
           - name: "Dev"
             prior: "Library"
           - name: "Test"
@@ -48,11 +48,11 @@ Create two lifecycle environment paths: Library -> Dev -> Test -> Prod and Libra
   roles:
     - role: theforeman.foreman.lifecycle_environments
       vars:
-        server_url: https://foreman.example.com
-        username: "admin"
-        password: "changeme"
-        organization: "Default Organization"
-        lifecycle_environments:
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "Default Organization"
+        foreman_lifecycle_environments:
           - name: "Dev"
             prior: "Library"
           - name: "Test"
