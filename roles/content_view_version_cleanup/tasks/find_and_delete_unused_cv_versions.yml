@@ -1,11 +1,11 @@
 ---
 - name: "find content view versions of {{ cv.name }}"
   theforeman.foreman.resource_info:
-    server_url: "{{ server_url | default(omit) }}"
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     resource: content_view_versions
     params:
       content_view_id: "{{ cv.id }}"
@@ -17,4 +17,4 @@
     cv_name: "{{ cv.name }}"
     cv_versions: "{{ (versions.resources | rejectattr('environments') | rejectattr('composite_content_view_ids') |
       rejectattr('published_in_composite_content_view_ids') | map(attribute='version') | map('float') | sort |
-      map('string') | list )[:-content_view_version_cleanup_keep] }}"
+      map('string') | list )[:-foreman_content_view_version_cleanup_keep] }}"

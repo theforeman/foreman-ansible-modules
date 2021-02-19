@@ -52,13 +52,9 @@
   roles:
     - role: content_view_version_cleanup
       vars:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "Test Organization"
-        content_view_version_cleanup_keep: 2
-        content_view_version_cleanup_search: "name ~ cleanup"
+        foreman_organization: "Test Organization"
+        foreman_content_view_version_cleanup_keep: 2
+        foreman_content_view_version_cleanup_search: "name ~ cleanup"
   post_tasks:
     - name: find remaining content view versions
       theforeman.foreman.resource_info:
