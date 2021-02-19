@@ -1,11 +1,11 @@
 ---
 - name: 'Enable Red Hat Repositories'
   theforeman.foreman.repository_set:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     product: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     all_repositories: false
@@ -14,42 +14,42 @@
       - releasever: "{{ item.1.releasever | default(omit) }}"
         basearch: "{{ item.1.basearch | default(omit) }}"
   with_subelements:
-    - "{{ products | selectattr('repository_sets', 'defined') | list }}"
+    - "{{ foreman_products | selectattr('repository_sets', 'defined') | list }}"
     - repository_sets
 
 - name: 'Enable Red Hat Repository Sets'
   theforeman.foreman.repository_set:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     label: "{{ item.1 }}"
     all_repositories: true
     state: enabled
   with_subelements:
-    - "{{ products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
+    - "{{ foreman_products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
     - labels
 
 - name: 'Create Products'
   theforeman.foreman.product:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
     state: present
   with_items:
-    - "{{ products | selectattr('repositories', 'defined') | list }}"
+    - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
 
 - name: 'Create Repositories'
   theforeman.foreman.repository:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     name: "{{ item.1.name }}"
     url: "{{ item.1.url }}"
     product: "{{ item.0.name }}"
@@ -80,5 +80,5 @@
     upstream_username: "{{ item.1.upstream_username | default(omit) }}"
     verify_ssl_on_sync: "{{ item.1.verify_ssl_on_sync | default(omit) }}"
   with_subelements:
-    - "{{ products | selectattr('repositories', 'defined') | list }}"
+    - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
     - repositories
