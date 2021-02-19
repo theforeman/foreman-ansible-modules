@@ -1,11 +1,11 @@
 ---
 - name: 'Create Activation Keys'
   theforeman.foreman.activation_key:
-    username: "{{ username | default(omit) }}"
-    password: "{{ password | default(omit) }}"
-    server_url: "{{ server_url | default(omit) }}"
-    validate_certs: "{{ validate_certs | default(omit) }}"
-    organization: "{{ organization }}"
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
     description: "{{ item.description | default(omit) }}"
     lifecycle_environment: "{{ item.lifecycle_environment | default('Library') }}"
@@ -23,4 +23,4 @@
     purpose_addons: "{{ item.purpose_addons | default(omit) }}"
     state: present
   with_items:
-    - "{{ activation_keys }}"
+    - "{{ foreman_activation_keys }}"
