@@ -328,3 +328,48 @@ releases:
     - theforeman.foreman.content_view_version_cleanup_role.yml
     - theforeman.foreman.manifest_role.yml
     release_date: '2020-12-03'
+  2.0.0:
+    changes:
+      breaking_changes:
+      - All role variables are now prefixed with ``foreman_`` to avoid clashes with
+        similarly named variables from roles outside this collection.
+      bugfixes:
+      - content_view_version - make the ``version`` parameter not fail when the version
+        was entered without a minor part (https://github.com/theforeman/foreman-ansible-modules/issues/1087)
+      - host - allow moving hosts between Organizations and Locations (https://bugzilla.redhat.com/show_bug.cgi?id=1901716)
+      - host - fix subnet/domain assignment when multiple interfaces are defined (https://github.com/theforeman/foreman-ansible-modules/issues/1095)
+      - host, hostgroup - select kickstart_repository based on lifecycle_environment
+        and content_view if those are set (https://github.com/theforeman/foreman-ansible-modules/issues/1090,
+        https://bugzilla.redhat.com/1915872)
+      - resource_info - correctly show the exact resource when passing ``id`` in ``params``
+      minor_changes:
+      - Add a role `activation_keys` to manage activation keys
+      - Add a role `lifecycle_environments` to manage lifecycle environments
+      - Add a role `repositories` to manage products, repositories, and repository_sets
+      - Add a role `sync_plans` to manage sync plans
+      - activation_key - add support for selecting subscriptions by ``upstream_pool_id``
+      - compute_resource - add ``set_console_password``, ``keyboard_layout`` and ``public_key``
+        parameters (https://github.com/theforeman/foreman-ansible-modules/issues/1052)
+      - host - clarify that ``owner`` refers to a users login, not their full name
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1045)
+      - host - look up the correct network id for a network given as part of ``interfaces_attributes``
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1104)
+      - host, hostgroup - add ``activation_keys`` parameter to ease configuring activation
+        keys for deploments
+    fragments:
+    - 1027-repositories_role.yml
+    - 1045-host-owner.yml
+    - 1052-compute_resource-params.yaml
+    - 1065-sync-plans_role.yml
+    - 1068-activation-keys_role.yml
+    - 1087-content_view_version-safenet.yml
+    - 1090-scope_kickstart_repository_tighter.yml
+    - 1095-nested_list-lookup-fix.yml
+    - 1096-lifecycle-environments-role.yml
+    - 1104-network_id-lookup.yml
+    - 1145-role_prefix.yml
+    - 541-activation-key-upstream-pool.yml
+    - bz1901716-dont_scope_requests.yml
+    - host-hostgroup-ak-parameter.yml
+    - resource_info-params-id.yml
+    release_date: '2021-02-22'
