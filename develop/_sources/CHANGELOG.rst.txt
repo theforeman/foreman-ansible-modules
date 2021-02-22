@@ -6,6 +6,36 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.0.0
+======
+
+Minor Changes
+-------------
+
+- Add a role `activation_keys` to manage activation keys
+- Add a role `lifecycle_environments` to manage lifecycle environments
+- Add a role `repositories` to manage products, repositories, and repository_sets
+- Add a role `sync_plans` to manage sync plans
+- activation_key - add support for selecting subscriptions by ``upstream_pool_id``
+- compute_resource - add ``set_console_password``, ``keyboard_layout`` and ``public_key`` parameters (https://github.com/theforeman/foreman-ansible-modules/issues/1052)
+- host - clarify that ``owner`` refers to a users login, not their full name (https://github.com/theforeman/foreman-ansible-modules/issues/1045)
+- host - look up the correct network id for a network given as part of ``interfaces_attributes`` (https://github.com/theforeman/foreman-ansible-modules/issues/1104)
+- host, hostgroup - add ``activation_keys`` parameter to ease configuring activation keys for deploments
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- All role variables are now prefixed with ``foreman_`` to avoid clashes with similarly named variables from roles outside this collection.
+
+Bugfixes
+--------
+
+- content_view_version - make the ``version`` parameter not fail when the version was entered without a minor part (https://github.com/theforeman/foreman-ansible-modules/issues/1087)
+- host - allow moving hosts between Organizations and Locations (https://bugzilla.redhat.com/show_bug.cgi?id=1901716)
+- host - fix subnet/domain assignment when multiple interfaces are defined (https://github.com/theforeman/foreman-ansible-modules/issues/1095)
+- host, hostgroup - select kickstart_repository based on lifecycle_environment and content_view if those are set (https://github.com/theforeman/foreman-ansible-modules/issues/1090, https://bugzilla.redhat.com/1915872)
+- resource_info - correctly show the exact resource when passing ``id`` in ``params``
+
 v1.5.0
 ======
 
