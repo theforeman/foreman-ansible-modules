@@ -88,8 +88,8 @@ For individual role documentation, check the README defined at `roles/rolename/R
 
 ### Common Role Variables
 
-- `foreman_server_url`: URL of the Foreman server.
-- `foreman_username`: Username accessing the Foreman server.
-- `foreman_password`: Password of the user accessing the Foreman server.
-- `foreman_validate_certs`: Whether or not to verify the TLS certificates of the Foreman server.
+- `foreman_server_url`: URL of the Foreman server. If the variable is not specified, the value of environment variable `FOREMAN_SERVER_URL` will be used instead.
+- `foreman_username`: Username accessing the Foreman server. If the variable is not specified, the value of environment variable `FOREMAN_USERNAME` will be used instead.
+- `foreman_password`: Password of the user accessing the Foreman server. If the variable is not specified, the value of environment variable `FOREMAN_PASSWORD` will be used instead.
+- `foreman_validate_certs`: Whether or not to verify the TLS certificates of the Foreman server. If the variable is not specified, the value of environment variable `FOREMAN_VALIDATE_CERTS` will be used instead.
 - `foreman_organization`: Organization where configuration will be applied.
