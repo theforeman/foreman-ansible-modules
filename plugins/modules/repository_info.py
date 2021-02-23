@@ -50,7 +50,7 @@ EXAMPLES = '''
     organization: "Default Organization"
 
 - name: "Find repository using a search"
-  theforeman.foreman.repository:
+  theforeman.foreman.repository_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

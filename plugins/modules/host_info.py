@@ -42,7 +42,7 @@ EXAMPLES = '''
     name: "host.example.com"
 
 - name: "Show all hosts with domain example.com"
-  theforeman.foreman.host:
+  theforeman.foreman.host_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
