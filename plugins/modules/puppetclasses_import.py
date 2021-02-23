@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: puppetclasses_import
-version_added: 1.6.0
+version_added: 2.0.0
 short_description: Import Puppet Classes from a Proxy
 description:
   - Import Puppet Classes from a Proxy

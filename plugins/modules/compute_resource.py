@@ -124,12 +124,12 @@ options:
         description:
           - Set a randomly generated password on the display connection for I(provider=vmware) and I(provider=libvirt)
         type: bool
-        version_added: 1.6.0
+        version_added: 2.0.0
       keyboard_layout:
         description:
           - Default VNC Keyboard for I(provider=ovirt)
         type: str
-        version_added: 1.6.0
+        version_added: 2.0.0
         choices:
           - 'ar'
           - 'da'
@@ -168,7 +168,7 @@ options:
         description:
           - X509 Certification Authorities, only valid for I(provider=ovirt)
         type: str
-        version_added: 1.6.0
+        version_added: 2.0.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
