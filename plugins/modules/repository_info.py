@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: repository_info
-version_added: 1.6.0
+version_added: 2.0.0
 short_description: Fetch information about Repositories
 description:
   - Fetch information about Repositories

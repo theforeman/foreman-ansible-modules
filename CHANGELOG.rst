@@ -36,6 +36,13 @@ Bugfixes
 - host, hostgroup - select kickstart_repository based on lifecycle_environment and content_view if those are set (https://github.com/theforeman/foreman-ansible-modules/issues/1090, https://bugzilla.redhat.com/1915872)
 - resource_info - correctly show the exact resource when passing ``id`` in ``params``
 
+New Modules
+-----------
+
+- theforeman.foreman.host_info - Fetch information about Hosts
+- theforeman.foreman.puppetclasses_import - Import Puppet Classes from a Proxy
+- theforeman.foreman.repository_info - Fetch information about Repositories
+
 v1.5.0
 ======
 
