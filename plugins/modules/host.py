@@ -477,10 +477,6 @@ def main():
         elif 'owner_group' in module.foreman_params:
             module.foreman_params['owner_type'] = 'Usergroup'
 
-        if 'interfaces_attributes' in module.foreman_params:
-            filtered = [nic for nic in ({k: v for k, v in obj.items() if v} for obj in module.foreman_params['interfaces_attributes']) if nic]
-            module.foreman_params['interfaces_attributes'] = filtered
-
     with module.api_connection():
         entity = module.lookup_entity('entity')
 
