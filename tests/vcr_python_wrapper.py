@@ -112,7 +112,6 @@ def filter_response(response):
     except json.JSONDecodeError:
         pass
     else:
-        saved_str = response['body']['string']
         if "host" in json_body:
             json_body['host'] = 'FILTERED'
         if "account" in json_body:
