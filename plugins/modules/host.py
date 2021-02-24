@@ -485,11 +485,20 @@ def main():
 
         if 'compute_resource' in module.foreman_params:
             compute_resource = module.foreman_params['compute_resource']
-            if 'compute_attributes' in module.foreman_params and 'cluster' in module.foreman_params['compute_attributes']:
-                cluster = module.find_cluster(module.foreman_params['compute_attributes']['cluster'], compute_resource)
-                module.foreman_params['compute_attributes']['cluster'] = cluster['_api_identifier']
-            else:
-                cluster = None
+            cluster = None
+            if 'compute_attributes' in module.foreman_params:
+                if 'cluster' in module.foreman_params['compute_attributes']:
+                    cluster = module.find_cluster(module.foreman_params['compute_attributes']['cluster'], compute_resource)
+                    module.foreman_params['compute_attributes']['cluster'] = cluster['_api_identifier']
+
+                if 'volumes_attributes' in module.foreman_params['compute_attributes']:
+                    for volume in module.foreman_params['compute_attributes']['volumes_attributes'].values():
+                        if 'storage_pod' in volume:
+                            storage_pod = module.find_storage_pod(volume['storage_pod'], compute_resource, cluster)
+                            volume['storage_pod'] = storage_pod['id']
+                        if 'storage_domain' in volume:
+                            storage_domain = module.find_storage_domain(volume['storage_domain'], compute_resource, cluster)
+                            volume['storage_domain'] = storage_domain['id']
 
             if 'interfaces_attributes' in module.foreman_params:
                 for interface in module.foreman_params['interfaces_attributes']:

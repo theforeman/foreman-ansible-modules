@@ -195,18 +195,28 @@ def main():
             for ca_module_params in compute_attributes:
                 ca_module_params['compute_resource'] = module.find_resource_by_name(
                     'compute_resources', name=ca_module_params['compute_resource'], failsafe=False, thin=False)
+                compute_resource = ca_module_params['compute_resource']
 
                 if 'vm_attrs' in ca_module_params:
                     if 'cluster' in ca_module_params['vm_attrs']:
-                        cluster = module.find_cluster(ca_module_params['vm_attrs']['cluster'], ca_module_params['compute_resource'])
+                        cluster = module.find_cluster(ca_module_params['vm_attrs']['cluster'], compute_resource)
                         ca_module_params['vm_attrs']['cluster'] = cluster['_api_identifier']
                     else:
                         cluster = None
 
+                    if 'volumes_attributes' in ca_module_params['vm_attrs']:
+                        for volume in ca_module_params['vm_attrs']['volumes_attributes'].values():
+                            if 'storage_pod' in volume:
+                                storage_pod = module.find_storage_pod(volume['storage_pod'], compute_resource, cluster)
+                                volume['storage_pod'] = storage_pod['id']
+                            if 'storage_domain' in volume:
+                                storage_domain = module.find_storage_domain(volume['storage_domain'], compute_resource, cluster)
+                                volume['storage_domain'] = storage_domain['id']
+
                     if 'interfaces_attributes' in ca_module_params['vm_attrs']:
                         for interface in ca_module_params['vm_attrs']['interfaces_attributes'].values():
                             if 'network' in interface:
-                                network = module.find_network(interface['network'], ca_module_params['compute_resource'], cluster)
+                                network = module.find_network(interface['network'], compute_resource, cluster)
                                 interface['network'] = network['id']
 
                 ca_entities = ca_module_params['compute_resource'].get('compute_attributes', [])

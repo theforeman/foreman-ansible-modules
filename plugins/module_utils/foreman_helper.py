@@ -820,6 +820,36 @@ class ForemanAnsibleModule(AnsibleModule):
             self.fail_json(msg=err_msg)
         return network
 
+    def find_storage_domain(self, name, compute_resource, cluster=None):
+        if compute_resource['provider'].lower() not in ['ovirt', 'vmware']:
+            return {'id': name, 'name': name}
+
+        avsd_params = {'id': compute_resource['id']}
+        if cluster is not None:
+            avsd_params['cluster_id'] = cluster['_api_identifier']
+        available_storage_domains = self.resource_action('compute_resources', 'available_storage_domains', params=avsd_params,
+                                                         ignore_check_mode=True, record_change=False)['results']
+        storage_domain = next((domain for domain in available_storage_domains if domain['name'] == name or domain['id'] == name), None)
+        if storage_domain is None:
+            err_msg = "Could not find storage domain '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
+            self.fail_json(msg=err_msg)
+        return storage_domain
+
+    def find_storage_pod(self, name, compute_resource, cluster=None):
+        if compute_resource['provider'].lower() not in ['vmware']:
+            return {'id': name, 'name': name}
+
+        avsp_params = {'id': compute_resource['id']}
+        if cluster is not None:
+            avsp_params['cluster_id'] = cluster['_api_identifier']
+        available_storage_pods = self.resource_action('compute_resources', 'available_storage_pods', params=avsp_params,
+                                                      ignore_check_mode=True, record_change=False)['results']
+        storage_pod = next((pod for pod in available_storage_pods if pod['name'] == name or pod['id'] == name), None)
+        if storage_pod is None:
+            err_msg = "Could not find storage pod '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
+            self.fail_json(msg=err_msg)
+        return storage_pod
+
     def scope_for(self, key, scoped_resource=None):
         # workaround for https://projects.theforeman.org/issues/31714
         if scoped_resource in ['content_views', 'repositories'] and key == 'lifecycle_environment':
