@@ -108,45 +108,44 @@ def filter_response(response):
         response['headers'].pop(header.lower(), None)
         response['headers'].pop(header, None)
     try:
-        json_sbody = json.loads(response['body']['string'])
-        if "host" in json_sbody:
-            json_sbody['host'] = 'FILTERED'
-        if "account" in json_sbody:
-            json_sbody['account'] = 'FILTERED'
-        if "base_dn" in json_sbody:
-            json_sbody['base_dn'] = 'FILTERED'
-        if "groups_base" in json_sbody:
-            json_sbody['groups_base'] = 'FILTERED'
-        response['body']['string'] = json.dumps(json_sbody)
-    except Exception:
+        json_body = json.loads(response['body']['string'])
+    except json.JSONDecodeError:
         pass
-    # another for the search result
-    try:
-        json_sbody = json.loads(response['body']['string'])
-        if "host" in json_sbody['results'][0]:
-            json_sbody['results'][0]['host'] = 'FILTERED'
-        if "account" in json_sbody['results'][0]:
-            json_sbody['results'][0]['account'] = 'FILTERED'
-        if "base_dn" in json_sbody['results'][0]:
-            json_sbody['results'][0]['base_dn'] = 'FILTERED'
-        if "groups_base" in json_sbody['results'][0]:
-            json_sbody['results'][0]['groups_base'] = 'FILTERED'
-            response['body']['string'] = json.dumps(json_sbody)
-    except Exception:
-        pass
+    else:
+        saved_str = response['body']['string']
+        if "host" in json_body:
+            json_body['host'] = 'FILTERED'
+        if "account" in json_body:
+            json_body['account'] = 'FILTERED'
+        if "base_dn" in json_body:
+            json_body['base_dn'] = 'FILTERED'
+        if "groups_base" in json_body:
+            json_body['groups_base'] = 'FILTERED'
+        # another for the search result
+        if 'results' in json_body:
+            if "host" in json_body['results'][0]:
+                json_body['results'][0]['host'] = 'FILTERED'
+            if "account" in json_body['results'][0]:
+                json_body['results'][0]['account'] = 'FILTERED'
+            if "base_dn" in json_body['results'][0]:
+                json_body['results'][0]['base_dn'] = 'FILTERED'
+            if "groups_base" in json_body['results'][0]:
+                json_body['results'][0]['groups_base'] = 'FILTERED'
+        response['body']['string'] = json.dumps(json_body).encode()
     return response
 
 
-def filter_request_uri(request):
+def filter_request(request):
     request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
     if request.body is not None:
         try:
-            json_qbody = json.loads(request.body)
-            if json_qbody['auth_source_ldap']:
-                json_qbody['auth_source_ldap'] = 'FILTERED'
-                request.body = json.dumps(json_qbody)
-        except Exception:
+            json_body = json.loads(request.body)
+        except json.JSONDecodeError:
             pass
+        else:
+            if 'auth_source_ldap' in json_body:
+                json_body['auth_source_ldap'] = 'FILTERED'
+                request.body = json.dumps(json_body).encode()
     return request
 
 
