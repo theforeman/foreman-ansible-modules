@@ -122,19 +122,31 @@ def filter_response(response):
             json_body['groups_base'] = 'FILTERED'
         # another for the search result
         if 'results' in json_body:
-            if "host" in json_body['results'][0]:
-                json_body['results'][0]['host'] = 'FILTERED'
-            if "account" in json_body['results'][0]:
-                json_body['results'][0]['account'] = 'FILTERED'
-            if "base_dn" in json_body['results'][0]:
-                json_body['results'][0]['base_dn'] = 'FILTERED'
-            if "groups_base" in json_body['results'][0]:
-                json_body['results'][0]['groups_base'] = 'FILTERED'
+            if len(json_body["results"]) > 0:
+                if "host" in json_body['results'][0]:
+                    json_body['results'][0]['host'] = 'FILTERED'
+                if "account" in json_body['results'][0]:
+                    json_body['results'][0]['account'] = 'FILTERED'
+                if "base_dn" in json_body['results'][0]:
+                    json_body['results'][0]['base_dn'] = 'FILTERED'
+                if "groups_base" in json_body['results'][0]:
+                    json_body['results'][0]['groups_base'] = 'FILTERED'
         response['body']['string'] = json.dumps(json_body).encode()
     return response
 
 
 def filter_request_uri(request):
+    request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
+    return request
+
+
+def filter_request_manifest(request):
+    if request.method == 'POST' and request.path.endswith('/subscriptions/upload'):
+        request.body = 'FAKE_MANIFEST'
+    return request
+
+
+def filter_request_ldap(request):
     request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
     if request.body is not None:
         try:
@@ -148,15 +160,10 @@ def filter_request_uri(request):
     return request
 
 
-def filter_request_manifest(request):
-    if request.method == 'POST' and request.path.endswith('/subscriptions/upload'):
-        request.body = 'FAKE_MANIFEST'
-    return request
-
-
 def filter_request(request):
     request = filter_request_uri(request)
     request = filter_request_manifest(request)
+    request = filter_request_ldap(request)
     return request
 
 
