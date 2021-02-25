@@ -70,11 +70,11 @@ interactions:
     uri: https://foreman.example.org/api/compute_profiles?search=name%3D%22Test+Compute+Profile%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Compute Profile\\\"\",\n  \"\
         sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
-        created_at\":\"2021-02-17 14:12:20 UTC\",\"updated_at\":\"2021-02-17 14:12:20\
-        \ UTC\",\"id\":10,\"name\":\"Test Compute Profile\"}]\n}\n"
+        created_at\":\"2021-02-25 09:03:59 UTC\",\"updated_at\":\"2021-02-25 09:03:59\
+        \ UTC\",\"id\":5,\"name\":\"Test Compute Profile\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -111,7 +111,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '303'
+      - '302'
     status:
       code: 200
       message: OK
@@ -127,12 +127,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_profiles/10
+    uri: https://foreman.example.org/api/compute_profiles/5
   response:
     body:
-      string: '{"created_at":"2021-02-17 14:12:20 UTC","updated_at":"2021-02-17 14:12:20
-        UTC","id":10,"name":"Test Compute Profile","compute_attributes":[{"id":4,"name":"2
-        Cores and 1 GB memory","compute_resource_id":3,"compute_resource_name":"ovirt-cr01","provider_friendly_name":"oVirt","compute_profile_id":10,"compute_profile_name":"Test
+      string: '{"created_at":"2021-02-25 09:03:59 UTC","updated_at":"2021-02-25 09:03:59
+        UTC","id":5,"name":"Test Compute Profile","compute_attributes":[{"id":1,"name":"2
+        Cores and 1 GB memory","compute_resource_id":1,"compute_resource_name":"ovirt-cr01","provider_friendly_name":"oVirt","compute_profile_id":5,"compute_profile_name":"Test
         Compute Profile","vm_attrs":{"cluster":"7363a2e5-20a9-458a-a212-7c0bae19331a","cores":2,"sockets":1,"memory":1073741824,"ha":0,"interfaces_attributes":{"0":{"name":"","network":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","interface":"virtio"}},"volumes_attributes":{"0":{"size_gb":"16","storage_domain":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","preallocate":"1","wipe_after_delete":"0","interface":"virtio_scsi","bootable":"true"}}},"attributes":{"cores":2,"interfaces_attributes":{"0":{"name":"","network_id":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","network_name":"ovirtmgmt"}},"memory":1073741824,"cluster_id":"7363a2e5-20a9-458a-a212-7c0bae19331a","cluster_name":"Devel-Infra","template_id":null,"template_name":null,"volumes_attributes":{"0":{"size":"17179869184","storage_domain_id":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","storage_domain_name":"Local-IBM","preallocate":true,"bootable":true}}}}]}'
     headers:
       Cache-Control:
@@ -157,8 +157,6 @@ interactions:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -172,7 +170,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1224'
+      - '1222'
     status:
       code: 200
       message: OK
@@ -191,12 +189,12 @@ interactions:
     uri: https://foreman.example.org/api/compute_resources?search=name%3D%22ovirt-cr01%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"ovirt-cr01\\\"\",\n  \"sort\": {\n\
         \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\"\
         :\"\",\"url\":\"https://ovirt.example.com/ovirt-engine/api\"\
-        ,\"created_at\":\"2021-02-17 13:47:22 UTC\",\"updated_at\":\"2021-02-17 13:47:22\
-        \ UTC\",\"id\":3,\"name\":\"ovirt-cr01\",\"provider\":\"Ovirt\",\"provider_friendly_name\"\
+        ,\"created_at\":\"2021-02-25 09:01:13 UTC\",\"updated_at\":\"2021-02-25 09:01:13\
+        \ UTC\",\"id\":1,\"name\":\"ovirt-cr01\",\"provider\":\"Ovirt\",\"provider_friendly_name\"\
         :\"oVirt\",\"user\":\"admin@internal\",\"datacenter\":\"1b59bc75-99ab-4ee8-b9e0-d59b4a0c59df\"\
         ,\"ovirt_quota\":\"489f068e-7d27-445d-853d-c0247e878871\",\"display_type\"\
         :\"vnc\",\"keyboard_layout\":\"en-us\"}]\n}\n"
@@ -252,15 +250,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_resources/3
+    uri: https://foreman.example.org/api/compute_resources/1
   response:
     body:
-      string: '{"description":"","url":"https://ovirt.example.com/ovirt-engine/api","created_at":"2021-02-17
-        13:47:22 UTC","updated_at":"2021-02-17 13:47:22 UTC","id":3,"name":"ovirt-cr01","provider":"Ovirt","provider_friendly_name":"oVirt","user":"admin@internal","datacenter":"1b59bc75-99ab-4ee8-b9e0-d59b4a0c59df","ovirt_quota":"489f068e-7d27-445d-853d-c0247e878871","display_type":"vnc","keyboard_layout":"en-us","images":[],"compute_attributes":[{"id":2,"name":"1
-        Cores and 1 GB memory","compute_resource_id":3,"compute_resource_name":"ovirt-cr01","provider_friendly_name":"oVirt","compute_profile_id":4,"compute_profile_name":"lol","vm_attrs":{"cluster":"7363a2e5-20a9-458a-a212-7c0bae19331a","template":"","instance_type":"","cores":"1","sockets":"1","memory":"1073741824","ha":"0","display":{"type":"vnc","keyboard_layout":"en-us"},"volumes_attributes":{"1613570707652":{"size_gb":"","storage_domain":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","id":"","preallocate":"0","wipe_after_delete":"0","interface":"virtio_scsi"}}},"attributes":{"cores":"1","interfaces_attributes":{},"memory":"1073741824","cluster_id":"7363a2e5-20a9-458a-a212-7c0bae19331a","cluster_name":"Devel-Infra","template_id":"","template_name":null,"volumes_attributes":{"1613570707652":{"size":"0","storage_domain_id":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","storage_domain_name":"Local-IBM","preallocate":false,"bootable":null}}}},{"id":4,"name":"2
-        Cores and 1 GB memory","compute_resource_id":3,"compute_resource_name":"ovirt-cr01","provider_friendly_name":"oVirt","compute_profile_id":10,"compute_profile_name":"Test
-        Compute Profile","vm_attrs":{"cluster":"7363a2e5-20a9-458a-a212-7c0bae19331a","cores":2,"sockets":1,"memory":1073741824,"ha":0,"interfaces_attributes":{"0":{"name":"","network":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","interface":"virtio"}},"volumes_attributes":{"0":{"size_gb":"16","storage_domain":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","preallocate":"1","wipe_after_delete":"0","interface":"virtio_scsi","bootable":"true"}}},"attributes":{"cores":2,"interfaces_attributes":{"0":{"name":"","network_id":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","network_name":"ovirtmgmt"}},"memory":1073741824,"cluster_id":"7363a2e5-20a9-458a-a212-7c0bae19331a","cluster_name":"Devel-Infra","template_id":null,"template_name":null,"volumes_attributes":{"0":{"size":"17179869184","storage_domain_id":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","storage_domain_name":"Local-IBM","preallocate":true,"bootable":true}}}}],"locations":[{"id":6,"name":"Test
-        Location","title":"Test Location","description":null}],"organizations":[{"id":5,"name":"Test
+      string: '{"description":"","url":"https://ovirt.example.com/ovirt-engine/api","created_at":"2021-02-25
+        09:01:13 UTC","updated_at":"2021-02-25 09:01:13 UTC","id":1,"name":"ovirt-cr01","provider":"Ovirt","provider_friendly_name":"oVirt","user":"admin@internal","datacenter":"1b59bc75-99ab-4ee8-b9e0-d59b4a0c59df","ovirt_quota":"489f068e-7d27-445d-853d-c0247e878871","display_type":"vnc","keyboard_layout":"en-us","images":[],"compute_attributes":[{"id":1,"name":"2
+        Cores and 1 GB memory","compute_resource_id":1,"compute_resource_name":"ovirt-cr01","provider_friendly_name":"oVirt","compute_profile_id":5,"compute_profile_name":"Test
+        Compute Profile","vm_attrs":{"cluster":"7363a2e5-20a9-458a-a212-7c0bae19331a","cores":2,"sockets":1,"memory":1073741824,"ha":0,"interfaces_attributes":{"0":{"name":"","network":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","interface":"virtio"}},"volumes_attributes":{"0":{"size_gb":"16","storage_domain":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","preallocate":"1","wipe_after_delete":"0","interface":"virtio_scsi","bootable":"true"}}},"attributes":{"cores":2,"interfaces_attributes":{"0":{"name":"","network_id":"b52ae3b6-7c03-470c-ace8-a27ad3fe9a93","network_name":"ovirtmgmt"}},"memory":1073741824,"cluster_id":"7363a2e5-20a9-458a-a212-7c0bae19331a","cluster_name":"Devel-Infra","template_id":null,"template_name":null,"volumes_attributes":{"0":{"size":"17179869184","storage_domain_id":"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0","storage_domain_name":"Local-IBM","preallocate":true,"bootable":true}}}}],"locations":[{"id":2,"name":"Default
+        Location","title":"Default Location","description":null}],"organizations":[{"id":3,"name":"Test
         Organization","title":"Test Organization","description":"A test organization"}]}'
     headers:
       Cache-Control:
@@ -298,7 +295,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2708'
+      - '1756'
     status:
       code: 200
       message: OK
@@ -314,7 +311,7 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_resources/3/available_clusters
+    uri: https://foreman.example.org/api/compute_resources/1/available_clusters
   response:
     body:
       string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
@@ -373,7 +370,66 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_resources/3/available_clusters/7363a2e5-20a9-458a-a212-7c0bae19331a/available_networks
+    uri: https://foreman.example.org/api/compute_resources/1/available_clusters/7363a2e5-20a9-458a-a212-7c0bae19331a/available_storage_domains
+  response:
+    body:
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 20,\n  \"search\": null,\n  \"sort\": {\n    \"by\": null,\n    \"order\"\
+        : null\n  },\n  \"results\": [{\"name\":\"Local-IBM\",\"id\":\"d82a0993-5fb7-4ef4-8abf-fd2ccf0e87f0\"\
+        }]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.0-develop
+      Keep-Alive:
+      - timeout=15, max=94
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '215'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/compute_resources/1/available_clusters/7363a2e5-20a9-458a-a212-7c0bae19331a/available_networks
   response:
     body:
       string: "{\n  \"total\": 3,\n  \"subtotal\": 3,\n  \"page\": 1,\n  \"per_page\"\
@@ -402,7 +458,7 @@ interactions:
       Foreman_version:
       - 2.5.0-develop
       Keep-Alive:
-      - timeout=15, max=94
+      - timeout=15, max=93
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
