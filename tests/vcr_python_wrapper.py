@@ -134,7 +134,7 @@ def filter_response(response):
     return response
 
 
-def filter_request(request):
+def filter_request_uri(request):
     request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
     if request.body is not None:
         try:
