@@ -190,7 +190,7 @@ class CallbackModule(CallbackBase):
         except TypeError:
             verify = option
 
-        if verify is False: # is only set to bool if try block succeeds
+        if verify is False:  # is only set to bool if try block succeeds
             requests.packages.urllib3.disable_warnings()
             self._display.warning(
                 u"SSL verification of %s disabled" % self.foreman_url,
