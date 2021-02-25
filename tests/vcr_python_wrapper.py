@@ -122,7 +122,7 @@ def filter_response(response):
             json_body['groups_base'] = 'FILTERED'
         # another for the search result
         if 'results' in json_body:
-            if len(json_body["results"]) > 0:
+            if len(json_body["results"]) == 1:
                 if "host" in json_body['results'][0]:
                     json_body['results'][0]['host'] = 'FILTERED'
                 if "account" in json_body['results'][0]:
