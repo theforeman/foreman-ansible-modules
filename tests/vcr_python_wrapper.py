@@ -147,11 +147,10 @@ def filter_request_manifest(request):
 
 
 def filter_request_ldap(request):
-    request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
     if request.body is not None:
         try:
             json_body = json.loads(request.body)
-        except json.JSONDecodeError:
+        except ValueError:
             pass
         else:
             if 'auth_source_ldap' in json_body:
