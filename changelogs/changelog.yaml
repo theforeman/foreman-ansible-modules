@@ -383,3 +383,14 @@ releases:
       name: repository_info
       namespace: ''
     release_date: '2021-02-22'
+  2.0.1:
+    changes:
+      bugfixes:
+      - host - don't filter ``false`` values for ``interfaces_attributes`` (https://github.com/theforeman/foreman-ansible-modules/issues/1148)
+      - host_info, repository_info - correctly fetch all entities when neither ``name``
+        nor ``search`` is set
+      - host_info, repository_info - enforce mutual exclusivity of ``name`` and ``search``
+    fragments:
+    - 1148-dont-filter-false-params.yml
+    - 20210224-info_module_fixes.yml
+    release_date: '2021-03-02'

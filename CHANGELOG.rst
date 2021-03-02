@@ -6,6 +6,16 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.0.1
+======
+
+Bugfixes
+--------
+
+- host - don't filter ``false`` values for ``interfaces_attributes`` (https://github.com/theforeman/foreman-ansible-modules/issues/1148)
+- host_info, repository_info - correctly fetch all entities when neither ``name`` nor ``search`` is set
+- host_info, repository_info - enforce mutual exclusivity of ``name`` and ``search``
+
 v2.0.0
 ======
 
