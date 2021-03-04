@@ -40,6 +40,10 @@ options:
       Name of the repository to sync
       If omitted, all repositories in I(product) are synched.
     type: str
+  wait_for_completion:
+    description: Wait for Foreman task completion. Default true
+    type: bool
+    default: true
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -67,6 +71,7 @@ def main():
         foreman_spec=dict(
             product=dict(type='entity', scope=['organization'], required=True),
             repository=dict(type='entity', scope=['product'], failsafe=True),
+            wait_for_completion=dict(type='bool', default='true'),
             # This should be scoped more explicit for better serch performance, but needs rerecording
             # repository=dict(type='entity', scope=['organization', 'product'], failsafe=True),
         ),
@@ -77,10 +82,11 @@ def main():
     with module.api_connection():
         product = module.lookup_entity('product')
         repository = module.lookup_entity('repository')
+        wait_for_completion = module.lookup_entity('wait_for_completion')
         if repository:
-            task = module.resource_action('repositories', 'sync', {'id': repository['id']})
+            task = module.resource_action('repositories', 'sync', {'id': repository['id']}, wait_for_task=wait_for_completion)
         else:
-            task = module.resource_action('products', 'sync', {'id': product['id']})
+            task = module.resource_action('products', 'sync', {'id': product['id']}, wait_for_task=wait_for_completion)
 
         module.exit_json(task=task)
 
