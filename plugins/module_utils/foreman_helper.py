@@ -1158,7 +1158,7 @@ class ForemanAnsibleModule(AnsibleModule):
         return None
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None,
-                        ignore_check_mode=False, record_change=True, ignore_task_errors=False):
+                        ignore_check_mode=False, record_change=True, ignore_task_errors=False, wait_for_task=True):
         resource_payload = self._resource_prepare_params(resource, action, params)
         if options is None:
             options = {}
@@ -1167,7 +1167,7 @@ class ForemanAnsibleModule(AnsibleModule):
             if ignore_check_mode or not self.check_mode:
                 result = self._resource_call(resource, action, resource_payload, options=options, data=data, files=files)
                 is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'started_at' in result
-                if is_foreman_task:
+                if is_foreman_task and wait_for_task:
                     result = self.wait_for_task(result, ignore_errors=ignore_task_errors)
         except Exception as e:
             msg = 'Error while performing {0} on {1}: {2}'.format(
