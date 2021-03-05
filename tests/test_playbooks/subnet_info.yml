@@ -1,0 +1,99 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_organizations:
+          - "Test Organization"
+        location_state: present
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "example.net"
+        domain_locations:
+          - "Test Location"
+        domain_organizations:
+          - "Test Organization"
+        domain_state: present
+    - name: create subnet
+      include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "testnet"
+        subnet_organization:
+          - "Test Organization"
+        subnet_locations:
+          - "Test Location"
+        subnet_domains:
+          - "example.net"
+        subnet_cidr: 24
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch subnet info
+      subnet_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "testnet"
+      register: subnet_info
+    - name: check subnet details
+      assert:
+        that:
+          - subnet_info['subnet']['name'] == "testnet"
+          - subnet_info['subnet']['domains'][0]['name'] == "example.net"
+
+    - name: search subnet info
+      subnet_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name = testnet"
+      register: subnet_info
+    - name: check subnet details
+      assert:
+        that:
+          - subnet_info['subnets'][0]['name'] == "testnet"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: unassign domain from subnet
+      include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "testnet"
+        subnet_cidr: 24
+        subnet_domains: []
+    - name: delete subnet
+      include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "testnet"
+        subnet_state: absent
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "example.net"
+        domain_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
