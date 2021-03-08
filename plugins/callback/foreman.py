@@ -66,6 +66,13 @@ DOCUMENTATION = '''
         ini:
           - section: callback_foreman
             key: verify_certs
+      disable_callback:
+        description:
+          - Toggle to make the callback plugin disable itself even if it is loaded.
+          - It can be set to '1' to prevent the plugin from being used even if it gets loaded.
+        env:
+          - name: FOREMAN_CALLBACK_DISABLE
+        default: 0
 '''
 
 import os
@@ -104,6 +111,9 @@ class CallbackModule(CallbackBase):
     def set_options(self, task_keys=None, var_options=None, direct=None):
 
         super(CallbackModule, self).set_options(task_keys=task_keys, var_options=var_options, direct=direct)
+
+        if self.get_option('disable_callback'):
+            self._disable_plugin('Callback disabled by environment.')
 
         self.FOREMAN_URL = self.get_option('url')
         self.FOREMAN_SSL_CERT = (self.get_option('client_cert'), self.get_option('client_key'))
