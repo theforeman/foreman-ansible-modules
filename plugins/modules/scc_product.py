@@ -81,8 +81,12 @@ def main():
             statuses = module.foremanapi.resource('ping').call('statuses')
             plugins = statuses['results']['foreman']['plugins']
             for plugin in plugins:
-                if 'foreman_scc_manager' in plugin:
-                    scc_version = plugin.split(',')[1]
+                if isinstance(plugin, dict):
+                    if plugin['name'] == 'foreman_scc_manager':
+                        scc_version = plugin['version']
+                else:
+                    if 'foreman_scc_manager' in plugin:
+                        scc_version = plugin.split(',')[1]
         except Exception:
             pass
 
