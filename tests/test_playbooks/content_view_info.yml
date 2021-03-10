@@ -1,0 +1,93 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 2"
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        product_name: "Test Product 2"
+        repository_state: present
+    - include: tasks/content_view.yml
+      vars:
+        content_view_name: "Test Composite Content View"
+        content_view_state: absent
+    - name: Create content view
+      include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        expected_change: true
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch content_view info
+      content_view_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "Test Content View"
+      register: content_view_info
+    - name: check content_view details
+      assert:
+        that:
+          - content_view_info['content_view']['name'] == "Test Content View"
+          - content_view_info['content_view']['repositories'][0]['name'] == "Test Repository"
+
+    - name: search content_view info
+      content_view_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: 'name = "Test Content View"'
+      register: content_view_info
+    - name: check content_view details
+      assert:
+        that:
+          - content_view_info['content_views'][0]['name'] == "Test Content View"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include: tasks/repository.yml
+      vars:
+        product_name: "Test Product 2"
+        repository_state: absent
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 2"
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
