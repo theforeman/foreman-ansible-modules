@@ -788,67 +788,43 @@ class ForemanAnsibleModule(AnsibleModule):
         return [self.find_puppetclass(name, **kwargs) for name in names]
 
     def find_cluster(self, name, compute_resource):
-        if compute_resource['provider'].lower() not in ['ovirt', 'vmware']:
-            return {'id': name, 'name': name, '_api_identifier': name}
+        cluster = self.find_compute_resource_parts('clusters', name, compute_resource, None, ['ovirt', 'vmware'])
 
-        avc_params = {'id': compute_resource['id']}
-        available_clusters = self.resource_action('compute_resources', 'available_clusters', params=avc_params,
-                                                  ignore_check_mode=True, record_change=False)['results']
-        cluster = next((cluster for cluster in available_clusters if cluster['name'] == name or cluster['id'] == name), None)
-        if cluster is None:
-            err_msg = "Could not find cluster '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
-            self.fail_json(msg=err_msg)
         # workaround for https://projects.theforeman.org/issues/31874
         if compute_resource['provider'].lower() == 'vmware':
             cluster['_api_identifier'] = cluster['name']
         else:
             cluster['_api_identifier'] = cluster['id']
+
         return cluster
 
     def find_network(self, name, compute_resource, cluster=None):
-        if compute_resource['provider'].lower() not in ['ovirt', 'vmware', 'google', 'azurerm']:
-            return {'id': name, 'name': name}
-
-        avn_params = {'id': compute_resource['id']}
-        if cluster is not None:
-            avn_params['cluster_id'] = cluster['_api_identifier']
-        available_networks = self.resource_action('compute_resources', 'available_networks', params=avn_params,
-                                                  ignore_check_mode=True, record_change=False)['results']
-        network = next((network for network in available_networks if network['name'] == name or network['id'] == name), None)
-        if network is None:
-            err_msg = "Could not find network '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
-            self.fail_json(msg=err_msg)
-        return network
+        return self.find_compute_resource_parts('networks', name, compute_resource, cluster, ['ovirt', 'vmware', 'google', 'azurerm'])
 
     def find_storage_domain(self, name, compute_resource, cluster=None):
-        if compute_resource['provider'].lower() not in ['ovirt', 'vmware']:
-            return {'id': name, 'name': name}
-
-        avsd_params = {'id': compute_resource['id']}
-        if cluster is not None:
-            avsd_params['cluster_id'] = cluster['_api_identifier']
-        available_storage_domains = self.resource_action('compute_resources', 'available_storage_domains', params=avsd_params,
-                                                         ignore_check_mode=True, record_change=False)['results']
-        storage_domain = next((domain for domain in available_storage_domains if domain['name'] == name or domain['id'] == name), None)
-        if storage_domain is None:
-            err_msg = "Could not find storage domain '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
-            self.fail_json(msg=err_msg)
-        return storage_domain
+        return self.find_compute_resource_parts('storage_domains', name, compute_resource, cluster, ['ovirt', 'vmware'])
 
     def find_storage_pod(self, name, compute_resource, cluster=None):
-        if compute_resource['provider'].lower() not in ['vmware']:
+        return self.find_compute_resource_parts('storage_pods', name, compute_resource, cluster, ['vmware'])
+
+    def find_compute_resource_parts(self, part_name, name, compute_resource, cluster=None, supported_crs=None):
+        if supported_crs is None:
+            supported_crs = []
+
+        if compute_resource['provider'].lower() not in supported_crs:
             return {'id': name, 'name': name}
 
-        avsp_params = {'id': compute_resource['id']}
+        additional_params = {'id': compute_resource['id']}
         if cluster is not None:
-            avsp_params['cluster_id'] = cluster['_api_identifier']
-        available_storage_pods = self.resource_action('compute_resources', 'available_storage_pods', params=avsp_params,
-                                                      ignore_check_mode=True, record_change=False)['results']
-        storage_pod = next((pod for pod in available_storage_pods if pod['name'] == name or pod['id'] == name), None)
-        if storage_pod is None:
-            err_msg = "Could not find storage pod '{0}' on compute resource '{1}'.".format(name, compute_resource.get('name'))
+            additional_params['cluster_id'] = cluster['_api_identifier']
+        api_name = 'available_{0}'.format(part_name)
+        available_parts = self.resource_action('compute_resources', api_name, params=additional_params,
+                                               ignore_check_mode=True, record_change=False)['results']
+        part = next((part for part in available_parts if part['name'] == name or part['id'] == name), None)
+        if part is None:
+            err_msg = "Could not find {0} '{1}' on compute resource '{2}'.".format(part_name, name, compute_resource.get('name'))
             self.fail_json(msg=err_msg)
-        return storage_pod
+        return part
 
     def scope_for(self, key, scoped_resource=None):
         # workaround for https://projects.theforeman.org/issues/31714
