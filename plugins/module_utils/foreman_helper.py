@@ -1349,7 +1349,9 @@ class ForemanInfoAnsibleModule(ForemanStatelessEntityAnsibleModule):
             location=dict(type='entity'),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
-        mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['name', 'search']]
+        mutually_exclusive = kwargs.pop('mutually_exclusive', [])
+        if not foreman_spec['name'].get('invisible', False):
+            mutually_exclusive.extend([['name', 'search']])
         super(ForemanInfoAnsibleModule, self).__init__(foreman_spec=foreman_spec, mutually_exclusive=mutually_exclusive, **kwargs)
 
     def run(self, **kwargs):

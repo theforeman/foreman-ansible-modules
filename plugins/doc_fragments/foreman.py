@@ -352,6 +352,25 @@ options:
     type: str
 '''
 
+    INFOMODULEWITHOUTNAME = '''
+options:
+  location:
+    description:
+      - Label of the Location to scope the search for.
+    required: false
+    type: str
+  organization:
+    description:
+      - Name of the Organization to scope the search for.
+    required: false
+    type: str
+  search:
+    description:
+      - Search query to use
+      - If None, all resources are returned.
+    type: str
+'''
+
     KATELLOINFOMODULE = '''
 options:
   organization:

@@ -1,0 +1,120 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Test
+          label: test
+          prior: Library
+        - name: QA
+          label: qa
+          prior: Test
+        - name: Prod
+          label: prod
+          prior: QA
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+      ignore_errors: true
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+    - name: publish CV version 1.0
+      include_tasks: tasks/content_view_version.yml
+      vars:
+        description: version-1.0
+        version: 1.0
+    - name: promote CV from Library to Test
+      include_tasks: tasks/content_view_version.yml
+      vars:
+        current_lifecycle_environment: Library
+        lifecycle_environments:
+          - Library
+          - Test
+    - name: publish CV version 2.0
+      include_tasks: tasks/content_view_version.yml
+      vars:
+        description: version-2.0
+        version: 2.0
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch all content view versions
+      content_view_version_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        content_view: "Test Content View"
+      register: content_view_version_info
+    - name: check content_view_version details
+      assert:
+        that:
+          - content_view_version_info['content_view_versions'][0]['version'] == "2.0"
+          - content_view_version_info['content_view_versions'][1]['version'] == "1.0"
+
+    - name: search content view version info
+      content_view_version_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        content_view: "Test Content View"
+        search: 'version = "1.0"'
+      register: content_view_version_info
+    - name: check content_view details
+      assert:
+        that:
+          - content_view_version_info['content_view_versions'][0]['version'] == "1.0"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+      ignore_errors: true
+    - include: tasks/repository.yml
+      vars:
+        repository_state: absent
+      ignore_errors: true
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+      ignore_errors: true
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
