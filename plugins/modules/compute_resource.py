@@ -423,7 +423,7 @@ def main():
                 ovirt_quota=dict(),
                 project=dict(),
                 email=dict(),
-                key_path=dict(),
+                key_path=dict(no_log=False),
                 zone=dict(),
                 ssl_verify_peer=dict(type='bool'),
                 set_console_password=dict(type='bool'),
