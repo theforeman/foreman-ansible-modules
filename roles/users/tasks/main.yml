@@ -3,14 +3,13 @@
 - name: set auth params
   set_fact:
     auth_params: &auth_params
-      server_url: "{{ server_url }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
+      server_url: "{{ foreman_server_url }}"
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
       validate_certs: "{{ foreman_validate_certs }}"
-  no_log: true
 
 # task for user creation
-- name: Create user
+- name: Create user(s)
   theforeman.foreman.user:
     <<: *auth_params
     name: "{{ item.username }}"
@@ -29,12 +28,12 @@
     locations: "{{ item.locations | default(omit) }}"
     organizations: "{{ item.organizations | default(omit) }}"
     state: present
-  loop: "{{ users }}"
-  when: create_users |bool
-  no_log: "{{ hide_password_in_log }}"
+  loop: "{{ foreman_users }}"
+  when: foreman_create_users |bool
+  no_log: "{{ foreman_users_hide_log }}"
 
 # task for usergroup creation
-- name: Create usergroup
+- name: Create usergroup(s)
   theforeman.foreman.usergroup:
     <<: *auth_params
     name: "{{ item.usergroupname }}"
@@ -42,41 +41,42 @@
     roles: "{{ item.roles | default(omit) }}"
     users: "{{ item.users | default(omit) }}"
     state: present
-  loop: "{{ usergroups }}"
-  when: create_usergroups |bool
+  loop: "{{ foreman_usergroups }}"
+  when: foreman_create_usergroups |bool
 
 # tasks for ldap
-- name: Connect with LDAP Authentication
+- name: Connect Foreman with LDAP authentication(s)
   theforeman.foreman.auth_source_ldap:
     <<: *auth_params
-    name: "{{ ldap_name }}"
-    port: "{{ port | default(omit) }}"
-    host: "{{ ldap_host }}"
+    name: "{{ item.ldap_name }}"
+    port: "{{ item.port | default(omit) }}"
+    host: "{{ item.ldap_host }}"
     # on the fly value must be boolean
-    onthefly_register: "{{ onthefly_register | default(omit) }}"
-    account: "{{ ldap_account | default(omit) }}"
-    account_password: "{{ ldap_password | default(omit) }}"
-    base_dn: "{{ ldap_base_dn | default(omit) }} "
-    groups_base: "{{ ldap_groups_base | default(omit) }}"
-    server_type: "{{ ldap_server_type | default(omit) }}"
-    attr_login: "{{ attr_login | default(omit) }}"
-    attr_firstname: "{{ attr_firstname | default(omit) }}"
-    attr_lastname: "{{ attr_lastname | default(omit) }}"
-    attr_mail: "{{ attr_mail | default(omit) }}"
-    attr_photo: "{{ attr_photo | default(omit) }}"
+    onthefly_register: "{{ item.onthefly_register | default(omit) }}"
+    account: "{{ item.ldap_account | default(omit) }}"
+    account_password: "{{ item.ldap_password | default(omit) }}"
+    base_dn: "{{ item.ldap_base_dn | default(omit) }} "
+    groups_base: "{{ item.ldap_groups_base | default(omit) }}"
+    server_type: "{{ item.ldap_server_type | default(omit) }}"
+    attr_login: "{{ item.attr_login | default(omit) }}"
+    attr_firstname: "{{ item.attr_firstname | default(omit) }}"
+    attr_lastname: "{{ item.attr_lastname | default(omit) }}"
+    attr_mail: "{{ item.attr_mail | default(omit) }}"
+    attr_photo: "{{ item.attr_photo | default(omit) }}"
     state: present
-  when: enable_ldap_auth |bool
-  no_log: "{{ hide_password_in_log }}"
+  when: foreman_enable_ldap_auth |bool
+  no_log: "{{ foreman_users_hide_log }}"
+  loop: "{{ foreman_auth_sources }}"
 
 # tasks for ext_usergroup
-- name: Create external user group
+- name: Create external user group(s)
   theforeman.foreman.external_usergroup:
     <<: *auth_params
     # name of the external userg.
     name: "{{ item.external_usergroupname }}"
     auth_source_ldap: "{{ item.auth_source_ldap }}"
     # name of the group listed in Foreman
-    usergroup: "{{ item.usergroup }}"
+    usergroup: "{{ item.foreman_usergroup }}"
     state: present
-  when: map_external_usergroups
-  loop: "{{ linked_groups }}"
+  when: foreman_map_external_usergroups
+  loop: "{{ foreman_linked_usergroups }}"
