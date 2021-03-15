@@ -1,0 +1,76 @@
+---
+# The following sensitive variables can be specified in the server.yml
+# ldap_host:
+# ldap_account:
+# ldap_password:
+# ldap_base_dn:
+# ldap_groups_base:
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include_tasks: tasks/location.yml
+      vars:
+        location_state: present
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  vars:
+    vars:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "Atix"
+    location: "Minga"
+    users:
+      - username: "Gandalf"
+        firstname: "Weiß"
+        lastname: "Grau"
+        email: "gandalf@mordor.auen"
+        description: "Großer alter Mann"
+        admin_rights: true
+        user_password: "PASSWORD"
+        default_location: "Test Location"
+        default_organization: "Test Organization"
+        auth_source: Internal    # or "{{ ldap_name }}"
+        timezone: "Berlin"
+        user_locale: "de"
+        roles:
+          - "Viewer"
+        locations:
+          - "{{ location }}"
+        organizations:
+          - "{{ organization }}"
+    usergroups:
+      - usergroupname: "test"
+        admin_rights: true
+        users:
+          - "{{ users.0.username }}"
+        usergroups: ""     # nested group
+    ldap_name: "testing"
+    onthefly_register: true
+    ldap_server_type: posix
+    attr_login: uid
+    attr_firstname: givenName
+    attr_lastname: sn
+    attr_mail: mail
+    attr_photo: ""
+    linked_groups:
+      - external_usergroupname: "admins"
+        usergroup: "{{ usergroups.0.usergroupname }}"
+        auth_source_ldap: "{{ ldap_name }}"
+  roles:
+    - role: users
