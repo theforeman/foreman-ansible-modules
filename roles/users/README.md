@@ -28,10 +28,10 @@ validate_certs: bool defualt (true)
 To switch on/off tasks use:
 
 ``` yaml
-create_users: bool defualt (true)
-create_usergroups: bool defualt (true)
-enable_ldap_auth: bool defualt (true)
-map_external_usergroups: bool defualt (true)
+create_users: bool default (true)
+create_usergroups: bool default (true)
+enable_ldap_auth: bool default (true)
+map_external_usergroups: bool default (true)
 ```
 
 For user creation use:
