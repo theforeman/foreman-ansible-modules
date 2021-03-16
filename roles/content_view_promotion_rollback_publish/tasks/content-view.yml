@@ -1,0 +1,14 @@
+---
+- name: "Promote Content-Views"
+  include_tasks: promote.yml
+  loop: "{{ organization.value.content_views }}"
+  loop_control:
+    loop_var: content_view
+  when: rollback == False
+
+- name: "Rollback Content-Views"
+  include_tasks: rollback.yml
+  loop: "{{ organization.value.content_views }}"
+  loop_control:
+    loop_var: content_view
+  when: rollback == True

@@ -1,0 +1,82 @@
+---
+# get data on the current content-view
+- name: "Gather Data For Current Content-View From Foreman"
+  theforeman.foreman.resource_info:
+    username: "{{ foreman.user}}"
+    password: "{{ foreman.password }}"
+    server_url: "{{ foreman.url }}"
+    organization: "{{ organization.key }}"
+    resource: content_views
+    search: name = "{{ content_view }}"
+    validate_certs: False
+  register: content_view_data
+
+
+# get data on the current content-view version
+- name: "Gather Data For Current Content-View Versions From Foreman"
+  theforman.foreman.resource_info:
+    username: "{{ foreman.user}}"
+    password: "{{ foreman.password }}"
+    server_url: "{{ foreman.url }}"
+    organization: "{{ organization.key }}"
+    resource: content_view_versions
+    params:
+      content_view_id: "{{ content_view_data.resources[0].id }}"
+  register: version_information
+
+# creates a dictionary with data formatted as such {'Prod':'11.0'}
+- name: "Build Dictionary With Lifecycle Envrionment And Version Number"
+  set_fact:
+    environments: "{{ environments | default({}) | combine ({item[1].name : item[0].name.split()[-1]}) }}"
+  with_subelements:
+    - "{{ version_information.resources }}"
+    - environments
+
+
+# add 1 to each of the version numbers
+- name: "Update Facts With Incremented Content-View Version Numbers"
+  set_fact:
+    new_environments: "{{ new_environments | default({}) | combine ({item.key: item.value|int + 1.0 }) }} "
+  with_dict: "{{ environments }}"
+
+
+# set the highest version to zero so that we don't use previous loop settings
+- name: "Set Highest Version to 0"
+  set_fact:
+    highest_version: 0
+
+
+# get the highest version number for the content-view
+- name: "Get Highest Content-View Version That Isn't Library"
+  set_fact:
+    highest_version: "{{ item.value|int }}"
+  when: highest_version | default(0) | int < item.value|int and item.key != 'Library'
+  with_dict: "{{ environments }}"
+
+
+# only publish new view if necessary (when the current view is at or above library)
+- name: "Publish new version of Content-View"
+  theforman.foreman.content_view_version:
+    username: "{{ foreman.user}}"
+    password: "{{ foreman.password }}"
+    server_url: "{{ foreman.url }}"
+    organization: "{{ organization.key }}"
+    content_view: "{{ content_view }}"
+  when: highest_version | int >= environments.Library | int or publish_only | default(False)
+
+
+# only promote environments defined in the vars
+- name: "Promote Environments to Version N+1"
+  theforman.foreman.content_view_version:
+    username: "{{ foreman.user}}"
+    password: "{{ foreman.password }}"
+    server_url: "{{ foreman.url }}"
+    organization: "{{ organization.key }}"
+    content_view: "{{ content_view }}"
+    # dictionaries aren't order and Foreman doesn't want you promoting things out of order
+    # but we're promoting them all so we just override that behavior
+    force_promote: yes
+    lifecycle_environments: "{{ item.key }}"
+    version: "{{ item.value }}"
+  with_dict: "{{ new_environments }}"
+  when: item.key in organization.value.lifecycle_environments and not publish_only | default(False)
