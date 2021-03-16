@@ -49,7 +49,7 @@ Items not described in the inventory will not be affected (the exception being L
 
 If you only want to use this role for staging new content_view_versions, simply set the variable **publish_only** to **True** (this can be done in vars/main.yml or elsewhere).  This action will only publish a new content_view_version to the content_views described in the dictionary.
 
-If you want to rollback (reverse promote) lifecycle environments simply set the variable **rollback** to **True** (this can be done in vars/main.yml or elsewhere).  This action will only roll back lifecycle_environments in the content views described in main dictionary.
+If you want to rollback (reverse promote) lifecycle environments simply set the variable **rollback** to **True**.  This action will only roll back lifecycle_environments in the content views described in main dictionary.
 
 
 Foreman information is accessed by way setting the vars below:
