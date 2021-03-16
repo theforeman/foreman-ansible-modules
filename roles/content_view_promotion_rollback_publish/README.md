@@ -45,7 +45,7 @@ organizations:
     content_views:
       - "content-view1"
 ```
-Items not described in the inventory will not be affected (the exception being Library when a new content_view_version needs to be published.
+Items not described in the inventory will not be affected (the exception being Library when a new content_view_version needs to be published).
 
 If you only want to use this role for staging new content_view_versions, simply set the variable **publish_only** to **True** (this can be done in vars/main.yml or elsewhere).  This action will only publish a new content_view_version to the content_views described in the dictionary.
 
