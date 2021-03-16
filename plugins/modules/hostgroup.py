@@ -55,6 +55,14 @@ options:
   parameters:
     description:
       - Hostgroup specific host parameters
+  ansible_roles:
+    description:
+      - A list of ansible roles to associate with the hostgroup.
+      - The foreman-ansible plugin must be installed to use this parameter.
+    required: false
+    type: list
+    elements: str
+    version_added: 2.1.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -159,6 +167,7 @@ def main():
             name=dict(required=True),
             description=dict(),
             parent=dict(type='entity'),
+            ansible_roles=dict(type='entity_list', ensure=False),
             organization=dict(type='entity', required=False, ensure=False),
         ),
         argument_spec=dict(
@@ -169,10 +178,12 @@ def main():
             content_view=('organization',),
             lifecycle_environment=('organization',),
         ),
+        required_plugins=[('ansible', ['ansible_roles'])],
     )
 
     module_params = module.foreman_params
     with module.api_connection():
+        old_entity = module.lookup_entity('entity')
         if not module.desired_absent:
             if 'organization' in module_params:
                 if 'organizations' in module_params:
@@ -182,8 +193,24 @@ def main():
                     module_params['organizations'] = [module_params['organization']]
         expected_puppetclasses = module_params.pop('puppetclasses', None)
         entity = module.run()
+
         if not module.desired_absent and 'environment_id' in entity:
             ensure_puppetclasses(module, 'hostgroup', entity, expected_puppetclasses)
+
+        ansible_roles = module_params.get('ansible_roles')
+        if not module.desired_absent and ansible_roles is not None:
+            desired_ansible_role_ids = [item['id'] for item in ansible_roles]
+            current_ansible_role_ids = [
+                item['id'] for item in module.resource_action(
+                    'hostgroups', 'ansible_roles', {'id': entity['id']},
+                    ignore_check_mode=True, record_change=False,
+                )
+            ] if old_entity else []
+            if set(current_ansible_role_ids) != set(desired_ansible_role_ids):
+                module.resource_action(
+                    'hostgroups', 'assign_ansible_roles',
+                    {'id': entity['id'], 'ansible_role_ids': desired_ansible_role_ids},
+                )
 
 
 if __name__ == '__main__':
