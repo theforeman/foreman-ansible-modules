@@ -300,7 +300,7 @@ class HostMixin(ParametersMixin):
             kickstart_repository=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment', 'content_view'],
                                       resource_type='repositories'),
             content_view=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment']),
-            activation_keys=dict(),
+            activation_keys=dict(no_log=False),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', []) + [
