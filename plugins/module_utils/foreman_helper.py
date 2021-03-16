@@ -56,6 +56,7 @@ parameter_foreman_spec = dict(
 parameter_ansible_spec = {k: v for (k, v) in parameter_foreman_spec.items() if k != 'id'}
 
 _PLUGIN_RESOURCES = {
+    'ansible': 'ansible_roles',
     'discovery': 'discovery_rules',
     'katello': 'subscriptions',
     'openscap': 'scap_contents',

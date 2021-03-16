@@ -1,3 +1,4 @@
+# `ansible-galaxy role install thulium_drake.motd -p /usr/share/ansible/roles`
 ---
 - hosts: localhost
   collections:
@@ -35,6 +36,8 @@
         hostgroup_locations: "{{ hostgroup.locations }}"
         hostgroup_organizations: "{{ hostgroup.organizations }}"
         hostgroup_openscap_proxy: "{{ hostgroup.openscap_proxy }}"
+        hostgroup_ansible_roles:
+          - thulium_drake.motd
         hostgroup_state: present
         expected_change: true
 
@@ -44,6 +47,28 @@
         hostgroup_locations: "{{ hostgroup.locations }}"
         hostgroup_organizations: "{{ hostgroup.organizations }}"
         hostgroup_openscap_proxy: "{{ hostgroup.openscap_proxy }}"
+        hostgroup_ansible_roles:
+          - thulium_drake.motd
+        hostgroup_state: present
+        expected_change: false
+
+    - include: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_locations: "{{ hostgroup.locations }}"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_openscap_proxy: "{{ hostgroup.openscap_proxy }}"
+        hostgroup_ansible_roles: []
+        hostgroup_state: present
+        expected_change: true
+
+    - include: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_locations: "{{ hostgroup.locations }}"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_openscap_proxy: "{{ hostgroup.openscap_proxy }}"
+        hostgroup_ansible_roles: []
         hostgroup_state: present
         expected_change: false
 
