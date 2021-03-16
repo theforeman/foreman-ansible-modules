@@ -49,28 +49,22 @@ If you only want to use this role for staging new content_view_versions, simply 
 
 If you want to rollback (reverse promote) lifecycle environments simply set the variable **rollback** to **True** (this can be done in vars/main.yml or elsewhere).  This action will only roll back lifecycle_environments in the content views described in main dictionary.
 
-
-Foreman information is accessed by way setting the vars below:
-```
-foreman_user: admin
-foreman_password: changeme
-foreman_server_url: "https://myforemanserver.myorg.com"
-```
-This is in the vars/main.yml for illistrative purposes only!  Please use a vault (or custom credential-type if using Tower).  STORING PASSWORDS IN PLAINTEXT IS BAD, MMM-KAY?
-
-
 Dependencies
 ------------
 
 You need a Foreman user with admin access to the Organizations, Lifecycle_Environments, and Content_Views you wish to interact with.
 
-By default, the role will require a valid SSL certificate installed on your Foreman server that the ansible client can trace trust to.  To disable that update the 'FOREMAN_VALIDATE_CERTS variable in defaults/main.yml.'
+By default, the role will require a valid SSL certificate installed on your Foreman server that the ansible client can trace trust to.  To disable that update the 'FOREMAN_VALIDATE_CERTS' variable in defaults/main.yml.
 
+For example, to disable certificate checking you would update the variable as such:
+```
+FOREMAN_VALIDATE_CERTS: false
+```
 
 Example Playbook
 ----------------
 
-The role can be instantiated quite simply, all of the decision making is handled by the variables set:
+The role can be instantiated quite simply, all of the decision making is handled by the variables previously set:
 
 ```
 ---
