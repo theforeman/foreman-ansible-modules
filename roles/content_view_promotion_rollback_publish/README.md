@@ -11,8 +11,6 @@ This role requires the theforeman.foreman module collection.
 Role Variables
 --------------
 
-The main amount of work is vars/main.yml.
-
 The primary dictionary is the organizations dictionary, which is formatted as such:
 ```
 organizations:
