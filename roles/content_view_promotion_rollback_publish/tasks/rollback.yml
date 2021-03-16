@@ -2,9 +2,9 @@
 # get data on the current content-view
 - name: "Gather Data For Current Content-View From Foreman"
   theforeman.foreman.resource_info:
-    username: "{{ foreman.user }}"
-    password: "{{ foreman.password }}"
-    server_url: "{{ foreman.url }}"
+    username: "{{ foreman_user}}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
     organization: "{{ organization.key }}"
     resource: content_views
     search: name = "{{ content_view }}"
@@ -14,9 +14,9 @@
 # get data on the current content-view version
 - name: "Gather Data For Current Content-View Versions From Foreman"
   theforeman.foreman.resource_info:
-    username: "{{ foreman.user }}"
-    password: "{{ foreman.password }}"
-    server_url: "{{ foreman.url }}"
+    username: "{{ foreman_user}}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
     organization: "{{ organization.key }}"
     resource: content_view_versions
     params:
@@ -43,9 +43,9 @@
 # only promote environments defined in the vars
 - name: "Rollback Environments to Version N-1"
   theforeman.foreman.content_view_version:
-    username: "{{ foreman.user }}"
-    password: "{{ foreman.password }}"
-    server_url: "{{ foreman.url }}"
+    username: "{{ foreman_user}}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
     organization: "{{ organization.key }}"
     content_view: "{{ content_view }}"
     # dictionaries aren't order and Foreman doesn't want you promoting things out of order

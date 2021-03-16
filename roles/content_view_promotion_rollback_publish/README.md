@@ -52,12 +52,11 @@ If you only want to use this role for staging new content_view_versions, simply 
 If you want to rollback (reverse promote) lifecycle environments simply set the variable **rollback** to **True** (this can be done in vars/main.yml or elsewhere).  This action will only roll back lifecycle_environments in the content views described in main dictionary.
 
 
-Foreman information is accessed by way of the dictionary 'foreman', formatted as such:
+Foreman information is accessed by way setting the vars below:
 ```
-foreman:
-  user: admin
-  password: changeme
-  url: "https://myforemanserver.myorg.com"
+foreman_user: admin
+foreman_password: changeme
+foreman_server_url: "https://myforemanserver.myorg.com"
 ```
 This is in the vars/main.yml for illistrative purposes only!  Please use a vault (or custom credential-type if using Tower).  STORING PASSWORDS IN PLAINTEXT IS BAD, MMM-KAY?
 
