@@ -75,3 +75,73 @@ The role can be instantiated quite simply, all of the decision making is handled
     include_role: 
       name: theforeman.foreman.content_view_promotion_rollback_publish 
 ```
+For example:
+
+Promoting Lifecycle Environments (and publishing new Content-View versions if necessary):
+```
+organizations:
+  org1:
+    lifecycle_environments:
+      - "Dev"
+      - "QA"
+      - "Prod"
+    content_views:
+      - "content-view1"
+      - "content-view2"
+```
+
+The role would promote the Dev, QA and Prod Lifecycle Environments up one version level for both content-view1 and content-view2.  If that newest Content-View version does not exist, first we will publish a new version then promote the appropiate Lifecycle Environments.
+
+Rolling back Lifecycle Environments to the previous version:
+```
+organizations:
+  org1:
+    lifecycle_environments:
+      - "Dev"
+      - "QA"
+      - "Prod"
+    content_views:
+      - "content-view1"
+      - "content-view2"
+rollback: true
+```
+
+The role would take the Dev, QA and Prod Lifecycle Environments to Content-View version N-1.  If, prior to role runtime, the versions were: Prod=10, QA=11, and Dev=12, the result at the end of the run would be: Prod=9, QA=10, and Dev=11.
+
+Only publishing a new Content-View version:
+```
+organizations:
+  org1:
+    lifecycle_environments:
+      - "Dev"
+      - "QA"
+      - "Prod"
+    content_views:
+      - "content-view1"
+      - "content-view2"
+publish_only: true
+```
+
+The role would publish a new version of Content-Views content-view1 and content-view2 only.
+
+To perform actions across multiple Organizations:
+```
+organizations:
+  org1:
+    lifecycle_environments:
+      - "Dev"
+      - "QA"
+      - "Prod"
+    content_views:
+      - "content-view1"
+      - "content-view2"
+  org2:
+    lifecycle_environments:
+      - "LCE1"
+      - "LCE2"
+    content_views:
+      - "org2_content-view"
+publish_only: true
+```
+
+The role would publish a new version of all the listed Content-Views, across both organizations.
