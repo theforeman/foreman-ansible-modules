@@ -124,10 +124,10 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
-            gpg_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
+            gpg_key=dict(type='entity', resource_type='content_credentials', scope=['organization'], no_log=False),
             ssl_ca_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             ssl_client_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
-            ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization']),
+            ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization'], no_log=False),
             sync_plan=dict(type='entity', scope=['organization']),
             description=dict(),
         ),
