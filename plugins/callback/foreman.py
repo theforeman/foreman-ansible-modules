@@ -98,9 +98,9 @@ def build_log(data):
     config_report API.
     """
     for source, msg in data:
-        if 'failed' in msg:
+        if msg.get('failed'):
             level = 'err'
-        elif 'changed' in msg and msg['changed']:
+        elif msg.get('changed'):
             level = 'notice'
         else:
             level = 'info'
@@ -257,26 +257,27 @@ class CallbackModule(CallbackBase):
 
             self.items[host] = []
 
-    def append_result(self, result):
+    def append_result(self, result, failed=False):
         name = result._task.get_name()
         host = result._host.get_name()
         value = result._result
+        value['failed'] = failed
         self.items[host].append((name, value))
         if 'ansible_facts' in value:
             self.facts[host].update(value['ansible_facts'])
 
     # Ansible callback API
     def v2_runner_on_failed(self, result, ignore_errors=False):
-        self.append_result(result)
+        self.append_result(result, True)
 
     def v2_runner_on_unreachable(self, result):
-        self.append_result(result)
+        self.append_result(result, True)
 
     def v2_runner_on_async_ok(self, result):
         self.append_result(result)
 
     def v2_runner_on_async_failed(self, result):
-        self.append_result(result)
+        self.append_result(result, True)
 
     def v2_playbook_on_stats(self, stats):
         self.send_facts()
