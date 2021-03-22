@@ -88,7 +88,52 @@ except ImportError:
     HAS_REQUESTS = False
 
 from ansible.module_utils._text import to_text
+from ansible.module_utils.parsing.convert_bool import boolean as to_bool
 from ansible.plugins.callback import CallbackBase
+
+
+def build_log(data):
+    """
+    Transform the internal log structure to one accepted by Foreman's
+    config_report API.
+    """
+    for source, msg in data:
+        if 'failed' in msg:
+            level = 'err'
+        elif 'changed' in msg and msg['changed']:
+            level = 'notice'
+        else:
+            level = 'info'
+
+        yield {
+            "log": {
+                'sources': {
+                    'source': source,
+                },
+                'messages': {
+                    'message': json.dumps(msg),
+                },
+                'level': level,
+            }
+        }
+
+
+def get_time():
+    """
+    Return the time for measuring duration. Prefers monotonic time but
+    falls back to the regular time on older Python versions.
+    """
+    try:
+        return time.monotonic()
+    except AttributeError:
+        return time.time()
+
+
+def get_now():
+    """
+    Return the current timestamp as a string to be sent over the network.
+    """
+    return datetime.utcnow().isoformat()
 
 
 class CallbackModule(CallbackBase):
@@ -97,16 +142,11 @@ class CallbackModule(CallbackBase):
     CALLBACK_NAME = 'theforeman.foreman.foreman'
     CALLBACK_NEEDS_WHITELIST = True
 
-    FOREMAN_HEADERS = {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-    TIME_FORMAT = "%Y-%m-%d %H:%M:%S %f"
-
     def __init__(self):
         super(CallbackModule, self).__init__()
         self.items = defaultdict(list)
-        self.start_time = int(time.time())
+        self.facts = defaultdict(dict)
+        self.start_time = get_time()
 
     def set_options(self, task_keys=None, var_options=None, direct=None):
 
@@ -115,88 +155,73 @@ class CallbackModule(CallbackBase):
         if self.get_option('disable_callback'):
             self._disable_plugin('Callback disabled by environment.')
 
-        self.FOREMAN_URL = self.get_option('url')
-        self.FOREMAN_SSL_CERT = (self.get_option('client_cert'), self.get_option('client_key'))
-        self.FOREMAN_SSL_VERIFY = str(self.get_option('verify_certs'))
-
-        self.ssl_verify = self._ssl_verify()
+        self.foreman_url = self.get_option('url')
+        ssl_cert = self.get_option('client_cert')
+        ssl_key = self.get_option('client_key')
 
         if HAS_REQUESTS:
-            requests_major = int(requests.__version__.split('.')[0])
-            if requests_major < 2:
-                self._disable_plugin('The `requests` python module is too old.')
+            requests_version = tuple(map(int, requests.__version__.split('.')))
+            if requests_version < (2, 14):
+                self._disable_plugin(u'The `requests` python module is older than 2.14.0.')
         else:
-            self._disable_plugin('The `requests` python module is not installed.')
+            self._disable_plugin(u'The `requests` python module is not installed')
 
-        if self.FOREMAN_URL.startswith('https://'):
-            if not os.path.exists(self.FOREMAN_SSL_CERT[0]):
-                self._disable_plugin('FOREMAN_SSL_CERT %s not found.' % self.FOREMAN_SSL_CERT[0])
+        if self.foreman_url.startswith('https://'):
+            if not os.path.exists(ssl_cert):
+                self._disable_plugin(u'FOREMAN_SSL_CERT %s not found.' % ssl_cert)
 
-            if not os.path.exists(self.FOREMAN_SSL_CERT[1]):
-                self._disable_plugin('FOREMAN_SSL_KEY %s not found.' % self.FOREMAN_SSL_CERT[1])
+            if not os.path.exists(ssl_key):
+                self._disable_plugin(u'FOREMAN_SSL_KEY %s not found.' % ssl_key)
+
+        self.session = requests.Session()
+        self.session.verify = self._ssl_verify(str(self.get_option('verify_certs')))
+        self.session.cert = (ssl_cert, ssl_key)
 
     def _disable_plugin(self, msg):
         self.disabled = True
         if msg:
-            self._display.warning(msg + ' Disabling the Foreman callback plugin.')
+            self._display.warning(msg + u' Disabling the Foreman callback plugin.')
         else:
-            self._display.warning('Disabling the Foreman callback plugin.')
+            self._display.warning(u'Disabling the Foreman callback plugin.')
 
-    def _ssl_verify(self):
-        if self.FOREMAN_SSL_VERIFY.lower() in ["1", "true", "on"]:
-            verify = True
-        elif self.FOREMAN_SSL_VERIFY.lower() in ["0", "false", "off"]:
+    def _ssl_verify(self, option):
+        try:
+            verify = to_bool(option)
+        except TypeError:
+            verify = option
+
+        if verify is False:  # is only set to bool if try block succeeds
             requests.packages.urllib3.disable_warnings()
-            self._display.warning("SSL verification of %s disabled" %
-                                  self.FOREMAN_URL)
-            verify = False
-        else:  # Set to a CA bundle:
-            verify = self.FOREMAN_SSL_VERIFY
+            self._display.warning(
+                u"SSL verification of %s disabled" % self.foreman_url,
+            )
+
         return verify
 
-    def send_facts(self, host, data):
+    def send_facts(self):
         """
         Sends facts to Foreman, to be parsed by foreman_ansible fact
         parser.  The default fact importer should import these facts
         properly.
         """
-        data["_type"] = "ansible"
-        data["_timestamp"] = datetime.now().strftime(self.TIME_FORMAT)
-        facts = {"name": host,
-                 "facts": data,
-                 }
-        try:
-            r = requests.post(url=self.FOREMAN_URL + '/api/v2/hosts/facts',
-                              data=json.dumps(facts),
-                              headers=self.FOREMAN_HEADERS,
-                              cert=self.FOREMAN_SSL_CERT,
-                              verify=self.ssl_verify)
-            r.raise_for_status()
-        except requests.exceptions.RequestException as err:
-            print(to_text(err))
+        url = self.foreman_url + '/api/v2/hosts/facts'
 
-    def _build_log(self, data):
-        logs = []
-        for entry in data:
-            source, msg = entry
-            if 'failed' in msg:
-                level = 'err'
-            elif 'changed' in msg and msg['changed']:
-                level = 'notice'
-            else:
-                level = 'info'
-            logs.append({
-                "log": {
-                    'sources': {
-                        'source': source
-                    },
-                    'messages': {
-                        'message': json.dumps(msg)
-                    },
-                    'level': level
-                }
-            })
-        return logs
+        for host, facts in self.facts.items():
+            facts = {
+                "name": host,
+                "facts": {
+                    "ansible_facts": self.facts[host],
+                    "_type": "ansible",
+                    "_timestamp": get_now(),
+                },
+            }
+
+            try:
+                response = self.session.post(url=url, json=facts)
+                response.raise_for_status()
+            except requests.exceptions.RequestException as err:
+                self._display.warning(u'Sending facts to Foreman at {url} failed for {host}: {err}'.format(
+                    host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
 
     def send_reports(self, stats):
         """
@@ -204,42 +229,44 @@ class CallbackModule(CallbackBase):
         importer. THe data is in a format that Foreman can handle
         without writing another report importer.
         """
-        status = defaultdict(lambda: 0)
-        metrics = {}
+        url = self.foreman_url + '/api/v2/config_reports'
 
         for host in stats.processed.keys():
-            sum = stats.summarize(host)
-            status["applied"] = sum['changed']
-            status["failed"] = sum['failures'] + sum['unreachable']
-            status["skipped"] = sum['skipped']
-            log = self._build_log(self.items[host])
-            metrics["time"] = {"total": int(time.time()) - self.start_time}
-            now = datetime.now().strftime(self.TIME_FORMAT)
+            total = stats.summarize(host)
             report = {
                 "config_report": {
                     "host": host,
-                    "reported_at": now,
-                    "metrics": metrics,
-                    "status": status,
-                    "logs": log,
+                    "reported_at": get_now(),
+                    "metrics": {
+                        "time": {
+                            "total": int(get_time() - self.start_time)
+                        }
+                    },
+                    "status": {
+                        "applied": total['changed'],
+                        "failed": total['failures'] + total['unreachable'],
+                        "skipped": total['skipped'],
+                    },
+                    "logs": list(build_log(self.items[host])),
                     "reporter": "ansible",
                 }
             }
             try:
-                r = requests.post(url=self.FOREMAN_URL + '/api/v2/config_reports',
-                                  data=json.dumps(report),
-                                  headers=self.FOREMAN_HEADERS,
-                                  cert=self.FOREMAN_SSL_CERT,
-                                  verify=self.ssl_verify)
-                r.raise_for_status()
+                response = self.session.post(url=url, json=report)
+                response.raise_for_status()
             except requests.exceptions.RequestException as err:
-                print(to_text(err))
+                self._display.warning(u'Sending report to Foreman at {url} failed for {host}: {err}'.format(
+                    host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
+
             self.items[host] = []
 
     def append_result(self, result):
         name = result._task.get_name()
         host = result._host.get_name()
-        self.items[host].append((name, result._result))
+        value = result._result
+        self.items[host].append((name, value))
+        if 'ansible_facts' in value:
+            self.facts[host].update(value['ansible_facts'])
 
     # Ansible callback API
     def v2_runner_on_failed(self, result, ignore_errors=False):
@@ -248,21 +275,15 @@ class CallbackModule(CallbackBase):
     def v2_runner_on_unreachable(self, result):
         self.append_result(result)
 
-    def v2_runner_on_async_ok(self, result, jid):
+    def v2_runner_on_async_ok(self, result):
         self.append_result(result)
 
-    def v2_runner_on_async_failed(self, result, jid):
+    def v2_runner_on_async_failed(self, result):
         self.append_result(result)
 
     def v2_playbook_on_stats(self, stats):
+        self.send_facts()
         self.send_reports(stats)
 
     def v2_runner_on_ok(self, result):
-        res = result._result
-        module = result._task.action
-
-        if module == 'setup' or 'ansible_facts' in res:
-            host = result._host.get_name()
-            self.send_facts(host, res)
-        else:
-            self.append_result(result)
+        self.append_result(result)
