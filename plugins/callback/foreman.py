@@ -132,8 +132,10 @@ def get_time():
 def get_now():
     """
     Return the current timestamp as a string to be sent over the network.
+    The time is always in UTC timezone and printed in a format Ruby
+    DateTime can easily parse.
     """
-    return datetime.utcnow().isoformat()
+    return datetime.datetime.now(datetime.timezone.utc).isoformat(sep=" ", timespec="seconds")
 
 
 class CallbackModule(CallbackBase):
