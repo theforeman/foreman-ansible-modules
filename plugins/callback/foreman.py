@@ -166,6 +166,8 @@ class CallbackModule(CallbackBase):
         else:
             self._disable_plugin(u'The `requests` python module is not installed')
 
+        self.session = requests.Session()
+
         if self.foreman_url.startswith('https://'):
             if not os.path.exists(ssl_cert):
                 self._disable_plugin(u'FOREMAN_SSL_CERT %s not found.' % ssl_cert)
@@ -173,9 +175,8 @@ class CallbackModule(CallbackBase):
             if not os.path.exists(ssl_key):
                 self._disable_plugin(u'FOREMAN_SSL_KEY %s not found.' % ssl_key)
 
-        self.session = requests.Session()
-        self.session.verify = self._ssl_verify(str(self.get_option('verify_certs')))
-        self.session.cert = (ssl_cert, ssl_key)
+            self.session.verify = self._ssl_verify(str(self.get_option('verify_certs')))
+            self.session.cert = (ssl_cert, ssl_key)
 
     def _disable_plugin(self, msg):
         self.disabled = True
