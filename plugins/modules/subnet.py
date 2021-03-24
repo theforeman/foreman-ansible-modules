@@ -125,6 +125,11 @@ options:
     description: Template Smart proxy for this subnet
     required: false
     type: str
+  bmc_proxy:
+    description: BMC Smart proxy for this subnet
+    required: false
+    type: str
+    version_added: 2.1.0
   remote_execution_proxies:
     description:
       - Remote execution Smart proxies for this subnet
@@ -248,6 +253,7 @@ def main():
             discovery_proxy=dict(type='entity', flat_name='discovery_id', resource_type='smart_proxies'),
             dns_proxy=dict(type='entity', flat_name='dns_id', resource_type='smart_proxies'),
             template_proxy=dict(type='entity', flat_name='template_id', resource_type='smart_proxies'),
+            bmc_proxy=dict(type='entity', flat_name='bmc_id', resource_type='smart_proxies'),
             remote_execution_proxies=dict(type='entity_list', resource_type='smart_proxies'),
             externalipam_proxy=dict(type='entity', flat_name='externalipam_id', resource_type='smart_proxies'),
             externalipam_group=dict(),
