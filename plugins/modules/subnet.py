@@ -118,7 +118,7 @@ options:
     required: false
     type: str
   dns_proxy:
-    description: DNS Smart proxy for this subnet
+    description: Reverse DNS Smart proxy for this subnet
     required: false
     type: str
   template_proxy:
