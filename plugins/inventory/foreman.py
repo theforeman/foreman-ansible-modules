@@ -237,7 +237,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             params['page'] = 1
             params['per_page'] = self.get_option('batch_size')
             while True:
-                ret = s.get(url, params=params)
+                # workaround to address the follwing issues where 'verify' is overridden in Requests:
+                #   - https://github.com/psf/requests/issues/3829
+                #   - https://github.com/psf/requests/issues/5209
+                ret = s.get(url, params=params, verify=self.get_option('validate_certs'))
+
                 if ignore_errors and ret.status_code in ignore_errors:
                     break
                 ret.raise_for_status()
