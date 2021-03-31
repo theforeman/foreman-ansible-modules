@@ -68,6 +68,46 @@ The collection is also available as `ansible-collection-theforeman-foreman` from
 
 After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.
 
+## Installation From Source
+
+For development or testing purposes, you can install the collection from source git repository. For production usage, see the instructions above on installing the latest stable release.
+
+### Installation from Github Repository
+
+With Ansible >= 2.10, you can install from a Github repository (such as this one or your fork):
+
+`ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git`
+
+If you have configured GitHub to use SSH instead of HTTPS, you can do:
+
+`ansible-galaxy collection install git@github.com/theforeman/foreman-ansible-modules.git`
+
+You can also specify a branch to use such as `devel` (below) or a feature branch that you are working with:
+
+`ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git,devel`
+
+To install from a `requirements.yml` file (useful when installing multiple collections) add a snippet to your `requirements.yml` like
+
+```yml
+---
+collections:
+  - name: https://github.com/theforeman/foreman-ansible-modules.git
+    type: git
+    version: devel
+```
+
+And install all specified requirements with `ansible-galaxy install -r requirements.yml`
+
+### Building and Installing the Collection Locally
+
+For all currently supported versions of Ansible (i.e. Ansible >= 2.8, and particularly Ansible < 2.10 where the above approach is not yet supported), you can build the collection locally:
+
+`make dist`
+
+And install it with:
+
+`ansible-galaxy collection install ./theforeman-foreman-*.tar.gz`
+
 ## Dependencies
 
 These dependencies are required for the Ansible controller, not the Foreman server.
