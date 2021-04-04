@@ -246,8 +246,12 @@ class CallbackModule(CallbackBase):
                     },
                     "logs": list(build_log(self.items[host])),
                     "reporter": "ansible",
+                    "check_mode": self.check_mode,
                 }
             }
+            if self.check_mode:
+                report['config_report']['status']['pending'] = total['changed']
+                report['config_report']['status']['applied'] = 0
             try:
                 response = self.session.post(url=url, json=report)
                 response.raise_for_status()
@@ -263,6 +267,7 @@ class CallbackModule(CallbackBase):
         value = result._result
         value['failed'] = failed
         self.items[host].append((name, value))
+        self.check_mode = result._task.check_mode
         if 'ansible_facts' in value:
             self.facts[host].update(value['ansible_facts'])
 
