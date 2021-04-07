@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>theforeman.foreman.hostgroups &mdash; Foreman Ansible Modules  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Foreman Ansible Modules
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>theforeman.foreman.hostgroups</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/roles/hostgroups.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="theforeman-foreman-hostgroups">
+<h1>theforeman.foreman.hostgroups<a class="headerlink" href="#theforeman-foreman-hostgroups" title="Permalink to this headline">¶</a></h1>
+<p>This role creates and manages Hostgroups.</p>
+<div class="section" id="role-variables">
+<h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline">¶</a></h2>
+<p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">foreman_hostgroups</span></code>: List of hostgroups to manage that are each represented as a dictionary. See module documentation for a list of available options for each hostgroup.
+Hostgroups may have any set of fields defined on them and may optionally define a <code class="docutils literal notranslate"><span class="pre">parent</span></code> for nested hostgroups.
+A variety of examples are demonstrated in the data structure below:</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_hostgroups</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Basic</span><span class="nv"> </span><span class="s">example&quot;</span>
+    <span class="nt">architecture</span><span class="p">:</span> <span class="s">&quot;x86_64&quot;</span>
+    <span class="nt">operatingsystem</span><span class="p">:</span> <span class="s">&quot;CentOS&quot;</span>
+    <span class="nt">medium</span><span class="p">:</span> <span class="s">&quot;media_name&quot;</span>
+    <span class="nt">ptable</span><span class="p">:</span> <span class="s">&quot;partition_table_name&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Proxies</span><span class="nv"> </span><span class="s">hostgroup&quot;</span>
+    <span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
+    <span class="nt">puppet_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+    <span class="nt">puppet_ca_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+    <span class="nt">openscap_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openscap-proxy.example.com</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+    <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+    <span class="nt">lifecycle_environment</span><span class="p">:</span> <span class="s">&quot;Production&quot;</span>
+    <span class="nt">content_view</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+    <span class="nt">activation_keys</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">centos-7</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Webserver&quot;</span>
+    <span class="nt">parent</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+    <span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
+    <span class="nt">puppet_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+    <span class="nt">puppet_ca_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+    <span class="nt">openscap_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openscap-proxy.example.com</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-playbooks">
+<h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this headline">¶</a></h2>
+<p>This example creates several hostgroups with some nested examples.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+  <span class="nt">roles</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.hostgroups</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_hostgroups</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Basic</span><span class="nv"> </span><span class="s">example&quot;</span>
+            <span class="nt">architecture</span><span class="p">:</span> <span class="s">&quot;x86_64&quot;</span>
+            <span class="nt">operatingsystem</span><span class="p">:</span> <span class="s">&quot;CentOS&quot;</span>
+            <span class="nt">medium</span><span class="p">:</span> <span class="s">&quot;media_name&quot;</span>
+            <span class="nt">ptable</span><span class="p">:</span> <span class="s">&quot;partition_table_name&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Proxies</span><span class="nv"> </span><span class="s">hostgroup&quot;</span>
+            <span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
+            <span class="nt">puppet_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+            <span class="nt">puppet_ca_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+            <span class="nt">openscap_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openscap-proxy.example.com</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+            <span class="nt">organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+            <span class="nt">lifecycle_environment</span><span class="p">:</span> <span class="s">&quot;Production&quot;</span>
+            <span class="nt">content_view</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+            <span class="nt">activation_keys</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">centos-7</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Webserver&quot;</span>
+            <span class="nt">parent</span><span class="p">:</span> <span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
+            <span class="nt">environment</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">production</span>
+            <span class="nt">puppet_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+            <span class="nt">puppet_ca_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">puppet-proxy.example.com</span>
+            <span class="nt">openscap_proxy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">openscap-proxy.example.com</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, The Foreman Project.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
