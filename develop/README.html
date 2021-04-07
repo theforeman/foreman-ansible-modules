@@ -101,6 +101,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#installation-via-rpm">Installation via RPM</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">Installation From Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-from-github-repository">Installation from Github Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-installing-the-collection-locally">Building and Installing the Collection Locally</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 </ul>
 </li>
@@ -255,6 +260,35 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
 <h3>Installation via RPM<a class="headerlink" href="#installation-via-rpm" title="Permalink to this headline">¶</a></h3>
 <p>The collection is also available as <code class="docutils literal notranslate"><span class="pre">ansible-collection-theforeman-foreman</span></code> from the <code class="docutils literal notranslate"><span class="pre">client</span></code> repository on <code class="docutils literal notranslate"><span class="pre">yum.theforeman.org</span></code>.</p>
 <p>After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.</p>
+</div>
+</div>
+<div class="section" id="installation-from-source">
+<h2>Installation From Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
+<p>For development or testing purposes, you can install the collection from source git repository. For production usage, see the instructions above on installing the latest stable release.</p>
+<div class="section" id="installation-from-github-repository">
+<h3>Installation from Github Repository<a class="headerlink" href="#installation-from-github-repository" title="Permalink to this headline">¶</a></h3>
+<p>With Ansible &gt;= 2.10, you can install from a Github repository (such as this one or your fork):</p>
+<p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">git+https://github.com/theforeman/foreman-ansible-modules.git</span></code></p>
+<p>If you have configured GitHub to use SSH instead of HTTPS, you can do:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">git&#64;github.com/theforeman/foreman-ansible-modules.git</span></code></p>
+<p>You can also specify a branch to use such as <code class="docutils literal notranslate"><span class="pre">devel</span></code> (below) or a feature branch that you are working with:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">git+https://github.com/theforeman/foreman-ansible-modules.git,devel</span></code></p>
+<p>To install from a <code class="docutils literal notranslate"><span class="pre">requirements.yml</span></code> file (useful when installing multiple collections) add a snippet to your <code class="docutils literal notranslate"><span class="pre">requirements.yml</span></code> like</p>
+<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>---
+collections:
+  - name: https://github.com/theforeman/foreman-ansible-modules.git
+    type: git
+    version: devel
+</pre></div>
+</div>
+<p>And install all specified requirements with <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.yml</span></code></p>
+</div>
+<div class="section" id="building-and-installing-the-collection-locally">
+<h3>Building and Installing the Collection Locally<a class="headerlink" href="#building-and-installing-the-collection-locally" title="Permalink to this headline">¶</a></h3>
+<p>For all currently supported versions of Ansible (i.e. Ansible &gt;= 2.8, and particularly Ansible &lt; 2.10 where the above approach is not yet supported), you can build the collection locally:</p>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dist</span></code></p>
+<p>And install it with:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">./theforeman-foreman-*.tar.gz</span></code></p>
 </div>
 </div>
 <div class="section" id="dependencies">
