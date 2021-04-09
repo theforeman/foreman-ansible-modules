@@ -76,7 +76,6 @@ $ make sanity
 ## Writing tests
 
 The tests in this repository run playbooks that can be found in `tests/test_playbooks`.
-To be run, the name of the corresponding playbook must be listed in `tests/test_crud.py`.
 
 The playbooks should be self contained, target the features of a specific module and be able to run against an actual foreman instance.
 The structure would usually be something like setup -> run tests -> clean up.
