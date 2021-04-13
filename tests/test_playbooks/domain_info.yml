@@ -1,0 +1,83 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/domain.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: "present"
+      with_items: "{{ domain_locations }}"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: "present"
+      with_items: "{{ domain_organizations }}"
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_state: "absent"
+    - name: create domain
+      include_tasks: tasks/domain.yml
+      vars:
+        domain_state: "present"
+        expected_change: true
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch domain info
+      domain_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "example.com"
+      register: domain_info
+    - name: check domain details
+      assert:
+        that:
+          - domain_info['domain']['name'] == "example.com"
+
+    - name: search domain info
+      domain_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name = example.com"
+      register: domain_info
+    - name: check domain details
+      assert:
+        that:
+          - domain_info['domains'][0]['name'] == "example.com"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/domain.yml
+  tasks:
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_state: "absent"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: "absent"
+      with_items: "{{ domain_locations }}"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: "absent"
+      with_items: "{{ domain_organizations }}"
+...
