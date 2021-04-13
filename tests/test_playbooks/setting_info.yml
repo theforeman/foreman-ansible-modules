@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/setting.yml
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch setting info
+      setting_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "login_text"
+      register: setting_info
+    - name: check setting details
+      assert:
+        that:
+          - setting_info['setting']['name'] == "login_text"
+          - setting_info['setting']['value'] == ''
+
+    - name: search setting info
+      setting_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name = token_duration"
+      register: setting_info
+    - name: check setting details
+      assert:
+        that:
+          - setting_info['settings'][0]['name'] == "token_duration"
+...
