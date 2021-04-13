@@ -64,8 +64,10 @@
         cron_expression: "{{ foreman_sync_plan_cron_expression | default(omit) }}"
         sync_date: "{{ foreman_sync_plan_sync_date | default('2020-01-01 00:00:00 UTC') }}"
         products:
-          - "{{ foreman_content_rhel_enable_rhel7 | ternary('Red Hat Enterprise Linux Server', omit) }}"
-          - "{{ foreman_content_rhel_enable_rhel8 | ternary('Red Hat Enterprise Linux for x86_64', omit) }}"
+          "{{ [
+            foreman_content_rhel_enable_rhel7 | ternary('Red Hat Enterprise Linux Server', ''),
+            foreman_content_rhel_enable_rhel8 | ternary('Red Hat Enterprise Linux for x86_64', '')
+          ] | select() | list }}"
 
 - name: "Create Activation Key"
   include_role:
