@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: drop existing test orgs
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: "absent"
+      loop:
+        - "Test Organization One"
+        - "Test Organization Two"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: organizations
+      vars:
+        foreman_organizations:
+          - name: "Test Organization One"
+          - name: "Test Organization Two"
+            description: "Two Two Two"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: drop existing test orgs
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: "absent"
+      loop:
+        - "Test Organization One"
+        - "Test Organization Two"
