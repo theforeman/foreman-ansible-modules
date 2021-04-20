@@ -1,47 +1,44 @@
-# theforeman.foreman.organizations
+theforeman.foreman.organizations
+================================
 
-## Description
-An Ansible Role to create Organizations in Foreman.
+This role creates and manages organizations.
 
 Role Variables
 --------------
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `foreman_organizations`: list of organizations to manage. See Variables table below for data structure definition. Default is `[]`.
+The main data structure for this role is the list of `foreman_organizations`. Each `organization` requires the following fields:
 
-### Organization Data Structure
-|Variable Name|Default Value|Required|Description|
-|:---:|:---:|:---:|:---:|
-|`name`|" "|yes|Name of Organization.|
-|`description`|" "|no|Description of Named Organization.|
-|`label`|" "|no|Label of the Organization.|
-|`state`|`present`|no|Desired State of the Entity.|
+- `name`: The name of the organization.
 
-## Playbook Examples
-### Standard Role Usage
+The following fields are optional in the sense that the server will use default values when they are omitted:
+
+- `label`: The label of the organization.
+- `description`: The description of the organization.
+- `state`: The state of the organization. Can be `present` or `absent`.
+
+Example Playbooks
+-----------------
+
 ```yaml
 --- 
 - name: add organizations to foreman
   hosts: localhost
   gather_facts: false
-  tasks:
-    - name: add organizations
-      include_role: 
-        name: theforeman.foreman.organizations
+  roles:
+    - role: theforeman.foreman.organizations
       vars: 
-            foreman_server_url: https://foreman.example.com
-            foreman_username: admin
-            foreman_password: changeme
-            foreman_organizations: 
-              - name: raleigh
-                label: rdu
-                state: present
-              - name: default
-                label: boring
-                state: absent
-              - name: lanai 
-                description: pacific datacenter 
+        foreman_server_url: https://foreman.example.com
+        foreman_username: admin
+        foreman_password: changeme
+        foreman_organizations: 
+          - name: raleigh
+            label: rdu
+            state: present
+          - name: default
+            label: boring
+            state: absent
+          - name: lanai 
+            description: pacific datacenter 
 ```
-## Author
-[Chris Hindman](https://github.com/hindman-redhat)
