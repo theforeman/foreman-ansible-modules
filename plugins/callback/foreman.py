@@ -159,11 +159,7 @@ class CallbackModule(CallbackBase):
         ssl_cert = self.get_option('client_cert')
         ssl_key = self.get_option('client_key')
 
-        if HAS_REQUESTS:
-            requests_version = tuple(map(int, requests.__version__.split('.')))
-            if requests_version < (2, 14):
-                self._disable_plugin(u'The `requests` python module is older than 2.14.0.')
-        else:
+        if not HAS_REQUESTS:
             self._disable_plugin(u'The `requests` python module is not installed')
 
         if self.foreman_url.startswith('https://'):
