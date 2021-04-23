@@ -1,0 +1,68 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+    - include: tasks/content_view.yml
+      vars:
+        content_view_name: "Test Composite Content View"
+        content_view_state: absent
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: content_views
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_content_views:
+          - name: "Test Content View"
+            repositories:
+              - name: "Test Repository"
+                product: "Test Product"
+          - name: "Test Composite Content View"
+            components:
+              - content_view: Test Content View
+                latest: true
+          - name: "Test Content View with Filter"
+            repositories:
+              - name: "Test Repository"
+                product: "Test Product"
+            filters:
+              - name: "Test Package Content View Filter"
+                filter_state: "present"
+                filter_type: "rpm"
+                rule_name: "bear"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "absent"
