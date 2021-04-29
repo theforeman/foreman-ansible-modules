@@ -1,0 +1,12 @@
+---
+- name: "Publish content views"
+  theforeman.foreman.content_view_version:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    content_view: "{{ content_view }}"
+    organization: "{{ foreman_organization }}"
+  loop: "{{ foreman_content_views }}"
+  loop_control:
+    loop_var: "content_view"

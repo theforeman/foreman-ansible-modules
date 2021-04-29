@@ -1,0 +1,93 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 2"
+        product_state: present
+    - include: tasks/repository.yml
+      vars:
+        product_name: "Test Product 2"
+        repository_state: present
+    - include: tasks/content_view.yml
+      vars:
+        content_view_name: "Test Composite Content View"
+        content_view_state: absent
+    - include: tasks/content_view_version.yml
+      vars:
+        state: absent
+        version: "1.0"
+      ignore_errors: true
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: content_view_publish
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_content_views:
+          - Test Content View
+  post_tasks:
+    - name: search content view version info
+      content_view_version_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        content_view: "Test Content View"
+        search: 'version = "1.0"'
+      register: content_view_version_info
+    - name: check content_view details
+      assert:
+        that:
+          - content_view_version_info['content_view_versions'][0]['version'] == "1.0"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include: tasks/repository.yml
+      vars:
+        product_name: "Test Product 2"
+        repository_state: absent
+    - include: tasks/product.yml
+      vars:
+        product_name: "Test Product 2"
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
