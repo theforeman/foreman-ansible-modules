@@ -15,11 +15,11 @@ To ease cleanup of old Content Views, we ship the `content_view_version_cleanup`
   roles:
     - role: theforeman.foreman.content_view_version_cleanup
       vars:
-        server_url: https://foreman.example.com
-        username: "admin"
-        password: "changeme"
-        organization: "Default Organization"
-        content_view_version_cleanup_keep: 10
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "Default Organization"
+        foreman_content_view_version_cleanup_keep: 10
 ```
 
 ## Automated Updates
