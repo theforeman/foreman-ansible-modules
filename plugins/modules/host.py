@@ -204,6 +204,7 @@ options:
         type: str
         choices:
           - 'IPMI'
+          - 'Redfish'
           - 'SSH'
       virtual:
         description:
