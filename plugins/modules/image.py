@@ -68,14 +68,14 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-   - name: create Image for EC2
-     image:
-        name: CentOS
-        image_uuid: "ami-0ff760d16d9497662"
-        image_username: "centos"
-        operatingsystem: "CentOS 7"
-        compute_resource: "AWS"
-        architecture: "x86_64"
+- name: create Image for EC2
+  image:
+     name: CentOS
+     image_uuid: "ami-0ff760d16d9497662"
+     image_username: "centos"
+     operatingsystem: "CentOS 7"
+     compute_resource: "AWS"
+     architecture: "x86_64"
 '''
 
 RETURN = '''
