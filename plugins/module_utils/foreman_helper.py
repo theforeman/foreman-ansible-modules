@@ -1834,7 +1834,7 @@ interfaces_spec = dict(
     provision=dict(type='bool'),
     username=dict(),
     password=dict(no_log=True),
-    provider=dict(choices=['IPMI', 'SSH']),
+    provider=dict(choices=['IPMI', 'Redfish', 'SSH']),
     virtual=dict(type='bool'),
     tag=dict(),
     mtu=dict(type='int'),
