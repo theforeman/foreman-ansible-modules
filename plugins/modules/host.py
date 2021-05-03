@@ -484,6 +484,11 @@ def main():
         if not module.desired_absent:
             module.auto_lookup_entities()
 
+        if 'image' in module.foreman_params:
+            if 'compute_attributes' not in module.foreman_params:
+                module.foreman_params['compute_attributes'] = {}
+            module.foreman_params['compute_attributes']['image_id'] = module.foreman_params['image']['uuid']
+
         if 'compute_resource' in module.foreman_params:
             compute_resource = module.foreman_params['compute_resource']
             cluster = None
