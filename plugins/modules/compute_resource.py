@@ -112,6 +112,16 @@ options:
         description:
           - zone for I(provider=GCE)
         type: str
+      cloud:
+        description:
+          - cloud for I(provider=AzureRm)
+        type: str
+        choices:
+          - azure
+          - azureusgovernment
+          - azurechina
+          - azuregermancloud
+        version_added: 2.1.0
       ssl_verify_peer:
         description:
           - verify ssl from provider I(provider=proxmox)
@@ -368,7 +378,7 @@ def get_provider_info(provider):
         return 'EC2', ['user', 'password', 'region']
 
     elif provider_name == 'azurerm':
-        return 'AzureRm', ['user', 'password', 'tenant', 'region', 'app_ident']
+        return 'AzureRm', ['user', 'password', 'tenant', 'region', 'app_ident', 'cloud']
 
     elif provider_name == 'gce':
         return 'GCE', ['project', 'email', 'key_path', 'zone']
@@ -403,6 +413,7 @@ def main():
             email=dict(invisible=True),
             key_path=dict(invisible=True),
             zone=dict(invisible=True),
+            cloud=dict(invisible=True),
             ssl_verify_peer=dict(invisible=True),
             set_console_password=dict(invisible=True),
             keyboard_layout=dict(invisible=True),
@@ -425,6 +436,7 @@ def main():
                 email=dict(),
                 key_path=dict(no_log=False),
                 zone=dict(),
+                cloud=dict(choices=['azure', 'azureusgovernment', 'azurechina', 'azuregermancloud']),
                 ssl_verify_peer=dict(type='bool'),
                 set_console_password=dict(type='bool'),
                 keyboard_layout=dict(choices=['ar', 'de-ch', 'es', 'fo', 'fr-ca', 'hu', 'ja', 'mk', 'no', 'pt-br', 'sv', 'da', 'en-gb', 'et', 'fr', 'fr-ch',
