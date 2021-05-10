@@ -1,0 +1,99 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+    - include: tasks/activation_key.yml
+      vars:
+        activation_key_name: errata_key
+        activation_key_content_view: Default Organization View
+        activation_key_lifecycle_environment: Library
+        activation_key_subscriptions:
+          - name: "Test Product"
+    - include: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_url: "https://jlsherrill.fedorapeople.org/fake-repos/needed-errata/"
+    - name: sync product
+      include_tasks: tasks/katello_sync.yml
+
+- hosts: foreman
+  become: true
+  tasks:
+    - name: install katello-ca-consumer
+      package:
+        name: http://localhost/pub/katello-ca-consumer-latest.noarch.rpm
+    - name: subscribe to katello
+      command: subscription-manager register --org="Test_Organization" --activationkey="errata_key"
+    - name: install buggy walrus
+      package:
+        name: walrus-0.71-1
+
+- hosts: tests
+  gather_facts: false
+  collections:
+    - theforeman.foreman
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: get errata info
+      host_errata_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        host: "{{ foreman_host }}"
+      register: errata
+    - name: check results
+      assert:
+        that:
+          - errata.host_errata | length == 1
+          - errata.host_errata[0]['errata_id'] == 'RHEA-2012:0055'
+
+    - name: get errata info with CV and LCE
+      host_errata_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        host: "{{ foreman_host }}"
+        content_view: "Default Organization View"
+        lifecycle_environment: "Library"
+      register: errata
+    - name: check results
+      assert:
+        that:
+          - errata.host_errata | length == 1
+          - errata.host_errata[0]['errata_id'] == 'RHEA-2012:0055'
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/activation_key.yml
+      vars:
+        activation_key_name: errata_key
+        activation_key_state: absent
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
