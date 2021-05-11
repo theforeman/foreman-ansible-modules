@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Fetch Subscription info
+      subscription_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "Test Product"
+      register: sub
+    - name: check results
+      assert:
+        that:
+          - sub.subscription.name == 'Test Product'
+          - sub.subscription.product_name == 'Test Product'
+
+    - name: Fetch Subscription info
+      subscription_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: name="Test Product"
+      register: sub
+    - name: check results
+      assert:
+        that:
+          - sub.subscriptions[0].name == 'Test Product'
+          - sub.subscriptions[0].product_name == 'Test Product'
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
