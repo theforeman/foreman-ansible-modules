@@ -1,0 +1,66 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: content_rhel
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_validate_certs: false
+        foreman_manifest_download: false
+        foreman_manifest_path: "{{ subscription_manifest_path }}"
+        foreman_content_rhel_enable_rhel7: true
+        foreman_content_rhel_enable_rhel8: false
+        foreman_content_rhel_sync_now: false
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch RHEL 7 Server RPMs by product and name
+      repository_set_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: false
+        organization: "Test Organization"
+        product: "Red Hat Enterprise Linux Server"
+        name: "Red Hat Enterprise Linux 7 Server (RPMs)"
+      register: repository_set_info
+    - name: check repository_set details
+      assert:
+        that:
+          - repository_set_info['repository_set']['name'] == "Red Hat Enterprise Linux 7 Server (RPMs)"
+
+    - name: fetch RHEL 7 Server RPMs by label
+      repository_set_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: false
+        organization: "Test Organization"
+        search: 'label = "rhel-7-server-rpms"'
+      register: repository_set_info
+    - name: check repository_set details
+      assert:
+        that:
+          - repository_set_info['repository_sets'][0]['name'] == "Red Hat Enterprise Linux 7 Server (RPMs)"
