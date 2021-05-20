@@ -6,6 +6,43 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.1.0
+======
+
+Minor Changes
+-------------
+
+- Add a domain_info module
+- Add a hostgroups role (https://github.com/theforeman/foreman-ansible-modules/issues/1116)
+- Add a role `content_rhel` to perform basic setup for registering and syncing RHEL content hosts
+- Add content credentials role
+- callback plugin - collect facts during the run, merge them correctly and upload them once at the end
+- compute_resource - add ``cloud`` param for the AzureRm provider, to select which Azure cloud to use
+- compute_resource - add ``sub_id`` parameter for handling the Azure Subscription ID instead of the ``user`` parameter
+- host - Add ``Redfish`` to list of possible BMC providers of an interface
+- host, compute_profile - look up the correct id for storage pods and domains given as part of ``volumes_attributes`` (https://bugzilla.redhat.com/show_bug.cgi?id=1885234)
+- hostgroup - add a ``ansible_roles`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1123)
+- new ``content_views`` role to manage content views (https://github.com/theforeman/foreman-ansible-modules/issues/1111)
+- new ``organizations`` role to manage organizations (https://github.com/theforeman/foreman-ansible-modules/issues/1109)
+- subnet - add ``bmc_proxy`` parameter to configure BMC proxies for subnets
+
+Bugfixes
+--------
+
+- host - pass the right image id to the compute resource when creating a host (https://github.com/theforeman/foreman-ansible-modules/issues/1160, https://bugzilla.redhat.com/show_bug.cgi?id=1911670)
+
+New Modules
+-----------
+
+- theforeman.foreman.content_view_info - Fetch information about Content Views
+- theforeman.foreman.content_view_version_info - Fetch information about Content Views
+- theforeman.foreman.domain_info - Fetch information about Domains
+- theforeman.foreman.host_errata_info - Fetch information about Host Errata
+- theforeman.foreman.repository_set_info - Fetch information about Red Hat Repositories
+- theforeman.foreman.setting_info - Fetch information about Settings
+- theforeman.foreman.subnet_info - Fetch information about Subnets
+- theforeman.foreman.subscription_info - Fetch information about Subscriptions
+
 v2.0.1
 ======
 
