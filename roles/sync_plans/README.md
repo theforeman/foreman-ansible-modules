@@ -17,7 +17,7 @@ foreman_sync_plans:
     sync_date: 2020-11-07 00:00:00 UTC
     products:
       - Red Hat Enterprise Linux Server
-      - Red Hat Software Collectiions (for RHEL Server)
+      - Red Hat Software Collections (for RHEL Server)
       - Red Hat Enterprise Linux for x86_64
       - CentOS 8
       - Debian 10
