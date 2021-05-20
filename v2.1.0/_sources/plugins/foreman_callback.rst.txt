@@ -1,0 +1,243 @@
+.. Document meta
+
+:orphan:
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.foreman_callback:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.foreman -- Sends events to Foreman
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 2.1.0).
+
+    To install it use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.foreman`.
+
+.. version_added
+
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- This callback will report facts and task events to Foreman
+
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the local controller node that executes this callback.
+
+- whitelisting in configuration
+- requests (python library)
+
+
+.. Options
+
+Parameters
+----------
+
+.. raw:: html
+
+    <table  border=0 cellpadding=0 class="documentation-table">
+        <tr>
+            <th colspan="1">Parameter</th>
+            <th>Choices/<font color="blue">Defaults</font></th>
+                            <th>Configuration</th>
+                        <th width="100%">Comments</th>
+        </tr>
+                    <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-client_cert"></div>
+                    <b>client_cert</b>
+                    <a class="ansibleOptionLink" href="#parameter-client_cert" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"/etc/foreman/client_cert.pem"</div>
+                                    </td>
+                                                    <td>
+                                                    <div> ini entries:
+                                                                    <p>
+                                        [callback_foreman]<br>ssl_cert = /etc/foreman/client_cert.pem
+                                                                                                                    </p>
+                                                                    <p>
+                                        [callback_foreman]<br>client_cert = /etc/foreman/client_cert.pem
+                                                                                                                    </p>
+                                                            </div>
+                                                                            <div>
+                                env:FOREMAN_SSL_CERT
+                                                                                            </div>
+                                                                    </td>
+                                                <td>
+                                            <div>X509 certificate to authenticate to Foreman if https is used</div>
+                                                                <div style="font-size: small; color: darkgreen"><br/>aliases: ssl_cert</div>
+                                    </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-client_key"></div>
+                    <b>client_key</b>
+                    <a class="ansibleOptionLink" href="#parameter-client_key" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"/etc/foreman/client_key.pem"</div>
+                                    </td>
+                                                    <td>
+                                                    <div> ini entries:
+                                                                    <p>
+                                        [callback_foreman]<br>ssl_key = /etc/foreman/client_key.pem
+                                                                                                                    </p>
+                                                                    <p>
+                                        [callback_foreman]<br>client_key = /etc/foreman/client_key.pem
+                                                                                                                    </p>
+                                                            </div>
+                                                                            <div>
+                                env:FOREMAN_SSL_KEY
+                                                                                            </div>
+                                                                    </td>
+                                                <td>
+                                            <div>the corresponding private key</div>
+                                                                <div style="font-size: small; color: darkgreen"><br/>aliases: ssl_key</div>
+                                    </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-disable_callback"></div>
+                    <b>disable_callback</b>
+                    <a class="ansibleOptionLink" href="#parameter-disable_callback" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">0</div>
+                                    </td>
+                                                    <td>
+                                                                            <div>
+                                env:FOREMAN_CALLBACK_DISABLE
+                                                                                            </div>
+                                                                    </td>
+                                                <td>
+                                            <div>Toggle to make the callback plugin disable itself even if it is loaded.</div>
+                                            <div>It can be set to &#x27;1&#x27; to prevent the plugin from being used even if it gets loaded.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-url"></div>
+                    <b>url</b>
+                    <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"http://localhost:3000"</div>
+                                    </td>
+                                                    <td>
+                                                    <div> ini entries:
+                                                                    <p>
+                                        [callback_foreman]<br>url = http://localhost:3000
+                                                                                                                    </p>
+                                                            </div>
+                                                                            <div>
+                                env:FOREMAN_URL
+                                                                                            </div>
+                                                    <div>
+                                env:FOREMAN_SERVER_URL
+                                                                                            </div>
+                                                    <div>
+                                env:FOREMAN_SERVER
+                                                                                            </div>
+                                                                    </td>
+                                                <td>
+                                            <div>URL of the Foreman server.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-verify_certs"></div>
+                    <b>verify_certs</b>
+                    <a class="ansibleOptionLink" href="#parameter-verify_certs" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">1</div>
+                                    </td>
+                                                    <td>
+                                                    <div> ini entries:
+                                                                    <p>
+                                        [callback_foreman]<br>verify_certs = 1
+                                                                                                                    </p>
+                                                            </div>
+                                                                            <div>
+                                env:FOREMAN_SSL_VERIFY
+                                                                                            </div>
+                                                                    </td>
+                                                <td>
+                                            <div>Toggle to decide whether to verify the Foreman certificate.</div>
+                                            <div>It can be set to &#x27;1&#x27; to verify SSL certificates using the installed CAs or to a path pointing to a CA bundle.</div>
+                                            <div>Set to &#x27;0&#x27; to disable certificate checking.</div>
+                                                        </td>
+            </tr>
+                        </table>
+    <br/>
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+
+
+.. Facts
+
+
+.. Return values
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+
+
+.. Parsing errors
+
