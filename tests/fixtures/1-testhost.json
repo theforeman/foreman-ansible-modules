@@ -1,0 +1,108 @@
+{
+  "config_report": {
+    "host": "testhost",
+    "reported_at": "2000-01-01 12:00:00.0000",
+    "metrics": {
+      "time": {
+        "total": 2
+      }
+    },
+    "status": {
+      "applied": 5,
+      "failed": 0,
+      "skipped": 1
+    },
+    "logs": [
+      {
+        "log": {
+          "sources": {
+            "source": "Changed task"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "notice"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Ok task"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": false, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "info"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Failed task"
+          },
+          "messages": {
+            "message": "{\"msg\": \"no reason\", \"_ansible_no_log\": false, \"changed\": false, \"failed\": true}"
+          },
+          "level": "err"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Task with var in name (foo bar)"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "notice"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Loop task"
+          },
+          "messages": {
+            "message": "{\"results\": [{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false, \"item\": 1, \"ansible_loop_var\": \"item\", \"_ansible_item_label\": \"foo-1\"}, {\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false, \"item\": 2, \"ansible_loop_var\": \"item\", \"_ansible_item_label\": \"foo-2\"}, {\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false, \"item\": 3, \"ansible_loop_var\": \"item\", \"_ansible_item_label\": \"foo-3\"}], \"changed\": true, \"msg\": \"All items completed\", \"failed\": false}"
+          },
+          "level": "notice"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Test handler 1"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "notice"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Test handler 2"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": false, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "info"
+        }
+      },
+      {
+        "log": {
+          "sources": {
+            "source": "Test handler 3"
+          },
+          "messages": {
+            "message": "{\"cmd\": [\"echo\", \"foo\"], \"stdout\": \"foo\", \"stderr\": \"\", \"rc\": 0, \"start\": \"2000-01-01 12:00:00.0000\", \"end\": \"2000-01-01 12:00:00.0000\", \"delta\": \"12:00:00.0000\", \"changed\": true, \"invocation\": {\"module_args\": {\"_raw_params\": \"echo foo\", \"warn\": true, \"_uses_shell\": false, \"stdin_add_newline\": true, \"strip_empty_ends\": true, \"argv\": null, \"chdir\": null, \"executable\": null, \"creates\": null, \"removes\": null, \"stdin\": null}}, \"stdout_lines\": [\"foo\"], \"stderr_lines\": [], \"_ansible_no_log\": false, \"failed\": false}"
+          },
+          "level": "notice"
+        }
+      }
+    ],
+    "reporter": "ansible",
+    "check_mode": false
+  }
+}

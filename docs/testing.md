@@ -7,6 +7,10 @@ Foreman Ansible Modules are tested in different ways:
 2. Integration tests
 3. Ansible Sanity
 
+Before you start, ensure all required dependencies are installed. Typically this is `python, python-devel, popt-devel`. To create a virtual environment, do:
+
+    python3 -m venv venv --system-site-packages
+
 ### Unit tests
 
 We currently only have unit tests for the `foreman_spec` to `argument_spec` translation helpers (see `tests/test_foreman_spec_helper.py`).
