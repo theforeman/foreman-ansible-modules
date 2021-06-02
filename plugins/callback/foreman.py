@@ -266,6 +266,7 @@ class CallbackModule(CallbackBase):
         host = result._host.get_name()
         value = result._result
         value['failed'] = failed
+        value['module'] = result._task.action
         self.items[host].append((name, value))
         self.check_mode = result._task.check_mode
         if 'ansible_facts' in value:
