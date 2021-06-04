@@ -89,17 +89,17 @@ def main():
     module = ForemanExternalUsergroupModule(
         foreman_spec=dict(
             name=dict(required=True),
-            usergroup=dict(required=True),
+            usergroup=dict(required=True, type='entity', ensure=False),
             auth_source=dict(required=True, aliases=['auth_source_ldap'], type='entity', flat_name='auth_source_id', resource_type='auth_sources'),
             auth_source_ldap=dict(type='entity', invisible=True, flat_name='auth_source_id'),
             auth_source_external=dict(type='entity', invisible=True, flat_name='auth_source_id'),
         ),
     )
 
-    params = {"usergroup_id": module.foreman_params.pop('usergroup')}
     entity = None
 
     with module.api_connection():
+        params = module.scope_for('usergroup')
         # There is no way to find by name via API search, so we need
         # to iterate over all external user groups of a given usergroup
         for external_usergroup in module.list_resource("external_usergroups", params=params):
