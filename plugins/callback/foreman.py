@@ -19,6 +19,15 @@ DOCUMENTATION = '''
       - whitelisting in configuration
       - requests (python library)
     options:
+      report_type:
+        description:
+          - "endpoint type for reports: foreman or proxy"
+        env:
+          - name: FOREMAN_REPORT_TYPE
+        default: foreman
+        ini:
+          - section: callback_foreman
+            key: report_type
       url:
         description:
           - URL of the Foreman server.
@@ -31,6 +40,14 @@ DOCUMENTATION = '''
         ini:
           - section: callback_foreman
             key: url
+      proxy_url:
+        description:
+          - URL of the Foreman Smart Proxy server.
+        env:
+          - name: FOREMAN_PROXY_URL
+        ini:
+          - section: callback_foreman
+            key: proxy_url
       client_cert:
         description:
           - X509 certificate to authenticate to Foreman if https is used
@@ -106,15 +123,19 @@ from ansible.module_utils.parsing.convert_bool import boolean as to_bool
 from ansible.plugins.callback import CallbackBase
 
 
-def build_log(data):
+def build_log_foreman(data_list):
     """
     Transform the internal log structure to one accepted by Foreman's
     config_report API.
     """
-    for source, msg in data:
-        if msg.get('failed'):
+    for data in data_list:
+        result = data.pop('result')
+        task = data.pop('task')
+        result['failed'] = data.get('failed')
+        result['module'] = task.get('action')
+        if data.get('failed'):
             level = 'err'
-        elif msg.get('changed'):
+        elif result.get('changed'):
             level = 'notice'
         else:
             level = 'info'
@@ -122,10 +143,10 @@ def build_log(data):
         yield {
             "log": {
                 'sources': {
-                    'source': source,
+                    'source': task.get('name'),
                 },
                 'messages': {
-                    'message': json.dumps(msg, sort_keys=True),
+                    'message': json.dumps(result, sort_keys=True),
                 },
                 'level': level,
             }
@@ -169,7 +190,9 @@ class CallbackModule(CallbackBase):
         if self.get_option('disable_callback'):
             self._disable_plugin('Callback disabled by environment.')
 
+        self.report_type = self.get_option('report_type')
         self.foreman_url = self.get_option('url')
+        self.proxy_url = self.get_option('proxy_url')
         ssl_cert = self.get_option('client_cert')
         ssl_key = self.get_option('client_key')
         self.dir_store = self.get_option('dir_store')
@@ -178,7 +201,6 @@ class CallbackModule(CallbackBase):
             self._disable_plugin(u'The `requests` python module is not installed')
 
         self.session = requests.Session()
-
         if self.foreman_url.startswith('https://'):
             if not os.path.exists(ssl_cert):
                 self._disable_plugin(u'FOREMAN_SSL_CERT %s not found.' % ssl_cert)
@@ -210,13 +232,15 @@ class CallbackModule(CallbackBase):
 
         return verify
 
-    def _send_data(self, endpoint, host, data):
-        if endpoint == 'facts':
+    def _send_data(self, data_type, report_type, host, data):
+        if data_type == 'facts':
             url = self.foreman_url + '/api/v2/hosts/facts'
-        elif endpoint == 'report':
+        elif data_type == 'report' and report_type == 'foreman':
             url = self.foreman_url + '/api/v2/config_reports'
+        elif data_type == 'report' and report_type == 'proxy':
+            url = self.proxy_url + '/host_reports/ansible'
         else:
-            self._display.warning(u'Unknown endpoint type: {type}'.format(type=endpoint))
+            self._display.warning(u'Unknown report_type: {rt}'.format(rt=report_type))
 
         if len(self.dir_store) > 0:
             filename = u'{host}.json'.format(host=to_text(host))
@@ -248,12 +272,43 @@ class CallbackModule(CallbackBase):
                 },
             }
 
-            self._send_data('facts', host, facts)
+            self._send_data('facts', 'foreman', host, facts)
 
-    def send_reports(self, stats):
+    def send_reports_proxy_host_report(self, stats):
+        """
+        Send reports to Foreman Smart Proxy running Host Reports
+        plugin. The format is native Ansible report without any
+        changes.
+        """
+        for host in stats.processed.keys():
+            total = stats.summarize(host)
+            report = {
+                "host": host,
+                "reported_at": get_now(),
+                "metrics": {
+                    "time": {
+                        "total": int(get_time() - self.start_time)
+                    }
+                },
+                "status": {
+                    "applied": total['changed'],
+                    "failed": total['failures'] + total['unreachable'],
+                    "skipped": total['skipped'],
+                },
+                "results": self.items[host],
+                "check_mode": self.check_mode,
+            }
+            if self.check_mode:
+                report['status']['pending'] = total['changed']
+                report['status']['applied'] = 0
+
+            self._send_data('report', 'proxy', host, report)
+            self.items[host] = []
+
+    def send_reports_foreman(self, stats):
         """
         Send reports to Foreman to be parsed by its config report
-        importer. THe data is in a format that Foreman can handle
+        importer. The data is in a format that Foreman can handle
         without writing another report importer.
         """
         for host in stats.processed.keys():
@@ -272,7 +327,7 @@ class CallbackModule(CallbackBase):
                         "failed": total['failures'] + total['unreachable'],
                         "skipped": total['skipped'],
                     },
-                    "logs": list(build_log(self.items[host])),
+                    "logs": list(build_log_foreman(self.items[host])),
                     "reporter": "ansible",
                     "check_mode": self.check_mode,
                 }
@@ -281,20 +336,47 @@ class CallbackModule(CallbackBase):
                 report['config_report']['status']['pending'] = total['changed']
                 report['config_report']['status']['applied'] = 0
 
-            self._send_data('report', host, report)
-
+            self._send_data('report', 'foreman', host, report)
             self.items[host] = []
 
+    def send_reports(self, stats):
+        if self.report_type == "foreman":
+            self.send_reports_foreman(stats)
+        elif self.report_type == "proxy":
+            self.send_reports_proxy_host_report(stats)
+        else:
+            self._display.warning(u'Unknown foreman endpoint type: {type}'.format(type=self.report_type))
+
+    def drop_nones(self, d):
+        """Recursively drop Nones or empty dicts/arrays in dict d and return a new dict"""
+        dd = {}
+        for k, v in d.items():
+            if isinstance(v, dict) and v:
+                dd[k] = self.drop_nones(v)
+            elif isinstance(v, list) and len(v) == 1 and v[0] == {}:
+                pass
+            elif isinstance(v, (list, set, tuple)) and v:
+                dd[k] = type(v)(self.drop_nones(vv) if isinstance(vv, dict) else vv
+                                for vv in v)
+            elif not isinstance(v, (dict, list, set, tuple)) and v is not None:
+                dd[k] = v
+        return dd
+
     def append_result(self, result, failed=False):
-        name = result._task.get_name()
-        host = result._host.get_name()
-        value = result._result
+        result_info = result._result
+        task_info = result._task.serialize()
+        task_info['args'] = None
+        value = {}
+        value['result'] = result_info
+        value['task'] = task_info
         value['failed'] = failed
-        value['module'] = result._task.action
-        self.items[host].append((name, value))
+        if self.report_type == "proxy":
+            value = self.drop_nones(value)
+        host = result._host.get_name()
+        self.items[host].append(value)
         self.check_mode = result._task.check_mode
-        if 'ansible_facts' in value:
-            self.facts[host].update(value['ansible_facts'])
+        if 'ansible_facts' in result_info:
+            self.facts[host].update(result_info['ansible_facts'])
 
     # Ansible callback API
     def v2_runner_on_failed(self, result, ignore_errors=False):
