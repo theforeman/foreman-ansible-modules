@@ -174,8 +174,10 @@ class ParametersMixinBase(object):
     def validate_parameters(self):
         parameters = self.foreman_params.get('parameters')
         if parameters is not None:
-            if len(parameters) != len(set(param['name'] for param in parameters)):
-                self.fail_json(msg="There are duplicate keys in 'parameters'.")
+            parameter_names = [param['name'] for param in parameters]
+            duplicate_params = set([x for x in parameter_names if parameter_names.count(x) > 1])
+            if duplicate_params:
+                self.fail_json(msg="There are duplicate keys in 'parameters': {0}.".format(duplicate_params))
 
 
 class ParametersMixin(ParametersMixinBase):
