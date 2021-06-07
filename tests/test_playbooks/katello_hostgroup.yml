@@ -29,6 +29,7 @@
         version: "{{ hostgroup.content_view.version }}"
     - include: tasks/hostgroup.yml
       vars:
+        hostgroup_name: "New host group"
         hostgroup_state: absent
 
 - hosts: tests
@@ -39,7 +40,8 @@
     - vars/server.yml
     - vars/hostgroup.yml
   tasks:
-    - include: tasks/hostgroup.yml
+    - name: create HG
+      include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -48,10 +50,16 @@
         hostgroup_content_source: "{{ hostgroup.content_source }}"
         hostgroup_lifecycle_environment: "{{ hostgroup.lifecycle_environment }}"
         hostgroup_content_view: "{{ hostgroup.content_view.name }}"
+        hostgroup_parameters:
+          - name: test_param_one
+            parameter_type: string
+            value: oneoneone
+        hostgroup_activation_keys: key_one
         hostgroup_state: present
         expected_change: true
 
-    - include: tasks/hostgroup.yml
+    - name: create HG again, no change
+      include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -60,16 +68,46 @@
         hostgroup_content_source: "{{ hostgroup.content_source }}"
         hostgroup_lifecycle_environment: "{{ hostgroup.lifecycle_environment }}"
         hostgroup_content_view: "{{ hostgroup.content_view.name }}"
+        hostgroup_parameters:
+          - name: test_param_one
+            parameter_type: string
+            value: oneoneone
+        hostgroup_activation_keys: key_one
         hostgroup_state: present
         expected_change: false
 
-    - include: tasks/hostgroup.yml
+    - name: only set AK, HG should not lose params, no change
+      include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_organization: "{{ hostgroup.organizations | first }}"
+        hostgroup_activation_keys: key_one
+        hostgroup_state: present
+        expected_change: false
+
+    - name: only set params, HG should not lose AK, no change
+      include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_organization: "{{ hostgroup.organizations | first }}"
+        hostgroup_parameters:
+          - name: test_param_one
+            parameter_type: string
+            value: oneoneone
+        hostgroup_state: present
+        expected_change: false
+
+    - name: delete HG
+      include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_state: absent
         expected_change: true
 
-    - include: tasks/hostgroup.yml
+    - name: delete HG again, no change
+      include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_state: absent
