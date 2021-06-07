@@ -205,7 +205,7 @@ class ParametersMixin(ParametersMixinBase):
 
         self.validate_parameters()
 
-    def run(self, **kwargs):
+    def update_parameters(self):
         entity = self.lookup_entity('entity')
         if not self.desired_absent:
             if entity and 'parameters' in entity:
@@ -213,7 +213,12 @@ class ParametersMixin(ParametersMixinBase):
             parameters = self.foreman_params.get('parameters')
             if parameters is not None:
                 self.foreman_params['parameters'] = parameters_list_to_str_list(parameters)
+            elif entity and 'parameters' in entity:
+                # this allows us to merge special named parameters like kt_activation_keys later
+                self.foreman_params['parameters'] = entity['parameters']
 
+    def run(self, **kwargs):
+        self.update_parameters()
         return super(ParametersMixin, self).run(**kwargs)
 
 
@@ -313,6 +318,9 @@ class HostMixin(ParametersMixin):
         mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
         super(HostMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
 
+    def run(self, **kwargs):
+        self.update_parameters()
+
         if 'activation_keys' in self.foreman_params:
             if 'parameters' not in self.foreman_params:
                 self.foreman_params['parameters'] = []
@@ -320,6 +328,8 @@ class HostMixin(ParametersMixin):
             self.foreman_params['parameters'].append(ak_param)
 
         self.validate_parameters()
+
+        return super(HostMixin, self).run(**kwargs)
 
 
 class ForemanAnsibleModule(AnsibleModule):
