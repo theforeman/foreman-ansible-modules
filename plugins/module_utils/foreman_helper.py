@@ -213,9 +213,6 @@ class ParametersMixin(ParametersMixinBase):
             parameters = self.foreman_params.get('parameters')
             if parameters is not None:
                 self.foreman_params['parameters'] = parameters_list_to_str_list(parameters)
-            elif entity and 'parameters' in entity:
-                # this allows us to merge special named parameters like kt_activation_keys later
-                self.foreman_params['parameters'] = entity['parameters']
 
     def run(self, **kwargs):
         self.update_parameters()
@@ -319,19 +316,20 @@ class HostMixin(ParametersMixin):
         super(HostMixin, self).__init__(foreman_spec=foreman_spec, required_plugins=required_plugins, mutually_exclusive=mutually_exclusive, **kwargs)
 
     def run(self, **kwargs):
-        self.update_parameters()
+        entity = self.lookup_entity('entity')
 
-        if 'activation_keys' in self.foreman_params:
-            self.foreman_params['parameters'] = [param for param in self.foreman_params.get('parameters', []) if param['name'] != 'kt_activation_keys']
-            ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
-            self.foreman_params['parameters'].append(ak_param)
-        else:
-            entity = self.lookup_entity('entity')
-            if not self.desired_absent and entity is not None and 'parameters' in entity:
-                ak_param = next((param for param in entity['parameters'] if param['name'] == 'kt_activation_keys'), None)
+        if not self.desired_absent:
+            if 'activation_keys' in self.foreman_params:
+                if 'parameters' not in self.foreman_params:
+                    parameters = [param for param in (entity or {}).get('parameters', []) if param['name'] != 'kt_activation_keys']
+                else:
+                    parameters = self.foreman_params['parameters']
+                ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
+                self.foreman_params['parameters'] = parameters + [ak_param]
+            elif 'activation_keys' not in self.foreman_params and 'parameters' in self.foreman_params and entity is not None:
+                ak_param = next((param for param in entity.get('parameters') if param['name'] == 'kt_activation_keys'), None)
                 if ak_param:
                     self.foreman_params['parameters'].append(ak_param)
-
 
         self.validate_parameters()
 
