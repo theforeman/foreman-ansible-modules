@@ -322,10 +322,16 @@ class HostMixin(ParametersMixin):
         self.update_parameters()
 
         if 'activation_keys' in self.foreman_params:
-            if 'parameters' not in self.foreman_params:
-                self.foreman_params['parameters'] = []
+            self.foreman_params['parameters'] = [param for param in self.foreman_params.get('parameters', []) if param['name'] != 'kt_activation_keys']
             ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
             self.foreman_params['parameters'].append(ak_param)
+        else:
+            entity = self.lookup_entity('entity')
+            if not self.desired_absent and entity is not None and 'parameters' in entity:
+                ak_param = next((param for param in entity['parameters'] if param['name'] == 'kt_activation_keys'), None)
+                if ak_param:
+                    self.foreman_params['parameters'].append(ak_param)
+
 
         self.validate_parameters()
 
