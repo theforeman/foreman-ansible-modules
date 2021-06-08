@@ -205,7 +205,7 @@ class ParametersMixin(ParametersMixinBase):
 
         self.validate_parameters()
 
-    def update_parameters(self):
+    def run(self, **kwargs):
         entity = self.lookup_entity('entity')
         if not self.desired_absent:
             if entity and 'parameters' in entity:
@@ -214,8 +214,6 @@ class ParametersMixin(ParametersMixinBase):
             if parameters is not None:
                 self.foreman_params['parameters'] = parameters_list_to_str_list(parameters)
 
-    def run(self, **kwargs):
-        self.update_parameters()
         return super(ParametersMixin, self).run(**kwargs)
 
 
