@@ -1,6 +1,5 @@
 import os
 import re
-import ansible_runner
 
 from .conftest import run_playbook
 
