@@ -1,5 +1,6 @@
 import os
 import re
+import json
 
 from .conftest import run_playbook
 
@@ -34,5 +35,6 @@ def test_callback(tmpdir, vcrmode):
                 f.write(contents)
         else:
             with open(fixture, 'r') as f:
-                expected_contents = f.read()
-                assert expected_contents == contents
+                expected_contents = json.load(f)
+                real_contents = json.loads(contents)
+                assert expected_contents == real_contents
