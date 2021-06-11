@@ -7,7 +7,7 @@ from .conftest import run_playbook
 
 def run_playbook_callback(tmpdir):
     extra_env = {}
-    extra_env['ANSIBLE_STDOUT_CALLBACK'] = "foreman"
+    extra_env['ANSIBLE_STDOUT_CALLBACK'] = "theforeman.foreman.foreman"
     extra_env['ANSIBLE_LOAD_CALLBACK_PLUGINS'] = "1"
     # No connection is actually performed during the test
     extra_env['FOREMAN_URL'] = "http://localhost"
