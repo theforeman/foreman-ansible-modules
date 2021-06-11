@@ -45,9 +45,11 @@ def get_foreman_url():
     return server_yml_content['foreman_server_url']
 
 
-def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode=False):
+def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode=False, extra_env=None):
     # Assemble parameters for playbook call
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
+    if extra_env is not None:
+        os.environ.update(extra_env)
     kwargs = {}
     kwargs['playbook'] = os.path.join(os.getcwd(), 'tests', 'test_playbooks', '{}.yml'.format(module))
     if inventory is None:
@@ -63,7 +65,7 @@ def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode
     return ansible_runner.run(**kwargs)
 
 
-def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=False, check_mode=False):
+def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=False, check_mode=False, extra_env=None):
     if extra_vars is None:
         extra_vars = {}
     limit = None
@@ -93,4 +95,4 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=Fal
     fixture_dir = py.path.local(__file__).realpath() / '..' / 'fixtures'
     fixture_dir.join(apidoc).copy(json_cache)
 
-    return run_playbook(module, extra_vars=extra_vars, limit=limit, inventory=inventory, check_mode=check_mode)
+    return run_playbook(module, extra_vars=extra_vars, limit=limit, inventory=inventory, check_mode=check_mode, extra_env=extra_env)

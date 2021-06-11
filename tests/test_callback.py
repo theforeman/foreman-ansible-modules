@@ -2,24 +2,25 @@ import os
 import re
 import ansible_runner
 
+from .conftest import run_playbook
 
-def run_playbook(tmpdir):
-    os.environ['ANSIBLE_STDOUT_CALLBACK'] = "foreman"
-    os.environ['ANSIBLE_LOAD_CALLBACK_PLUGINS'] = "1"
+
+def run_playbook_callback(tmpdir):
+    extra_env = {}
+    extra_env['ANSIBLE_STDOUT_CALLBACK'] = "foreman"
+    extra_env['ANSIBLE_LOAD_CALLBACK_PLUGINS'] = "1"
     # No connection is actually performed during the test
-    os.environ['FOREMAN_URL'] = "http://localhost"
-    os.environ['FOREMAN_SSL_CERT'] = "/dev/zero"
-    os.environ['FOREMAN_SSL_KEY'] = "/dev/zero"
-    os.environ['FOREMAN_DIR_STORE'] = str(tmpdir)
-    kwargs = {}
-    kwargs['playbook'] = os.path.join(os.getcwd(), 'tests', 'callback', 'three_hosts.yml')
-    kwargs['inventory'] = os.path.join(os.getcwd(), 'tests', 'callback', 'three_hosts')
-    kwargs['verbosity'] = 4
-    return ansible_runner.run(**kwargs)
+    extra_env['FOREMAN_URL'] = "http://localhost"
+    extra_env['FOREMAN_SSL_CERT'] = "/dev/zero"
+    extra_env['FOREMAN_SSL_KEY'] = "/dev/zero"
+    extra_env['FOREMAN_DIR_STORE'] = str(tmpdir)
+    playbook = os.path.join('..', 'callback', 'three_hosts')
+    inventory = os.path.join(os.getcwd(), 'tests', 'callback', 'three_hosts')
+    return run_playbook(playbook, inventory=inventory, extra_env=extra_env)
 
 
 def test_callback(tmpdir, vcrmode):
-    run = run_playbook(tmpdir)
+    run = run_playbook_callback(tmpdir)
     assert run.rc == 0
     for file in os.listdir(str(tmpdir)):
         with open(os.path.join(tmpdir, file), 'r') as f:
