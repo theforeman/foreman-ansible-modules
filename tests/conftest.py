@@ -68,6 +68,8 @@ def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode
 def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None, record=False, check_mode=False, extra_env=None):
     if extra_vars is None:
         extra_vars = {}
+    if extra_env is None:
+        extra_env = {}
     if record:
         # Cassettes that are to be overwritten must be deleted first
         record_mode = 'once'
@@ -83,11 +85,11 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode, 'check_mode': check_mode}
     params_file = tmpdir.join('{}_test_params.json'.format(module))
     params_file.write(json.dumps(test_params), ensure=True)
-    os.environ['FAM_TEST_VCR_PARAMS_FILE'] = params_file.strpath
+    extra_env['FAM_TEST_VCR_PARAMS_FILE'] = params_file.strpath
 
     cache_dir = tmpdir.join('cache')
     cache_dir.ensure(dir=True)
-    os.environ['XDG_CACHE_HOME'] = cache_dir.strpath
+    extra_env['XDG_CACHE_HOME'] = cache_dir.strpath
     apypie_cache_folder = get_foreman_url().replace(':', '_').replace('/', '_')
     json_cache = cache_dir / 'apypie' / apypie_cache_folder / 'v2/default.json'
     json_cache.ensure()
