@@ -324,7 +324,7 @@ class HostMixin(ParametersMixin):
                     parameters = self.foreman_params['parameters']
                 ak_param = {'name': 'kt_activation_keys', 'parameter_type': 'string', 'value': self.foreman_params.pop('activation_keys')}
                 self.foreman_params['parameters'] = parameters + [ak_param]
-            elif 'activation_keys' not in self.foreman_params and 'parameters' in self.foreman_params and entity is not None:
+            elif 'parameters' in self.foreman_params and entity is not None:
                 ak_param = next((param for param in entity.get('parameters') if param['name'] == 'kt_activation_keys'), None)
                 if ak_param:
                     self.foreman_params['parameters'].append(ak_param)
