@@ -65,10 +65,9 @@ def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode
     return ansible_runner.run(**kwargs)
 
 
-def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=False, check_mode=False, extra_env=None):
+def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None, record=False, check_mode=False, extra_env=None):
     if extra_vars is None:
         extra_vars = {}
-    limit = None
     if record:
         # Cassettes that are to be overwritten must be deleted first
         record_mode = 'once'
@@ -76,8 +75,9 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, inventory=None, record=Fal
     else:
         # Never reach out to the internet
         record_mode = 'none'
-        # Only run the tests (skip fixtures)
-        limit = 'tests:container'
+        if limit is None:
+            # Only run the tests (skip fixtures)
+            limit = 'tests:container'
 
     # Dump recording parameters to json-file and pass its name by environment
     test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode, 'check_mode': check_mode}
