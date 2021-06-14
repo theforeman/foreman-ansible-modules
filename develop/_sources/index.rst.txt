@@ -11,7 +11,6 @@ Welcome to Foreman Ansible Modules' documentation!
    :caption: User documentation
 
    README
-   Changelog <CHANGELOG>
    plugins/index
    Filters <filters>
    roles/index
@@ -25,6 +24,12 @@ Welcome to Foreman Ansible Modules' documentation!
    api
    testing
    releasing
+
+.. toctree::
+   :maxdepth: 2
+   :caption: General
+
+   Changelog <CHANGELOG>
 
 Indices and tables
 ==================
