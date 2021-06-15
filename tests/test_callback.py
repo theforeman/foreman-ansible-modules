@@ -37,4 +37,4 @@ def test_callback(tmpdir, vcrmode):
             with open(fixture, 'r') as f:
                 expected_contents = json.load(f)
                 real_contents = json.loads(contents)
-                assert expected_contents == real_contents
+                assert expected_contents == real_contents, "Fixture {file} differs, run with -vvvv to see the diff".format(file=file)
