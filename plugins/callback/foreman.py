@@ -173,7 +173,6 @@ class CallbackModule(CallbackBase):
         ssl_cert = self.get_option('client_cert')
         ssl_key = self.get_option('client_key')
         self.dir_store = self.get_option('dir_store')
-        self.report_number = 1
 
         if not HAS_REQUESTS:
             self._disable_plugin(u'The `requests` python module is not installed')
@@ -220,12 +219,10 @@ class CallbackModule(CallbackBase):
             self._display.warning(u'Unknown endpoint type: {type}'.format(type=endpoint))
 
         if len(self.dir_store) > 0:
-            filename = u'{number}-{host}.json'.format(
-                number=self.report_number, host=to_text(host))
+            filename = u'{host}.json'.format(host=to_text(host))
             filename = os.path.join(self.dir_store, filename)
             with open(filename, 'w') as f:
                 f.write(json.dumps(data, indent=2, sort_keys=True))
-            self.report_number += 1
         else:
             try:
                 response = self.session.post(url=url, json=data)
