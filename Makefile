@@ -14,7 +14,7 @@ COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST =
 FLAGS =
-PYTEST = pytest -n 4 --boxed -v
+PYTEST = pytest -n 4 --boxed -vv
 
 APIPIE_VERSION ?= v0.3.2
 
@@ -63,17 +63,17 @@ test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
 livetest: $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -v 'tests/test_crud.py::test_crud' --vcrmode live
+	pytest -vv 'tests/test_crud.py::test_crud' --vcrmode live
 
 test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
+	pytest -vv 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
 
 livetest_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' --vcrmode live $(FLAGS)
+	pytest -vv 'tests/test_crud.py::test_crud[$*]' --vcrmode live $(FLAGS)
 
 record_%: FORCE $(MANIFEST)
 	$(RM) tests/test_playbooks/fixtures/$*-*.yml
-	pytest -v 'tests/test_crud.py::test_crud[$*]' --vcrmode record $(FLAGS)
+	pytest -vv 'tests/test_crud.py::test_crud[$*]' --vcrmode record $(FLAGS)
 
 clean_%: FORCE $(MANIFEST)
 	ansible-playbook --tags teardown,cleanup -i tests/inventory/hosts 'tests/test_playbooks/$*.yml'
