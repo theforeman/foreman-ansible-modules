@@ -23,12 +23,12 @@ def run_playbook_callback(tmpdir):
 def test_callback(tmpdir, vcrmode):
     run = run_playbook_callback(tmpdir)
     assert run.rc == 0
-    for file in os.listdir(tmpdir.strpath):
-        with open(os.path.join(tmpdir, file), 'r') as f:
-            contents = f.read()
-            contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
-            contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
-        fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', file)
+    for real_file in tmpdir.listdir(sort=True):
+        contents = real_file.read()
+        contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
+        contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
+        fixture_name = real_file.basename
+        fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', fixture_name)
         if vcrmode == "record":
             print("Writing: ", str(fixture))
             with open(fixture, 'w') as f:
@@ -37,4 +37,4 @@ def test_callback(tmpdir, vcrmode):
             with open(fixture, 'r') as f:
                 expected_contents = json.load(f)
                 real_contents = json.loads(contents)
-                assert expected_contents == real_contents, "Fixture {file} differs, run with -vvvv to see the diff".format(file=file)
+                assert expected_contents == real_contents, "Fixture {fixture_name} differs, run with -vvvv to see the diff".format(fixture_name=fixture_name)
