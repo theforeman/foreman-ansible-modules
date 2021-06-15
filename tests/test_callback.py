@@ -1,14 +1,23 @@
+import distutils.version
 import os
 import re
 import json
 
-from .conftest import run_playbook
+import pytest
+
+from .conftest import run_playbook, get_ansible_version
 
 
 def run_playbook_callback(tmpdir):
     extra_env = {}
+    ansible_version = get_ansible_version()
+    if ansible_version is None:
+        pytest.skip("Couldn't figure out Ansible version?!")
+    if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.11'):
+        extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
+    else:
+        extra_env['ANSIBLE_CALLBACKS_ENABLED'] = "theforeman.foreman.foreman"
     extra_env['ANSIBLE_STDOUT_CALLBACK'] = "theforeman.foreman.foreman"
-    extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
     extra_env['ANSIBLE_LOAD_CALLBACK_PLUGINS'] = "1"
     # No connection is actually performed during the test
     extra_env['FOREMAN_URL'] = "http://localhost"
