@@ -125,7 +125,7 @@ def build_log(data):
                     'source': source,
                 },
                 'messages': {
-                    'message': json.dumps(msg),
+                    'message': json.dumps(msg, sort_keys=True),
                 },
                 'level': level,
             }
