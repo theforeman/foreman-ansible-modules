@@ -224,7 +224,7 @@ class CallbackModule(CallbackBase):
                 number=self.report_number, host=to_text(host))
             filename = os.path.join(self.dir_store, filename)
             with open(filename, 'w') as f:
-                f.write(json.dumps(data, indent=2))
+                f.write(json.dumps(data, indent=2, sort_keys=True))
             self.report_number += 1
         else:
             try:
