@@ -2,6 +2,7 @@ import json
 import os
 
 import ansible_runner
+import pkg_resources
 import pytest
 import py.path
 import yaml
@@ -98,3 +99,13 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
     fixture_dir.join(apidoc).copy(json_cache)
 
     return run_playbook(module, extra_vars=extra_vars, limit=limit, inventory=inventory, check_mode=check_mode, extra_env=extra_env)
+
+
+def get_ansible_version():
+    ansible_version = None
+    for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
+        try:
+            ansible_version = pkg_resources.get_distribution(ansible_name).version
+        except pkg_resources.DistributionNotFound:
+            pass
+    return ansible_version

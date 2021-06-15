@@ -2,10 +2,9 @@ import distutils.version
 import os
 import sys
 
-import pkg_resources
 import pytest
 
-from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr
+from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version
 
 IGNORED_WARNINGS = [
     "Activation Key 'Test Activation Key Copy' already exists.",
@@ -43,12 +42,7 @@ def test_check_mode(tmpdir, module):
 
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
 def test_inventory(tmpdir, module):
-    ansible_version = None
-    for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
-        try:
-            ansible_version = pkg_resources.get_distribution(ansible_name).version
-        except pkg_resources.DistributionNotFound:
-            pass
+    ansible_version = get_ansible_version()
     if ansible_version is None:
         pytest.skip("Couldn't figure out Ansible version?!")
     if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
