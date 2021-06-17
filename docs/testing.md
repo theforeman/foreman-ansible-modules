@@ -65,6 +65,18 @@ To re-record, execute:
 $ make record_global_parameter
 ```
 
+Callback tests are part of integration tests, to run just callback tests, execute:
+
+```console
+$ make test TEST="tests/test_callback.py"
+```
+
+To re-record just callback JSON fixtures, execute:
+
+```console
+$ make test TEST="tests/test_callback.py --vcrmode record"
+```
+
 ### Ansible Sanity
 
 To run the Ansible Sanity tests, execute:

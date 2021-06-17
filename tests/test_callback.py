@@ -40,7 +40,7 @@ def test_callback(tmpdir, vcrmode):
         real_contents = json.loads(contents)
         real_contents['config_report']['metrics']['time']['total'] = 1
         fixture_name = real_file.basename
-        fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', fixture_name)
+        fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', 'callback', 'dir_store', fixture_name)
         if vcrmode == "record":
             print("Writing: ", str(fixture))
             with open(fixture, 'w') as f:
