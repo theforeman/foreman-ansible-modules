@@ -37,14 +37,15 @@ def test_callback(tmpdir, vcrmode):
         contents = real_file.read()
         contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
         contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
+        real_contents = json.loads(contents)
+        real_contents['config_report']['metrics']['time']['total'] = 1
         fixture_name = real_file.basename
         fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', fixture_name)
         if vcrmode == "record":
             print("Writing: ", str(fixture))
             with open(fixture, 'w') as f:
-                f.write(contents)
+                json.dump(real_contents, f, indent=2, sort_keys=True)
         else:
             with open(fixture, 'r') as f:
                 expected_contents = json.load(f)
-                real_contents = json.loads(contents)
                 assert expected_contents == real_contents, "Fixture {fixture_name} differs, run with -vvvv to see the diff".format(fixture_name=fixture_name)
