@@ -222,7 +222,7 @@ class CallbackModule(CallbackBase):
             filename = u'{host}.json'.format(host=to_text(host))
             filename = os.path.join(self.dir_store, filename)
             with open(filename, 'w') as f:
-                json.dump(data, f, indent=2, sort_keys=True))
+                json.dump(data, f, indent=2, sort_keys=True)
         else:
             try:
                 response = self.session.post(url=url, json=data)
