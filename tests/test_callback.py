@@ -37,6 +37,7 @@ def test_callback(tmpdir, vcrmode):
         contents = real_file.read()
         contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
         contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
+        contents = re.sub(r", \\\"msg\\\": \\\"\\\"", "", contents)
         real_contents = json.loads(contents)
         real_contents['config_report']['metrics']['time']['total'] = 1
         fixture_name = real_file.basename
