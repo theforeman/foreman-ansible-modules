@@ -22,6 +22,11 @@
         auth_source_ldap_attr_login: dc=vagrant,dc=vm
         auth_source_ldap_groups_base: cn=groups,cn=accounts,dc=vagrant,dc=vm
         auth_source_ldap_tls: false
+    - include: tasks/external_usergroup.yml
+      vars:
+        external_usergroup_state: absent
+        auth_source_ldap: "Example LDAP"
+        usergroup: "internal_group"
 
 - hosts: tests
   collections:
