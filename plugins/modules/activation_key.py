@@ -282,6 +282,7 @@ def main():
                 activation_key = module.ensure_entity('activation_keys', module.foreman_params, activation_key, params=scope)
 
             ak_scope = {'activation_key_id': activation_key['id']}
+            ak_scope.update(scope)
             if subscriptions is not None:
                 desired_subscriptions = []
                 for subscription in subscriptions:
