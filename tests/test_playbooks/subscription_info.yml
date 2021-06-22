@@ -20,12 +20,13 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: Fetch Subscription info
+    - name: Fetch Subscription info via name
       subscription_info:
         username: "{{ foreman_username }}"
         password: "{{ foreman_password }}"
         server_url: "{{ foreman_server_url }}"
         validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
         name: "Test Product"
       register: sub
     - name: check results
@@ -34,12 +35,13 @@
           - sub.subscription.name == 'Test Product'
           - sub.subscription.product_name == 'Test Product'
 
-    - name: Fetch Subscription info
+    - name: Fetch Subscription info via search
       subscription_info:
         username: "{{ foreman_username }}"
         password: "{{ foreman_password }}"
         server_url: "{{ foreman_server_url }}"
         validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
         search: name="Test Product"
       register: sub
     - name: check results
