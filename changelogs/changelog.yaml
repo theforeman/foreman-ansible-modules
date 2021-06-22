@@ -459,3 +459,14 @@ releases:
       name: subscription_info
       namespace: ''
     release_date: '2021-05-20'
+  2.1.1:
+    changes:
+      bugfixes:
+      - external_usergroup - always lookup the ID of the usergroup, instead of passing
+        the name to the API (https://bugzilla.redhat.com/show_bug.cgi?id=1967649)
+      - host, hostgroup - don't override already set parameters when passing an activation
+        key only (and vice versa) (https://bugzilla.redhat.com/show_bug.cgi?id=1967904)
+    fragments:
+    - bz1967649-usergroup_lookup.yml
+    - bz1967904-dont_override_params.yml
+    release_date: '2021-06-22'

@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.1.1
+======
+
+Bugfixes
+--------
+
+- external_usergroup - always lookup the ID of the usergroup, instead of passing the name to the API (https://bugzilla.redhat.com/show_bug.cgi?id=1967649)
+- host, hostgroup - don't override already set parameters when passing an activation key only (and vice versa) (https://bugzilla.redhat.com/show_bug.cgi?id=1967904)
+
 v2.1.0
 ======
 
