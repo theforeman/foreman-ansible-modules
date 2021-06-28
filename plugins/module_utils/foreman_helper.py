@@ -1778,20 +1778,29 @@ def build_fqn(name, parent=None):
 
 # Helper for puppetclasses
 def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=None):
-    puppetclasses_resource = '{0}_classes'.format(entity_type)
     if expected_puppetclasses:
+        puppetclasses_resource = '{0}_classes'.format(entity_type)
         expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
-    current_puppetclasses = entity.pop('puppetclass_ids', [])
-    if expected_puppetclasses:
+        current_puppetclass_ids = entity.get('puppetclass_ids', [])
+        previous_puppetclass_ids = current_puppetclass_ids[:]
         for puppetclass in expected_puppetclasses:
-            if puppetclass['id'] in current_puppetclasses:
-                current_puppetclasses.remove(puppetclass['id'])
+            if puppetclass['id'] in current_puppetclass_ids:
+                # Nothing to do, prevent removal
+                previous_puppetclass_ids.remove(puppetclass['id'])
             else:
                 payload = {'{0}_id'.format(entity_type): entity['id'], 'puppetclass_id': puppetclass['id']}
                 module.ensure_entity(puppetclasses_resource, {}, None, params=payload, state='present', foreman_spec={})
-        if len(current_puppetclasses) > 0:
-            for leftover_puppetclass in current_puppetclasses:
-                module.ensure_entity(puppetclasses_resource, {}, {'id': leftover_puppetclass}, {'hostgroup_id': entity['id']}, state='absent', foreman_spec={})
+                # Add to entity for reporting
+                current_puppetclass_ids.append(puppetclass['id'])
+
+        if len(previous_puppetclass_ids) > 0:
+            for leftover_puppetclass in previous_puppetclass_ids:
+                payload = {'{0}_id'.format(entity_type): entity['id']}
+                module.ensure_entity(
+                    puppetclasses_resource, {}, {'id': leftover_puppetclass},
+                    params=payload, state='absent', foreman_spec={},
+                )
+                current_puppetclass_ids.remove(leftover_puppetclass)
 
 
 # Helper constants
