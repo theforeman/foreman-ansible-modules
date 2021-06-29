@@ -1,4 +1,10 @@
 ---
+- name: "verify foreman_content_view_version_cleanup_keep is set"
+  assert:
+    that:
+      - foreman_content_view_version_cleanup_keep|int >= 0
+    fail_msg: "foreman_content_view_version_cleanup_keep needs to be set to >= 0"
+
 - name: "find all content views"
   theforeman.foreman.resource_info:
     server_url: "{{ foreman_server_url | default(omit) }}"
