@@ -49,13 +49,14 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
-  roles:
-    - role: content_view_version_cleanup
+  tasks:
+    - name: clean up all but two unused CVs
+      include_role:
+        name: content_view_version_cleanup
       vars:
         foreman_organization: "Test Organization"
         foreman_content_view_version_cleanup_keep: 2
         foreman_content_view_version_cleanup_search: "name ~ cleanup"
-  post_tasks:
     - name: find remaining content view versions
       theforeman.foreman.resource_info:
         username: "{{ foreman_username }}"
@@ -71,6 +72,28 @@
         that:
           - remaining_cvs.resources[0].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
           - remaining_cvs.resources[1].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
+    - name: clean up all unused CVs
+      include_role:
+        name: content_view_version_cleanup
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_content_view_version_cleanup_keep: 0
+        foreman_content_view_version_cleanup_search: "name ~ cleanup"
+    - name: find remaining content view versions
+      theforeman.foreman.resource_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        resource: content_views
+        search: "name ~ cleanup"
+      register: remaining_cvs
+    - name: check remaining content view versions
+      assert:
+        that:
+          - remaining_cvs.resources[0].versions|map(attribute='version')|list == ['5.0']
+          - remaining_cvs.resources[1].versions|map(attribute='version')|list == ['5.0']
 
 - hosts: localhost
   collections:
