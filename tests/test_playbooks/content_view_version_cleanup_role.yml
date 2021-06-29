@@ -69,8 +69,8 @@
     - name: check remaining content view versions
       assert:
         that:
-          - remaining_cvs.resources[0].versions|length == 3
-          - remaining_cvs.resources[1].versions|length == 3
+          - remaining_cvs.resources[0].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
+          - remaining_cvs.resources[1].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
 
 - hosts: localhost
   collections:
