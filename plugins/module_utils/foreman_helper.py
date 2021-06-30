@@ -835,7 +835,7 @@ class ForemanAnsibleModule(AnsibleModule):
         api_name = 'available_{0}'.format(part_name)
         available_parts = self.resource_action('compute_resources', api_name, params=additional_params,
                                                ignore_check_mode=True, record_change=False)['results']
-        part = next((part for part in available_parts if part['name'] == name or part['id'] == name), None)
+        part = next((part for part in available_parts if str(part['name']) == str(name) or str(part['id']) == str(name)), None)
         if part is None:
             err_msg = "Could not find {0} '{1}' on compute resource '{2}'.".format(part_name, name, compute_resource.get('name'))
             self.fail_json(msg=err_msg)
