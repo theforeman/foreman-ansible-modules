@@ -66,6 +66,20 @@ DOCUMENTATION = '''
         ini:
           - section: callback_foreman
             key: verify_certs
+      dir_store:
+        description:
+          - When set, callback does not perform HTTP calls but stores results in a given directory.
+          - For each report, new file in the form of SEQ_NO-hostname.json is created.
+          - For each facts, new file in the form of SEQ_NO-hostname.json is created.
+          - The value must be a valid directory.
+          - This is meant for debugging and testing purposes.
+          - When set to blank (default) this functionality is turned off.
+        env:
+          - name: FOREMAN_DIR_STORE
+        default: ''
+        ini:
+          - section: callback_foreman
+            key: dir_store
       disable_callback:
         description:
           - Toggle to make the callback plugin disable itself even if it is loaded.
@@ -111,7 +125,7 @@ def build_log(data):
                     'source': source,
                 },
                 'messages': {
-                    'message': json.dumps(msg),
+                    'message': json.dumps(msg, sort_keys=True),
                 },
                 'level': level,
             }
@@ -158,6 +172,7 @@ class CallbackModule(CallbackBase):
         self.foreman_url = self.get_option('url')
         ssl_cert = self.get_option('client_cert')
         ssl_key = self.get_option('client_key')
+        self.dir_store = self.get_option('dir_store')
 
         if not HAS_REQUESTS:
             self._disable_plugin(u'The `requests` python module is not installed')
@@ -195,13 +210,33 @@ class CallbackModule(CallbackBase):
 
         return verify
 
+    def _send_data(self, endpoint, host, data):
+        if endpoint == 'facts':
+            url = self.foreman_url + '/api/v2/hosts/facts'
+        elif endpoint == 'report':
+            url = self.foreman_url + '/api/v2/config_reports'
+        else:
+            self._display.warning(u'Unknown endpoint type: {type}'.format(type=endpoint))
+
+        if len(self.dir_store) > 0:
+            filename = u'{host}.json'.format(host=to_text(host))
+            filename = os.path.join(self.dir_store, filename)
+            with open(filename, 'w') as f:
+                json.dump(data, f, indent=2, sort_keys=True)
+        else:
+            try:
+                response = self.session.post(url=url, json=data)
+                response.raise_for_status()
+            except requests.exceptions.RequestException as err:
+                self._display.warning(u'Sending data to Foreman at {url} failed for {host}: {err}'.format(
+                    host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
+
     def send_facts(self):
         """
         Sends facts to Foreman, to be parsed by foreman_ansible fact
         parser.  The default fact importer should import these facts
         properly.
         """
-        url = self.foreman_url + '/api/v2/hosts/facts'
 
         for host, facts in self.facts.items():
             facts = {
@@ -213,12 +248,7 @@ class CallbackModule(CallbackBase):
                 },
             }
 
-            try:
-                response = self.session.post(url=url, json=facts)
-                response.raise_for_status()
-            except requests.exceptions.RequestException as err:
-                self._display.warning(u'Sending facts to Foreman at {url} failed for {host}: {err}'.format(
-                    host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
+            self._send_data('facts', host, facts)
 
     def send_reports(self, stats):
         """
@@ -226,8 +256,6 @@ class CallbackModule(CallbackBase):
         importer. THe data is in a format that Foreman can handle
         without writing another report importer.
         """
-        url = self.foreman_url + '/api/v2/config_reports'
-
         for host in stats.processed.keys():
             total = stats.summarize(host)
             report = {
@@ -252,12 +280,8 @@ class CallbackModule(CallbackBase):
             if self.check_mode:
                 report['config_report']['status']['pending'] = total['changed']
                 report['config_report']['status']['applied'] = 0
-            try:
-                response = self.session.post(url=url, json=report)
-                response.raise_for_status()
-            except requests.exceptions.RequestException as err:
-                self._display.warning(u'Sending report to Foreman at {url} failed for {host}: {err}'.format(
-                    host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
+
+            self._send_data('report', host, report)
 
             self.items[host] = []
 
