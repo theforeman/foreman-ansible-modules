@@ -80,18 +80,20 @@ options:
     elements: str
   content_overrides:
     description:
-      - List of content overrides that include label and override state ('enabled', 'disabled' or 'default')
+      - List of content overrides that include label and override state
+      - Label refers to repository content_label, e.g. rhel-7-server-rpms
+      - Override state ('enabled', 'disabled', or 'default') sets initial state of repository for newly registered hosts
     type: list
     elements: dict
     suboptions:
       label:
         description:
-          - Label of the content override
+          - Repository content_label to override when registering hosts with the activation key
         type: str
         required: true
       override:
         description:
-          - Override value
+          - Override value to use for the repository when registering hosts with the activation key
         choices:
           - enabled
           - disabled
