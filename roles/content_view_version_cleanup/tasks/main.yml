@@ -20,7 +20,7 @@
   include_tasks: delete_cv_versions.yml
   vars:
     cv_name: "{{ ccv.name }}"
-    cv_versions: "{{ (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:] }}"
+    cv_versions: "{{ (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | map('float') | sort | map('string') | reverse | list)[foreman_content_view_version_cleanup_keep:] }}"
   loop: "{{ all_cvs.resources | selectattr('composite') | list }}"
   loop_control:
     label: "{{ ccv.label }}"
