@@ -470,3 +470,23 @@ releases:
     - bz1967649-usergroup_lookup.yml
     - bz1967904-dont_override_params.yml
     release_date: '2021-06-22'
+  2.1.2:
+    changes:
+      bugfixes:
+      - activation_key - submit organization_id when querying subs, required for Katello
+        4.1
+      - content_view_version_cleanup - sort content view versions before deleting
+        (https://github.com/RedHatSatellite/satellite-ansible-collection/issues/30,
+        https://bugzilla.redhat.com/show_bug.cgi?id=1980274)
+      - content_view_version_cleanup role - properly clean up when users set keep=0
+        (https://bugzilla.redhat.com/show_bug.cgi?id=1974314)
+      - host, compute_profile - when resolving cluster and other values in vm_attrs,
+        compare them as strings (https://github.com/theforeman/foreman-ansible-modules/issues/1245)
+      - subscription_info - mark ``organization`` parameter as required, to match
+        Katello
+    fragments:
+    - 1245-search_vm_attr_as_string.yml
+    - BZ1974314-cv_cleanup_keep_0.yml
+    - bz1980274.yml
+    - katello41-subscription-org-required.yml
+    release_date: '2021-07-13'
