@@ -6,6 +6,18 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.1.2
+======
+
+Bugfixes
+--------
+
+- activation_key - submit organization_id when querying subs, required for Katello 4.1
+- content_view_version_cleanup - sort content view versions before deleting (https://github.com/RedHatSatellite/satellite-ansible-collection/issues/30, https://bugzilla.redhat.com/show_bug.cgi?id=1980274)
+- content_view_version_cleanup role - properly clean up when users set keep=0 (https://bugzilla.redhat.com/show_bug.cgi?id=1974314)
+- host, compute_profile - when resolving cluster and other values in vm_attrs, compare them as strings (https://github.com/theforeman/foreman-ansible-modules/issues/1245)
+- subscription_info - mark ``organization`` parameter as required, to match Katello
+
 v2.1.1
 ======
 
