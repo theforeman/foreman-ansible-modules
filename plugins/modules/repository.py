@@ -203,6 +203,16 @@ options:
       - repositories will be automatically enabled on a registered host subscribed to this product
     type: bool
     required: false
+  os_versions:
+    description:
+      - Identifies whether the repository should be disabled on a client with a non-matching OS version
+    type: list
+    elements: str
+    required: false
+    choices:
+      - rhel-6
+      - rhel-7
+      - rhel-8
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -292,6 +302,7 @@ def main():
             ignorable_content=dict(type='list', elements='str'),
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
+            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8']),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
