@@ -205,7 +205,9 @@ options:
     required: false
   os_versions:
     description:
-      - Identifies whether the repository should be disabled on a client with a non-matching OS version
+      - Identifies whether the repository should be disabled on a client with a non-matching OS version.
+      - A maximum of one OS version can be selected.
+      - Set to C([]) to disable filtering again.
     type: list
     elements: str
     required: false
