@@ -332,7 +332,7 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'ansible_collection'".format(",".join(invalid_list)))
 
     if module.foreman_params['content_type'] != 'yum':
-        invalid_list = [key for key in ['ignorable_content'] if key in module.foreman_params]
+        invalid_list = [key for key in ['ignorable_content', 'os_versions'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'yum'".format(",".join(invalid_list)))
 
