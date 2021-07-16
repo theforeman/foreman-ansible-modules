@@ -203,6 +203,18 @@ options:
       - repositories will be automatically enabled on a registered host subscribed to this product
     type: bool
     required: false
+  os_versions:
+    description:
+      - Identifies whether the repository should be disabled on a client with a non-matching OS version.
+      - A maximum of one OS version can be selected.
+      - Set to C([]) to disable filtering again.
+    type: list
+    elements: str
+    required: false
+    choices:
+      - rhel-6
+      - rhel-7
+      - rhel-8
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -292,6 +304,7 @@ def main():
             ignorable_content=dict(type='list', elements='str'),
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
+            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8']),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -319,7 +332,7 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'ansible_collection'".format(",".join(invalid_list)))
 
     if module.foreman_params['content_type'] != 'yum':
-        invalid_list = [key for key in ['ignorable_content'] if key in module.foreman_params]
+        invalid_list = [key for key in ['ignorable_content', 'os_versions'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'yum'".format(",".join(invalid_list)))
 
