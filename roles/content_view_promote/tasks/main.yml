@@ -1,6 +1,103 @@
 ---
-- name: "Run Content-View Role"
-  include_tasks: content-view.yml
-  with_dict: "{{ organizations }}"
-  loop_control:
-    loop_var: organization
+# get data on the current content-view
+- name: "Gather Data For Current Content-View From Foreman"
+  theforeman.foreman.resource_info:
+    username: "{{ foreman_user }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ foreman_organization }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    resource: content_views
+    search: name = "{{ foreman_content_view }}"
+  register: content_view_data
+
+# get data on the current content-view version
+- name: "Gather Data For Current Content-View Versions From Foreman"
+  theforeman.foreman.resource_info:
+    username: "{{ foreman_user }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ foreman_organization }}"    
+    validate_certs: "{{ foreman_validate_certs }}"
+    resource: content_view_versions
+    params:
+      content_view_id: "{{ content_view_data.resources[0].id }}"
+  register: version_information
+
+# creates a dictionary with data formatted as such {'Prod':'11.0'}
+- name: "Build Dictionary With Lifecycle Envrionment And Version Number"
+  set_fact:
+    environments: "{{ environments | default({}) | combine ({item[1].name : item[0].name.split()[-1]}) }}"
+  with_subelements:
+    - "{{ version_information.resources }}"
+    - environments
+
+# create list of content-view versions
+- name: "Build List of All Versions of Content-View"
+  set_fact:
+    cv_versions: "{{ cv_versions | default([]) + [item.major] }}"
+  with_items: "{{ version_information.resources }}"
+
+# set the highest version to zero so that we don't use previous Content-View settings
+- name: "Set Highest Version to 0"
+  set_fact:
+    highest_version: 0
+
+# set highest number
+- name: "Set the Highest Version of the Content-View Currently Available"
+  set_fact: 
+    highest_version: "{{ cv_versions | max }}"
+
+# add one to each of the version numbers
+- name: "Update Facts With Incremented Content-View Version Numbers"
+  set_fact:
+    new_environments: "{{ new_environments | default({}) | combine ({item.key: item.value|int + 1.0 }) }} "
+  with_dict: "{{ environments }}"
+
+- name: "Check if publishing new version of Content-View is necessary"
+  set_fact:
+    publish_true: true
+  with_dict: "{{ new_environments }}"
+  when: item.value | int > highest_version | int
+
+- name: Run Content-View Publish
+  block:
+  # only publish new view if necessary (when the current view is at or above library)
+  - name: "Publish new version of Content-View"
+    theforeman.foreman.content_view_version:
+      username: "{{ foreman_user }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      organization: "{{ foreman_organization }}"
+      validate_certs: "{{ foreman_validate_certs }}"
+      content_view: "{{ foreman_content_view }}"
+    async: 3600 #allow async run for up to 1 hour for large content-views
+    poll: 0
+    register: cv_publish
+
+  - name: 'Check on status of Content-View Publish'
+    async_status:
+      jid: "{{ cv_publish.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 360
+    delay: 10
+  when: publish_true | default(false)
+
+# only promote environments defined in the vars
+- name: "Promote Environments to Version N+1"
+  theforeman.foreman.content_view_version:
+    username: "{{ foreman_user }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ foreman_organization }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    content_view: "{{ foreman_content_view }}"
+    # dictionaries aren't ordered and Foreman doesn't want you promoting things out of order
+    # but we're promoting them all so we just override that behavior
+    force_promote: true
+    lifecycle_environments: "{{ item.key }}"
+    version: "{{ item.value }}"
+  with_dict: "{{ new_environments }}"
+  when: item.key in foreman_lifecycle_environments
+
