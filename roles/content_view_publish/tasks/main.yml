@@ -1,6 +1,21 @@
 ---
-- name: "Run content_view_publish Role"
-  include_tasks: content-view.yml
-  with_dict: "{{ organizations }}"
-  loop_control:
-    loop_var: organization
+# only publish new version
+- name: "Publish new version of Content-View"
+  theforeman.foreman.content_view_version:
+    username: "{{ foreman_user }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ foreman_organization }}"
+    content_view: "{{ foreman_content_view }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+  async: 3600 #allow async run for up to 1 hour for large content-views
+  poll: 0
+  register: cv_publish
+
+- name: 'Check on status of Content-View Publish'
+  async_status:
+    jid: "{{ cv_publish.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 360
+  delay: 10
