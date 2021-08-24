@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v2.2.0
+======
+
+Minor Changes
+-------------
+
+- repository - add support for filtering repositories by OS version based on API feature apidoc/v2/repositories/create.html
+
+Bugfixes
+--------
+
+- host, hostgroup - don't accidentally duplicate ``kt_activation_keys`` param (https://github.com/theforeman/foreman-ansible-modules/issues/1268)
+
 v2.1.2
 ======
 
