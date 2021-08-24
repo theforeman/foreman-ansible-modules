@@ -99,6 +99,32 @@
         hostgroup_state: present
         expected_change: false
 
+    - name: only set AK via params
+      include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_organization: "{{ hostgroup.organizations | first }}"
+        hostgroup_parameters:
+          - name: kt_activation_keys
+            parameter_type: string
+            value: new_key
+        hostgroup_state: present
+        expected_change: true
+
+    - name: only set AK via params, again, no change
+      include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_organization: "{{ hostgroup.organizations | first }}"
+        hostgroup_parameters:
+          - name: kt_activation_keys
+            parameter_type: string
+            value: new_key
+        hostgroup_state: present
+        expected_change: false
+
     - name: delete HG
       include_tasks: tasks/hostgroup.yml
       vars:
