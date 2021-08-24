@@ -490,3 +490,15 @@ releases:
     - bz1980274.yml
     - katello41-subscription-org-required.yml
     release_date: '2021-07-13'
+  2.2.0:
+    changes:
+      bugfixes:
+      - host, hostgroup - don't accidentally duplicate ``kt_activation_keys`` param
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1268)
+      minor_changes:
+      - repository - add support for filtering repositories by OS version based on
+        API feature apidoc/v2/repositories/create.html
+    fragments:
+    - 1268-ak_param_duplicate.yml
+    - repository.yml
+    release_date: '2021-08-24'
