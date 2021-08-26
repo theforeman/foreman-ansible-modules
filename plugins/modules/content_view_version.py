@@ -252,13 +252,19 @@ def main():
                     content_view_version = {'id': -1, 'environments': []}
 
             if 'lifecycle_environments' in module.foreman_params:
-                promote_content_view_version(
-                    module,
-                    content_view_version,
-                    module.foreman_params['lifecycle_environments'],
-                    force=module.foreman_params['force_promote'],
-                    force_yum_metadata_regeneration=module.foreman_params['force_yum_metadata_regeneration'],
-                )
+                if module.foreman_params['lifecycle_environments'] == [] and content_view_version['environments']:
+                    current_environment_ids = {environment['id'] for environment in content_view_version['environments']}
+
+                    for environment_id in current_environment_ids:
+                        response = module.resource_action('content_views', 'remove_from_environment', params={'id': content_view['id'], 'environment_id': environment_id})
+                else:
+                    promote_content_view_version(
+                        module,
+                        content_view_version,
+                        module.foreman_params['lifecycle_environments'],
+                        force=module.foreman_params['force_promote'],
+                        force_yum_metadata_regeneration=module.foreman_params['force_yum_metadata_regeneration'],
+                    )
 
 
 if __name__ == '__main__':
