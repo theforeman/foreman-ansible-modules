@@ -1074,11 +1074,11 @@ class ForemanAnsibleModule(AnsibleModule):
         """
         payload = {}
         desired_entity = _flatten_entity(desired_entity, foreman_spec)
-        current_entity = _flatten_entity(current_entity, foreman_spec)
+        current_flat_entity = _flatten_entity(current_entity, foreman_spec)
         for key, value in desired_entity.items():
             foreman_type = foreman_spec[key].get('type', 'str')
             new_value = value
-            old_value = current_entity.get(key)
+            old_value = current_flat_entity.get(key)
             # String comparison needs extra care in face of unicode
             if foreman_type == 'str':
                 old_value = to_native(old_value)
@@ -1096,14 +1096,14 @@ class ForemanAnsibleModule(AnsibleModule):
             if new_value != old_value:
                 payload[key] = value
         if self._validate_supported_payload(resource, 'update', payload):
-            payload['id'] = current_entity['id']
+            payload['id'] = current_flat_entity['id']
             if not self.check_mode:
                 if params:
                     payload.update(params)
                 return self.resource_action(resource, 'update', payload)
             else:
                 # In check_mode we emulate the server updating the entity
-                fake_entity = current_entity.copy()
+                fake_entity = current_flat_entity.copy()
                 fake_entity.update(payload)
                 self.set_changed()
                 return fake_entity
