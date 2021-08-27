@@ -94,6 +94,14 @@
         operatingsystem_architectures:
           - "{{ host.arch }}"
         operatingsystem_state: present
+    - include_tasks: tasks/environment.yml
+      vars:
+        environment_state: present
+        environment_name: "production"
+        environment_locations:
+          - "{{ host.location }}"
+        environment_organizations:
+          - "{{ host.organization }}"
     - include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -363,6 +371,7 @@
         host_location: "{{ host.location }}"
         host_managed: false
         host_build: false
+        host_environment: production
         host_puppetclasses:
           - "prometheus::redis_exporter"
         expected_change: true
@@ -375,8 +384,83 @@
         host_location: "{{ host.location }}"
         host_managed: false
         host_build: false
+        host_environment: production
         host_puppetclasses:
           - "prometheus::redis_exporter"
+        expected_change: false
+
+    - name: update host with puppetclasses
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_environment: production
+        host_puppetclasses:
+          - "prometheus::haproxy_exporter"
+        expected_change: true
+
+    - name: update host with puppetclasses again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_environment: production
+        host_puppetclasses:
+          - "prometheus::haproxy_exporter"
+        expected_change: false
+
+    - name: create host with puppetclasses
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_environment: production
+        host_puppetclasses:
+          - "prometheus::redis_exporter"
+        expected_change: true
+
+    - name: create host with puppetclasses again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_environment: production
+        host_puppetclasses:
+          - "prometheus::redis_exporter"
+        expected_change: false
+
+    - name: remove puppetclasses from host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_puppetclasses: []
+        expected_change: true
+
+    - name: remove puppetclasses from host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_managed: false
+        host_build: false
+        host_puppetclasses: []
         expected_change: false
 
     - name: delete host
