@@ -1802,6 +1802,7 @@ def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=Non
                 params=payload, state='absent', foreman_spec={},
             )
             current_puppetclass_ids.remove(leftover_puppetclass)
+        entity['puppetclass_ids'] = current_puppetclass_ids
 
 
 # Helper constants
