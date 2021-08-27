@@ -1779,7 +1779,7 @@ def build_fqn(name, parent=None):
 
 # Helper for puppetclasses
 def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=None):
-    if expected_puppetclasses:
+    if expected_puppetclasses is not None:
         puppetclasses_resource = '{0}_classes'.format(entity_type)
         expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
         current_puppetclasses = entity.get('puppetclasses', [])
