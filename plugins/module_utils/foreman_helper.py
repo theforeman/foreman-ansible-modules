@@ -1782,7 +1782,8 @@ def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=Non
     if expected_puppetclasses:
         puppetclasses_resource = '{0}_classes'.format(entity_type)
         expected_puppetclasses = module.find_puppetclasses(expected_puppetclasses, environment=entity['environment_id'], thin=True)
-        current_puppetclass_ids = entity.get('puppetclass_ids', [])
+        current_puppetclasses = entity.get('puppetclasses', [])
+        current_puppetclass_ids = [pc['id'] for pc in current_puppetclasses]
         previous_puppetclass_ids = current_puppetclass_ids[:]
         for puppetclass in expected_puppetclasses:
             if puppetclass['id'] in current_puppetclass_ids:
