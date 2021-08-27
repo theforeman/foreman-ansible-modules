@@ -1795,14 +1795,13 @@ def ensure_puppetclasses(module, entity_type, entity, expected_puppetclasses=Non
                 # Add to entity for reporting
                 current_puppetclass_ids.append(puppetclass['id'])
 
-        if len(previous_puppetclass_ids) > 0:
-            for leftover_puppetclass in previous_puppetclass_ids:
-                payload = {'{0}_id'.format(entity_type): entity['id']}
-                module.ensure_entity(
-                    puppetclasses_resource, {}, {'id': leftover_puppetclass},
-                    params=payload, state='absent', foreman_spec={},
-                )
-                current_puppetclass_ids.remove(leftover_puppetclass)
+        for leftover_puppetclass in previous_puppetclass_ids:
+            payload = {'{0}_id'.format(entity_type): entity['id']}
+            module.ensure_entity(
+                puppetclasses_resource, {}, {'id': leftover_puppetclass},
+                params=payload, state='absent', foreman_spec={},
+            )
+            current_puppetclass_ids.remove(leftover_puppetclass)
 
 
 # Helper constants
