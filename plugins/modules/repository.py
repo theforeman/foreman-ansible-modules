@@ -215,6 +215,12 @@ options:
       - rhel-6
       - rhel-7
       - rhel-8
+  arch:
+    description:
+      - Architecture of content in the repository
+      - Set to C(noarch) to disable the architecture restriction again.
+    type: str
+    required: false
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -305,6 +311,7 @@ def main():
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
             os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8']),
+            arch=dict(),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
