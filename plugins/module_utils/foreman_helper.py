@@ -237,7 +237,7 @@ class NestedParametersMixin(ParametersMixinBase):
 
     def run(self, **kwargs):
         new_entity = super(NestedParametersMixin, self).run(**kwargs)
-        if new_entity:
+        if new_entity and 'id' in new_entity:
             scope = {'{0}_id'.format(self.entity_name): new_entity['id']}
             self.ensure_scoped_parameters(scope)
         return new_entity

@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  tags:
+    - setup
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "present"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  tags:
+    - test
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    # generate registration command
+    - include: tasks/registration_command.yml
