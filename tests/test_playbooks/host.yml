@@ -415,7 +415,7 @@
           - "prometheus::haproxy_exporter"
         expected_change: false
 
-    - name: create host with puppetclasses
+    - name: update host with puppetclasses and description
       include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -423,12 +423,13 @@
         host_location: "{{ host.location }}"
         host_managed: false
         host_build: false
+        host_description: nice host
         host_environment: production
         host_puppetclasses:
           - "prometheus::redis_exporter"
         expected_change: true
 
-    - name: create host with puppetclasses again, no change
+    - name: update host with puppetclasses and description again, no change
       include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
@@ -436,6 +437,7 @@
         host_location: "{{ host.location }}"
         host_managed: false
         host_build: false
+        host_description: nice host
         host_environment: production
         host_puppetclasses:
           - "prometheus::redis_exporter"
