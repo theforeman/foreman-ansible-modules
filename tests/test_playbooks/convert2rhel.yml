@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: convert2rhel
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_validate_certs: false
+        foreman_convert2rhel_manage_subscription: false
+        foreman_content_rhel_wait_for_syncs: false
+        foreman_content_rhel_enable_rhel7: true
+        foreman_content_rhel_enable_rhel8: false
