@@ -242,7 +242,7 @@ class CallbackModule(CallbackBase):
             facts = {
                 "name": host,
                 "facts": {
-                    "ansible_facts": self.facts[host],
+                    "ansible_facts": facts,
                     "_type": "ansible",
                     "_timestamp": get_now(),
                 },
