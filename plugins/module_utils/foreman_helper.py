@@ -931,7 +931,7 @@ class ForemanAnsibleModule(AnsibleModule):
     def auto_lookup_nested_entities(self):
         for key, entity_spec in self.foreman_spec.items():
             if entity_spec.get('type') in {'nested_list'}:
-                for nested_key, nested_spec in self.foreman_spec[key]['foreman_spec'].items():
+                for nested_key, nested_spec in entity_spec['foreman_spec'].items():
                     for item in self.foreman_params.get(key, []):
                         if (nested_key in item and nested_spec.get('resolve', True)
                                 and not _is_resolved(nested_spec, item[nested_key])):
