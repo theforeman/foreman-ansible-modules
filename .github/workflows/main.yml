@@ -14,52 +14,23 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - "2.7"
-          - "3.6"
-          - "3.7"
           - "3.8"
-          - "3.9"
         ansible:
           - stable-2.8
           - stable-2.9
           - stable-2.10
           - stable-2.11
+          - stable-2.12
           - devel
-        exclude:
+        include:
           - python: "2.7"
-            ansible: "stable-2.8"
-          - python: "2.7"
-            ansible: "stable-2.9"
-          - python: "2.7"
-            ansible: "stable-2.10"
-          - python: "2.7"
-            ansible: "devel"
+            ansible: "stable-2.11"
           - python: "3.6"
-            ansible: "stable-2.8"
-          - python: "3.6"
-            ansible: "stable-2.9"
-          - python: "3.6"
-            ansible: "stable-2.10"
-          - python: "3.6"
-            ansible: "devel"
+            ansible: "stable-2.11"
           - python: "3.7"
+            ansible: "stable-2.11"
+          - python: "3.9"
             ansible: "devel"
-          - python: "3.8"
-            ansible: "stable-2.8"
-          - python: "3.8"
-            ansible: "stable-2.9"
-          - python: "3.8"
-            ansible: "stable-2.10"
-          - python: "3.8"
-            ansible: "stable-2.11"
-          - python: "3.9"
-            ansible: "stable-2.8"
-          - python: "3.9"
-            ansible: "stable-2.9"
-          - python: "3.9"
-            ansible: "stable-2.10"
-          - python: "3.9"
-            ansible: "stable-2.11"
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -88,7 +59,7 @@ jobs:
         run: sudo mkdir -p /etc/rhsm/ca/ && sudo touch /etc/rhsm/ca/redhat-uep.pem
       - name: Install required collections for ansible-base (2.10+)
         run: ansible-galaxy collection install community.docker
-        if: matrix.ansible == 'devel' || matrix.ansible == 'stable-2.10' || matrix.ansible == 'stable-2.11'
+        if: matrix.ansible != 'stable-2.8' && matrix.ansible != 'stable-2.9'
       - name: Run crud tests
         run: make test-crud
       - name: Run other tests
@@ -97,7 +68,7 @@ jobs:
         run: make dist-test
       - name: Run sanity tests
         run: make SANITY_OPTS="--local" sanity
-        if: matrix.ansible == 'devel' || matrix.ansible == 'stable-2.10' || matrix.stable == 'stable-2.11'
+        if: matrix.ansible != 'stable-2.8' && matrix.ansible != 'stable-2.9'
 
   checkmode:
     runs-on: ubuntu-latest
