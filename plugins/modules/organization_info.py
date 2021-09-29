@@ -64,15 +64,17 @@ organizations:
 '''
 
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloInfoAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
+    ForemanInfoAnsibleModule,
+)
 
 
-class KatelloOrganizationInfo(KatelloInfoAnsibleModule):
+class ForemanOrganizationInfo(ForemanInfoAnsibleModule):
     pass
 
 
 def main():
-    module = KatelloOrganizationInfo()
+    module = ForemanOrganizationInfo()
 
     with module.api_connection():
         module.run()
