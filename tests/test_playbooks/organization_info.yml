@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch organization info
+      organization_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "Test Organization"
+      register: organization_info
+    - name: check organization details
+      assert:
+        that:
+          - organization_info['organization']['name'] == "Test Organization"
+          - "'parent_name' in organization_info['organization']"
+
+    - name: search organization info
+      organization_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name ~ Test"
+      register: organization_info
+    - name: check organization details
+      assert:
+        that:
+          - organization_info['organizations'][0]['name'] == "Test Organization"
+          - "'parent_name' not in organization_info['organizations'][0]"
