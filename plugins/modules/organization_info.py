@@ -31,7 +31,6 @@ author:
 
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.katelloinfomodule
   - theforeman.foreman.foreman.infomodule
 '''
 
