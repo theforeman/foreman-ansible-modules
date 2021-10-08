@@ -721,7 +721,10 @@ class ForemanAnsibleModule(AnsibleModule):
 
         if search is not None:
             params['search'] = search
-        params['per_page'] = 2 << 31
+        if resource.startswith('settings'):
+            params['per_page'] = 'all'
+        else:
+            params['per_page'] = 2 << 31
 
         params = self._resource_prepare_params(resource, 'index', params)
 
@@ -752,7 +755,10 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_resource_by(self, resource, search_field, value, **kwargs):
         if not value:
             return NoEntity
-        search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
+        if resource.startswith('settings'):
+            search = '{0}{1}{2}'.format(search_field, kwargs.pop('search_operator', '='), value)
+        else:
+            search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
         return self.find_resource(resource, search, **kwargs)
 
     def find_resource_by_name(self, resource, name, **kwargs):
