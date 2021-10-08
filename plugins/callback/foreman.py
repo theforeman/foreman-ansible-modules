@@ -27,7 +27,6 @@ DOCUMENTATION = '''
           - name: FOREMAN_SERVER_URL
           - name: FOREMAN_SERVER
         required: True
-        default: http://localhost:3000
         ini:
           - section: callback_foreman
             key: url
