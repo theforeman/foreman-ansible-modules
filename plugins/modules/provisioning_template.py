@@ -43,6 +43,7 @@ options:
       - Bootdisk
       - cloud-init
       - finish
+      - host_init_config
       - iPXE
       - job_template
       - kexec
