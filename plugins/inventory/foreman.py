@@ -88,7 +88,7 @@ DOCUMENTATION = '''
       use_reports_api:
         description: Use Reporting API.
         type: boolean
-        default: False
+        default: True
       foreman:
         description:
           - Foreman server related configuration, deprecated.
