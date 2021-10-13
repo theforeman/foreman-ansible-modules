@@ -37,7 +37,7 @@ options:
   hostgroup:
     description:
       - Title of related hostgroup
-      - Example parent hostgroup I(foo) with a child hostgroup I(bar) would have the title I(foo/bar)
+      - "Example: A child hostgroup I(bar) within a parent hostgroup I(foo) would have the title I(foo/bar)."
     required: false
     type: str
   location:
