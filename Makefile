@@ -93,25 +93,13 @@ dist-test: $(MANIFEST)
 	ansible-doc $(NAMESPACE).$(NAME).organization | grep -q "Manage Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
-ifeq ($(COLLECTION_COMMAND),mazer)
-	# No idea, why this fails. But mazer is old and deprecated so unlikely to beeing fixed...
-	# mazer install --collections-path build/collections $<
-	-mkdir build/collections build/collections/ansible_collections build/collections/ansible_collections/$(NAMESPACE) build/collections/ansible_collections/$(NAMESPACE)/$(NAME)
-	tar xf $< -C build/collections/ansible_collections/$(NAMESPACE)/$(NAME)
-else
 	ansible-galaxy collection install -p build/collections $< --force
-endif
 
 build/src/%: %
 	install -m 644 -DT $< $@
 
 $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES))
-ifeq ($(COLLECTION_COMMAND),mazer)
-	mazer build --collection-path=build/src
-	cp build/src/releases/$@ .
-else
 	ansible-galaxy collection build build/src --force
-endif
 
 dist: $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 
