@@ -13,8 +13,6 @@ def run_playbook_callback(tmpdir, report_type):
     ansible_version = get_ansible_version()
     if ansible_version is None:
         pytest.skip("Couldn't figure out Ansible version?!")
-    if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
-        pytest.skip("Callbacks do not work correctly on 2.8")
     if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.11'):
         extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
         extra_env['ANSIBLE_COMMAND_WARNINGS'] = "0"
