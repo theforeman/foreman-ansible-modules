@@ -17,12 +17,12 @@ We actively test the modules against the latest stable Foreman release and the m
 
 ### Supported Ansible Versions
 
-The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.8+).
-You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#release-status).
+The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.9+).
+You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html).
 
 ### Supported Python Versions
 
-Starting with Ansible 2.7, Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
+Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
 
 ### Known issues
 
@@ -58,7 +58,7 @@ There are currently two ways to use the modules in your setup: install from Ansi
 
 ### Installation from Ansible Galaxy
 
-You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `ansible-galaxy collection install theforeman.foreman` (Ansible 2.9 and later) or `mazer install theforeman.foreman` (Ansible 2.8).
+You can install the collection from [Ansible Galaxy](https://galaxy.ansible.com/theforeman/foreman) by running `ansible-galaxy collection install theforeman.foreman`.
 
 After the installation, the modules are available as `theforeman.foreman.<module_name>`. Please see the [Using Ansible collections documentation](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for further details.
 
@@ -100,7 +100,7 @@ And install all specified requirements with `ansible-galaxy install -r requireme
 
 ### Building and Installing the Collection Locally
 
-For all currently supported versions of Ansible (i.e. Ansible >= 2.8, and particularly Ansible < 2.10 where the above approach is not yet supported), you can build the collection locally:
+For all currently supported versions of Ansible (i.e. Ansible >= 2.9, and particularly Ansible < 2.10 where the above approach is not yet supported), you can build the collection locally:
 
 `make dist`
 
