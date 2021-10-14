@@ -70,8 +70,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-03
-        12:39:45 UTC\",\"updated_at\":\"2021-11-03 12:39:48 UTC\",\"id\":4,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-09
+        09:00:31 UTC\",\"updated_at\":\"2021-11-09 09:00:35 UTC\",\"id\":3,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -123,13 +123,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/organizations/4/activation_keys?search=name%3D%22convert2rhel_rhel7%22&per_page=4294967296
+    uri: http://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Oracle+Linux+7+Convert2RHEL%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"convert2rhel_rhel7\"","sort":{"by":"name","order":"asc"},"results":[{"id":8,"name":"convert2rhel_rhel7","description":null,"unlimited_hosts":true,"auto_attach":false,"content_view_id":2,"environment_id":2,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-11-04
-        11:33:36 UTC","updated_at":"2021-11-04 11:33:36 UTC","content_view":{"id":2,"name":"Default
-        Organization View"},"environment":{"name":"Library","id":2},"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
+      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Oracle
+        Linux 7 Convert2RHEL\"","sort":{"by":"name","order":"asc"},"results":[{"id":9,"cp_id":"411938769108","name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2021-11-09 11:03:57 UTC","last_sync_words":"2 days","organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -148,7 +149,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 3; Test Organization
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
@@ -165,8 +166,19 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      X-bullet-console-text:
+      - '["user: root\nAVOID eager loading detected\n  Katello::Product =\u003e [:provider]\n  Remove
+        from your query: .includes([:provider])\nCall stack\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
+        `call''\n\n"]'
+      X-bullet-footer-text:
+      - '["user: root  AVOID eager loading detected    Katello::Product =\u003e [:provider]\n  Remove
+        from your query: .includes([:provider])"]'
       content-length:
-      - '854'
+      - '698'
     status:
       code: 200
       message: OK
@@ -182,13 +194,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/activation_keys/8?organization_id=4
+    uri: http://foreman.example.org/katello/api/products/9/repositories?search=name%3D%22Oracle+Linux+7+Convert2RHEL+main%22&per_page=4294967296
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":8,"name":"convert2rhel_rhel7","description":null,"unlimited_hosts":true,"auto_attach":false,"content_view_id":2,"environment_id":2,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-11-04
-        11:33:36 UTC","updated_at":"2021-11-04 11:33:36 UTC","content_view":{"id":2,"name":"Default
-        Organization View"},"environment":{"name":"Library","id":2},"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Oracle
+        Linux 7 Convert2RHEL main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"f8fa2a37-c9d6-46a4-8865-a2dc916d973b","relative_path":"Test_Organization/Library/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/65e871ff-f56b-4c0a-8856-6ffa146aedb9/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/ac792dec-e2d8-45a6-a84d-b60f112ff319/","publication_href":"/pulp/api/v3/publications/rpm/rpm/38b55529-e510-4d1c-a9dd-8b6b7a44e9b4/","content_counts":{"rpm":999,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main","description":null,"content_view_versions":[],"last_sync":{"id":"63c8ff5b-d33d-4ab4-b434-6d97d05de1ed","username":"admin","started_at":"2021-11-09
+        11:03:57 UTC","ended_at":"2021-11-09 11:05:08 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
+        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi/server/7/7Server/x86_64/os","arch":"noarch","os_versions":[],"content_id":"1636452922233","generic_remote_options":null,"major":null,"minor":null,"product":{"id":9,"cp_id":"411938769108","name":"Oracle
+        Linux 7 Convert2RHEL","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Oracle_Linux_7_Convert2RHEL_Oracle_Linux_7_Convert2RHEL_main","last_sync_words":"2
+        days"}]}
 
         '
     headers:
@@ -207,7 +223,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - ; ANY
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
@@ -224,13 +240,29 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      X-bullet-console-text:
+      - '["user: root\nUSE eager loading detected\n  SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])\nCall stack\n  /home/vagrant/foreman/app/models/smart_proxy.rb:91:in
+        `smart_proxy_feature_by_name''\n  /home/vagrant/foreman/app/models/smart_proxy.rb:108:in
+        `setting''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/timezone.rb:10:in
+        `set_timezone''\n  /home/vagrant/foreman/app/models/concerns/foreman/thread_session.rb:32:in
+        `clear_thread''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/topbar_sweeper.rb:12:in
+        `set_topbar_sweeper_controller''\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
+        `call''\n\n"]'
+      X-bullet-footer-text:
+      - '["user: root  USE eager loading detected    SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])"]'
       content-length:
-      - '728'
+      - '1970'
     status:
       code: 200
       message: OK
 - request:
-    body: null
+    body: '{}'
     headers:
       Accept:
       - application/json;version=2
@@ -238,20 +270,32 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '2'
+      Content-Type:
+      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/katello/api/organizations/4/environments?search=name%3D%22Library%22&per_page=4294967296
+    method: POST
+    uri: http://foreman.example.org/katello/api/repositories/9/sync
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":2,"name":"Library","label":"Library","description":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-11-03
-        12:39:46 UTC","updated_at":"2021-11-03 12:39:46 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":0,"packages":2,"module_streams":0,"errata":{"security":null,"bugfix":0,"enhancement":2,"total":2},"yum_repositories":1,"docker_repositories":0,"ostree_repositories":0,"products":1},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true}}]}
+      string: '  {"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
       Cache-Control:
-      - max-age=0, private, must-revalidate
+      - no-cache
       Connection:
       - Keep-Alive
       Content-Security-Policy:
@@ -265,13 +309,13 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - ; ANY
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
       - timeout=15, max=96
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -282,11 +326,9 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '955'
     status:
-      code: 200
-      message: OK
+      code: 202
+      message: Accepted
 - request:
     body: null
     headers:
@@ -299,18 +341,21 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/organizations/4/content_views?search=name%3D%22Default+Organization+View%22&per_page=4294967296
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Default
-        Organization View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":true,"version_count":1,"latest_version":"1.0","latest_version_id":2,"auto_publish":false,"solve_dependencies":false,"import_only":false,"related_cv_count":0,"related_composite_cvs":[],"repository_ids":[],"id":2,"name":"Default
-        Organization View","label":"Default_Organization_View","description":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-11-03
-        12:39:46 UTC","updated_at":"2021-11-03 12:39:46 UTC","last_task":null,"latest_version_environments":[{"id":2,"name":"Library","label":"Library"}],"environments":[{"id":2,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[],"versions":[{"id":2,"version":"1.0","published":"2021-11-03
-        12:39:46 UTC","environment_ids":[2]}],"components":[],"content_view_components":[],"activation_keys":[{"id":7,"name":"convert2rhel_centos7"},{"id":8,"name":"convert2rhel_rhel7"}],"hosts":[],"next_version":"1.0","last_published":"2021-11-03
-        12:39:46 UTC"}]}
-
-        '
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:04.822582","state":"running","result":"pending","progress":0.08,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Waiting
+        to start.\n--------------------------------","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -327,7 +372,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - ; ANY
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
@@ -345,7 +390,2954 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1224'
+      - '1719'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:08.959818","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        8/8\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 0/0\nDownloading Metadata Files: 8/8","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=94
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1805'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:13.080493","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        8/8\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 0/0\nDownloading Metadata Files: 8/8","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=93
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1805'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:17.214382","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1008/1008\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 0/0\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=92
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1880'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:21.327871","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1035/1035\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 27/27\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=91
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1882'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:25.442715","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1064/1064\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 56/56\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=90
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1882'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:29.541404","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1087/1087\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 79/79\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=89
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1882'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:33.632787","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1110/1110\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 102/102\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=88
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:37.767589","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1134/1134\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 126/126\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=87
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:41.901516","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1148/1148\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 140/140\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=86
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:46.008035","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1148/1148\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 140/140\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=85
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:50.135923","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1195/1195\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 187/187\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=84
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:54.248045","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1195/1195\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 187/187\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=83
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:00:58.358543","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1256/1256\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 248/248\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=82
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:02.469937","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1256/1256\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 248/248\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=81
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:06.577128","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1310/1310\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 302/302\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=80
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:10.706376","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1310/1310\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 302/302\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=79
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:14.859023","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1353/1353\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 345/345\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=78
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:19.045134","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1353/1353\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 345/345\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=77
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:23.18438","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1396/1396\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 388/388\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=76
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1883'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:27.299351","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1396/1396\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 388/388\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=75
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:31.434107","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1396/1396\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 388/388\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=74
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:35.534083","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1396/1396\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 388/388\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=73
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:39.64541","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1496/1496\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 488/488\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=72
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1883'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:43.783961","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1496/1496\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 488/488\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=71
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:47.903074","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1496/1496\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 488/488\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=70
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:52.023808","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1496/1496\n--------------------------------\nAssociating Content: 0/0\nDownloading
+        Artifacts: 488/488\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=69
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:01:56.153165","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1607/1607\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 596/596\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=68
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:00.314935","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1607/1607\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 596/596\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=67
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:04.436659","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1607/1607\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 596/596\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=66
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:08.564677","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1607/1607\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 596/596\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=65
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:12.700898","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1720/1720\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 709/709\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=64
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:16.811566","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1720/1720\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 709/709\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=63
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:20.93748","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1720/1720\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 709/709\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=62
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1883'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:25.039316","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1720/1720\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 709/709\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=61
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:29.154251","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1825/1825\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 814/814\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=60
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:33.26876","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1825/1825\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 814/814\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=59
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1883'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:37.393557","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1825/1825\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 814/814\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=58
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:41.511875","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1825/1825\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 814/814\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=57
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:45.654782","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1940/1940\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 929/929\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=56
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:49.758105","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1940/1940\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 929/929\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=55
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:53.877916","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1940/1940\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 929/929\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=54
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:02:57.981945","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        1940/1940\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 929/929\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=53
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1884'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":null,"duration":"00:03:02.722565","state":"running","result":"pending","progress":0.58,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"75ec389e-dc5b-4a6b-a271-7d2b6505fc83","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
+        2011/2011\n--------------------------------\nAssociating Content: 3/3\nDownloading
+        Artifacts: 997/997\nDownloading Metadata Files: 9/9\nParsed Advisories: 0/0\nParsed
+        Comps: 0/0\nParsed Packages: 999/999\nUn-Associating Content: 3/3","errors":[]},"cli_example":null,"start_at":"2021-11-11
+        08:13:53 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=52
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1914'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/d444e622-44a4-4ec2-88a7-57ce68997283
+  response:
+    body:
+      string: '{"id":"d444e622-44a4-4ec2-88a7-57ce68997283","label":"Actions::Katello::Repository::Sync","pending":false,"action":"Synchronize
+        repository ''Oracle Linux 7 Convert2RHEL main''; product ''Oracle Linux 7
+        Convert2RHEL''; organization ''Test Organization''","username":"admin","started_at":"2021-11-11
+        08:13:53 UTC","ended_at":"2021-11-11 08:16:57 UTC","duration":"00:03:03.985","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Oracle_Linux_7_Convert2RHEL_main"},"product":{"id":9,"name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","cp_id":"411938769108"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":9,"sync_result":{"publication_provided":true,"contents_changed":true},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f797c8a-03b5-4032-9cce-8cd1c9c62f24","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Oracle Linux 7 Convert2RHEL main''","link":null}],["product",{"text":"product
+        ''Oracle Linux 7 Convert2RHEL''","link":"/products/9/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"No content
+        added.\nTotal steps: 2011/2011\n--------------------------------\nAssociating
+        Content: 3/3\nDownloading Artifacts: 997/997\nDownloading Metadata Files:
+        9/9\nParsed Advisories: 0/0\nParsed Comps: 0/0\nParsed Packages: 999/999\nUn-Associating
+        Content: 3/3","errors":[]},"cli_example":null,"start_at":"2021-11-11 08:13:53
+        UTC","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=51
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1854'
     status:
       code: 200
       message: OK

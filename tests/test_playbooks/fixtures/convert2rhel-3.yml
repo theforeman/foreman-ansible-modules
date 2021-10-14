@@ -70,8 +70,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-03
-        12:39:45 UTC\",\"updated_at\":\"2021-11-03 12:39:48 UTC\",\"id\":4,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-09
+        09:00:31 UTC\",\"updated_at\":\"2021-11-09 09:00:35 UTC\",\"id\":3,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -123,12 +123,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/organizations/4/products?search=name%3D%22Convert2RHEL7%22&per_page=4294967296
+    uri: http://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Convert2RHEL7%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7\"","sort":{"by":"name","order":"asc"},"results":[{"id":32,"cp_id":"780361625466","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
-        Complete.","last_sync":"2021-11-08 09:40:07 UTC","last_sync_words":"1 minute","organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"sync_plan":null,"repository_count":1}]}
+      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7\"","sort":{"by":"name","order":"asc"},"results":[{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2021-11-09 11:03:43 UTC","last_sync_words":"2 days","organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -147,7 +147,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 3; Test Organization
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
@@ -176,7 +176,7 @@ interactions:
       - '["user: root  AVOID eager loading detected    Katello::Product =\u003e [:provider]\n  Remove
         from your query: .includes([:provider])"]'
       content-length:
-      - '659'
+      - '656'
     status:
       code: 200
       message: OK
@@ -192,7 +192,7 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/content_credentials?organization_id=4&search=name%3D%22Convert2RHEL+CA%22&per_page=4294967296
+    uri: http://foreman.example.org/katello/api/content_credentials?organization_id=3&search=name%3D%22Convert2RHEL+CA%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL
@@ -200,10 +200,12 @@ interactions:
         CA","content_type":"cert","content":"-----BEGIN CERTIFICATE-----\n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\niRZpyzOZmeineJvhrJZ4Tvs=\n-----END
         CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIGejCCBGKgAwIBAgIJAJGKz8qFAAAIMA0GCSqGSIb3DQEBDAUAMIGwMQswCQYD\nVQQGEwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVp\nZ2gxFjAUBgNVBAoMDVJlZCBIYXQsIEluYy4xGDAWBgNVBAsMD1JlZCBIYXQgTmV0\nd29yazEeMBwGA1UEAwwVRW50aXRsZW1lbnQgTWFzdGVyIENBMSQwIgYJKoZIhvcN\nAQkBFhVjYS1zdXBwb3J0QHJlZGhhdC5jb20wHhcNMTgwOTEyMTgxMzIxWhcNMzAw\nMzE1MTgxMzIxWjCBsTELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9s\naW5hMRYwFAYDVQQKDA1SZWQgSGF0LCBJbmMuMRgwFgYDVQQLDA9SZWQgSGF0IE5l\ndHdvcmsxMTAvBgNVBAMMKFJlZCBIYXQgRW50aXRsZW1lbnQgT3BlcmF0aW9ucyBB\ndXRob3JpdHkxJDAiBgkqhkiG9w0BCQEWFWNhLXN1cHBvcnRAcmVkaGF0LmNvbTCC\nAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALsmiohDnNvIpBMZVJR5pbP6\nGrE5B4doUmvTeR4XJ5C66uvFTwuGTVigNXAL+0UWf9r2AwxKEPCy65h7fLbyK4W7\n/xEZPVsamQYDHpyBwlkPkJ3WhHneqQWC8bKkv8Iqu08V+86biCDDAh6uP0SiAz7a\nNGaLEnOe5L9WNfsYyNwrG+2AfiLy/1LUtmmg5dc6Ln7R+uv0PZJ5J2iUbiT6lMz3\nv73zAxuEjiDNurZzxzHSSEYzw0W1eO6zM4F26gcOuH2BHemPMjHi+c1OnheaafDE\nHQJTNgECz5Xe7WGdZwOyn9a8GtMvm0PAhGVyp7RAWxxfoU1B794cBb66IKKjliJQ\n5DKoqyxD9qJbMF8U4Kd1ZIVB0Iy2WEaaqCFMIi3xtlWVUNku5x21ewMmJvwjnWZA\ntUeKQUFwIXqSjuOoZDu80H6NQb+4dnRSjWlx/m7HPk75m0zErshpB2HSKUnrs4wR\ni7GsWDDcqBus7eLMwUZPvDNVcLQu/2Y4DUHNbJbn7+DwEqi5D0heC+dyY8iS45gp\nI/yhVvq/GfKL+dqjaNaE4CorJJA5qJ9f383Ol/aub+aJeBahCBNuVa2daA9Bo3BA\ndnL7KkILPFyCcEhQITnu70Qn9sQlwYcRoYF2LWAm9DtLrBT0Y0w7wQHh8vNhwEQ7\nk5G87WpwzcC8y6ePR0vFAgMBAAGjgZMwgZAwHQYDVR0OBBYEFMRJeFZFnR4sYWDD\nZktYBTcvAyJ7MB8GA1UdIwQYMBaAFIhLpkXERuyP1s+m9hrPJjyQzH8XMAwGA1Ud\nEwQFMAMBAf8wCwYDVR0PBAQDAgEGMBEGCWCGSAGG+EIBAQQEAwIBBjAgBgNVHREE\nGTAXgRVjYS1zdXBwb3J0QHJlZGhhdC5jb20wDQYJKoZIhvcNAQEMBQADggIBAGKk\nq5Ab0AC7SOCYq9up5z0twbe+gI72cm854+VhcxafnLP2/4nH6nQauKLKEFLI8+fV\nRAwYxm1f5nuEiaTvjPE0umYdgMlpEJQeGdW/+/DotDaOon1G6bSMEKFvaKcBHKqa\nkBxQ29trwMG2WN8qZ7/H3XzBvLZ+JrYr01vDSV0P4tcBFOytbMZeJr4xmfxiqWxp\nVUM9eGf6z+ngXyth8lohxGd9MMXwsaPdvM+wptp3AQpq5wFPWyfJqCd6uBxu09k1\nns3Y/sya2GHqDK4bUW6gCHO13gkYviTCIBLAlX7PDeK5nYVcq8HvTLU9+H9BFGix\nYGDdHphz7i5qO/gLLLcfKhENP6jtbe8i6nwqeDzj+DMy38iMWNYFVWn1OrBaQMtf\nwlVfyRJij9SfyiUAVFld1RoPAN/haf1VmF/0dGrOigibYijqnHvDJffMUND/sbk8\ndf6O6VYjvLLlwry4W4dHiLLA7NAHGtkUv2g1+oH1lQIfRG+PvZhWz4pGT1AlzfwD\naXUfX2X+Bo9tYr9BGy5Li1pLGLvfw+an7cBAbBaw8+HhAHt+Vm4F03KX/bHlge0a\nfMYK6FoA/xQSaZ6IPm4HfPSMvhboguVG+/AZQN4/UxjDleoEz8b0CWYafcJRRZch\nBdxBjTy7JLf3j0HCbenZQF83wwtrSmiTOTK1tLsm\n-----END
         CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIHZDCCBUygAwIBAgIJAOb+QiglyeZeMA0GCSqGSIb3DQEBBQUAMIGwMQswCQYD\nVQQGEwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVp\nZ2gxFjAUBgNVBAoMDVJlZCBIYXQsIEluYy4xGDAWBgNVBAsMD1JlZCBIYXQgTmV0\nd29yazEeMBwGA1UEAwwVRW50aXRsZW1lbnQgTWFzdGVyIENBMSQwIgYJKoZIhvcN\nAQkBFhVjYS1zdXBwb3J0QHJlZGhhdC5jb20wHhcNMTAwMzE3MTkwMDQ0WhcNMzAw\nMzEyMTkwMDQ0WjCBsDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9s\naW5hMRAwDgYDVQQHDAdSYWxlaWdoMRYwFAYDVQQKDA1SZWQgSGF0LCBJbmMuMRgw\nFgYDVQQLDA9SZWQgSGF0IE5ldHdvcmsxHjAcBgNVBAMMFUVudGl0bGVtZW50IE1h\nc3RlciBDQTEkMCIGCSqGSIb3DQEJARYVY2Etc3VwcG9ydEByZWRoYXQuY29tMIIC\nIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2Z+mW7OYcBcGxWS+RSKG2GJ2\ncsMXiGGfEp36vKVsIvypmNS60SkicKENMYREalbdSjrgfXxPJygZWsVWJ5lHPfBV\no3WkFrFHTIXd/R6LxnaHD1m8Cx3GwEeuSlE/ASjc1ePtMnsHH7xqZ9wdl85b1C8O\nscgO7fwuM192kvv/veI/BogIqUQugtG6szXpV8dp4ml029LXFoNIy2lfFoa2wKYw\nMiUHwtYgAz7TDY63e8qGhd5PoqTv9XKQogo2ze9sF9y/npZjliNy5qf6bFE+24oW\nE8pGsp3zqz8h5mvw4v+tfIx5uj7dwjDteFrrWD1tcT7UmNrBDWXjKMG81zchq3h4\netgF0iwMHEuYuixiJWNzKrLNVQbDmcLGNOvyJfq60tM8AUAd72OUQzivBegnWMit\nCLcT5viCT1AIkYXt7l5zc/duQWLeAAR2FmpZFylSukknzzeiZpPclRziYTboDYHq\nrevM97eER1xsfoSYp4mJkBHfdlqMnf3CWPcNgru8NbEPeUGMI6+C0YvknPlqDDtU\nojfl4qNdf6nWL+YNXpR1YGKgWGWgTU6uaG8Sc6qGfAoLHh6oGwbuz102j84OgjAJ\nDGv/S86svmZWSqZ5UoJOIEqFYrONcOSgztZ5tU+gP4fwRIkTRbTEWSgudVREOXhs\nbfN1YGP7HYvS0OiBKZUCAwEAAaOCAX0wggF5MB0GA1UdDgQWBBSIS6ZFxEbsj9bP\npvYazyY8kMx/FzCB5QYDVR0jBIHdMIHagBSIS6ZFxEbsj9bPpvYazyY8kMx/F6GB\ntqSBszCBsDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAw\nDgYDVQQHDAdSYWxlaWdoMRYwFAYDVQQKDA1SZWQgSGF0LCBJbmMuMRgwFgYDVQQL\nDA9SZWQgSGF0IE5ldHdvcmsxHjAcBgNVBAMMFUVudGl0bGVtZW50IE1hc3RlciBD\nQTEkMCIGCSqGSIb3DQEJARYVY2Etc3VwcG9ydEByZWRoYXQuY29tggkA5v5CKCXJ\n5l4wDAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCAQYwEQYJYIZIAYb4QgEBBAQDAgEG\nMCAGA1UdEQQZMBeBFWNhLXN1cHBvcnRAcmVkaGF0LmNvbTAgBgNVHRIEGTAXgRVj\nYS1zdXBwb3J0QHJlZGhhdC5jb20wDQYJKoZIhvcNAQEFBQADggIBAJ1hEdNBDTRr\n6kI6W6stoogSUwjuiWPDY8DptwGhdpyIfbCoxvBR7F52DlwyXOpCunogfKMRklnE\ngH1Wt66RYkgNuJcenKHAhR5xgSLoPCOVF9rDjMunyyBuxjIbctM21R7BswVpsEIE\nOpV5nlJ6wkHsrn0/E+Zk5UJdCzM+Fp4hqHtEn/c97nvRspQcpWeDg6oUvaJSZTGM\n8yFpzR90X8ZO4rOgpoERukvYutUfJUzZuDyS3LLc6ysamemH93rZXr52zc4B+C9G\nEm8zemDgIPaH42ce3C3TdVysiq/yk+ir7pxW8toeavFv75l1UojFSjND+Q2AlNQn\npYkmRznbD5TZ3yDuPFQG2xYKnMPACepGgKZPyErtOIljQKCdgcvb9EqNdZaJFz1+\n/iWKYBL077Y0CKwb+HGIDeYdzrYxbEd95YuVU0aStnf2Yii2tLcpQtK9cC2+DXjL\nYf3kQs4xzH4ZejhG9wzv8PGXOS8wHYnfVNA3+fclDEQ1mEBKWHHmenGI6QKZUP8f\ng0SQ3PNRnSZu8R+rhABOEuVFIBRlaYijg2Pxe0NgL9FlHsNyRfo6EUrB2QFRKACW\n3Mo6pZyDjQt7O8J7l9B9IIURoJ1niwygf7VSJTMl2w3fFleNJlZTGgdXw0V+5g+9\nKg6Ay0rrsi4nw1JHue2GvdjdfVOaWSWC\n-----END
-        CERTIFICATE-----\n","id":2,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-11-04
-        11:33:07 UTC","updated_at":"2021-11-04 11:33:07 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[{"id":6,"name":"Convert2RHEL7
-        main","content_type":"yum","product":{"id":32,"cp_id":"780361625466","name":"Convert2RHEL7"},"library_instance_id":6}],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
+        CERTIFICATE-----\n","id":2,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2021-11-09
+        09:00:39 UTC","updated_at":"2021-11-09 09:00:39 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[{"id":4,"name":"Convert2RHEL7
+        main","content_type":"yum","product":{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7"},"library_instance_id":4},{"id":5,"name":"Oracle
+        Linux Convert2RHEL main","content_type":"yum","product":{"id":5,"cp_id":"9480733332","name":"Oracle
+        Linux Convert2RHEL"},"library_instance_id":5}],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
 
         '
     headers:
@@ -222,7 +224,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 3; Test Organization
       Foreman_version:
       - 3.1.0-develop
       Keep-Alive:
@@ -239,8 +241,27 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      X-bullet-console-text:
+      - '["user: root\nUSE eager loading detected\n  Katello::RootRepository =\u003e
+        [:product]\n  Add to your query: .includes([:product])\nCall stack\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/timezone.rb:10:in
+        `set_timezone''\n  /home/vagrant/foreman/app/models/concerns/foreman/thread_session.rb:32:in
+        `clear_thread''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/topbar_sweeper.rb:12:in
+        `set_topbar_sweeper_controller''\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
+        `call''\n\n"]'
+      X-bullet-footer-text:
+      - '["user: root  USE eager loading detected    Katello::RootRepository =\u003e
+        [:product]\n  Add to your query: .includes([:product])"]'
       content-length:
-      - '8387'
+      - '8555'
     status:
       code: 200
       message: OK
@@ -256,16 +277,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/products/32/repositories?search=name%3D%22Convert2RHEL7+main%22&per_page=4294967296
+    uri: http://foreman.example.org/katello/api/products/4/repositories?search=name%3D%22Convert2RHEL7+main%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7
-        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"31f3b2f2-0aff-4347-b25a-1419477dad25","relative_path":"Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/4180bec4-e8b7-4268-ac08-387306bb86f1/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/b8f503bb-eba9-4f72-a0ea-d8c186aeebe1/","publication_href":"/pulp/api/v3/publications/rpm/rpm/3d512cf0-f408-43d4-a35b-adf9324dbbe3/","content_counts":{"rpm":2,"erratum":2,"package_group":0,"srpm":0,"module_stream":0},"id":6,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main","description":null,"content_view_versions":[],"last_sync":{"id":"92bc0c64-3f80-4c6b-a4e2-2026f77d6ea1","username":"admin","started_at":"2021-11-08
-        09:40:07 UTC","ended_at":"2021-11-08 09:40:26 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
+        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"1a134c99-53ed-4456-b864-ee8aaaa3c1c2","relative_path":"Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/0b249af7-6da0-4313-b6ee-89c6acf36e09/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/7c43c8a6-9ca7-4cbe-a2de-e54f02b3b4eb/","publication_href":"/pulp/api/v3/publications/rpm/rpm/15c3e895-783f-4dd5-b1ed-f8037c1b9821/","content_counts":{"rpm":2,"erratum":2,"package_group":0,"srpm":0,"module_stream":0},"id":4,"name":"Convert2RHEL7
+        main","label":"Convert2RHEL7_main","description":null,"content_view_versions":[],"last_sync":{"id":"333097e4-0199-47ce-85ad-b2381124f731","username":"admin","started_at":"2021-11-09
+        11:03:43 UTC","ended_at":"2021-11-09 11:03:52 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1636025591688","generic_remote_options":null,"major":null,"minor":null,"product":{"id":32,"cp_id":"780361625466","name":"Convert2RHEL7","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","last_sync_words":"1
-        minute"}]}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1636448445894","generic_remote_options":null,"major":null,"minor":null,"product":{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","last_sync_words":"2
+        days"}]}
 
         '
     headers:
@@ -301,8 +322,24 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      X-bullet-console-text:
+      - '["user: root\nUSE eager loading detected\n  SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])\nCall stack\n  /home/vagrant/foreman/app/models/smart_proxy.rb:91:in
+        `smart_proxy_feature_by_name''\n  /home/vagrant/foreman/app/models/smart_proxy.rb:108:in
+        `setting''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/timezone.rb:10:in
+        `set_timezone''\n  /home/vagrant/foreman/app/models/concerns/foreman/thread_session.rb:32:in
+        `clear_thread''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/topbar_sweeper.rb:12:in
+        `set_topbar_sweeper_controller''\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
+        `call''\n\n"]'
+      X-bullet-footer-text:
+      - '["user: root  USE eager loading detected    SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])"]'
       content-length:
-      - '1813'
+      - '1810'
     status:
       code: 200
       message: OK
@@ -318,17 +355,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/repositories/6
+    uri: http://foreman.example.org/katello/api/repositories/4
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2021-11-04
-        11:33:25 UTC","organization_id":4,"organization":{"name":"Test Organization","label":"Test_Organization","id":4},"created_at":"2021-11-04
-        11:33:10 UTC","updated_at":"2021-11-04 11:33:12 UTC","backend_identifier":"31f3b2f2-0aff-4347-b25a-1419477dad25","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main/","version_href":"/pulp/api/v3/repositories/rpm/rpm/4180bec4-e8b7-4268-ac08-387306bb86f1/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/b8f503bb-eba9-4f72-a0ea-d8c186aeebe1/","publication_href":"/pulp/api/v3/publications/rpm/rpm/3d512cf0-f408-43d4-a35b-adf9324dbbe3/","content_counts":{"rpm":2,"erratum":2,"package_group":0,"srpm":0,"module_stream":0},"id":6,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main","description":null,"content_view_versions":[],"last_sync":{"id":"92bc0c64-3f80-4c6b-a4e2-2026f77d6ea1","username":"admin","started_at":"2021-11-08
-        09:40:07 UTC","ended_at":"2021-11-08 09:40:26 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
+      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2021-11-09
+        09:01:04 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2021-11-09
+        09:00:44 UTC","updated_at":"2021-11-09 09:00:46 UTC","backend_identifier":"1a134c99-53ed-4456-b864-ee8aaaa3c1c2","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main/","version_href":"/pulp/api/v3/repositories/rpm/rpm/0b249af7-6da0-4313-b6ee-89c6acf36e09/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/7c43c8a6-9ca7-4cbe-a2de-e54f02b3b4eb/","publication_href":"/pulp/api/v3/publications/rpm/rpm/15c3e895-783f-4dd5-b1ed-f8037c1b9821/","content_counts":{"rpm":2,"erratum":2,"package_group":0,"srpm":0,"module_stream":0},"id":4,"name":"Convert2RHEL7
+        main","label":"Convert2RHEL7_main","description":null,"content_view_versions":[],"last_sync":{"id":"333097e4-0199-47ce-85ad-b2381124f731","username":"admin","started_at":"2021-11-09
+        11:03:43 UTC","ended_at":"2021-11-09 11:03:52 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1636025591688","generic_remote_options":null,"major":null,"minor":null,"product":{"id":32,"cp_id":"780361625466","name":"Convert2RHEL7","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","last_sync_words":"1
-        minute","environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":2,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":2,"name":"Convert2RHEL
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1636448445894","generic_remote_options":null,"major":null,"minor":null,"product":{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","last_sync_words":"2
+        days","environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":2,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":2,"name":"Convert2RHEL
         CA"},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
@@ -365,8 +402,26 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      X-bullet-console-text:
+      - '["user: root\nUSE eager loading detected\n  SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])\nCall stack\n  /home/vagrant/foreman/app/models/smart_proxy.rb:91:in
+        `smart_proxy_feature_by_name''\n  /home/vagrant/foreman/app/models/smart_proxy.rb:108:in
+        `setting''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/config/initializers/rabl_init.rb:49:in
+        `render''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/timezone.rb:10:in
+        `set_timezone''\n  /home/vagrant/foreman/app/models/concerns/foreman/thread_session.rb:32:in
+        `clear_thread''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/topbar_sweeper.rb:12:in
+        `set_topbar_sweeper_controller''\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
+        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
+        `call''\n\n"]'
+      X-bullet-footer-text:
+      - '["user: root  USE eager loading detected    SmartProxy =\u003e [:smart_proxy_features]\n  Add
+        to your query: .includes([:smart_proxy_features])"]'
       content-length:
-      - '3041'
+      - '3038'
     status:
       code: 200
       message: OK

@@ -14,6 +14,9 @@
       - name: "Convert2RHEL7"
     foreman_convert2rhel_centos8_subs:
       - name: "Convert2RHEL8"
+    foreman_convert2rhel_ol7_subs:
+      - name: "Convert2RHEL7"
+      - name: "{{ foreman_convert2rhel_oracle7_product }}"
   when: not foreman_convert2rhel_org_info['organization']['simple_content_access']
 
 - name: "Create '{{ foreman_convert2rhel_key_centos7 }}' activation key"
@@ -42,6 +45,19 @@
     auto_attach: false
     subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_centos8_subs) }}"
   when: foreman_content_rhel_enable_rhel8
+
+- name: "Create '{{ foreman_convert2rhel_key_oracle7 }}' activation key"
+  theforeman.foreman.activation_key:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
+    name: "{{ foreman_convert2rhel_key_oracle7 }}"
+    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
+    content_view: "{{ foreman_convert2rhel_content_view }}"
+    subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_ol7_subs) }}"
+  when: foreman_convert2rhel_enable_oracle7
 
 - name: "Create '{{ foreman_convert2rhel_key_rhel7 }}' activation key"
   theforeman.foreman.activation_key:
