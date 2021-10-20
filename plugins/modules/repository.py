@@ -112,6 +112,11 @@ options:
     - Repository SSL client private key
     required: false
     type: str
+  download_concurrency:
+    description:
+      - download concurrency for sync from upstream
+    required: false
+    type: int
   download_policy:
     description:
       - download policy for sync from upstream
@@ -294,6 +299,7 @@ def main():
             ssl_client_cert=dict(type='entity', resource_type='content_credentials', scope=['organization']),
             ssl_client_key=dict(type='entity', resource_type='content_credentials', scope=['organization'], no_log=False),
             download_policy=dict(choices=['background', 'immediate', 'on_demand']),
+            download_concurrency=dict(type='int'),
             mirror_on_sync=dict(type='bool', default=True),
             verify_ssl_on_sync=dict(type='bool'),
             upstream_username=dict(),
