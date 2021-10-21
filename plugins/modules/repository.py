@@ -115,7 +115,7 @@ options:
   download_concurrency:
     description:
       - download concurrency for sync from upstream
-      - as the API does not return this value, this will break idempotency for this module
+      - as the API does not return this value, this will break idempotence for this module
     required: false
     type: int
   download_policy:
