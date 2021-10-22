@@ -59,6 +59,12 @@
             repository_state: present
             expected_change: true
         - include: tasks/repository.yml
+            repository_download_concurrency: 10
+            expected_change: true
+        - include: tasks/repository.yml
+            repository_download_concurrency: 10
+            expected_change: true # currently idempotence is not working as this value is not reported back by Katello's API
+        - include: tasks/repository.yml
           vars:
             repository_state: absent
             expected_change: true
