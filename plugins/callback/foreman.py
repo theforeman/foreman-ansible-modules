@@ -237,7 +237,7 @@ class CallbackModule(CallbackBase):
         elif data_type == 'report' and report_type == 'foreman':
             url = self.foreman_url + '/api/v2/config_reports'
         elif data_type == 'report' and report_type == 'proxy':
-            url = self.proxy_url + '/host_reports/ansible'
+            url = self.proxy_url + '/reports/ansible'
         else:
             self._display.warning(u'Unknown report_type: {rt}'.format(rt=report_type))
 
