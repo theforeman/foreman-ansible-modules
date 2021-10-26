@@ -260,6 +260,9 @@ class CallbackModule(CallbackBase):
         parser.  The default fact importer should import these facts
         properly.
         """
+        # proxy parses facts from report directly
+        if self.report_type == "proxy":
+            return
 
         for host, facts in self.facts.items():
             facts = {
