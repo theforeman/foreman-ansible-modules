@@ -1315,6 +1315,8 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
         if 'parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity':
             if 'resouce_type' not in self.foreman_spec['parent']:
                 self.foreman_spec['parent']['resource_type'] = self.foreman_spec['entity']['resource_type']
+            if 'failsafe' not in self.foreman_spec['parent']:
+                self.foreman_spec['parent']['failsafe'] = True
             current, parent = split_fqn(self.foreman_params[self.entity_key])
             if isinstance(self.foreman_params.get('parent'), six.string_types):
                 if parent:
@@ -1424,10 +1426,14 @@ class ForemanEntityAnsibleModule(ForemanStatelessEntityAnsibleModule):
     def run(self, **kwargs):
         """ lookup entities, ensure entity, remove sensitive data, manage parameters.
         """
+        parent_name = self.foreman_params.get('parent')
         if ('parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity'
-                and self.desired_absent and 'parent' in self.foreman_params and self.lookup_entity('parent') is None):
-            # Parent does not exist so just exit here
-            return None
+                and 'parent' in self.foreman_params and self.lookup_entity('parent') is None):
+            if self.desired_absent:
+                # Parent does not exist so just exit here
+                return None
+            else:
+                self.fail_json(msg="Couldn't find parent '{0}' for '{1}'.".format(parent_name, self.foreman_params['name']))
         if not self.desired_absent:
             self.auto_lookup_entities()
         entity = self.lookup_entity('entity')
