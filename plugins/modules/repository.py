@@ -118,6 +118,7 @@ options:
       - as the API does not return this value, this will break idempotence for this module
     required: false
     type: int
+    version_added: 3.0.0
   download_policy:
     description:
       - download policy for sync from upstream
