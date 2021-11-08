@@ -13,7 +13,7 @@
     organization: "{{ foreman_organization }}"
     name: "Convert2RHEL CA"
     content_type: cert
-    content: "{{ ct.stat.exists | ternary(lookup('file', '/etc/rhsm/ca/redhat-uep.pem', errors='ignore'), lookup('url', 'https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem', split_lines=False)) }}"
+    content: "{{ ct.stat.exists | ternary(lookup('file', '/etc/rhsm/ca/redhat-uep.pem', errors='ignore', rstrip=False), lookup('url', 'https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem', split_lines=False)) }}"
     state: present
 
 - name: "Create '{{ foreman_convert2rhel_rhel7_product }}' product and repositories"
