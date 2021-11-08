@@ -102,6 +102,7 @@
 <p>Repository behavior is controlled via the variables:</p>
 <p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_enable_rhel7</span></code>: Enable rhel-7-server-rpms repository (x86 architecture and 7Server release). Default true.</p>
 <p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_enable_rhel8</span></code>: Enable rhel-8-for-x86_64-baseos-rpms and rhel-8-for-x86_64-appstream-rpms (x86 architecture). Default true.</p>
+<p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_rhel8_releasever</span></code>: Version of RHEL 8 repositories. Default <code class="docutils literal notranslate"><span class="pre">8</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_sync_now</span></code>: Sync repositories immediately after enabling. Default true.</p>
 <p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_wait_for_syncs</span></code>: Monitor status of sync tasks. When false, the sync tasks will continue running in the background after the playbook has finished running. This option is most useful when other automation (for example, registering and patching a client) requires the repository syncs to have completed. Default true.</p>
 </section>
@@ -155,6 +156,7 @@
         <span class="nt">foreman_sync_plan_interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">daily</span>
         <span class="nt">foreman_sync_plan_sync_date</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2021-02-02 00:00:00 UTC</span>
         <span class="nt">foreman_activation_key_name</span><span class="p">:</span> <span class="s">&quot;RHEL_Key&quot;</span>
+        <span class="nt">foreman_content_rhel_rhel8_releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8.4</span>
 </pre></div>
 </div>
 <p>This example assumes the manifest has already been downloaded to ~/my_subscription_manifesst.zip on localhost and uploads that manifest to the ACME organization. It enables the rhel-7-server-rpms repository only, syncs it immediately, and also creates a custom cron sync plan for it. It creates an activation key “RHEL_Key” to register existing RHEL content hosts.</p>
