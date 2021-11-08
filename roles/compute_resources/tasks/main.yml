@@ -1,10 +1,10 @@
 ---
 - name: 'Create Compute Resources'
-  redhat.satellite.compute_resource:
-    username: "{{ satellite_username | default(omit) }}"
-    password: "{{ satellite_password | default(omit) }}"
-    server_url: "{{ satellite_server_url | default(omit) }}"
-    validate_certs: "{{ satellite_validate_certs | default(omit) }}"
+  theforeman.foreman.compute_resource:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     name: "{{ item.name }}"
     updated_name: "{{ item.updated_name | default(omit) }}"
     description: "{{ item.description | default(omit) }}"
@@ -13,4 +13,4 @@
     provider: "{{ item.provider | default(omit) }}"
     provider_params: "{{ item.provider_params | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-  loop: "{{ satellite_compute_resources }}"
+  loop: "{{ foreman_compute_resources }}"
