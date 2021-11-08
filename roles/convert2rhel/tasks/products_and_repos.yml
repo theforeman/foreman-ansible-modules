@@ -1,0 +1,75 @@
+---
+- name: Check /etc/rhsm/ca/redhat-uep.pem
+  stat:
+    path: "/etc/rhsm/ca/redhat-uep.pem"
+  register: ct
+
+- name: "Create 'Convert2RHEL' credentials"
+  theforeman.foreman.content_credential:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
+    name: "Convert2RHEL CA"
+    content_type: cert
+    content: "{{ ct.stat.exists | ternary(lookup('file', '/etc/rhsm/ca/redhat-uep.pem', errors='ignore', rstrip=False), lookup('url', 'https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem', split_lines=False)) }}"
+    state: present
+
+- name: "Create '{{ foreman_convert2rhel_rhel7_product }}' product and repositories"
+  include_role:
+    name: theforeman.foreman.repositories
+  vars:
+    foreman_products:
+      - name: "{{ foreman_convert2rhel_rhel7_product }}"
+        repositories:
+          - name: "{{ foreman_convert2rhel_rhel7_repo }}"
+            content_type: "yum"
+            product: "{{ foreman_convert2rhel_rhel7_product }}"
+            url: "https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/"
+            mirror_on_sync: true
+            verify_ssl_on_sync: true
+            download_policy: immediate
+            ssl_ca_cert: "Convert2RHEL CA"
+            state: present
+  when: foreman_content_rhel_enable_rhel7
+
+- name: "Create '{{ foreman_convert2rhel_rhel8_product }}' product and repositories"
+  include_role:
+    name: theforeman.foreman.repositories
+  vars:
+    foreman_products:
+      - name: "{{ foreman_convert2rhel_rhel8_product }}"
+        repositories:
+          - name: "{{ foreman_convert2rhel_rhel8_repo }}"
+            content_type: "yum"
+            product: "{{ foreman_convert2rhel_rhel8_product }}"
+            url: "https://cdn.redhat.com/content/public/convert2rhel/8/x86_64/os/"
+            mirror_on_sync: true
+            verify_ssl_on_sync: true
+            download_policy: immediate
+            ssl_ca_cert: "Convert2RHEL CA"
+            state: present
+  when: foreman_content_rhel_enable_rhel8
+
+- name: "Synchronize '{{ foreman_convert2rhel_rhel7_repo }}' repository"
+  theforeman.foreman.repository_sync:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
+    repository: "{{ foreman_convert2rhel_rhel7_repo }}"
+    product: "{{ foreman_convert2rhel_rhel7_product }}"
+  when: foreman_content_rhel_enable_rhel7
+
+- name: "Synchronize '{{ foreman_convert2rhel_rhel8_repo }}' repository"
+  theforeman.foreman.repository_sync:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_organization }}"
+    repository: "{{ foreman_convert2rhel_rhel8_repo }}"
+    product: "{{ foreman_convert2rhel_rhel8_product }}"
+  when: foreman_content_rhel_enable_rhel8

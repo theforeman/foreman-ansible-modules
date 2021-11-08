@@ -1,0 +1,8 @@
+---
+- name: "Upload Subscription Manifest and sync RHEL repository"
+  include_role:
+    name: theforeman.foreman.content_rhel
+  when: foreman_convert2rhel_manage_subscription
+- import_tasks: products_and_repos.yml
+- import_tasks: activation_keys.yml
+- import_tasks: host_groups.yml

@@ -15,4 +15,4 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     manifest_path: "{{ foreman_manifest_path }}"
-    state: present
+    state: "{{ foreman_manifest_state | default('present') }}"

@@ -38,6 +38,8 @@ Repository behavior is controlled via the variables:
 
 `foreman_content_rhel_enable_rhel8`: Enable rhel-8-for-x86_64-baseos-rpms and rhel-8-for-x86_64-appstream-rpms (x86 architecture). Default true.
 
+`foreman_content_rhel_rhel8_releasever`: Version of RHEL 8 repositories. Default `8`.
+
 `foreman_content_rhel_sync_now`: Sync repositories immediately after enabling. Default true.
 
 `foreman_content_rhel_wait_for_syncs`: Monitor status of sync tasks. When false, the sync tasks will continue running in the background after the playbook has finished running. This option is most useful when other automation (for example, registering and patching a client) requires the repository syncs to have completed. Default true.
@@ -99,6 +101,7 @@ This example downloads a manifest with the provided UUID from the RHSM portal us
         foreman_sync_plan_interval: daily
         foreman_sync_plan_sync_date: 2021-02-02 00:00:00 UTC
         foreman_activation_key_name: "RHEL_Key"
+        foreman_content_rhel_rhel8_releasever: 8.4
 ```
 
 This example assumes the manifest has already been downloaded to ~/my_subscription_manifesst.zip on localhost and uploads that manifest to the ACME organization. It enables the rhel-7-server-rpms repository only, syncs it immediately, and also creates a custom cron sync plan for it. It creates an activation key "RHEL_Key" to register existing RHEL content hosts.
