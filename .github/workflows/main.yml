@@ -53,8 +53,8 @@ jobs:
         run: pip install --upgrade git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}
       - name: Install dependencies
         run: make test-setup
-      - name: fake redhat-uep.pem for redhat_manifest module
-        run: sudo mkdir -p /etc/rhsm/ca/ && sudo touch /etc/rhsm/ca/redhat-uep.pem
+      - name: prepare a redhat-uep.pem, even if we run on Ubuntu
+        run: sudo mkdir -p /etc/rhsm/ca/ && sudo curl -o /etc/rhsm/ca/redhat-uep.pem https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem
       - name: Install required collections for ansible-base (2.10+)
         run: ansible-galaxy collection install community.docker
         if: matrix.ansible != 'stable-2.9'
@@ -87,6 +87,8 @@ jobs:
         run: pip install --upgrade ansible
       - name: Install dependencies
         run: make test-setup
+      - name: prepare a redhat-uep.pem, even if we run on Ubuntu
+        run: sudo mkdir -p /etc/rhsm/ca/ && sudo curl -o /etc/rhsm/ca/redhat-uep.pem https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem
       - name: Run check_mode tests
         run: make test-check-mode
 
