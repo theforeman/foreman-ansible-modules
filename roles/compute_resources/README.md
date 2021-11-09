@@ -18,10 +18,12 @@ The following fields are optional and will be omitted by default:
 - `provider`: Compute resource provider. Required if *state=present_with_defaults*.
 - `provider_params`: Parameter specific to compute resource provider. Required if *state=present_with_defaults*.
 
+Each `compute_resource` can also list a number of `images` associated with the compute resource.
+
 Example Playbooks
 -----------------
 
-Create a compute resource for vSphere.
+Create a compute resource for vSphere, with a single image for RHEL 8.4.
 
 ```yaml
 - hosts: localhost
@@ -40,4 +42,13 @@ Create a compute resource for vSphere.
               user: "administrator@vsphere.local"
               password: "changeme"
               datacenter: "ha-datacenter"
+              images:
+                - name: "RHEL-8.4"
+                  compute_resource: "VMware"
+                  operatingsystem: "RedHat-8.4"
+                  architecture: "x86_64"
+                  user_data: true
+                  image_username: "root"
+                  image_password: "changeme"
+                  uuid: "Templates/rhel-8.4-template"
 ```
