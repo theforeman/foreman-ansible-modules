@@ -17,7 +17,6 @@ The following fields are optional and will be omitted by default:
 - `description`: Description of the compute resource
 - `provider`: Compute resource provider. Required if *state=present_with_defaults*.
 - `provider_params`: Parameter specific to compute resource provider. Required if *state=present_with_defaults*.
-- `updated_name`: New compute resource name. Setting this will make the role not idempotent.
 
 Example Playbooks
 -----------------
