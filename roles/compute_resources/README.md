@@ -21,7 +21,7 @@ The following fields are optional and will be omitted by default:
 Example Playbooks
 -----------------
 
-Create a lifecycle environment path with three environments: Library -> Dev -> Test -> Prod
+Create a compute resource for vSphere.
 
 ```yaml
 - hosts: localhost
