@@ -6,6 +6,27 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.0.0
+======
+
+Minor Changes
+-------------
+
+- Add a role `convert2rhel` to perform setup for converting systems to RHEL
+- inventory plugin - enable certificate validation by default
+- repository - add ``arch`` parameter to limit architectures of the repository (https://github.com/theforeman/foreman-ansible-modules/issues/1265)
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Set use_reports_api default value to true for the inventory plugin
+- Support for Ansible 2.8 is removed
+
+Bugfixes
+--------
+
+- host, hostgroup - fix updating puppetclasses while also updating description (or other string-like attributes) (https://github.com/theforeman/foreman-ansible-modules/issues/1231)
+
 v2.2.0
 ======
 

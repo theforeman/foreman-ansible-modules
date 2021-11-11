@@ -502,3 +502,24 @@ releases:
     - 1268-ak_param_duplicate.yml
     - repository.yml
     release_date: '2021-08-24'
+  3.0.0:
+    changes:
+      breaking_changes:
+      - Set use_reports_api default value to true for the inventory plugin
+      - Support for Ansible 2.8 is removed
+      bugfixes:
+      - host, hostgroup - fix updating puppetclasses while also updating description
+        (or other string-like attributes) (https://github.com/theforeman/foreman-ansible-modules/issues/1231)
+      minor_changes:
+      - Add a role `convert2rhel` to perform setup for converting systems to RHEL
+      - inventory plugin - enable certificate validation by default
+      - repository - add ``arch`` parameter to limit architectures of the repository
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1265)
+    fragments:
+    - 1231-puppetclasses-and-description-update.yml
+    - 1265-repository-arch.yml
+    - 1291-foreman-ansible-inventory-default.yml
+    - convert2rhel.yml
+    - drop-ansible28.yml
+    - validate-inventory-certs.yml
+    release_date: '2021-11-11'
