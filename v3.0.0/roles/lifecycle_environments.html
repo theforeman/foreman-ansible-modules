@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>theforeman.foreman.lifecycle_environments &mdash; Foreman Ansible Modules  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Foreman Ansible Modules
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>theforeman.foreman.lifecycle_environments</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/roles/lifecycle_environments.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theforeman-foreman-lifecycle-environments">
+<h1>theforeman.foreman.lifecycle_environments<a class="headerlink" href="#theforeman-foreman-lifecycle-environments" title="Permalink to this headline"></a></h1>
+<p>This role creates and manages Lifecycle Environments.</p>
+<section id="role-variables">
+<h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this headline"></a></h2>
+<p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
+<p>The main data structure for this role is the list of <code class="docutils literal notranslate"><span class="pre">foreman_lifecycle_environments</span></code>. Each <code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code> requires the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the lifecycle environment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prior</span></code>: The name of the previous lifecycle environment to attach to in sequence. For the first lifecycle environment in a new path, set the prior lifecycle environment to Library. The order of definition matters, ensure that the environments are listed in the order the path would exist.</p></li>
+</ul>
+<p>The following fields are optional and will be omitted by default:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: Description of the lifecycle environment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: A permanent label for identifying the lifecycle environment to tools such as subscription-manager. This is created by the server if omitted. It can’t be changed after the lifecycle environment has been created.</p></li>
+</ul>
+</section>
+<section id="example-playbooks">
+<h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this headline"></a></h2>
+<p>Create a lifecycle environment path with three environments: Library -&gt; Dev -&gt; Test -&gt; Prod</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+  <span class="nt">roles</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.lifecycle_environments</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_lifecycle_environments</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Library&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Test&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Prod&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+</pre></div>
+</div>
+<p>Create two lifecycle environment paths: Library -&gt; Dev -&gt; Test -&gt; Prod and Library -&gt; QA -&gt; Stage -&gt; Prod</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
+  <span class="nt">roles</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.lifecycle_environments</span>
+      <span class="nt">vars</span><span class="p">:</span>
+        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
+        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
+        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+        <span class="nt">foreman_lifecycle_environments</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Library&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Test&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Prod&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Dev&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;QA&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Library&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Stage&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;QA&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;Prod&quot;</span>
+            <span class="nt">prior</span><span class="p">:</span> <span class="s">&quot;Stage&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, The Foreman Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
