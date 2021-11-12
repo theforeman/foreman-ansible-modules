@@ -31,10 +31,11 @@ jobs:
           git checkout gh-pages
           rm -rf $(basename ${GITHUB_REF})
           mv docs/_build/html $(basename ${GITHUB_REF})
+          ln --force --no-dereference --symbolic  $(dirname v*/index.html | sort --version-sort --reverse | head -n1) latest
           git show origin/develop:docs/_gh_include/header.inc > index.html
-          (echo develop; dirname v*/index.html | sort --version-sort --reverse) | xargs -I@@ -n1 echo '<div class="col-md-4 center"><a href="@@/" class="btn-doc btn"><i class="fa fa-newspaper-o"></i><p>@@</p></a></div>' >> index.html
+          (echo develop; echo latest; dirname v*/index.html | sort --version-sort --reverse) | xargs -I@@ -n1 echo '<div class="col-md-4 center"><a href="@@/" class="btn-doc btn"><i class="fa fa-newspaper-o"></i><p>@@</p></a></div>' >> index.html
           git show origin/develop:docs/_gh_include/footer.inc >> index.html
-          git add $(basename ${GITHUB_REF}) index.html
+          git add $(basename ${GITHUB_REF}) latest index.html
           git commit -m "update docs for $(basename ${GITHUB_REF})" || true
       - name: push docs
         run: git push origin gh-pages
