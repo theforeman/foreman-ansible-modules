@@ -127,11 +127,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_resources/3
+    uri: https://foreman.example.org/api/operatingsystems?search=title%3D%22RedHat-8.4%22&per_page=4294967296
   response:
     body:
-      string: '{"description":"Libvirt compute resource","url":"qemu+ssh://root@libvirt.example.com/system","created_at":"2021-11-13
-        11:09:41 UTC","updated_at":"2021-11-13 11:09:41 UTC","id":3,"name":"libvirt-cr01","provider":"Libvirt","provider_friendly_name":"Libvirt","display_type":"vnc","set_console_password":true,"images":[{"id":1,"name":"RHEL-8.4"}],"compute_attributes":[],"locations":[],"organizations":[]}'
+      string: "{\n  \"total\": 6,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"RedHat-8.4\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -168,7 +169,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '401'
+      - '177'
     status:
       code: 200
       message: OK
@@ -184,14 +185,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+    uri: https://foreman.example.org/api/operatingsystems?search=title~%22RedHat-8.4%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-13
-        19:12:43 UTC\",\"updated_at\":\"2021-11-13 19:12:45 UTC\",\"id\":9,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 6,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title~\\\"RedHat-8.4\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":null,\"major\":\"8\",\"minor\":\"2\",\"family\":\"Redhat\",\"release_name\":\"reverse
+        whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2021-11-13 19:12:21 UTC\",\"updated_at\":\"2021-11-13
+        19:12:21 UTC\",\"id\":6,\"name\":\"RedHat-8.4\",\"title\":\"RedHat-8.4 8.2\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -228,7 +229,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '388'
+      - '424'
     status:
       code: 200
       message: OK
@@ -244,14 +245,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
+    uri: https://foreman.example.org/api/compute_resources/3/images?search=name%3D%22RHEL-8.4%22%2Coperatingsystem%3D%226%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-13
-        19:12:46 UTC\",\"updated_at\":\"2021-11-13 19:12:46 UTC\",\"id\":10,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"RHEL-8.4\\\",operatingsystem=\\\"6\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"operatingsystem_id\":6,\"operatingsystem_name\":\"RedHat-8.4 8.2\",\"compute_resource_id\":3,\"compute_resource_name\":\"libvirt-cr01\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"uuid\":\"rhel-8.4-template\",\"username\":\"root\",\"created_at\":\"2021-11-13
+        19:12:23 UTC\",\"updated_at\":\"2021-11-13 19:12:23 UTC\",\"id\":1,\"name\":\"RHEL-8.4\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -288,12 +289,12 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '385'
+      - '520'
     status:
       code: 200
       message: OK
 - request:
-    body: '{"compute_resource": {"location_ids": [10], "organization_ids": [9]}}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -301,20 +302,14 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '69'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: PUT
-    uri: https://foreman.example.org/api/compute_resources/3
+    method: GET
+    uri: https://foreman.example.org/api/compute_resources/3/images/1
   response:
     body:
-      string: '{"description":"Libvirt compute resource","url":"qemu+ssh://root@libvirt.example.com/system","created_at":"2021-11-13
-        11:09:41 UTC","updated_at":"2021-11-13 11:09:41 UTC","id":3,"name":"libvirt-cr01","provider":"Libvirt","provider_friendly_name":"Libvirt","display_type":"vnc","set_console_password":true,"images":[{"id":1,"name":"RHEL-8.4"}],"compute_attributes":[],"locations":[{"id":10,"name":"Test
-        Location","title":"Test Location","description":null}],"organizations":[{"id":9,"name":"Test
-        Organization","title":"Test Organization","description":"A test organization"}]}'
+      string: '{"operatingsystem_id":6,"operatingsystem_name":"RedHat-8.4 8.2","compute_resource_id":3,"compute_resource_name":"libvirt-cr01","architecture_id":1,"architecture_name":"x86_64","uuid":"rhel-8.4-template","username":"root","created_at":"2021-11-13
+        19:12:23 UTC","updated_at":"2021-11-13 19:12:23 UTC","id":1,"name":"RHEL-8.4"}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -351,7 +346,128 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '575'
+      - '324'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/architectures?search=name%3D%22x86_64%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"x86_64\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\":\"2021-11-12
+        13:00:12 UTC\",\"updated_at\":\"2021-11-12 13:00:12 UTC\",\"name\":\"x86_64\",\"id\":1}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=94
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '274'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"image": {"password": "changeme", "compute_resource_id": 3, "user_data":
+      true}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '80'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: PUT
+    uri: https://foreman.example.org/api/compute_resources/3/images/1
+  response:
+    body:
+      string: '{"operatingsystem_id":6,"operatingsystem_name":"RedHat-8.4 8.2","compute_resource_id":3,"compute_resource_name":"libvirt-cr01","architecture_id":1,"architecture_name":"x86_64","uuid":"rhel-8.4-template","username":"root","created_at":"2021-11-13
+        19:12:23 UTC","updated_at":"2021-11-13 19:12:23 UTC","id":1,"name":"RHEL-8.4"}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.1.0-develop
+      Keep-Alive:
+      - timeout=15, max=93
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '324'
     status:
       code: 200
       message: OK

@@ -16,6 +16,13 @@
       vars:
         location_name: "Test Location"
         location_state: present
+    - name: ensure operating system
+      include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "RedHat-8.4"
+        operatingsystem_major: "8"
+        operatingsystem_family: Redhat
+        operatingsystem_state: present
 
 - hosts: tests
   collections:
@@ -37,6 +44,14 @@
             provider: 'libvirt'
             provider_params:
               url: qemu+ssh://root@libvirt.example.com/system
+            images:
+              - name: "RHEL-8.4"
+                operatingsystem: "RedHat-8.4"
+                architecture: "x86_64"
+                user_data: true
+                image_username: "root"
+                image_password: "changeme"
+                uuid: "rhel-8.4-template"
             state: present
         expected_change: true
 
