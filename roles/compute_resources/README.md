@@ -44,7 +44,6 @@ Create a compute resource for vSphere, with a single image for RHEL 8.4.
               datacenter: "ha-datacenter"
               images:
                 - name: "RHEL-8.4"
-                  compute_resource: "VMware"
                   operatingsystem: "RedHat-8.4"
                   architecture: "x86_64"
                   user_data: true
