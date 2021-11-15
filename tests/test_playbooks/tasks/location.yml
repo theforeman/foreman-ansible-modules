@@ -13,14 +13,14 @@
     parameters: "{{ location_parameters | default(omit) }}"
     state: "{{ location_state }}"
   register: result
-  ignore_errors: true
+  ignore_errors: "{{ expected_error is defined and expected_error }}"
 - assert:
     fail_msg: "Ensuring location is {{ location_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
 - assert:
-    fail_msg: "Ensuring location is {{ location_state }} didn't fail! (expected_error: {{ expected_error | default('unknown') }})"
+    fail_msg: "Ensuring location is {{ location_state }} did fail! (expected_error: {{ expected_error | default('unknown') }})"
     that:
       - result is failed
   when:
