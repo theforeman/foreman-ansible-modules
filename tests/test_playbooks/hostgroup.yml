@@ -6,6 +6,12 @@
 ## $ puppet module install puppet-prometheus
 ## $ hammer proxy import-classes --puppet-environment production --name $(hostname -f)
 ##
+## You also need the libvirt compute resource support enabled:
+## $ foreman-installer --enable-foreman-compute-libvirt
+##
+## You also need the proxy to be setup with the DNS feature:
+## $ foreman-installer --foreman-proxy-dns true
+##
 
 - hosts: localhost
   collections:
@@ -548,6 +554,12 @@
     - include: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
+        hostgroup_state: absent
+        expected_change: false
+
+    - include: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "New host group/Whatever Child"
         hostgroup_state: absent
         expected_change: false
 

@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.5.4","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -70,10 +70,10 @@ interactions:
     uri: https://foreman.example.org/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%2FNew+host+group+with+nested+parent%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group/New\
-        \ host group with nested parent\\\"\",\n  \"sort\": {\n    \"by\": null,\n\
-        \    \"order\": null\n  },\n  \"results\": []\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group/New
+        host group with nested parent\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\":
+        null\n  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -92,7 +92,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -126,16 +126,19 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/organizations?search=name%3D%22Test+Org1%22&per_page=4294967296
+    uri: https://foreman.example.org/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Org1\\\"\",\n  \"sort\": {\n\
-        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
-        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-09-03\
-        \ 07:56:40 UTC\",\"updated_at\":\"2020-09-03 07:56:40 UTC\",\"id\":51,\"name\"\
-        :\"Test Org1\",\"title\":\"Test Org1\",\"description\":\"A test organization\"\
-        }]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"subnet_id\":1,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS
+        7.6\",\"domain_id\":2,\"domain_name\":\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\",\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\":\"8\",\"parent_id\":8,\"parent_name\":\"New
+        host group\",\"ptable_id\":133,\"ptable_name\":\"Part table\",\"medium_id\":13,\"medium_name\":\"TestOS
+        Mirror\",\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\":null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2021-11-15
+        08:33:54 UTC\",\"updated_at\":\"2021-11-15 08:33:54 UTC\",\"id\":10,\"name\":\"Nested
+        New host group\",\"title\":\"New host group/Nested New host group\",\"description\":\"Nested
+        group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\":null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\":null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\":null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\":null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\":null,\"inherited_pxe_loader\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -154,9 +157,69 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1872'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/organizations?search=name%3D%22Test+Org1%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Org1\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-15
+        08:24:35 UTC\",\"updated_at\":\"2021-11-15 08:24:35 UTC\",\"id\":12,\"name\":\"Test
+        Org1\",\"title\":\"Test Org1\",\"description\":\"A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.4
+      Keep-Alive:
+      - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -191,13 +254,11 @@ interactions:
     uri: https://foreman.example.org/api/organizations?search=name%3D%22Test+Org2%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Org2\\\"\",\n  \"sort\": {\n\
-        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
-        :null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-09-03\
-        \ 07:56:41 UTC\",\"updated_at\":\"2020-09-03 07:56:41 UTC\",\"id\":52,\"name\"\
-        :\"Test Org2\",\"title\":\"Test Org2\",\"description\":\"A test organization\"\
-        }]\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Org2\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-15
+        08:24:35 UTC\",\"updated_at\":\"2021-11-15 08:24:35 UTC\",\"id\":13,\"name\":\"Test
+        Org2\",\"title\":\"Test Org2\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -216,9 +277,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=97
+      - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -253,12 +314,10 @@ interactions:
     uri: https://foreman.example.org/api/locations?search=title%3D%22Foo%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"Foo\\\"\",\n  \"sort\": {\n    \"\
-        by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"\
-        parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-09-03 07:50:16\
-        \ UTC\",\"updated_at\":\"2020-09-03 07:50:16 UTC\",\"id\":46,\"name\":\"Foo\"\
-        ,\"title\":\"Foo\",\"description\":null}]\n}\n"
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"Foo\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-15
+        08:24:32 UTC\",\"updated_at\":\"2021-11-15 08:24:32 UTC\",\"id\":9,\"name\":\"Foo\",\"title\":\"Foo\",\"description\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -277,9 +336,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=96
+      - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -295,7 +354,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '355'
+      - '354'
     status:
       code: 200
       message: OK
@@ -314,12 +373,10 @@ interactions:
     uri: https://foreman.example.org/api/locations?search=title%3D%22Foo%2FBaz%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"Foo/Baz\\\"\",\n  \"sort\": {\n \
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\"\
-        :\"46\",\"parent_id\":46,\"parent_name\":\"Foo\",\"created_at\":\"2020-09-03\
-        \ 07:50:17 UTC\",\"updated_at\":\"2020-09-03 07:50:17 UTC\",\"id\":47,\"name\"\
-        :\"Baz\",\"title\":\"Foo/Baz\",\"description\":null}]\n}\n"
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"Foo/Baz\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":\"9\",\"parent_id\":9,\"parent_name\":\"Foo\",\"created_at\":\"2021-11-15
+        08:24:33 UTC\",\"updated_at\":\"2021-11-15 08:24:33 UTC\",\"id\":10,\"name\":\"Baz\",\"title\":\"Foo/Baz\",\"description\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -338,9 +395,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=95
+      - timeout=15, max=94
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -356,7 +413,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '362'
+      - '360'
     status:
       code: 200
       message: OK
@@ -375,12 +432,10 @@ interactions:
     uri: https://foreman.example.org/api/locations?search=title%3D%22Bar%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"Bar\\\"\",\n  \"sort\": {\n    \"\
-        by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"\
-        parent_id\":null,\"parent_name\":null,\"created_at\":\"2020-09-03 07:50:18\
-        \ UTC\",\"updated_at\":\"2020-09-03 07:50:18 UTC\",\"id\":48,\"name\":\"Bar\"\
-        ,\"title\":\"Bar\",\"description\":null}]\n}\n"
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"Bar\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-15
+        08:24:34 UTC\",\"updated_at\":\"2021-11-15 08:24:34 UTC\",\"id\":11,\"name\":\"Bar\",\"title\":\"Bar\",\"description\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -399,9 +454,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=94
+      - timeout=15, max=93
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -436,13 +491,10 @@ interactions:
     uri: https://foreman.example.org/api/domains?search=name%3D%22foo.example.com%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"foo.example.com\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"fullname\"\
-        :null,\"created_at\":\"2020-09-03 07:50:22 UTC\",\"updated_at\":\"2020-09-03\
-        \ 07:50:22 UTC\",\"id\":17,\"name\":\"foo.example.com\",\"dns_id\":1,\"dns\"\
-        :{\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"\
-        }}]\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"foo.example.com\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"fullname\":null,\"created_at\":\"2021-11-15
+        08:27:23 UTC\",\"updated_at\":\"2021-11-15 08:27:23 UTC\",\"id\":2,\"name\":\"foo.example.com\",\"dns_id\":1,\"dns\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"}}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -461,9 +513,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=93
+      - timeout=15, max=92
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -479,7 +531,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '441'
+      - '440'
     status:
       code: 200
       message: OK
@@ -498,19 +550,11 @@ interactions:
     uri: https://foreman.example.org/api/subnets?search=name%3D%22Test+subnet4%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test subnet4\\\"\",\n  \"sort\": {\n\
-        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\"\
-        :\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\"\
-        ,\"priority\":null,\"vlanid\":null,\"mtu\":1500,\"gateway\":null,\"dns_primary\"\
-        :null,\"dns_secondary\":null,\"from\":null,\"to\":null,\"created_at\":\"2020-09-03\
-        \ 07:50:23 UTC\",\"updated_at\":\"2020-09-03 07:50:23 UTC\",\"ipam\":\"DHCP\"\
-        ,\"boot_mode\":\"DHCP\",\"id\":35,\"name\":\"Test subnet4\",\"description\"\
-        :null,\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\"\
-        :null,\"tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\"\
-        :null,\"externalipam_id\":null,\"externalipam_name\":null,\"dns_id\":null,\"\
-        template_id\":null,\"template_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\"\
-        :null,\"externalipam\":null,\"dns\":null,\"template\":null}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test subnet4\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\":\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\",\"priority\":null,\"vlanid\":null,\"mtu\":1500,\"gateway\":null,\"dns_primary\":null,\"dns_secondary\":null,\"from\":null,\"to\":null,\"created_at\":\"2021-11-15
+        08:27:24 UTC\",\"updated_at\":\"2021-11-15 08:27:24 UTC\",\"ipam\":\"DHCP\",\"boot_mode\":\"DHCP\",\"nic_delay\":null,\"id\":1,\"name\":\"Test
+        subnet4\",\"description\":null,\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\":null,\"tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\":null,\"externalipam_id\":null,\"externalipam_name\":null,\"dns_id\":null,\"template_id\":null,\"template_name\":null,\"bmc_id\":null,\"bmc_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\":null,\"externalipam\":null,\"dns\":null,\"template\":null,\"bmc\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -529,9 +573,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=92
+      - timeout=15, max=91
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -547,7 +591,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '870'
+      - '927'
     status:
       code: 200
       message: OK
@@ -566,11 +610,10 @@ interactions:
     uri: https://foreman.example.org/api/architectures?search=name%3D%22x86_64%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"x86_64\\\"\",\n  \"sort\": {\n   \
-        \ \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\"\
-        :\"2020-07-15 11:29:52 UTC\",\"updated_at\":\"2020-07-15 11:29:52 UTC\",\"\
-        name\":\"x86_64\",\"id\":1}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"x86_64\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"created_at\":\"2021-11-15
+        08:14:58 UTC\",\"updated_at\":\"2021-11-15 08:14:58 UTC\",\"name\":\"x86_64\",\"id\":1}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -589,9 +632,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=91
+      - timeout=15, max=90
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -626,13 +669,11 @@ interactions:
     uri: https://foreman.example.org/api/operatingsystems?search=title%3D%22TestOS+7.6%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"TestOS 7.6\\\"\",\n  \"sort\": {\n\
-        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\"\
-        :null,\"major\":\"7\",\"minor\":\"6\",\"family\":\"Redhat\",\"release_name\"\
-        :\"reverse whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2020-09-03\
-        \ 07:50:25 UTC\",\"updated_at\":\"2020-09-03 07:50:25 UTC\",\"id\":2,\"name\"\
-        :\"TestOS\",\"title\":\"TestOS 7.6\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"TestOS 7.6\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":null,\"major\":\"7\",\"minor\":\"6\",\"family\":\"Redhat\",\"release_name\":\"reverse
+        whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2021-11-15 08:27:25 UTC\",\"updated_at\":\"2021-11-15
+        08:27:25 UTC\",\"id\":2,\"name\":\"TestOS\",\"title\":\"TestOS 7.6\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -651,9 +692,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=90
+      - timeout=15, max=89
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -688,12 +729,11 @@ interactions:
     uri: https://foreman.example.org/api/media?search=name%3D%22TestOS+Mirror%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 12,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"TestOS Mirror\\\"\",\n  \"sort\":\
-        \ {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"path\"\
-        :\"https://templeos.org/TempleOS.ISO\",\"os_family\":\"Redhat\",\"created_at\"\
-        :\"2020-09-03 07:50:26 UTC\",\"updated_at\":\"2020-09-03 07:50:26 UTC\",\"\
-        id\":12,\"name\":\"TestOS Mirror\"}]\n}\n"
+      string: "{\n  \"total\": 13,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"TestOS Mirror\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"path\":\"https://templeos.org/TempleOS.ISO\",\"os_family\":\"Redhat\",\"created_at\":\"2021-11-15
+        08:27:25 UTC\",\"updated_at\":\"2021-11-15 08:27:25 UTC\",\"id\":13,\"name\":\"TestOS
+        Mirror\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -712,9 +752,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=89
+      - timeout=15, max=88
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -749,12 +789,11 @@ interactions:
     uri: https://foreman.example.org/api/ptables?search=name%3D%22Part+table%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 19,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Part table\\\"\",\n  \"sort\": {\n\
-        \    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\"\
-        :null,\"os_family\":\"Redhat\",\"created_at\":\"2020-09-03 07:50:24 UTC\"\
-        ,\"updated_at\":\"2020-09-03 07:50:24 UTC\",\"name\":\"Part table\",\"id\"\
-        :127}]\n}\n"
+      string: "{\n  \"total\": 20,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Part table\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":null,\"os_family\":\"Redhat\",\"created_at\":\"2021-11-15
+        08:27:24 UTC\",\"updated_at\":\"2021-11-15 08:27:24 UTC\",\"name\":\"Part
+        table\",\"id\":133}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -773,9 +812,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
-      - timeout=15, max=88
+      - timeout=15, max=87
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       Vary:
@@ -807,20 +846,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/smart_proxies?search=name%3D%22centos7-foreman-2-1.yatsu.example.com%22&per_page=4294967296
+    uri: https://foreman.example.org/api/smart_proxies?search=name%3D%22centos7-foreman-2-5.tanso.example.com%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"centos7-foreman-2-1.yatsu.example.com\\\
-        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"created_at\":\"2020-07-15 11:31:50 UTC\",\"updated_at\":\"2020-07-15\
-        \ 11:31:50 UTC\",\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\"\
-        :1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\",\"features\"\
-        :[{\"capabilities\":[],\"name\":\"TFTP\",\"id\":2},{\"capabilities\":[],\"\
-        name\":\"Puppet CA\",\"id\":6},{\"capabilities\":[],\"name\":\"Puppet\",\"\
-        id\":5},{\"capabilities\":[],\"name\":\"Logs\",\"id\":10},{\"capabilities\"\
-        :[],\"name\":\"HTTPBoot\",\"id\":11},{\"capabilities\":[],\"name\":\"DNS\"\
-        ,\"id\":3}]}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"centos7-foreman-2-5.tanso.example.com\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"created_at\":\"2021-11-15 08:16:36 UTC\",\"updated_at\":\"2021-11-15 08:16:36
+        UTC\",\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\",\"features\":[{\"capabilities\":[],\"name\":\"Puppet
+        CA\",\"id\":6},{\"capabilities\":[],\"name\":\"Puppet\",\"id\":5},{\"capabilities\":[],\"name\":\"Logs\",\"id\":10},{\"capabilities\":[],\"name\":\"Registration\",\"id\":13},{\"capabilities\":[],\"name\":\"DNS\",\"id\":3}]}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -839,73 +873,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
-      Keep-Alive:
-      - timeout=15, max=87
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '666'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/smart_proxies?search=name%3D%22centos7-foreman-2-1.yatsu.example.com%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"centos7-foreman-2-1.yatsu.example.com\\\
-        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"created_at\":\"2020-07-15 11:31:50 UTC\",\"updated_at\":\"2020-07-15\
-        \ 11:31:50 UTC\",\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\"\
-        :1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\",\"features\"\
-        :[{\"capabilities\":[],\"name\":\"TFTP\",\"id\":2},{\"capabilities\":[],\"\
-        name\":\"Puppet CA\",\"id\":6},{\"capabilities\":[],\"name\":\"Puppet\",\"\
-        id\":5},{\"capabilities\":[],\"name\":\"Logs\",\"id\":10},{\"capabilities\"\
-        :[],\"name\":\"HTTPBoot\",\"id\":11},{\"capabilities\":[],\"name\":\"DNS\"\
-        ,\"id\":3}]}]\n}\n"
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=86
       Strict-Transport-Security:
@@ -923,7 +891,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '666'
+      - '629'
     status:
       code: 200
       message: OK
@@ -939,35 +907,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%22&per_page=4294967296
+    uri: https://foreman.example.org/api/smart_proxies?search=name%3D%22centos7-foreman-2-5.tanso.example.com%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group\\\
-        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"subnet_id\":35,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\"\
-        :2,\"operatingsystem_name\":\"TestOS 7.6\",\"domain_id\":17,\"domain_name\"\
-        :\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\"\
-        ,\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\"\
-        :\"2\",\"parent_id\":2,\"parent_name\":\"New host group\",\"ptable_id\":127,\"\
-        ptable_name\":\"Part table\",\"medium_id\":12,\"medium_name\":\"TestOS Mirror\"\
-        ,\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"\
-        compute_resource_id\":null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\"\
-        :1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"\
-        created_at\":\"2020-09-03 07:57:00 UTC\",\"updated_at\":\"2020-09-03 07:57:00\
-        \ UTC\",\"id\":4,\"name\":\"Nested New host group\",\"title\":\"New host group/Nested\
-        \ New host group\",\"description\":\"Nested group\",\"puppet_proxy_id\":1,\"\
-        puppet_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\",\"puppet_ca_proxy_id\"\
-        :1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\",\"puppet_proxy\"\
-        :{\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"\
-        },\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-1.yatsu.example.com\"\
-        ,\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"},\"\
-        inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\"\
-        :null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\"\
-        :null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\"\
-        :null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\"\
-        :null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\"\
-        :null,\"inherited_pxe_loader\":null}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"centos7-foreman-2-5.tanso.example.com\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"created_at\":\"2021-11-15 08:16:36 UTC\",\"updated_at\":\"2021-11-15 08:16:36
+        UTC\",\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\",\"features\":[{\"capabilities\":[],\"name\":\"Puppet
+        CA\",\"id\":6},{\"capabilities\":[],\"name\":\"Puppet\",\"id\":5},{\"capabilities\":[],\"name\":\"Logs\",\"id\":10},{\"capabilities\":[],\"name\":\"Registration\",\"id\":13},{\"capabilities\":[],\"name\":\"DNS\",\"id\":3}]}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -986,7 +934,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=85
       Strict-Transport-Security:
@@ -1004,16 +952,16 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1873'
+      - '629'
     status:
       code: 200
       message: OK
 - request:
     body: '{"hostgroup": {"name": "New host group with nested parent", "description":
-      "Nested group", "parent_id": 4, "operatingsystem_id": 2, "architecture_id":
-      1, "pxe_loader": "Grub2 UEFI", "medium_id": 12, "ptable_id": 127, "subnet_id":
-      35, "domain_id": 17, "puppet_proxy_id": 1, "puppet_ca_proxy_id": 1, "location_ids":
-      [46, 47, 48], "organization_ids": [51, 52]}}'
+      "Nested group", "parent_id": 10, "operatingsystem_id": 2, "architecture_id":
+      1, "pxe_loader": "Grub2 UEFI", "medium_id": 13, "ptable_id": 133, "subnet_id":
+      1, "domain_id": 2, "puppet_proxy_id": 1, "puppet_ca_proxy_id": 1, "location_ids":
+      [9, 10, 11], "organization_ids": [12, 13]}}'
     headers:
       Accept:
       - application/json;version=2
@@ -1022,7 +970,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '358'
+      - '356'
       Content-Type:
       - application/json
       User-Agent:
@@ -1031,14 +979,14 @@ interactions:
     uri: https://foreman.example.org/api/hostgroups
   response:
     body:
-      string: '{"subnet_id":35,"subnet_name":"Test subnet4","operatingsystem_id":2,"operatingsystem_name":"TestOS
-        7.6","domain_id":17,"domain_name":"foo.example.com","environment_id":null,"environment_name":"production","compute_profile_id":null,"compute_profile_name":"myprofile","ancestry":"2/4","parent_id":4,"parent_name":"New
-        host group/Nested New host group","ptable_id":127,"ptable_name":"Part table","medium_id":12,"medium_name":"TestOS
-        Mirror","pxe_loader":"Grub2 UEFI","subnet6_id":null,"subnet6_name":null,"compute_resource_id":null,"compute_resource_name":"libvirt-cr","architecture_id":1,"architecture_name":"x86_64","realm_id":null,"realm_name":null,"created_at":"2020-09-03
-        07:57:02 UTC","updated_at":"2020-09-03 07:57:02 UTC","id":5,"name":"New host
+      string: '{"subnet_id":1,"subnet_name":"Test subnet4","operatingsystem_id":2,"operatingsystem_name":"TestOS
+        7.6","domain_id":2,"domain_name":"foo.example.com","environment_id":null,"environment_name":"production","compute_profile_id":null,"compute_profile_name":"myprofile","ancestry":"8/10","parent_id":10,"parent_name":"New
+        host group/Nested New host group","ptable_id":133,"ptable_name":"Part table","medium_id":13,"medium_name":"TestOS
+        Mirror","pxe_loader":"Grub2 UEFI","subnet6_id":null,"subnet6_name":null,"compute_resource_id":null,"compute_resource_name":"libvirt-cr","architecture_id":1,"architecture_name":"x86_64","realm_id":null,"realm_name":null,"created_at":"2021-11-15
+        08:33:56 UTC","updated_at":"2021-11-15 08:33:56 UTC","id":11,"name":"New host
         group with nested parent","title":"New host group/Nested New host group/New
-        host group with nested parent","description":"Nested group","puppet_proxy_id":1,"puppet_proxy_name":"centos7-foreman-2-1.yatsu.example.com","puppet_ca_proxy_id":1,"puppet_ca_proxy_name":"centos7-foreman-2-1.yatsu.example.com","puppet_proxy":{"name":"centos7-foreman-2-1.yatsu.example.com","id":1,"url":"https://centos7-foreman-2-1.yatsu.example.com:8443"},"puppet_ca_proxy":{"name":"centos7-foreman-2-1.yatsu.example.com","id":1,"url":"https://centos7-foreman-2-1.yatsu.example.com:8443"},"inherited_compute_profile_id":4,"inherited_environment_id":1,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":1,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[],"template_combinations":[],"puppetclasses":[],"config_groups":[],"all_puppetclasses":[],"locations":[{"id":46,"name":"Foo","title":"Foo","description":null},{"id":47,"name":"Baz","title":"Foo/Baz","description":null},{"id":48,"name":"Bar","title":"Bar","description":null}],"organizations":[{"id":51,"name":"Test
-        Org1","title":"Test Org1","description":"A test organization"},{"id":52,"name":"Test
+        host group with nested parent","description":"Nested group","puppet_proxy_id":1,"puppet_proxy_name":"centos7-foreman-2-5.tanso.example.com","puppet_ca_proxy_id":1,"puppet_ca_proxy_name":"centos7-foreman-2-5.tanso.example.com","puppet_proxy":{"name":"centos7-foreman-2-5.tanso.example.com","id":1,"url":"https://centos7-foreman-2-5.tanso.example.com:8443"},"puppet_ca_proxy":{"name":"centos7-foreman-2-5.tanso.example.com","id":1,"url":"https://centos7-foreman-2-5.tanso.example.com:8443"},"inherited_compute_profile_id":4,"inherited_environment_id":1,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":1,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[],"template_combinations":[],"puppetclasses":[],"config_groups":[],"all_puppetclasses":[],"locations":[{"id":9,"name":"Foo","title":"Foo","description":null},{"id":10,"name":"Baz","title":"Foo/Baz","description":null},{"id":11,"name":"Bar","title":"Bar","description":null}],"organizations":[{"id":12,"name":"Test
+        Org1","title":"Test Org1","description":"A test organization"},{"id":13,"name":"Test
         Org2","title":"Test Org2","description":"A test organization"}]}'
     headers:
       Cache-Control:
@@ -1058,7 +1006,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=84
       Strict-Transport-Security:

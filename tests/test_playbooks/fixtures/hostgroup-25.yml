@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"2.5.4","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -70,33 +70,17 @@ interactions:
     uri: https://foreman.example.org/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%2FNew+host+group+with+nested+parent%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group/New\
-        \ host group with nested parent\\\"\",\n  \"sort\": {\n    \"by\": null,\n\
-        \    \"order\": null\n  },\n  \"results\": [{\"subnet_id\":35,\"subnet_name\"\
-        :\"Test subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS\
-        \ 7.6\",\"domain_id\":17,\"domain_name\":\"foo.example.com\",\"environment_id\"\
-        :null,\"environment_name\":\"production\",\"compute_profile_id\":null,\"compute_profile_name\"\
-        :\"myprofile\",\"ancestry\":\"2/4\",\"parent_id\":4,\"parent_name\":\"New\
-        \ host group/Nested New host group\",\"ptable_id\":127,\"ptable_name\":\"\
-        Part table\",\"medium_id\":12,\"medium_name\":\"TestOS Mirror\",\"pxe_loader\"\
-        :\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\"\
-        :null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\"\
-        :\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2020-09-03\
-        \ 07:57:02 UTC\",\"updated_at\":\"2020-09-03 07:57:02 UTC\",\"id\":5,\"name\"\
-        :\"New host group with nested parent\",\"title\":\"New host group/Nested New\
-        \ host group/New host group with nested parent\",\"description\":\"Nested\
-        \ group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\"\
-        ,\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\"\
-        ,\"puppet_proxy\":{\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\"\
-        :1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"},\"puppet_ca_proxy\"\
-        :{\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"\
-        },\"inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\"\
-        :null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\"\
-        :null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\"\
-        :null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\"\
-        :null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\"\
-        :null,\"inherited_pxe_loader\":null}]\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group/New
+        host group with nested parent\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\":
+        null\n  },\n  \"results\": [{\"subnet_id\":1,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS
+        7.6\",\"domain_id\":2,\"domain_name\":\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\",\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\":\"8/10\",\"parent_id\":10,\"parent_name\":\"New
+        host group/Nested New host group\",\"ptable_id\":133,\"ptable_name\":\"Part
+        table\",\"medium_id\":13,\"medium_name\":\"TestOS Mirror\",\"pxe_loader\":\"Grub2
+        UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\":null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2021-11-15
+        08:33:56 UTC\",\"updated_at\":\"2021-11-15 08:33:56 UTC\",\"id\":11,\"name\":\"New
+        host group with nested parent\",\"title\":\"New host group/Nested New host
+        group/New host group with nested parent\",\"description\":\"Nested group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\":null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\":null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\":null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\":null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\":null,\"inherited_pxe_loader\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -115,7 +99,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -133,7 +117,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1977'
+      - '1978'
     status:
       code: 200
       message: OK
@@ -152,32 +136,16 @@ interactions:
     uri: https://foreman.example.org/api/hostgroups?search=title%3D%22New+host+group%2FNested+New+host+group%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group\\\
-        \"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"subnet_id\":35,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\"\
-        :2,\"operatingsystem_name\":\"TestOS 7.6\",\"domain_id\":17,\"domain_name\"\
-        :\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\"\
-        ,\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\"\
-        :\"2\",\"parent_id\":2,\"parent_name\":\"New host group\",\"ptable_id\":127,\"\
-        ptable_name\":\"Part table\",\"medium_id\":12,\"medium_name\":\"TestOS Mirror\"\
-        ,\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"\
-        compute_resource_id\":null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\"\
-        :1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"\
-        created_at\":\"2020-09-03 07:57:00 UTC\",\"updated_at\":\"2020-09-03 07:57:00\
-        \ UTC\",\"id\":4,\"name\":\"Nested New host group\",\"title\":\"New host group/Nested\
-        \ New host group\",\"description\":\"Nested group\",\"puppet_proxy_id\":1,\"\
-        puppet_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\",\"puppet_ca_proxy_id\"\
-        :1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-1.yatsu.example.com\",\"puppet_proxy\"\
-        :{\"name\":\"centos7-foreman-2-1.yatsu.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"\
-        },\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-1.yatsu.example.com\"\
-        ,\"id\":1,\"url\":\"https://centos7-foreman-2-1.yatsu.example.com:8443\"},\"\
-        inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\"\
-        :null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\"\
-        :null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\"\
-        :null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\"\
-        :null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\"\
-        :null,\"inherited_pxe_loader\":null}]\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"New host group/Nested New host group\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"subnet_id\":1,\"subnet_name\":\"Test subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS
+        7.6\",\"domain_id\":2,\"domain_name\":\"foo.example.com\",\"environment_id\":null,\"environment_name\":\"production\",\"compute_profile_id\":null,\"compute_profile_name\":\"myprofile\",\"ancestry\":\"8\",\"parent_id\":8,\"parent_name\":\"New
+        host group\",\"ptable_id\":133,\"ptable_name\":\"Part table\",\"medium_id\":13,\"medium_name\":\"TestOS
+        Mirror\",\"pxe_loader\":\"Grub2 UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\":null,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2021-11-15
+        08:33:54 UTC\",\"updated_at\":\"2021-11-15 08:33:54 UTC\",\"id\":10,\"name\":\"Nested
+        New host group\",\"title\":\"New host group/Nested New host group\",\"description\":\"Nested
+        group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"inherited_compute_profile_id\":4,\"inherited_environment_id\":1,\"inherited_domain_id\":null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\":null,\"inherited_compute_resource_id\":1,\"inherited_operatingsystem_id\":null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\":null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\":null,\"inherited_pxe_loader\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -196,7 +164,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -214,7 +182,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1873'
+      - '1872'
     status:
       code: 200
       message: OK
@@ -232,10 +200,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/hostgroups/5
+    uri: https://foreman.example.org/api/hostgroups/11
   response:
     body:
-      string: '{"id":5,"name":"New host group with nested parent","created_at":"2020-09-03T07:57:02.267Z","updated_at":"2020-09-03T07:57:02.267Z","environment_id":null,"operatingsystem_id":2,"architecture_id":1,"medium_id":12,"ptable_id":127,"root_pass":null,"puppet_ca_proxy_id":1,"use_image":null,"image_file":"","ancestry":"2/4","vm_defaults":null,"subnet_id":35,"domain_id":17,"puppet_proxy_id":1,"title":"New
+      string: '{"id":11,"name":"New host group with nested parent","created_at":"2021-11-15T08:33:56.190Z","updated_at":"2021-11-15T08:33:56.190Z","environment_id":null,"operatingsystem_id":2,"architecture_id":1,"medium_id":13,"ptable_id":133,"root_pass":null,"puppet_ca_proxy_id":1,"use_image":null,"image_file":"","ancestry":"8/10","vm_defaults":null,"subnet_id":1,"domain_id":2,"puppet_proxy_id":1,"title":"New
         host group/Nested New host group/New host group with nested parent","realm_id":null,"compute_profile_id":null,"grub_pass":"","lookup_value_matcher":"hostgroup=New
         host group/Nested New host group/New host group with nested parent","subnet6_id":null,"pxe_loader":"Grub2
         UEFI","description":"Nested group","compute_resource_id":null}'
@@ -257,7 +225,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 2.5.4
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
