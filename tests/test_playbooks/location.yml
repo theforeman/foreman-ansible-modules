@@ -186,6 +186,14 @@
         location_state: absent
         expected_change: true
 
+    - name: Try to delete location with not existing parent
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: NonExistant/SubLocation
+        location_state: absent
+        expected_change: false
+        expected_error: false
+
 - hosts: localhost
   collections:
     - theforeman.foreman
