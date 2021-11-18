@@ -1,0 +1,92 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - name: ensure operating system
+      include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "RedHat-8.4"
+        operatingsystem_major: "8"
+        operatingsystem_family: Redhat
+        operatingsystem_state: present
+    - name: ensure compute resource
+      include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt"
+        compute_resource_organizations:
+          - Test Organization
+        compute_resource_locations:
+          - Test Location
+        compute_resource_provider: 'libvirt'
+        compute_resource_provider_params:
+          url: qemu:///system
+        compute_resource_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: compute_profiles
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_compute_profiles:
+          - name: "app-small"
+            compute_attributes:
+              - compute_resource: "libvirt"
+                vm_attrs:
+                  cpus: 1
+                  memory: 2147483648
+                  nics_attributes:
+                    0:
+                      type: bridge
+                      bridge: ""
+                      model: virtio
+                  volumes_attributes:
+                    0:
+                      pool_name: default
+                      capacity: 10G
+                      allocation: 0G
+                      format_type: raw
+            state: present
+        expected_change: true
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
+    - include: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "RedHat-8.4"
+        operatingsystem_state: absent
+    - include: tasks/compute_resource.yml
+      vars:
+        compute_resource_name: "libvirt"
+        compute_resource_state: absent
