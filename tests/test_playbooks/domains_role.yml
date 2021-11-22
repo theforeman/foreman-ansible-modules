@@ -1,0 +1,61 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "example.org"
+        domain_state: "absent"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: domains
+      vars:
+        foreman_domains:
+          - name: "example.org"
+            description: 'Example Domain'
+            organizations:
+              - Test Organization
+            locations:
+              - Test Location
+            state: present
+        expected_change: true
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "example.org"
+        domain_state: "absent"
