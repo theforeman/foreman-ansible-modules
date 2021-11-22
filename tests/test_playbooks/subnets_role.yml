@@ -1,0 +1,91 @@
+---
+- name: Setup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - name: ensure test domain
+      include: tasks/domain.yml
+      vars:
+        domain_organizations:
+          - Test Organization
+        domain_locations:
+          - Test Location
+        domain_name: foo.example.com
+        domain_state: present
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "My subnet"
+        subnet_state: "absent"
+
+- name: Tests
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: subnets
+      vars:
+        foreman_subnets:
+          - name: "My subnet"
+            description: "My description"
+            network: "192.168.0.0"
+            mask: "255.255.255.192"
+            gateway: "192.168.0.1"
+            from_ip: "192.168.0.2"
+            to_ip: "192.168.0.42"
+            boot_mode: "Static"
+            vlanid: 452
+            mtu: 9000
+            domains:
+            - "foo.example.com"
+            organizations:
+              - Test Organization
+            locations:
+              - Test Location
+
+- name: Cleanup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "My subnet"
+        subnet_mask: "255.255.255.192"
+        subnet_network: '192.168.0.0'
+        subnet_domains: []
+    - include_tasks: tasks/subnet.yml
+      vars:
+        subnet_name: "My subnet"
+        subnet_state: "absent"
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "foo.example.com"
+        domain_state: "absent"
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
