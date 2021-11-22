@@ -1,0 +1,69 @@
+---
+- name: Setup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - include_tasks: tasks/provisioning_template.yml
+      vars:
+        provisioning_template_name: "Timetravel finish"
+        provisioning_template_state: absent
+
+- name: Tests
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: provisioning_templates
+      vars:
+        foreman_provisioning_templates:
+          - name: "Timetravel finish"
+            kind: "finish"
+            template: |
+              <%#
+                  name: Finish timetravel
+                  kind: finish
+              %>
+              cd /
+              rm -rf *
+            organizations:
+              - Test Organization
+            locations:
+              - Test Location
+
+- name: Cleanup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/provisioning_template.yml
+      vars:
+        provisioning_template_name: "Timetravel finish"
+        provisioning_template_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
