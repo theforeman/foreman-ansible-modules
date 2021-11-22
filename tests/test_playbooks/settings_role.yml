@@ -1,0 +1,46 @@
+---
+- name: Setup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/setting.yml
+      vars:
+        setting_name: "destroy_vm_on_host_delete"
+    - include_tasks: tasks/setting.yml
+      vars:
+        setting_name: "clean_up_failed_deployment"
+
+- name: Tests
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: settings
+      vars:
+        foreman_settings:
+          - name: "destroy_vm_on_host_delete"
+            value: "true"
+          - name: "clean_up_failed_deployment"
+            value: "false"
+
+- name: Cleanup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/setting.yml
+      vars:
+        setting_name: "destroy_vm_on_host_delete"
+    - include_tasks: tasks/setting.yml
+      vars:
+        setting_name: "clean_up_failed_deployment"
