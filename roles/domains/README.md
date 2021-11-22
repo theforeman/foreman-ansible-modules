@@ -10,18 +10,18 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 The main data structure for this role is the list of `foreman_domains`. Each `domain` requires the following fields:
 
-- `name`: The name of the compute resource.
+- `name`: The name of the domain.
 
 The following fields are optional and will be omitted by default:
 
-- `description`: Description of the compute resource
+- `description`: Description of the domain.
 - `dns_proxy`: DNS proxy to use within this domain for managing A records.
 - `parameters`: Domain specific host parameters.
 
 Example Playbook
 ----------------
 
-Create a domain for vSphere, with a single image for RHEL 8.4.
+Create a domain `example.org`.
 
 ```yaml
 - hosts: localhost
