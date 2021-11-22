@@ -1,0 +1,202 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/status
+  response:
+    body:
+      string: '{"result":"ok","status":200,"version":"2.5.4","api_version":2}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.4
+      Keep-Alive:
+      - timeout=15, max=100
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '62'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/operatingsystems?search=name%3D%22RedHat%22%2Cmajor%3D%228%22%2Cminor%3D%225%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 6,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"RedHat\\\",major=\\\"8\\\",minor=\\\"5\\\"\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        []\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.4
+      Keep-Alive:
+      - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '196'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operatingsystem": {"name": "RedHat", "major": "8", "minor": "5", "family":
+      "Redhat", "password_hash": "SHA256"}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '114'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/api/operatingsystems
+  response:
+    body:
+      string: '{"description":null,"major":"8","minor":"5","family":"Redhat","release_name":null,"password_hash":"SHA256","created_at":"2021-11-22
+        11:59:09 UTC","updated_at":"2021-11-22 11:59:09 UTC","id":11,"name":"RedHat","title":"RedHat
+        8.5","media":[],"architectures":[],"ptables":[{"name":"Kickstart default","id":121}],"provisioning_templates":[{"id":52,"name":"Kickstart
+        default","template_kind_id":6,"template_kind_name":"provision"},{"id":32,"name":"Kickstart
+        default finish","template_kind_id":7,"template_kind_name":"finish"},{"id":41,"name":"Kickstart
+        default iPXE","template_kind_id":5,"template_kind_name":"iPXE"},{"id":3,"name":"Kickstart
+        default PXEGrub","template_kind_id":3,"template_kind_name":"PXEGrub"},{"id":6,"name":"Kickstart
+        default PXEGrub2","template_kind_id":4,"template_kind_name":"PXEGrub2"},{"id":14,"name":"Kickstart
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux"},{"id":107,"name":"Kickstart
+        default user data","template_kind_id":9,"template_kind_name":"user_data"},{"id":36,"name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config"}],"os_default_templates":[{"id":82,"provisioning_template_id":36,"provisioning_template_name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":83,"provisioning_template_id":14,"provisioning_template_name":"Kickstart
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":84,"provisioning_template_id":3,"provisioning_template_name":"Kickstart
+        default PXEGrub","template_kind_id":3,"template_kind_name":"PXEGrub","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":85,"provisioning_template_id":6,"provisioning_template_name":"Kickstart
+        default PXEGrub2","template_kind_id":4,"template_kind_name":"PXEGrub2","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":86,"provisioning_template_id":41,"provisioning_template_name":"Kickstart
+        default iPXE","template_kind_id":5,"template_kind_name":"iPXE","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":87,"provisioning_template_id":52,"provisioning_template_name":"Kickstart
+        default","template_kind_id":6,"template_kind_name":"provision","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":88,"provisioning_template_id":32,"provisioning_template_name":"Kickstart
+        default finish","template_kind_id":7,"template_kind_name":"finish","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"},{"id":89,"provisioning_template_id":107,"provisioning_template_name":"Kickstart
+        default user data","template_kind_id":9,"template_kind_name":"user_data","operatingsystem_id":11,"operatingsystem_name":"RedHat
+        8.5"}],"images":[],"parameters":[]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.4
+      Keep-Alive:
+      - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 201
+      message: Created
+version: 1

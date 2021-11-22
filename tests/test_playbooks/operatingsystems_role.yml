@@ -1,0 +1,70 @@
+---
+- name: Setup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - include_tasks: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "RedHat"
+        operatingsystem_major: "8"
+        operatingsystem_minor: "5"
+        operatingsystem_state: "absent"
+
+- name: Tests
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: operatingsystems
+      vars:
+        foreman_operatingsystems:
+          - name: RedHat
+            major: "8"
+            minor: "5"
+            os_family: Redhat
+            password_hash: "SHA256"
+            default_templates:
+              - template_kind: cloud-init
+                provisioning_template: CloudInit default
+              - template_kind: user_data
+                provisioning_template: UserData open-vm-tools
+
+- name: Cleanup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/operatingsystem.yml
+      vars:
+        operatingsystem_name: "RedHat"
+        operatingsystem_major: "8"
+        operatingsystem_minor: "5"
+        operatingsystem_state: "absent"
+    - include: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
