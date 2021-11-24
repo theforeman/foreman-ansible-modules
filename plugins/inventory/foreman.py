@@ -256,8 +256,20 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     break
                 elif isinstance(json['results'], MutableMapping):
                     # /facts are returned as dict in 'results'
-                    results = json['results']
-                    break
+                    if not isinstance(results, MutableMapping):
+                        results = {}
+
+                    # check for end of paging
+                    if len(json['results']) == 0:
+                        break
+
+                    for host, facts in json['results'].items():
+                        if host not in results:
+                            results[host] = {}
+                        results[host].update(facts)
+
+                    # get next page
+                    params['page'] += 1
                 else:
                     # /hosts 's 'results' is a list of all hosts, returned is paginated
                     results = results + json['results']
