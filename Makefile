@@ -82,7 +82,7 @@ clean_%: FORCE $(MANIFEST)
 setup: test-setup
 
 test-setup: | tests/test_playbooks/vars/server.yml
-	pip install --upgrade 'pip<20'
+	pip install --upgrade pip
 	pip install --upgrade -r requirements-dev.txt
 
 tests/test_playbooks/vars/server.yml:
