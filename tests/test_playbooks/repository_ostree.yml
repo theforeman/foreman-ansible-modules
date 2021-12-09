@@ -1,0 +1,73 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_state: present
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_name: "Test SSL Cert"
+        content_credential_type: "cert"
+        content_credential_state: present
+    - include: tasks/product.yml
+      vars:
+        product_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Create Ostree Repository
+      include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_label: "just_a_test_repo_ostree"
+        repository_name: Test OStree Repository
+        repository_content_type: ostree
+        repository_url: https://fixtures.pulpproject.org/ostree/small/
+        expected_change: true
+    - name: sync repository
+      include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: "Test Ostree Repository"
+    - name: remove repository
+      include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+        repository_name: Test OStree Repository
+        repository_content_type: ostree
+        expected_change: true
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_name: "Test SSL Cert"
+        content_credential_type: "cert"
+        content_credential_state: absent
+    - include: tasks/content_credential.yml
+      vars:
+        content_credential_state: absent
+    - include: tasks/product.yml
+      vars:
+        product_state: absent
+    - include: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
