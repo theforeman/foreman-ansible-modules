@@ -283,7 +283,6 @@ class CallbackModule(CallbackBase):
         changes.
         """
         for host in stats.processed.keys():
-            total = stats.summarize(host)
             report = {
                 "host": host,
                 "reported_at": get_now(),
@@ -292,17 +291,10 @@ class CallbackModule(CallbackBase):
                         "total": int(get_time() - self.start_time)
                     }
                 },
-                "status": {
-                    "applied": total['changed'],
-                    "failed": total['failures'] + total['unreachable'],
-                    "skipped": total['skipped'],
-                },
+                "summary": stats.summarize(host),
                 "results": self.items[host],
                 "check_mode": self.check_mode,
             }
-            if self.check_mode:
-                report['status']['pending'] = total['changed']
-                report['status']['applied'] = 0
 
             self._send_data('report', 'proxy', host, report)
             self.items[host] = []
