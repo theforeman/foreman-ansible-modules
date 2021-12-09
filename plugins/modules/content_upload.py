@@ -49,9 +49,16 @@ options:
       - Product to which the repository lives in
     required: true
     type: str
+  ostree_repository_name:
+    description:
+      - Name of repository within the OSTree archive.
+      - Required for OSTree uploads.
+    required: false
+    type: str
 notes:
-  - Currently only uploading to deb, RPM & file repositories is supported
+  - Currently only uploading to deb, RPM, OSTree & file repositories is supported
   - For anything but file repositories, a supporting library must be installed. See Requirements.
+  - OSTree content upload is not idempotent - running mutliple times will attempt to upload the content unit.
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -67,6 +74,17 @@ EXAMPLES = '''
     repository: "Build RPMs"
     product: "My Product"
     organization: "Default Organization"
+
+- name: "Upload ostree-archive.tar"
+  theforeman.foreman.content_upload:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    src: "ostree_archive.tar"
+    repository: "My OStree Repository"
+    product: "My Product"
+    organization: "Default Organization"
+    ostree_repository_name: "small"
 '''
 
 RETURN = ''' # '''
@@ -128,6 +146,7 @@ def main():
             src=dict(required=True, type='path', aliases=['file']),
             repository=dict(required=True, type='entity', scope=['product'], thin=False),
             product=dict(required=True, type='entity', scope=['organization']),
+            ostree_repository_name=dict(required=False, type='str'),
         ),
     )
 
@@ -157,6 +176,11 @@ def main():
         elif module.foreman_params['repository']['content_type'] == 'file':
             query = 'name = "{0}" and checksum = "{1}"'.format(filename, checksum)
             content_unit = module.find_resource('file_units', query, params=repository_scope, failsafe=True)
+        elif module.foreman_params['repository']['content_type'] == 'ostree':
+            try:
+                ostree_repository_name = module.foreman_params['ostree_repository_name']
+            except KeyError:
+                module.fail_json(msg="The 'ostree_repository_name' parameter is required when uploading to OSTree repositories!")
         else:
             # possible types in 3.12: docker, ostree, yum, puppet, file, deb
             module.fail_json(msg="Uploading to a {0} repository is not supported yet.".format(module.foreman_params['repository']['content_type']))
@@ -166,6 +190,7 @@ def main():
                 size = os.stat(module.foreman_params['src']).st_size
                 content_upload_payload = {'size': size}
                 content_upload_payload.update(repository_scope)
+
                 content_upload = module.resource_action('content_uploads', 'create', content_upload_payload)
                 content_upload_scope = {'id': content_upload['upload_id']}
                 content_upload_scope.update(repository_scope)
@@ -182,6 +207,10 @@ def main():
                 uploads = [{'id': content_upload['upload_id'], 'name': filename,
                             'size': offset, 'checksum': checksum}]
                 import_params = {'id': module.foreman_params['repository']['id'], 'uploads': uploads}
+                if module.foreman_params['repository']['content_type'] == 'ostree':
+                    ostree_parameters = {'ostree_repository_name': ostree_repository_name, 'content_type': 'ostree_ref'}
+                    import_params.update(ostree_parameters)
+
                 module.resource_action('repositories', 'import_uploads', import_params)
 
                 module.resource_action('content_uploads', 'destroy', content_upload_scope)
