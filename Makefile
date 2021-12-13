@@ -91,6 +91,7 @@ tests/test_playbooks/vars/server.yml:
 
 dist-test: $(MANIFEST)
 	FOREMAN_SERVER_URL=https://foreman.example.test ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme name=collectiontest" localhost | grep -q "Failed to connect to Foreman server.*foreman.example.test"
+	FOREMAN_SERVER_URL=http://foreman.example.test ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme name=collectiontest" localhost 2>&1| grep -q "You have configured a plain HTTP server URL."
 	ansible-doc $(NAMESPACE).$(NAME).organization | grep -q "Manage Organization"
 
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz

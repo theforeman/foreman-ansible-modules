@@ -381,6 +381,11 @@ class ForemanAnsibleModule(AnsibleModule):
         self._foremanapi_password = self.foreman_params.pop('password')
         self._foremanapi_validate_certs = self.foreman_params.pop('validate_certs')
 
+        if self._foremanapi_server_url.lower().startswith('http://'):
+            self.warn("You have configured a plain HTTP server URL. All communication will happen unencrypted.")
+        elif not self._foremanapi_server_url.lower().startswith('https://'):
+            self.fail_json(msg="The server URL needs to be either HTTPS or HTTP!")
+
         self.task_timeout = 60
         self.task_poll = 4
 
