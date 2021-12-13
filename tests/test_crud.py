@@ -8,6 +8,7 @@ from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_pla
 
 IGNORED_WARNINGS = [
     "Activation Key 'Test Activation Key Copy' already exists.",
+    "You have configured a plain HTTP server URL. All communication will happen unencrypted.",
 ]
 
 if sys.version_info[0] == 2:
