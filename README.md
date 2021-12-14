@@ -64,7 +64,7 @@ After the installation, the modules are available as `theforeman.foreman.<module
 
 ### Installation via RPM
 
-The collection is also available as `ansible-collection-theforeman-foreman` from the `client` repository on `yum.theforeman.org`.
+The collection is also available as `ansible-collection-theforeman-foreman` from the `plugins` repository on `yum.theforeman.org`.
 
 After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.
 
