@@ -56,6 +56,7 @@ def run_callback(tmpdir, report_type, vcrmode):
     assert len(tmpdir.listdir()) > 0, "Directory with results is empty"
     for real_file in tmpdir.listdir(sort=True):
         contents = real_file.read()
+        contents = re.sub(r"\d+-\d+-\d+ \d+:\d+:\d+\+\d+:\d+", "2000-01-01 12:00:00+00:00", contents)
         contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
         contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
         if report_type == "foreman":

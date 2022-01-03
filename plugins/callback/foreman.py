@@ -166,8 +166,10 @@ def get_time():
 def get_now():
     """
     Return the current timestamp as a string to be sent over the network.
+    The time is always in UTC *with* timezone information, so that Ruby
+    DateTime can easily parse it.
     """
-    return datetime.utcnow().isoformat()
+    return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S+00:00")
 
 
 class CallbackModule(CallbackBase):
