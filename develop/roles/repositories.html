@@ -95,64 +95,64 @@ All repository sets for a Red Hat Product can be enabled by omitting <code class
 Custom (i.e. non Red Hat) Products can also be defined, with associated <code class="docutils literal notranslate"><span class="pre">repositories</span></code> which represent custom repositories, and are required to have a <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">url</span></code>, and <code class="docutils literal notranslate"><span class="pre">content_type</span></code>; they may require additional fields and can take any parameter supported by <a class="reference external" href="https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html">theforeman.foreman.repository</a>.
 A variety of examples are demonstrated in the data structure below:</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_products</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
-    <span class="nt">repository_sets</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7Server</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 6 Server (RPMs)</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6Server</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Extras (RPMs)</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Optional (RPMs)</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span>
-    <span class="nt">repository_sets</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7Server</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections RPMs for Red Hat Enterprise Linux 6 Server</span>
-        <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6Server</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span>
-    <span class="nt">repository_sets</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)</span>
-        <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span>
-    <span class="nt">all_repositories</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
-    <span class="nt">labels</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">rhel-server-rhscl-7-rpms</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CentOS 8</span>
-    <span class="nt">repositories</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BaseOS x86_64</span>
-        <span class="nt">content_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yum</span>
-        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://mirror.centos.org/centos/8/BaseOS/x86_64/os/</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AppStream x86_64</span>
-        <span class="nt">content_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yum</span>
-        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://mirror.centos.org/centos/8/AppStream/x86_64/os/</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Debian 10</span>
-    <span class="nt">repositories</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Debian 10 main</span>
-        <span class="nt">content_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deb</span>
-        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://deb.debian.org/debian</span>
-        <span class="nt">deb_components</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">main</span>
-        <span class="nt">deb_architectures</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
-        <span class="nt">deb_releases</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">buster</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Foreman Client</span>
-    <span class="nt">repositories</span><span class="p">:</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Foreman Client Debian 10</span>
-        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://apt.atix.de/debian</span>
-        <span class="nt">content_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deb</span>
-        <span class="nt">deb_components</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">main</span>
-        <span class="nt">deb_architectures</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">amd64</span>
-        <span class="nt">deb_releases</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">stable</span>
-      <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Foreman Client CentOS 7</span>
-        <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://yum.theforeman.org/client/latest/el7/x86_64/</span>
-        <span class="nt">content_type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">yum</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_products</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repository_sets</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7Server</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 6 Server (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6Server</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Extras (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Optional (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repository_sets</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7Server</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections RPMs for Red Hat Enterprise Linux 6 Server</span><span class="w"></span>
+<span class="w">        </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6Server</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repository_sets</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)</span><span class="w"></span>
+<span class="w">        </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span><span class="w"></span>
+<span class="w">    </span><span class="nt">all_repositories</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel-server-rhscl-7-rpms</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CentOS 8</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repositories</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BaseOS x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">content_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum</span><span class="w"></span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://mirror.centos.org/centos/8/BaseOS/x86_64/os/</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AppStream x86_64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">content_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum</span><span class="w"></span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://mirror.centos.org/centos/8/AppStream/x86_64/os/</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Debian 10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repositories</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Debian 10 main</span><span class="w"></span>
+<span class="w">        </span><span class="nt">content_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deb</span><span class="w"></span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://deb.debian.org/debian</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_components</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_architectures</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amd64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_releases</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">buster</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foreman Client</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repositories</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foreman Client Debian 10</span><span class="w"></span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://apt.atix.de/debian</span><span class="w"></span>
+<span class="w">        </span><span class="nt">content_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deb</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_components</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_architectures</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amd64</span><span class="w"></span>
+<span class="w">        </span><span class="nt">deb_releases</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foreman Client CentOS 7</span><span class="w"></span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://yum.theforeman.org/client/latest/el7/x86_64/</span><span class="w"></span>
+<span class="w">        </span><span class="nt">content_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yum</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -164,33 +164,33 @@ A variety of examples are demonstrated in the data structure below:</p></li>
 <li><p>The RHEL 8 product already contains the <code class="docutils literal notranslate"><span class="pre">basearch</span></code> so it should not be specified on the RHEL 8 <code class="docutils literal notranslate"><span class="pre">repository_sets</span></code>, and the naming convention for <code class="docutils literal notranslate"><span class="pre">releasever</span></code> changed with RHEL 8 since system purpose removes the need for separate distributions like <code class="docutils literal notranslate"><span class="pre">Server</span></code> and <code class="docutils literal notranslate"><span class="pre">Workstation</span></code>.</p></li>
 <li><p>The optional and extras repositories do not have point releases so <code class="docutils literal notranslate"><span class="pre">releasever</span></code> should be omitted.</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-  <span class="nt">roles</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.repositories</span>
-      <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">foreman_organization</span><span class="p">:</span> <span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
-        <span class="nt">foreman_products</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
-            <span class="nt">repository_sets</span><span class="p">:</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span>
-                <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-                <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">7Server</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 6 Server (RPMs)</span>
-                <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-                <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6Server</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Extras (RPMs)</span>
-                <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Optional (RPMs)</span>
-                <span class="nt">basearch</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">x86_64</span>
-          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span>
-            <span class="nt">repository_sets</span><span class="p">:</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)</span>
-                <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
-              <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)</span>
-                <span class="nt">releasever</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.repositories</span><span class="w"></span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_products</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span><span class="w"></span>
+<span class="w">            </span><span class="nt">repository_sets</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">                </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7Server</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 6 Server (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">                </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6Server</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Extras (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 7 Server - Optional (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">basearch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">x86_64</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span><span class="w"></span>
+<span class="w">            </span><span class="nt">repository_sets</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)</span><span class="w"></span>
+<span class="w">                </span><span class="nt">releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -204,7 +204,7 @@ A variety of examples are demonstrated in the data structure below:</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, The Foreman Project.</p>
+    <p>&#169; Copyright 2022, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

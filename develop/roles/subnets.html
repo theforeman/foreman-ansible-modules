@@ -97,35 +97,35 @@
 <section id="example-playbook">
 <h2>Example Playbook<a class="headerlink" href="#example-playbook" title="Permalink to this headline"></a></h2>
 <p>Create subnet <code class="docutils literal notranslate"><span class="pre">192.168.0.0/26</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">hosts</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost</span>
-  <span class="nt">roles</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nt">role</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.subnets</span>
-      <span class="nt">vars</span><span class="p">:</span>
-        <span class="nt">foreman_server_url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
-        <span class="nt">foreman_username</span><span class="p">:</span> <span class="s">&quot;admin&quot;</span>
-        <span class="nt">foreman_password</span><span class="p">:</span> <span class="s">&quot;changeme&quot;</span>
-        <span class="nt">foreman_subnets</span><span class="p">:</span>
-          <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">subnet&quot;</span>
-            <span class="nt">description</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">description&quot;</span>
-            <span class="nt">network</span><span class="p">:</span> <span class="s">&quot;192.168.0.0&quot;</span>
-            <span class="nt">mask</span><span class="p">:</span> <span class="s">&quot;255.255.255.192&quot;</span>
-            <span class="nt">gateway</span><span class="p">:</span> <span class="s">&quot;192.168.0.1&quot;</span>
-            <span class="nt">from_ip</span><span class="p">:</span> <span class="s">&quot;192.168.0.2&quot;</span>
-            <span class="nt">to_ip</span><span class="p">:</span> <span class="s">&quot;192.168.0.42&quot;</span>
-            <span class="nt">boot_mode</span><span class="p">:</span> <span class="s">&quot;Static&quot;</span>
-            <span class="nt">dhcp_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy1.foo.example.com&quot;</span>
-            <span class="nt">tftp_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy1.foo.example.com&quot;</span>
-            <span class="nt">dns_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy2.foo.example.com&quot;</span>
-            <span class="nt">template_proxy</span><span class="p">:</span> <span class="s">&quot;smart-proxy2.foo.example.com&quot;</span>
-            <span class="nt">vlanid</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">452</span>
-            <span class="nt">mtu</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9000</span>
-            <span class="nt">domains</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="s">&quot;foo.example.com&quot;</span>
-            <span class="p p-Indicator">-</span> <span class="s">&quot;bar.example.com&quot;</span>
-            <span class="nt">organizations</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="s">&quot;Example</span><span class="nv"> </span><span class="s">Org&quot;</span>
-            <span class="nt">locations</span><span class="p">:</span>
-            <span class="p p-Indicator">-</span> <span class="s">&quot;Uppsala&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.subnets</span><span class="w"></span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">foreman_subnets</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">subnet&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">description&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;192.168.0.0&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">mask</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;255.255.255.192&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">gateway</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;192.168.0.1&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">from_ip</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;192.168.0.2&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">to_ip</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;192.168.0.42&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">boot_mode</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Static&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">dhcp_proxy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smart-proxy1.foo.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">tftp_proxy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smart-proxy1.foo.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">dns_proxy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smart-proxy2.foo.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">template_proxy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;smart-proxy2.foo.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">vlanid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">452</span><span class="w"></span>
+<span class="w">            </span><span class="nt">mtu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9000</span><span class="w"></span>
+<span class="w">            </span><span class="nt">domains</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;foo.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;bar.example.com&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">organizations</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Example</span><span class="nv"> </span><span class="s">Org&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">locations</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Uppsala&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -139,7 +139,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, The Foreman Project.</p>
+    <p>&#169; Copyright 2022, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
