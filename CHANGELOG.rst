@@ -6,6 +6,30 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.1.0
+======
+
+Minor Changes
+-------------
+
+- Warn if the user tries to use a plain HTTP server URL and fail if the URL is neither HTTPS nor HTTP.
+- new ``compute_profiles`` role to manage compute profiles
+- new ``compute_resources`` role to manage compute resources
+- new ``content_view_publish`` role to publish a list of content views (https://github.com/theforeman/foreman-ansible-modules/issues/1209)
+- new ``domains`` role to manage domains
+- new ``operatingsystems`` role to manage operating systems
+- new ``provisioning_templates`` role to manage provisioning templates
+- new ``settings`` role to manage settings
+- new ``subnets`` role to manage subnets
+- repository - new ``download_concurrency`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1273)
+
+Bugfixes
+--------
+
+- callback plugin - include timezone information in the callback reported data (https://github.com/theforeman/foreman-ansible-modules/issues/1171)
+- hostgroup, location - don't fail when trying to delete a Hostgroup or Location where the parent is already absent
+- inventory plugin - fetch *all* facts, not only the first 250, when using the old Hosts API
+
 v3.0.0
 ======
 
