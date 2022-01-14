@@ -523,3 +523,39 @@ releases:
     - drop-ansible28.yml
     - validate-inventory-certs.yml
     release_date: '2021-11-11'
+  3.1.0:
+    changes:
+      bugfixes:
+      - callback plugin - include timezone information in the callback reported data
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1171)
+      - hostgroup, location - don't fail when trying to delete a Hostgroup or Location
+        where the parent is already absent
+      - inventory plugin - fetch *all* facts, not only the first 250, when using the
+        old Hosts API
+      minor_changes:
+      - Warn if the user tries to use a plain HTTP server URL and fail if the URL
+        is neither HTTPS nor HTTP.
+      - new ``compute_profiles`` role to manage compute profiles
+      - new ``compute_resources`` role to manage compute resources
+      - new ``content_view_publish`` role to publish a list of content views (https://github.com/theforeman/foreman-ansible-modules/issues/1209)
+      - new ``domains`` role to manage domains
+      - new ``operatingsystems`` role to manage operating systems
+      - new ``provisioning_templates`` role to manage provisioning templates
+      - new ``settings`` role to manage settings
+      - new ``subnets`` role to manage subnets
+      - repository - new ``download_concurrency`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1273)
+    fragments:
+    - 1171-timezone.yml
+    - 1209-content_views_role.yml
+    - 1301-failsafe-parents.yml
+    - 1303-foreman-repository-download-concurrency.yml
+    - add-compute-profile-role.yml
+    - add-compute-resource-role.yml
+    - add-domains-role.yml
+    - add-operatingsystems-role.yml
+    - add-provisioning-templates-role.yml
+    - add-settings-role.yml
+    - add-subnets-role.yml
+    - explicit-http-warning.yml
+    - inventory-facts-batch-size.yml
+    release_date: '2022-01-14'
