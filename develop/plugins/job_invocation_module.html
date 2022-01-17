@@ -44,9 +44,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Theforeman.Foreman</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman – Sends events to Foreman</a></li>
 <li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman – Foreman inventory source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key – Manage Activation Keys</a></li>
@@ -169,7 +169,7 @@
 <h1>theforeman.foreman.job_invocation – Invoke Remote Execution Jobs<a class="headerlink" href="#theforeman-foreman-job-invocation-invoke-remote-execution-jobs" title="Permalink to this headline"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.1.0-dev).</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.2.0-dev).</p>
 <p>You might already have this collection installed if you are using the <code class="docutils literal notranslate"><span class="pre">ansible</span></code> package.
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
@@ -203,403 +203,204 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </section>
 <section id="parameters">
 <h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h2>
-<table  border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="2">Parameter</th>
-        <th>Choices/<font color="blue">Defaults</font></th>
-                    <th width="100%">Comments</th>
-    </tr>
-                <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-bookmark"></div>
-                <b>bookmark</b>
-                <a class="ansibleOptionLink" href="#parameter-bookmark" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Bookmark to infer the search query from</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-command"></div>
-                <b>command</b>
-                <a class="ansibleOptionLink" href="#parameter-command" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Command to be executed on host. Required for command templates</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-concurrency_control"></div>
-                <b>concurrency_control</b>
-                <a class="ansibleOptionLink" href="#parameter-concurrency_control" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Control concurrency level and distribution over time</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-concurrency_control/concurrency_level"></div>
-                <b>concurrency_level</b>
-                <a class="ansibleOptionLink" href="#parameter-concurrency_control/concurrency_level" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">integer</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Maximum jobs to be executed at once</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-concurrency_control/time_span"></div>
-                <b>time_span</b>
-                <a class="ansibleOptionLink" href="#parameter-concurrency_control/time_span" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">integer</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Distribute tasks over given number of seconds</div>
-                                                    </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-execution_timeout_interval"></div>
-                <b>execution_timeout_interval</b>
-                <a class="ansibleOptionLink" href="#parameter-execution_timeout_interval" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">integer</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Override the timeout interval from the template for this invocation only</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-inputs"></div>
-                <b>inputs</b>
-                <a class="ansibleOptionLink" href="#parameter-inputs" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Inputs to use</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-job_template"></div>
-                <b>job_template</b>
-                <a class="ansibleOptionLink" href="#parameter-job_template" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Job template to execute</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-password"></div>
-                <b>password</b>
-                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Password of the user accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-randomized_ordering"></div>
-                <b>randomized_ordering</b>
-                <a class="ansibleOptionLink" href="#parameter-randomized_ordering" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">boolean</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>no</li>
-                                                                                                                                                                                            <li>yes</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Whether to order the selected hosts randomly</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-recurrence"></div>
-                <b>recurrence</b>
-                <a class="ansibleOptionLink" href="#parameter-recurrence" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Schedule a recurring job</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-recurrence/cron_line"></div>
-                <b>cron_line</b>
-                <a class="ansibleOptionLink" href="#parameter-recurrence/cron_line" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>How often the job should occur, in the cron format</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-recurrence/end_time"></div>
-                <b>end_time</b>
-                <a class="ansibleOptionLink" href="#parameter-recurrence/end_time" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Perform no more executions after this time</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-recurrence/max_iteration"></div>
-                <b>max_iteration</b>
-                <a class="ansibleOptionLink" href="#parameter-recurrence/max_iteration" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">integer</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Repeat a maximum of N times</div>
-                                                    </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-scheduling"></div>
-                <b>scheduling</b>
-                <a class="ansibleOptionLink" href="#parameter-scheduling" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Schedule the job to start at a later time</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-scheduling/start_at"></div>
-                <b>start_at</b>
-                <a class="ansibleOptionLink" href="#parameter-scheduling/start_at" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Schedule the job for a future time</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-scheduling/start_before"></div>
-                <b>start_before</b>
-                <a class="ansibleOptionLink" href="#parameter-scheduling/start_before" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Indicates that the action should be cancelled if it cannot be started before this time.</div>
-                                                    </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-search_query"></div>
-                <b>search_query</b>
-                <a class="ansibleOptionLink" href="#parameter-search_query" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Search query to identify hosts</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
-                <b>server_url</b>
-                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>URL of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-ssh"></div>
-                <b>ssh</b>
-                <a class="ansibleOptionLink" href="#parameter-ssh" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>ssh related options</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-ssh/effective_user"></div>
-                <b>effective_user</b>
-                <a class="ansibleOptionLink" href="#parameter-ssh/effective_user" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>What user should be used to run the script (using sudo-like mechanisms)</div>
-                                        <div>Defaults to a template parameter or global setting</div>
-                                                    </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-targeting_type"></div>
-                <b>targeting_type</b>
-                <a class="ansibleOptionLink" href="#parameter-targeting_type" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li><div style="color: blue"><b>static_query</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                            <li>dynamic_query</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Dynamic query updates the search results before execution (useful for scheduled jobs)</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-username"></div>
-                <b>username</b>
-                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Username accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                <b>validate_certs</b>
-                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">boolean</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>no</li>
-                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                    </table>
-<br/></section>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-bookmark"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-bookmark"><strong>bookmark</strong></p>
+<a class="ansibleOptionLink" href="#parameter-bookmark" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Bookmark to infer the search query from</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-command"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-command"><strong>command</strong></p>
+<a class="ansibleOptionLink" href="#parameter-command" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Command to be executed on host. Required for command templates</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-concurrency_control"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-concurrency-control"><strong>concurrency_control</strong></p>
+<a class="ansibleOptionLink" href="#parameter-concurrency_control" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Control concurrency level and distribution over time</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-concurrency_control/concurrency_level"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-concurrency-control-concurrency-level"><strong>concurrency_level</strong></p>
+<a class="ansibleOptionLink" href="#parameter-concurrency_control/concurrency_level" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Maximum jobs to be executed at once</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-concurrency_control/time_span"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-concurrency-control-time-span"><strong>time_span</strong></p>
+<a class="ansibleOptionLink" href="#parameter-concurrency_control/time_span" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Distribute tasks over given number of seconds</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-execution_timeout_interval"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-execution-timeout-interval"><strong>execution_timeout_interval</strong></p>
+<a class="ansibleOptionLink" href="#parameter-execution_timeout_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Override the timeout interval from the template for this invocation only</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-inputs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-inputs"><strong>inputs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-inputs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Inputs to use</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-job_template"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-job-template"><strong>job_template</strong></p>
+<a class="ansibleOptionLink" href="#parameter-job_template" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Job template to execute</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-randomized_ordering"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-randomized-ordering"><strong>randomized_ordering</strong></p>
+<a class="ansibleOptionLink" href="#parameter-randomized_ordering" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether to order the selected hosts randomly</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-recurrence"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-recurrence"><strong>recurrence</strong></p>
+<a class="ansibleOptionLink" href="#parameter-recurrence" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Schedule a recurring job</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-recurrence/cron_line"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-recurrence-cron-line"><strong>cron_line</strong></p>
+<a class="ansibleOptionLink" href="#parameter-recurrence/cron_line" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>How often the job should occur, in the cron format</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-recurrence/end_time"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-recurrence-end-time"><strong>end_time</strong></p>
+<a class="ansibleOptionLink" href="#parameter-recurrence/end_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Perform no more executions after this time</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-recurrence/max_iteration"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-recurrence-max-iteration"><strong>max_iteration</strong></p>
+<a class="ansibleOptionLink" href="#parameter-recurrence/max_iteration" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Repeat a maximum of N times</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-scheduling"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-scheduling"><strong>scheduling</strong></p>
+<a class="ansibleOptionLink" href="#parameter-scheduling" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Schedule the job to start at a later time</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-scheduling/start_at"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-scheduling-start-at"><strong>start_at</strong></p>
+<a class="ansibleOptionLink" href="#parameter-scheduling/start_at" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Schedule the job for a future time</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-scheduling/start_before"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-scheduling-start-before"><strong>start_before</strong></p>
+<a class="ansibleOptionLink" href="#parameter-scheduling/start_before" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Indicates that the action should be cancelled if it cannot be started before this time.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-search_query"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-search-query"><strong>search_query</strong></p>
+<a class="ansibleOptionLink" href="#parameter-search_query" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Search query to identify hosts</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-server-url"><strong>server_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ssh"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-ssh"><strong>ssh</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ssh" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>ssh related options</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ssh/effective_user"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-ssh-effective-user"><strong>effective_user</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ssh/effective_user" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>What user should be used to run the script (using sudo-like mechanisms)</p>
+<p>Defaults to a template parameter or global setting</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-targeting_type"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-targeting-type"><strong>targeting_type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-targeting_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Dynamic query updates the search results before execution (useful for scheduled jobs)</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">static_query</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">dynamic_query</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-default-bold">yes</span> <span class="ansible-option-default">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Run</span><span class="nv"> </span><span class="s">remote</span><span class="nv"> </span><span class="s">command</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">single</span><span class="nv"> </span><span class="s">host</span><span class="nv"> </span><span class="s">once&quot;</span><span class="w"></span>
@@ -625,46 +426,32 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <section id="return-values">
 <h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h2>
 <p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v5)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
-<table border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="2">Key</th>
-        <th>Returned</th>
-        <th width="100%">Description</th>
-    </tr>
-                <tr>
-                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="return-entity"></div>
-                <b>entity</b>
-                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">dictionary</span>
-                                      </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Final state of the affected entities grouped by their type.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="return-entity/job_invocations"></div>
-                <b>job_invocations</b>
-                <a class="ansibleOptionLink" href="#return-entity/job_invocations" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">list</span>
-                   / <span style="color: purple">elements=dictionary</span>                    </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>List of job invocations</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-
-                    </table>
-<br/><br/><section id="authors">
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-return-entity"><strong>entity</strong></p>
+<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/job_invocations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-job-invocation-module-return-entity-job-invocations"><strong>job_invocations</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/job_invocations" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of job invocations</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>Peter Ondrejka (&#64;pondrejk)</p></li>

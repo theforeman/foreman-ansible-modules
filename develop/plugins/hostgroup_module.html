@@ -44,9 +44,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Theforeman.Foreman</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman – Sends events to Foreman</a></li>
 <li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman – Foreman inventory source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key – Manage Activation Keys</a></li>
@@ -169,7 +169,7 @@
 <h1>theforeman.foreman.hostgroup – Manage Hostgroups<a class="headerlink" href="#theforeman-foreman-hostgroup-manage-hostgroups" title="Permalink to this headline"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.1.0-dev).</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.2.0-dev).</p>
 <p>You might already have this collection installed if you are using the <code class="docutils literal notranslate"><span class="pre">ansible</span></code> package.
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
@@ -203,676 +203,357 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </section>
 <section id="parameters">
 <h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h2>
-<table  border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="2">Parameter</th>
-        <th>Choices/<font color="blue">Defaults</font></th>
-                    <th width="100%">Comments</th>
-    </tr>
-                <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-activation_keys"></div>
-                <b>activation_keys</b>
-                <a class="ansibleOptionLink" href="#parameter-activation_keys" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Activation Keys used for deployment.</div>
-                                        <div>Comma separated list.</div>
-                                        <div>Only available for Katello installations.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-ansible_roles"></div>
-                <b>ansible_roles</b>
-                <a class="ansibleOptionLink" href="#parameter-ansible_roles" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=string</span>                                            </div>
-                                      <div style="font-style: italic; font-size: small; color: darkgreen">
-                    added in 2.1.0 of theforeman.foreman
-                  </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>A list of ansible roles to associate with the hostgroup.</div>
-                                        <div>The foreman-ansible plugin must be installed to use this parameter.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-architecture"></div>
-                <b>architecture</b>
-                <a class="ansibleOptionLink" href="#parameter-architecture" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Architecture name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-compute_profile"></div>
-                <b>compute_profile</b>
-                <a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Compute profile name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-compute_resource"></div>
-                <b>compute_resource</b>
-                <a class="ansibleOptionLink" href="#parameter-compute_resource" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Compute resource name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-config_groups"></div>
-                <b>config_groups</b>
-                <a class="ansibleOptionLink" href="#parameter-config_groups" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=string</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Config groups list</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-content_source"></div>
-                <b>content_source</b>
-                <a class="ansibleOptionLink" href="#parameter-content_source" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Content source.</div>
-                                        <div>Only available for Katello installations.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-content_view"></div>
-                <b>content_view</b>
-                <a class="ansibleOptionLink" href="#parameter-content_view" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Content view.</div>
-                                        <div>Only available for Katello installations.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-description"></div>
-                <b>description</b>
-                <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Description of hostgroup</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-domain"></div>
-                <b>domain</b>
-                <a class="ansibleOptionLink" href="#parameter-domain" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Domain name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-environment"></div>
-                <b>environment</b>
-                <a class="ansibleOptionLink" href="#parameter-environment" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Puppet environment name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-kickstart_repository"></div>
-                <b>kickstart_repository</b>
-                <a class="ansibleOptionLink" href="#parameter-kickstart_repository" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Kickstart repository name.</div>
-                                        <div>You need to provide this to use the &quot;Synced Content&quot; feature.</div>
-                                        <div>Mutually exclusive with <em>medium</em>.</div>
-                                        <div>Only available for Katello installations.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-lifecycle_environment"></div>
-                <b>lifecycle_environment</b>
-                <a class="ansibleOptionLink" href="#parameter-lifecycle_environment" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Lifecycle environment.</div>
-                                        <div>Only available for Katello installations.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-locations"></div>
-                <b>locations</b>
-                <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=string</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>List of locations the entity should be assigned to</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-medium"></div>
-                <b>medium</b>
-                <a class="ansibleOptionLink" href="#parameter-medium" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Medium name</div>
-                                        <div>Mutually exclusive with <em>kickstart_repository</em>.</div>
-                                                            <div style="font-size: small; color: darkgreen"><br/>aliases: media</div>
-                                </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-name"></div>
-                <b>name</b>
-                <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Name of hostgroup</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-openscap_proxy"></div>
-                <b>openscap_proxy</b>
-                <a class="ansibleOptionLink" href="#parameter-openscap_proxy" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>OpenSCAP proxy name.</div>
-                                        <div>Only available when the OpenSCAP plugin is installed.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div>
-                <b>operatingsystem</b>
-                <a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Operating systems are looked up by their title which is composed as &quot;&lt;name&gt; &lt;major&gt;.&lt;minor&gt;&quot;.</div>
-                                        <div>You can omit the version part as long as you only have one operating system by that name.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-organization"></div>
-                <b>organization</b>
-                <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Organization for scoped resources attached to the hostgroup.</div>
-                                        <div>Only used for Katello installations.</div>
-                                        <div>This organization will implicitly be added to the <em>organizations</em> parameter if needed.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
-                <b>organizations</b>
-                <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=string</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>List of organizations the entity should be assigned to</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-parameters"></div>
-                <b>parameters</b>
-                <a class="ansibleOptionLink" href="#parameter-parameters" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=dictionary</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Hostgroup specific host parameters</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-parameters/name"></div>
-                <b>name</b>
-                <a class="ansibleOptionLink" href="#parameter-parameters/name" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Name of the parameter</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-parameters/parameter_type"></div>
-                <b>parameter_type</b>
-                <a class="ansibleOptionLink" href="#parameter-parameters/parameter_type" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li><div style="color: blue"><b>string</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                            <li>boolean</li>
-                                                                                                                                                                                            <li>integer</li>
-                                                                                                                                                                                            <li>real</li>
-                                                                                                                                                                                            <li>array</li>
-                                                                                                                                                                                            <li>hash</li>
-                                                                                                                                                                                            <li>yaml</li>
-                                                                                                                                                                                            <li>json</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Type of the parameter</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-parameters/value"></div>
-                <b>value</b>
-                <a class="ansibleOptionLink" href="#parameter-parameters/value" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">raw</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Value of the parameter</div>
-                                                    </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-parent"></div>
-                <b>parent</b>
-                <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Hostgroup parent name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-password"></div>
-                <b>password</b>
-                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Password of the user accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-ptable"></div>
-                <b>ptable</b>
-                <a class="ansibleOptionLink" href="#parameter-ptable" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Partition table name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-puppet_ca_proxy"></div>
-                <b>puppet_ca_proxy</b>
-                <a class="ansibleOptionLink" href="#parameter-puppet_ca_proxy" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Puppet CA proxy name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-puppet_proxy"></div>
-                <b>puppet_proxy</b>
-                <a class="ansibleOptionLink" href="#parameter-puppet_proxy" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Puppet server proxy name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-puppetclasses"></div>
-                <b>puppetclasses</b>
-                <a class="ansibleOptionLink" href="#parameter-puppetclasses" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=string</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>List of puppet classes to include in this host group. Must exist for hostgroup&#x27;s puppet environment.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-pxe_loader"></div>
-                <b>pxe_loader</b>
-                <a class="ansibleOptionLink" href="#parameter-pxe_loader" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>PXELinux BIOS</li>
-                                                                                                                                                                                            <li>PXELinux UEFI</li>
-                                                                                                                                                                                            <li>Grub UEFI</li>
-                                                                                                                                                                                            <li>Grub2 BIOS</li>
-                                                                                                                                                                                            <li>Grub2 ELF</li>
-                                                                                                                                                                                            <li>Grub2 UEFI</li>
-                                                                                                                                                                                            <li>Grub2 UEFI SecureBoot</li>
-                                                                                                                                                                                            <li>Grub2 UEFI HTTP</li>
-                                                                                                                                                                                            <li>Grub2 UEFI HTTPS</li>
-                                                                                                                                                                                            <li>Grub2 UEFI HTTPS SecureBoot</li>
-                                                                                                                                                                                            <li>iPXE Embedded</li>
-                                                                                                                                                                                            <li>iPXE UEFI HTTP</li>
-                                                                                                                                                                                            <li>iPXE Chain BIOS</li>
-                                                                                                                                                                                            <li>iPXE Chain UEFI</li>
-                                                                                                                                                                                            <li>None</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>PXE Bootloader</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-realm"></div>
-                <b>realm</b>
-                <a class="ansibleOptionLink" href="#parameter-realm" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Realm name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-root_pass"></div>
-                <b>root_pass</b>
-                <a class="ansibleOptionLink" href="#parameter-root_pass" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Root password.</div>
-                                        <div>Will result in the entity always being updated, as the current password cannot be retrieved.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
-                <b>server_url</b>
-                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>URL of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-state"></div>
-                <b>state</b>
-                <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                            <li>absent</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>State of the entity</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-subnet"></div>
-                <b>subnet</b>
-                <a class="ansibleOptionLink" href="#parameter-subnet" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>IPv4 Subnet name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-subnet6"></div>
-                <b>subnet6</b>
-                <a class="ansibleOptionLink" href="#parameter-subnet6" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>IPv6 Subnet name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
-                <b>updated_name</b>
-                <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>New name of hostgroup. When this parameter is set, the module will not be idempotent.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-username"></div>
-                <b>username</b>
-                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Username accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                <b>validate_certs</b>
-                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">boolean</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>no</li>
-                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                    </table>
-<br/></section>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-activation_keys"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-activation-keys"><strong>activation_keys</strong></p>
+<a class="ansibleOptionLink" href="#parameter-activation_keys" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Activation Keys used for deployment.</p>
+<p>Comma separated list.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ansible_roles"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-ansible-roles"><strong>ansible_roles</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ansible_roles" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+<p><span class="ansible-option-versionadded">added in 2.1.0 of theforeman.foreman</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>A list of ansible roles to associate with the hostgroup.</p>
+<p>The foreman-ansible plugin must be installed to use this parameter.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-architecture"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-architecture"><strong>architecture</strong></p>
+<a class="ansibleOptionLink" href="#parameter-architecture" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Architecture name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_profile"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-compute-profile"><strong>compute_profile</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Compute profile name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_resource"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-compute-resource"><strong>compute_resource</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_resource" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Compute resource name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-config_groups"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-config-groups"><strong>config_groups</strong></p>
+<a class="ansibleOptionLink" href="#parameter-config_groups" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Config groups list</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-content_source"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-content-source"><strong>content_source</strong></p>
+<a class="ansibleOptionLink" href="#parameter-content_source" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Content source.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-content_view"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-content-view"><strong>content_view</strong></p>
+<a class="ansibleOptionLink" href="#parameter-content_view" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Content view.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-description"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-description"><strong>description</strong></p>
+<a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Description of hostgroup</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-domain"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-domain"><strong>domain</strong></p>
+<a class="ansibleOptionLink" href="#parameter-domain" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Domain name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-environment"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-environment"><strong>environment</strong></p>
+<a class="ansibleOptionLink" href="#parameter-environment" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet environment name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-kickstart_repository"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-kickstart-repository"><strong>kickstart_repository</strong></p>
+<a class="ansibleOptionLink" href="#parameter-kickstart_repository" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Kickstart repository name.</p>
+<p>You need to provide this to use the “Synced Content” feature.</p>
+<p>Mutually exclusive with <em>medium</em>.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-lifecycle_environment"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-lifecycle-environment"><strong>lifecycle_environment</strong></p>
+<a class="ansibleOptionLink" href="#parameter-lifecycle_environment" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Lifecycle environment.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-locations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-locations"><strong>locations</strong></p>
+<a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of locations the entity should be assigned to</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-medium"></div>
+<div class="ansibleOptionAnchor" id="parameter-media"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-media"><span id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-medium"></span><strong>medium</strong></p>
+<a class="ansibleOptionLink" href="#parameter-medium" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: media</span></p>
+<p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Medium name</p>
+<p>Mutually exclusive with <em>kickstart_repository</em>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of hostgroup</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-openscap_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-openscap-proxy"><strong>openscap_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-openscap_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>OpenSCAP proxy name.</p>
+<p>Only available when the OpenSCAP plugin is installed.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-operatingsystem"><strong>operatingsystem</strong></p>
+<a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Operating systems are looked up by their title which is composed as “&lt;name&gt; &lt;major&gt;.&lt;minor&gt;”.</p>
+<p>You can omit the version part as long as you only have one operating system by that name.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-organization"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-organization"><strong>organization</strong></p>
+<a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Organization for scoped resources attached to the hostgroup.</p>
+<p>Only used for Katello installations.</p>
+<p>This organization will implicitly be added to the <em>organizations</em> parameter if needed.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-organizations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-organizations"><strong>organizations</strong></p>
+<a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of organizations the entity should be assigned to</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-parameters"><strong>parameters</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Hostgroup specific host parameters</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-parameters-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Name of the parameter</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/parameter_type"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-parameters-parameter-type"><strong>parameter_type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/parameter_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Type of the parameter</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">string</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">boolean</span></p></li>
+<li><p><span class="ansible-option-choices-entry">integer</span></p></li>
+<li><p><span class="ansible-option-choices-entry">real</span></p></li>
+<li><p><span class="ansible-option-choices-entry">array</span></p></li>
+<li><p><span class="ansible-option-choices-entry">hash</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yaml</span></p></li>
+<li><p><span class="ansible-option-choices-entry">json</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/value"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-parameters-value"><strong>value</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/value" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">raw</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Value of the parameter</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parent"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-parent"><strong>parent</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Hostgroup parent name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ptable"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-ptable"><strong>ptable</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ptable" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Partition table name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppet_ca_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-puppet-ca-proxy"><strong>puppet_ca_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppet_ca_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet CA proxy name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppet_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-puppet-proxy"><strong>puppet_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppet_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet server proxy name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppetclasses"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-puppetclasses"><strong>puppetclasses</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppetclasses" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of puppet classes to include in this host group. Must exist for hostgroup’s puppet environment.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-pxe_loader"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-pxe-loader"><strong>pxe_loader</strong></p>
+<a class="ansibleOptionLink" href="#parameter-pxe_loader" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>PXE Bootloader</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">PXELinux BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">PXELinux UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 ELF</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI SecureBoot</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTP</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTPS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTPS SecureBoot</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Embedded</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE UEFI HTTP</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Chain BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Chain UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">None</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-realm"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-realm"><strong>realm</strong></p>
+<a class="ansibleOptionLink" href="#parameter-realm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Realm name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-root_pass"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-root-pass"><strong>root_pass</strong></p>
+<a class="ansibleOptionLink" href="#parameter-root_pass" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Root password.</p>
+<p>Will result in the entity always being updated, as the current password cannot be retrieved.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-server-url"><strong>server_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>State of the entity</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-subnet"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-subnet"><strong>subnet</strong></p>
+<a class="ansibleOptionLink" href="#parameter-subnet" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>IPv4 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-subnet6"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-subnet6"><strong>subnet6</strong></p>
+<a class="ansibleOptionLink" href="#parameter-subnet6" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>IPv6 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-updated_name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-updated-name"><strong>updated_name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>New name of hostgroup. When this parameter is set, the module will not be idempotent.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-default-bold">yes</span> <span class="ansible-option-default">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">Hostgroup&quot;</span><span class="w"></span>
@@ -944,46 +625,32 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <section id="return-values">
 <h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h2>
 <p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v5)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
-<table border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="2">Key</th>
-        <th>Returned</th>
-        <th width="100%">Description</th>
-    </tr>
-                <tr>
-                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="return-entity"></div>
-                <b>entity</b>
-                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">dictionary</span>
-                                      </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Final state of the affected entities grouped by their type.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="return-entity/hostgroups"></div>
-                <b>hostgroups</b>
-                <a class="ansibleOptionLink" href="#return-entity/hostgroups" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">list</span>
-                   / <span style="color: purple">elements=dictionary</span>                    </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>List of hostgroups.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-
-                    </table>
-<br/><br/><section id="authors">
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-return-entity"><strong>entity</strong></p>
+<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/hostgroups"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-hostgroup-module-return-entity-hostgroups"><strong>hostgroups</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/hostgroups" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of hostgroups.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>Manisha Singhal (&#64;Manisha15) ATIX AG</p></li>

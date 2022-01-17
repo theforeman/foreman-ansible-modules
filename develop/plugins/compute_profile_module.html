@@ -44,9 +44,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Theforeman.Foreman</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html#modules">Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman – Sends events to Foreman</a></li>
 <li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman – Foreman inventory source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key – Manage Activation Keys</a></li>
@@ -169,7 +169,7 @@
 <h1>theforeman.foreman.compute_profile – Manage Compute Profiles<a class="headerlink" href="#theforeman-foreman-compute-profile-manage-compute-profiles" title="Permalink to this headline"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.1.0-dev).</p>
+<p>This plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.2.0-dev).</p>
 <p>You might already have this collection installed if you are using the <code class="docutils literal notranslate"><span class="pre">ansible</span></code> package.
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
@@ -203,180 +203,102 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </section>
 <section id="parameters">
 <h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h2>
-<table  border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="2">Parameter</th>
-        <th>Choices/<font color="blue">Defaults</font></th>
-                    <th width="100%">Comments</th>
-    </tr>
-                <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-compute_attributes"></div>
-                <b>compute_attributes</b>
-                <a class="ansibleOptionLink" href="#parameter-compute_attributes" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">list</span>
-                     / <span style="color: purple">elements=dictionary</span>                                            </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type</div>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-compute_attributes/compute_resource"></div>
-                <b>compute_resource</b>
-                <a class="ansibleOptionLink" href="#parameter-compute_attributes/compute_resource" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Name of the compute resource the attribute should be for</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="parameter-compute_attributes/vm_attrs"></div>
-                <b>vm_attrs</b>
-                <a class="ansibleOptionLink" href="#parameter-compute_attributes/vm_attrs" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">dictionary</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Hash containing the data of vm_attrs</div>
-                                                            <div style="font-size: small; color: darkgreen"><br/>aliases: vm_attributes</div>
-                                </td>
-        </tr>
-
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-name"></div>
-                <b>name</b>
-                <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>compute profile name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-password"></div>
-                <b>password</b>
-                <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Password of the user accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_PASSWORD</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
-                <b>server_url</b>
-                <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>URL of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_SERVER_URL</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-state"></div>
-                <b>state</b>
-                <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                            <li>absent</li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>State of the entity</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
-                <b>updated_name</b>
-                <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>new compute profile name</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-username"></div>
-                <b>username</b>
-                <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">string</span>
-                                             / <span style="color: red">required</span>                    </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                        <div>Username accessing the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_USERNAME</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                            <tr>
-                                                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                <b>validate_certs</b>
-                <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                <div style="font-size: small">
-                    <span style="color: purple">boolean</span>
-                                                                </div>
-                                                    </td>
-                            <td>
-                                                                                                                                                                                                                <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                            <li>no</li>
-                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
-                                                                                </ul>
-                                                                        </td>
-                                                            <td>
-                                        <div>Whether or not to verify the TLS certificates of the Foreman server.</div>
-                                        <div>If the value is not specified in the task, the value of environment variable <code>FOREMAN_VALIDATE_CERTS</code> will be used instead.</div>
-                                                    </td>
-        </tr>
-                    </table>
-<br/></section>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-compute-attributes"><strong>compute_attributes</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_attributes" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Compute attributes related to this compute profile. Some of these attributes are specific to the underlying compute resource type</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_attributes/compute_resource"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-compute-attributes-compute-resource"><strong>compute_resource</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_attributes/compute_resource" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Name of the compute resource the attribute should be for</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_attributes/vm_attrs"></div>
+<div class="ansibleOptionAnchor" id="parameter-compute_attributes/vm_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-compute-attributes-vm-attributes"><span id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-compute-attributes-vm-attrs"></span><strong>vm_attrs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_attributes/vm_attrs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: vm_attributes</span></p>
+<p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Hash containing the data of vm_attrs</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>compute profile name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-server-url"><strong>server_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>State of the entity</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-updated_name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-updated-name"><strong>updated_name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>new compute profile name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-default-bold">yes</span> <span class="ansible-option-default">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute profile</span><span class="w"></span>
@@ -458,98 +380,56 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <section id="return-values">
 <h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h2>
 <p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v5)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
-<table border=0 cellpadding=0 class="documentation-table">
-    <tr>
-        <th colspan="3">Key</th>
-        <th>Returned</th>
-        <th width="100%">Description</th>
-    </tr>
-                <tr>
-                            <td colspan="3">
-                <div class="ansibleOptionAnchor" id="return-entity"></div>
-                <b>entity</b>
-                <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">dictionary</span>
-                                      </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Final state of the affected entities grouped by their type.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="2">
-                <div class="ansibleOptionAnchor" id="return-entity/compute_profiles"></div>
-                <b>compute_profiles</b>
-                <a class="ansibleOptionLink" href="#return-entity/compute_profiles" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">list</span>
-                   / <span style="color: purple">elements=dictionary</span>                    </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>List of compute profiles.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                                    <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="return-entity/compute_profiles/compute_attributes"></div>
-                <b>compute_attributes</b>
-                <a class="ansibleOptionLink" href="#return-entity/compute_profiles/compute_attributes" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">list</span>
-                   / <span style="color: purple">elements=string</span>                    </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Attributes for this compute profile.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                            <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="return-entity/compute_profiles/id"></div>
-                <b>id</b>
-                <a class="ansibleOptionLink" href="#return-entity/compute_profiles/id" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">integer</span>
-                                      </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Database id of the compute profile.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-                            <tr>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                                <td class="elbow-placeholder">&nbsp;</td>
-                            <td colspan="1">
-                <div class="ansibleOptionAnchor" id="return-entity/compute_profiles/name"></div>
-                <b>name</b>
-                <a class="ansibleOptionLink" href="#return-entity/compute_profiles/name" title="Permalink to this return value"></a>
-                <div style="font-size: small">
-                  <span style="color: purple">string</span>
-                                      </div>
-                                </td>
-            <td>success</td>
-            <td>
-                                        <div>Name of the compute profile.</div>
-                                    <br/>
-                                                    </td>
-        </tr>
-
-
-                    </table>
-<br/><br/><section id="authors">
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-return-entity"><strong>entity</strong></p>
+<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/compute_profiles"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-return-entity-compute-profiles"><strong>compute_profiles</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/compute_profiles" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of compute profiles.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/compute_profiles/compute_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-return-entity-compute-profiles-compute-attributes"><strong>compute_attributes</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/compute_profiles/compute_attributes" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Attributes for this compute profile.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/compute_profiles/id"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-return-entity-compute-profiles-id"><strong>id</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/compute_profiles/id" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Database id of the compute profile.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/compute_profiles/name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-compute-profile-module-return-entity-compute-profiles-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/compute_profiles/name" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Name of the compute profile.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>Philipp Joos (&#64;philippj)</p></li>
