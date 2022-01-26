@@ -121,7 +121,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-- name: LDAP Authentication source
+- name: Simple FreeIPA authentication source
   theforeman.foreman.auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
@@ -134,7 +134,7 @@ EXAMPLES = '''
     password: "changeme"
     state: present
 
-- name: LDAP Authentication with automatic registration
+- name: FreeIPA with automatic registration
   theforeman.foreman.auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
@@ -149,6 +149,26 @@ EXAMPLES = '''
     attr_lastname: sn
     attr_mail: mail
     attr_photo: jpegPhoto
+    server_url: "https://foreman.example.com"
+    username: "admin"
+    password: "changeme"
+    state: present
+
+- name: Active Directory with automatic registration
+  theforeman.foreman.auth_source_ldap:
+    name: "Example AD"
+    host: "ad.example.org"
+    onthefly_register: True
+    account: EXAMPLE\\ansible
+    account_password: secret
+    base_dn: cn=Users,dc=example,dc=com
+    groups_base: cn=Users,dc=example,dc=com
+    server_type: active_directory
+    attr_login: sAMAccountName
+    attr_firstname: givenName
+    attr_lastname: sn
+    attr_mail: mail
+    ldap_filter: (memberOf=CN=Domain Users,CN=Users,DC=example,DC=com)
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
