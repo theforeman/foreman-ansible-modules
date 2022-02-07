@@ -14,7 +14,7 @@ interactions:
     uri: http://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.1.0-develop","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.2.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Vary:
@@ -70,8 +70,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-09
-        09:00:31 UTC\",\"updated_at\":\"2021-11-09 09:00:35 UTC\",\"id\":3,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-02-08
+        07:55:38 UTC\",\"updated_at\":\"2022-02-08 07:55:42 UTC\",\"id\":3,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -91,7 +91,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Vary:
@@ -126,9 +126,7 @@ interactions:
     uri: http://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Convert2RHEL7%22&per_page=4294967296
   response:
     body:
-      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7\"","sort":{"by":"name","order":"asc"},"results":[{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
-        Complete.","last_sync":"2021-11-09 11:03:43 UTC","last_sync_words":"2 days","organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
+      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7\"","sort":{"by":"name","order":"asc"},"results":[]}
 
         '
     headers:
@@ -149,7 +147,7 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Vary:
@@ -164,24 +162,13 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      X-bullet-console-text:
-      - '["user: root\nAVOID eager loading detected\n  Katello::Product =\u003e [:provider]\n  Remove
-        from your query: .includes([:provider])\nCall stack\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
-        `call''\n\n"]'
-      X-bullet-footer-text:
-      - '["user: root  AVOID eager loading detected    Katello::Product =\u003e [:provider]\n  Remove
-        from your query: .includes([:provider])"]'
       content-length:
-      - '656'
+      - '168'
     status:
       code: 200
       message: OK
 - request:
-    body: null
+    body: '{"organization_id": 3, "name": "Convert2RHEL7"}'
     headers:
       Accept:
       - application/json;version=2
@@ -189,22 +176,19 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '47'
+      Content-Type:
+      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/katello/api/products/4?organization_id=3
+    method: POST
+    uri: http://foreman.example.org/katello/api/products
   response:
     body:
-      string: '  {"sync_state_aggregated":"Syncing Complete.","redhat":false,"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
-        Complete.","last_sync":"2021-11-09 11:03:43 UTC","last_sync_words":"2 days","organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1,"created_at":"2021-11-09
-        09:00:41 UTC","updated_at":"2021-11-09 09:00:41 UTC","product_content":[{"enabled":true,"product_id":4,"content":{"name":"Convert2RHEL7
-        main","label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","vendor":"Custom","content_url":"/custom/Convert2RHEL7/Convert2RHEL7_main","gpg_url":null,"id":"1636448445894","type":"yum","gpgUrl":null,"contentUrl":"/custom/Convert2RHEL7/Convert2RHEL7_main"}}],"available_content":[{"enabled":true,"product_id":4,"content":{"name":"Convert2RHEL7
-        main","label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","vendor":"Custom","content_url":"/custom/Convert2RHEL7/Convert2RHEL7_main","gpg_url":null,"id":"1636448445894","type":"yum","gpgUrl":null,"contentUrl":"/custom/Convert2RHEL7/Convert2RHEL7_main"}}],"repositories":[{"name":"Convert2RHEL7
-        main","id":4}],"provider":{"name":"Anonymous"},"sync_status":{"id":4,"product_id":4,"progress":{"progress":100.0},"sync_id":"333097e4-0199-47ce-85ad-b2381124f731","state":"Syncing
-        Complete.","raw_state":"stopped","start_time":"2 days ago","finish_time":"2
-        days ago","duration":"less than a minute","display_size":"No content added.","size":"No
-        content added.","is_running":false,"error_details":"#<ActiveModel::Errors:0x00000000148e16b0>"},"permissions":{"view_products":true,"edit_products":true,"destroy_products":true,"sync_products":true},"published_content_view_ids":[],"active_task_count":0}
+      string: '  {"sync_state_aggregated":null,"redhat":false,"id":1,"cp_id":"192068951743","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":0,"created_at":"2022-02-08
+        07:55:57 UTC","updated_at":"2022-02-08 07:55:57 UTC","product_content":[],"available_content":[],"repositories":[],"provider":{"name":"Anonymous"},"sync_status":{"id":null,"product_id":null,"progress":null,"sync_id":null,"state":null,"raw_state":null,"start_time":null,"finish_time":null,"duration":null,"display_size":null,"size":null,"is_running":null,"error_details":null},"permissions":{"view_products":true,"edit_products":true,"destroy_products":true,"sync_products":true},"published_content_view_ids":[],"active_task_count":0}
 
         '
     headers:
@@ -225,11 +209,11 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=97
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -240,9 +224,7 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1960'
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
 version: 1
