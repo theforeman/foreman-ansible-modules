@@ -74,7 +74,7 @@
       vars:
         location_name: "{{ item }}"
         location_state: "absent"
-      with_items: "{{ domain_locations }}"
+      with_items: "{{ domain_locations | reverse | list }}"
     - include_tasks: tasks/organization.yml
       vars:
         organization_name: "{{ item }}"

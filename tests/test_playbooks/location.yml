@@ -201,6 +201,15 @@
   vars_files:
     - vars/server.yml
   tasks:
+    - include: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: absent
+      with_items:
+        - Test Location/Sub Location 1/Sub Location 2
+        - Test Location/Sub Location 1
+        - Test Location/Sub Location 2
+        - Test Location
     - include: tasks/organization.yml
       vars:
         organization_state: absent
