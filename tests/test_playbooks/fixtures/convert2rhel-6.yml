@@ -11,10 +11,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/api/status
+    uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.1.0-develop","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.2.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,9 +33,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=100
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -65,13 +67,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-11-09
-        09:00:31 UTC\",\"updated_at\":\"2021-11-09 09:00:35 UTC\",\"id\":3,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-02-15
+        09:36:18 UTC\",\"updated_at\":\"2022-02-15 09:36:35 UTC\",\"id\":3,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -91,9 +93,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -123,11 +127,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Convert2RHEL7%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Oracle+Linux+7+Convert2RHEL%22&per_page=4294967296
   response:
     body:
-      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7\"","sort":{"by":"name","order":"asc"},"results":[{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","label":"Convert2RHEL7","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
-        Complete.","last_sync":"2021-11-09 11:03:43 UTC","last_sync_words":"2 days","organization_id":3,"organization":{"name":"Test
+      string: '{"total":33,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Oracle
+        Linux 7 Convert2RHEL\"","sort":{"by":"name","order":"asc"},"results":[{"id":32,"cp_id":"679930184998","name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2022-02-15 09:38:11 UTC","last_sync_words":"14 minutes","organization_id":3,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
@@ -149,9 +155,11 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -176,7 +184,7 @@ interactions:
       - '["user: root  AVOID eager loading detected    Katello::Product =\u003e [:provider]\n  Remove
         from your query: .includes([:provider])"]'
       content-length:
-      - '656'
+      - '704'
     status:
       code: 200
       message: OK
@@ -192,16 +200,20 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: http://foreman.example.org/katello/api/products/4/repositories?search=name%3D%22Convert2RHEL7+main%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/32?organization_id=3
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL7
-        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"1a134c99-53ed-4456-b864-ee8aaaa3c1c2","relative_path":"Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main","container_repository_name":null,"full_path":"https://centos7-katello-devel-stable.example.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL7/Convert2RHEL7_main/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/0b249af7-6da0-4313-b6ee-89c6acf36e09/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/7c43c8a6-9ca7-4cbe-a2de-e54f02b3b4eb/","publication_href":"/pulp/api/v3/publications/rpm/rpm/15c3e895-783f-4dd5-b1ed-f8037c1b9821/","content_counts":{"rpm":2,"erratum":2,"package_group":0,"srpm":0,"module_stream":0},"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main","description":null,"content_view_versions":[],"last_sync":{"id":"333097e4-0199-47ce-85ad-b2381124f731","username":"admin","started_at":"2021-11-09
-        11:03:43 UTC","ended_at":"2021-11-09 11:03:52 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":2,"name":"Default
-        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1636448445894","generic_remote_options":null,"major":null,"minor":null,"product":{"id":4,"cp_id":"561915692945","name":"Convert2RHEL7","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL7_Convert2RHEL7_main","last_sync_words":"2
-        days"}]}
+      string: '  {"sync_state_aggregated":"Syncing Complete.","redhat":false,"id":32,"cp_id":"679930184998","name":"Oracle
+        Linux 7 Convert2RHEL","label":"Oracle_Linux_7_Convert2RHEL","description":null,"provider_id":3,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2022-02-15 09:38:11 UTC","last_sync_words":"14 minutes","organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1,"created_at":"2022-02-15
+        09:37:10 UTC","updated_at":"2022-02-15 09:37:10 UTC","product_content":[{"enabled":true,"product_id":32,"content":{"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Test_Organization_Oracle_Linux_7_Convert2RHEL_Oracle_Linux_7_Convert2RHEL_main","vendor":"Custom","content_url":"/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main","gpg_url":null,"id":"1644917833414","type":"yum","gpgUrl":null,"contentUrl":"/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main"}}],"available_content":[{"enabled":true,"product_id":32,"content":{"name":"Oracle
+        Linux 7 Convert2RHEL main","label":"Test_Organization_Oracle_Linux_7_Convert2RHEL_Oracle_Linux_7_Convert2RHEL_main","vendor":"Custom","content_url":"/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main","gpg_url":null,"id":"1644917833414","type":"yum","gpgUrl":null,"contentUrl":"/custom/Oracle_Linux_7_Convert2RHEL/Oracle_Linux_7_Convert2RHEL_main"}}],"repositories":[{"name":"Oracle
+        Linux 7 Convert2RHEL main","id":6}],"provider":{"name":"Anonymous"},"sync_status":{"id":6,"product_id":32,"progress":{"progress":100.0},"sync_id":"b280bc98-a8f1-4d67-8ee5-ad0519774c55","state":"Syncing
+        Complete.","raw_state":"stopped","start_time":"14 minutes ago","finish_time":"9
+        minutes ago","duration":"5 minutes","display_size":"Added Rpms: 999","size":"Added
+        Rpms: 999","is_running":false,"error_details":"#<ActiveModel::Errors:0x00000000178a4028>"},"permissions":{"view_products":true,"edit_products":true,"destroy_products":true,"sync_products":true},"published_content_view_ids":[],"active_task_count":0}
 
         '
     headers:
@@ -220,156 +232,13 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 3; Test Organization
       Foreman_version:
-      - 3.1.0-develop
+      - 3.2.0-develop
       Keep-Alive:
       - timeout=15, max=97
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      X-bullet-console-text:
-      - '["user: root\nUSE eager loading detected\n  SmartProxy =\u003e [:smart_proxy_features]\n  Add
-        to your query: .includes([:smart_proxy_features])\nCall stack\n  /home/vagrant/foreman/app/models/smart_proxy.rb:91:in
-        `smart_proxy_feature_by_name''\n  /home/vagrant/foreman/app/models/smart_proxy.rb:108:in
-        `setting''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/timezone.rb:10:in
-        `set_timezone''\n  /home/vagrant/foreman/app/models/concerns/foreman/thread_session.rb:32:in
-        `clear_thread''\n  /home/vagrant/foreman/app/controllers/concerns/foreman/controller/topbar_sweeper.rb:12:in
-        `set_topbar_sweeper_controller''\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/catch_json_parse_errors.rb:9:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
-        `call''\n\n"]'
-      X-bullet-footer-text:
-      - '["user: root  USE eager loading detected    SmartProxy =\u003e [:smart_proxy_features]\n  Add
-        to your query: .includes([:smart_proxy_features])"]'
-      content-length:
-      - '1810'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '2'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: http://foreman.example.org/katello/api/repositories/4/sync
-  response:
-    body:
-      string: '  {"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"32563bf6-4695-4f7b-a3d0-14c6db78eb69","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-11-11
-        08:13:31 UTC","available_actions":{"cancellable":false,"resumable":false}}
-
-        '
-    headers:
-      Cache-Control:
-      - no-cache
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=96
-      Transfer-Encoding:
-      - chunked
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 202
-      message: Accepted
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/foreman_tasks/api/tasks/94e8b979-1776-4b7c-b62e-e1b8bbef2082
-  response:
-    body:
-      string: '{"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":null,"duration":"00:00:04.843006","state":"running","result":"pending","progress":0.08,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"32563bf6-4695-4f7b-a3d0-14c6db78eb69","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Waiting
-        to start.\n--------------------------------","errors":[]},"cli_example":null,"start_at":"2021-11-11
-        08:13:31 UTC","available_actions":{"cancellable":true,"resumable":false}}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=95
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
       Vary:
       - Accept-Encoding
       X-Content-Type-Options:
@@ -383,265 +252,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1607'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/foreman_tasks/api/tasks/94e8b979-1776-4b7c-b62e-e1b8bbef2082
-  response:
-    body:
-      string: '{"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":null,"duration":"00:00:09.007691","state":"running","result":"pending","progress":0.08,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"32563bf6-4695-4f7b-a3d0-14c6db78eb69","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
-        2/2\n--------------------------------\nAssociating Content: 0/0\nDownloading
-        Artifacts: 0/0\nDownloading Metadata Files: 2/2","errors":[]},"cli_example":null,"start_at":"2021-11-11
-        08:13:31 UTC","available_actions":{"cancellable":true,"resumable":false}}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=94
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1693'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/foreman_tasks/api/tasks/94e8b979-1776-4b7c-b62e-e1b8bbef2082
-  response:
-    body:
-      string: '{"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":null,"duration":"00:00:13.137675","state":"running","result":"pending","progress":0.42,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"32563bf6-4695-4f7b-a3d0-14c6db78eb69","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
-        2/2\n--------------------------------\nAssociating Content: 0/0\nDownloading
-        Artifacts: 0/0\nDownloading Metadata Files: 2/2","errors":[]},"cli_example":null,"start_at":"2021-11-11
-        08:13:31 UTC","available_actions":{"cancellable":true,"resumable":false}}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=93
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1693'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/foreman_tasks/api/tasks/94e8b979-1776-4b7c-b62e-e1b8bbef2082
-  response:
-    body:
-      string: '{"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":null,"duration":"00:00:17.344865","state":"running","result":"pending","progress":0.48,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"32563bf6-4695-4f7b-a3d0-14c6db78eb69","step_id":15,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"Total steps:
-        14/14\n--------------------------------\nAssociating Content: 0/0\nDownloading
-        Artifacts: 1/1\nDownloading Metadata Files: 9/9\nParsed Advisories: 2/2\nParsed
-        Comps: 0/0\nParsed Packages: 2/2\nUn-Associating Content: 0/0","errors":[]},"cli_example":null,"start_at":"2021-11-11
-        08:13:31 UTC","available_actions":{"cancellable":true,"resumable":false}}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=92
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1789'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: http://foreman.example.org/foreman_tasks/api/tasks/94e8b979-1776-4b7c-b62e-e1b8bbef2082
-  response:
-    body:
-      string: '{"id":"94e8b979-1776-4b7c-b62e-e1b8bbef2082","label":"Actions::Katello::Repository::Sync","pending":false,"action":"Synchronize
-        repository ''Convert2RHEL7 main''; product ''Convert2RHEL7''; organization
-        ''Test Organization''","username":"admin","started_at":"2021-11-11 08:13:31
-        UTC","ended_at":"2021-11-11 08:13:49 UTC","duration":"00:00:17.927","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":4,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main"},"product":{"id":4,"name":"Convert2RHEL7","label":"Convert2RHEL7","cp_id":"561915692945"},"provider":{"id":3,"name":"Anonymous"},"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":4,"sync_result":{"publication_provided":false,"contents_changed":false},"skip_metadata_check":false,"validate_contents":false,"contents_changed":null,"locale":"en","current_request_id":"3f262451-76d0-4a75-a49c-39d0e74b9e41","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL7 main''","link":null}],["product",{"text":"product ''Convert2RHEL7''","link":"/products/4/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"No content
-        added.\nTotal steps: 14/14\n--------------------------------\nAssociating
-        Content: 0/0\nDownloading Artifacts: 1/1\nDownloading Metadata Files: 9/9\nParsed
-        Advisories: 2/2\nParsed Comps: 0/0\nParsed Packages: 2/2\nUn-Associating Content:
-        0/0","errors":[]},"cli_example":null,"start_at":"2021-11-11 08:13:31 UTC","available_actions":{"cancellable":false,"resumable":false}}'
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.1.0-develop
-      Keep-Alive:
-      - timeout=15, max=91
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1732'
+      - '2200'
     status:
       code: 200
       message: OK
