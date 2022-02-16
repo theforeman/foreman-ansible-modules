@@ -1,4 +1,4 @@
-theforeman.foreman.auth_source_ldaps
+theforeman.foreman.auth_sources_ldap
 ====================================
 
 This role manages LDAP authentication sources, allowing users from an external source such as Active Directory or
@@ -11,7 +11,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 Role specific variables should be documented as below:
 
-The main data structure for this role is the list of `foreman_auth_source_ldaps`. Each `auth_source_ldap` requires the following fields:
+The main data structure for this role is the list of `foreman_auth_sources_ldap`. Each `auth_source_ldap` requires the following fields:
 
 - `name`: The name of the authentication source.
 
@@ -25,13 +25,13 @@ Configure FreeIPA as an authentication source, with automatic registration:
 ```yaml
 - hosts: localhost
   roles:
-    - role: theforeman.foreman.auth_source_ldaps
+    - role: theforeman.foreman.auth_sources_ldap
       vars:
         foreman_server_url: https://foreman.example.com
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "ACME"
-        foreman_auth_source_ldaps:
+        foreman_auth_sources_ldap:
           - name: "Example LDAP"
             host: "ldap.example.org"
             onthefly_register: True
@@ -53,13 +53,13 @@ To instead integrate with Active Directory, only allowing users who are member o
 ```yaml
 - hosts: localhost
   roles:
-    - role: theforeman.foreman.auth_source_ldaps
+    - role: theforeman.foreman.auth_sources_ldap
       vars:
         foreman_server_url: https://foreman.example.com
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "ACME"
-        foreman_auth_source_ldaps:
+        foreman_auth_sources_ldap:
           - name: "Example AD"
             host: "ad.example.org"
             onthefly_register: True
