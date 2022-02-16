@@ -6920,9 +6920,14 @@ interactions:
     uri: https://foreman.example.org/api/auth_source_ldaps?search=name%3D%22Example+LDAP%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 0,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\":
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Example LDAP\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"host\":\"ldap.example.org\",\"port\":389,\"account\":\"uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com\",\"base_dn\":\"dc=example,dc=com\",\"ldap_filter\":null,\"attr_login\":\"uid\",\"attr_firstname\":\"givenName\",\"attr_lastname\":\"sn\",\"attr_mail\":\"mail\",\"attr_photo\":\"jpegPhoto\",\"onthefly_register\":true,\"usergroup_sync\":true,\"tls\":false,\"server_type\":\"free_ipa\",\"groups_base\":\"cn=groups,cn=accounts,
+        dc=example,dc=com\",\"use_netgroups\":false,\"created_at\":\"2022-01-26 08:20:41
+        UTC\",\"updated_at\":\"2022-01-26 08:20:41 UTC\",\"id\":4,\"type\":\"AuthSourceLdap\",\"name\":\"Example
+        LDAP\",\"locations\":[{\"id\":2,\"name\":\"Default Location\",\"title\":\"Default
+        Location\",\"description\":null}],\"organizations\":[{\"id\":1,\"name\":\"Default
+        Organization\",\"title\":\"Default Organization\",\"description\":null}]}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -6959,17 +6964,12 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '178'
+      - '938'
     status:
       code: 200
       message: OK
 - request:
-    body: '{"auth_source_ldap": {"name": "Example LDAP", "host": "ldap.example.org",
-      "port": 389, "account": "uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com",
-      "base_dn": "dc=example,dc=com", "account_password": "secret", "attr_login":
-      "uid", "attr_firstname": "givenName", "attr_lastname": "sn", "attr_mail": "mail",
-      "attr_photo": "jpegPhoto", "onthefly_register": true, "groups_base": "cn=groups,cn=accounts,
-      dc=example,dc=com", "server_type": "free_ipa"}}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -6977,14 +6977,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '451'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/api/auth_source_ldaps
+    method: GET
+    uri: https://foreman.example.org/api/auth_source_ldaps/4
   response:
     body:
       string: '{"host":"ldap.example.org","port":389,"account":"uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com","base_dn":"dc=example,dc=com","ldap_filter":null,"attr_login":"uid","attr_firstname":"givenName","attr_lastname":"sn","attr_mail":"mail","attr_photo":"jpegPhoto","onthefly_register":true,"usergroup_sync":true,"tls":false,"server_type":"free_ipa","groups_base":"cn=groups,cn=accounts,
@@ -7016,8 +7012,8 @@ interactions:
       - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
+      Vary:
+      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -7028,7 +7024,74 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
+      content-length:
+      - '785'
     status:
-      code: 201
-      message: Created
+      code: 200
+      message: OK
+- request:
+    body: '{"auth_source_ldap": {"account_password": "secret"}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '52'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: PUT
+    uri: https://foreman.example.org/api/auth_source_ldaps/4
+  response:
+    body:
+      string: '{"host":"ldap.example.org","port":389,"account":"uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com","base_dn":"dc=example,dc=com","ldap_filter":null,"attr_login":"uid","attr_firstname":"givenName","attr_lastname":"sn","attr_mail":"mail","attr_photo":"jpegPhoto","onthefly_register":true,"usergroup_sync":true,"tls":false,"server_type":"free_ipa","groups_base":"cn=groups,cn=accounts,
+        dc=example,dc=com","use_netgroups":false,"created_at":"2022-01-26 08:20:41
+        UTC","updated_at":"2022-02-16 18:33:48 UTC","id":4,"type":"AuthSourceLdap","name":"Example
+        LDAP","external_usergroups":[],"locations":[{"id":2,"name":"Default Location","title":"Default
+        Location","description":null}],"organizations":[{"id":1,"name":"Default Organization","title":"Default
+        Organization","description":null}]}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 2.5.4
+      Keep-Alive:
+      - timeout=15, max=96
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '785'
+    status:
+      code: 200
+      message: OK
 version: 1
