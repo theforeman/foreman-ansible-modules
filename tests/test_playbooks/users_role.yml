@@ -1,0 +1,79 @@
+---
+# The following sensitive variables can be specified in the server.yml
+# foreman_auth_sources: [] beblow is an example
+# To test this role you need a ldap server/container populated with users an groups
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include_tasks: tasks/location.yml
+      vars:
+        location_state: present
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  vars:
+    vars:
+    foreman_username: "{{ foreman_username }}"
+    foreman_password: "{{ foreman_password }}"
+    foreman_server_url: "{{ foreman_server_url }}"
+    foreman_validate_certs: "{{ foreman_validate_certs }}"
+    foreman_organization: "Atix"
+    foreman_location: "Minga"
+    foreman_users:
+      - username: "Gandalf"
+        firstname: "Weiß"
+        lastname: "Grau"
+        email: "gandalf@mordor.auen"
+        description: "Großer alter Mann"
+        admin_rights: true
+        user_password: "PASSWORD"
+        default_location: "Test Location"
+        default_organization: "Test Organization"
+        auth_source: Internal    # or "{{ ldap_name }}"
+        timezone: "Berlin"
+        user_locale: "de"
+        roles:
+          - "Viewer"
+        locations:
+          - "{{ foreman_location }}"
+        organizations:
+          - "{{ foreman_organization }}"
+    foreman_usergroups:
+      - usergroupname: "test2"
+        admin_rights: true
+        users:
+          - "{{ foreman_users.0.username }}"
+        usergroups: ""     # nested group
+    foreman_auth_sources:
+      - ldap_name: "test"
+        onthefly_register: true
+        ldap_host: "ldap-fqdn"
+        ldap_account: cn=Manager,dc=example,dc=de
+        ldap_password: PASSWORD
+        ldap_base_dn: dc=example,dc=de
+        ldap_groups_base:  ou=testingmembers,dc=example,dc=de
+        ldap_server_type: posix
+        attr_login: uid
+        attr_firstname: givenName
+        attr_lastname: sn
+        attr_mail: mail
+        attr_photo: ""
+    foreman_linked_usergroups:
+      - external_usergroupname: "admins"
+        foreman_usergroup: "{{ foreman_usergroups.0.usergroupname }}"
+        auth_source_ldap: "{{ foreman_auth_sources.0.ldap_name }}"
+  roles:
+    - role: users
