@@ -1,8 +1,11 @@
-import distutils.version
 import os
 import sys
 
 import pytest
+try:
+    from ansible.module_utils.compat.version import LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 
 from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version
 
@@ -46,7 +49,7 @@ def test_inventory(tmpdir, module):
     ansible_version = get_ansible_version()
     if ansible_version is None:
         pytest.skip("Couldn't figure out Ansible version?!")
-    if distutils.version.LooseVersion(ansible_version) < distutils.version.LooseVersion('2.9'):
+    if LooseVersion(ansible_version) < LooseVersion('2.9'):
         pytest.skip("This module should not be tested on Ansible before 2.9")
     inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
     run = run_playbook(module, inventory=inventory)

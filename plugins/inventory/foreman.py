@@ -169,7 +169,10 @@ hostnames:
   - name.split('.')[0]
 '''
 import json
-from distutils.version import LooseVersion
+try:
+    from ansible.module_utils.compat.version import LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 from time import sleep
 from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_bytes, to_native, to_text
