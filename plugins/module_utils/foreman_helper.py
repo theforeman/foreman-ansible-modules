@@ -25,7 +25,10 @@ from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_
 from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils import six
 
-from distutils.version import LooseVersion
+try:
+    from ansible.module_utils.compat.version import LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 
 try:
     try:

@@ -61,7 +61,10 @@ RETURN = ''' # '''
 
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule
-from distutils.version import LooseVersion
+try:
+    from ansible.module_utils.compat.version import LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 
 
 def main():
