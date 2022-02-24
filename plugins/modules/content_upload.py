@@ -34,7 +34,7 @@ requirements:
 options:
   src:
     description:
-      - File to upload
+      - File (on the remote/target machine) to upload
     required: true
     type: path
     aliases:
