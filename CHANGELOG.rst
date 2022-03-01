@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.2.0
+======
+
+Minor Changes
+-------------
+
+- new ``auth_sources_ldap`` role to manage LDAP authentication sources
+
+Bugfixes
+--------
+
+- content_upload - clarify that ``src`` refers to a remote file (https://bugzilla.redhat.com/show_bug.cgi?id=2055416)
+
 v3.1.0
 ======
 
