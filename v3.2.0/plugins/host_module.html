@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>theforeman.foreman.host module – Manage Hosts &mdash; Foreman Ansible Modules  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="theforeman.foreman.host_collection module – Manage Host Collections" href="host_collection_module.html" />
+    <link rel="prev" title="theforeman.foreman.hardware_model module – Manage Hardware Models" href="hardware_model_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Foreman Ansible Modules
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Theforeman.Foreman</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman callback – Sends events to Foreman</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman inventory – Foreman inventory source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key module – Manage Activation Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture_module.html">theforeman.foreman.architecture module – Manage Architectures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_source_ldap_module.html">theforeman.foreman.auth_source_ldap module – Manage LDAP Authentication Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bookmark_module.html">theforeman.foreman.bookmark module – Manage Bookmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_attribute_module.html">theforeman.foreman.compute_attribute module – Manage Compute Attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_profile_module.html">theforeman.foreman.compute_profile module – Manage Compute Profiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_resource_module.html">theforeman.foreman.compute_resource module – Manage Compute Resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="config_group_module.html">theforeman.foreman.config_group module – Manage (Puppet) Config Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_credential_module.html">theforeman.foreman.content_credential module – Manage Content Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_upload_module.html">theforeman.foreman.content_upload module – Upload content to a repository</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_module.html">theforeman.foreman.content_view module – Manage Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_filter_module.html">theforeman.foreman.content_view_filter module – Manage Content View Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_info_module.html">theforeman.foreman.content_view_info module – Fetch information about Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_version_module.html">theforeman.foreman.content_view_version module – Manage Content View Versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_version_info_module.html">theforeman.foreman.content_view_version_info module – Fetch information about Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="domain_module.html">theforeman.foreman.domain module – Manage Domains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="domain_info_module.html">theforeman.foreman.domain_info module – Fetch information about Domains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="external_usergroup_module.html">theforeman.foreman.external_usergroup module – Manage External User Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="global_parameter_module.html">theforeman.foreman.global_parameter module – Manage Global Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hardware_model_module.html">theforeman.foreman.hardware_model module – Manage Hardware Models</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.host module – Manage Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_collection_module.html">theforeman.foreman.host_collection module – Manage Host Collections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_errata_info_module.html">theforeman.foreman.host_errata_info module – Fetch information about Host Errata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_info_module.html">theforeman.foreman.host_info module – Fetch information about Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_power_module.html">theforeman.foreman.host_power module – Manage Power State of Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hostgroup_module.html">theforeman.foreman.hostgroup module – Manage Hostgroups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http_proxy_module.html">theforeman.foreman.http_proxy module – Manage HTTP Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_module.html">theforeman.foreman.image module – Manage Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation_medium_module.html">theforeman.foreman.installation_medium module – Manage Installation Media</a></li>
+<li class="toctree-l4"><a class="reference internal" href="job_invocation_module.html">theforeman.foreman.job_invocation module – Invoke Remote Execution Jobs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="job_template_module.html">theforeman.foreman.job_template module – Manage Job Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lifecycle_environment_module.html">theforeman.foreman.lifecycle_environment module – Manage Lifecycle Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="location_module.html">theforeman.foreman.location module – Manage Locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="operatingsystem_module.html">theforeman.foreman.operatingsystem module – Manage Operating Systems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="organization_module.html">theforeman.foreman.organization module – Manage Organizations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="organization_info_module.html">theforeman.foreman.organization_info module – Get information about organization(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="os_default_template_module.html">theforeman.foreman.os_default_template module – Manage Default Template Associations To Operating Systems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="partition_table_module.html">theforeman.foreman.partition_table module – Manage Partition Table Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="product_module.html">theforeman.foreman.product module – Manage Products</a></li>
+<li class="toctree-l4"><a class="reference internal" href="provisioning_template_module.html">theforeman.foreman.provisioning_template module – Manage Provisioning Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="puppet_environment_module.html">theforeman.foreman.puppet_environment module – Manage Puppet Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="puppetclasses_import_module.html">theforeman.foreman.puppetclasses_import module – Import Puppet Classes from a Proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="realm_module.html">theforeman.foreman.realm module – Manage Realms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="redhat_manifest_module.html">theforeman.foreman.redhat_manifest module – Interact with a Red Hat Satellite Subscription Manifest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_module.html">theforeman.foreman.repository module – Manage Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_info_module.html">theforeman.foreman.repository_info module – Fetch information about Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_set_module.html">theforeman.foreman.repository_set module – Enable/disable Red Hat Repositories available through subscriptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_set_info_module.html">theforeman.foreman.repository_set_info module – Fetch information about Red Hat Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_sync_module.html">theforeman.foreman.repository_sync module – Sync a Repository or Product</a></li>
+<li class="toctree-l4"><a class="reference internal" href="resource_info_module.html">theforeman.foreman.resource_info module – Gather information about resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="role_module.html">theforeman.foreman.role module – Manage Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scap_content_module.html">theforeman.foreman.scap_content module – Manage SCAP content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scap_tailoring_file_module.html">theforeman.foreman.scap_tailoring_file module – Manage SCAP Tailoring Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scc_account_module.html">theforeman.foreman.scc_account module – Manage SUSE Customer Center Accounts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scc_product_module.html">theforeman.foreman.scc_product module – Subscribe SUSE Customer Center Account Products</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setting_module.html">theforeman.foreman.setting module – Manage Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setting_info_module.html">theforeman.foreman.setting_info module – Fetch information about Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="smart_class_parameter_module.html">theforeman.foreman.smart_class_parameter module – Manage Smart Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="smart_proxy_module.html">theforeman.foreman.smart_proxy module – Manage Smart Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="snapshot_module.html">theforeman.foreman.snapshot module – Manage Snapshots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="status_info_module.html">theforeman.foreman.status_info module – Get status info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subnet_module.html">theforeman.foreman.subnet module – Manage Subnets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subnet_info_module.html">theforeman.foreman.subnet_info module – Fetch information about Subnets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subscription_info_module.html">theforeman.foreman.subscription_info module – Fetch information about Subscriptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subscription_manifest_module.html">theforeman.foreman.subscription_manifest module – Manage Subscription Manifests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sync_plan_module.html">theforeman.foreman.sync_plan module – Manage Sync Plans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="templates_import_module.html">theforeman.foreman.templates_import module – Sync Templates from a repository</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_module.html">theforeman.foreman.user module – Manage Users</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usergroup_module.html">theforeman.foreman.usergroup module – Manage User Groups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Theforeman.Foreman</a> &raquo;</li>
+      <li>theforeman.foreman.host module – Manage Hosts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/plugins/host_module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-theforeman-foreman-host-module"></span><section id="theforeman-foreman-host-module-manage-hosts">
+<h1>theforeman.foreman.host module – Manage Hosts<a class="headerlink" href="#theforeman-foreman-host-module-manage-hosts" title="Permalink to this headline"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.2.0).</p>
+<p>You might already have this collection installed if you are using the <code class="docutils literal notranslate"><span class="pre">ansible</span></code> package.
+It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
+To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.host</span></code>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
+</ul>
+</div>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Create, update, and delete Hosts</p></li>
+</ul>
+</section>
+<section id="requirements">
+<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>requests</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h2>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-activation_keys"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-activation-keys"><strong>activation_keys</strong></p>
+<a class="ansibleOptionLink" href="#parameter-activation_keys" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Activation Keys used for deployment.</p>
+<p>Comma separated list.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-architecture"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-architecture"><strong>architecture</strong></p>
+<a class="ansibleOptionLink" href="#parameter-architecture" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Architecture name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-build"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-build"><strong>build</strong></p>
+<a class="ansibleOptionLink" href="#parameter-build" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to setup build context for the host</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-comment"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-comment"><strong>comment</strong></p>
+<a class="ansibleOptionLink" href="#parameter-comment" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Comment about the host.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-compute-attributes"><strong>compute_attributes</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_attributes" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Additional compute resource specific attributes.</p>
+<p>When this parameter is set, the module will not be idempotent.</p>
+<p>When you provide a <em>cluster</em> here and <em>compute_resource</em> is set, the cluster id will be automatically looked up.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_profile"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-compute-profile"><strong>compute_profile</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Compute profile name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-compute_resource"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-compute-resource"><strong>compute_resource</strong></p>
+<a class="ansibleOptionLink" href="#parameter-compute_resource" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Compute resource name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-config_groups"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-config-groups"><strong>config_groups</strong></p>
+<a class="ansibleOptionLink" href="#parameter-config_groups" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Config groups list</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-content_source"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-content-source"><strong>content_source</strong></p>
+<a class="ansibleOptionLink" href="#parameter-content_source" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Content source.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-content_view"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-content-view"><strong>content_view</strong></p>
+<a class="ansibleOptionLink" href="#parameter-content_view" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Content view.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-domain"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-domain"><strong>domain</strong></p>
+<a class="ansibleOptionLink" href="#parameter-domain" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Domain name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-enabled"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-enabled"><strong>enabled</strong></p>
+<a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Include this host within reporting</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-environment"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-environment"><strong>environment</strong></p>
+<a class="ansibleOptionLink" href="#parameter-environment" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet environment name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-hostgroup"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-hostgroup"><strong>hostgroup</strong></p>
+<a class="ansibleOptionLink" href="#parameter-hostgroup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Title of related hostgroup</p>
+<p>Example: A child hostgroup <em>bar</em> within a parent hostgroup <em>foo</em> would have the title <em>foo/bar</em>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-image"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-image"><strong>image</strong></p>
+<a class="ansibleOptionLink" href="#parameter-image" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The image to use when <em>provision_method=image</em>.</p>
+<p>The <em>compute_resource</em> parameter is required to find the correct image.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes"><strong>interfaces_attributes</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+<p><span class="ansible-option-versionadded">added in 1.5.0 of theforeman.foreman</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Additional interfaces specific attributes.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/attached_devices"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-attached-devices"><strong>attached_devices</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/attached_devices" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Identifiers of attached interfaces, e.g. [‘eth1’, ‘eth2’].</p>
+<p>For bond interfaces those are the slaves.</p>
+<p>Only for bond and bridges interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/attached_to"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-attached-to"><strong>attached_to</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/attached_to" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Identifier of the interface to which this interface belongs, e.g. eth1.</p>
+<p>Only for virtual interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/bond_options"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-bond-options"><strong>bond_options</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/bond_options" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Space separated options, e.g. miimon=100.</p>
+<p>Only for bond interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/compute_attributes"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-compute-attributes"><strong>compute_attributes</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/compute_attributes" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Additional compute resource specific attributes for the interface.</p>
+<p>When this parameter is set, the module will not be idempotent.</p>
+<p>When you provide a <em>network</em> here and <em>compute_resource</em> is set, the network id will be automatically looked up.</p>
+<p>On oVirt/RHV <em>cluster</em> is required in the hosts <em>compute_attributes</em> for the lookup to work.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/domain"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-domain"><strong>domain</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/domain" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Domain name</p>
+<p>Required for primary interfaces on managed hosts.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/identifier"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-identifier"><strong>identifier</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/identifier" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Device identifier, e.g. eth0 or eth1.1</p>
+<p>You need to set one of <em>identifier</em>, <em>name</em> or <em>mac</em> to be able to update existing interfaces and make execution idempotent.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/ip"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-ip"><strong>ip</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/ip" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>IPv4 address of interface</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/ip6"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-ip6"><strong>ip6</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/ip6" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>IPv6 address of interface</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/mac"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-mac"><strong>mac</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/mac" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>MAC address of interface. Required for managed interfaces on bare metal.</p>
+<p>Please include leading zeros and separate nibbles by colons, otherwise the execution will not be idempotent.</p>
+<p>Example EE:BB:01:02:03:04</p>
+<p>You need to set one of <em>identifier</em>, <em>name</em> or <em>mac</em> to be able to update existing interfaces and make execution idempotent.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/managed"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-managed"><strong>managed</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/managed" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Should this interface be managed via DHCP and DNS smart proxy and should it be configured during provisioning?</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/mode"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-mode"><strong>mode</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Bond mode of the interface.</p>
+<p>Only for bond interfaces.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">balance-rr</span></p></li>
+<li><p><span class="ansible-option-choices-entry">active-backup</span></p></li>
+<li><p><span class="ansible-option-choices-entry">balance-xor</span></p></li>
+<li><p><span class="ansible-option-choices-entry">broadcast</span></p></li>
+<li><p><span class="ansible-option-choices-entry">802.3ad</span></p></li>
+<li><p><span class="ansible-option-choices-entry">balance-tlb</span></p></li>
+<li><p><span class="ansible-option-choices-entry">balance-alb</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/mtu"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-mtu"><strong>mtu</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/mtu" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>MTU, this attribute has precedence over the subnet MTU.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Interface’s DNS name</p>
+<p>You need to set one of <em>identifier</em>, <em>name</em> or <em>mac</em> to be able to update existing interfaces and make execution idempotent.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Password for BMC authentication.</p>
+<p>Only for BMC interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/primary"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-primary"><strong>primary</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/primary" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Should this interface be used for constructing the FQDN of the host?</p>
+<p>Each managed hosts needs to have one primary interface.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/provider"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-provider"><strong>provider</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/provider" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Interface provider, e.g. IPMI.</p>
+<p>Only for BMC interfaces.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">IPMI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Redfish</span></p></li>
+<li><p><span class="ansible-option-choices-entry">SSH</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/provision"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-provision"><strong>provision</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/provision" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Should this interface be used for TFTP of PXELinux (or SSH for image-based hosts)?</p>
+<p>Each managed hosts needs to have one provision interface.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/subnet"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-subnet"><strong>subnet</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/subnet" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>IPv4 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/subnet6"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-subnet6"><strong>subnet6</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/subnet6" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>IPv6 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/tag"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-tag"><strong>tag</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/tag" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>VLAN tag, this attribute has precedence over the subnet VLAN ID.</p>
+<p>Only for virtual interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/type"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-type"><strong>type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Interface type.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">interface</span></p></li>
+<li><p><span class="ansible-option-choices-entry">bmc</span></p></li>
+<li><p><span class="ansible-option-choices-entry">bond</span></p></li>
+<li><p><span class="ansible-option-choices-entry">bridge</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Username for BMC authentication.</p>
+<p>Only for BMC interfaces.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-interfaces_attributes/virtual"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-interfaces-attributes-virtual"><strong>virtual</strong></p>
+<a class="ansibleOptionLink" href="#parameter-interfaces_attributes/virtual" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Alias or VLAN device</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ip"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-ip"><strong>ip</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ip" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>IP address of the primary interface of the host.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-kickstart_repository"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-kickstart-repository"><strong>kickstart_repository</strong></p>
+<a class="ansibleOptionLink" href="#parameter-kickstart_repository" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Kickstart repository name.</p>
+<p>You need to provide this to use the “Synced Content” feature.</p>
+<p>Mutually exclusive with <em>medium</em>.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-lifecycle_environment"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-lifecycle-environment"><strong>lifecycle_environment</strong></p>
+<a class="ansibleOptionLink" href="#parameter-lifecycle_environment" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Lifecycle environment.</p>
+<p>Only available for Katello installations.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-location"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-location"><strong>location</strong></p>
+<a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of related location</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-mac"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-mac"><strong>mac</strong></p>
+<a class="ansibleOptionLink" href="#parameter-mac" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>MAC address of the primary interface of the host.</p>
+<p>Please include leading zeros and separate nibbles by colons, otherwise the execution will not be idempotent.</p>
+<p>Example EE:BB:01:02:03:04</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-managed"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-managed"><strong>managed</strong></p>
+<a class="ansibleOptionLink" href="#parameter-managed" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether a host is managed or unmanaged.</p>
+<p>Forced to true when <em>build=true</em></p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-medium"></div>
+<div class="ansibleOptionAnchor" id="parameter-media"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-media"><span id="ansible-collections-theforeman-foreman-host-module-parameter-medium"></span><strong>medium</strong></p>
+<a class="ansibleOptionLink" href="#parameter-medium" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: media</span></p>
+<p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Medium name</p>
+<p>Mutually exclusive with <em>kickstart_repository</em>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Fully Qualified Domain Name of host</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-openscap_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-openscap-proxy"><strong>openscap_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-openscap_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>OpenSCAP proxy name.</p>
+<p>Only available when the OpenSCAP plugin is installed.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-operatingsystem"><strong>operatingsystem</strong></p>
+<a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Operating systems are looked up by their title which is composed as “&lt;name&gt; &lt;major&gt;.&lt;minor&gt;”.</p>
+<p>You can omit the version part as long as you only have one operating system by that name.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-organization"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-organization"><strong>organization</strong></p>
+<a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of related organization</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-owner"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-owner"><strong>owner</strong></p>
+<a class="ansibleOptionLink" href="#parameter-owner" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Owner (user) of the host.</p>
+<p>Users are looked up by their <code class="docutils literal notranslate"><span class="pre">login</span></code>.</p>
+<p>Mutually exclusive with <em>owner_group</em>.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-owner_group"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-owner-group"><strong>owner_group</strong></p>
+<a class="ansibleOptionLink" href="#parameter-owner_group" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Owner (user group) of the host.</p>
+<p>Mutually excluside with <em>owner</em>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-parameters"><strong>parameters</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Entity domain specific host parameters</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-parameters-name"><strong>name</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Name of the parameter</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/parameter_type"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-parameters-parameter-type"><strong>parameter_type</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/parameter_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Type of the parameter</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">string</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">boolean</span></p></li>
+<li><p><span class="ansible-option-choices-entry">integer</span></p></li>
+<li><p><span class="ansible-option-choices-entry">real</span></p></li>
+<li><p><span class="ansible-option-choices-entry">array</span></p></li>
+<li><p><span class="ansible-option-choices-entry">hash</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yaml</span></p></li>
+<li><p><span class="ansible-option-choices-entry">json</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-parameters/value"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-parameters-value"><strong>value</strong></p>
+<a class="ansibleOptionLink" href="#parameter-parameters/value" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">raw</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Value of the parameter</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-provision_method"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-provision-method"><strong>provision_method</strong></p>
+<a class="ansibleOptionLink" href="#parameter-provision_method" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The method used to provision the host.</p>
+<p><em>provision_method=bootdisk</em> is only available if the bootdisk plugin is installed.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">build</span></p></li>
+<li><p><span class="ansible-option-choices-entry">image</span></p></li>
+<li><p><span class="ansible-option-choices-entry">bootdisk</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-ptable"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-ptable"><strong>ptable</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ptable" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Partition table name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppet_ca_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-puppet-ca-proxy"><strong>puppet_ca_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppet_ca_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet CA proxy name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppet_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-puppet-proxy"><strong>puppet_proxy</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppet_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Puppet server proxy name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-puppetclasses"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-puppetclasses"><strong>puppetclasses</strong></p>
+<a class="ansibleOptionLink" href="#parameter-puppetclasses" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of puppet classes to include in this host group. Must exist for hostgroup’s puppet environment.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-pxe_loader"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-pxe-loader"><strong>pxe_loader</strong></p>
+<a class="ansibleOptionLink" href="#parameter-pxe_loader" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>PXE Bootloader</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">PXELinux BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">PXELinux UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 ELF</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI SecureBoot</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTP</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTPS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Grub2 UEFI HTTPS SecureBoot</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Embedded</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE UEFI HTTP</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Chain BIOS</span></p></li>
+<li><p><span class="ansible-option-choices-entry">iPXE Chain UEFI</span></p></li>
+<li><p><span class="ansible-option-choices-entry">None</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-realm"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-realm"><strong>realm</strong></p>
+<a class="ansibleOptionLink" href="#parameter-realm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Realm name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-root_pass"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-root-pass"><strong>root_pass</strong></p>
+<a class="ansibleOptionLink" href="#parameter-root_pass" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Root password.</p>
+<p>Will result in the entity always being updated, as the current password cannot be retrieved.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-server-url"><strong>server_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>State of the entity</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-subnet"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-subnet"><strong>subnet</strong></p>
+<a class="ansibleOptionLink" href="#parameter-subnet" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>IPv4 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-subnet6"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-subnet6"><strong>subnet6</strong></p>
+<a class="ansibleOptionLink" href="#parameter-subnet6" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>IPv6 Subnet name</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-default-bold">yes</span> <span class="ansible-option-default">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">host&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_hostgroup</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">host</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">build</span><span class="nv"> </span><span class="s">context&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hostgroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my_hostgroup</span><span class="w"></span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">unmanaged</span><span class="nv"> </span><span class="s">host&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">managed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">CPUs</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">4GB</span><span class="nv"> </span><span class="s">RAM&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">compute_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">cpus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">      </span><span class="nt">memory_mb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">it</span><span class="nv"> </span><span class="s">after</span><span class="nv"> </span><span class="s">creation&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">compute_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">specific</span><span class="nv"> </span><span class="s">ovirt</span><span class="nv"> </span><span class="s">network&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">interfaces_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;interface&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">compute_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nic1&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;969efbe6-f9e0-4383-a19a-a7ee65ad5007&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">interface</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;virtio&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">VM</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">NICs</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">specific</span><span class="nv"> </span><span class="s">ovirt</span><span class="nv"> </span><span class="s">networks&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">interfaces_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;interface&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">compute_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nic1&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;969efbe6-f9e0-4383-a19a-a7ee65ad5007&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">interface</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;virtio&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;interface&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host_nic2&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">managed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">compute_attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nic2&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;969efbe6-f9e0-4383-a19a-a7ee65ad5008&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">interface</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;e1000&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Delete</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">host&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.host</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;new_host&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v5)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-return-entity"><strong>entity</strong></p>
+<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/hosts"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-host-module-return-entity-hosts"><strong>hosts</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/hosts" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of hosts.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>Bernhard Hopfenmueller (&#64;Fobhep) ATIX AG</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hardware_model_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.hardware_model module – Manage Hardware Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="host_collection_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.host_collection module – Manage Host Collections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, The Foreman Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
