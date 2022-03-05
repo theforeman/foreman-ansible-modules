@@ -11,7 +11,6 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
     name: foreman
-    plugin_type: inventory
     short_description: Foreman inventory source
     requirements:
         - requests >= 1.1
