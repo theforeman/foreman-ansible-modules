@@ -137,6 +137,42 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ostree_repository_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_upload_module__parameter-ostree_repository_name:
+
+      .. rst-class:: ansible-option-title
+
+      **ostree_repository_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ostree_repository_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of repository within the OSTree archive.
+
+      Required for OSTree uploads.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-password"></div>
 
       .. _ansible_collections.theforeman.foreman.content_upload_module__parameter-password:
@@ -403,8 +439,9 @@ Notes
 -----
 
 .. note::
-   - Currently only uploading to deb, RPM & file repositories is supported
+   - Currently only uploading to deb, RPM, OSTree & file repositories is supported
    - For anything but file repositories, a supporting library must be installed. See Requirements.
+   - OSTree content upload is not idempotent - running mutliple times will attempt to upload the content unit.
 
 .. Seealso
 
@@ -426,6 +463,17 @@ Examples
         repository: "Build RPMs"
         product: "My Product"
         organization: "Default Organization"
+
+    - name: "Upload ostree-archive.tar"
+      theforeman.foreman.content_upload:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        src: "ostree_archive.tar"
+        repository: "My OStree Repository"
+        product: "My Product"
+        organization: "Default Organization"
+        ostree_repository_name: "small"
 
 
 
