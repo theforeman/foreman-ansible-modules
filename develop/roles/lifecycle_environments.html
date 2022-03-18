@@ -90,12 +90,18 @@
 <p>The main data structure for this role is the list of <code class="docutils literal notranslate"><span class="pre">foreman_lifecycle_environments</span></code>. Each <code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code> requires the following fields:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The name of the lifecycle environment.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">prior</span></code>: The name of the previous lifecycle environment to attach to in sequence. For the first lifecycle environment in a new path, set the prior lifecycle environment to Library. The order of definition matters, ensure that the environments are listed in the order the path would exist.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prior</span></code>: The name of the previous lifecycle environment to attach to in
+sequence. For the first lifecycle environment in a new path, set the prior
+lifecycle environment to Library. The order of definition matters, ensure that
+the environments are listed in the order the path would exist. It can’t be
+changed after the lifecycle environment has been created.</p></li>
 </ul>
 <p>The following fields are optional and will be omitted by default:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: Description of the lifecycle environment</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: A permanent label for identifying the lifecycle environment to tools such as subscription-manager. This is created by the server if omitted. It can’t be changed after the lifecycle environment has been created.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code>: A permanent label for identifying the lifecycle environment to tools
+such as subscription-manager. This is created by the server if omitted. It
+can’t be changed after the lifecycle environment has been created.</p></li>
 </ul>
 </section>
 <section id="example-playbooks">
@@ -115,7 +121,7 @@
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="w"></span>
 <span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dev&quot;</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Prod&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dev&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Create two lifecycle environment paths: Library -&gt; Dev -&gt; Test -&gt; Prod and Library -&gt; QA -&gt; Stage -&gt; Prod</p>
@@ -133,7 +139,8 @@
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="w"></span>
 <span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dev&quot;</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Prod&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dev&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="w"></span>
+
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;QA&quot;</span><span class="w"></span>
 <span class="w">            </span><span class="nt">prior</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Library&quot;</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stage&quot;</span><span class="w"></span>
