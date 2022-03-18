@@ -67,6 +67,9 @@ test-other:
 livetest: $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -vv 'tests/test_crud.py::test_crud' --vcrmode live
 
+livetest_downstream: $(MANIFEST) | tests/test_playbooks/vars/server.yml
+	pytest -vv 'tests/test_crud.py::test_crud_downstream' --vcrmode live $(FLAGS)
+
 test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -vv 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
 

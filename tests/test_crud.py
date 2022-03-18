@@ -4,7 +4,7 @@ import sys
 
 import pytest
 
-from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version
+from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, DOWNSTREAM_TEST_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version
 
 IGNORED_WARNINGS = [
     "Activation Key 'Test Activation Key Copy' already exists.",
@@ -30,6 +30,16 @@ def test_crud(tmpdir, module, vcrmode):
 
     _assert_no_warnings(run)
 
+@pytest.mark.parametrize('module', DOWNSTREAM_TEST_PLAYBOOKS)
+def test_crud_downstream(tmpdir, module, vcrmode):
+    if vcrmode == "live":
+        run = run_playbook(module)
+    else:
+        record = vcrmode == "record"
+        run = run_playbook_vcr(tmpdir, module, record=record)
+    assert run.rc == 0
+
+    _assert_no_warnings(run)
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_check_mode(tmpdir, module):

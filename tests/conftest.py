@@ -17,9 +17,19 @@ def find_all_test_playbooks():
         if playbook.endswith('.yml'):
             yield playbook.replace('.yml', '')
 
+UPSTREAM_ONLY = ['scc_account', 'scc_product', 'scc_product_old', 'content_upload_deb', 'repository_deb']
+def find_all_downstream_test_playbooks():
+    for playbook in TEST_PLAYBOOKS_PATH.listdir(sort=True):
+        playbook = playbook.basename
+        if playbook.endswith('.yml'):
+            playbook = playbook.replace('.yml', '')
+            if playbook not in UPSTREAM_ONLY:
+                yield playbook
+
 
 ALL_TEST_PLAYBOOKS = list(find_all_test_playbooks())
 TEST_PLAYBOOKS = sorted([playbook for playbook in ALL_TEST_PLAYBOOKS if not playbook.startswith('inventory_plugin')])
+DOWNSTREAM_TEST_PLAYBOOKS = sorted([playbook for playbook in list(find_all_downstream_test_playbooks()) if not playbook.startswith('inventory_plugin')])
 INVENTORY_PLAYBOOKS = sorted(set(ALL_TEST_PLAYBOOKS) - set(TEST_PLAYBOOKS))
 
 
