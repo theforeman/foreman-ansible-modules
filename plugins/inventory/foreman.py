@@ -148,6 +148,7 @@ DOCUMENTATION = '''
           - A list of templates in order of precedence to compose inventory_hostname.
           - If the template results in an empty string or None value it is ignored.
         type: list
+        elements: str
         default: ['name']
 '''
 
