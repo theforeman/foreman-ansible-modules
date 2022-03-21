@@ -12,9 +12,10 @@ TEST_PLAYBOOKS_PATH = py.path.local(__file__).realpath() / '..' / 'test_playbook
 
 
 def find_all_test_playbooks():
+    excluded_playbooks = os.environ.get('FAM_TEST_EXCLUDE_PLAYBOOKS', '').split(',')
     for playbook in TEST_PLAYBOOKS_PATH.listdir(sort=True):
         playbook = playbook.basename
-        if playbook.endswith('.yml'):
+        if playbook.endswith('.yml') and playbook not in excluded_playbooks:
             yield playbook.replace('.yml', '')
 
 
