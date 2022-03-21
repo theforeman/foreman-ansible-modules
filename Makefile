@@ -65,7 +65,7 @@ test-other:
 	$(PYTEST) -k 'not test_crud.py'
 
 livetest: $(MANIFEST) | tests/test_playbooks/vars/server.yml
-	pytest -vv 'tests/test_crud.py::test_crud' --vcrmode live
+	pytest -vv 'tests/test_crud.py::test_crud' --vcrmode live $(FLAGS)
 
 test_%: FORCE $(MANIFEST) | tests/test_playbooks/vars/server.yml
 	pytest -vv 'tests/test_crud.py::test_crud[$*]' 'tests/test_crud.py::test_check_mode[$*]' $(FLAGS)
