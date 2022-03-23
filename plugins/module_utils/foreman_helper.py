@@ -26,9 +26,9 @@ from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils import six
 
 try:
-    from ansible.module_utils.compat.version import LooseVersion
+    from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 except ImportError:
-    from distutils.version import LooseVersion
+    from plugins.module_utils._version import LooseVersion
 
 try:
     try:
