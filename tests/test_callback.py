@@ -48,7 +48,7 @@ def drop_incompatible_items(d):
         elif isinstance(v, (list, set, tuple)):
             dd[k] = type(v)(drop_incompatible_items(vv) if isinstance(vv, dict) else vv
                             for vv in v)
-        elif k not in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log']:
+        elif k not in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn']:
             dd[k] = v
     return dd
 
@@ -66,6 +66,7 @@ def run_callback(tmpdir, report_type, vcrmode):
             # drop_incompatible_items cannot be used for the legacy format
             contents = re.sub(r", \\\"msg\\\": \\\"\\\"", "", contents)
             contents = re.sub(r"\\\"_ansible_no_log\\\": [^,]+, ", "", contents)
+            contents = re.sub(r", \\\"warn\\\": false", "", contents)
         real_contents = json.loads(contents)
         if report_type == "foreman":
             real_contents['config_report']['metrics']['time']['total'] = 1
