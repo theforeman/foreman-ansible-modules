@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.3.0
+======
+
+Minor Changes
+-------------
+
+- content_upload - add support for OSTree content uploads (https://github.com/theforeman/foreman-ansible-modules/issues/628, https://projects.theforeman.org/issues/33299)
+- os_default_template, provisioning_template - add ``host_init_config`` to list of possible template types
+
 v3.2.0
 ======
 
