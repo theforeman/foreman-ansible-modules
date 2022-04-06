@@ -26,20 +26,20 @@
   tasks:
 
     # create user
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: present
         user_password: s3cret
         expected_change: true
 
     # verify idempotence
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: present
         expected_change: false
 
     # change user
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: present
         user_locale: "{{ omit }}"
@@ -48,7 +48,7 @@
         expected_change: true
 
     # try to auth as new user
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         foreman_username: test
         foreman_password: s3cret
@@ -57,7 +57,7 @@
         expected_change: true
 
     # change password
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: present
         user_password: newp@ass
@@ -65,7 +65,7 @@
         expected_change: true
 
     # try to auth as new user with new password
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         foreman_username: test
         foreman_password: newp@ass
@@ -74,13 +74,13 @@
         expected_change: true
 
     # remove user
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: absent
         expected_change: true
 
     # verify idempotence for absence
-    - include: tasks/user.yml
+    - include_tasks: tasks/user.yml
       vars:
         user_state: absent
         expected_change: false

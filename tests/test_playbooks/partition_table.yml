@@ -6,10 +6,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
 
@@ -20,45 +20,45 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         expected_change: false
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         locked_state: false
         expected_change: false
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         locked_state: true
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         locked_state: true
         expected_change: false
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         expected_change: false
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: present
         locked_state: false
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_layout: 'A partition table with a changed layout'
         ptable_state: present
         expected_change: true
     - name: add ptable
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: 'A partition table 2'
         ptable_layout: |
@@ -68,7 +68,7 @@
         ptable_state: present
         expected_change: true
     - name: change ptable name
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: 'A partition table 2'
         ptable_updated_name: 'A partition table 3'
@@ -78,7 +78,7 @@
           autopart
         ptable_state: present
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_name: 'A partition table 3'
         ptable_layout: |
@@ -87,13 +87,13 @@
           autopart
         ptable_state: present
         expected_change: false
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_name: 'A partition table 3'
         ptable_state: absent
         expected_change: true
     - name: add ptable without location
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: 'A second partition table'
         ptable_locations: "{{ omit }}"
@@ -103,16 +103,16 @@
           autopart
         ptable_state: present
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: absent
         expected_change: true
-    - include: tasks/ptable.yml
+    - include_tasks: tasks/ptable.yml
       vars:
         ptable_state: absent
         expected_change: false
     - name: set location of all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         ptable_organizations: "{{ omit }}"
@@ -120,7 +120,7 @@
         ptable_state: present
         expected_change: true
     - name: set location of all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         ptable_organizations: "{{ omit }}"
@@ -128,7 +128,7 @@
         ptable_state: present
         expected_change: false
     - name: unlock all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         locked_state: false
@@ -138,7 +138,7 @@
         ptable_state: present
         expected_change: true
     - name: unlock all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         locked_state: false
@@ -148,7 +148,7 @@
         ptable_state: present
         expected_change: false
     - name: delete all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         ptable_locations: "{{ omit }}"
@@ -157,7 +157,7 @@
         ptable_state: absent
         expected_change: true
     - name: delete all ptables
-      include: tasks/ptable.yml
+      include_tasks: tasks/ptable.yml
       vars:
         ptable_name: '*'
         ptable_locations: "{{ omit }}"
@@ -173,10 +173,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

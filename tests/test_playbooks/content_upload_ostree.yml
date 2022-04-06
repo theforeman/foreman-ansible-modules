@@ -6,18 +6,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
         repository_name: "Test OStree Repository"
         repository_content_type: "ostree"
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_name: "Test OStree Repository"
@@ -53,15 +53,15 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
         repository_name: "Test OStree Repository"
         repository_content_type: "ostree"
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

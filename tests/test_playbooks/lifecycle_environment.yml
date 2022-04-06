@@ -6,10 +6,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "{{ item }}"
@@ -26,17 +26,17 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_label: "dev"
         lifecycle_environment_description: "The dev environment"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         expected_change: false
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_name: "Test"
@@ -44,14 +44,14 @@
         lifecycle_environment_prior: "Dev"
         lifecycle_environment_description: "The test environment"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_name: "Test"
         lifecycle_environment_label: "test"
         lifecycle_environment_prior: "Dev"
         expected_change: false
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_name: "Production"
@@ -59,33 +59,33 @@
         lifecycle_environment_prior: "Test"
         lifecycle_environment_description: "The prod environment"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_name: "Test"
         lifecycle_environment_description: "The new test environment"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "Production"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "Test"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "Test"
         expected_change: false
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "Dev"
         expected_change: true
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "Dev"
@@ -98,7 +98,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: absent
         lifecycle_environment_name: "{{ item }}"
@@ -106,7 +106,7 @@
         - Production
         - Test
         - Dev
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

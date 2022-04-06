@@ -6,10 +6,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
 - hosts: tests
@@ -22,7 +22,7 @@
     - name: 'Libvirt compute resource'
       block:
         - name: Create libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr01"
             compute_resource_description: 'Libvirt compute resource'
@@ -36,7 +36,7 @@
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr01"
             compute_resource_description: 'Libvirt compute resource'
@@ -50,7 +50,7 @@
             compute_resource_state: present
             expected_change: false
         - name: Update libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr01"
             compute_resource_updated_name: "libvirt-cr"
@@ -65,7 +65,7 @@
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr"
             compute_resource_description: 'A compute_resource with an updated description'
@@ -79,7 +79,7 @@
             compute_resource_state: present
             expected_change: false
         - name: Update libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr"
             compute_resource_description: 'A compute_resource with an updated description and params'
@@ -94,7 +94,7 @@
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr"
             compute_resource_description: 'A compute_resource with an updated description and params'
@@ -109,13 +109,13 @@
             compute_resource_state: present
             expected_change: false
         - name: Delete libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr"
             compute_resource_state: absent
             expected_change: true
         - name: Delete libvirt compute resource
-          include: tasks/compute_resource.yml
+          include_tasks: tasks/compute_resource.yml
           vars:
             compute_resource_name: "libvirt-cr"
             compute_resource_state: absent
@@ -127,10 +127,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
 ...

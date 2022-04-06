@@ -6,36 +6,36 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: present
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: absent
-    - include: tasks/content_view_version.yml
+    - include_tasks: tasks/content_view_version.yml
       vars:
         state: absent
         version: "1.0"
       ignore_errors: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         repositories:
@@ -77,17 +77,17 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: absent
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent

@@ -6,33 +6,33 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: present
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: absent
-    - include: tasks/content_view_version.yml
+    - include_tasks: tasks/content_view_version.yml
       vars:
         state: absent
         version: "1.0"
       ignore_errors: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
 
@@ -43,7 +43,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         expected_change: true
@@ -53,28 +53,28 @@
         expected_diff: true
         expected_diff_before: "{}"
         expected_diff_after: "Test Content View"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         expected_change: false
         repositories:
           - name: "Test Repository"
             product: "Test Product"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
         expected_change: true
         repositories:
           - name: "Test Repository"
             product: "Test Product"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
         expected_change: false
         repositories:
           - name: "Test Repository"
             product: "Test Product"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         expected_change: true
@@ -82,12 +82,12 @@
           - name: "Test Repository"
             product: "Test Product"
 
-    - include: tasks/content_view_version.yml
+    - include_tasks: tasks/content_view_version.yml
       vars:
         version: "1.0"
 
     # Composite Content Views
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -99,7 +99,7 @@
         expected_diff: true
         expected_diff_before: "content_view_components.*\\[\\]"
         expected_diff_after: "content_view_version_id"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -108,7 +108,7 @@
         components:
           - content_view: Test Content View
             version: "1.0"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -118,7 +118,7 @@
         components:
           - content_view: Test Content View
             version: "1.0"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -128,7 +128,7 @@
         components:
           - content_view: Test Content View
             version: "1.0"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -141,7 +141,7 @@
         expected_diff: true
         expected_diff_before: "latest.*false"
         expected_diff_after: "latest.*true"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -151,14 +151,14 @@
         components:
           - content_view: Test Content View
             latest: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
         expected_change: false
         composite: true
         auto_publish: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -169,7 +169,7 @@
         expected_diff: true
         expected_diff_before: "content_view_version_id"
         expected_diff_after: "content_view_components.*\\[\\]"
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
@@ -177,21 +177,21 @@
         composite: true
         components: []
         auto_publish: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: present
         expected_change: false
         composite: true
         auto_publish: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: absent
         expected_change: true
         composite: true
         auto_publish: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: absent
@@ -200,11 +200,11 @@
         auto_publish: true
 
     # Remove the original CV again
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
         expected_change: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
         expected_change: false
@@ -216,14 +216,14 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: absent
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent

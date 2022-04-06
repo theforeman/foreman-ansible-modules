@@ -7,16 +7,16 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: present
-    - include: tasks/compute_resource.yml
+    - include_tasks: tasks/compute_resource.yml
       vars:
         compute_resource_organizations: "{{ libvirt.compute_resource.organizations }}"
         compute_resource_locations: "{{ libvirt.compute_resource.locations }}"
@@ -33,7 +33,7 @@
       include_vars:
         file: vars/server.yml
 
-    - include: tasks/compute_attribute.yml
+    - include_tasks: tasks/compute_attribute.yml
       vars:
         vm_attrs:
           memory: 2147483648
@@ -41,7 +41,7 @@
         compute_attribute_state: present
         expected_change: true
 
-    - include: tasks/compute_attribute.yml
+    - include_tasks: tasks/compute_attribute.yml
       vars:
         vm_attrs:
           memory: 2147483648
@@ -49,7 +49,7 @@
         compute_attribute_state: present
         expected_change: false
 
-    - include: tasks/compute_attribute.yml
+    - include_tasks: tasks/compute_attribute.yml
       vars:
         vm_attrs:
           memory_mb: 1073741824
@@ -57,7 +57,7 @@
         compute_attribute_state: present
         expected_change: true
 
-    - include: tasks/compute_attribute.yml
+    - include_tasks: tasks/compute_attribute.yml
       vars:
         vm_attrs:
           memory_mb: 1073741824
@@ -73,16 +73,16 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: absent
-    - include: tasks/compute_resource.yml
+    - include_tasks: tasks/compute_resource.yml
       vars:
         compute_resource_state: absent
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

@@ -6,18 +6,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_state: present
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
         content_credential_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
 
@@ -30,56 +30,56 @@
   tasks:
     - name: Test Yum Repository
       block:
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             expected_change: true
             repository_label: "just_a_test_repo"
             repository_mirror_on_sync: false
             repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: false
             expected_change: false
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: true
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: true
             expected_change: false
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_url: 'https://localhost/pulp/repos/demo_repos/zoo'
             repository_download_policy: "immediate"
             repository_state: present
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_download_concurrency: 10
             repository_state: present
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_download_concurrency: 10
             repository_state: present
             expected_change: true # currently idempotence is not working as this value is not reported back by Katello's API
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: absent
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: absent
             expected_change: false
 
     - name: Test Yum Repository with content SSL and GPG key
       block:
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             expected_change: true
@@ -91,30 +91,30 @@
             repository_ssl_client_key: "Test SSL Cert"
             repository_mirror_on_sync: false
             repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: false
             expected_change: false
             repository_name: "Test Repository 2"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: true
             expected_change: true
             repository_name: "Test Repository 2"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_mirror_on_sync: true
             expected_change: false
             repository_name: "Test Repository 2"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: absent
             expected_change: true
             repository_name: "Test Repository 2"
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: absent
             expected_change: false
@@ -122,7 +122,7 @@
 
     - name: Test Docker Repository
       block:
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_label: "just_a_test_repo"
@@ -133,7 +133,7 @@
             repository_docker_tags_whitelist:
               - latest
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_name: Test Docker Repository
@@ -143,7 +143,7 @@
             repository_docker_tags_whitelist:
               - latest
             expected_change: false
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
             repository_name: Test Docker Repository
@@ -155,7 +155,7 @@
             repository_docker_tags_whitelist:
               - latest
             expected_change: true
-        - include: tasks/repository.yml
+        - include_tasks: tasks/repository.yml
           vars:
             repository_state: absent
             repository_name: Test Docker Repository
@@ -168,18 +168,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
         content_credential_state: absent
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_state: absent
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

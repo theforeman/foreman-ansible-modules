@@ -6,16 +6,16 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: "{{ scc_account_name_for_scc_product }}"
         scc_account_login: "{{ scc_account_login_for_scc_product }}"
         scc_account_password: "{{ scc_account_password_for_scc_product }}"
         scc_account_state: present
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: "{{ scc_account_name_for_scc_product }}"
         scc_account_state: synced
@@ -27,12 +27,12 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/scc_product.yml
+    - include_tasks: tasks/scc_product.yml
       vars:
         scc_product_name: 'SUSE Linux Enterprise Client Tools 10 SP3 i586'
         expected_change: true
 
-    - include: tasks/scc_product.yml
+    - include_tasks: tasks/scc_product.yml
       vars:
         scc_product_name: 'SUSE Linux Enterprise Client Tools 10 SP3 i586'
         expected_change: false
@@ -44,11 +44,11 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: "{{ scc_account_name_for_scc_product }}"
         scc_account_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

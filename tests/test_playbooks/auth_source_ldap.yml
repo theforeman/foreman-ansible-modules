@@ -28,35 +28,35 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         auth_source_ldap_account_password: changeme
         expected_change: true
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         expected_change: false
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         auth_source_ldap_account: test
         expected_change: true
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         auth_source_ldap_netgroups: true
         expected_change: true
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         auth_source_ldap_netgroups: true
         expected_change: false
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: absent
         expected_change: true
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: absent
         expected_change: false

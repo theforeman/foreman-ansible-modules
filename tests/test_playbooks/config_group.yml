@@ -10,65 +10,65 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_state: present
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_state: present
         config_group_puppetclasses: []
         expected_change: false
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_puppetclasses: ['ntp', 'ntp::config']
         config_group_state: present
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_puppetclasses: ['ntp', 'ntp::config']
         config_group_state: present
         expected_change: false
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_puppetclasses: []
         config_group_state: present
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_name: "config group 1"
         config_group_puppetclasses: []
         config_group_state: present
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_name: "config group 1"
         config_group_updated_name: "config group 2"
         config_group_puppetclasses: []
         config_group_state: present
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_name: "config group 2"
         config_group_puppetclasses: []
         config_group_state: present
         expected_change: false
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_name: "config group 2"
         config_group_puppetclasses: []
         config_group_state: absent
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_puppetclasses: []
         config_group_state: present
         expected_change: false
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_state: absent
         expected_change: true
-    - include: tasks/config_group.yml
+    - include_tasks: tasks/config_group.yml
       vars:
         config_group_state: absent
         expected_change: false

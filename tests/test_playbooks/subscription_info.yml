@@ -6,10 +6,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
 
@@ -57,10 +57,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

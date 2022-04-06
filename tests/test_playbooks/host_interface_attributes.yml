@@ -25,7 +25,7 @@
         domain_organizations:
           - "{{ host.organization }}"
         domain_state: present
-    - include: tasks/subnet.yml
+    - include_tasks: tasks/subnet.yml
       vars:
         subnet_name: "{{ host.subnet }}"
         subnet_network: '192.0.2.0'
@@ -37,7 +37,7 @@
         subnet_organizations:
           - "{{ host.organization }}"
         subnet_state: present
-    - include: tasks/subnet.yml
+    - include_tasks: tasks/subnet.yml
       vars:
         subnet_name: "{{ host.subnet }} Secondary"
         subnet_network: '198.51.100.0'
@@ -58,11 +58,11 @@
         hostgroup_organizations:
           - "{{ host.organization }}"
         hostgroup_state: present
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "{{ host.arch }}"
         architecture_state: present
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "{{ host.os.name }}"
         operatingsystem_major: "{{ host.os.major }}"

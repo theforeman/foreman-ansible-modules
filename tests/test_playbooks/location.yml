@@ -6,7 +6,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_name: "{{ item }}"
         location_state: absent
@@ -15,7 +15,7 @@
         - Test Location/Sub Location 1
         - Test Location/Sub Location 2
         - Test Location
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
 
@@ -26,17 +26,17 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Test Location
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Test Location
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Sub Location 1
@@ -44,7 +44,7 @@
         location_organizations:
           - Test Organization
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Sub Location 1
@@ -52,83 +52,83 @@
         location_organizations:
           - Test Organization
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Sub Location 2
         location_parent: Test Location/Sub Location 1
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Sub Location 2
         location_parent: Test Location/Sub Location 1
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Test Location/Sub Location 1/Sub Location 2
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Test Location/Sub Location 1/Sub Location 2
         location_organizations:
           - Test Organization
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         location_name: Test Location/Sub Location 2
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Test Location
         # TODO checkmode does not realize the impossibility of removing the parent
         expected_change: "{{ ansible_check_mode }}"
         expected_error: "{{ not ansible_check_mode }}"
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Test Location/Sub Location 1/Sub Location 2
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Sub Location 1
         location_parent: Test Location
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Test Location/Sub Location 2
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Sub Location 1
         location_parent: Test Location
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Test Location/Sub Location 2
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         location_name: Test Location
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_parameters:
           - name: my_param
@@ -143,7 +143,7 @@
               - value
         location_state: present
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_parameters:
           - name: my_param
@@ -158,30 +158,30 @@
               - value
         location_state: present
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_parameters:
           - name: my_param
             value: my value
         location_state: present
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_parameters:
           - name: my_param
             value: my value
         location_state: present
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_parameters: []
         location_state: present
         expected_change: true
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
         expected_change: false
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
         expected_change: true
@@ -201,7 +201,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_name: "{{ item }}"
         location_state: absent
@@ -210,7 +210,7 @@
         - Test Location/Sub Location 1
         - Test Location/Sub Location 2
         - Test Location
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...
