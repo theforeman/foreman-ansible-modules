@@ -1,0 +1,793 @@
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.scc_account_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.scc_account module -- Manage SUSE Customer Center Accounts
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.3.0).
+
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.scc_account`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Manage SUSE Customer Center Accounts
+- This module requires the foreman_scc_manager plugin set up in the server
+- See \ https://github.com/ATIX-AG/foreman_scc_manager\ 
+
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-base_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-base_url:
+
+      .. rst-class:: ansible-option-title
+
+      **base_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-base_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of SUSE for suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-interval"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-interval:
+
+      .. rst-class:: ansible-option-title
+
+      **interval**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-interval" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Interval for syncing suse customer center account
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`never`
+      - :ansible-option-choices-entry:`daily`
+      - :ansible-option-choices-entry:`weekly`
+      - :ansible-option-choices-entry:`monthly`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-login"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-login:
+
+      .. rst-class:: ansible-option-title
+
+      **login**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Login id of suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-organization:
+
+      .. rst-class:: ansible-option-title
+
+      **organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of related organization
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-scc_account_password"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-scc_account_password:
+
+      .. rst-class:: ansible-option-title
+
+      **scc_account_password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-scc_account_password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the suse customer center account
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`absent`
+      - :ansible-option-choices-entry:`synced`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-sync_date"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-sync_date:
+
+      .. rst-class:: ansible-option-title
+
+      **sync_date**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-sync_date" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Last Sync time of suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-test_connection"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-test_connection:
+
+      .. rst-class:: ansible-option-title
+
+      **test_connection**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-test_connection" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Test suse customer center account credentials that connects to the server
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`yes`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-updated_name:
+
+      .. rst-class:: ansible-option-title
+
+      **updated_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name to be updated of suse customer center account
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Create a suse customer center account"
+      theforeman.foreman.scc_account:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Test"
+        login: "abcde"
+        scc_account_password: "12345"
+        base_url: "https://scc.suse.com"
+        state: present
+
+    - name: "Update a suse customer center account"
+      theforeman.foreman.scc_account:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Test1"
+        state: present
+
+    - name: "Delete a suse customer center account"
+      theforeman.foreman.scc_account:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Test"
+        state: absent
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/scc_accounts"></div>
+
+      .. _ansible_collections.theforeman.foreman.scc_account_module__return-entity/scc_accounts:
+
+      .. rst-class:: ansible-option-title
+
+      **scc_accounts**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/scc_accounts" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of scc accounts.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Manisha Singhal (@manisha15) ATIX AG
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

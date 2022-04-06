@@ -1,0 +1,615 @@
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.redhat_manifest_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.redhat_manifest module -- Interact with a Red Hat Satellite Subscription Manifest
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.3.0).
+
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.redhat_manifest`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Download and modify a Red Hat Satellite Subscription Manifest
+
+
+.. Aliases
+
+
+.. Requirements
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_access_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-content_access_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **content_access_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_access_mode" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Content Access Mode of the Subscription Manifest.
+
+      Setting \ :emphasis:`content\_access\_mode=org\_enviroment`\  enables Simple Content Access.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`org\_environment`
+      - :ansible-option-default-bold:`entitlement` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Manifest Name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Red Hat Portal password
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-path"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-path:
+
+      .. rst-class:: ansible-option-title
+
+      **path**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-path" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`path`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      path to export the manifest
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-pool_id"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-pool_id:
+
+      .. rst-class:: ansible-option-title
+
+      **pool_id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-pool_id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Subscription pool_id
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-pool_state"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-pool_state:
+
+      .. rst-class:: ansible-option-title
+
+      **pool_state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-pool_state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Subscription state
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`absent`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-portal"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-portal:
+
+      .. rst-class:: ansible-option-title
+
+      **portal**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-portal" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Red Hat Portal subscription access address
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"https://subscription.rhsm.redhat.com"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-quantity"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-quantity:
+
+      .. rst-class:: ansible-option-title
+
+      **quantity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-quantity" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      quantity of pool_id Subscriptions
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Manifest state
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`absent`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Red Hat Portal username
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-uuid"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-uuid:
+
+      .. rst-class:: ansible-option-title
+
+      **uuid**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-uuid" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Manifest uuid
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.redhat_manifest_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Validate Portal SSL
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create foreman.example.com Manifest and add 7 sub
+      theforeman.foreman.redhat_manifest:
+        name: "foreman.example.com"
+        username: "john-smith"
+        password: "changeme"
+        pool_id: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        quantity: 7
+
+    - name: Ensure my manifest has 10 of one subs in it and export
+      theforeman.foreman.redhat_manifest:
+        uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+        username: john-smith
+        password: changeme
+        pool_id: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        quantity: 10
+        path: /root/manifest.zip
+
+    - name: Remove all of one subs from foreman.example.com
+      theforeman.foreman.redhat_manifest:
+        name: foreman.example.com
+        username: john-smith
+        password: changeme
+        pool_id: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        pool_state: absent
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Sean O'Keeffe (@sean797)
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

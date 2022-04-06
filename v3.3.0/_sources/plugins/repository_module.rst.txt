@@ -1,0 +1,1712 @@
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.repository_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.repository module -- Manage Repositories
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.3.0).
+
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.repository`.
+
+.. version_added
+
+.. versionadded:: 1.0.0 of theforeman.foreman
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create and manage repositories
+
+
+.. Aliases
+
+
+.. Requirements
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ansible_collection_requirements"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ansible_collection_requirements:
+
+      .. rst-class:: ansible-option-title
+
+      **ansible_collection_requirements**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ansible_collection_requirements" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Contents of requirement yaml file to sync from URL
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-arch"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-arch:
+
+      .. rst-class:: ansible-option-title
+
+      **arch**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-arch" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Architecture of content in the repository
+
+      Set to \ :literal:`noarch`\  to disable the architecture restriction again.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-auto_enabled"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-auto_enabled:
+
+      .. rst-class:: ansible-option-title
+
+      **auto_enabled**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-auto_enabled" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      repositories will be automatically enabled on a registered host subscribed to this product
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-choices-entry:`yes`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-checksum_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-checksum_type:
+
+      .. rst-class:: ansible-option-title
+
+      **checksum_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-checksum_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Checksum of the repository
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`sha1`
+      - :ansible-option-choices-entry:`sha256`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-content_type:
+
+      .. rst-class:: ansible-option-title
+
+      **content_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The content type of the repository
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`deb`
+      - :ansible-option-choices-entry:`docker`
+      - :ansible-option-choices-entry:`file`
+      - :ansible-option-choices-entry:`ostree`
+      - :ansible-option-choices-entry:`puppet`
+      - :ansible-option-choices-entry:`yum`
+      - :ansible-option-choices-entry:`ansible\_collection`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-deb_architectures"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-deb_architectures:
+
+      .. rst-class:: ansible-option-title
+
+      **deb_architectures**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-deb_architectures" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      comma separated list of architectures to be synced from deb-archive
+
+      only available for \ :emphasis:`content\_type=deb`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-deb_components"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-deb_components:
+
+      .. rst-class:: ansible-option-title
+
+      **deb_components**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-deb_components" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      comma separated list of repo components to be synced from deb-archive
+
+      only available for \ :emphasis:`content\_type=deb`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-deb_errata_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-deb_errata_url:
+
+      .. rst-class:: ansible-option-title
+
+      **deb_errata_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-deb_errata_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL to sync Debian or Ubuntu errata information from
+
+      only available on Orcharhino
+
+      only available for \ :emphasis:`content\_type=deb`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-deb_releases"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-deb_releases:
+
+      .. rst-class:: ansible-option-title
+
+      **deb_releases**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-deb_releases" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      comma separated list of releases to be synced from deb-archive
+
+      only available for \ :emphasis:`content\_type=deb`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Description of the repository
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-docker_tags_whitelist"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-docker_tags_whitelist:
+
+      .. rst-class:: ansible-option-title
+
+      **docker_tags_whitelist**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-docker_tags_whitelist" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      list of tags to sync for Container Image repository
+
+      only available for \ :emphasis:`content\_type=docker`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-docker_upstream_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-docker_upstream_name:
+
+      .. rst-class:: ansible-option-title
+
+      **docker_upstream_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-docker_upstream_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      name of the upstream docker repository
+
+      only available for \ :emphasis:`content\_type=docker`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-download_concurrency"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-download_concurrency:
+
+      .. rst-class:: ansible-option-title
+
+      **download_concurrency**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-download_concurrency" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in 3.0.0 of theforeman.foreman`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      download concurrency for sync from upstream
+
+      as the API does not return this value, this will break idempotence for this module
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-download_policy"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-download_policy:
+
+      .. rst-class:: ansible-option-title
+
+      **download_policy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-download_policy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      download policy for sync from upstream
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`background`
+      - :ansible-option-choices-entry:`immediate`
+      - :ansible-option-choices-entry:`on\_demand`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-gpg_key"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-gpg_key:
+
+      .. rst-class:: ansible-option-title
+
+      **gpg_key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-gpg_key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository GPG key
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-http_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-http_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **http_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-http_proxy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the http proxy to use for content synching
+
+      Should be combined with \ :emphasis:`http\_proxy\_policy='use\_selected\_http\_proxy'`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-http_proxy_policy"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-http_proxy_policy:
+
+      .. rst-class:: ansible-option-title
+
+      **http_proxy_policy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-http_proxy_policy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Which proxy to use for content synching
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`global\_default\_http\_proxy`
+      - :ansible-option-choices-entry:`none`
+      - :ansible-option-choices-entry:`use\_selected\_http\_proxy`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ignorable_content"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ignorable_content:
+
+      .. rst-class:: ansible-option-title
+
+      **ignorable_content**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ignorable_content" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of content units to ignore while syncing a yum repository.
+
+      Must be subset of rpm,drpm,srpm,distribution,erratum.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ignore_global_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ignore_global_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **ignore_global_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ignore_global_proxy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether content sync should use or ignore the global http proxy setting
+
+      This is deprecated with Katello 3.13
+
+      It has been superseeded by \ :emphasis:`http\_proxy\_policy`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-choices-entry:`yes`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-label"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-label:
+
+      .. rst-class:: ansible-option-title
+
+      **label**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-label" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      label of the repository
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-mirror_on_sync"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-mirror_on_sync:
+
+      .. rst-class:: ansible-option-title
+
+      **mirror_on_sync**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-mirror_on_sync" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      toggle "mirror on sync" where the state of the repository mirrors that of the upstream repository at sync time
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the repository
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-organization:
+
+      .. rst-class:: ansible-option-title
+
+      **organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Organization that the entity is in
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-os_versions"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-os_versions:
+
+      .. rst-class:: ansible-option-title
+
+      **os_versions**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-os_versions" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Identifies whether the repository should be disabled on a client with a non-matching OS version.
+
+      A maximum of one OS version can be selected.
+
+      Set to \ :literal:`[]`\  to disable filtering again.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`rhel-6`
+      - :ansible-option-choices-entry:`rhel-7`
+      - :ansible-option-choices-entry:`rhel-8`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-product"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-product:
+
+      .. rst-class:: ansible-option-title
+
+      **product**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-product" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Product to which the repository lives in
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ssl_ca_cert"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ssl_ca_cert:
+
+      .. rst-class:: ansible-option-title
+
+      **ssl_ca_cert**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ssl_ca_cert" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository SSL CA certificate
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ssl_client_cert"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ssl_client_cert:
+
+      .. rst-class:: ansible-option-title
+
+      **ssl_client_cert**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ssl_client_cert" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository SSL client certificate
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ssl_client_key"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-ssl_client_key:
+
+      .. rst-class:: ansible-option-title
+
+      **ssl_client_key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ssl_client_key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository SSL client private key
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the entity
+
+      \ :literal:`present\_with\_defaults`\  will ensure the entity exists, but won't update existing ones
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`present\_with\_defaults`
+      - :ansible-option-choices-entry:`absent`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-unprotected"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-unprotected:
+
+      .. rst-class:: ansible-option-title
+
+      **unprotected**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-unprotected" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      publish the repository via HTTP
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-choices-entry:`yes`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-upstream_password"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-upstream_password:
+
+      .. rst-class:: ansible-option-title
+
+      **upstream_password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-upstream_password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      password to access upstream repository
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-upstream_username"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-upstream_username:
+
+      .. rst-class:: ansible-option-title
+
+      **upstream_username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-upstream_username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      username to access upstream repository
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-url"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository URL to sync from
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-verify_ssl_on_sync"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__parameter-verify_ssl_on_sync:
+
+      .. rst-class:: ansible-option-title
+
+      **verify_ssl_on_sync**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-verify_ssl_on_sync" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      verify the upstream certifcates are signed by a trusted CA
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-choices-entry:`yes`
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+.. Notes
+
+Notes
+-----
+
+.. note::
+   - You can configure certain aspects of existing Red Hat Repositories (like \ :emphasis:`download\_policy`\ ) using this module, but you can't create (enable) or delete (disable) them.
+   - If you want to enable or disable Red Hat Repositories available through your subscription, please use the \ :ref:`theforeman.foreman.repository\_set <ansible_collections.theforeman.foreman.repository_set_module>`\  module instead.
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Create repository"
+      theforeman.foreman.repository:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "My repository"
+        state: present
+        content_type: "yum"
+        product: "My Product"
+        organization: "Default Organization"
+        url: "http://yum.theforeman.org/plugins/latest/el7/x86_64/"
+        mirror_on_sync: true
+        download_policy: background
+
+    - name: "Create repository with content credentials"
+      theforeman.foreman.repository:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "My repository 2"
+        state: present
+        content_type: "yum"
+        product: "My Product"
+        organization: "Default Organization"
+        url: "http://yum.theforeman.org/releases/latest/el7/x86_64/"
+        download_policy: background
+        mirror_on_sync: true
+        gpg_key: RPM-GPG-KEY-my-product2
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/repositories"></div>
+
+      .. _ansible_collections.theforeman.foreman.repository_module__return-entity/repositories:
+
+      .. rst-class:: ansible-option-title
+
+      **repositories**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/repositories" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of repositories.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Eric D Helms (@ehelms)
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+
