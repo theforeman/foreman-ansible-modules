@@ -51,7 +51,7 @@ jobs:
       - name: Install libyaml-dev for PyYAML
         run: sudo apt-get install -y libyaml-dev
       - name: Install Ansible
-        run: pip install --upgrade git+https://github.com/ansible/ansible.git@${{ matrix.ansible }}
+        run: pip install --upgrade https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
       - name: Install dependencies
         run: make test-setup
       - name: prepare a redhat-uep.pem, even if we run on Ubuntu
