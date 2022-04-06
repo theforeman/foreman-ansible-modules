@@ -6,23 +6,23 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "TestOS1"
         operatingsystem_minor: 0
         operatingsystem_description: "TestOS1"
         operatingsystem_state: present
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "TestOS1"
         operatingsystem_minor: 1
         operatingsystem_description: "TestOS1 SP1"
         operatingsystem_state: present
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "TestOS2"
         operatingsystem_state: present
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_state: absent
 
@@ -33,21 +33,21 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS1"
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS1"
         architecture_state: present
         expected_change: false
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS1"
@@ -55,58 +55,58 @@
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS1"
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS2"
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         operatingsystems:
           - "TestOS2"
         architecture_state: present
         expected_change: false
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "aarch64"
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "aarch64"
         architecture_updated_name: "aarch64-2"
         architecture_state: present
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "aarch64-2"
         architecture_state: present
         expected_change: false
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "aarch64-2"
         architecture_state: absent
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_state: absent
         expected_change: true
 
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_state: absent
         expected_change: false
@@ -118,14 +118,14 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_description: "{{ item }}"
         operatingsystem_state: absent
       loop:
         - "TestOS1"
         - "TestOS1 SP1"
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "TestOS2"
         operatingsystem_state: absent

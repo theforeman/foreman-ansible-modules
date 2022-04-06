@@ -6,18 +6,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_state: present
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
         content_credential_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
 
@@ -56,18 +56,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
         content_credential_state: absent
-    - include: tasks/content_credential.yml
+    - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_state: absent
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

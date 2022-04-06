@@ -6,16 +6,16 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include: tasks/lifecycle_environment.yml
+    - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
         lifecycle_environment_name: "{{ item.name }}"
@@ -31,11 +31,11 @@
         - name: Prod
           label: prod
           prior: QA
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
       ignore_errors: true
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         repositories:
@@ -103,18 +103,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/content_view.yml
+    - include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
       ignore_errors: true
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
       ignore_errors: true
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
       ignore_errors: true
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent

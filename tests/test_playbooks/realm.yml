@@ -9,7 +9,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/realm.yml
+    - include_tasks: tasks/realm.yml
       vars:
         realm_state: absent
 - hosts: tests
@@ -19,19 +19,19 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/realm.yml
+    - include_tasks: tasks/realm.yml
       vars:
         realm_state: present
         expected_change: true
-    - include: tasks/realm.yml
+    - include_tasks: tasks/realm.yml
       vars:
         realm_state: present
         expected_change: false
-    - include: tasks/realm.yml
+    - include_tasks: tasks/realm.yml
       vars:
         realm_state: absent
         expected_change: true
-    - include: tasks/realm.yml
+    - include_tasks: tasks/realm.yml
       vars:
         realm_state: absent
         expected_change: false

@@ -6,16 +6,16 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: absent
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_name: "{{ item }}"
         job_template_state: absent
@@ -31,38 +31,38 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: present
         job_template_audit_comment: "create job template"
         expected_change: true
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: present
         job_template_audit_comment: "don't update job template"
         expected_change: false
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         template_inputs:
           - name: "newer input"
             input_type: "user"
         job_template_state: present
         expected_change: true
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_template: 'A job template with an template'
         job_template_state: present
         expected_change: true
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: absent
         expected_change: true
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: absent
         expected_change: false
 
-    - include: tasks/job_template_from_file.yml
+    - include_tasks: tasks/job_template_from_file.yml
       vars:
         job_template_state: present
         job_template_file_name: "data/delete_file.erb"
@@ -73,7 +73,7 @@
         expected_change: true
 
     - name: Add the same template input via direct input
-      include: tasks/job_template.yml
+      include_tasks: tasks/job_template.yml
       vars:
         job_template_name: delete file
         job_template_job_category: Commands
@@ -101,14 +101,14 @@
         job_template_state: present
         expected_change: false
 
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_name: delete file
         job_template_state: absent
         expected_change: true
 
     - name: Add Ansible template with implicit provider_type
-      include: tasks/job_template_from_file.yml
+      include_tasks: tasks/job_template_from_file.yml
       vars:
         job_template_state: present
         job_template_file_name: "data/ansible_hello.erb"
@@ -117,7 +117,7 @@
         expected_change: true
 
     - name: Add the same template input via direct input with explicit provider_type
-      include: tasks/job_template.yml
+      include_tasks: tasks/job_template.yml
       vars:
         job_template_name: Ansible Roles - Hello World
         job_template_job_category: Ansible Playbook
@@ -147,7 +147,7 @@
         job_template_state: present
         expected_change: false
     - name: assign all job templates the same organization
-      include: tasks/job_template.yml
+      include_tasks: tasks/job_template.yml
       vars:
         job_template_name: '*'
         job_template_locations: "{{ omit }}"
@@ -157,7 +157,7 @@
         job_template_state: present
         expected_change: true
     - name: assign all job templates the same organization
-      include: tasks/job_template.yml
+      include_tasks: tasks/job_template.yml
       vars:
         job_template_name: '*'
         job_template_locations: "{{ omit }}"
@@ -167,7 +167,7 @@
         job_template_state: present
         expected_change: false
 
-    - include: tasks/job_template.yml
+    - include_tasks: tasks/job_template.yml
       vars:
         job_template_name: Ansible Roles - Hello World
         job_template_state: absent
@@ -180,10 +180,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

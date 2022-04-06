@@ -6,10 +6,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
 
@@ -20,29 +20,29 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: present
         expected_change: true
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: present
         environment_locations: []
         environment_organizations: []
         expected_change: true
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: present
         expected_change: true
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: present
         expected_change: false
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: absent
         expected_change: true
-    - include: tasks/environment.yml
+    - include_tasks: tasks/environment.yml
       vars:
         environment_state: absent
         expected_change: false
@@ -54,10 +54,10 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

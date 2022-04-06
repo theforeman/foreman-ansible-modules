@@ -12,7 +12,7 @@
         organization_name: "Test Organization"
         organization_state: "present"
     - name: ensure test location
-      include: tasks/location.yml
+      include_tasks: tasks/location.yml
       vars:
         location_name: "Test Location"
         location_state: present
@@ -47,11 +47,11 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_name: "Test Organization"
         organization_state: absent
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_name: "Test Location"
         location_state: absent

@@ -6,15 +6,15 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test'
         organization_name: 'Test Organization'
         scc_account_state: absent
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test2'
         organization_name: 'Test Organization'
@@ -27,7 +27,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_password: 'testpass'
         scc_account_login: 'testuser'
@@ -36,12 +36,12 @@
         scc_account_state: present
         expected_change: true
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_state: present
         expected_change: false
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_password: 'testpass'
         scc_account_login: 'testuser'
@@ -51,7 +51,7 @@
         expected_change: false
         expected_fail: true
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test'
         scc_account_updated_name: 'Test2'
@@ -61,7 +61,7 @@
         expected_change: false
         expected_fail: true
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test'
         scc_account_updated_name: 'Test2'
@@ -70,14 +70,14 @@
         scc_account_state: present
         expected_change: true
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test2'
         scc_account_interval: 'monthly'
         scc_account_state: present
         expected_change: false
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test2'
         test_connection: false
@@ -85,14 +85,14 @@
         expected_fail: "{{ not ansible_check_mode }}"
         expected_change: "{{ ansible_check_mode }}"
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test2'
         organization_name: 'Test Organization'
         scc_account_state: absent
         expected_change: true
 
-    - include: tasks/scc_account.yml
+    - include_tasks: tasks/scc_account.yml
       vars:
         scc_account_name: 'Test2'
         organization_name: 'Test Organization'
@@ -106,7 +106,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

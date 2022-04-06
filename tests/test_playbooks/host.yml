@@ -45,7 +45,7 @@
         domain_organizations:
           - "{{ host.organization }}"
         domain_state: present
-    - include: tasks/subnet.yml
+    - include_tasks: tasks/subnet.yml
       vars:
         subnet_name: "{{ host.subnet }}"
         subnet_mask: '255.255.255.224'
@@ -81,11 +81,11 @@
     - include_tasks: tasks/usergroup.yml
       vars:
         usergroup_state: present
-    - include: tasks/architecture.yml
+    - include_tasks: tasks/architecture.yml
       vars:
         architecture_name: "{{ host.arch }}"
         architecture_state: present
-    - include: tasks/operatingsystem.yml
+    - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_name: "{{ host.os.name }}"
         operatingsystem_major: "{{ host.os.major }}"

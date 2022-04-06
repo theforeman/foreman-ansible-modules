@@ -6,20 +6,20 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/activation_key.yml
+    - include_tasks: tasks/activation_key.yml
       vars:
         activation_key_name: errata_key
         activation_key_content_view: Default Organization View
         activation_key_lifecycle_environment: Library
         activation_key_subscriptions:
           - name: "Test Product"
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_url: "https://jlsherrill.fedorapeople.org/fake-repos/needed-errata/"
@@ -83,7 +83,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/activation_key.yml
+    - include_tasks: tasks/activation_key.yml
       vars:
         activation_key_name: errata_key
         activation_key_state: absent

@@ -14,11 +14,11 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: test_hostgroup
         hostgroup_state: present
-    - include: tasks/smart_class_parameter.yml
+    - include_tasks: tasks/smart_class_parameter.yml
       vars:
         smart_class_parameter_puppetclass_name: ntp
         smart_class_parameter_parameter: "{{ item }}"
@@ -40,7 +40,7 @@
         - servers
         - burst
         - stepout
-    - include: tasks/smart_class_parameter.yml
+    - include_tasks: tasks/smart_class_parameter.yml
       vars:
         smart_class_parameter_puppetclass_name: ntp
         smart_class_parameter_parameter: "{{ item }}"
@@ -69,80 +69,80 @@
         smart_class_parameter_omit: false
         smart_class_parameter_override: true
       block:
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_description: ntp log file
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_description: ntp log file
             smart_class_parameter_state: present
             expected_change: false
 
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_parameter_type: string
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_parameter_type: string
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_parameter_type: none
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_parameter_type: none
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_state: present
             expected_change: false
 
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: true
             smart_class_parameter_default_value: "/var/log/ntp.log"
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: true
             smart_class_parameter_default_value: "/var/log/ntp.log"
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: false
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_hidden_value: false
             smart_class_parameter_state: present
             expected_change: false
 
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_override_value_order:
               - fqdn
@@ -151,7 +151,7 @@
               - hostgroup
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_override_value_order:
               - fqdn
@@ -160,7 +160,7 @@
               - hostgroup
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_override_value_order:
               - fqdn
@@ -169,7 +169,7 @@
               - domain
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_override_value_order:
               - fqdn
@@ -193,33 +193,33 @@
         smart_class_parameter_override: true
       block:
         # Test string param with default value
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd-foo"
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd-foo"
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_state: present
             expected_change: false
 
         # Test string param with matchers
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -229,7 +229,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -239,7 +239,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -249,7 +249,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -259,7 +259,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -267,7 +267,7 @@
                 value: "/etc/ntpd/foo"
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: "/etc/ntpd"
             smart_class_parameter_override_values:
@@ -285,33 +285,33 @@
         smart_class_parameter_override: true
       block:
         # Test boolean param with default value
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_state: present
             expected_change: false
 
         # Test boolean param with matchers
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_override_values:
@@ -321,7 +321,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_override_values:
@@ -331,7 +331,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_override_values:
@@ -339,7 +339,7 @@
                 value: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: false
             smart_class_parameter_override_values:
@@ -357,33 +357,33 @@
         smart_class_parameter_override: true
       block:
         # Test integer param with default value
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 3
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 3
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_state: present
             expected_change: false
 
         # Test integer param with matchers
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_override_values:
@@ -393,7 +393,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_override_values:
@@ -403,7 +403,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_override_values:
@@ -411,7 +411,7 @@
                 value: 42
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: 5
             smart_class_parameter_override_values:
@@ -429,7 +429,7 @@
         smart_class_parameter_override: true
       block:
         # Test array param with default value
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -437,7 +437,7 @@
             smart_class_parameter_avoid_duplicates: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -445,7 +445,7 @@
             smart_class_parameter_avoid_duplicates: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -453,7 +453,7 @@
             smart_class_parameter_avoid_duplicates: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -461,7 +461,7 @@
             smart_class_parameter_avoid_duplicates: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_merge_default: true
             smart_class_parameter_merge_overrides: true
@@ -470,7 +470,7 @@
             expected_change: false
 
         # Test array param with matchers
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -483,7 +483,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_puppetclass_name: ntp
             smart_class_parameter_parameter: servers
@@ -499,7 +499,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -510,7 +510,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_merge_default: true
@@ -521,7 +521,7 @@
                 omit: true
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_merge_default: true
             smart_class_parameter_merge_overrides: true
@@ -529,7 +529,7 @@
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_state: present
             expected_change: false
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_merge_default: false
             smart_class_parameter_merge_overrides: false
@@ -537,7 +537,7 @@
             smart_class_parameter_default_value: ['foo.ntp.org', 'bar.ntp.org']
             smart_class_parameter_state: present
             expected_change: true
-        - include: tasks/smart_class_parameter.yml
+        - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_merge_default: false
             smart_class_parameter_merge_overrides: false
@@ -553,7 +553,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/smart_class_parameter.yml
+    - include_tasks: tasks/smart_class_parameter.yml
       vars:
         smart_class_parameter_puppetclass_name: ntp
         smart_class_parameter_parameter: "{{ item }}"
@@ -575,7 +575,7 @@
         - servers
         - burst
         - stepout
-    - include: tasks/smart_class_parameter.yml
+    - include_tasks: tasks/smart_class_parameter.yml
       vars:
         smart_class_parameter_puppetclass_name: ntp
         smart_class_parameter_parameter: "{{ item }}"
@@ -586,7 +586,7 @@
         - servers
         - burst
         - stepout
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: test_hostgroup
         hostgroup_state: absent

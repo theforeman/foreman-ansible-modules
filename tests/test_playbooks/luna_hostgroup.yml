@@ -18,7 +18,7 @@
         organization_name: "{{ item }}"
         organization_state: present
       with_items: "{{ hostgroup.organizations }}"
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_state: absent
@@ -30,7 +30,7 @@
     - vars/server.yml
     - vars/hostgroup.yml
   tasks:
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -41,7 +41,7 @@
         hostgroup_state: present
         expected_change: true
 
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -52,7 +52,7 @@
         hostgroup_state: present
         expected_change: false
 
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -62,7 +62,7 @@
         hostgroup_state: present
         expected_change: true
 
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -72,13 +72,13 @@
         hostgroup_state: present
         expected_change: false
 
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_state: absent
         expected_change: true
 
-    - include: tasks/hostgroup.yml
+    - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group"
         hostgroup_state: absent

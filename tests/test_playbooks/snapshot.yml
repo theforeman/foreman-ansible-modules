@@ -6,7 +6,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: absent
 
@@ -17,33 +17,33 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: present
         expected_change: true
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: present
         expected_change: false
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_description: "alpha"
         snapshot_state: present
         expected_change: true
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_description: "alpha"
         snapshot_state: present
         expected_change: false
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: reverted
         expected_change: true
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: absent
         expected_change: true
-    - include: tasks/snapshot.yml
+    - include_tasks: tasks/snapshot.yml
       vars:
         snapshot_state: absent
         expected_change: false

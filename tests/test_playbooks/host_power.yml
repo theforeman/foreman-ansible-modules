@@ -8,7 +8,7 @@
   vars:
     host_name: vm01.example.com
   tasks:
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "off"
@@ -22,33 +22,33 @@
   vars:
     host_name: vm01.example.com
   tasks:
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "state"
         expected_change: false
         expected_power_state: "off"
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_hostname: "{{ host_name }}"
         host_power_state: "state"
         expected_change: false
         expected_power_state: "off"
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "on"
         expected_change: true
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "on"
         expected_change: false
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "start"
@@ -60,7 +60,7 @@
         seconds: 5
       when: recording is defined
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "off"
@@ -72,13 +72,13 @@
         seconds: 5
       when: recording is defined
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "off"
         expected_change: false
 
-    - include: tasks/host_power.yml
+    - include_tasks: tasks/host_power.yml
       vars:
         host_power_name: "{{ host_name }}"
         host_power_state: "stop"

@@ -34,57 +34,57 @@
   tasks:
     - name: 'Test usergroup with minimal params (name)'
       block:
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: present
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: present
             expected_change: false
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: absent
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: absent
             expected_change: false
     - name: 'Test usergroup rename'
       block:
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: present
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_updated_name: "{{ group.name }}2"
             usergroup_state: present
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}2"
             usergroup_state: present
             expected_change: false
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}2"
             usergroup_state: absent
             expected_change: true
     - name: 'Test usergroup with users/roles/groups'
       block:
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: nestedgroup
             usergroup_state: present
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_users: "{{ group.users }}"
@@ -93,7 +93,7 @@
             usergroup_roles: "{{ group.roles }}"
             usergroup_state: present
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_users: "{{ group.users }}"
@@ -102,12 +102,12 @@
             usergroup_roles: "{{ group.roles }}"
             usergroup_state: present
             expected_change: false
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: "{{ group.name }}"
             usergroup_state: absent
             expected_change: true
-        - include: tasks/usergroup.yml
+        - include_tasks: tasks/usergroup.yml
           vars:
             usergroup_name: nestedgroup
             usergroup_state: absent

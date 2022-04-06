@@ -12,17 +12,17 @@
     - include_tasks: tasks/organization.yml
       vars:
         organization_state: "present"
-    - include: tasks/usergroup.yml
+    - include_tasks: tasks/usergroup.yml
       vars:
         usergroup_name: "internal_group"
         usergroup_state: present
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
         auth_source_ldap_attr_login: dc=vagrant,dc=vm
         auth_source_ldap_groups_base: cn=groups,cn=accounts,dc=vagrant,dc=vm
         auth_source_ldap_tls: false
-    - include: tasks/external_usergroup.yml
+    - include_tasks: tasks/external_usergroup.yml
       vars:
         external_usergroup_state: absent
         auth_source_ldap: "Example LDAP"
@@ -35,25 +35,25 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/external_usergroup.yml
+    - include_tasks: tasks/external_usergroup.yml
       vars:
         external_usergroup_state: present
         auth_source_ldap: "Example LDAP"
         usergroup: "internal_group"
         expected_change: true
-    - include: tasks/external_usergroup.yml
+    - include_tasks: tasks/external_usergroup.yml
       vars:
         external_usergroup_state: present
         auth_source_ldap: "Example LDAP"
         usergroup: "internal_group"
         expected_change: false
-    - include: tasks/external_usergroup.yml
+    - include_tasks: tasks/external_usergroup.yml
       vars:
         external_usergroup_state: absent
         auth_source_ldap: "Example LDAP"
         usergroup: "internal_group"
         expected_change: true
-    - include: tasks/external_usergroup.yml
+    - include_tasks: tasks/external_usergroup.yml
       vars:
         external_usergroup_state: absent
         auth_source_ldap: "Example LDAP"
@@ -69,11 +69,11 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/usergroup.yml
+    - include_tasks: tasks/usergroup.yml
       vars:
         usergroup_name: "internal_group"
         usergroup_state: "absent"
-    - include: tasks/auth_source_ldap.yml
+    - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: absent
     - include_tasks: tasks/location.yml

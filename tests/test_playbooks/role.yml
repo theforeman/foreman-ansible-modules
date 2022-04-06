@@ -12,7 +12,7 @@
     - include_tasks: tasks/organization.yml
       vars:
         organization_state: "present"
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_name: "{{ item }}"
         role_state: absent
@@ -27,7 +27,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_name: "role_with_filters"
         role_state: present
@@ -37,17 +37,17 @@
               - view_hosts
             search: "owner_type = Usergroup and owner_id = 4"
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: true
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: false
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: true
@@ -56,7 +56,7 @@
               - view_hosts
             search: "owner_type = Usergroup and owner_id = 4"
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: false
@@ -65,7 +65,7 @@
               - view_hosts
             search: "owner_type = Usergroup and owner_id = 4"
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: true
@@ -75,7 +75,7 @@
               - puppetrun_hosts
             search: "owner_type = Usergroup and owner_id = 4"
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: false
@@ -85,7 +85,7 @@
               - puppetrun_hosts
             search: "owner_type = Usergroup and owner_id = 4"
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: true
@@ -94,7 +94,7 @@
               - view_hosts
               - puppetrun_hosts
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         expected_change: false
@@ -103,18 +103,18 @@
               - view_hosts
               - puppetrun_hosts
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: present
         role_description: new description
         expected_change: true
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: absent
         expected_change: true
 
-    - include: tasks/role.yml
+    - include_tasks: tasks/role.yml
       vars:
         role_state: absent
         expected_change: false

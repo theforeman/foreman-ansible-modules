@@ -6,24 +6,24 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
         repository_name: "Test File Repository"
         repository_content_type: "file"
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_name: "Test File Repository"
@@ -37,22 +37,22 @@
     - vars/server.yml
   tasks:
     - name: upload RPM
-      include: tasks/upload.yml
+      include_tasks: tasks/upload.yml
       vars:
         expected_change: true
     - name: upload RPM again, no change
-      include: tasks/upload.yml
+      include_tasks: tasks/upload.yml
       vars:
         expected_change: false
 
     - name: upload File
-      include: tasks/upload.yml
+      include_tasks: tasks/upload.yml
       vars:
         upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
         upload_repository: "Test File Repository"
         expected_change: true
     - name: upload File again, no change
-      include: tasks/upload.yml
+      include_tasks: tasks/upload.yml
       vars:
         upload_src: "{{ playbook_dir }}/data/file_repo_test.txt"
         upload_repository: "Test File Repository"
@@ -66,18 +66,18 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
-    - include: tasks/repository.yml
+    - include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
         repository_name: "Test File Repository"
         repository_content_type: "file"
-    - include: tasks/product.yml
+    - include_tasks: tasks/product.yml
       vars:
         product_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

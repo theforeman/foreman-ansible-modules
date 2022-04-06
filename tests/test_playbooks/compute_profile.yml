@@ -7,13 +7,13 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: present
-    - include: tasks/compute_resource.yml
+    - include_tasks: tasks/compute_resource.yml
       vars:
         compute_resource_name: "{{ libvirt.compute_resource.name }}"
         compute_resource_organizations: "{{ libvirt.compute_resource.organizations }}"
@@ -21,10 +21,10 @@
         compute_resource_provider: 'libvirt'
         compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
         compute_resource_state: present
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: absent
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_state: absent
@@ -37,23 +37,23 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: present
         expected_change: true
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: present
         expected_change: false
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: absent
         expected_change: true
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_state: absent
         expected_change: false
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_attributes:
@@ -64,7 +64,7 @@
         expected_diff: true
         expected_diff_before: "{}"
         expected_diff_after: "model.*virtio"
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_attributes:
@@ -72,7 +72,7 @@
             vm_attrs: "{{ libvirt.compute_profile.attrs }}"
         compute_profile_state: present
         expected_change: false
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_attributes:
@@ -80,7 +80,7 @@
             vm_attrs: "{{ libvirt.compute_profile.attrs | combine({'cpus':2}) }}"
         compute_profile_state: present
         expected_change: true
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_attributes:
@@ -88,7 +88,7 @@
             vm_attrs: "{{ libvirt.compute_profile.attrs | combine({'cpus':2}) }}"
         compute_profile_state: present
         expected_change: false
-    - include: tasks/compute_profile.yml
+    - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: app-small
         compute_profile_state: absent
@@ -102,14 +102,14 @@
     - vars/server.yml
     - vars/compute_profile.yml
   tasks:
-    - include: tasks/compute_resource.yml
+    - include_tasks: tasks/compute_resource.yml
       vars:
         compute_resource_name: "{{ libvirt.compute_resource.name }}"
         compute_resource_state: absent
-    - include: tasks/location.yml
+    - include_tasks: tasks/location.yml
       vars:
         location_state: absent
-    - include: tasks/organization.yml
+    - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
 ...

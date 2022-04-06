@@ -6,7 +6,7 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_state: absent
 - hosts: tests
@@ -16,104 +16,104 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_name: "my_param"
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_name: "my_param"
         global_parameter_updated_name: "my_param2"
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_name: "my_param2"
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_name: "my_param2"
         global_parameter_state: absent
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: integer
         global_parameter_hidden_value: true
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: integer
         global_parameter_hidden_value: true
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: integer
         global_parameter_hidden_value: false
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: real
         global_parameter_value: 3.14
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: real
         global_parameter_value: 3.14
         global_parameter_hidden_value: false
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: string
         global_parameter_value: ""
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: string
         global_parameter_value: ""
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: boolean
         global_parameter_value: true
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: boolean
         global_parameter_value: true
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: string
         global_parameter_value: "'"
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: string
         global_parameter_value: "'"
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: hash
         global_parameter_value: {'a': 2, '1': 'b'}
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: hash
         global_parameter_value:
           a: 2
           1: b
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: array
         global_parameter_value: ['a', 2, true, 1.e-3]
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: array
         global_parameter_value:
@@ -122,7 +122,7 @@
           - true
           - 0.001
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: yaml
         global_parameter_value:
@@ -131,7 +131,7 @@
               - a
               - 1
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: yaml
         global_parameter_value:
@@ -140,12 +140,12 @@
               - a
               - 1
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: json
         global_parameter_value: {"name": "test", "value": 4, "tags": ["a", "b", "c"]}
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: json
         global_parameter_value:
@@ -153,16 +153,16 @@
           value: 4
           tags: ['a', 'b', 'c']
         expected_change: false
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_state: absent
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_type: json
         global_parameter_value: {"name": "test", "value": 4, "tags": ["a", "b", "c"]}
         expected_change: true
-    - include: tasks/global_parameter.yml
+    - include_tasks: tasks/global_parameter.yml
       vars:
         global_parameter_state: absent
         expected_change: true
