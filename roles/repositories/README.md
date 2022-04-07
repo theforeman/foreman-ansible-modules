@@ -29,6 +29,7 @@ foreman_products:
         basearch: x86_64
       - name: Red Hat Enterprise Linux 7 Server - Optional (RPMs)
         basearch: x86_64
+        releasever: 7Server
   - name: Red Hat Software Collections (for RHEL Server)
     repository_sets:
       - name: Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server
@@ -106,6 +107,7 @@ This example enables several Red Hat Repositories. There are a few important poi
                 basearch: x86_64
               - name: Red Hat Enterprise Linux 7 Server - Optional (RPMs)
                 basearch: x86_64
+                releasever: 7Server
           - name: Red Hat Enterprise Linux for x86_64
             repository_sets:
               - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
