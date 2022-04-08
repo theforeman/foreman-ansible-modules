@@ -46,9 +46,9 @@ Example Playbooks
         foreman_content_views:
           - name: RHEL7
             repositories:
-              - name: Red Hat Enterprise Linux 7 Server (RPMs)
+              - name: Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server
                 product: 'Red Hat Enterprise Linux Server'
-              - name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
+              - name: Red Hat Enterprise Linux 7 Server - Extras RPMs x86_64
                 product: 'Red Hat Enterprise Linux Server'
               - name: Red Hat Satellite Tools 6.8 (for RHEL 7 Server) (RPMs)
                 product: 'Red Hat Enterprise Linux Server'
