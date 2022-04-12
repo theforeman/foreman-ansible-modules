@@ -1,5 +1,4 @@
 ---
-requires_ansible: '>=2.9'
 action_groups:
   foreman:
   - activation_key
@@ -14,30 +13,41 @@ action_groups:
   - content_upload
   - content_view
   - content_view_filter
+  - content_view_info
   - content_view_version
+  - content_view_version_info
   - domain
+  - domain_info
   - external_usergroup
   - global_parameter
   - hardware_model
   - host
   - host_collection
+  - host_errata_info
+  - host_info
   - host_power
   - hostgroup
+  - http_proxy
   - image
   - installation_medium
+  - job_invocation
   - job_template
   - lifecycle_environment
   - location
   - operatingsystem
   - organization
+  - organization_info
   - os_default_template
   - partition_table
   - product
   - provisioning_template
   - puppet_environment
+  - puppetclasses_import
   - realm
   - repository
+  - repository_info
   - repository_set
+  - repository_set_info
   - repository_sync
   - resource_info
   - role
@@ -46,9 +56,14 @@ action_groups:
   - scc_account
   - scc_product
   - setting
+  - setting_info
   - smart_class_parameter
+  - smart_proxy
   - snapshot
+  - status_info
   - subnet
+  - subnet_info
+  - subscription_info
   - subscription_manifest
   - sync_plan
   - templates_import
@@ -78,12 +93,12 @@ plugin_routing:
       redirect: external_usergroup
     foreman_global_parameter:
       redirect: global_parameter
-    foreman_hostgroup:
-      redirect: hostgroup
-    foreman_host_power:
-      redirect: host_power
     foreman_host:
       redirect: host
+    foreman_host_power:
+      redirect: host_power
+    foreman_hostgroup:
+      redirect: hostgroup
     foreman_image:
       redirect: image
     foreman_installation_medium:
@@ -128,18 +143,18 @@ plugin_routing:
       redirect: subnet
     foreman_templates_import:
       redirect: templates_import
-    foreman_usergroup:
-      redirect: usergroup
     foreman_user:
       redirect: user
+    foreman_usergroup:
+      redirect: usergroup
     katello_activation_key:
       redirect: activation_key
     katello_content_credential:
       redirect: content_credential
-    katello_content_view_filter:
-      redirect: content_view_filter
     katello_content_view:
       redirect: content_view
+    katello_content_view_filter:
+      redirect: content_view_filter
     katello_content_view_version:
       redirect: content_view_version
     katello_host_collection:
@@ -154,9 +169,10 @@ plugin_routing:
       redirect: repository
     katello_repository_set:
       redirect: repository_set
-    katello_sync_plan:
-      redirect: sync_plan
     katello_sync:
       redirect: repository_sync
+    katello_sync_plan:
+      redirect: sync_plan
     katello_upload:
       redirect: content_upload
+requires_ansible: '>=2.9'

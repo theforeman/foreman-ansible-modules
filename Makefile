@@ -6,7 +6,8 @@ MANIFEST := build/collections/ansible_collections/$(NAMESPACE)/$(NAME)/MANIFEST.
 
 ROLES := $(wildcard roles/*)
 PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
-METADATA := galaxy.yml LICENSE README.md meta/runtime.yml requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt
+RUNTIME_YML := meta/runtime.yml
+METADATA := galaxy.yml LICENSE README.md $(RUNTIME_YML) requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*)) $(foreach ROLE,$(ROLES),$(ROLE)/README.md)
 
@@ -41,12 +42,14 @@ info:
 	@echo "  roles:\n $(foreach ROLE,$(notdir $(ROLES)),   - $(ROLE)\n)"
 	@echo " $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES), $(PLUGIN_TYPE):\n $(foreach PLUGIN,$(basename $(notdir $(_$(PLUGIN_TYPE)))),   - $(PLUGIN)\n)\n)"
 
-lint: $(MANIFEST) | tests/test_playbooks/vars/server.yml
+lint: $(MANIFEST) $(RUNTIME_YML) | tests/test_playbooks/vars/server.yml
 	yamllint -f parsable tests/test_playbooks roles
 	ansible-lint -v roles/*
 	ansible-playbook --syntax-check tests/test_playbooks/*.yml | grep -v '^$$'
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 	GALAXY_IMPORTER_CONFIG=tests/galaxy-importer.cfg python -m galaxy_importer.main $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+	@echo "Check that there are no changes to $(RUNTIME_YML)"
+	git diff --exit-code $(RUNTIME_YML)
 
 sanity: $(MANIFEST)
 	# Fake a fresh git repo for ansible-test
@@ -127,6 +130,9 @@ doc: $(MANIFEST)
 vendor:
 	git clone --depth=1 --branch=$(APIPIE_VERSION) https://github.com/Apipie/apypie/ build/apypie-git
 	python vendor.py build/apypie-git/apypie/*.py > plugins/module_utils/_apypie.py
+
+$(RUNTIME_YML): FORCE
+	$(PYTHON_COMMAND) generate_action_groups.py
 
 FORCE:
 
