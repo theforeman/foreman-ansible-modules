@@ -136,6 +136,8 @@ def get_rpm_info(path):
     version = to_native(rpmhdr[rpm.RPMTAG_VERSION])
     release = to_native(rpmhdr[rpm.RPMTAG_RELEASE])
     arch = to_native(rpmhdr[rpm.RPMTAG_ARCH])
+    if arch == 'noarch' and rpmhdr[rpm.RPMTAG_SOURCEPACKAGE] == 1:
+        arch = 'src'
 
     return (name, epoch, version, release, arch)
 
