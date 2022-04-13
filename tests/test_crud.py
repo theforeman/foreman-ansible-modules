@@ -14,6 +14,8 @@ IGNORED_WARNINGS = [
     "You have configured a plain HTTP server URL. All communication will happen unencrypted.",
 ]
 
+ANSIBLE_SUPPORTS_MODULE_DEFAULTS = LooseVersion(get_ansible_version()) >= LooseVersion('2.12')
+
 if sys.version_info[0] == 2:
     for envvar in os.environ.keys():
         try:
@@ -24,6 +26,8 @@ if sys.version_info[0] == 2:
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_crud(tmpdir, module, vcrmode):
+    if module in ['module_defaults'] and not ANSIBLE_SUPPORTS_MODULE_DEFAULTS:
+        pytest.skip("Module defaults only work with Ansible 2.12+")
     if vcrmode == "live":
         run = run_playbook(module)
     else:
@@ -38,6 +42,8 @@ def test_crud(tmpdir, module, vcrmode):
 def test_check_mode(tmpdir, module):
     if module in ['subscription_manifest', 'templates_import', 'puppetclasses_import', 'content_rhel_role']:
         pytest.skip("This module does not support check_mode.")
+    if module in ['module_defaults'] and not ANSIBLE_SUPPORTS_MODULE_DEFAULTS:
+        pytest.skip("Module defaults only work with Ansible 2.12+")
     run = run_playbook_vcr(tmpdir, module, check_mode=True)
     assert run.rc == 0
 
