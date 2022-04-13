@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch status
+      include_tasks: tasks/status_info.yml
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  module_defaults:
+    group/theforeman.foreman.foreman:
+      username: "{{ foreman_username }}"
+      password: "{{ foreman_password }}"
+      server_url: "{{ foreman_server_url }}"
+      validate_certs: "{{ foreman_validate_certs }}"
+  tasks:
+    - name: fetch status info (no FQCN)
+      status_info:
+
+    - name: fetch setting info (FQCN)
+      theforeman.foreman.setting_info:
+        name: "login_text"
+      register: setting_info
+    - name: check setting details
+      assert:
+        that:
+          - setting_info['setting']['name'] == "login_text"
+          - setting_info['setting']['value'] == ''
