@@ -381,8 +381,15 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
     def _post_request(self):
         url = "%s/ansible/api/v2/ansible_inventories/schedule" % self.foreman_url
-        session = self._get_session()
         params = {'input_values': self._fetch_params()}
+
+        if self.use_cache and url in self._cache.get(self.cache_key, {}):
+            return self._cache[self.cache_key][url]
+
+        if self.cache_key not in self._cache:
+            self._cache[self.cache_key] = {}
+
+        session = self._get_session()
         self.poll_interval = self.get_option('poll_interval')
         self.max_timeout = self.get_option('max_timeout')
         # backward compatibility
@@ -395,21 +402,22 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         ret = session.post(url, json=params)
         if not ret:
             raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
-        url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
+        data_url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
         polls = 0
-        response = session.get(url)
+        response = session.get(data_url)
         while response:
             if response.status_code != 204 or polls > max_polls:
                 break
             sleep(self.poll_interval)
             polls += 1
-            response = session.get(url)
+            response = session.get(data_url)
         if not response:
             raise Exception("Error receiving inventory report from foreman. Please check foreman logs!")
         elif (response.status_code == 204 and polls > max_polls):
             raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
         else:
-            return response.json()
+            self._cache[self.cache_key][url] = json.loads(response.json())
+            return self._cache[self.cache_key][url]
 
     def _populate(self):
         if self._use_inventory_report():
@@ -444,7 +452,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.groups = dict()
         self.hosts = dict()
         try:
-            inventory_report_response = self._post_request()
+            host_data = self._post_request()
         except Exception as exc:
             self.display.warning("Failed to use Reports API, falling back to Hosts API: {0}".format(exc))
             self._populate_host_api()
@@ -454,7 +462,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         hostnames = self.get_option('hostnames')
         strict = self.get_option('strict')
 
-        host_data = json.loads(inventory_report_response)
         for host in host_data:
             if not(host):
                 continue
