@@ -16,8 +16,10 @@
     foreman_port: "3000"
     postgres_version: "12"
     postgres_host: "postgres"
+    postgres_port: 5432
   collections:
     - community.docker
     - theforeman.foreman
   tasks:
-    - include_tasks: tasks/inventory_plugin.yml
+    - name: test inventory
+      include_tasks: tasks/inventory_plugin.yml
