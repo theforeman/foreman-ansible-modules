@@ -6,6 +6,8 @@
   block:
     - name: execute tests
       include_tasks: inventory_plugin_tests.yml
+    - name: execute tests again, now fed from cache
+      include_tasks: inventory_plugin_tests.yml
   always:
     - name: remove containers
       docker_container:

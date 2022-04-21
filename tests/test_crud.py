@@ -53,7 +53,9 @@ def test_check_mode(tmpdir, module):
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
 def test_inventory(tmpdir, module):
     inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
-    run = run_playbook(module, inventory=inventory)
+    extra_env = {}
+    extra_env['ANSIBLE_INVENTORY_CACHE_CONNECTION'] = tmpdir.strpath
+    run = run_playbook(module, inventory=inventory, extra_env=extra_env)
     assert run.rc == 0
 
     _assert_no_warnings(run)
