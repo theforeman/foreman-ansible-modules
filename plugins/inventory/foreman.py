@@ -168,6 +168,7 @@ password: changeme
 hostnames:
   - name.split('.')[0]
 '''
+import copy
 import json
 from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 from time import sleep
@@ -452,7 +453,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.groups = dict()
         self.hosts = dict()
         try:
-            host_data = self._post_request()
+            # We need a deep copy of the data, as we modify it below and this would also modify the cache
+            host_data = copy.deepcopy(self._post_request())
         except Exception as exc:
             self.display.warning("Failed to use Reports API, falling back to Hosts API: {0}".format(exc))
             self._populate_host_api()
