@@ -1,0 +1,47 @@
+---
+- name: test that all groups are present
+  assert:
+    that: >
+      'foreman_{{ item.label | default(item.name) | regex_replace('/', '_') }}' in groups
+  with_items: "{{ foreman_groups }}"
+
+- name: test that all hosts are in the "all" group
+  assert:
+    that: >
+      '{{ item.key }}' in groups['all']
+  with_dict: "{{ foreman_hosts }}"
+
+- name: test that all hosts are in the correct hostgroup
+  assert:
+    that: >
+      '{{ item.key }}' in groups['foreman_{{ item.value | regex_replace('/', '_') }}']
+  with_dict: "{{ foreman_hosts }}"
+
+- name: dump all host details
+  debug:
+    var: "hostvars['{{ item.key }}']"
+  with_dict: "{{ foreman_hosts }}"
+
+- name: test that all hosts have the domain fact set
+  assert:
+    that: >
+      hostvars['{{ item.key }}']['foreman_facts']['domain']  == 'example.com'
+  with_dict: "{{ foreman_hosts }}"
+
+- name: test that all hosts have the OS fact set
+  assert:
+    that: >
+      hostvars['{{ item.key }}']['foreman_facts']['operatingsystem']  == 'CentOS'
+  with_dict: "{{ foreman_hosts }}"
+
+- name: test that all hosts have the testparam1
+  assert:
+    that: >
+      hostvars['{{ item.key }}']['testparam1']  == 'testvalue1'
+  with_dict: "{{ foreman_hosts }}"
+
+- name: test that all hosts have the testparam2
+  assert:
+    that: >
+      hostvars['{{ item.key }}']['testparam2']  == 'testvalue2'
+  with_dict: "{{ foreman_hosts }}"

@@ -1,0 +1,107 @@
+---
+- name: fetch PostgreSQL container
+  docker_image:
+    name: docker.io/library/postgres:{{ postgres_version }}
+    source: pull
+
+- name: fetch Foreman container
+  docker_image:
+    name: "{{ foreman_container }}:{{ foreman_version }}"
+    source: pull
+
+- name: start PostgreSQL container
+  docker_container:
+    name: "{{ postgres_host }}"
+    image: docker.io/library/postgres:{{ postgres_version }}
+    env:
+      POSTGRES_USER: foreman
+      POSTGRES_PASSWORD: foreman
+      POSTGRES_DATABASE: foreman
+      PGDATA: /var/lib/postgresql/data/pgdata
+    published_ports:
+      - "0.0.0.0:{{ postgres_port }}:5432"
+
+- name: start Foreman container
+  docker_container:
+    name: "{{ foreman_host }}"
+    image: "{{ foreman_container }}:{{ foreman_version }}"
+    command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
+    env:
+      SEED_ADMIN_PASSWORD: changeme
+      RAILS_ENV: production
+      DATABASE_URL: postgres://foreman:foreman@{{ ansible_default_ipv4['address'] }}:{{ postgres_port }}/foreman?pool=5
+    published_ports:
+      - "0.0.0.0:{{ foreman_port }}:3000"
+
+- name: wait for foreman to start
+  status_info:
+    username: admin
+    password: changeme
+    server_url: http://127.0.0.1:{{ foreman_port }}/
+  register: result
+  until:
+    - result is success
+    - result.status.status == 200
+  retries: 10
+  delay: 10
+
+- name: start dynflow container
+  docker_container:
+    name: "{{ foreman_host }}dynflow"
+    image: "{{ foreman_container }}:{{ foreman_version }}"
+    command: bash -c "bundle exec rake dynflow:executor"
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: postgres://foreman:foreman@{{ ansible_default_ipv4['address'] }}:{{ postgres_port }}/foreman?pool=5
+
+- name: create test hostgroups
+  hostgroup:
+    username: admin
+    password: changeme
+    server_url: http://127.0.0.1:{{ foreman_port }}/
+    name: "{{ item.name }}"
+    parent: "{{ item.parent | default(omit) }}"
+    organizations:
+      - Default Organization
+    locations:
+      - Default Location
+  with_items: "{{ foreman_groups }}"
+
+- name: create test hosts
+  host:
+    username: admin
+    password: changeme
+    server_url: http://127.0.0.1:{{ foreman_port }}/
+    name: "{{ item.key }}"
+    hostgroup: "{{ item.value }}"
+    build: false
+    organization: Default Organization
+    location: Default Location
+    managed: false
+    parameters:
+      - name: testparam1
+        value: testvalue1
+      - name: testparam2
+        value: testvalue2
+  with_dict: "{{ foreman_hosts }}"
+
+- name: submit facts for hosts
+  uri:
+    url: http://127.0.0.1:{{ foreman_port }}/api/hosts/facts
+    url_username: admin
+    url_password: changeme
+    validate_certs: false
+    method: POST
+    body:
+      name: "{{ item.key }}"
+      facts:
+        fqdn: "{{ item.key }}"
+        domain: example.com
+        famtesthost: true
+        operatingsystem: CentOS
+        operatingsystemrelease: "7.7"
+    force_basic_auth: true
+    status_code: 201
+    body_format: json
+  with_dict: "{{ foreman_hosts }}"
+  ignore_errors: true
