@@ -52,11 +52,6 @@ def test_check_mode(tmpdir, module):
 
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
 def test_inventory(tmpdir, module):
-    ansible_version = get_ansible_version()
-    if ansible_version is None:
-        pytest.skip("Couldn't figure out Ansible version?!")
-    if LooseVersion(ansible_version) < LooseVersion('2.9'):
-        pytest.skip("This module should not be tested on Ansible before 2.9")
     inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
     run = run_playbook(module, inventory=inventory)
     assert run.rc == 0
