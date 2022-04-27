@@ -39,6 +39,8 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
+    label: "{{ item.label | default(omit) }}"
+    gpg_key: "{{ item.gpg_key | default(omit) }}"
     state: present
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
