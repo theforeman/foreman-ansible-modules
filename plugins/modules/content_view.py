@@ -39,7 +39,7 @@ options:
     type: str
   label:
     description:
-      - Label of the Content View
+      - Label of the Content View. This field cannot be updated.
     type: str
   repositories:
     description:
