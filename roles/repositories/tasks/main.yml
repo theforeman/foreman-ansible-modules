@@ -53,7 +53,7 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ item.1.name }}"
-    url: "{{ item.1.url }}"
+    url: "{{ item.1.url | default(omit) }}"
     product: "{{ item.0.name }}"
     auto_enabled: "{{ item.1.auto_enabled | default(omit) }}"
     checksum_type: "{{ item.1.checksum_type | default(omit) }}"
