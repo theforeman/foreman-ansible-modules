@@ -232,6 +232,7 @@ options:
       - rhel-6
       - rhel-7
       - rhel-8
+      - rhel-9
   arch:
     description:
       - Architecture of content in the repository
@@ -329,7 +330,7 @@ def main():
             ignorable_content=dict(type='list', elements='str'),
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
-            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8']),
+            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8', 'rhel-9']),
             arch=dict(),
         ),
         mutually_exclusive=[
