@@ -37,6 +37,10 @@ options:
     description:
       - Description of the Content View
     type: str
+  label:
+    description:
+      - Label of the Content View
+    type: str
   repositories:
     description:
       - List of repositories that include name and product.
@@ -159,6 +163,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
+            label=dict(),
             composite=dict(type='bool', default=False),
             auto_publish=dict(type='bool', default=False),
             solve_dependencies=dict(type='bool'),
