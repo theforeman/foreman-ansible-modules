@@ -946,10 +946,18 @@ class ForemanAnsibleModule(AnsibleModule):
                             item[nested_key] = self._lookup_entity(item[nested_key], nested_spec)
 
     def record_before(self, resource, entity):
-        self._before[resource].append(entity)
+        if isinstance(entity, dict):
+            to_record = _recursive_dict_without_none(entity)
+        else:
+            to_record = entity
+        self._before[resource].append(to_record)
 
     def record_after(self, resource, entity):
-        self._after[resource].append(entity)
+        if isinstance(entity, dict):
+            to_record = _recursive_dict_without_none(entity)
+        else:
+            to_record = entity
+        self._after[resource].append(to_record)
 
     def record_after_full(self, resource, entity):
         self._after_full[resource].append(entity)
