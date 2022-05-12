@@ -1855,7 +1855,6 @@ TEMPLATE_KIND_LIST = [
     'kexec',
     'POAP',
     'provision',
-    'ptable',
     'PXEGrub',
     'PXEGrub2',
     'PXELinux',

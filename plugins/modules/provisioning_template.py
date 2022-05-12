@@ -49,7 +49,6 @@ options:
       - kexec
       - POAP
       - provision
-      - ptable
       - PXEGrub
       - PXEGrub2
       - PXELinux
