@@ -200,8 +200,8 @@ EXAMPLES = '''
       - ACME
     provider: libvirt
     provider_params:
-      url: libvirt.example.com
-      display_type: vnc
+      url: qemu+ssh://root@libvirt.example.com/system
+      display_type: spice
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
@@ -217,8 +217,8 @@ EXAMPLES = '''
       - ACME
     provider: libvirt
     provider_params:
-      url: libvirt.example.com
-      display_type: vnc
+      url: qemu+ssh://root@libvirt.example.com/system
+      display_type: spice
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
