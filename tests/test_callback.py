@@ -21,8 +21,6 @@ def run_playbook_callback(tmpdir, report_type):
         extra_env['ANSIBLE_COMMAND_WARNINGS'] = "0"
     else:
         extra_env['ANSIBLE_CALLBACKS_ENABLED'] = "theforeman.foreman.foreman"
-    extra_env['ANSIBLE_STDOUT_CALLBACK'] = "theforeman.foreman.foreman"
-    extra_env['ANSIBLE_LOAD_CALLBACK_PLUGINS'] = "1"
     # No connection is actually performed during the test
     extra_env['FOREMAN_REPORT_TYPE'] = report_type
     extra_env['FOREMAN_URL'] = "http://localhost"
