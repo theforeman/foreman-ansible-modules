@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.2.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -70,14 +70,14 @@ interactions:
     uri: https://foreman.example.org/api/operatingsystems?search=name%3D%22SuperOS%22%2Cmajor%3D%221%22%2Cminor%3D%222%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 6,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"SuperOS\\\",major=\\\"1\\\",minor=\\\
         \"2\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n\
         \  \"results\": [{\"description\":null,\"major\":\"1\",\"minor\":\"2\",\"\
         family\":\"Debian\",\"release_name\":\"reverse whip\",\"password_hash\":\"\
-        SHA256\",\"created_at\":\"2020-09-03 09:04:33 UTC\",\"updated_at\":\"2020-09-03\
-        \ 09:04:33 UTC\",\"id\":17,\"name\":\"SuperOS\",\"title\":\"SuperOS 1.2\"\
-        }]\n}\n"
+        SHA256\",\"created_at\":\"2022-05-13 07:57:18 UTC\",\"updated_at\":\"2022-05-13\
+        \ 07:57:18 UTC\",\"id\":6,\"name\":\"SuperOS\",\"title\":\"SuperOS 1.2\"}]\n\
+        }\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -96,7 +96,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -114,7 +114,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '439'
+      - '438'
     status:
       code: 200
       message: OK
@@ -130,12 +130,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/operatingsystems/17
+    uri: https://foreman.example.org/api/operatingsystems/6
   response:
     body:
       string: '{"description":null,"major":"1","minor":"2","family":"Debian","release_name":"reverse
-        whip","password_hash":"SHA256","created_at":"2020-09-03 09:04:33 UTC","updated_at":"2020-09-03
-        09:04:33 UTC","id":17,"name":"SuperOS","title":"SuperOS 1.2","media":[],"architectures":[],"ptables":[],"provisioning_templates":[],"os_default_templates":[],"images":[],"parameters":[]}'
+        whip","password_hash":"SHA256","created_at":"2022-05-13 07:57:18 UTC","updated_at":"2022-05-13
+        07:57:18 UTC","id":6,"name":"SuperOS","title":"SuperOS 1.2","media":[],"architectures":[],"ptables":[],"provisioning_templates":[{"id":37,"name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config"}],"os_default_templates":[{"id":6,"provisioning_template_id":37,"provisioning_template_name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config","operatingsystem_id":6,"operatingsystem_name":"SuperOS
+        1.2"}],"images":[],"parameters":[]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -154,7 +157,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -172,7 +175,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '367'
+      - '697'
     status:
       code: 200
       message: OK
@@ -192,12 +195,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://foreman.example.org/api/operatingsystems/17
+    uri: https://foreman.example.org/api/operatingsystems/6
   response:
     body:
       string: '{"description":null,"major":"1","minor":"2","family":"Debian","release_name":"reverse
-        whip","password_hash":"SHA256","created_at":"2020-09-03 09:04:33 UTC","updated_at":"2020-09-03
-        09:04:33 UTC","id":17,"name":"SuperOS-NG","title":"SuperOS-NG 1.2","media":[],"architectures":[],"ptables":[],"provisioning_templates":[],"os_default_templates":[],"images":[],"parameters":[]}'
+        whip","password_hash":"SHA256","created_at":"2022-05-13 07:57:18 UTC","updated_at":"2022-05-13
+        07:57:19 UTC","id":6,"name":"SuperOS-NG","title":"SuperOS-NG 1.2","media":[],"architectures":[],"ptables":[],"provisioning_templates":[{"id":37,"name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config"}],"os_default_templates":[{"id":6,"provisioning_template_id":37,"provisioning_template_name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config","operatingsystem_id":6,"operatingsystem_name":"SuperOS-NG
+        1.2"}],"images":[],"parameters":[]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -216,7 +222,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
@@ -234,7 +240,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '373'
+      - '706'
     status:
       code: 200
       message: OK

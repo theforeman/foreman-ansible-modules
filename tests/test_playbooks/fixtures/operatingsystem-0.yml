@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.2.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -67,12 +67,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/operatingsystems?search=description%3D%22famos+SP1%22&per_page=4294967296
+    uri: https://foreman.example.org/api/operatingsystems?search=description%3D%22famos+SP1%22+or+title%3D%22famos+SP1%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"description=\\\"famos SP1\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"description=\\\"famos SP1\\\" or title=\\\"\
+        famos SP1\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n\
+        \  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -91,7 +92,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -109,7 +110,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '182'
+      - '205'
     status:
       code: 200
       message: OK
@@ -128,7 +129,7 @@ interactions:
     uri: https://foreman.example.org/api/operatingsystems?search=name%3D%22famos%22%2Cmajor%3D%221%22%2Cminor%3D%221%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"famos\\\",major=\\\"1\\\",minor=\\\
         \"1\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n\
         \  \"results\": []\n}\n"
@@ -150,7 +151,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -194,8 +195,11 @@ interactions:
   response:
     body:
       string: '{"description":"famos SP1","major":"1","minor":"1","family":"Debian","release_name":"reverse
-        whip","password_hash":"SHA256","created_at":"2020-09-03 09:04:27 UTC","updated_at":"2020-09-03
-        09:04:27 UTC","id":15,"name":"famos","title":"famos SP1","media":[],"architectures":[],"ptables":[],"provisioning_templates":[],"os_default_templates":[],"images":[],"parameters":[]}'
+        whip","password_hash":"SHA256","created_at":"2022-05-13 07:57:14 UTC","updated_at":"2022-05-13
+        07:57:14 UTC","id":4,"name":"famos","title":"famos SP1","media":[],"architectures":[],"ptables":[],"provisioning_templates":[{"id":37,"name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config"}],"os_default_templates":[{"id":4,"provisioning_template_id":37,"provisioning_template_name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config","operatingsystem_id":4,"operatingsystem_name":"famos
+        SP1"}],"images":[],"parameters":[]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -214,7 +218,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
