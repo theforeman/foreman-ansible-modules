@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.2.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -67,16 +67,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/operatingsystems?search=description%3D%22famos+SP1%22&per_page=4294967296
+    uri: https://foreman.example.org/api/operatingsystems?search=description%3D%22famos+SP1%22+or+title%3D%22famos+SP1%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"description=\\\"famos SP1\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\"\
-        :\"famos SP1\",\"major\":\"1\",\"minor\":\"1\",\"family\":\"Debian\",\"release_name\"\
-        :\"reverse whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2020-09-03\
-        \ 09:04:27 UTC\",\"updated_at\":\"2020-09-03 09:04:27 UTC\",\"id\":15,\"name\"\
-        :\"famos\",\"title\":\"famos SP1\"}]\n}\n"
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"description=\\\"famos SP1\\\" or title=\\\"\
+        famos SP1\\\"\",\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n\
+        \  },\n  \"results\": [{\"description\":\"famos SP1\",\"major\":\"1\",\"minor\"\
+        :\"1\",\"family\":\"Debian\",\"release_name\":\"reverse whip\",\"password_hash\"\
+        :\"SHA256\",\"created_at\":\"2022-05-13 07:57:14 UTC\",\"updated_at\":\"2022-05-13\
+        \ 07:57:14 UTC\",\"id\":4,\"name\":\"famos\",\"title\":\"famos SP1\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -95,7 +95,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -113,7 +113,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '427'
+      - '449'
     status:
       code: 200
       message: OK
@@ -131,10 +131,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/operatingsystems/15
+    uri: https://foreman.example.org/api/operatingsystems/4
   response:
     body:
-      string: '{"id":15,"major":"1","name":"famos","minor":"1","nameindicator":null,"created_at":"2020-09-03T09:04:27.978Z","updated_at":"2020-09-03T09:04:27.978Z","release_name":"reverse
+      string: '{"id":4,"major":"1","name":"famos","minor":"1","nameindicator":null,"created_at":"2022-05-13T07:57:14.460Z","updated_at":"2022-05-13T07:57:14.460Z","release_name":"reverse
         whip","description":"famos SP1","password_hash":"SHA256","title":"famos SP1"}'
     headers:
       Cache-Control:
@@ -154,7 +154,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.2
+      - 3.2.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -172,7 +172,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '250'
+      - '249'
     status:
       code: 200
       message: OK
