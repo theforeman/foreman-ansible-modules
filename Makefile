@@ -7,7 +7,7 @@ MANIFEST := build/collections/ansible_collections/$(NAMESPACE)/$(NAME)/MANIFEST.
 ROLES := $(wildcard roles/*)
 PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
 RUNTIME_YML := meta/runtime.yml
-METADATA := galaxy.yml LICENSE README.md $(RUNTIME_YML) requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt PSF-license.txt
+METADATA := galaxy.yml LICENSE README.md $(RUNTIME_YML) requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt PSF-license.txt meta/execution-environment.yml
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*)) $(foreach ROLE,$(ROLES),$(ROLE)/README.md)
 
