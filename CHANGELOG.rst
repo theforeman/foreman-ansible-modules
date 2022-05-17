@@ -6,6 +6,27 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.4.0
+======
+
+Minor Changes
+-------------
+
+- add support for module defaults groups for Ansible core 2.12 (https://github.com/theforeman/foreman-ansible-modules/issues/1015)
+- all modules - report smaller diffs by dropping ``null`` values. This should result in not showing fields that were unset to begin with, and mark fields that were explicitly removed as "deleted" instead of "replaced by ``null``"
+- compute_resource - update libvirt examples (https://bugzilla.redhat.com/show_bug.cgi?id=1990119)
+- content_view - add support to set label during creation.
+- repository - add ``rhel-9`` to os version filter choices
+- repository - add support for ``mirroring_policy`` for Katello 4.4+ (https://github.com/theforeman/foreman-ansible-modules/issues/1388)
+
+Bugfixes
+--------
+
+- content_upload - properly detect SRPMs and ensure idempotency during uploads (https://github.com/theforeman/foreman-ansible-modules/issues/1274)
+- inventory plugin - fix caching for Report API (https://github.com/theforeman/foreman-ansible-modules/issues/1246)
+- operatingsystem - find operatingsystems by title or full (name,major,minor) tuple (https://github.com/theforeman/foreman-ansible-modules/issues/1401)
+- os_default_template, provisioning_template - don't document invalid template kind ``ptable`` (https://bugzilla.redhat.com/show_bug.cgi?id=1970132)
+
 v3.3.0
 ======
 

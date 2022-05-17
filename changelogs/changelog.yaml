@@ -580,3 +580,34 @@ releases:
     - 1297-host_init_config.yml
     - 628-ostree.yml
     release_date: '2022-04-04'
+  3.4.0:
+    changes:
+      bugfixes:
+      - content_upload - properly detect SRPMs and ensure idempotency during uploads
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1274)
+      - inventory plugin - fix caching for Report API (https://github.com/theforeman/foreman-ansible-modules/issues/1246)
+      - operatingsystem - find operatingsystems by title or full (name,major,minor)
+        tuple (https://github.com/theforeman/foreman-ansible-modules/issues/1401)
+      - os_default_template, provisioning_template - don't document invalid template
+        kind ``ptable`` (https://bugzilla.redhat.com/show_bug.cgi?id=1970132)
+      minor_changes:
+      - add support for module defaults groups for Ansible core 2.12 (https://github.com/theforeman/foreman-ansible-modules/issues/1015)
+      - all modules - report smaller diffs by dropping ``null`` values. This should
+        result in not showing fields that were unset to begin with, and mark fields
+        that were explicitly removed as "deleted" instead of "replaced by ``null``"
+      - compute_resource - update libvirt examples (https://bugzilla.redhat.com/show_bug.cgi?id=1990119)
+      - content_view - add support to set label during creation.
+      - repository - add ``rhel-9`` to os version filter choices
+      - repository - add support for ``mirroring_policy`` for Katello 4.4+ (https://github.com/theforeman/foreman-ansible-modules/issues/1388)
+    fragments:
+    - 1015-action_groups.yml
+    - 1246-inventory_reports_cache.yml
+    - 1274-content_upload-srpm.yml
+    - 1388-repository-mirroring_policy.yml
+    - 1397-content_view-label.yml
+    - 1401-os-search-title.yml
+    - 1970132-no-ptable-kind.yml
+    - 1990119-libvirt-examples.yml
+    - repository-rhel9.yml
+    - smaller-diffs.yml
+    release_date: '2022-05-17'
