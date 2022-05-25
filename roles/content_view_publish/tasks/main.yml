@@ -7,6 +7,7 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     content_view: "{{ content_view }}"
     organization: "{{ foreman_organization }}"
+    lifecycle_environments: "{{ foreman_lifecycle_environments | default(omit) }}"
   loop: "{{ foreman_content_views }}"
   loop_control:
     loop_var: "content_view"
