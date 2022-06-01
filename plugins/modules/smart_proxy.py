@@ -52,8 +52,8 @@ options:
       - The download policy for the Smart Proxy
       - Only available for Katello installations.
     choices:
-      - background
       - immediate
+      - inherit
       - on_demand
     required: false
     type: str
@@ -112,7 +112,7 @@ def main():
             name=dict(required=True),
             url=dict(required=True),
             lifecycle_environments=dict(required=False, type='entity_list'),
-            download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand']),
+            download_policy=dict(required=False, choices=['inherit', 'immediate', 'on_demand']),
         ),
         required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
     )
