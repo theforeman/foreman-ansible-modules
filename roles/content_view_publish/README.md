@@ -12,6 +12,10 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 - `foreman_content_views`: List of content views to publish
 
+### Optional
+
+- `foreman_lifecycle_environments`: List of lifecycle environments to promote new versions to.
+
 Example Playbook
 ----------------
 
@@ -27,4 +31,7 @@ Example Playbook
         foreman_content_views:
           - RHEL 7 View
           - RHEL 8 View
+        foreman_lifecycle_environments:
+          - Testing
+          - Development
 ```
