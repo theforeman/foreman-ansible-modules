@@ -65,7 +65,8 @@ options:
     type: bool
   user_password:
     description:
-      - Password for the user
+      - Password for the user.
+      - When this parameter is set, the module will not be idempotent.
     required: false
     type: str
   default_location:
