@@ -155,7 +155,8 @@ options:
     type: str
   upstream_password:
     description:
-      - password to access upstream repository
+      - Password to access upstream repository.
+      - When this parameter is set, the module will not be idempotent.
     type: str
   docker_upstream_name:
     description:
