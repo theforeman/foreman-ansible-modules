@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -89,7 +90,7 @@
            <div itemprop="articleBody">
              
   <section id="how-to-write-modules">
-<h1>How to write modules<a class="headerlink" href="#how-to-write-modules" title="Permalink to this headline"></a></h1>
+<h1>How to write modules<a class="headerlink" href="#how-to-write-modules" title="Permalink to this heading"></a></h1>
 <p>First of all, please have a look at the <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html">Ansible module development</a> guide and get familiar with the general Ansible module layout.</p>
 <p>When looking at actual modules in this repository (<a class="reference external" href="../plugins/modules/domain.py"><code class="docutils literal notranslate"><span class="pre">domain</span></code></a> is a nice short example), you will notice a few differences to a “regular” Ansible module:</p>
 <ul class="simple">
@@ -138,7 +139,7 @@ Eg: Like previous example, if the foreman entity is named <code class="docutils 
 <p>You can see a complete example of simple module in <a class="reference external" href="../plugins/modules/architecture.py"><code class="docutils literal notranslate"><span class="pre">architecture</span></code></a>
 In some cases, you will have to handle some custom workflows/validations, you can see some examples in <a class="reference external" href="../plugins/modules/bookmark.py"><code class="docutils literal notranslate"><span class="pre">bookmark</span></code></a>, <a class="reference external" href="../plugins/modules/compute_attribute.py"><code class="docutils literal notranslate"><span class="pre">compute_attribute</span></code></a>, <a class="reference external" href="../plugins/modules/hostgroup.py"><code class="docutils literal notranslate"><span class="pre">hostgroup</span></code></a>, <a class="reference external" href="../plugins/modules/provisioning_template.py"><code class="docutils literal notranslate"><span class="pre">provisioning_template</span></code></a>…</p>
 <section id="specification-of-the-foreman-spec">
-<h2>Specification of the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code><a class="headerlink" href="#specification-of-the-foreman-spec" title="Permalink to this headline"></a></h2>
+<h2>Specification of the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code><a class="headerlink" href="#specification-of-the-foreman-spec" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> can be seen as an extended version of Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>. It understands more parameters (e.g. <code class="docutils literal notranslate"><span class="pre">flat_name</span></code>) and supports more <code class="docutils literal notranslate"><span class="pre">type</span></code>s than the original version. An <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> will be generated from an <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code>. Any parameters not directly known or consumed by <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> will be passed directly to the <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>.</p>
 <p>In addition to Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>, <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> understands the following types:</p>
 <ul class="simple">
@@ -162,7 +163,7 @@ The sub entities must be described by <code class="docutils literal notranslate"
 <p>You can add new or override generated Ansible module arguments, by specifying them in the <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> as usual.</p>
 </section>
 <section id="entity-lookup">
-<h2>Entity lookup<a class="headerlink" href="#entity-lookup" title="Permalink to this headline"></a></h2>
+<h2>Entity lookup<a class="headerlink" href="#entity-lookup" title="Permalink to this heading"></a></h2>
 <p>Sometimes you need to access entities before <code class="docutils literal notranslate"><span class="pre">module.run()</span></code> can take over.
 You can trigger the automatic lookup of entities via <code class="docutils literal notranslate"><span class="pre">&lt;entity_variable&gt;</span> <span class="pre">=</span> <span class="pre">module.lookup_entity('&lt;entity_name&gt;')</span></code>.
 If you only need the entity to be used as a scope parameter, it is enough to call <code class="docutils literal notranslate"><span class="pre">scope</span> <span class="pre">=</span> <span class="pre">module.scope_for('organization')</span></code>.</p>
@@ -170,7 +171,7 @@ If you only need the entity to be used as a scope parameter, it is enough to cal
 <p>In instances of <code class="docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code> the main entity is references as ‘entity’ in the above context.</p>
 </section>
 <section id="required-plugins">
-<h2>required_plugins<a class="headerlink" href="#required-plugins" title="Permalink to this headline"></a></h2>
+<h2>required_plugins<a class="headerlink" href="#required-plugins" title="Permalink to this heading"></a></h2>
 <p>A module can pass an optional <code class="docutils literal notranslate"><span class="pre">required_plugins</span></code> list to <code class="docutils literal notranslate"><span class="pre">ForemanAnsibleModule</span></code>, which will indicate whether the module needs any Foreman plugins to be installed to work.</p>
 <p>You can either specify that the whole module needs a specific plugin, like Katello modules:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">required_plugins</span><span class="o">=</span><span class="p">[</span>

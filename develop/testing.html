@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -103,9 +104,9 @@
            <div itemprop="articleBody">
              
   <section id="testing-foreman-ansible-modules">
-<h1>Testing Foreman Ansible Modules<a class="headerlink" href="#testing-foreman-ansible-modules" title="Permalink to this headline"></a></h1>
+<h1>Testing Foreman Ansible Modules<a class="headerlink" href="#testing-foreman-ansible-modules" title="Permalink to this heading"></a></h1>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>Foreman Ansible Modules are tested in different ways:</p>
 <ol class="simple">
 <li><p>Unit tests</p></li>
@@ -113,37 +114,37 @@
 <li><p>Ansible Sanity</p></li>
 </ol>
 <section id="unit-tests">
-<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h3>
+<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
 <p>We currently only have unit tests for the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> to <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> translation helpers (see <code class="docutils literal notranslate"><span class="pre">tests/test_foreman_spec_helper.py</span></code>).
 All other code is tested by the integration tests.</p>
 </section>
 <section id="integration-tests">
-<h3>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this headline"></a></h3>
+<h3>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this heading"></a></h3>
 <p>Every module is tested using a playbook (<code class="docutils literal notranslate"><span class="pre">see</span> <span class="pre">tests/test_playbooks</span></code>) against all supported Ansible versions plus the current <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible.
 Additionally, the modules which support check mode are tested with the latest Ansible release in check mode.</p>
 </section>
 <section id="ansible-sanity">
-<h3>Ansible Sanity<a class="headerlink" href="#ansible-sanity" title="Permalink to this headline"></a></h3>
+<h3>Ansible Sanity<a class="headerlink" href="#ansible-sanity" title="Permalink to this heading"></a></h3>
 <p>Ansible provides <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/testing/sanity/index.html">Sanity Tests</a> that ensure the modules are using the current best practices in terms of development and documentantion.
 We run these tests with the <code class="docutils literal notranslate"><span class="pre">devel</span></code> branch of Ansible to ensure conformability with the latest guidelines.</p>
 </section>
 </section>
 <section id="running-tests">
-<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline"></a></h2>
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading"></a></h2>
 <section id="preparation">
-<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline"></a></h3>
+<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this heading"></a></h3>
 <p>All tests require you to have run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-setup</span></code>. This will install all test dependencies and prepare a configuration file (<code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code>).</p>
 <p>The configuration file will need updates if you want to run tests against a live Foreman instance (see below).</p>
 </section>
 <section id="id1">
-<h3>Unit tests<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Unit tests<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <p>To run the unit tests, execute:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make test-other
 </pre></div>
 </div>
 </section>
 <section id="id2">
-<h3>Integration tests<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>Integration tests<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <p>To run all integration tests, execute:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make <span class="nb">test</span>
 </pre></div>
@@ -171,7 +172,7 @@ You also need to update <code class="docutils literal notranslate"><span class="
 </div>
 </section>
 <section id="id3">
-<h3>Ansible Sanity<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<h3>Ansible Sanity<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>To run the Ansible Sanity tests, execute:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make sanity
 </pre></div>
@@ -179,7 +180,7 @@ You also need to update <code class="docutils literal notranslate"><span class="
 </section>
 </section>
 <section id="writing-tests">
-<h2>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline"></a></h2>
+<h2>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this heading"></a></h2>
 <p>The tests in this repository run playbooks that can be found in <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks</span></code>.</p>
 <p>The playbooks should be self contained, target the features of a specific module and be able to run against an actual foreman instance.
 The structure would usually be something like setup -&gt; run tests -&gt; clean up.</p>
@@ -196,7 +197,7 @@ It can also be useful to run ad hoc commands or small playbooks during developme
 For this last step, <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> must be configured to point to a running Foreman or Katello server.
 Then, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">record_&lt;playbook</span> <span class="pre">name&gt;</span></code> must be called, and the resulting vcr files (<code class="docutils literal notranslate"><span class="pre">test_playbook/fixtures/&lt;playbook_name&gt;-*.yml</span></code>) must be checked into git.</p>
 <section id="recording-storing-apidoc-json-for-tests">
-<h3>Recording/storing apidoc.json for tests<a class="headerlink" href="#recording-storing-apidoc-json-for-tests" title="Permalink to this headline"></a></h3>
+<h3>Recording/storing apidoc.json for tests<a class="headerlink" href="#recording-storing-apidoc-json-for-tests" title="Permalink to this heading"></a></h3>
 <p>The tests depend on a valid <code class="docutils literal notranslate"><span class="pre">apidoc.json</span></code> being available during execution.
 The easiest way to do so is to provide a <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.json</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests/fixtures/apidoc</span></code> folder.
 Most modules can just use a symlink to either <code class="docutils literal notranslate"><span class="pre">foreman.json</span></code> or <code class="docutils literal notranslate"><span class="pre">katello.json</span></code>, depending on whether they need a plain Foreman or Foreman+Katello to function properly.

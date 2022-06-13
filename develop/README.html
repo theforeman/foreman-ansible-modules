@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -111,31 +112,31 @@
            <div itemprop="articleBody">
              
   <section id="foreman-ansible-modules-build-status">
-<h1>Foreman Ansible Modules <img alt="Build Status" src="https://github.com/theforeman/foreman-ansible-modules/workflows/CI/badge.svg" /><a class="headerlink" href="#foreman-ansible-modules-build-status" title="Permalink to this headline"></a></h1>
+<h1>Foreman Ansible Modules <img alt="Build Status" src="https://github.com/theforeman/foreman-ansible-modules/workflows/CI/badge.svg" /><a class="headerlink" href="#foreman-ansible-modules-build-status" title="Permalink to this heading"></a></h1>
 <p>Ansible modules for interacting with the Foreman API and various plugin APIs such as Katello.</p>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
 <p>A list of all modules and their documentation can be found at <a class="reference external" href="https://theforeman.org/plugins/foreman-ansible-modules/">theforeman.org/plugins/foreman-ansible-modules</a>.</p>
 </section>
 <section id="support">
-<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline"></a></h2>
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this heading"></a></h2>
 <section id="supported-foreman-and-plugins-versions">
-<h3>Supported Foreman and plugins versions<a class="headerlink" href="#supported-foreman-and-plugins-versions" title="Permalink to this headline"></a></h3>
+<h3>Supported Foreman and plugins versions<a class="headerlink" href="#supported-foreman-and-plugins-versions" title="Permalink to this heading"></a></h3>
 <p>Modules should support any currently stable Foreman release and the matching set of plugins.
 Some modules have additional features/arguments that are only applied when the corresponding plugin is installed.</p>
 <p>We actively test the modules against the latest stable Foreman release and the matching set of plugins.</p>
 </section>
 <section id="supported-ansible-versions">
-<h3>Supported Ansible Versions<a class="headerlink" href="#supported-ansible-versions" title="Permalink to this headline"></a></h3>
+<h3>Supported Ansible Versions<a class="headerlink" href="#supported-ansible-versions" title="Permalink to this heading"></a></h3>
 <p>The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.9+).
 You can find the list of maintained Ansible versions <a class="reference external" href="https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html">here</a>.</p>
 </section>
 <section id="supported-python-versions">
-<h3>Supported Python Versions<a class="headerlink" href="#supported-python-versions" title="Permalink to this headline"></a></h3>
+<h3>Supported Python Versions<a class="headerlink" href="#supported-python-versions" title="Permalink to this heading"></a></h3>
 <p>Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.</p>
 </section>
 <section id="known-issues">
-<h3>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this headline"></a></h3>
+<h3>Known issues<a class="headerlink" href="#known-issues" title="Permalink to this heading"></a></h3>
 <ul>
 <li><p>Some modules, e.g. <code class="docutils literal notranslate"><span class="pre">repository_sync</span></code> and <code class="docutils literal notranslate"><span class="pre">content_view_version</span></code>, trigger long running tasks on the server side. It might be beneficial to your playbook to wait for their completion in an asynchronous manner.
 As Ansible has facilities to do so, the modules will wait unconditionally. See the <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html">Ansible documentation</a> for putting tasks in the background.
@@ -164,24 +165,24 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
 </section>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <p>There are currently two ways to use the modules in your setup: install from Ansible Galaxy or via RPM.</p>
 <section id="installation-from-ansible-galaxy">
-<h3>Installation from Ansible Galaxy<a class="headerlink" href="#installation-from-ansible-galaxy" title="Permalink to this headline"></a></h3>
+<h3>Installation from Ansible Galaxy<a class="headerlink" href="#installation-from-ansible-galaxy" title="Permalink to this heading"></a></h3>
 <p>You can install the collection from <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">Ansible Galaxy</a> by running <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
 <p>After the installation, the modules are available as <code class="docutils literal notranslate"><span class="pre">theforeman.foreman.&lt;module_name&gt;</span></code>. Please see the <a class="reference external" href="https://docs.ansible.com/ansible/devel/user_guide/collections_using.html">Using Ansible collections documentation</a> for further details.</p>
 </section>
 <section id="installation-via-rpm">
-<h3>Installation via RPM<a class="headerlink" href="#installation-via-rpm" title="Permalink to this headline"></a></h3>
+<h3>Installation via RPM<a class="headerlink" href="#installation-via-rpm" title="Permalink to this heading"></a></h3>
 <p>The collection is also available as <code class="docutils literal notranslate"><span class="pre">ansible-collection-theforeman-foreman</span></code> from the <code class="docutils literal notranslate"><span class="pre">plugins</span></code> repository on <code class="docutils literal notranslate"><span class="pre">yum.theforeman.org</span></code>.</p>
 <p>After installing the RPM, you can use the modules in the same way as when they are installed directly from Ansible Galaxy.</p>
 </section>
 </section>
 <section id="installation-from-source">
-<h2>Installation From Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline"></a></h2>
+<h2>Installation From Source<a class="headerlink" href="#installation-from-source" title="Permalink to this heading"></a></h2>
 <p>For development or testing purposes, you can install the collection from source git repository. For production usage, see the instructions above on installing the latest stable release.</p>
 <section id="installation-from-github-repository">
-<h3>Installation from Github Repository<a class="headerlink" href="#installation-from-github-repository" title="Permalink to this headline"></a></h3>
+<h3>Installation from Github Repository<a class="headerlink" href="#installation-from-github-repository" title="Permalink to this heading"></a></h3>
 <p>With Ansible &gt;= 2.10, you can install from a Github repository (such as this one or your fork):</p>
 <p><code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">git+https://github.com/theforeman/foreman-ansible-modules.git</span></code></p>
 <p>If you have configured GitHub to use SSH instead of HTTPS, you can do:</p>
@@ -199,7 +200,7 @@ collections:
 <p>And install all specified requirements with <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.yml</span></code></p>
 </section>
 <section id="building-and-installing-the-collection-locally">
-<h3>Building and Installing the Collection Locally<a class="headerlink" href="#building-and-installing-the-collection-locally" title="Permalink to this headline"></a></h3>
+<h3>Building and Installing the Collection Locally<a class="headerlink" href="#building-and-installing-the-collection-locally" title="Permalink to this heading"></a></h3>
 <p>For all currently supported versions of Ansible (i.e. Ansible &gt;= 2.9, and particularly Ansible &lt; 2.10 where the above approach is not yet supported), you can build the collection locally:</p>
 <p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dist</span></code></p>
 <p>And install it with:</p>
@@ -207,7 +208,7 @@ collections:
 </section>
 </section>
 <section id="dependencies">
-<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this heading"></a></h2>
 <p>These dependencies are required for the Ansible controller, not the Foreman server.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pypi.org/project/PyYAML/"><code class="docutils literal notranslate"><span class="pre">PyYAML</span></code></a></p></li>
@@ -219,13 +220,13 @@ collections:
 </section>
 </section>
 <section id="foreman-ansible-roles">
-<h1>Foreman Ansible Roles<a class="headerlink" href="#foreman-ansible-roles" title="Permalink to this headline"></a></h1>
+<h1>Foreman Ansible Roles<a class="headerlink" href="#foreman-ansible-roles" title="Permalink to this heading"></a></h1>
 <p>Roles using the Foreman Ansible Modules to configure Foreman and its plugins.</p>
 <section id="id1">
-<h2>Documentation<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<h2>Documentation<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <p>For individual role documentation, check the README defined at <code class="docutils literal notranslate"><span class="pre">roles/rolename/README.md</span></code>.</p>
 <section id="common-role-variables">
-<h3>Common Role Variables<a class="headerlink" href="#common-role-variables" title="Permalink to this headline"></a></h3>
+<h3>Common Role Variables<a class="headerlink" href="#common-role-variables" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">foreman_server_url</span></code>: URL of the Foreman server. If the variable is not specified, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">foreman_username</span></code>: Username accessing the Foreman server. If the variable is not specified, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p></li>
