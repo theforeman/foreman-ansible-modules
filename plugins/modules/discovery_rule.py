@@ -32,15 +32,45 @@ options:
   name:
     description:
       - Name of the Discovery Rule
-    required: true
+    required: True
     type: str
-  parent:
+  search:
     description:
-      - Title of a parent Location for nesting
+      - Expression to match newly discovered hosts with
+    required: True
     type: str
+  hostgroup:
+    description:
+      - Hostgroup to assign hosts to
+    required: True
+    type: str
+  hostname:
+    description:
+      - Hostname to assign to discovered host(s)
+      - When matching multiple hosts, must provide unique hostnames for each of the discovered hosts
+    type: str
+  enabled:
+    description:
+      - Enable or disable the rule
+    type: bool
+  priority:
+    description:
+      - Priority of the rule
+    type: int
+  max_count:
+    description:
+      - Maximum amount of hosts to provision with the rule
+      - 0 means no limit
+    type: int
+extends_documentation_fragment:
+  locations:
+    description:
+      - List of locations the discovery rule should be assigned to
+    type: list
+    elements: str
   organizations:
     description:
-      - List of organizations the location should be assigned to
+      - List of organizations the discovery rule should be assigned to
     type: list
     elements: str
 extends_documentation_fragment:
