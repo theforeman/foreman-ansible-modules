@@ -1,0 +1,13 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_export.yml
+      vars:
+        expected_change: true
+        organization_name: "Default Organization"
+...
