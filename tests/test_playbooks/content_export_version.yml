@@ -1,0 +1,77 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+        organization_name: "Export Org"
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        organization_name: "Export Org"
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: present
+        organization_name: "Export Org"
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        organization_name: "Export Org"
+        repositories:
+          - name: "TestRepo"
+            product: "Export Test Product"
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        version: 1.0
+        state: present
+        organization_name: "Export Org"
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Fetch content view version info
+      content_view_version_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Export Org"
+        content_view: "Test Content View"
+        search: 'version = "1.0"'
+      register: cv_info
+    - include_tasks: tasks/content_export_version.yml # Full export
+      vars:
+        organization_name: "Export Org"
+        foreman_organization: "Export Org" # required for CV publish
+        destination_server: "airgapped.example.com"
+        id: "{{ cv_info['content_view_versions'][0]['id'] }}"
+        content_view: "Test Content View"
+        incremental: false
+      register: result
+
+    - include_tasks: tasks/content_export_version.yml # Incremental export
+      vars:
+        expected_change: true
+        incremental: true
+        id: "{{ cv_info['content_view_versions'][0]['id'] }}"
+        organization_name: "Export Org"
+        foreman_organization: "Export Org"
+        destination_server: "airgapped.example.com"
+    - include_tasks: tasks/content_export_show.yml
+      vars:
+        id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
+        organization_name: "Export Org"
+        foreman_organization: "Export Org"
+        destination_server: "airgapped.example.com"
+...

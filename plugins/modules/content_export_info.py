@@ -34,6 +34,7 @@ options:
       - Export history identifier.
     required: false
     type: int
+<<<<<<< HEAD
   content_view_version:
     description:
       - Content view version.
@@ -44,11 +45,31 @@ options:
       - Content view name.
     required: false
     type: str
+=======
+  content_view_version_id:
+    description:
+      - Content view version identifier.
+    required: false
+    type: int
+  content_view_id:
+    description:
+      - Content view identifier.
+    required: false
+    type: int
+>>>>>>> 676d97ef (Add version export)
   destination_server:
     description:
       - Destination server name
     required: false
     type: str
+<<<<<<< HEAD
+=======
+  organization_id:
+    description:
+      - Organization identifier.
+    required: false
+    type: int
+>>>>>>> 676d97ef (Add version export)
   type:
     description:
       - Specify complete or incremental exports.
@@ -57,10 +78,21 @@ options:
     choices:
     - complete
     - incremental
+<<<<<<< HEAD
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.katelloinfomodule
   - theforeman.foreman.foreman.infomodulewithoutname
+=======
+  search:
+    description:
+      - Search string.
+    required: false
+    type: str
+extends_documentation_fragment:
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
+>>>>>>> 676d97ef (Add version export)
 '''
 
 EXAMPLES = '''
@@ -83,14 +115,22 @@ EXAMPLES = '''
   register: result
 - name: "Write metadata.json to disk using data from the previous task"
   vars:
+<<<<<<< HEAD
     metadata: "{{ result['content_exports'][0]['metadata'] }}"
+=======
+    metadata: "{{ result['task']['results'][0]['metadata'] }}"
+>>>>>>> 676d97ef (Add version export)
   ansible.builtin.copy:
     content: "{{ metadata }}"
     dest: ./metadata.json
 - name: "List all exports of a specific content view version"
   content_export_info:
+<<<<<<< HEAD
     content_view: RHEL8
     content_view_version: '1.0'
+=======
+    content_view_version_id: 379
+>>>>>>> 676d97ef (Add version export)
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -104,7 +144,11 @@ EXAMPLES = '''
     organization: "Default Organization"
 - name: "List incremental exports of a specific content view version marked for a specific destination server"
   content_export_info:
+<<<<<<< HEAD
     content_view: RHEL8
+=======
+    content_view_id: 1
+>>>>>>> 676d97ef (Add version export)
     destination_server: "airgapped.example.com"
     type: incremental
     username: "admin"
@@ -113,7 +157,11 @@ EXAMPLES = '''
     organization: "Default Organization"
 - name: "List all exports of a specific content view marked for a specific destination server"
   content_export_info:
+<<<<<<< HEAD
     content_view: RHEL8
+=======
+    content_view_id: 1
+>>>>>>> 676d97ef (Add version export)
     destination_server: "airgapped.example.com"
     username: "admin"
     password: "changeme"
@@ -122,14 +170,22 @@ EXAMPLES = '''
 
 '''
 
+<<<<<<< HEAD
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloInfoAnsibleModule
 
 
 class KatelloContentExportInfo(KatelloInfoAnsibleModule):
+=======
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
+
+
+class KatelloContentExportInfoModule(KatelloAnsibleModule):
+>>>>>>> 676d97ef (Add version export)
     pass
 
 
 def main():
+<<<<<<< HEAD
     module = KatelloContentExportInfo(
         foreman_spec=dict(
             id=dict(required=False, type='int'),
@@ -139,11 +195,33 @@ def main():
             type=dict(required=False, type='str', choices=['complete', 'incremental']),
             search=dict(required=False, type='str'),
             name=dict(invisible=True),
+=======
+    module = KatelloContentExportInfoModule(
+        foreman_spec=dict(
+            id=dict(required=False, type='int'),
+            content_view_version_id=dict(required=False, type='int'),
+            content_view_id=dict(required=False, type='int'),
+            destination_server=dict(required=False, type='str'),
+            organization_id=dict(required=False, type='int'),
+            type=dict(required=False, type='str', choices=['complete', 'incremental']),
+            search=dict(required=False, type='str'),
+>>>>>>> 676d97ef (Add version export)
         ),
     )
 
     with module.api_connection():
+<<<<<<< HEAD
         module.run()
+=======
+        module.auto_lookup_entities()
+
+        endpoint = 'content_exports'
+
+        payload = _flatten_entity(module.foreman_params, module.foreman_spec)
+        task = module.resource_action(endpoint, 'index', payload)
+
+        module.exit_json(task=task)
+>>>>>>> 676d97ef (Add version export)
 
 
 if __name__ == '__main__':
