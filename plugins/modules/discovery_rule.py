@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
 # (c) 2022, Jeffrey van Pelt <jeff@vanpelt.one>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -116,10 +117,10 @@ entity:
       elements: dict
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule, NestedParametersMixin
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
 
-class ForemanDiscoveryRuleModule(NestedParametersMixin, ForemanEntityAnsibleModule):
+class ForemanDiscoveryRuleModule(ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
@@ -133,8 +134,6 @@ def main():
             max_count=dict(type='int'),
             priority=dict(type='int'),
             enabled=dict(type='bool'),
-            organizations=dict(type='entity_list'),
-            locations=dict(type='entity_list'),
         ),
         required_if=[
             ['state', 'present', ['hostgroup', 'search']],
