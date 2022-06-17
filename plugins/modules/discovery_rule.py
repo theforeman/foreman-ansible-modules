@@ -141,6 +141,13 @@ def main():
     )
 
     with module.api_connection():
+        entity = module.lookup_entity('entity')
+
+        # workround the fact that the API expects `max_count` when modifying the entity
+        # but uses `hosts_limit` when showing one
+        if entity and 'hosts_limit' in entity:
+            entity['max_count'] = entity.pop('hosts_limit')
+
         module.run()
 
 
