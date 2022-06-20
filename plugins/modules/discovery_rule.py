@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
 # (c) 2022, Jeffrey van Pelt <jeff@vanpelt.one>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: discovery_rule
-version_added: x.x.x
+version_added: 3.5.0
 short_description: Manage Host Discovery Rules
 description:
   - Manage Host Discovery Rules
@@ -64,20 +63,9 @@ options:
       - 0 means no limit
     type: int
 extends_documentation_fragment:
-  locations:
-    description:
-      - List of locations the discovery rule should be assigned to
-    type: list
-    elements: str
-  organizations:
-    description:
-      - List of organizations the discovery rule should be assigned to
-    type: list
-    elements: str
-extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
-  - theforeman.foreman.foreman.nested_parameters
+  - theforeman.foreman.foreman.taxonomy
 '''
 
 EXAMPLES = '''

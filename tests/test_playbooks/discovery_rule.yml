@@ -25,64 +25,12 @@
         organization_name: "{{ item }}"
         organization_state: present
       with_items: "{{ hostgroup.organizations }}"
-    - include_tasks: tasks/domain.yml
-      vars:
-        domain_organizations: "{{ hostgroup.organizations }}"
-        domain_locations: "{{ hostgroup.locations }}"
-        domain_name: "{{ item }}"
-        domain_dns_proxy: "{{ hostgroup.dns_proxy }}"
-        domain_state: present
-      with_items: "{{ hostgroup.domains }}"
-    - include_tasks: tasks/subnet.yml
-      vars:
-        subnet_name: "{{ hostgroup.subnet }}"
-        subnet_mask: '255.255.255.224'
-        subnet_domains: "{{ hostgroup.domains }}"
-        subnet_state: present
-    - include_tasks: tasks/ptable.yml
-      vars:
-        ptable_name: "{{ hostgroup.ptable }}"
-        ptable_os_family: "{{ hostgroup.os.family }}"
-        ptable_locations: "{{ hostgroup.locations }}"
-        ptable_organizations: "{{ hostgroup.organizations }}"
-        ptable_state: present
-    - include_tasks: tasks/operatingsystem.yml
-      vars:
-        operatingsystem_name: "{{ hostgroup.os.name }}"
-        operatingsystem_major: "{{ hostgroup.os.major }}"
-        operatingsystem_minor: "{{ hostgroup.os.minor }}"
-        operatingsystem_family: "{{ hostgroup.os.family }}"
-        operatingsystem_architectures:
-          - "{{ hostgroup.arch }}"
-        operatingsystem_ptables:
-          - "{{ hostgroup.ptable }}"
-        operatingsystem_state: present
-    - include_tasks: tasks/installation_medium.yml
-      vars:
-        installation_medium_name: "{{ hostgroup.os.name }} Mirror"
-        installation_medium_operatingsystems:
-          - "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
-        installation_medium_locations: "{{ hostgroup.locations }}"
-        installation_medium_organizations: "{{ hostgroup.organizations }}"
-        installation_medium_state: present
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "Discovery hostgroup"
         hostgroup_description: "Discovery hostgroup"
-        hostgroup_architecture: "{{ hostgroup.arch }}"
-        hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
         hostgroup_locations: "{{ hostgroup.locations }}"
         hostgroup_organizations: "{{ hostgroup.organizations }}"
-        hostgroup_domain: "{{ hostgroup.domains | first }}"
-        hostgroup_subnet: "{{ hostgroup.subnet }}"
-        hostgroup_installation_medium: "{{ hostgroup.os.name }} Mirror"
-        hostgroup_ptable: "{{ hostgroup.ptable }}"
-        hostgroup_pxe_loader: "Grub2 UEFI"
-        hostgroup_parameters:
-          - name: subnet_param1
-            value: value1
-          - name: subnet_param2
-            value: value2
         hostgroup_state: present
     - include_tasks: tasks/discovery_rule.yml
       vars:
@@ -126,3 +74,35 @@
         discovery_rule_name: 'New-discovery-rule'
         discovery_rule_state: 'absent'
         expected_change: true
+
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_state: 'absent'
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/hostgroup.yml
+  tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "Discovery hostgroup"
+        hostgroup_description: "Discovery hostgroup"
+        hostgroup_locations: "{{ hostgroup.locations }}"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: absent
+      with_items: "{{ hostgroup.locations | reverse | list }}"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: absent
+      with_items: "{{ hostgroup.organizations }}"
