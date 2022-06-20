@@ -37,12 +37,12 @@ options:
   search:
     description:
       - Expression to match newly discovered hosts with
-    required: True
+      - Required if I(state=present)
     type: str
   hostgroup:
     description:
       - Hostgroup to assign hosts to
-    required: True
+      - Required if I(state=present)
     type: str
   hostname:
     description:
@@ -70,19 +70,19 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: 'Ensure Discovery Rule'
-    theforeman.foreman.discovery_rule:
-      username: 'admin'
-      password: 'secret_password'
-      server_url: 'https://foreman.example.com'
-      name: 'my-first-disco'
-      search: 'mac = bb:bb:bb:bb:bb:bb'
-      hostgroup: 'RedHat7-Base'
-      hostname: 'servera'
-      max_count: 1
-      organizations:
-        - 'MyOrg'
-      locations:
-        - 'DC1'
+  theforeman.foreman.discovery_rule:
+    username: 'admin'
+    password: 'secret_password'
+    server_url: 'https://foreman.example.com'
+    name: 'my-first-disco'
+    search: 'mac = bb:bb:bb:bb:bb:bb'
+    hostgroup: 'RedHat7-Base'
+    hostname: 'servera'
+    max_count: 1
+    organizations:
+      - 'MyOrg'
+    locations:
+      - 'DC1'
 
 - name: 'Remove Discovery Rule'
   theforeman.foreman.discovery_rule:
