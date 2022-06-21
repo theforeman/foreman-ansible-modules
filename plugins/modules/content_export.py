@@ -32,10 +32,10 @@ author:
 '''
 
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule
 
 
-class KatelloContentExportModule(KatelloEntityAnsibleModule):
+class KatelloContentExportModule(KatelloAnsibleModule):
     pass
 
 
@@ -46,13 +46,19 @@ def main():
             chunk_size_gb=dict(required=False, type='int'),
             fail_on_missing_content=dict(required=False, type='bool', default=False),
         ),
-        argument_spec=dict(
-            state=dict(default='present', choices=['present', 'absent']),
-        ),
     )
 
     with module.api_connection():
-        module.run()
+        # payload = {
+        #     'destination_server': module.foreman_params['destination_server'],
+        #     'chunk_size_gb': module.foreman_params['chunk_size_gb'],
+        #     'fail_on_missing_content': module.foreman_params['fail_on_missing_content'],
+        # }
+        payload = { key: module.foreman_params[key] for key in module.params.keys() if key in module.foreman_params }
+        print(payload)
+        task = module.resource_action('content_exports', 'library', payload)
+
+        module.exit_json(task=task)
 
 
 if __name__ == '__main__':
