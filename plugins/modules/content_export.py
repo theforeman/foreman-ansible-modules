@@ -49,12 +49,14 @@ def main():
     )
 
     with module.api_connection():
+        scope = module.scope_for('organization')
         # payload = {
         #     'destination_server': module.foreman_params['destination_server'],
         #     'chunk_size_gb': module.foreman_params['chunk_size_gb'],
         #     'fail_on_missing_content': module.foreman_params['fail_on_missing_content'],
         # }
-        payload = { key: module.foreman_params[key] for key in module.params.keys() if key in module.foreman_params }
+        payload = {key: module.params[key] for key in module.params.keys() if key in module.foreman_params}
+        payload.update(scope)
         print(payload)
         task = module.resource_action('content_exports', 'library', payload)
 
