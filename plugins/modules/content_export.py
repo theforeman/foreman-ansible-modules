@@ -44,7 +44,7 @@ def main():
         foreman_spec=dict(
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
-            fail_on_missing_content=dict(required=False, type='bool', default=False),
+            fail_on_missing_content=dict(required=False, type='bool'),
         ),
     )
 
