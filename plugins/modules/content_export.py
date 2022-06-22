@@ -32,7 +32,7 @@ author:
 '''
 
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
 
 
 class KatelloContentExportModule(KatelloAnsibleModule):
@@ -49,15 +49,8 @@ def main():
     )
 
     with module.api_connection():
-        scope = module.scope_for('organization')
-        # payload = {
-        #     'destination_server': module.foreman_params['destination_server'],
-        #     'chunk_size_gb': module.foreman_params['chunk_size_gb'],
-        #     'fail_on_missing_content': module.foreman_params['fail_on_missing_content'],
-        # }
-        payload = {key: module.params[key] for key in module.params.keys() if key in module.foreman_params}
-        payload.update(scope)
-        print(payload)
+        module.auto_lookup_entities()
+        payload = _flatten_entity(module.foreman_params, module.foreman_spec)
         task = module.resource_action('content_exports', 'library', payload)
 
         module.exit_json(task=task)
