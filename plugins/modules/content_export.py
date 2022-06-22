@@ -28,7 +28,25 @@ description:
     - Export content view versions, repositories, or library content to a directory.
 author:
     - "Jeremy Lenz (@jeremylenz)"
-
+options:
+  destination_server:
+    description:
+      - Destination Server name
+    required: false
+    type: str
+  chunk_size_gb:
+    description:
+      - Split the exported content into archives no greater than the specified size in gigabytes.
+    required: false
+    type: int
+  fail_on_missing_content:
+    description:
+      - Fails if any of the repositories belonging to this organization are unexportable.
+    required: false
+    type: bool
+extends_documentation_fragment:
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
 '''
 
 
