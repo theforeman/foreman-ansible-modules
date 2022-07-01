@@ -1,8 +1,10 @@
 ---
-- name: "Export library content (full)"
+
+- name: "Export repository (full)"
   vars:
     - organization_name: "Test Organization"
-  content_export_library:
+  content_export_repository:
+    id: "{{ id }}"
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
@@ -10,19 +12,19 @@
     organization: "{{ organization_name }}"
     destination_server: "{{ destination_server | default(omit) }}"
     incremental: false
-    from_history_id: "{{ from_history_id | default(omit) }}"
   register: result
 
 - assert:
-    fail_msg: "Library export failed srry!"
+    fail_msg: "Repository export failed!"
     that:
       - result.changed == expected_change
   when: expected_change is defined
 
-- name: "Export library content (incremental)"
+- name: "Export repository (incremental)"
   vars:
     - organization_name: "Test Organization"
-  content_export_library:
+  content_export_repository:
+    id: "{{ id }}"
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
     server_url: "{{ foreman_server_url }}"
@@ -34,8 +36,9 @@
   register: result
 
 - assert:
-    fail_msg: "Incremental library export failed srry!"
+    fail_msg: "Incremental repository export failed!"
     that:
       - result.changed == expected_change
   when: expected_change is defined
+  
 ...

@@ -1,0 +1,53 @@
+---
+
+- name: "Export content view version (full)"
+  vars:
+    - organization_name: "Test Organization"
+  content_export_version:
+    id: "{{ id }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    destination_server: "{{ destination_server | default(omit) }}"
+    incremental: false
+  register: result
+
+- assert:
+    fail_msg: "Content view version export failed!"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+
+- name: "Publish the exported content view"
+  theforeman.foreman.content_view_version:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    content_view: "{{ content_view }}"
+    organization: "{{ foreman_organization }}"
+
+- name: "Export content view version (incremental)"
+  vars:
+    - organization_name: "Test Organization"
+  content_export_version:
+    id: "{{ id }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    destination_server: "{{ destination_server | default(omit) }}"
+    incremental: true
+    from_history_id: "{{ from_history_id | default(omit) }}"
+  register: result
+
+- assert:
+    fail_msg: "Incremental content view version export failed!"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  
+...
