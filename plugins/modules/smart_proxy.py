@@ -51,7 +51,8 @@ options:
     description:
       - The download policy for the Smart Proxy
       - Only available for Katello installations.
-      - The download policy C(streamed) is available since Katello 4.5
+      - The download policy C(background) is deprecated and not available since Katello 4.3.
+      - The download policy C(streamed) is available since Katello 4.5.
     choices:
       - background
       - immediate

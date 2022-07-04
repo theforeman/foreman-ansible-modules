@@ -121,7 +121,8 @@ options:
     version_added: 3.0.0
   download_policy:
     description:
-      - download policy for sync from upstream
+      - The download policy for sync from upstream.
+      - The download policy C(background) is deprecated and not available since Katello 4.3.
     choices:
       - background
       - immediate
