@@ -57,6 +57,7 @@ options:
       - immediate
       - on_demand
       - streamed
+      - inherit
     required: false
     type: str
 notes:
@@ -114,7 +115,7 @@ def main():
             name=dict(required=True),
             url=dict(required=True),
             lifecycle_environments=dict(required=False, type='entity_list'),
-            download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand', 'streamed']),
+            download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand', 'streamed', 'inherit']),
         ),
         required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
     )
