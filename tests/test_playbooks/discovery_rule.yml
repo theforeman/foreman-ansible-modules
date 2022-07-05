@@ -1,0 +1,108 @@
+---
+## To record cassettes using this playbook (record_discovery_rule)
+## you need to have the discovery plugin active
+## $ foreman-installer --enable-foreman-plugin-discovery
+##
+## You also need the proxy to be setup with the DNS feature:
+## $ foreman-installer --foreman-proxy-dns true
+##
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/hostgroup.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: present
+      with_items: "{{ hostgroup.locations }}"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: present
+      with_items: "{{ hostgroup.organizations }}"
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "Discovery hostgroup"
+        hostgroup_description: "Discovery hostgroup"
+        hostgroup_locations: "{{ hostgroup.locations }}"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_state: present
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_state: 'absent'
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/hostgroup.yml
+  tasks:
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_search: 'mac = aa:aa:aa:aa:aa:aa'
+        discovery_rule_hostgroup: 'Discovery hostgroup'
+        discovery_rule_hostname: 'discovered-host'
+        discovery_rule_max_count: '1'
+        discovery_rule_organizations: "{{ hostgroup.organizations }}"
+        discovery_rule_locations: "{{ hostgroup.locations }}"
+        discovery_rule_state: 'present'
+        expected_change: true
+
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_search: 'mac = aa:aa:aa:aa:aa:aa'
+        discovery_rule_hostgroup: 'Discovery hostgroup'
+        discovery_rule_hostname: 'discovered-host'
+        discovery_rule_max_count: '1'
+        discovery_rule_organizations: "{{ hostgroup.organizations }}"
+        discovery_rule_locations: "{{ hostgroup.locations }}"
+        discovery_rule_state: 'present'
+        expected_change: false
+
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_state: 'absent'
+        expected_change: true
+
+    - include_tasks: tasks/discovery_rule.yml
+      vars:
+        discovery_rule_name: 'New-discovery-rule'
+        discovery_rule_state: 'absent'
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/hostgroup.yml
+  tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "Discovery hostgroup"
+        hostgroup_description: "Discovery hostgroup"
+        hostgroup_locations: "{{ hostgroup.locations }}"
+        hostgroup_organizations: "{{ hostgroup.organizations }}"
+        hostgroup_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: absent
+      with_items: "{{ hostgroup.locations | reverse | list }}"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ item }}"
+        organization_state: absent
+      with_items: "{{ hostgroup.organizations }}"
