@@ -126,6 +126,7 @@ def main():
         required_if=[
             ['state', 'present', ['hostgroup', 'search']],
         ],
+        required_plugins=[('discovery', ['*'])],
     )
 
     with module.api_connection():
