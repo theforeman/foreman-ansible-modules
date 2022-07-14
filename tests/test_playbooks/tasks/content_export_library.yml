@@ -1,7 +1,8 @@
 ---
-- name: "Export library content (full)"
+- name: "{{ 'Export library content (incremental)' if incremental else 'Export library content(full)' }}"
   vars:
     - organization_name: "Test Organization"
+    - incremental: "{{ incremental | default(false) }}"
   content_export_library:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -9,9 +10,10 @@
     validate_certs: "{{ foreman_validate_certs }}"
     organization: "{{ organization_name }}"
     destination_server: "{{ destination_server | default(omit) }}"
-    incremental: false
+    incremental: "{{ incremental }}"
     from_history_id: "{{ from_history_id | default(omit) }}"
   register: result
+  tags: full-export
 
 - assert:
     fail_msg: "Library export failed!"
@@ -19,24 +21,27 @@
       - result.changed == expected_change
   when: expected_change is defined
 
-- name: "Export library content (incremental)"
-  vars:
-    - organization_name: "Test Organization"
-  content_export_library:
-    username: "{{ foreman_username }}"
-    password: "{{ foreman_password }}"
-    server_url: "{{ foreman_server_url }}"
-    validate_certs: "{{ foreman_validate_certs }}"
-    organization: "{{ organization_name }}"
-    destination_server: "{{ destination_server | default(omit) }}"
-    incremental: true
-    from_history_id: "{{ from_history_id | default(omit) }}"
-  register: result
+# - name: "Export library content (incremental)"
+#   vars:
+#     - organization_name: "Test Organization"
+#     - incremental: "{{ incremental | default(false) }}"
+#   content_export_library:
+#     username: "{{ foreman_username }}"
+#     password: "{{ foreman_password }}"
+#     server_url: "{{ foreman_server_url }}"
+#     validate_certs: "{{ foreman_validate_certs }}"
+#     organization: "{{ organization_name }}"
+#     destination_server: "{{ destination_server | default(omit) }}"
+#     incremental: "{{ incremental | default(false) }}"
+#     from_history_id: "{{ from_history_id | default(omit) }}"
+#   register: result
+#   tags: incremental-export
+#   when: incremental
 
-- assert:
-    fail_msg: "Incremental library export failed!"
-    that:
-      - result.changed == expected_change
-  when: expected_change is defined
+# - assert:
+#     fail_msg: "Incremental library export failed!"
+#     that:
+#       - result.changed == expected_change
+#   when: (expected_change is defined) and (incremental is true)
 
 ...
