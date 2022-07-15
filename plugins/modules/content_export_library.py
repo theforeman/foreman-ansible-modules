@@ -59,6 +59,52 @@ extends_documentation_fragment:
   - theforeman.foreman.foreman.organization
 '''
 
+EXAMPLES = '''
+- name: "Export library content (full)"
+  content_export_library:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+
+- name: "Export library content (full) and fail if any repos are unexportable"
+  content_export_library:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+    fail_on_missing_content: true
+
+- name: "Export library content (full) in chunks of 10 GB"
+  content_export_library:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    chunk_size_gb: 10
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+
+- name: "Export library content (incremental) since the most recent export"
+  content_export_library:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+    incremental: true
+
+- name: "Export library content (incremental) since a specific export"
+  content_export_library:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+    incremental: true
+    from_history_id: "12345"
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
 

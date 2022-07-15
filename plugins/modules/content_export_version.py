@@ -46,7 +46,7 @@ options:
     type: int
   fail_on_missing_content:
     description:
-      - Fails if any of the repositories belonging to this organization are unexportable.
+      - Fails if any of the repositories belonging to this version are unexportable.
     required: false
     type: bool
   incremental:
@@ -64,6 +64,57 @@ extends_documentation_fragment:
   - theforeman.foreman.foreman.organization
 '''
 
+EXAMPLES = '''
+- name: "Export content view version (full)"
+  content_export_version:
+    id: 279
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+
+- name: "Export content view version (full) in chunks of 10 GB"
+  content_export_version:
+    id: 279
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+    chunk_size_gb: 10
+
+- name: "Export content view version (full) and fail if any repos are unexportable"
+  content_export_version:
+    id: 279
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    destination_server: "airgapped.example.com"
+    fail_on_missing_content: true
+
+- name: "Export content view version (incremental) since the most recent export"
+  content_export_version:
+      id: 279
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      organization: "Default Organization"
+      destination_server: "airgapped.example.com"
+      incremental: true
+
+- name: "Export content view version (incremental) since a specific export"
+  content_export_version:
+      id: 279
+      username: "admin"
+      password: "changeme"
+      server_url: "https://foreman.example.com"
+      organization: "Default Organization"
+      destination_server: "airgapped.example.com"
+      incremental: true
+      from_history_id: 12345
+'''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
 
