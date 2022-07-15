@@ -28,9 +28,6 @@
         repositories:
           - name: "TestRepo"
             product: "Export Test Product"
-        # expected_diff: true
-        # expected_diff_before: "{}"
-        # expected_diff_after: "Test Content View"
       include_tasks: tasks/content_view_version.yml
       vars:
         version: 1.0
@@ -45,25 +42,26 @@
         organization: "Export Org"
         content_view: "Test Content View"
         search: 'version = "1.0"'
-      register: result
-    - include_tasks: tasks/content_export_version.yml
+      register: cv_info
+    - include_tasks: tasks/content_export_version.yml # Full export
       vars:
         organization_name: "Export Org"
         foreman_organization: "Export Org" # required for CV publish
         destination_server: "airgapped.example.com"
-        id: "{{ result['content_view_versions'][0]['id'] }}"
+        id: "{{ cv_info['content_view_versions'][0]['id'] }}"
         content_view: "Test Content View"
-        incremental: true
-      # register: result
+        incremental: false
+      register: result
 
-    # - include_tasks: tasks/content_export_version.yml # Incremental export
-    #   vars:
-    #     expected_change: true
-    #     incremental: true
-    #     # from_history_id: "{{ result.task.output.export_history_id }}" # (not required; will use most recent export by default)
-    #     organization_name: "Export Org"
-    #     foreman_organization: "Export Org"
-    #     destination_server: "library-export.example.com"
+    - include_tasks: tasks/content_export_version.yml # Incremental export
+      vars:
+        expected_change: true
+        incremental: true
+        id: "{{ cv_info['content_view_versions'][0]['id'] }}"
+        # from_history_id: "{{ result.task.output.export_history_id }}" # (not required; will use most recent export by default)
+        organization_name: "Export Org"
+        foreman_organization: "Export Org"
+        destination_server: "airgapped.example.com"
 ...
 
 
