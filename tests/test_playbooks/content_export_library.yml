@@ -1,5 +1,5 @@
 ---
-- hosts: tests
+- hosts: localhost
   collections:
     - theforeman.foreman
   gather_facts: false
@@ -21,6 +21,13 @@
         repository_name: "TestRepo"
         repository_state: present
         organization_name: "Export Org"
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
     - include_tasks: tasks/content_export_library.yml # Full export
       vars:
         expected_change: true
@@ -37,7 +44,12 @@
         organization_name: "Export Org"
         foreman_organization: "Export Org"
         destination_server: "airgapped.example.com"
-    - include_tasks: tasks/content_export_library.yml
-      tags: info
-        
+      tags: library-export
+      register: result
+    - include_tasks: tasks/content_export_show.yml
+      vars:
+        id: "{{ result['task']['output']['export_history_id'] }}"
+        organization_name: "Export Org"
+        foreman_organization: "Export Org"
+        destination_server: "airgapped.example.com"
 ...

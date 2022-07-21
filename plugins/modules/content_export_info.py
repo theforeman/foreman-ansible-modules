@@ -81,6 +81,22 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
+- name: "Get a specific export history and register the result for the next task"
+  vars:
+    organization_name: "Export Org"
+  content_export_info:
+    id: 29
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+  register: result
+- name: "Write metadata.json to disk using data from the previous task"
+  vars:
+    metadata: "{{ result['task']['results'][0]['metadata'] }}"
+  ansible.builtin.copy:
+    content: "{{ metadata }}"
+    dest: ./metadata.json
 - name: "List all exports of a specific content view version"
   content_export_info:
     content_view_version_id: 379
