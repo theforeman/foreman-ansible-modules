@@ -1,0 +1,251 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/status
+  response:
+    body:
+      string: '{"result":"ok","status":200,"version":"3.4.0-develop","api_version":2}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=100
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '70'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Export+Org%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 7,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Export Org\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Export_Org\",\"created_at\":\"2022-07-12
+        15:05:28 UTC\",\"updated_at\":\"2022-07-13 19:20:00 UTC\",\"id\":10,\"name\":\"Export
+        Org\",\"title\":\"Export Org\",\"description\":\"A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=99
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '361'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"id": 100}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '11'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/katello/api/content_export_incrementals/repository
+  response:
+    body:
+      string: '  {"id":"648af5f3-8dd8-460d-84ea-39dbbfcda48f","label":"Actions::Pulp3::Orchestration::ContentViewVersion::ExportRepository","pending":true,"action":"Export
+        Repository repository ''TestRepo''; product ''Export Test Product''; organization
+        ''Export Org''","username":"admin","started_at":"2022-07-21 19:13:41 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"repository":{"id":100,"name":"TestRepo","label":"TestRepo"},"product":{"id":337,"name":"Export
+        Test Product","label":"Export_Test_Product","cp_id":"317036520577"},"provider":{"id":15,"name":"Anonymous"},"organization":{"id":10,"name":"Export
+        Org","label":"Export_Org"},"services_checked":["pulp3","candlepin","candlepin_auth"],"export_action_output":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"0df6a2c4-153b-4ffc-a8a9-432d4861322b","step_id":54,"action_id":26,"subkeys":[]},"locale":"en","current_request_id":"04230719-137a-462a-9cf9-f5fbe585b6f9","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Export
+        Repository","input":[["repository",{"text":"repository ''TestRepo''","link":null}],["product",{"text":"product
+        ''Export Test Product''","link":"/products/337/"}],["organization",{"text":"organization
+        ''Export Org''","link":"/organizations/10/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2022-07-21
+        19:13:41 UTC","available_actions":{"cancellable":false,"resumable":false}}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 202
+      message: Accepted
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/648af5f3-8dd8-460d-84ea-39dbbfcda48f
+  response:
+    body:
+      string: '{"id":"648af5f3-8dd8-460d-84ea-39dbbfcda48f","label":"Actions::Pulp3::Orchestration::ContentViewVersion::ExportRepository","pending":false,"action":"Export
+        Repository repository ''TestRepo''; product ''Export Test Product''; organization
+        ''Export Org''","username":"admin","started_at":"2022-07-21 19:13:41 UTC","ended_at":"2022-07-21
+        19:13:45 UTC","duration":"4.298636","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":100,"name":"TestRepo","label":"TestRepo"},"product":{"id":337,"name":"Export
+        Test Product","label":"Export_Test_Product","cp_id":"317036520577"},"provider":{"id":15,"name":"Anonymous"},"organization":{"id":10,"name":"Export
+        Org","label":"Export_Org"},"services_checked":["pulp3","candlepin","candlepin_auth"],"export_action_output":{"export_history_id":133,"export_path":"/var/lib/pulp/exports/Export_Org/Export-TestRepo-100/14.0/2022-07-21T19-13-43-00-00","exported_file_checksum":{"/var/lib/pulp/exports/Export_Org/Export-TestRepo-100/14.0/2022-07-21T19-13-43-00-00/export-6084f053-b6af-40fb-8e26-7117ab1d289d-20220721_1913.tar.gz":"82fd29fd26824b338b89e0af6175001f81cf6854a1a3cd46ca1454887ed79259","/var/lib/pulp/exports/Export_Org/Export-TestRepo-100/14.0/2022-07-21T19-13-43-00-00/export-6084f053-b6af-40fb-8e26-7117ab1d289d-20220721_1913-toc.json":"b6e97ceac57afbc2d66245ac04f72e5d6b8c692cd718394cd6fc5a002924c6c0"}},"locale":"en","current_request_id":"04230719-137a-462a-9cf9-f5fbe585b6f9","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"export_history_id":133},"humanized":{"action":"Export
+        Repository","input":[["repository",{"text":"repository ''TestRepo''","link":null}],["product",{"text":"product
+        ''Export Test Product''","link":"/products/337/"}],["organization",{"text":"organization
+        ''Export Org''","link":"/organizations/10/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2022-07-21
+        19:13:41 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.4.0-develop
+      Keep-Alive:
+      - timeout=15, max=97
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Vary:
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '1997'
+    status:
+      code: 200
+      message: OK
+version: 1
