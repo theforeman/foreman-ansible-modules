@@ -584,7 +584,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             # Set ansible roles
             if self.get_option('want_ansible_roles'):
                 ansible_roles = self._get_ansible_roles(host['id'])
-                self.inventory.set_variable(host_name, 'foreman_roles', ansible_roles)
+                self.inventory.set_variable(host_name, 'foreman_ansible_roles', ansible_roles)
 
             hostvars = self.inventory.get_host(host_name).get_vars()
             self._set_composite_vars(self.get_option('compose'), hostvars, host_name, strict)
@@ -653,7 +653,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             # Set ansible roles
             if self.get_option('want_ansible_roles'):
                 ansible_roles = self._get_ansible_roles(host['id'])
-                self.inventory.set_variable(host_name, 'foreman_roles', ansible_roles)
+                self.inventory.set_variable(host_name, 'foreman_ansible_roles', ansible_roles)
 
             # set host vars from facts
             if self.get_option('want_facts'):
