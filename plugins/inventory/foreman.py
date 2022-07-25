@@ -56,6 +56,9 @@ DOCUMENTATION = '''
       group_prefix:
         description: prefix to apply to foreman groups
         default: foreman_
+      hostcollection_group_prefix:
+        description: prefix to apply to foreman groups generated from host collections
+        default: foreman_hostcollection_
       vars_prefix:
         description: prefix to apply to host variables, does not include facts nor params
         default: foreman_
@@ -460,6 +463,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             self._populate_host_api()
             return
         self.group_prefix = self.get_option('group_prefix')
+        self.hostcollection_group_prefix = self.get_option('hostcollection_group_prefix')
 
         hostnames = self.get_option('hostnames')
         strict = self.get_option('strict')
@@ -547,8 +551,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     # Create Ansible groups for host collections
                     for hostcollection in hostcollections:
                         try:
-                            host_collection_group_name = to_safe_group_name('%shostcollection_%s' % (
-                                to_text(self.group_prefix),
+                            host_collection_group_name = to_safe_group_name('%s%s' % (
+                                to_text(self.hostcollection_group_prefix),
                                 to_text(hostcollection).lower()
                             ))
                             hostcollection_group = self.inventory.add_group(host_collection_group_name)
@@ -643,7 +647,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     # Create Ansible groups for host collections
                     for hostcollection in hostcollections:
                         try:
-                            hostcollection_group = to_safe_group_name('%shostcollection_%s' % (self.get_option('group_prefix'),
+                            hostcollection_group = to_safe_group_name('%s%s' % (self.get_option('hostcollection_group_prefix'),
                                                                       hostcollection['name'].lower().replace(" ", "")))
                             hostcollection_group = self.inventory.add_group(hostcollection_group)
                             self.inventory.add_child(hostcollection_group, host_name)
