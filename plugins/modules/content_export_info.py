@@ -80,7 +80,6 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    organization: "Default Organization"
 - name: "Get a specific export history and register the result for the next task"
   vars:
     organization_name: "Export Org"
