@@ -1,5 +1,5 @@
 ---
-- name: "Get export history with id {{ id }}"
+- name: "Get export history with id {{ id | default(12345) }}"
   vars:
     organization_name: "Export Org"
   content_export_info:
@@ -13,10 +13,11 @@
   register: result
 - name: "Generate metadata.json"
   vars:
-    metadata: "{{ result['task']['results'][0]['metadata'] }}"
+    metadata: "{{ result['task']['results'][0]['metadata'] | default(omit) }}"
   ansible.builtin.copy:
     content: "{{ metadata }}"
     dest: ./metadata.json
+  when: result.task is defined
 - name: "Verify metadata.json was generated"
   stat:
     path: ./metadata.json
@@ -24,4 +25,5 @@
 - assert:
     that: file_data.stat.exists
     fail_msg: "metadata.json was not written!"
+  when: result.task is defined
 ...
