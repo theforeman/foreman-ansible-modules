@@ -70,7 +70,7 @@
         destination_server: "airgapped.example.com"
     - include_tasks: tasks/content_export_show.yml
       vars:
-        id: "{{ result['task']['output']['export_history_id'] }}"
+        id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
         organization_name: "Export Org"
         foreman_organization: "Export Org"
         destination_server: "airgapped.example.com"
