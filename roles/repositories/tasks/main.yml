@@ -84,6 +84,7 @@
     upstream_password: "{{ item.1.upstream_password | default(omit) }}"
     upstream_username: "{{ item.1.upstream_username | default(omit) }}"
     verify_ssl_on_sync: "{{ item.1.verify_ssl_on_sync | default(omit) }}"
+    ansible_collection_requirements: "{{ item.1.ansible_collection_requirements | default(omit) }}"
   with_subelements:
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
     - repositories
