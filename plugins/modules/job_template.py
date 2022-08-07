@@ -137,6 +137,7 @@ options:
           - plain
           - search
           - date
+          - resource
         type: str
       resource_type:
         description:
@@ -322,6 +323,7 @@ template_input_foreman_spec = {
         'plain',
         'search',
         'date',
+        'resource',
     ]),
     'resource_type': dict(),
 }
