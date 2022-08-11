@@ -23,7 +23,7 @@ DOCUMENTATION = '''
 ---
 module: content_export_library
 version_added: 3.5.0
-short_description: Manage pulp3 content exports
+short_description: Manage content exports
 description:
     - Export library content to a directory.
 author:

@@ -34,26 +34,21 @@ options:
       - Export history identifier.
     required: false
     type: int
-  content_view_version_id:
+  content_view_version:
     description:
-      - Content view version identifier.
+      - Content view version.
     required: false
-    type: int
-  content_view_id:
+    type: str
+  content_view:
     description:
-      - Content view identifier.
+      - Content view name.
     required: false
-    type: int
+    type: str
   destination_server:
     description:
       - Destination server name
     required: false
     type: str
-  organization_id:
-    description:
-      - Organization identifier.
-    required: false
-    type: int
   type:
     description:
       - Specify complete or incremental exports.
@@ -62,14 +57,10 @@ options:
     choices:
     - complete
     - incremental
-  search:
-    description:
-      - Search string.
-    required: false
-    type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.organization
+  - theforeman.foreman.foreman.katelloinfomodule
+  - theforeman.foreman.foreman.infomodulewithoutname
 '''
 
 EXAMPLES = '''
@@ -92,13 +83,14 @@ EXAMPLES = '''
   register: result
 - name: "Write metadata.json to disk using data from the previous task"
   vars:
-    metadata: "{{ result['task']['results'][0]['metadata'] }}"
+    metadata: "{{ result['content_exports'][0]['metadata'] }}"
   ansible.builtin.copy:
     content: "{{ metadata }}"
     dest: ./metadata.json
 - name: "List all exports of a specific content view version"
   content_export_info:
-    content_view_version_id: 379
+    content_view: RHEL8
+    content_view_version: '1.0'
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -112,7 +104,7 @@ EXAMPLES = '''
     organization: "Default Organization"
 - name: "List incremental exports of a specific content view version marked for a specific destination server"
   content_export_info:
-    content_view_id: 1
+    content_view: RHEL8
     destination_server: "airgapped.example.com"
     type: incremental
     username: "admin"
@@ -121,7 +113,7 @@ EXAMPLES = '''
     organization: "Default Organization"
 - name: "List all exports of a specific content view marked for a specific destination server"
   content_export_info:
-    content_view_id: 1
+    content_view: RHEL8
     destination_server: "airgapped.example.com"
     username: "admin"
     password: "changeme"
@@ -130,35 +122,28 @@ EXAMPLES = '''
 
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloInfoAnsibleModule
 
 
-class KatelloContentExportInfoModule(KatelloAnsibleModule):
+class KatelloContentExportInfo(KatelloInfoAnsibleModule):
     pass
 
 
 def main():
-    module = KatelloContentExportInfoModule(
+    module = KatelloContentExportInfo(
         foreman_spec=dict(
             id=dict(required=False, type='int'),
-            content_view_version_id=dict(required=False, type='int'),
-            content_view_id=dict(required=False, type='int'),
+            content_view_version=dict(type='entity', scope=['content_view'], required=False),
+            content_view=dict(type='entity', scope=['organization'], required=False),
             destination_server=dict(required=False, type='str'),
-            organization_id=dict(required=False, type='int'),
             type=dict(required=False, type='str', choices=['complete', 'incremental']),
             search=dict(required=False, type='str'),
+            name=dict(invisible=True),
         ),
     )
 
     with module.api_connection():
-        module.auto_lookup_entities()
-
-        endpoint = 'content_exports'
-
-        payload = _flatten_entity(module.foreman_params, module.foreman_spec)
-        task = module.resource_action(endpoint, 'index', payload)
-
-        module.exit_json(task=task)
+        module.run()
 
 
 if __name__ == '__main__':
