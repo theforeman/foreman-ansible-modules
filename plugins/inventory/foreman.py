@@ -465,7 +465,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         strict = self.get_option('strict')
 
         for host in host_data:
-            if not(host):
+            if not host:
                 continue
 
             composed_host_name = self._get_hostname(host, hostnames, strict=strict)
@@ -576,7 +576,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         hostnames = self.get_option('hostnames')
         strict = self.get_option('strict')
         for host in self._get_hosts():
-            if not(host):
+            if not host:
                 continue
 
             composed_host_name = self._get_hostname(host, hostnames, strict=strict)
