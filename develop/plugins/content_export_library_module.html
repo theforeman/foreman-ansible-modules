@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>theforeman.foreman.role module – Manage Roles &mdash; Foreman Ansible Modules  documentation</title>
+  <title>theforeman.foreman.content_export_library module – Manage content exports &mdash; Foreman Ansible Modules  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="theforeman.foreman.scap_content module – Manage SCAP content" href="scap_content_module.html" />
-    <link rel="prev" title="theforeman.foreman.resource_info module – Gather information about resources" href="resource_info_module.html" /> 
+    <link rel="next" title="theforeman.foreman.content_upload module – Upload content to a repository" href="content_upload_module.html" />
+    <link rel="prev" title="theforeman.foreman.content_export_info module – List pulp3 content exports" href="content_export_info_module.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -61,7 +61,7 @@
 <li class="toctree-l4"><a class="reference internal" href="config_group_module.html">theforeman.foreman.config_group module – Manage (Puppet) Config Groups</a></li>
 <li class="toctree-l4"><a class="reference internal" href="content_credential_module.html">theforeman.foreman.content_credential module – Manage Content Credentials</a></li>
 <li class="toctree-l4"><a class="reference internal" href="content_export_info_module.html">theforeman.foreman.content_export_info module – List pulp3 content exports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="content_export_library_module.html">theforeman.foreman.content_export_library module – Manage content exports</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.content_export_library module – Manage content exports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="content_upload_module.html">theforeman.foreman.content_upload module – Upload content to a repository</a></li>
 <li class="toctree-l4"><a class="reference internal" href="content_view_module.html">theforeman.foreman.content_view module – Manage Content Views</a></li>
 <li class="toctree-l4"><a class="reference internal" href="content_view_filter_module.html">theforeman.foreman.content_view_filter module – Manage Content View Filters</a></li>
@@ -104,7 +104,7 @@
 <li class="toctree-l4"><a class="reference internal" href="repository_set_info_module.html">theforeman.foreman.repository_set_info module – Fetch information about Red Hat Repositories</a></li>
 <li class="toctree-l4"><a class="reference internal" href="repository_sync_module.html">theforeman.foreman.repository_sync module – Sync a Repository or Product</a></li>
 <li class="toctree-l4"><a class="reference internal" href="resource_info_module.html">theforeman.foreman.resource_info module – Gather information about resources</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.role module – Manage Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="role_module.html">theforeman.foreman.role module – Manage Roles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="scap_content_module.html">theforeman.foreman.scap_content module – Manage SCAP content</a></li>
 <li class="toctree-l4"><a class="reference internal" href="scap_tailoring_file_module.html">theforeman.foreman.scap_tailoring_file module – Manage SCAP Tailoring Files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="scc_account_module.html">theforeman.foreman.scc_account module – Manage SUSE Customer Center Accounts</a></li>
@@ -160,9 +160,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">Theforeman.Foreman</a> &raquo;</li>
-      <li>theforeman.foreman.role module – Manage Roles</li>
+      <li>theforeman.foreman.content_export_library module – Manage content exports</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/plugins/role_module.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/plugins/content_export_library_module.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -170,8 +170,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-theforeman-foreman-role-module"></span><section id="theforeman-foreman-role-module-manage-roles">
-<h1>theforeman.foreman.role module – Manage Roles<a class="headerlink" href="#theforeman-foreman-role-module-manage-roles" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-theforeman-foreman-content-export-library-module"></span><section id="theforeman-foreman-content-export-library-module-manage-content-exports">
+<h1>theforeman.foreman.content_export_library module – Manage content exports<a class="headerlink" href="#theforeman-foreman-content-export-library-module-manage-content-exports" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.5.0-dev).</p>
@@ -179,10 +179,10 @@
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.role</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.content_export_library</span></code>.</p>
 </div>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+<p><span class="versionmodified added">New in version 3.5.0: </span>of theforeman.foreman</p>
 </div>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -190,13 +190,12 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
 <li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
 <li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
-<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
 </ul>
 </div>
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Create, update, and delete Roles</p></li>
+<li><p>Export library content to a directory.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -216,84 +215,75 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-description"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-description"><strong>description</strong></p>
-<a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-chunk_size_gb"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-chunk-size-gb"><strong>chunk_size_gb</strong></p>
+<a class="ansibleOptionLink" href="#parameter-chunk_size_gb" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Description of the role</p>
+<td><div class="ansible-option-cell"><p>Split the exported content into archives no greater than the specified size in gigabytes.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-filters"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-filters"><strong>filters</strong></p>
-<a class="ansibleOptionLink" href="#parameter-filters" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+<div class="ansibleOptionAnchor" id="parameter-destination_server"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-destination-server"><strong>destination_server</strong></p>
+<a class="ansibleOptionLink" href="#parameter-destination_server" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Filters with permissions for this role</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-filters/permissions"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-filters-permissions"><strong>permissions</strong></p>
-<a class="ansibleOptionLink" href="#parameter-filters/permissions" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of permissions</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-filters/search"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-filters-search"><strong>search</strong></p>
-<a class="ansibleOptionLink" href="#parameter-filters/search" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Filter condition for the resources</p>
+<td><div class="ansible-option-cell"><p>Destination server name; optional parameter to differentiate between exports</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-locations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-locations"><strong>locations</strong></p>
-<a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-fail_on_missing_content"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-fail-on-missing-content"><strong>fail_on_missing_content</strong></p>
+<a class="ansibleOptionLink" href="#parameter-fail_on_missing_content" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>List of locations the entity should be assigned to</p>
+<td><div class="ansible-option-cell"><p>Fails if any of the repositories belonging to this organization are unexportable.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-name"><strong>name</strong></p>
-<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+<div class="ansibleOptionAnchor" id="parameter-from_history_id"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-from-history-id"><strong>from_history_id</strong></p>
+<a class="ansibleOptionLink" href="#parameter-from_history_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The name of the role</p>
+<td><div class="ansible-option-cell"><p>Export history identifier used for incremental export. If not provided the most recent export history will be used.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-organizations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-organizations"><strong>organizations</strong></p>
-<a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-incremental"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-incremental"><strong>incremental</strong></p>
+<a class="ansibleOptionLink" href="#parameter-incremental" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>List of organizations the entity should be assigned to</p>
+<td><div class="ansible-option-cell"><p>Export only the content that has changed since the last export.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">no</span></p></li>
+<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-password"><strong>password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-organization"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-organization"><strong>organization</strong></p>
+<a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Organization that the entity is in</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-password"><strong>password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-server-url"><strong>server_url</strong></p>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-server-url"><strong>server_url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-state"><strong>state</strong></p>
-<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>State of the entity</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
-</ul>
-</div></td>
-</tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-username"><strong>username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-username"><strong>username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
@@ -301,7 +291,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-export-library-module-parameter-validate-certs"><strong>validate_certs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
@@ -318,57 +308,56 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">role</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.role</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Provisioner&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Only</span><span class="nv"> </span><span class="s">provision</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">libvirt&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">locations</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;Uppsala&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">permissions</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">view_hosts</span><span class="w"></span>
-<span class="w">        </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;owner_type</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">Usergroup</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">owner_id</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">4&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Export</span><span class="nv"> </span><span class="s">library</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">(full)&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">content_export_library</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">destination_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;airgapped.example.com&quot;</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Export</span><span class="nv"> </span><span class="s">library</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">(full)</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">fail</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">repos</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">unexportable&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">content_export_library</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">destination_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;airgapped.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fail_on_missing_content</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Export</span><span class="nv"> </span><span class="s">library</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">(full)</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">chunks</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">GB&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">content_export_library</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">chunk_size_gb</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">destination_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;airgapped.example.com&quot;</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Export</span><span class="nv"> </span><span class="s">library</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">(incremental)</span><span class="nv"> </span><span class="s">since</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">most</span><span class="nv"> </span><span class="s">recent</span><span class="nv"> </span><span class="s">export&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">content_export_library</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">destination_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;airgapped.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">incremental</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Export</span><span class="nv"> </span><span class="s">library</span><span class="nv"> </span><span class="s">content</span><span class="nv"> </span><span class="s">(incremental)</span><span class="nv"> </span><span class="s">since</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">specific</span><span class="nv"> </span><span class="s">export&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">content_export_library</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">destination_server</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;airgapped.example.com&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">incremental</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">from_history_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;12345&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-</section>
-<section id="return-values">
-<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this heading"></a></h2>
-<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v6)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
-<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
-<thead>
-<tr class="row-odd"><th class="head"><p>Key</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-return-entity"><strong>entity</strong></p>
-<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
-<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-entity/roles"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-role-module-return-entity-roles"><strong>roles</strong></p>
-<a class="ansibleOptionLink" href="#return-entity/roles" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
-</div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles.</p>
-<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
-</div></td>
-</tr>
-</tbody>
-</table>
 <section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Christoffer Reijer (&#64;ephracis) Basalt AB</p></li>
+<li><p>Jeremy Lenz (&#64;jeremylenz)</p></li>
 </ul>
 </section>
 <section id="collection-links">
@@ -385,8 +374,8 @@ To check whether it is installed, run <code class="code docutils literal notrans
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="resource_info_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.resource_info module – Gather information about resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="scap_content_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.scap_content module – Manage SCAP content" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="content_export_info_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.content_export_info module – List pulp3 content exports" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="content_upload_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.content_upload module – Upload content to a repository" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
