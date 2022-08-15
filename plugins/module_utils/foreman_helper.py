@@ -37,6 +37,7 @@ try:
         from plugins.module_utils import _apypie as apypie
     import requests.exceptions
     HAS_APYPIE = True
+    APYPIE_IMP_ERR = None
     inflector = apypie.Inflector()
 except ImportError:
     HAS_APYPIE = False
@@ -45,6 +46,7 @@ except ImportError:
 try:
     import yaml
     HAS_PYYAML = True
+    PYYAML_IMP_ERR = None
 except ImportError:
     HAS_PYYAML = False
     PYYAML_IMP_ERR = traceback.format_exc()

@@ -218,6 +218,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 try:
     import ipaddress
     HAS_IPADDRESS = True
+    IPADDRESS_IMP_ERR = None
 except ImportError:
     HAS_IPADDRESS = False
     IPADDRESS_IMP_ERR = traceback.format_exc()
