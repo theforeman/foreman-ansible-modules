@@ -1,0 +1,29 @@
+---
+- name: "Get export history with id {{ id | default(12345) }}"
+  vars:
+    organization_name: "Test Organization"
+  content_export_info:
+    id: "{{ id }}"
+    organization: "{{ organization_name }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+  tags: show
+  register: result
+- name: "Generate metadata.json"
+  vars:
+    metadata: "{{ result['task']['results'][0]['metadata'] | default(omit) }}"
+  ansible.builtin.copy:
+    content: "{{ metadata }}"
+    dest: ./metadata.json
+  when: result.task is defined and result.task != None
+- name: "Verify metadata.json was generated"
+  stat:
+    path: ./metadata.json
+  register: file_data
+- assert:
+    that: file_data.stat.exists
+    fail_msg: "metadata.json was not written!"
+  when: result.task is defined and result.task != None
+...
