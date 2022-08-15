@@ -9,18 +9,13 @@
     - include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-        organization_name: "Export Org"
     - include_tasks: tasks/product.yml
       vars:
-        product_name: "Export Test Product"
-        organization_name: "Export Org"
         product_state: present
     - include_tasks: tasks/repository.yml
       vars:
-        product_name: "Export Test Product"
-        repository_name: "TestRepo"
         repository_state: present
-        organization_name: "Export Org"
+
 - hosts: tests
   collections:
     - theforeman.foreman
@@ -32,8 +27,6 @@
       vars:
         expected_change: true
         incremental: false
-        organization_name: "Export Org"
-        foreman_organization: "Export Org"
         destination_server: "airgapped.example.com"
       register: result
     - include_tasks: tasks/content_export_library.yml # Incremental export
@@ -41,22 +34,33 @@
         expected_change: true
         incremental: true
         # from_history_id: "{{ result.task.output.export_history_id }}" # (not required; will use most recent export by default)
-        organization_name: "Export Org"
-        foreman_organization: "Export Org"
         destination_server: "airgapped.example.com"
       tags: library-export
       register: result
     - include_tasks: tasks/content_export_show.yml
       vars:
         id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
-        organization_name: "Export Org"
-        foreman_organization: "Export Org"
         destination_server: "airgapped.example.com"
+
 - hosts: localhost
+  collections:
+    - theforeman.foreman
   gather_facts: false
+  vars_files:
+    - vars/server.yml
   tasks:
     - name: Clean up metadata.json
       ansible.builtin.file:
         path: ./metadata.json
         state: absent
+
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
 ...
