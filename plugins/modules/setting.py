@@ -63,9 +63,18 @@ EXAMPLES = '''
 
 RETURN = '''
 foreman_setting:
-  description: Created / Updated state of the setting
+  description: Created / Updated state of the setting (deprecated)
   returned: success
   type: dict
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    settings:
+      description: List of settings.
+      type: list
+      elements: dict
 '''
 
 
