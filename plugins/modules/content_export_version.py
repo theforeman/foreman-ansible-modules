@@ -29,11 +29,16 @@ description:
 author:
     - "Jeremy Lenz (@jeremylenz)"
 options:
-  id:
+  content_view_version:
     description:
-      - Content view version identifier.
-    required: true
-    type: int
+      - Content view version, e.g. "7.0"
+    required: false
+    type: str
+  content_view:
+    description:
+      - Content view name.
+    required: false
+    type: str
   destination_server:
     description:
       - Destination server name; optional parameter to differentiate between exports
@@ -67,7 +72,8 @@ extends_documentation_fragment:
 EXAMPLES = '''
 - name: "Export content view version (full)"
   content_export_version:
-    id: 279
+    content_view: RHEL8
+    content_view_version: '1.0'
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -76,7 +82,8 @@ EXAMPLES = '''
 
 - name: "Export content view version (full) in chunks of 10 GB"
   content_export_version:
-    id: 279
+    content_view: RHEL8
+    content_view_version: '1.0'
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -86,7 +93,8 @@ EXAMPLES = '''
 
 - name: "Export content view version (full) and fail if any repos are unexportable"
   content_export_version:
-    id: 279
+    content_view: RHEL8
+    content_view_version: '1.0'
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -96,7 +104,8 @@ EXAMPLES = '''
 
 - name: "Export content view version (incremental) since the most recent export"
   content_export_version:
-      id: 279
+      content_view: RHEL8
+      content_view_version: '1.0'
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -106,7 +115,8 @@ EXAMPLES = '''
 
 - name: "Export content view version (incremental) since a specific export"
   content_export_version:
-      id: 279
+      content_view: RHEL8
+      content_view_version: '1.0'
       username: "admin"
       password: "changeme"
       server_url: "https://foreman.example.com"
@@ -126,7 +136,8 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            id=dict(required=True, type='int'),
+            content_view_version=dict(type='entity', scope=['content_view'], required=False),
+            content_view=dict(type='entity', scope=['organization'], required=False),
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
             fail_on_missing_content=dict(required=False, type='bool'),
