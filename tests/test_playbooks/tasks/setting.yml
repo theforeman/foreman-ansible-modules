@@ -16,8 +16,8 @@
       - result.changed == expected_change
   when: expected_change is defined
 - assert:
-    fail_msg: "Setting the setting failed! ('{{ result.foreman_setting.value }}' != '{{ setting_value_override | default(setting_value) }}')"
+    fail_msg: "Setting the setting failed! ('{{ result.entity.settings[0].value }}' != '{{ setting_value_override | default(setting_value) }}')"
     that:
-      - result.foreman_setting.value == setting_value_override | default(setting_value)
+      - result.entity.settings[0].value == setting_value_override | default(setting_value)
   when: (setting_value is defined) or (setting_value_override is defined)
 ...
