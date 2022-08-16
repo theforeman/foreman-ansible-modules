@@ -136,7 +136,7 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            content_view_version=dict(type='entity', scope=['content_view'], required=False),
+            content_view_version=dict(type='entity', scope=['content_view'], search_by='version', required=False),
             content_view=dict(type='entity', scope=['organization'], required=False),
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
