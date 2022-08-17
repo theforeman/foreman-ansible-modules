@@ -45,11 +45,9 @@ theforeman.foreman.templates_import module -- Sync Templates from a repository
 .. note::
     This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.5.0-dev).
 
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
-
     To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.templates_import_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`theforeman.foreman.templates_import`.
 
@@ -69,14 +67,16 @@ Synopsis
 
 .. Description
 
-- Sync provisioning templates, report_templates, partition tables and job templates from external git repository or file system.
-- Based on foreman_templates plugin \ https://github.com/theforeman/foreman_templates\ .
+- Sync provisioning templates, report\_templates, partition tables and job templates from external git repository or file system.
+- Based on foreman\_templates plugin \ https://github.com/theforeman/foreman_templates\ .
 
 
 .. Aliases
 
 
 .. Requirements
+
+.. _ansible_collections.theforeman.foreman.templates_import_module_requirements:
 
 Requirements
 ------------
@@ -285,8 +285,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -360,8 +360,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -401,8 +401,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -654,8 +654,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -695,8 +695,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -712,7 +712,7 @@ Notes
 -----
 
 .. note::
-   - Due to a bug in the foreman_templates plugin, this module won't report \ :literal:`changed=true`\  when the only change is the Organization/Location association of the imported templates. Please see \ https://projects.theforeman.org/issues/29534\  for details.
+   - Due to a bug in the foreman\_templates plugin, this module won't report \ :literal:`changed=true`\  when the only change is the Organization/Location association of the imported templates. Please see \ https://projects.theforeman.org/issues/29534\  for details.
    - Default values for all module options can be set using \ :ref:`theforeman.foreman.setting <ansible_collections.theforeman.foreman.setting_module>`\  for TemplateSync category or on the settings page in WebUI.
 
 .. Seealso

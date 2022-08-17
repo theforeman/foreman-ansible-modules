@@ -45,11 +45,9 @@ theforeman.foreman.installation_medium module -- Manage Installation Media
 .. note::
     This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.5.0-dev).
 
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
-
     To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.installation_medium_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`theforeman.foreman.installation_medium`.
 
@@ -76,6 +74,8 @@ Synopsis
 
 
 .. Requirements
+
+.. _ansible_collections.theforeman.foreman.installation_medium_module_requirements:
 
 Requirements
 ------------
@@ -167,7 +167,7 @@ Parameters
 
       The full installation medium name.
 
-      The special name "*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
+      The special name "\*" (only possible as parameter) is used to perform bulk actions (modify, delete) on all existing partition tables.
 
 
       .. raw:: html
@@ -203,7 +203,7 @@ Parameters
 
       List of operating systems the entity should be assigned to.
 
-      Operating systems are looked up by their title which is composed as "<name> <major>.<minor>".
+      Operating systems are looked up by their title which is composed as "\<name\> \<major\>.\<minor\>".
 
       You can omit the version part as long as you only have one operating system by that name.
 
@@ -275,7 +275,7 @@ Parameters
 
       The OS family the template shall be assigned with.
 
-      If no os_family is set but a operatingsystem, the value will be derived from it.
+      If no os\_family is set but a operatingsystem, the value will be derived from it.
 
 
       .. rst-class:: ansible-option-line
@@ -561,8 +561,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 

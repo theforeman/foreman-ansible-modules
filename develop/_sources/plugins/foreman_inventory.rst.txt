@@ -45,11 +45,9 @@ theforeman.foreman.foreman inventory -- Foreman inventory source
 .. note::
     This inventory plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.5.0-dev).
 
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
-
     To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this inventory plugin,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.foreman_inventory_requirements>` for details.
 
     To use it in a playbook, specify: :code:`theforeman.foreman.foreman`.
 
@@ -69,7 +67,7 @@ Synopsis
 .. Description
 
 - Get inventory hosts from Foreman.
-- Uses a YAML configuration file that ends with ``foreman.(yml|yaml)``.
+- Uses a YAML configuration file that ends with \`\`foreman.(yml|yaml)\`\`.
 
 
 .. Aliases
@@ -77,11 +75,13 @@ Synopsis
 
 .. Requirements
 
+.. _ansible_collections.theforeman.foreman.foreman_inventory_requirements:
+
 Requirements
 ------------
 The below requirements are needed on the local controller node that executes this inventory.
 
-- requests >= 1.1
+- requests \>= 1.1
 
 
 
@@ -182,8 +182,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. rst-class:: ansible-option-line
 
@@ -194,7 +194,7 @@ Parameters
         .. code-block::
 
           [inventory]
-          cache = no
+          cache = false
 
 
       - Environment variable: ANSIBLE\_INVENTORY\_CACHE
@@ -691,7 +691,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      A list of templates in order of precedence to compose inventory_hostname.
+      A list of templates in order of precedence to compose inventory\_hostname.
 
       If the template results in an empty string or None value it is ignored.
 
@@ -777,15 +777,15 @@ Parameters
 
       Toggle, if true the plugin will build legacy hostvars present in the foreman script
 
-      Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
+      Places hostvars in a dictionary with keys \`foreman\`, \`foreman\_facts\`, and \`foreman\_params\`
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -821,7 +821,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Timeout before falling back to old host API when using report_data endpoint while polling.
+      Timeout before falling back to old host API when using report\_data endpoint while polling.
 
 
       .. rst-class:: ansible-option-line
@@ -949,7 +949,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The polling interval between 2 calls to the report_data endpoint while polling.
+      The polling interval between 2 calls to the report\_data endpoint while polling.
 
 
       .. rst-class:: ansible-option-line
@@ -1040,8 +1040,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1136,8 +1136,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1226,8 +1226,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. rst-class:: ansible-option-line
 
@@ -1318,8 +1318,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1362,8 +1362,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1399,15 +1399,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Toggle, if true the inventory will fetch host_groups and create groupings for the same.
+      Toggle, if true the inventory will fetch host\_groups and create groupings for the same.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1450,8 +1450,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1494,8 +1494,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1538,8 +1538,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1582,8 +1582,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1626,8 +1626,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1663,15 +1663,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Toggle, if true the inventory will retrieve 'all_parameters' information as host vars
+      Toggle, if true the inventory will retrieve 'all\_parameters' information as host vars
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1714,8 +1714,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1758,8 +1758,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1802,8 +1802,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
