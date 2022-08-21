@@ -143,6 +143,10 @@ options:
         description:
           - Type of the resource
         type: str
+      hidden_value:
+        description:
+          - The value contains sensitive information and should't be normally visible, useful e.g. for passwords
+        type: bool
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -326,6 +330,7 @@ template_input_foreman_spec = {
         'resource',
     ]),
     'resource_type': dict(),
+    'hidden_value': dict(type='bool'),
 }
 
 
