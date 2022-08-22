@@ -1,5 +1,5 @@
 ---
-- name: "find content view versions of {{ cv.name }}"
+- name: "Find content view versions of {{ cv.name }}"
   theforeman.foreman.resource_info:
     server_url: "{{ foreman_server_url | default(omit) }}"
     username: "{{ foreman_username | default(omit) }}"
@@ -11,7 +11,7 @@
       content_view_id: "{{ cv.id }}"
   register: versions
 
-- name: "delete unused content view versions of {{ cv.name }}"
+- name: "Delete unused content view versions of {{ cv.name }}"
   include_tasks: delete_cv_versions.yml
   vars:
     cv_name: "{{ cv.name }}"

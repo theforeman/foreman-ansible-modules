@@ -1,11 +1,11 @@
 ---
-- name: "verify foreman_content_view_version_cleanup_keep is set"
+- name: "Verify foreman_content_view_version_cleanup_keep is set"
   assert:
     that:
       - foreman_content_view_version_cleanup_keep|int >= 0
     fail_msg: "foreman_content_view_version_cleanup_keep needs to be set to >= 0"
 
-- name: "find all content views"
+- name: "Find all content views"
   theforeman.foreman.resource_info:
     server_url: "{{ foreman_server_url | default(omit) }}"
     username: "{{ foreman_username | default(omit) }}"
@@ -16,7 +16,7 @@
     search: "{{ foreman_content_view_version_cleanup_search | default(omit) }}"
   register: all_cvs
 
-- name: "delete unused composite content view versions"
+- name: "Delete unused composite content view versions"
   include_tasks: delete_cv_versions.yml
   vars:
     cv_name: "{{ ccv.name }}"
@@ -28,7 +28,7 @@
     loop_var: "ccv"
   when: (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:]
 
-- name: "find and delete unused content view versions"
+- name: "Find and delete unused content view versions"
   include_tasks: find_and_delete_unused_cv_versions.yml
   loop: "{{ all_cvs.resources | rejectattr('composite') | list }}"
   loop_control:
