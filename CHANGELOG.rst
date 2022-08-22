@@ -6,6 +6,33 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.5.0
+======
+
+Minor Changes
+-------------
+
+- add execution environment metadata
+- installation_medium, operatingsystem, partition_table - add ``Fcos``, ``Rhcos``, ``VRP`` OS families
+- job_template - add ``hidden_value`` to ``template_inputs`` parameters
+- job_template - allow ``value_type`` to be ``resource``
+- operatingsystems role - make ``provisioning_template`` parameter optional
+- repositories role - add ``ansible_collection_requirements``
+- repositories role - add ``arch`` and ``os_versions`` parameters
+- repositories role - support ``mirroring_policy``
+- repository, smart_proxy - document deprecation/removal status of ``download_policy=background``
+- setting - the ``foreman_setting`` return entry is deprecated and kept for backwards compatibility, please use ``entity`` as with any other module
+- smart_proxy - add ``inherit`` to possible values of ``download_policy`` (https://github.com/theforeman/foreman-ansible-modules/issues/1438)
+- smart_proxy - add ``streamed`` download policy
+- snapshot - add include_ram option when creating VMWare snapshot
+
+New Modules
+-----------
+
+- theforeman.foreman.content_export_info - List pulp3 content exports
+- theforeman.foreman.content_export_library - Manage content exports
+- theforeman.foreman.discovery_rule - Manage Host Discovery Rules
+
 v3.4.0
 ======
 
