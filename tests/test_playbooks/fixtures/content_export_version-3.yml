@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.4.0-develop","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.5.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.4.0-develop
+      - 3.5.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -67,14 +67,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Export+Org%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 7,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Export Org\\\"\",\n  \"sort\": {\n    \"by\":
-        null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Export_Org\",\"created_at\":\"2022-07-12
-        15:05:28 UTC\",\"updated_at\":\"2022-07-13 19:20:00 UTC\",\"id\":10,\"name\":\"Export
-        Org\",\"title\":\"Export Org\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 8,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-08-16
+        15:28:02 UTC\",\"updated_at\":\"2022-08-16 15:28:04 UTC\",\"id\":12,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -93,7 +93,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.4.0-develop
+      - 3.5.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -111,7 +111,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '361'
+      - '389'
     status:
       code: 200
       message: OK
@@ -127,17 +127,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_exports?organization_id=10&id=159&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_exports?organization_id=12&id=165&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"id","order":"asc"},"results":[{"destination_server":"airgapped.example.com","path":"/var/lib/pulp/exports/Export_Org/Test
-        Content View/1.0/airgapped.example.com/2022-08-15T20-27-09-00-00","id":159,"metadata":{"organization":"Export
-        Org","base_path":"/var/lib/pulp/exports","repositories":{"TestRepo-1001493":{"name":"TestRepo","label":"TestRepo","description":null,"arch":"noarch","content_type":"yum","unprotected":true,"checksum_type":null,"os_versions":[],"major":null,"minor":null,"download_policy":"immediate","mirroring_policy":"mirror_content_only","product":{"label":"Export_Test_Product"},"gpg_key":{},"content":{"id":"1657638425860","label":"Export_Org_Export_Test_Product_TestRepo"},"redhat":false}},"content_view":{"name":"Test
-        Content View","label":"Test_Content_View","description":null,"generated_for":"none"},"content_view_version":{"major":1,"minor":0,"description":"version-1.0"},"incremental":true,"format":"importable","from_content_view_version":{"major":1,"minor":0},"products":{"Export_Test_Product":{"name":"Export
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"id","order":"asc"},"results":[{"destination_server":"airgapped.example.com","path":"/var/lib/pulp/exports/Test_Organization/Test
+        Content View/1.0/airgapped.example.com/2022-08-25T20-09-05-00-00","id":165,"metadata":{"organization":"Test
+        Organization","base_path":"/var/lib/pulp/exports","repositories":{"TestRepo-3728823":{"name":"TestRepo","label":"TestRepo","description":null,"arch":"noarch","content_type":"yum","unprotected":true,"checksum_type":null,"os_versions":[],"major":null,"minor":null,"download_policy":"immediate","mirroring_policy":"mirror_content_only","product":{"label":"Export_Test_Product"},"gpg_key":{},"content":{"id":"1660663688347","label":"Test_Organization_Export_Test_Product_TestRepo"},"redhat":false}},"content_view":{"name":"Test
+        Content View","label":"Test_Content_View","description":null,"generated_for":"none"},"content_view_version":{"major":1,"minor":0,"description":null},"incremental":true,"format":"importable","from_content_view_version":{"major":1,"minor":0},"products":{"Export_Test_Product":{"name":"Export
         Test Product","label":"Export_Test_Product","description":"A happy little
-        test product","cp_id":"317036520577","gpg_key":{},"redhat":false}},"gpg_keys":{},"toc":"export-600030e8-bb36-4639-b0a3-d7679eaa95c8-20220815_2027-toc.json"},"type":"incremental","created_at":"2022-08-15
-        20:27:10 UTC","updated_at":"2022-08-15 20:27:10 UTC","content_view_version":"Test
-        Content View 1.0","content_view_version_id":71}]}
+        test product","cp_id":"881717904169","gpg_key":{},"redhat":false}},"gpg_keys":{},"toc":"export-b3bd1eca-6213-4ada-9535-cdab10ebe5c6-20220825_2009-toc.json"},"type":"incremental","created_at":"2022-08-25
+        20:09:06 UTC","updated_at":"2022-08-25 20:09:06 UTC","content_view_version":"Test
+        Content View 1.0","content_view_version_id":161}]}
 
         '
     headers:
@@ -156,9 +156,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 10; Export Org
+      - 12; Test Organization
       Foreman_version:
-      - 3.4.0-develop
+      - 3.5.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -176,7 +176,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1561'
+      - '1574'
     status:
       code: 200
       message: OK

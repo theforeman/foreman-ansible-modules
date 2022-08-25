@@ -1223,7 +1223,7 @@ class ForemanAnsibleModule(AnsibleModule):
         while task['state'] not in ['paused', 'stopped']:
             duration -= self.task_poll
             if duration <= 0:
-                self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
+                self.fail_json(msg="Timeout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
             resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})

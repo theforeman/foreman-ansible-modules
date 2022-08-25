@@ -136,7 +136,7 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            content_view_version=dict(type='entity', scope=['content_view'], search_by='version', required=False),
+            content_view_version=dict(type='entity', scope=['content_view'], search_by='version', flat_name='id', required=False),
             content_view=dict(type='entity', scope=['organization'], required=False),
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
@@ -147,6 +147,8 @@ def main():
             incremental=dict(required=False, type='bool'),
         ),
     )
+
+    module.task_timeout = 60 * 30
 
     with module.api_connection():
         module.auto_lookup_entities()

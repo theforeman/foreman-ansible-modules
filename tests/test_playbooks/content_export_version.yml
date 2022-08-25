@@ -49,7 +49,7 @@
       vars:
         destination_server: "airgapped.example.com"
         content_view: "Test Content View"
-        content_view_version: "{{ cv_info['content_view_versions'][0]['version'] }}"
+        content_view_version: "1.0"
         incremental: false
       register: result
 
@@ -58,10 +58,12 @@
         expected_change: true
         incremental: true
         content_view: "Test Content View"
-        content_view_version: "{{ cv_info['content_view_versions'][0]['version'] }}"
+        content_view_version: "1.0"
         destination_server: "airgapped.example.com"
     - include_tasks: tasks/content_export_show.yml
       vars:
         id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
         destination_server: "airgapped.example.com"
+      when:
+        - not ansible_check_mode
 ...
