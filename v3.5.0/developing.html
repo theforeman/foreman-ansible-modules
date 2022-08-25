@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to write modules &mdash; Foreman Ansible Modules  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/ansible-basic-sphinx-ext.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="foreman_helper module" href="api.html" />
+    <link rel="prev" title="Migrating from cvmanager to Foreman Ansible Modules" href="cvmanager.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Foreman Ansible Modules
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to write modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#specification-of-the-foreman-spec">Specification of the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entity-lookup">Entity lookup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#required-plugins">required_plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releasing.html">Releasing the collection</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Foreman Ansible Modules</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>How to write modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/developing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-write-modules">
+<h1>How to write modules<a class="headerlink" href="#how-to-write-modules" title="Permalink to this heading"></a></h1>
+<p>First of all, please have a look at the <a class="reference external" href="https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html">Ansible module development</a> guide and get familiar with the general Ansible module layout.</p>
+<p>When looking at actual modules in this repository (<a class="reference external" href="../plugins/modules/domain.py"><code class="docutils literal notranslate"><span class="pre">domain</span></code></a> is a nice short example), you will notice a few differences to a “regular” Ansible module:</p>
+<ul class="simple">
+<li><p>Instead of <code class="docutils literal notranslate"><span class="pre">AnsibleModule</span></code>, we use <code class="docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code> (and a few others, see <a class="reference external" href="../plugins/module_utils/foreman_helper.py"><code class="docutils literal notranslate"><span class="pre">plugins/module_utils/foreman_helper.py</span></code></a>) which provides an abstraction layer for talking with the Foreman API</p></li>
+<li><p>Instead of Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>, we provide an enhanced version called <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code>. It handles the translation from Ansible module arguments to Foreman API parameters, as nobody wants to write <code class="docutils literal notranslate"><span class="pre">organization_ids</span></code> in their playbook when they can write <code class="docutils literal notranslate"><span class="pre">organizations</span></code></p></li>
+<li><p>In addition to Ansible’s validation options, we provide <code class="docutils literal notranslate"><span class="pre">required_plugins</span></code> which will check for installed Foreman plugins should the module require any.</p></li>
+</ul>
+<p>The rest of the module is usually very minimalistic:</p>
+<ul>
+<li><p>Create a Sub class of <code class="docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code> for your module called <code class="docutils literal notranslate"><span class="pre">ForemanMyEntityModule</span></code> to work with <code class="docutils literal notranslate"><span class="pre">MyEntity</span></code> foreman resource and use this one for your module definition.
+Eg: If the foreman entity is named <code class="docutils literal notranslate"><span class="pre">Architecture</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">ForemanArchitectureModule</span><span class="p">(</span><span class="n">ForemanEntityAnsibleModule</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Connect to the API and run the module
+Eg: Like previous example, if the foreman entity is named <code class="docutils literal notranslate"><span class="pre">Architecture</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">ForemanArchitectureModule</span><span class="p">(</span>
+        <span class="n">argument_spec</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="n">foreman_spec</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">module</span><span class="o">.</span><span class="n">api_connection</span><span class="p">():</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+    <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>You can see a complete example of simple module in <a class="reference external" href="../plugins/modules/architecture.py"><code class="docutils literal notranslate"><span class="pre">architecture</span></code></a>
+In some cases, you will have to handle some custom workflows/validations, you can see some examples in <a class="reference external" href="../plugins/modules/bookmark.py"><code class="docutils literal notranslate"><span class="pre">bookmark</span></code></a>, <a class="reference external" href="../plugins/modules/compute_attribute.py"><code class="docutils literal notranslate"><span class="pre">compute_attribute</span></code></a>, <a class="reference external" href="../plugins/modules/hostgroup.py"><code class="docutils literal notranslate"><span class="pre">hostgroup</span></code></a>, <a class="reference external" href="../plugins/modules/provisioning_template.py"><code class="docutils literal notranslate"><span class="pre">provisioning_template</span></code></a>…</p>
+<section id="specification-of-the-foreman-spec">
+<h2>Specification of the <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code><a class="headerlink" href="#specification-of-the-foreman-spec" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> can be seen as an extended version of Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>. It understands more parameters (e.g. <code class="docutils literal notranslate"><span class="pre">flat_name</span></code>) and supports more <code class="docutils literal notranslate"><span class="pre">type</span></code>s than the original version. An <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> will be generated from an <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code>. Any parameters not directly known or consumed by <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> will be passed directly to the <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>.</p>
+<p>In addition to Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>, <code class="docutils literal notranslate"><span class="pre">foreman_spec</span></code> understands the following types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type='entity'</span></code> The referenced value is another Foreman entity.
+This is usually combined with <code class="docutils literal notranslate"><span class="pre">flat_name=&lt;entity&gt;_id</span></code>. If no flat_name is provided, fallback to <code class="docutils literal notranslate"><span class="pre">&lt;entity&gt;_id</span></code> where entity is the foreman_spec key. eg <code class="docutils literal notranslate"><span class="pre">default_organization=dict(type='entity')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">flat_name=default_organization_id</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type='entity_list'</span></code> The referenced value is a list of Foreman entities.
+This is usually combined with <code class="docutils literal notranslate"><span class="pre">flat_name=&lt;entity&gt;_ids</span></code>. If no flat_name is provided, fallback to <code class="docutils literal notranslate"><span class="pre">singularize(&lt;entity&gt;)_ids</span></code> where entity is the foreman_spec key. eg <code class="docutils literal notranslate"><span class="pre">organizations=dict(type='entity_list')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">flat_name=organization_ids</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type='nested_list'</span></code> The referenced value is a list of Foreman entities that are not included in the main API call.
+The module must handle the entities separately.
+See domain parameters in <a class="reference external" href="../plugins/modules/domain.py"><code class="docutils literal notranslate"><span class="pre">domain</span></code></a> for an example.
+The sub entities must be described by <code class="docutils literal notranslate"><span class="pre">foreman_spec=&lt;sub_entity&gt;_spec</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invisible=True</span></code> The parameter is available to the API call, but it will be excluded from Ansible’s <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">search_by='login'</span></code>: Used with <code class="docutils literal notranslate"><span class="pre">type='entity'</span></code> or <code class="docutils literal notranslate"><span class="pre">type='entity_list'</span></code>. Field used to search the sub entity. Defaults to value provided by <code class="docutils literal notranslate"><span class="pre">ENTITY_KEYS</span></code> or ‘name’ if no value found.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">search_operator='~'</span></code>: Used with <code class="docutils literal notranslate"><span class="pre">type='entity'</span></code> or <code class="docutils literal notranslate"><span class="pre">type='entity_list'</span></code>. Operator used to search the sub entity. Defaults to ‘=’. For fuzzy search use ‘~’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resource_type='organizations'</span></code>: Used with <code class="docutils literal notranslate"><span class="pre">type='entity'</span></code> or <code class="docutils literal notranslate"><span class="pre">type='entity_list'</span></code>. Resource type used to build API resource PATH. Defaults to pluralized entity key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolve=False</span></code>: Defaults to ‘True’. If set to false, the sub entity will not be resolved automatically.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ensure=False</span></code>: Defaults to ‘True’. If set to false, it will be removed before sending data to the foreman server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scope=['organization']</span></code>: Defaults to ‘[]’. A list of entities that are used to build the lookup scope for this one.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">flat_name</span></code> provides a way to translate the name of a module argument as known to Ansible to the name understood by the Foreman API.</p>
+<p>You can add new or override generated Ansible module arguments, by specifying them in the <code class="docutils literal notranslate"><span class="pre">argument_spec</span></code> as usual.</p>
+</section>
+<section id="entity-lookup">
+<h2>Entity lookup<a class="headerlink" href="#entity-lookup" title="Permalink to this heading"></a></h2>
+<p>Sometimes you need to access entities before <code class="docutils literal notranslate"><span class="pre">module.run()</span></code> can take over.
+You can trigger the automatic lookup of entities via <code class="docutils literal notranslate"><span class="pre">&lt;entity_variable&gt;</span> <span class="pre">=</span> <span class="pre">module.lookup_entity('&lt;entity_name&gt;')</span></code>.
+If you only need the entity to be used as a scope parameter, it is enough to call <code class="docutils literal notranslate"><span class="pre">scope</span> <span class="pre">=</span> <span class="pre">module.scope_for('organization')</span></code>.</p>
+<p>In case, the automatic lookup process is unable perform the proper find for a specific entity type, it must be looked up manually and then set via <code class="docutils literal notranslate"><span class="pre">module.set_entity('&lt;entity_name&gt;',</span> <span class="pre">search_result)</span></code> to prevent the automatism from trying.</p>
+<p>In instances of <code class="docutils literal notranslate"><span class="pre">ForemanEntityAnsibleModule</span></code> the main entity is references as ‘entity’ in the above context.</p>
+</section>
+<section id="required-plugins">
+<h2>required_plugins<a class="headerlink" href="#required-plugins" title="Permalink to this heading"></a></h2>
+<p>A module can pass an optional <code class="docutils literal notranslate"><span class="pre">required_plugins</span></code> list to <code class="docutils literal notranslate"><span class="pre">ForemanAnsibleModule</span></code>, which will indicate whether the module needs any Foreman plugins to be installed to work.</p>
+<p>You can either specify that the whole module needs a specific plugin, like Katello modules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">required_plugins</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;katello&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Or specific parameters, like the <code class="docutils literal notranslate"><span class="pre">discovery_proxy</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">subnet</span></code> which needs the Discovery plugin:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">required_plugins</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;discovery&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;discovery_proxy&#39;</span><span class="p">]),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cvmanager.html" class="btn btn-neutral float-left" title="Migrating from cvmanager to Foreman Ansible Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="foreman_helper module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, The Foreman Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

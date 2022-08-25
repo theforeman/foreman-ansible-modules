@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>theforeman.foreman.user module – Manage Users &mdash; Foreman Ansible Modules  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="theforeman.foreman.usergroup module – Manage User Groups" href="usergroup_module.html" />
+    <link rel="prev" title="theforeman.foreman.templates_import module – Sync Templates from a repository" href="templates_import_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Foreman Ansible Modules
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Theforeman.Foreman</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#description">Description</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman callback – Sends events to Foreman</a></li>
+<li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman inventory – Foreman inventory source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key module – Manage Activation Keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture_module.html">theforeman.foreman.architecture module – Manage Architectures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_source_ldap_module.html">theforeman.foreman.auth_source_ldap module – Manage LDAP Authentication Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bookmark_module.html">theforeman.foreman.bookmark module – Manage Bookmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_attribute_module.html">theforeman.foreman.compute_attribute module – Manage Compute Attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_profile_module.html">theforeman.foreman.compute_profile module – Manage Compute Profiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compute_resource_module.html">theforeman.foreman.compute_resource module – Manage Compute Resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="config_group_module.html">theforeman.foreman.config_group module – Manage (Puppet) Config Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_credential_module.html">theforeman.foreman.content_credential module – Manage Content Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_export_info_module.html">theforeman.foreman.content_export_info module – List pulp3 content exports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_export_library_module.html">theforeman.foreman.content_export_library module – Manage content exports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_upload_module.html">theforeman.foreman.content_upload module – Upload content to a repository</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_module.html">theforeman.foreman.content_view module – Manage Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_filter_module.html">theforeman.foreman.content_view_filter module – Manage Content View Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_info_module.html">theforeman.foreman.content_view_info module – Fetch information about Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_version_module.html">theforeman.foreman.content_view_version module – Manage Content View Versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="content_view_version_info_module.html">theforeman.foreman.content_view_version_info module – Fetch information about Content Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="discovery_rule_module.html">theforeman.foreman.discovery_rule module – Manage Host Discovery Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="domain_module.html">theforeman.foreman.domain module – Manage Domains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="domain_info_module.html">theforeman.foreman.domain_info module – Fetch information about Domains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="external_usergroup_module.html">theforeman.foreman.external_usergroup module – Manage External User Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="global_parameter_module.html">theforeman.foreman.global_parameter module – Manage Global Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hardware_model_module.html">theforeman.foreman.hardware_model module – Manage Hardware Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_module.html">theforeman.foreman.host module – Manage Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_collection_module.html">theforeman.foreman.host_collection module – Manage Host Collections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_errata_info_module.html">theforeman.foreman.host_errata_info module – Fetch information about Host Errata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_info_module.html">theforeman.foreman.host_info module – Fetch information about Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="host_power_module.html">theforeman.foreman.host_power module – Manage Power State of Hosts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hostgroup_module.html">theforeman.foreman.hostgroup module – Manage Hostgroups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http_proxy_module.html">theforeman.foreman.http_proxy module – Manage HTTP Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_module.html">theforeman.foreman.image module – Manage Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation_medium_module.html">theforeman.foreman.installation_medium module – Manage Installation Media</a></li>
+<li class="toctree-l4"><a class="reference internal" href="job_invocation_module.html">theforeman.foreman.job_invocation module – Invoke Remote Execution Jobs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="job_template_module.html">theforeman.foreman.job_template module – Manage Job Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lifecycle_environment_module.html">theforeman.foreman.lifecycle_environment module – Manage Lifecycle Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="location_module.html">theforeman.foreman.location module – Manage Locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="operatingsystem_module.html">theforeman.foreman.operatingsystem module – Manage Operating Systems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="organization_module.html">theforeman.foreman.organization module – Manage Organizations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="organization_info_module.html">theforeman.foreman.organization_info module – Get information about organization(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="os_default_template_module.html">theforeman.foreman.os_default_template module – Manage Default Template Associations To Operating Systems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="partition_table_module.html">theforeman.foreman.partition_table module – Manage Partition Table Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="product_module.html">theforeman.foreman.product module – Manage Products</a></li>
+<li class="toctree-l4"><a class="reference internal" href="provisioning_template_module.html">theforeman.foreman.provisioning_template module – Manage Provisioning Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="puppet_environment_module.html">theforeman.foreman.puppet_environment module – Manage Puppet Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="puppetclasses_import_module.html">theforeman.foreman.puppetclasses_import module – Import Puppet Classes from a Proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="realm_module.html">theforeman.foreman.realm module – Manage Realms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="redhat_manifest_module.html">theforeman.foreman.redhat_manifest module – Interact with a Red Hat Satellite Subscription Manifest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_module.html">theforeman.foreman.repository module – Manage Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_info_module.html">theforeman.foreman.repository_info module – Fetch information about Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_set_module.html">theforeman.foreman.repository_set module – Enable/disable Red Hat Repositories available through subscriptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_set_info_module.html">theforeman.foreman.repository_set_info module – Fetch information about Red Hat Repositories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="repository_sync_module.html">theforeman.foreman.repository_sync module – Sync a Repository or Product</a></li>
+<li class="toctree-l4"><a class="reference internal" href="resource_info_module.html">theforeman.foreman.resource_info module – Gather information about resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="role_module.html">theforeman.foreman.role module – Manage Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scap_content_module.html">theforeman.foreman.scap_content module – Manage SCAP content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scap_tailoring_file_module.html">theforeman.foreman.scap_tailoring_file module – Manage SCAP Tailoring Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scc_account_module.html">theforeman.foreman.scc_account module – Manage SUSE Customer Center Accounts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scc_product_module.html">theforeman.foreman.scc_product module – Subscribe SUSE Customer Center Account Products</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setting_module.html">theforeman.foreman.setting module – Manage Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setting_info_module.html">theforeman.foreman.setting_info module – Fetch information about Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="smart_class_parameter_module.html">theforeman.foreman.smart_class_parameter module – Manage Smart Class Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="smart_proxy_module.html">theforeman.foreman.smart_proxy module – Manage Smart Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="snapshot_module.html">theforeman.foreman.snapshot module – Manage Snapshots</a></li>
+<li class="toctree-l4"><a class="reference internal" href="status_info_module.html">theforeman.foreman.status_info module – Get status info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subnet_module.html">theforeman.foreman.subnet module – Manage Subnets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subnet_info_module.html">theforeman.foreman.subnet_info module – Fetch information about Subnets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subscription_info_module.html">theforeman.foreman.subscription_info module – Fetch information about Subscriptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subscription_manifest_module.html">theforeman.foreman.subscription_manifest module – Manage Subscription Manifests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sync_plan_module.html">theforeman.foreman.sync_plan module – Manage Sync Plans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="templates_import_module.html">theforeman.foreman.templates_import module – Sync Templates from a repository</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.user module – Manage Users</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usergroup_module.html">theforeman.foreman.usergroup module – Manage User Groups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releasing.html">Releasing the collection</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Foreman Ansible Modules</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Theforeman.Foreman</a> &raquo;</li>
+      <li>theforeman.foreman.user module – Manage Users</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/plugins/user_module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="ansible-collections-theforeman-foreman-user-module"></span><section id="theforeman-foreman-user-module-manage-users">
+<h1>theforeman.foreman.user module – Manage Users<a class="headerlink" href="#theforeman-foreman-user-module-manage-users" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.5.0).</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.
+You need further requirements to be able to use this module,
+see <a class="reference internal" href="#ansible-collections-theforeman-foreman-user-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.user</span></code>.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0: </span>of theforeman.foreman</p>
+</div>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id4">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id5">Return Values</a></p></li>
+</ul>
+</div>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Create, update, and delete users</p></li>
+</ul>
+</section>
+<section id="requirements">
+<span id="ansible-collections-theforeman-foreman-user-module-requirements"></span><h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<p>The below requirements are needed on the host that executes this module.</p>
+<ul class="simple">
+<li><p>requests</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-admin"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-admin"><strong>admin</strong></p>
+<a class="ansibleOptionLink" href="#parameter-admin" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not the user is an administrator</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-auth_source"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-auth-source"><strong>auth_source</strong></p>
+<a class="ansibleOptionLink" href="#parameter-auth_source" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Authentication source where the user exists</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-default_location"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-default-location"><strong>default_location</strong></p>
+<a class="ansibleOptionLink" href="#parameter-default_location" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The location that the user uses by default</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-default_organization"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-default-organization"><strong>default_organization</strong></p>
+<a class="ansibleOptionLink" href="#parameter-default_organization" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The organizxation that the user uses by default</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-description"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-description"><strong>description</strong></p>
+<a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Description of the user</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-firstname"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-firstname"><strong>firstname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-firstname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>First name of the user</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-lastname"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-lastname"><strong>lastname</strong></p>
+<a class="ansibleOptionLink" href="#parameter-lastname" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Last name of the user</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-locale"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-locale"><strong>locale</strong></p>
+<a class="ansibleOptionLink" href="#parameter-locale" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The language locale for the user</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">ca</span></p></li>
+<li><p><span class="ansible-option-choices-entry">de</span></p></li>
+<li><p><span class="ansible-option-choices-entry">en</span></p></li>
+<li><p><span class="ansible-option-choices-entry">en_GB</span></p></li>
+<li><p><span class="ansible-option-choices-entry">es</span></p></li>
+<li><p><span class="ansible-option-choices-entry">fr</span></p></li>
+<li><p><span class="ansible-option-choices-entry">gl</span></p></li>
+<li><p><span class="ansible-option-choices-entry">it</span></p></li>
+<li><p><span class="ansible-option-choices-entry">ja</span></p></li>
+<li><p><span class="ansible-option-choices-entry">ko</span></p></li>
+<li><p><span class="ansible-option-choices-entry">nl_NL</span></p></li>
+<li><p><span class="ansible-option-choices-entry">pl</span></p></li>
+<li><p><span class="ansible-option-choices-entry">pt_BR</span></p></li>
+<li><p><span class="ansible-option-choices-entry">ru</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sv_SE</span></p></li>
+<li><p><span class="ansible-option-choices-entry">zh_CN</span></p></li>
+<li><p><span class="ansible-option-choices-entry">zh_TW</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-locations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-locations"><strong>locations</strong></p>
+<a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of locations the entity should be assigned to</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-login"></div>
+<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-name"><span id="ansible-collections-theforeman-foreman-user-module-parameter-login"></span><strong>login</strong></p>
+<a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: name</span></p>
+<p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of the user</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-mail"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-mail"><strong>mail</strong></p>
+<a class="ansibleOptionLink" href="#parameter-mail" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Email address of the user</p>
+<p>Required when creating a new user</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-organizations"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-organizations"><strong>organizations</strong></p>
+<a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of organizations the entity should be assigned to</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-roles"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-roles"><strong>roles</strong></p>
+<a class="ansibleOptionLink" href="#parameter-roles" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>List of roles assigned to the user</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-server-url"><strong>server_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>State of the entity</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-timezone"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-timezone"><strong>timezone</strong></p>
+<a class="ansibleOptionLink" href="#parameter-timezone" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Timezone for the user</p>
+<p>If blank it will use the browser timezone.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">International Date Line West</span></p></li>
+<li><p><span class="ansible-option-choices-entry">American Samoa</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Midway Island</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Hawaii</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Alaska</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Pacific Time (US &amp; Canada)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tijuana</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Arizona</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Chihuahua</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Mazatlan</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Mountain Time (US &amp; Canada)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Central America</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Central Time (US &amp; Canada)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Guadalajara</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Mexico City</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Monterrey</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Saskatchewan</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Bogota</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Eastern Time (US &amp; Canada)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Indiana (East)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Lima</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Quito</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Atlantic Time (Canada)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Caracas</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Georgetown</span></p></li>
+<li><p><span class="ansible-option-choices-entry">La Paz</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Puerto Rico</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Santiago</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Newfoundland</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Brasilia</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Buenos Aires</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Greenland</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Montevideo</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Mid-Atlantic</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Azores</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Cape Verde Is.</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Dublin</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Edinburgh</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Lisbon</span></p></li>
+<li><p><span class="ansible-option-choices-entry">London</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Monrovia</span></p></li>
+<li><p><span class="ansible-option-choices-entry">UTC</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Amsterdam</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Belgrade</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Berlin</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Bern</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Bratislava</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Brussels</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Budapest</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Casablanca</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Copenhagen</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Ljubljana</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Madrid</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Paris</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Prague</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Rome</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Sarajevo</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Skopje</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Stockholm</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Vienna</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Warsaw</span></p></li>
+<li><p><span class="ansible-option-choices-entry">West Central Africa</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Zagreb</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Zurich</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Athens</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Bucharest</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Cairo</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Harare</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Helsinki</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Jerusalem</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kaliningrad</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kyiv</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Pretoria</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Riga</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Sofia</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tallinn</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Vilnius</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Baghdad</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Istanbul</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kuwait</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Minsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Moscow</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Nairobi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Riyadh</span></p></li>
+<li><p><span class="ansible-option-choices-entry">St. Petersburg</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tehran</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Abu Dhabi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Baku</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Muscat</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Samara</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tbilisi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Volgograd</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Yerevan</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kabul</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Ekaterinburg</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Islamabad</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Karachi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tashkent</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Chennai</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kolkata</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Mumbai</span></p></li>
+<li><p><span class="ansible-option-choices-entry">New Delhi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Sri Jayawardenepura</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kathmandu</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Almaty</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Astana</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Dhaka</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Urumqi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Rangoon</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Bangkok</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Hanoi</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Jakarta</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Krasnoyarsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Novosibirsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Beijing</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Chongqing</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Hong Kong</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Irkutsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kuala Lumpur</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Perth</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Singapore</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Taipei</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Ulaanbaatar</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Osaka</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Sapporo</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Seoul</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tokyo</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Yakutsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Adelaide</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Darwin</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Brisbane</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Canberra</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Guam</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Hobart</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Melbourne</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Port Moresby</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Sydney</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Vladivostok</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Magadan</span></p></li>
+<li><p><span class="ansible-option-choices-entry">New Caledonia</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Solomon Is.</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Srednekolymsk</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Auckland</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Fiji</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Kamchatka</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Marshall Is.</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Wellington</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Chatham Is.</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Nuku’alofa</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Samoa</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Tokelau Is.</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-user_password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-user-password"><strong>user_password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-user_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password for the user.</p>
+<p>When this parameter is set, the module will not be idempotent.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
+<p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code> will be used instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-choices-entry">false</span></p></li>
+<li><p><span class="ansible-option-default-bold">true</span> <span class="ansible-option-default">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.user</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span><span class="w"></span>
+<span class="w">    </span><span class="nt">firstname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test</span><span class="w"></span>
+<span class="w">    </span><span class="nt">lastname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Userson</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mail</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test.userson@example.com</span><span class="w"></span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dr. Test Userson</span><span class="w"></span>
+<span class="w">    </span><span class="nt">admin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span><span class="w"></span>
+<span class="w">    </span><span class="nt">user_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3cret</span><span class="w"></span>
+<span class="w">    </span><span class="nt">default_location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test Location</span><span class="w"></span>
+<span class="w">    </span><span class="nt">default_organization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test Organization</span><span class="w"></span>
+<span class="w">    </span><span class="nt">auth_source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Internal</span><span class="w"></span>
+<span class="w">    </span><span class="nt">timezone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stockholm</span><span class="w"></span>
+<span class="w">    </span><span class="nt">locale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sv_SE</span><span class="w"></span>
+<span class="w">    </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Manager</span><span class="w"></span>
+<span class="w">    </span><span class="nt">locations</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test Location</span><span class="w"></span>
+<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Test Organization</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Update a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.user</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span><span class="w"></span>
+<span class="w">    </span><span class="nt">firstname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tester</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Change password</span><span class="w"></span>
+<span class="w">  </span><span class="nt">theforeman.foreman.user</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span><span class="w"></span>
+<span class="w">    </span><span class="nt">user_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">newp@ss</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="return-values">
+<h2><a class="toc-backref" href="#id5">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this heading"></a></h2>
+<p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible v6)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-return-entity"><strong>entity</strong></p>
+<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-entity/users"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-user-module-return-entity-users"><strong>users</strong></p>
+<a class="ansibleOptionLink" href="#return-entity/users" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of users.</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Christoffer Reijer (&#64;ephracis) Basalt AB</p></li>
+</ul>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Permalink to this heading"></a></h3>
+<p class="ansible-links">
+  <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+  <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+  <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+</p></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="templates_import_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.templates_import module – Sync Templates from a repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usergroup_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.usergroup module – Manage User Groups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, The Foreman Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
