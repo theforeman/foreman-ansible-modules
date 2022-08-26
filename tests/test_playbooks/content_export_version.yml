@@ -35,16 +35,6 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: Fetch content view version info
-      content_view_version_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        organization: "Test Organization"
-        validate_certs: "{{ foreman_validate_certs }}"
-        content_view: "Test Content View"
-        search: 'version = "1.0"'
-      register: cv_info
     - include_tasks: tasks/content_export_version.yml # Full export
       vars:
         destination_server: "airgapped.example.com"
