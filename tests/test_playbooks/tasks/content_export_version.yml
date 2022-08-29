@@ -1,0 +1,23 @@
+---
+- name: "{{ 'Export content view version (incremental)' if (incremental is defined and incremental) else 'Export content view version (full)' }}"
+  vars:
+    - organization_name: "Test Organization"
+  content_export_version:
+    content_view: "{{ content_view }}"
+    content_view_version: "{{ content_view_version }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    destination_server: "{{ destination_server | default(omit) }}"
+    incremental: "{{ incremental | default(false) }}"
+    from_history_id: "{{ from_history_id | default(omit) }}"
+  register: result
+
+- assert:
+    fail_msg: "Content view version export failed!"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
