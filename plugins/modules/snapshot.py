@@ -47,6 +47,11 @@ options:
       - Name of related Host
     required: true
     type: str
+  include_ram:
+    description:
+      - Option to add RAM (only available for VMWare compute-resource)
+    required: false
+    type: bool
   state:
     description:
       - State of Snapshot
@@ -125,6 +130,7 @@ def main():
             host=dict(type='entity', required=True, ensure=False),
             name=dict(required=True),
             description=dict(),
+            include_ram=dict(type='bool'),
         ),
         required_plugins=[('snapshot_management', ['*'])],
         entity_opts={'scope': ['host']},

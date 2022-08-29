@@ -48,14 +48,14 @@ foreman_products:
     all_repositories: True
     labels:
       - rhel-server-rhscl-7-rpms
-  - name: CentOS 8
+  - name: CentOS Stream 8
     repositories:
       - name: BaseOS x86_64
         content_type: yum
-        url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
+        url: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
       - name: AppStream x86_64
         content_type: yum
-        url: http://mirror.centos.org/centos/8/AppStream/x86_64/os/
+        url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
   - name: Debian 10
     repositories:
       - name: Debian 10 main
