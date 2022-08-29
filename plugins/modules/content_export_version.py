@@ -32,12 +32,12 @@ options:
   content_view_version:
     description:
       - Content view version, e.g. "7.0"
-    required: false
+    required: true
     type: str
   content_view:
     description:
       - Content view name.
-    required: false
+    required: true
     type: str
   destination_server:
     description:
@@ -136,8 +136,8 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            content_view_version=dict(type='entity', scope=['content_view'], search_by='version', flat_name='id', required=False),
-            content_view=dict(type='entity', scope=['organization'], required=False),
+            content_view_version=dict(type='entity', scope=['content_view'], search_by='version', flat_name='id', required=True),
+            content_view=dict(type='entity', scope=['organization'], required=True),
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
             fail_on_missing_content=dict(required=False, type='bool'),
