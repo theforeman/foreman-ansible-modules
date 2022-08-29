@@ -38,7 +38,8 @@
       register: result
     - include_tasks: tasks/content_export_repository.yml # Full export
       vars:
-        id: "{{ result.entity.repositories[0]['id'] }}"
+        product: "Export Test Product"
+        repository: "TestRepo"
         expected_change: true
         incremental: false
         organization_name: "Export Org"
@@ -52,7 +53,8 @@
       register: result
     - include_tasks: tasks/content_export_repository.yml # Incremental export
       vars:
-        id: "{{ result.entity.repositories[0]['id'] }}"
+        product: "Export Test Product"
+        repository: "TestRepo"
         expected_change: true
         incremental: true
         organization_name: "Export Org"

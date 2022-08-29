@@ -29,11 +29,16 @@ description:
 author:
     - "Jeremy Lenz (@jeremylenz)"
 options:
-  id:
+  repository:
     description:
-      - Repository identifier.
+      - Name of the repository to export.
     required: true
-    type: int
+    type: str
+  product:
+    description:
+      - Name of the product that the repository belongs to.
+    required: true
+    type: str
   chunk_size_gb:
     description:
       - Split the exported content into archives no greater than the specified size in gigabytes.
@@ -102,7 +107,8 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            id=dict(required=True, type='int'),
+            repository=dict(type='entity', flat_name='id', scope=['product']),
+            product=dict(type='entity', scope=['organization']),
             chunk_size_gb=dict(required=False, type='int'),
             from_history_id=dict(required=False, type='str'),
         ),
