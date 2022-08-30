@@ -36,7 +36,7 @@ Convert2RHEL
         foreman_manifest_path: "~/manifest.zip"
         foreman_content_rhel_enable_rhel7: true
         foreman_content_rhel_enable_rhel8: true
-        foreman_content_rhel_rhel8_releasever: 8.4
+        foreman_content_rhel_rhel8_releasever: 8.5
         foreman_content_rhel_wait_for_syncs: false
         foreman_convert2rhel_lifecycle_env: "Library"
         foreman_convert2rhel_content_view: "Default Organization View"

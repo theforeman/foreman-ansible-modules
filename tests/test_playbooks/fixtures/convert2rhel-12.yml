@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.2.0-develop","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.3.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '70'
     status:
       code: 200
       message: OK
@@ -70,11 +68,12 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-02-15
-        09:36:18 UTC\",\"updated_at\":\"2022-02-15 09:36:35 UTC\",\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
+        :\"Test_Organization\",\"created_at\":\"2022-09-13 13:05:58 UTC\",\"updated_at\"\
+        :\"2022-09-13 13:06:00 UTC\",\"id\":5,\"name\":\"Test Organization\",\"title\"\
+        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -93,13 +92,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -110,8 +109,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '388'
     status:
       code: 200
       message: OK
@@ -127,13 +124,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/activation_keys?search=name%3D%22convert2rhel_centos8%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/5/content_views?search=name%3D%22convert2rhel_centos8%22&per_page=4294967296
   response:
     body:
-      string: '{"total":7,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"convert2rhel_centos8\"","sort":{"by":"name","order":"asc"},"results":[{"id":3,"name":"convert2rhel_centos8","description":null,"unlimited_hosts":true,"auto_attach":false,"content_view_id":2,"environment_id":2,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-02-15
-        09:37:22 UTC","updated_at":"2022-02-15 09:37:23 UTC","content_view":{"id":2,"name":"Default
-        Organization View"},"environment":{"name":"Library","id":2},"products":[{"id":31,"name":"Convert2RHEL8"}],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
+      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"convert2rhel_centos8\"","sort":{"by":"name","order":"asc"},"results":[]}
 
         '
     headers:
@@ -152,15 +146,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 5; Test Organization
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -171,8 +165,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '890'
     status:
       code: 200
       message: OK
@@ -188,13 +180,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/activation_keys/3?organization_id=3
+    uri: https://foreman.example.org/katello/api/organizations/5/products?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":3,"name":"convert2rhel_centos8","description":null,"unlimited_hosts":true,"auto_attach":false,"content_view_id":2,"environment_id":2,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-02-15
-        09:37:22 UTC","updated_at":"2022-02-15 09:37:23 UTC","content_view":{"id":2,"name":"Default
-        Organization View"},"environment":{"name":"Library","id":2},"products":[{"id":31,"name":"Convert2RHEL8"}],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+      string: '{"total":4,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":35,"cp_id":"392828398101","name":"Convert2RHEL8","label":"Convert2RHEL8","description":null,"provider_id":7,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2022-09-13
+        13:06:19 UTC","last_sync_words":"less than a minute","organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -213,15 +204,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 5; Test Organization
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -232,8 +223,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '762'
     status:
       code: 200
       message: OK
@@ -249,12 +238,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/environments?search=name%3D%22Library%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/35/repositories?search=name%3D%22Convert2RHEL8+main%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":2,"name":"Library","label":"Library","description":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-02-15
-        09:36:19 UTC","updated_at":"2022-02-15 09:36:19 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":0,"packages":1706,"module_streams":0,"errata":{"security":null,"bugfix":2,"enhancement":4,"total":6},"yum_repositories":7,"docker_repositories":0,"ostree_repositories":0,"products":6},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[]}]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL8
+        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"30e90963-51b4-4c7f-b1a6-349de2acc9e0","relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","container_repository_name":null,"full_path":"https://sat-r220-03.lab.eng.rdu2.redhat.com/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/9d5a55c3-57b7-4473-b929-66a5312d63b1/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/79852823-4d96-4501-9f2b-67c072c3943d/","publication_href":"/pulp/api/v3/publications/rpm/rpm/f2294eb2-f95d-48ed-8f95-283bb7dac642/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":96,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":16,"name":"Default
+        Organization View"},"content_view_version":{"id":16,"name":"Default Organization
+        View 1.0","content_view_id":16},"kt_environment":{"id":6,"name":"Library"},"content_type":"yum","url":"https://cdn.redhat.com/content/public/convert2rhel/8/x86_64/os/","arch":"noarch","os_versions":[],"content_id":"1663074377815","generic_remote_options":null,"major":null,"minor":null,"product":{"id":35,"cp_id":"392828398101","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":null}]}
 
         '
     headers:
@@ -273,15 +264,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - ; ANY
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -292,13 +283,12 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '977'
     status:
       code: 200
       message: OK
 - request:
-    body: null
+    body: '{"name": "convert2rhel_centos8", "composite": false, "repository_ids":
+      [96], "auto_publish": false}'
     headers:
       Accept:
       - application/json;version=2
@@ -306,19 +296,20 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '99'
+      Content-Type:
+      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/content_views?search=name%3D%22Default+Organization+View%22&per_page=4294967296
+    method: POST
+    uri: https://foreman.example.org/katello/api/organizations/5/content_views
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Default
-        Organization View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":true,"version_count":1,"latest_version":"1.0","latest_version_id":2,"auto_publish":false,"solve_dependencies":false,"import_only":false,"related_cv_count":0,"related_composite_cvs":[],"repository_ids":[],"id":2,"name":"Default
-        Organization View","label":"Default_Organization_View","description":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-02-15
-        09:36:19 UTC","updated_at":"2022-02-15 09:36:19 UTC","last_task":null,"latest_version_environments":[{"id":2,"name":"Library","label":"Library"}],"environments":[{"id":2,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[],"versions":[{"id":2,"version":"1.0","published":"2022-02-15
-        09:36:19 UTC","environment_ids":[2]}],"components":[],"content_view_components":[],"activation_keys":[{"id":1,"name":"base_rhel_key"},{"id":2,"name":"convert2rhel_centos7"},{"id":3,"name":"convert2rhel_centos8"},{"id":4,"name":"convert2rhel_oracle7"},{"id":5,"name":"convert2rhel_oracle8"},{"id":6,"name":"convert2rhel_rhel7"},{"id":7,"name":"convert2rhel_rhel8"}],"hosts":[],"next_version":"1.0","last_published":"2022-02-15
-        09:36:19 UTC"}]}
+      string: '  {"content_host_count":0,"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"repository_ids":[96],"id":18,"name":"convert2rhel_centos8","label":"convert2rhel_centos8","description":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2022-09-13
+        13:06:44 UTC","updated_at":"2022-09-13 13:06:44 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":96,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[],"duplicate_repositories_to_publish":[],"errors":null}
 
         '
     headers:
@@ -337,15 +328,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 5; Test Organization
       Foreman_version:
-      - 3.2.0-develop
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -356,127 +347,7 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1410'
     status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/subscriptions?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
-  response:
-    body:
-      string: '{"organization":{},"total":6,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":4,"cp_id":"ff8080817efcb97c017efcbe23ac0930","subscription_id":4,"name":"Convert2RHEL8","start_date":"2022-02-15
-        09:37:06 UTC","end_date":"2049-12-01 00:00:00 UTC","available":-1,"quantity":-1,"consumed":0,"account_number":null,"contract_number":null,"support_level":null,"product_id":"618582378888","sockets":null,"cores":null,"ram":null,"instance_multiplier":1,"stacking_id":null,"multi_entitlement":false,"type":"NORMAL","product_name":"Convert2RHEL8","unmapped_guest":false,"virt_only":false,"virt_who":false,"upstream":false,"upstream_pool_id":null}]}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - 3; Test Organization
-      Foreman_version:
-      - 3.2.0-develop
-      Keep-Alive:
-      - timeout=15, max=94
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '746'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/activation_keys/3/subscriptions?per_page=4294967296&organization_id=3
-  response:
-    body:
-      string: '{"organization":{},"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"name","order":"asc"},"results":[{"quantity_attached":1,"id":4,"cp_id":"ff8080817efcb97c017efcbe23ac0930","subscription_id":4,"name":"Convert2RHEL8","start_date":"2022-02-15
-        09:37:06 UTC","end_date":"2049-12-01 00:00:00 UTC","available":-1,"quantity":-1,"consumed":0,"account_number":null,"contract_number":null,"support_level":null,"product_id":"618582378888","sockets":null,"cores":null,"ram":null,"instance_multiplier":1,"stacking_id":null,"multi_entitlement":false,"type":"NORMAL","product_name":"Convert2RHEL8","unmapped_guest":false,"virt_only":false,"virt_who":false,"upstream":false,"upstream_pool_id":null}]}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - 3; Test Organization
-      Foreman_version:
-      - 3.2.0-develop
-      Keep-Alive:
-      - timeout=15, max=93
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '748'
-    status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
 version: 1
