@@ -53,7 +53,7 @@ options:
     description:
       - Export history identifier used for incremental export. If not provided the most recent export history will be used.
     required: false
-    type: str
+    type: int
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -103,7 +103,7 @@ EXAMPLES = '''
     organization: "Default Organization"
     destination_server: "airgapped.example.com"
     incremental: true
-    from_history_id: "12345"
+    from_history_id: 12345
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
@@ -119,7 +119,7 @@ def main():
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
             fail_on_missing_content=dict(required=False, type='bool'),
-            from_history_id=dict(required=False, type='str'),
+            from_history_id=dict(required=False, type='int'),
         ),
         argument_spec=dict(
             incremental=dict(required=False, type='bool'),
