@@ -107,8 +107,8 @@ class KatelloContentExportModule(KatelloAnsibleModule):
 def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
-            repository=dict(type='entity', flat_name='id', scope=['product']),
-            product=dict(type='entity', scope=['organization']),
+            repository=dict(type='entity', flat_name='id', scope=['product'], required=True),
+            product=dict(type='entity', scope=['organization'], required=True),
             chunk_size_gb=dict(required=False, type='int'),
             from_history_id=dict(required=False, type='str'),
         ),
