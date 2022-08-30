@@ -73,7 +73,7 @@ interactions:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
         {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-08-30
-        16:12:57 UTC\",\"updated_at\":\"2022-08-30 16:12:59 UTC\",\"id\":3,\"name\":\"Test
+        16:47:32 UTC\",\"updated_at\":\"2022-08-30 16:47:33 UTC\",\"id\":6,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -127,15 +127,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Export+Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_exports?organization_id=6&id=8&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Export
-        Test Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"134279152683","name":"Export
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"id","order":"asc"},"results":[{"destination_server":null,"path":"/var/lib/pulp/exports/Test_Organization/Export-TestRepo-13/2.0/2022-08-30T16-47-46-00-00","id":8,"metadata":{"organization":"Test
+        Organization","base_path":"/var/lib/pulp/exports","repositories":{"TestRepo-135211":{"name":"TestRepo","label":"TestRepo","description":null,"arch":"noarch","content_type":"yum","unprotected":true,"checksum_type":null,"os_versions":[],"major":null,"minor":null,"download_policy":"immediate","mirroring_policy":"mirror_content_only","product":{"label":"Export_Test_Product"},"gpg_key":{},"content":{"id":"1661878057021","label":"Test_Organization_Export_Test_Product_TestRepo"},"redhat":false}},"content_view":{"name":"Export-TestRepo-13","label":"Export-TestRepo-13","description":null,"generated_for":"repository_export"},"content_view_version":{"major":2,"minor":0,"description":""},"incremental":true,"format":"importable","from_content_view_version":{"major":1,"minor":0},"products":{"Export_Test_Product":{"name":"Export
         Test Product","label":"Export_Test_Product","description":"A happy little
-        test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2022-08-30
-        16:13:09 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
+        test product","cp_id":"840814034304","gpg_key":{},"redhat":false}},"gpg_keys":{},"toc":"export-ebb3494a-7a64-4b48-8804-77e83083914e-20220830_1647-toc.json"},"type":"incremental","created_at":"2022-08-30
+        16:47:46 UTC","updated_at":"2022-08-30 16:47:46 UTC","content_view_version":"Export-TestRepo-13
+        2.0","content_view_version_id":13}]}
 
         '
     headers:
@@ -154,7 +154,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
       - 3.5.0-develop
       Keep-Alive:
@@ -173,142 +173,8 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      X-bullet-console-text:
-      - '["user: vagrant\nAVOID eager loading detected\n  Katello::Product =\u003e
-        [:provider]\n  Remove from your query: .includes([:provider])\nCall stack\n  /home/vagrant/foreman/lib/foreman/middleware/libvirt_connection_cleaner.rb:9:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/telemetry.rb:10:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_session.rb:22:in
-        `call''\n  /home/vagrant/foreman/lib/foreman/middleware/logging_context_request.rb:11:in
-        `call''\n\n"]'
-      X-bullet-footer-text:
-      - '["user: vagrant  AVOID eager loading detected    Katello::Product =\u003e
-        [:provider]\n  Remove from your query: .includes([:provider])"]'
       content-length:
-      - '685'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22TestRepo%22&per_page=4294967296
-  response:
-    body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"TestRepo\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"64b447a0-5d67-4e19-937e-91d22cb59214","relative_path":"Test_Organization/Library/custom/Export_Test_Product/TestRepo","container_repository_name":null,"full_path":"https://centos8-katello-devel.fedora.example.com/pulp/content/Test_Organization/Library/custom/Export_Test_Product/TestRepo/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/8805c686-7ba5-48fe-8cb0-08f99a076a10/versions/0/","remote_href":null,"publication_href":"/pulp/api/v3/publications/rpm/rpm/6300ee27-d1d2-47a0-a1de-64c2588deb2a/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":1,"name":"TestRepo","label":"TestRepo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
-        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":null,"arch":"noarch","os_versions":[],"content_id":"1661875984947","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"134279152683","name":"Export
-        Test Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Export_Test_Product_TestRepo","last_sync_words":null}]}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.5.0-develop
-      Keep-Alive:
-      - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1498'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/repositories/1
-  response:
-    body:
-      string: '  {"relative_path":"Test_Organization/Library/custom/Export_Test_Product/TestRepo","promoted":true,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2022-08-30
-        16:13:04 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2022-08-30
-        16:13:04 UTC","updated_at":"2022-08-30 16:13:05 UTC","backend_identifier":"64b447a0-5d67-4e19-937e-91d22cb59214","container_repository_name":null,"full_path":"https://centos8-katello-devel.fedora.example.com/pulp/content/Test_Organization/Library/custom/Export_Test_Product/TestRepo/","version_href":"/pulp/api/v3/repositories/rpm/rpm/8805c686-7ba5-48fe-8cb0-08f99a076a10/versions/0/","remote_href":null,"publication_href":"/pulp/api/v3/publications/rpm/rpm/6300ee27-d1d2-47a0-a1de-64c2588deb2a/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":1,"name":"TestRepo","label":"TestRepo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
-        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":null,"arch":"noarch","os_versions":[],"content_id":"1661875984947","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"134279152683","name":"Export
-        Test Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Export_Test_Product_TestRepo","last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"include_tags":null,"exclude_tags":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"gpg_key":{"id":null,"name":null},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":false,"upstream_auth_exists":false}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 3.5.0-develop
-      Keep-Alive:
-      - timeout=15, max=96
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '2662'
+      - '1544'
     status:
       code: 200
       message: OK
