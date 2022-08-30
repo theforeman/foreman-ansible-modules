@@ -63,7 +63,7 @@ options:
     description:
       - Export history identifier used for incremental export. If not provided the most recent export history will be used.
     required: false
-    type: str
+    type: int
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -141,7 +141,7 @@ def main():
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
             fail_on_missing_content=dict(required=False, type='bool'),
-            from_history_id=dict(required=False, type='str'),
+            from_history_id=dict(required=False, type='int'),
         ),
         argument_spec=dict(
             incremental=dict(required=False, type='bool'),
