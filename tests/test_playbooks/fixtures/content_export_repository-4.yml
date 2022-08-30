@@ -67,14 +67,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Export+Org%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 8,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Export Org\\\"\",\n  \"sort\": {\n    \"by\":
-        null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Export_Org\",\"created_at\":\"2022-07-12
-        15:05:28 UTC\",\"updated_at\":\"2022-07-13 19:20:00 UTC\",\"id\":10,\"name\":\"Export
-        Org\",\"title\":\"Export Org\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2022-08-30
+        16:12:57 UTC\",\"updated_at\":\"2022-08-30 16:12:59 UTC\",\"id\":3,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -111,7 +111,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '361'
+      - '388'
     status:
       code: 200
       message: OK
@@ -127,15 +127,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_exports?organization_id=10&id=171&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_exports?organization_id=3&id=2&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"id","order":"asc"},"results":[{"destination_server":null,"path":"/var/lib/pulp/exports/Export_Org/Export-TestRepo-100/30.0/2022-08-29T19-47-34-00-00","id":171,"metadata":{"organization":"Export
-        Org","base_path":"/var/lib/pulp/exports","repositories":{"TestRepo-1001493":{"name":"TestRepo","label":"TestRepo","description":null,"arch":"noarch","content_type":"yum","unprotected":true,"checksum_type":null,"os_versions":[],"major":null,"minor":null,"download_policy":"immediate","mirroring_policy":"mirror_content_only","product":{"label":"Export_Test_Product"},"gpg_key":{},"content":{"id":"1657638425860","label":"Export_Org_Export_Test_Product_TestRepo"},"redhat":false}},"content_view":{"name":"Export-TestRepo-100","label":"Export-TestRepo-100","description":null,"generated_for":"repository_export"},"content_view_version":{"major":30,"minor":0,"description":""},"incremental":true,"format":"importable","from_content_view_version":{"major":29,"minor":0},"products":{"Export_Test_Product":{"name":"Export
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":null,"sort":{"by":"id","order":"asc"},"results":[{"destination_server":null,"path":"/var/lib/pulp/exports/Test_Organization/Export-TestRepo-1/2.0/2022-08-30T16-13-16-00-00","id":2,"metadata":{"organization":"Test
+        Organization","base_path":"/var/lib/pulp/exports","repositories":{"TestRepo-14973":{"name":"TestRepo","label":"TestRepo","description":null,"arch":"noarch","content_type":"yum","unprotected":true,"checksum_type":null,"os_versions":[],"major":null,"minor":null,"download_policy":"immediate","mirroring_policy":"mirror_content_only","product":{"label":"Export_Test_Product"},"gpg_key":{},"content":{"id":"1661875984947","label":"Test_Organization_Export_Test_Product_TestRepo"},"redhat":false}},"content_view":{"name":"Export-TestRepo-1","label":"Export-TestRepo-1","description":null,"generated_for":"repository_export"},"content_view_version":{"major":2,"minor":0,"description":""},"incremental":true,"format":"importable","from_content_view_version":{"major":1,"minor":0},"products":{"Export_Test_Product":{"name":"Export
         Test Product","label":"Export_Test_Product","description":"A happy little
-        test product","cp_id":"317036520577","gpg_key":{},"redhat":false}},"gpg_keys":{},"toc":"export-8dfd3683-6a8c-4bbd-8e50-ee8c73288efd-20220829_1947-toc.json"},"type":"incremental","created_at":"2022-08-29
-        19:47:35 UTC","updated_at":"2022-08-29 19:47:35 UTC","content_view_version":"Export-TestRepo-100
-        30.0","content_view_version_id":165}]}
+        test product","cp_id":"134279152683","gpg_key":{},"redhat":false}},"gpg_keys":{},"toc":"export-0b093663-3124-4026-9990-aa4a05e6e7ec-20220830_1613-toc.json"},"type":"incremental","created_at":"2022-08-30
+        16:13:16 UTC","updated_at":"2022-08-30 16:13:16 UTC","content_view_version":"Export-TestRepo-1
+        2.0","content_view_version_id":4}]}
 
         '
     headers:
@@ -154,7 +154,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 10; Export Org
+      - 3; Test Organization
       Foreman_version:
       - 3.5.0-develop
       Keep-Alive:
@@ -174,7 +174,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1535'
+      - '1538'
     status:
       code: 200
       message: OK

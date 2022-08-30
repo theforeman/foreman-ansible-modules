@@ -56,4 +56,29 @@
         destination_server: "airgapped.example.com"
       when:
         - not ansible_check_mode
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        state: absent
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
 ...
