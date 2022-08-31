@@ -34,7 +34,7 @@
     ssl_client_key: "{{ repository_ssl_client_key | default(omit) }}"
   register: result
 - assert:
-    fail_msg: "Ensuring repositroy is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring repository is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
