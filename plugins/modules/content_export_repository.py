@@ -23,7 +23,7 @@ DOCUMENTATION = '''
 ---
 module: content_export_repository
 version_added: 3.6.0
-short_description: Export repository content to a directory
+short_description: Manage repository content exports
 description:
     - Export repository content to a directory.
 author:
