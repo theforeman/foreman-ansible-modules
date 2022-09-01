@@ -23,7 +23,7 @@ DOCUMENTATION = '''
 ---
 module: content_export_version
 version_added: 3.6.0
-short_description: Manage pulp3 content exports
+short_description: Manage content view version content exports
 description:
     - Export a content view version to a directory.
 author:

@@ -23,7 +23,7 @@ DOCUMENTATION = '''
 ---
 module: content_export_info
 version_added: 3.5.0
-short_description: List pulp3 content exports
+short_description: List content exports
 description:
     - List information about content exports.
 author:
