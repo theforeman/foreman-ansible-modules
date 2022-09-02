@@ -62,7 +62,8 @@ extends_documentation_fragment:
 EXAMPLES = '''
 - name: "Export repository (full)"
   content_export_repository:
-    id: 346
+    product: "Example Product"
+    repository: "Example Repository"
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -70,7 +71,8 @@ EXAMPLES = '''
 
 - name: "Export repository (full) in chunks of 10 GB"
   content_export_repository:
-    id: 346
+    product: "Example Product"
+    repository: "Example Repository"
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -79,22 +81,24 @@ EXAMPLES = '''
 
 - name: "Export repository (incremental) since the most recent export"
   content_export_repository:
-      id: 346
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      organization: "Default Organization"
-      incremental: true
+    product: "Example Product"
+    repository: "Example Repository"
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    incremental: true
 
 - name: "Export repository (incremental) since a specific export"
   content_export_repository:
-      id: 346
-      username: "admin"
-      password: "changeme"
-      server_url: "https://foreman.example.com"
-      organization: "Default Organization"
-      incremental: true
-      from_history_id: 12345
+    product: "Example Product"
+    repository: "Example Repository"
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    incremental: true
+    from_history_id: 12345
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
