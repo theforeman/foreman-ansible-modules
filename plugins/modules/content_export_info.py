@@ -65,7 +65,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "List all full exports in the organization"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     organization: "Default Organization"
     type: complete
     username: "admin"
@@ -74,7 +74,7 @@ EXAMPLES = '''
 - name: "Get a specific export history and register the result for the next task"
   vars:
     organization_name: "Export Org"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     id: 29
     username: "admin"
     password: "changeme"
@@ -88,7 +88,7 @@ EXAMPLES = '''
     content: "{{ metadata }}"
     dest: ./metadata.json
 - name: "List all exports of a specific content view version"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     content_view: RHEL8
     content_view_version: '1.0'
     username: "admin"
@@ -96,14 +96,14 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
 - name: "List all exports marked for a specific destination server"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     destination_server: "airgapped.example.com"
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
 - name: "List incremental exports of a specific content view version marked for a specific destination server"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     content_view: RHEL8
     destination_server: "airgapped.example.com"
     type: incremental
@@ -112,7 +112,7 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
 - name: "List all exports of a specific content view marked for a specific destination server"
-  content_export_info:
+  theforeman.foreman.content_export_info:
     content_view: RHEL8
     destination_server: "airgapped.example.com"
     username: "admin"

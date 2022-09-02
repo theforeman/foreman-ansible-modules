@@ -61,7 +61,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Export repository (full)"
-  content_export_repository:
+  theforeman.foreman.content_export_repository:
     product: "Example Product"
     repository: "Example Repository"
     username: "admin"
@@ -70,7 +70,7 @@ EXAMPLES = '''
     organization: "Default Organization"
 
 - name: "Export repository (full) in chunks of 10 GB"
-  content_export_repository:
+  theforeman.foreman.content_export_repository:
     product: "Example Product"
     repository: "Example Repository"
     username: "admin"
@@ -80,7 +80,7 @@ EXAMPLES = '''
     chunk_size_gb: 10
 
 - name: "Export repository (incremental) since the most recent export"
-  content_export_repository:
+  theforeman.foreman.content_export_repository:
     product: "Example Product"
     repository: "Example Repository"
     username: "admin"
@@ -90,7 +90,7 @@ EXAMPLES = '''
     incremental: true
 
 - name: "Export repository (incremental) since a specific export"
-  content_export_repository:
+  theforeman.foreman.content_export_repository:
     product: "Example Product"
     repository: "Example Repository"
     username: "admin"
