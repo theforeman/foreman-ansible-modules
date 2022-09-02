@@ -71,7 +71,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Export content view version (full)"
-  content_export_version:
+  theforeman.foreman.content_export_version:
     content_view: RHEL8
     content_view_version: '1.0'
     username: "admin"
@@ -81,7 +81,7 @@ EXAMPLES = '''
     destination_server: "airgapped.example.com"
 
 - name: "Export content view version (full) in chunks of 10 GB"
-  content_export_version:
+  theforeman.foreman.content_export_version:
     content_view: RHEL8
     content_view_version: '1.0'
     username: "admin"
@@ -92,7 +92,7 @@ EXAMPLES = '''
     chunk_size_gb: 10
 
 - name: "Export content view version (full) and fail if any repos are unexportable"
-  content_export_version:
+  theforeman.foreman.content_export_version:
     content_view: RHEL8
     content_view_version: '1.0'
     username: "admin"
@@ -103,7 +103,7 @@ EXAMPLES = '''
     fail_on_missing_content: true
 
 - name: "Export content view version (incremental) since the most recent export"
-  content_export_version:
+  theforeman.foreman.content_export_version:
       content_view: RHEL8
       content_view_version: '1.0'
       username: "admin"
@@ -114,7 +114,7 @@ EXAMPLES = '''
       incremental: true
 
 - name: "Export content view version (incremental) since a specific export"
-  content_export_version:
+  theforeman.foreman.content_export_version:
       content_view: RHEL8
       content_view_version: '1.0'
       username: "admin"

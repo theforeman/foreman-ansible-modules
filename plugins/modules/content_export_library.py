@@ -61,7 +61,7 @@ extends_documentation_fragment:
 
 EXAMPLES = '''
 - name: "Export library content (full)"
-  content_export_library:
+  theforeman.foreman.content_export_library:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -69,7 +69,7 @@ EXAMPLES = '''
     destination_server: "airgapped.example.com"
 
 - name: "Export library content (full) and fail if any repos are unexportable"
-  content_export_library:
+  theforeman.foreman.content_export_library:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -78,7 +78,7 @@ EXAMPLES = '''
     fail_on_missing_content: true
 
 - name: "Export library content (full) in chunks of 10 GB"
-  content_export_library:
+  theforeman.foreman.content_export_library:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -87,7 +87,7 @@ EXAMPLES = '''
     destination_server: "airgapped.example.com"
 
 - name: "Export library content (incremental) since the most recent export"
-  content_export_library:
+  theforeman.foreman.content_export_library:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
@@ -96,7 +96,7 @@ EXAMPLES = '''
     incremental: true
 
 - name: "Export library content (incremental) since a specific export"
-  content_export_library:
+  theforeman.foreman.content_export_library:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"

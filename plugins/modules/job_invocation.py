@@ -125,7 +125,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 
 - name: "Run remote command on a single host once"
-  job_invocation:
+  theforeman.foreman.job_invocation:
     search_query: "name ^ (foreman.example.com)"
     command: 'ls'
     job_template: "Run Command - SSH Default"
@@ -133,7 +133,7 @@ EXAMPLES = '''
       effective_user: "tester"
 
 - name: "Run ansible command on active hosts once a day"
-  job_invocation:
+  theforeman.foreman.job_invocation:
     bookmark: 'active'
     command: 'pwd'
     job_template: "Run Command - Ansible Default"
