@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: repositories
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_products:
+          - name: Debian 10
+            repositories:
+              - name: main
+                content_type: deb
+                url: http://deb.debian.org/debian
+                deb_components: main
+                deb_architectures: amd64
+                deb_releases: buster
