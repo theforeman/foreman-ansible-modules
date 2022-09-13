@@ -137,7 +137,6 @@ def main():
             content_view=dict(type='entity', scope=['organization'], required=False),
             destination_server=dict(required=False, type='str'),
             type=dict(required=False, type='str', choices=['complete', 'incremental']),
-            search=dict(required=False, type='str'),
             name=dict(invisible=True),
         ),
     )
