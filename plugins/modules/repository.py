@@ -168,6 +168,7 @@ options:
     description:
       - list of tags to sync for Container Image repository
       - only available for I(content_type=docker)
+      - Deprecated since Katello 4.4
     type: list
     elements: str
   deb_releases:
@@ -241,6 +242,20 @@ options:
       - Set to C(noarch) to disable the architecture restriction again.
     type: str
     required: false
+  include_tags:
+    description:
+      - List of tags to sync for a container image repository.
+    type: list
+    elements: str
+    required: false
+    version_added: 3.7.0
+  exclude_tags:
+    description:
+      - List of tags to exclude when syncing a container image repository.
+    type: list
+    elements: str
+    required: false
+    version_added: 3.7.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -334,6 +349,8 @@ def main():
             auto_enabled=dict(type='bool'),
             os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8', 'rhel-9']),
             arch=dict(),
+            include_tags=dict(type='list', elements='str'),
+            exclude_tags=dict(type='list', elements='str'),
         ),
         mutually_exclusive=[
             ['mirror_on_sync', 'mirroring_policy']
@@ -349,7 +366,7 @@ def main():
     module.foreman_spec['entity']['scope'].remove('organization')
 
     if module.foreman_params['content_type'] != 'docker':
-        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist'] if key in module.foreman_params]
+        invalid_list = [key for key in ['docker_upstream_name', 'docker_tags_whitelist', 'include_tags', 'exclude_tags'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'docker'".format(",".join(invalid_list)))
 
