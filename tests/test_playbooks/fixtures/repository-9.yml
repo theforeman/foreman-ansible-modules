@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.1.3","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.3.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -73,8 +71,8 @@ interactions:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
         : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
         : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2022-09-14 09:40:45 UTC\",\"updated_at\"\
-        :\"2022-09-14 09:40:47 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
+        :\"Test_Organization\",\"created_at\":\"2022-09-14 11:27:41 UTC\",\"updated_at\"\
+        :\"2022-09-14 11:27:43 UTC\",\"id\":6,\"name\":\"Test Organization\",\"title\"\
         :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -94,13 +92,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -111,8 +109,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '388'
     status:
       code: 200
       message: OK
@@ -128,13 +124,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/6/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"678233483120","name":"Test
-        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":0}]}
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":21,"cp_id":"160566138145","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":9,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"sync_plan":null,"repository_count":0}]}
 
         '
     headers:
@@ -153,15 +149,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -172,8 +168,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '627'
     status:
       code: 200
       message: OK
@@ -189,16 +183,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=3&search=name%3D%22Test+GPG+key%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=6&search=name%3D%22Test+GPG+key%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
         GPG key\"","sort":{"by":"name","order":"asc"},"results":[{"name":"Test GPG
         key","content_type":"gpg_key","content":"-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion:
         GnuPG v1.4.5 (GNU/Linux)\n\nmQENBFVMupABCAC9AiPd5+NBtEed8BG4hf4dt94dqJ4B+Lnnv7sVdoqO3tNHA8GW\nQayAPQRN+kAkCzZ+BoqMi7rKTwMyRvUGBpkFhuVCRbQdDIJuvP1S8liP42sPMhVY\n+mb7frXQE7EUZ0MH7PfxrvgcxiFi/awmBjQZkrYYbiYZPc7NJFshoJeLe5f6ZXqX\nm9GoX5MVxwC4iRNrHxQKTywvxTURt4wTx4+ZipUmrAjUcknW+g/try61dHJhLCWi\nqH8QYZLNnSgmbK9y8BoL0wxDTeos8sGbvVSd1sVoTiktyGOROjEAUlzC7PhUMjLF\nX9ECWS2q7NoysmheJwVeZxzMxXfvg83HoLyjABEBAAG0JkthdGVsbG8gPGZvcmVt\nYW4tZGV2QGdvb2dsZWdyb3Vwcy5jb20+iQE8BBMBAgAmBQJVTLqQAhsDBQkFo5qA\nBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQCC1M07xi0T/8+Af/b4KfwT51wFWm\n3bN/LVEYKrfSE32PnlxAVX3jY+eSRnf3Cah+QH5eAGtDIn+hb2JXr5K+CEBnmupS\nRp57oZJQnqjxK4BRY2WstABxjSXG1gx8iC/vLq6dUV3lK5LSe9hfmXMKr3vos1x1\nb2ehiNstDj264aByokU9R9J3FDtwiEc/xaA7x66SSkWILYtRBYzUlu+lUmox3wJw\n0bCCWPF9PV0IpmzSKwqHLqaV985HtVovH34n//vQiMVnVmXYiiN5WQUrJs5VBmwy\nzXXOdEGqVA/0n4y7nG+hpFWgNb2G0/eSrIg4XWseMYXIc4tJF8zX0dU263A8fP/Q\neyRp696I2g==\n=5p62\n-----END
-        PGP PUBLIC KEY BLOCK-----","id":1,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
-        09:40:48 UTC","updated_at":"2022-09-14 09:40:48 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
+        PGP PUBLIC KEY BLOCK-----","id":3,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2022-09-14
+        11:27:44 UTC","updated_at":"2022-09-14 11:27:44 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
 
         '
     headers:
@@ -217,15 +211,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -236,8 +230,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1695'
     status:
       code: 200
       message: OK
@@ -253,16 +245,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=3&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=6&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
         SSL Cert\"","sort":{"by":"name","order":"asc"},"results":[{"name":"Test SSL
         Cert","content_type":"cert","content":"-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion:
         GnuPG v1.4.5 (GNU/Linux)\n\nmQENBFVMupABCAC9AiPd5+NBtEed8BG4hf4dt94dqJ4B+Lnnv7sVdoqO3tNHA8GW\nQayAPQRN+kAkCzZ+BoqMi7rKTwMyRvUGBpkFhuVCRbQdDIJuvP1S8liP42sPMhVY\n+mb7frXQE7EUZ0MH7PfxrvgcxiFi/awmBjQZkrYYbiYZPc7NJFshoJeLe5f6ZXqX\nm9GoX5MVxwC4iRNrHxQKTywvxTURt4wTx4+ZipUmrAjUcknW+g/try61dHJhLCWi\nqH8QYZLNnSgmbK9y8BoL0wxDTeos8sGbvVSd1sVoTiktyGOROjEAUlzC7PhUMjLF\nX9ECWS2q7NoysmheJwVeZxzMxXfvg83HoLyjABEBAAG0JkthdGVsbG8gPGZvcmVt\nYW4tZGV2QGdvb2dsZWdyb3Vwcy5jb20+iQE8BBMBAgAmBQJVTLqQAhsDBQkFo5qA\nBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQCC1M07xi0T/8+Af/b4KfwT51wFWm\n3bN/LVEYKrfSE32PnlxAVX3jY+eSRnf3Cah+QH5eAGtDIn+hb2JXr5K+CEBnmupS\nRp57oZJQnqjxK4BRY2WstABxjSXG1gx8iC/vLq6dUV3lK5LSe9hfmXMKr3vos1x1\nb2ehiNstDj264aByokU9R9J3FDtwiEc/xaA7x66SSkWILYtRBYzUlu+lUmox3wJw\n0bCCWPF9PV0IpmzSKwqHLqaV985HtVovH34n//vQiMVnVmXYiiN5WQUrJs5VBmwy\nzXXOdEGqVA/0n4y7nG+hpFWgNb2G0/eSrIg4XWseMYXIc4tJF8zX0dU263A8fP/Q\neyRp696I2g==\n=5p62\n-----END
-        PGP PUBLIC KEY BLOCK-----","id":2,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
-        09:40:48 UTC","updated_at":"2022-09-14 09:40:48 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
+        PGP PUBLIC KEY BLOCK-----","id":4,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2022-09-14
+        11:27:44 UTC","updated_at":"2022-09-14 11:27:44 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
 
         '
     headers:
@@ -281,15 +273,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -300,8 +292,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1694'
     status:
       code: 200
       message: OK
@@ -317,16 +307,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=3&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=6&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
         SSL Cert\"","sort":{"by":"name","order":"asc"},"results":[{"name":"Test SSL
         Cert","content_type":"cert","content":"-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion:
         GnuPG v1.4.5 (GNU/Linux)\n\nmQENBFVMupABCAC9AiPd5+NBtEed8BG4hf4dt94dqJ4B+Lnnv7sVdoqO3tNHA8GW\nQayAPQRN+kAkCzZ+BoqMi7rKTwMyRvUGBpkFhuVCRbQdDIJuvP1S8liP42sPMhVY\n+mb7frXQE7EUZ0MH7PfxrvgcxiFi/awmBjQZkrYYbiYZPc7NJFshoJeLe5f6ZXqX\nm9GoX5MVxwC4iRNrHxQKTywvxTURt4wTx4+ZipUmrAjUcknW+g/try61dHJhLCWi\nqH8QYZLNnSgmbK9y8BoL0wxDTeos8sGbvVSd1sVoTiktyGOROjEAUlzC7PhUMjLF\nX9ECWS2q7NoysmheJwVeZxzMxXfvg83HoLyjABEBAAG0JkthdGVsbG8gPGZvcmVt\nYW4tZGV2QGdvb2dsZWdyb3Vwcy5jb20+iQE8BBMBAgAmBQJVTLqQAhsDBQkFo5qA\nBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQCC1M07xi0T/8+Af/b4KfwT51wFWm\n3bN/LVEYKrfSE32PnlxAVX3jY+eSRnf3Cah+QH5eAGtDIn+hb2JXr5K+CEBnmupS\nRp57oZJQnqjxK4BRY2WstABxjSXG1gx8iC/vLq6dUV3lK5LSe9hfmXMKr3vos1x1\nb2ehiNstDj264aByokU9R9J3FDtwiEc/xaA7x66SSkWILYtRBYzUlu+lUmox3wJw\n0bCCWPF9PV0IpmzSKwqHLqaV985HtVovH34n//vQiMVnVmXYiiN5WQUrJs5VBmwy\nzXXOdEGqVA/0n4y7nG+hpFWgNb2G0/eSrIg4XWseMYXIc4tJF8zX0dU263A8fP/Q\neyRp696I2g==\n=5p62\n-----END
-        PGP PUBLIC KEY BLOCK-----","id":2,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
-        09:40:48 UTC","updated_at":"2022-09-14 09:40:48 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
+        PGP PUBLIC KEY BLOCK-----","id":4,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2022-09-14
+        11:27:44 UTC","updated_at":"2022-09-14 11:27:44 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
 
         '
     headers:
@@ -345,15 +335,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -364,8 +354,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1694'
     status:
       code: 200
       message: OK
@@ -381,16 +369,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=3&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_credentials?organization_id=6&search=name%3D%22Test+SSL+Cert%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
         SSL Cert\"","sort":{"by":"name","order":"asc"},"results":[{"name":"Test SSL
         Cert","content_type":"cert","content":"-----BEGIN PGP PUBLIC KEY BLOCK-----\nVersion:
         GnuPG v1.4.5 (GNU/Linux)\n\nmQENBFVMupABCAC9AiPd5+NBtEed8BG4hf4dt94dqJ4B+Lnnv7sVdoqO3tNHA8GW\nQayAPQRN+kAkCzZ+BoqMi7rKTwMyRvUGBpkFhuVCRbQdDIJuvP1S8liP42sPMhVY\n+mb7frXQE7EUZ0MH7PfxrvgcxiFi/awmBjQZkrYYbiYZPc7NJFshoJeLe5f6ZXqX\nm9GoX5MVxwC4iRNrHxQKTywvxTURt4wTx4+ZipUmrAjUcknW+g/try61dHJhLCWi\nqH8QYZLNnSgmbK9y8BoL0wxDTeos8sGbvVSd1sVoTiktyGOROjEAUlzC7PhUMjLF\nX9ECWS2q7NoysmheJwVeZxzMxXfvg83HoLyjABEBAAG0JkthdGVsbG8gPGZvcmVt\nYW4tZGV2QGdvb2dsZWdyb3Vwcy5jb20+iQE8BBMBAgAmBQJVTLqQAhsDBQkFo5qA\nBgsJCAcDAgQVAggDBBYCAwECHgECF4AACgkQCC1M07xi0T/8+Af/b4KfwT51wFWm\n3bN/LVEYKrfSE32PnlxAVX3jY+eSRnf3Cah+QH5eAGtDIn+hb2JXr5K+CEBnmupS\nRp57oZJQnqjxK4BRY2WstABxjSXG1gx8iC/vLq6dUV3lK5LSe9hfmXMKr3vos1x1\nb2ehiNstDj264aByokU9R9J3FDtwiEc/xaA7x66SSkWILYtRBYzUlu+lUmox3wJw\n0bCCWPF9PV0IpmzSKwqHLqaV985HtVovH34n//vQiMVnVmXYiiN5WQUrJs5VBmwy\nzXXOdEGqVA/0n4y7nG+hpFWgNb2G0/eSrIg4XWseMYXIc4tJF8zX0dU263A8fP/Q\neyRp696I2g==\n=5p62\n-----END
-        PGP PUBLIC KEY BLOCK-----","id":2,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
-        09:40:48 UTC","updated_at":"2022-09-14 09:40:48 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
+        PGP PUBLIC KEY BLOCK-----","id":4,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2022-09-14
+        11:27:44 UTC","updated_at":"2022-09-14 11:27:44 UTC","gpg_key_products":[],"gpg_key_repos":[],"ssl_ca_products":[],"ssl_ca_root_repos":[],"ssl_client_products":[],"ssl_client_root_repos":[],"ssl_key_products":[],"ssl_key_root_repos":[],"permissions":{"view_content_credenials":true,"edit_content_credenials":true,"destroy_content_credenials":true}}]}
 
         '
     headers:
@@ -409,15 +397,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 3; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=94
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -428,8 +416,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1694'
     status:
       code: 200
       message: OK
@@ -445,7 +431,7 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Repository+2%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/21/repositories?search=name%3D%22Test+Repository+2%22&per_page=4294967296
   response:
     body:
       string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
@@ -470,13 +456,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=93
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -487,16 +473,14 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '172'
     status:
       code: 200
       message: OK
 - request:
     body: '{"name": "Test Repository 2", "label": "just_a_test_repo2", "product_id":
-      1, "content_type": "yum", "url": "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/",
-      "gpg_key_id": 1, "ssl_ca_cert_id": 2, "ssl_client_cert_id": 2, "ssl_client_key_id":
-      2, "mirroring_policy": "additive"}'
+      21, "content_type": "yum", "url": "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/",
+      "gpg_key_id": 3, "ssl_ca_cert_id": 4, "ssl_client_cert_id": 4, "ssl_client_key_id":
+      4, "mirroring_policy": "additive"}'
     headers:
       Accept:
       - application/json;version=2
@@ -505,7 +489,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '285'
+      - '286'
       Content-Type:
       - application/json
       User-Agent:
@@ -514,16 +498,15 @@ interactions:
     uri: https://foreman.example.org/katello/api/repositories
   response:
     body:
-      string: '  {"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo2","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2022-09-14
-        09:41:06 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
-        09:41:06 UTC","updated_at":"2022-09-14 09:41:06 UTC","backend_identifier":"2a9e947c-1c82-41a4-9e71-e3e67808eee8","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-3.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo2/","version_href":"/pulp/api/v3/repositories/rpm/rpm/16602a75-d9ce-4f3f-a0d5-fb0a5b9386ca/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/c5987bd1-7d67-464d-aba2-eb4a42f0363c/","publication_href":null,"content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"additive","id":2,"name":"Test
-        Repository 2","label":"just_a_test_repo2","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
-        Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","os_versions":[],"content_id":"1663148466512","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"678233483120","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo2","last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":1,"ssl_ca_cert_id":2,"ssl_client_cert_id":2,"ssl_client_key_id":2,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"content_credential":{"id":1,"name":"Test
-        GPG key"},"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":2,"name":"Test
-        SSL Cert"},"ssl_client_cert":{"id":2,"name":"Test SSL Cert"},"ssl_client_key":{"id":2,"name":"Test
-        SSL Cert"},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false,"content_view_environments":[]}
+      string: '  {"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo2","promoted":false,"content_view_version_id":21,"library_instance_id":null,"last_contents_changed":"2022-09-14
+        11:28:02 UTC","organization_id":6,"organization":{"name":"Test Organization","label":"Test_Organization","id":6},"created_at":"2022-09-14
+        11:28:01 UTC","updated_at":"2022-09-14 11:28:02 UTC","backend_identifier":"3e823f85-a892-4b1d-ba9f-595e56c9b167","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-5.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo2/","version_href":"/pulp/api/v3/repositories/rpm/rpm/52d07ef3-f77c-4fb7-89cf-dbca9bf2d2eb/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/126c63ab-bac7-4d57-9bd3-2f53e7339727/","publication_href":null,"content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"additive","id":25,"name":"Test
+        Repository 2","label":"just_a_test_repo2","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":10,"name":"Default
+        Organization View"},"content_view_version":{"id":21,"name":"Default Organization
+        View 1.0","content_view_id":10},"kt_environment":{"id":5,"name":"Library"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","os_versions":[],"content_id":"1663154882204","generic_remote_options":null,"major":null,"minor":null,"product":{"id":21,"cp_id":"160566138145","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo2","last_sync_words":null,"environment":{"id":5,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"include_tags":null,"exclude_tags":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":3,"ssl_ca_cert_id":4,"ssl_client_cert_id":4,"ssl_client_key_id":4,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":4,"name":"Test
+        SSL Cert"},"ssl_client_cert":{"id":4,"name":"Test SSL Cert"},"ssl_client_key":{"id":4,"name":"Test
+        SSL Cert"},"gpg_key":{"id":3,"name":"Test GPG key"},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":false,"upstream_auth_exists":false,"content_view_environments":[]}
 
         '
     headers:
@@ -544,7 +527,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.1.3
+      - 3.3.0
       Keep-Alive:
       - timeout=15, max=92
       Strict-Transport-Security:
