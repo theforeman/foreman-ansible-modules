@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.0","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.1.3","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -70,11 +70,12 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2021-10-27
-        10:11:04 UTC\",\"updated_at\":\"2021-10-27 10:11:08 UTC\",\"id\":3,\"name\":\"Test
-        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
+        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
+        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
+        :\"Test_Organization\",\"created_at\":\"2022-09-14 09:40:45 UTC\",\"updated_at\"\
+        :\"2022-09-14 09:40:47 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
+        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -93,7 +94,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -130,10 +131,10 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Test+Product%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":3,"cp_id":"542618974491","name":"Test
-        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2021-10-27
-        10:15:31 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"678233483120","name":"Test
+        Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2022-09-14
+        09:40:59 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
@@ -155,7 +156,7 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -173,7 +174,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '649'
+      - '664'
     status:
       code: 200
       message: OK
@@ -189,15 +190,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/3/repositories?search=name%3D%22Test+Repository%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Repository%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"9ec49e4d-5eff-44b0-aa41-1ad10767d380","relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","container_repository_name":null,"full_path":"https://localhost/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/29452eaa-c307-4248-ac50-4ca5358521bb/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/a6863d8a-bfc5-4a41-ae48-5f910eb27597/","publication_href":"/pulp/api/v3/publications/rpm/rpm/d9ebf6dd-5d4f-42f9-8de9-b57d0cd80a83/","id":5,"name":"Test
-        Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"669ff9e2-a488-497a-b1ed-9c769b0b3cb4","relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-3.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/3af34924-2005-4df5-9b7c-fe153bcd6b31/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/92ebf8b4-5b00-4cd6-a96c-16ffaa79a3a9/","publication_href":"/pulp/api/v3/publications/rpm/rpm/dd69a22b-3805-49c1-b8d7-e362897c5f51/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":1,"name":"Test
+        Repository","label":"just_a_test_repo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1635329476188","major":null,"minor":null,"product":{"id":3,"cp_id":"542618974491","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null}]}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1663148452994","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"678233483120","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","last_sync_words":null}]}
 
         '
     headers:
@@ -218,7 +219,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
@@ -236,7 +237,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '1607'
+      - '1625'
     status:
       code: 200
       message: OK
@@ -252,16 +253,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/repositories/5
+    uri: https://foreman.example.org/katello/api/repositories/1
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2021-10-27
-        10:11:15 UTC","updated_at":"2021-10-27 10:15:28 UTC","backend_identifier":"9ec49e4d-5eff-44b0-aa41-1ad10767d380","container_repository_name":null,"full_path":"https://localhost/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","version_href":"/pulp/api/v3/repositories/rpm/rpm/29452eaa-c307-4248-ac50-4ca5358521bb/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/a6863d8a-bfc5-4a41-ae48-5f910eb27597/","publication_href":"/pulp/api/v3/publications/rpm/rpm/d9ebf6dd-5d4f-42f9-8de9-b57d0cd80a83/","id":5,"name":"Test
-        Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+      string: '  {"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2022-09-14
+        09:40:52 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
+        09:40:52 UTC","updated_at":"2022-09-14 09:41:00 UTC","backend_identifier":"669ff9e2-a488-497a-b1ed-9c769b0b3cb4","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-3.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","version_href":"/pulp/api/v3/repositories/rpm/rpm/3af34924-2005-4df5-9b7c-fe153bcd6b31/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/92ebf8b4-5b00-4cd6-a96c-16ffaa79a3a9/","publication_href":"/pulp/api/v3/publications/rpm/rpm/f9cc8dd1-fb16-4342-90fd-77f7c927fe77/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":1,"name":"Test
+        Repository","label":"just_a_test_repo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1635329476188","major":null,"minor":null,"product":{"id":3,"cp_id":"542618974491","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1663148452994","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"678233483120","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
     headers:
@@ -282,7 +283,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
@@ -300,7 +301,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2759'
+      - '2697'
     status:
       code: 200
       message: OK
@@ -320,16 +321,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://foreman.example.org/katello/api/repositories/5
+    uri: https://foreman.example.org/katello/api/repositories/1
   response:
     body:
-      string: '  {"ostree_branches":[],"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"organization_id":3,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":3},"created_at":"2021-10-27
-        10:11:15 UTC","updated_at":"2021-10-27 10:15:28 UTC","backend_identifier":"9ec49e4d-5eff-44b0-aa41-1ad10767d380","container_repository_name":null,"full_path":"https://localhost/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","version_href":"/pulp/api/v3/repositories/rpm/rpm/29452eaa-c307-4248-ac50-4ca5358521bb/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/a6863d8a-bfc5-4a41-ae48-5f910eb27597/","publication_href":"/pulp/api/v3/publications/rpm/rpm/d9ebf6dd-5d4f-42f9-8de9-b57d0cd80a83/","id":5,"name":"Test
-        Repository","label":"just_a_test_repo","description":null,"last_sync":null,"content_view":{"id":2,"name":"Default
+      string: '  {"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2022-09-14
+        09:40:52 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2022-09-14
+        09:40:52 UTC","updated_at":"2022-09-14 09:41:00 UTC","backend_identifier":"669ff9e2-a488-497a-b1ed-9c769b0b3cb4","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-3.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo/","version_href":"/pulp/api/v3/repositories/rpm/rpm/3af34924-2005-4df5-9b7c-fe153bcd6b31/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/92ebf8b4-5b00-4cd6-a96c-16ffaa79a3a9/","publication_href":"/pulp/api/v3/publications/rpm/rpm/f9cc8dd1-fb16-4342-90fd-77f7c927fe77/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":1,"name":"Test
+        Repository","label":"just_a_test_repo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1635329476188","major":null,"minor":null,"product":{"id":3,"cp_id":"542618974491","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","content_counts":{"ostree_branch":0,"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0,"rpm":0,"srpm":0,"package":0,"package_group":0,"erratum":0,"file":0,"deb":0,"module_stream":0,"ansible_collection":0},"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"mirror_on_sync":true,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"ostree_upstream_sync_policy":null,"ostree_upstream_sync_depth":null,"computed_ostree_upstream_sync_depth":0,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://localhost/pulp/repos/demo_repos/zoo","arch":"noarch","os_versions":[],"content_id":"1663148452994","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"678233483120","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"ignorable_content":null,"gpg_key":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"permissions":{"deletable":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
     headers:
@@ -350,7 +351,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.1.3
       Keep-Alive:
       - timeout=15, max=95
       Strict-Transport-Security:
@@ -368,7 +369,7 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
       content-length:
-      - '2759'
+      - '2697'
     status:
       code: 200
       message: OK
