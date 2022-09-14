@@ -15,6 +15,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.8"
+      - name: Install dependencies
+        run: make doc-setup
+      - name: Build docs
+        run: make doc
       - name: Install Ansible
         run: pip install --upgrade ansible py
       - name: Build Ansible Collection
