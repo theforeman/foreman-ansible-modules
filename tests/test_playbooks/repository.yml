@@ -20,6 +20,14 @@
     - include_tasks: tasks/product.yml
       vars:
         product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+        repository_name: "{{ item }}"
+      loop:
+        - "Test Repository"
+        - "Test Repository 2"
+        - "Test Docker Repository"
 
 - hosts: tests
   collections:
