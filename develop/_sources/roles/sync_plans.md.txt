@@ -8,7 +8,7 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `foreman_sync_plans`: List of sync plans to create. Each sync plan is represented as a dictionary which specifies the `name` of the sync plan and the `products` assigned to the sync plan. It also specifies the `interval` which can be 'hourly', 'daily', 'weekly', or 'custom cron'. In case the 'custom cron' `interval` is used, it should also specify the `cron_expression`. Finally the sync plan should have a `sync_date` which specifies the first time that the sync plan will run.
+- `foreman_sync_plans`: List of sync plans to create. Each sync plan is represented as a dictionary which specifies the `name` of the sync plan and the `products` assigned to the sync plan. It also specifies the `interval` which can be 'hourly', 'daily', 'weekly', or 'custom cron'. In case the 'custom cron' `interval` is used, it should also specify the `cron_expression`. Finally the sync plan should have a `sync_date` which specifies the first time that the sync plan will run. Optionally the sync plan can be enabled and disabled using the `enabled` parameter, and its state can be managed using `state`.
 
 ```yaml
 foreman_sync_plans:
@@ -27,6 +27,12 @@ foreman_sync_plans:
     sync_date: 2020-11-08 00:06:00 UTC
     products:
       - Foreman Client
+  - name: Weeky Ubuntu Sync (disabled)
+    interval: weekly
+    sync_date: 2020-11-07 00:00:00 UTC
+    products:
+      - Ubuntu 22.04
+    enabled: false
 ```
 
 Example Playbooks
