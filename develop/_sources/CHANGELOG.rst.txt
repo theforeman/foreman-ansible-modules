@@ -6,6 +6,23 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.7.0
+======
+
+Minor Changes
+-------------
+
+- repository - add support for ``include_tags`` and ``exclude_tags`` parameters for Katello 4.4+
+- subscription_manifest - increase the import timeout to 10 minutes (https://github.com/theforeman/foreman-ansible-modules/issues/1474)
+- sync_plans role - document the ``enabled`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+- sync_plans role - expose the ``state`` parameter of the underlying module, thus allowing to delete plans (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+
+Bugfixes
+--------
+
+- Properly use FQCN notation when redirecting the old ``foreman_*`` and ``katello_*`` module names. (https://github.com/theforeman/foreman-ansible-modules/issues/1484)
+- convert2rhel role - Content views for activation keys (https://bugzilla.redhat.com/2118790)
+
 v3.6.0
 ======
 
