@@ -652,3 +652,23 @@ releases:
       name: content_export_version
       namespace: ''
     release_date: '2022-09-01'
+  3.7.0:
+    changes:
+      bugfixes:
+      - Properly use FQCN notation when redirecting the old ``foreman_*`` and ``katello_*``
+        module names. (https://github.com/theforeman/foreman-ansible-modules/issues/1484)
+      - convert2rhel role - Content views for activation keys (https://bugzilla.redhat.com/2118790)
+      minor_changes:
+      - repository - add support for ``include_tags`` and ``exclude_tags`` parameters
+        for Katello 4.4+
+      - subscription_manifest - increase the import timeout to 10 minutes (https://github.com/theforeman/foreman-ansible-modules/issues/1474)
+      - sync_plans role - document the ``enabled`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+      - sync_plans role - expose the ``state`` parameter of the underlying module,
+        thus allowing to delete plans (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+    fragments:
+    - 1474-subscription_manifest-timeout.yaml
+    - 1477-sync_plans-enhancements.yml
+    - 1484-redirect-fqcn.yaml
+    - bz2118790.yml
+    - repository-include-exclude-tags.yaml
+    release_date: '2022-10-05'
