@@ -19,4 +19,10 @@
     that:
       - result.changed == expected_change
   when: expected_change is defined
+- assert:
+    fail_msg: "UUID not part of the returned data"
+    that:
+      - result.uuid is defined
+  when:
+    - manifest_state == 'present'
 ...
