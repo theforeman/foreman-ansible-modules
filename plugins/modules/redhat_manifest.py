@@ -123,7 +123,14 @@ EXAMPLES = '''
     pool_state: absent
 '''
 
-RETURN = '''# '''
+RETURN = '''
+uuid:
+    description: Manifest UUID
+    returned: success
+    type: str
+    sample: 5349d1d0-5bda-480a-b7bd-ff41e2c29e03
+    version_added: 3.8.0
+'''
 
 import json
 import os
@@ -321,8 +328,13 @@ def main():
     if module.params['path'] and manifest:
         export_manifest(module, manifest)
 
+    if manifest:
+        manifest_uuid = manifest.get('uuid')
+    else:
+        manifest_uuid = None
+
     changed = man_changed or sub_changed
-    module.exit_json(changed=changed)
+    module.exit_json(changed=changed, uuid=manifest_uuid)
 
 
 if __name__ == '__main__':
