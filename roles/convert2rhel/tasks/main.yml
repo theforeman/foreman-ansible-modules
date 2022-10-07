@@ -3,8 +3,13 @@
   include_role:
     name: theforeman.foreman.content_rhel
   when: foreman_convert2rhel_manage_subscription
-- import_tasks: products_and_repos.yml
-- import_tasks: content_views.yml
-- import_tasks: activation_keys.yml
-- import_tasks: host_groups.yml
-- import_tasks: sync.yml
+- name: "Create Producs and Repositories"
+  import_tasks: products_and_repos.yml
+- name: "Create Content Views"
+  import_tasks: content_views.yml
+- name: "Create Activation Keys"
+  import_tasks: activation_keys.yml
+- name: "Create Hostgroups"
+  import_tasks: host_groups.yml
+- name: "Sync Content"
+  import_tasks: sync.yml
