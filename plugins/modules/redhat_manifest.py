@@ -135,6 +135,7 @@ uuid:
 
 import json
 import os
+import tempfile
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.urls import fetch_url
@@ -277,13 +278,27 @@ def export_manifest(module, manifest):
     path = "/subscription/consumers/%s/export" % (manifest['uuid'])
     try:
         resp, info = fetch_portal(module, path, 'GET', accept_header='application/zip')
-        if not module.check_mode:
-            with open(module.params['path'], 'wb') as f:
-                while True:
-                    data = resp.read(65536)  # 64K
-                    if not data:
-                        break
-                    f.write(data)
+        fd, tempname = tempfile.mkstemp(dir=module.tmpdir)
+        with os.fdopen(fd, 'wb') as f:
+            while True:
+                data = resp.read(65536)  # 64K
+                if not data:
+                    break
+                f.write(data)
+
+        checksum_src = module.sha1(tempname)
+        checksum_dest = module.sha1(module.params['path'])
+
+        changed = checksum_src != checksum_dest
+
+        if changed and not module.check_mode:
+            module.atomic_move(tempname, module.params['path'])
+
+        if os.path.exists(tempname):
+            os.remove(tempname)
+
+        return changed
+
     except Exception as e:
         module.fail_json(msg="Failure downloading manifest, {0}".format(to_native(e)))
 
@@ -329,14 +344,16 @@ def main():
         sub_changed = False
 
     if module.params['path'] and manifest:
-        export_manifest(module, manifest)
+        export_changed = export_manifest(module, manifest)
+    else:
+        export_changed = False
 
     if manifest:
         manifest_uuid = manifest.get('uuid')
     else:
         manifest_uuid = None
 
-    changed = man_changed or sub_changed
+    changed = man_changed or sub_changed or export_changed
     module.exit_json(changed=changed, uuid=manifest_uuid)
 
 
