@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sys
 import vcr
 import json
@@ -113,7 +114,10 @@ def filter_response(response):
 def filter_request_uri(request):
     uri = urlparse(request.uri)
     if uri.hostname != 'subscription.rhsm.redhat.com':
-        request.uri = urlunparse(uri._replace(netloc="foreman.example.org"))
+        uri = uri._replace(netloc="foreman.example.org")
+    if uri.hostname == 'subscription.rhsm.redhat.com' and re.match('/subscription/users/[^/]+/owners', uri.path):
+        uri = uri._replace(path='/subscription/users/john-smith/owners')
+    request.uri = urlunparse(uri)
     return request
 
 
