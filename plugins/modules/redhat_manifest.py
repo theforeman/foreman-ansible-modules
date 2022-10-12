@@ -162,7 +162,7 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
                         "Talking to the Red Hat portal might fail without validate_certs=False. Please update.")
         del fetch_kwargs['ca_path']
         resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
-    if resp is None:
+    if resp is None or info["status"] >= 400:
         try:
             error = json.loads(info['body'])['displayMessage']
         except Exception:
