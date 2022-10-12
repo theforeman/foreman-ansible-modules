@@ -111,7 +111,9 @@ def filter_response(response):
 
 
 def filter_request_uri(request):
-    request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
+    uri = urlparse(request.uri)
+    if uri.hostname != 'subscription.rhsm.redhat.com':
+        request.uri = urlunparse(uri._replace(netloc="foreman.example.org"))
     return request
 
 
