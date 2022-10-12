@@ -55,6 +55,7 @@ options:
     description:
       - quantity of pool_id Subscriptions
     type: int
+    default: 1
   pool_state:
     description:
       - Subscription state
@@ -294,7 +295,7 @@ def main():
             password=dict(required=True, no_log=True),
             content_access_mode=dict(choices=['org_environment', 'entitlement'], default='entitlement'),
             pool_id=dict(type='str'),
-            quantity=dict(type='int'),
+            quantity=dict(type='int', default=1),
             pool_state=dict(choices=['present', 'absent'], default='present'),
             state=dict(choices=['present', 'absent'], default='present'),
             path=dict(type='path'),
