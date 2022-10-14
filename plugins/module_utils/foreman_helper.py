@@ -426,45 +426,6 @@ class ForemanAnsibleModule(AnsibleModule):
             _host_update_taxonomy_param = next(x for x in _host_update['params'] if x['name'] == param)
             _host_update['params'].remove(_host_update_taxonomy_param)
 
-    @_check_patch_needed(fixed_version='2.0.0')
-    def _patch_templates_resource_name(self):
-        """
-        Need to support both singular and plural form.
-        Not checking for the templates plugin here, as the check relies on the new name.
-        The resource was made plural per https://projects.theforeman.org/issues/28750
-        """
-        if 'template' in self.foremanapi.apidoc['docs']['resources']:
-            self.foremanapi.apidoc['docs']['resources']['templates'] = self.foremanapi.apidoc['docs']['resources']['template']
-
-    @_check_patch_needed(fixed_version='1.23.0')
-    def _patch_location_api(self):
-        """This is a workaround for the broken taxonomies apidoc in foreman.
-            see https://projects.theforeman.org/issues/10359
-        """
-
-        _location_organizations_parameter = {
-            u'validations': [],
-            u'name': u'organization_ids',
-            u'show': True,
-            u'description': u'\n<p>Organization IDs</p>\n',
-            u'required': False,
-            u'allow_nil': True,
-            u'allow_blank': False,
-            u'full_name': u'location[organization_ids]',
-            u'expected_type': u'array',
-            u'metadata': None,
-            u'validator': u'',
-        }
-        _location_methods = self.foremanapi.apidoc['docs']['resources']['locations']['methods']
-
-        _location_create = next(x for x in _location_methods if x['name'] == 'create')
-        _location_create_params_location = next(x for x in _location_create['params'] if x['name'] == 'location')
-        _location_create_params_location['params'].append(_location_organizations_parameter)
-
-        _location_update = next(x for x in _location_methods if x['name'] == 'update')
-        _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
-        _location_update_params_location['params'].append(_location_organizations_parameter)
-
     @_check_patch_needed(fixed_version='2.2.0', plugins=['remote_execution'])
     def _patch_subnet_rex_api(self):
         """
@@ -525,23 +486,6 @@ class ForemanAnsibleModule(AnsibleModule):
         _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
         _subnet_update_params_subnet['params'].append(_subnet_externalipam_group_parameter)
 
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_content_uploads_update_api(self):
-        """
-        This is a workaround for the broken content_uploads update apidoc in Katello.
-        See https://projects.theforeman.org/issues/27590
-        """
-
-        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
-
-        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
-        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
-        _content_upload_update_params_id['expected_type'] = 'string'
-
-        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
-        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
-        _content_upload_destroy_params_id['expected_type'] = 'string'
-
     @_check_patch_needed(plugins=['katello'])
     def _patch_organization_update_api(self):
         """
@@ -554,50 +498,6 @@ class ForemanAnsibleModule(AnsibleModule):
         _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
         _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
         _organization_update_params_organization['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_subscription_index_api(self):
-        """
-        This is a workaround for the broken subscriptions apidoc in Katello.
-        See https://projects.theforeman.org/issues/27575
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
-        _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
-        _subscription_index_params_organization_id['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_sync_plan_api(self):
-        """
-        This is a workaround for the broken sync_plan apidoc in Katello.
-        See https://projects.theforeman.org/issues/27532
-        """
-
-        _organization_parameter = {
-            u'validations': [],
-            u'name': u'organization_id',
-            u'show': True,
-            u'description': u'\n<p>Filter sync plans by organization name or label</p>\n',
-            u'required': False,
-            u'allow_nil': False,
-            u'allow_blank': False,
-            u'full_name': u'organization_id',
-            u'expected_type': u'numeric',
-            u'metadata': None,
-            u'validator': u'Must be a number.',
-        }
-
-        _sync_plan_methods = self.foremanapi.apidoc['docs']['resources']['sync_plans']['methods']
-
-        _sync_plan_add_products = next(x for x in _sync_plan_methods if x['name'] == 'add_products')
-        if next((x for x in _sync_plan_add_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_add_products['params'].append(_organization_parameter)
-
-        _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
-        if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_remove_products['params'].append(_organization_parameter)
 
     @_check_patch_needed(plugins=['katello'])
     def _patch_cv_filter_rule_api(self):
@@ -682,16 +582,11 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self._patch_host_update()
 
-        self._patch_templates_resource_name()
-        self._patch_location_api()
         self._patch_subnet_rex_api()
         self._patch_subnet_externalipam_group_api()
 
         # Katello
-        self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
-        self._patch_subscription_index_api()
-        self._patch_sync_plan_api()
         self._patch_cv_filter_rule_api()
         self._patch_ak_product_content_per_page()
 
