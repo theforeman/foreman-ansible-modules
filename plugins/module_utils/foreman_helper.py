@@ -517,7 +517,7 @@ class ForemanAnsibleModule(AnsibleModule):
             if create_param is not None and update_param is None:
                 _content_view_filter_rule_update['params'].append(create_param)
 
-    @_check_patch_needed(plugins=['katello'])
+    @_check_patch_needed(fixed_version='3.5.0', plugins=['katello'])
     def _patch_ak_product_content_per_page(self):
         """
         This is a workaround for the API not exposing the per_page param on the product_content endpoint
