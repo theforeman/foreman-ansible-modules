@@ -51,6 +51,7 @@ Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only P
      loop: "{{ compute_resources }}"
      no_log: yes
    ```
+* Modules require write access to `~/.cache` (or wherever `$XDG_CACHE_HOME` points at). Otherwise the API documentation cannot be downloaded and you get errors like `[Errno 13] Permission denied: '/home/runner/.cache/apypie`. If on your system `~/.cache` is not writeable, please set the `$XDG_CACHE_HOME` environment variable to a directory Ansible can write to.
 
 ## Installation
 
