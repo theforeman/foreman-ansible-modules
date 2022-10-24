@@ -10,7 +10,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 ### Required
 
-- `foreman_content_views`: List of content views to publish
+- `foreman_content_views_publish`: List of content views to publish
 
 Example Playbook
 ----------------
@@ -24,7 +24,7 @@ Example Playbook
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "Default Organization"
-        foreman_content_views:
+        foreman_content_views_publish:
           - RHEL 7 View
           - RHEL 8 View
 ```
