@@ -45,6 +45,15 @@ options:
     description:
       - Label of the Organization
     type: str
+  ignore_types:
+    description:
+      - List of resources types that will be automatically associated
+    type: list
+    elements: str
+    required: false
+    aliases:
+      - select_all_types
+    version_added: 3.8.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -87,10 +96,19 @@ def main():
             name=dict(required=True),
             description=dict(),
             label=dict(),
+            ignore_types=dict(type='list', elements='str', required=False, aliases=['select_all_types']),
+            select_all_types=dict(type='list', invisible=True, flat_name='ignore_types'),
         ),
     )
 
     with module.api_connection():
+        entity = module.lookup_entity('entity')
+
+        # workround the fact that the API expects `ignore_types` when modifying the entity
+        # but uses `select_all_types` when showing one
+        if entity and 'select_all_types' in entity:
+            entity['ignore_types'] = entity.pop('select_all_types')
+
         module.run()
 
 
