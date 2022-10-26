@@ -17,7 +17,7 @@ COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST =
 FLAGS =
-PYTEST = pytest -n 4 --boxed -vv
+PYTEST = pytest -n 4 --forked -vv
 
 APIPIE_VERSION ?= v0.3.2
 
