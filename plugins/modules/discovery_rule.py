@@ -120,6 +120,7 @@ def main():
             hostgroup=dict(type='entity'),
             hostname=dict(),
             max_count=dict(type='int'),
+            hosts_limit=dict(type='int', invisible=True, flat_name='max_count'),
             priority=dict(type='int'),
             enabled=dict(type='bool'),
         ),
