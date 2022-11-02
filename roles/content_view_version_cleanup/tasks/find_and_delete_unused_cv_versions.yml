@@ -12,7 +12,7 @@
   register: versions
 
 - name: "Delete unused content view versions of {{ cv.name }}"
-  include_tasks: delete_cv_versions.yml
+  ansible.builtin.include_tasks: delete_cv_versions.yml
   vars:
     cv_name: "{{ cv.name }}"
     cv_versions: "{{ (versions.resources | rejectattr('environments') | rejectattr('composite_content_view_ids') |
