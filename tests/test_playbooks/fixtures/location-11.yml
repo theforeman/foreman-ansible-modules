@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.4","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.4.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.4.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,68 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
-  response:
-    body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2021-11-15
-        08:18:28 UTC\",\"updated_at\":\"2021-11-15 08:18:28 UTC\",\"id\":4,\"name\":\"Test
-        Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
-      Foreman_version:
-      - 2.5.4
-      Keep-Alive:
-      - timeout=15, max=99
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Frame-Options:
-      - sameorigin
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '384'
     status:
       code: 200
       message: OK
@@ -133,8 +71,8 @@ interactions:
       string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"title=\\\"Test Location/Sub Location 1\\\"\",\n
         \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"ancestry\":\"4\",\"parent_id\":4,\"parent_name\":\"Test Location\",\"created_at\":\"2021-11-15
-        08:18:29 UTC\",\"updated_at\":\"2021-11-15 08:18:29 UTC\",\"id\":5,\"name\":\"Sub
+        [{\"ancestry\":\"4\",\"parent_id\":4,\"parent_name\":\"Test Location\",\"created_at\":\"2022-11-08
+        09:29:07 UTC\",\"updated_at\":\"2022-11-08 09:29:07 UTC\",\"id\":5,\"name\":\"Sub
         Location 1\",\"title\":\"Test Location/Sub Location 1\",\"description\":null}]\n}\n"
     headers:
       Cache-Control:
@@ -154,13 +92,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.4.0
       Keep-Alive:
-      - timeout=15, max=98
+      - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -171,8 +109,64 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '422'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2022-11-08
+        09:29:05 UTC\",\"updated_at\":\"2022-11-08 09:29:05 UTC\",\"id\":4,\"name\":\"Test
+        Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.4.0
+      Keep-Alive:
+      - timeout=15, max=98
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -193,7 +187,7 @@ interactions:
     uri: https://foreman.example.org/api/locations/5
   response:
     body:
-      string: '{"id":5,"name":"Sub Location 1","created_at":"2021-11-15T08:18:29.888Z","updated_at":"2021-11-15T08:18:29.888Z","ignore_types":[],"ancestry":"4","title":"Test
+      string: '{"id":5,"name":"Sub Location 1","created_at":"2022-11-08T09:29:07.656Z","updated_at":"2022-11-08T09:29:07.656Z","ignore_types":[],"ancestry":"4","title":"Test
         Location/Sub Location 1","description":null}'
     headers:
       Cache-Control:
@@ -213,13 +207,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.4.0
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -230,8 +224,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '203'
     status:
       code: 200
       message: OK
