@@ -120,6 +120,8 @@ jobs:
         run: |
           pip install --upgrade ansible-core
           pip install --upgrade -r requirements-lint.txt
+      - name: prepare a redhat-uep.pem, even if we run on Ubuntu
+        run: sudo mkdir -p /etc/rhsm/ca/ && sudo curl -o /etc/rhsm/ca/redhat-uep.pem https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem
       - name: Run lint
         run: make lint
       - name: Upload collection artifact
