@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/snapshot.yml
+      vars:
+        snapshot_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch snapshot info
+      snapshot_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        host: "{{ snapshot_host_name }}"
+      register: snapshot_info
+    - name: check snapshots details
+      assert:
+        that:
+          - snapshot_info['snapshots'][0]['name'] == "ansible"
