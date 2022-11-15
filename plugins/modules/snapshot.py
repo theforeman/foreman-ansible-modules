@@ -56,7 +56,12 @@ options:
     description:
       - State of Snapshot
     default: present
-    choices: ["present", "reverted", "absent"]
+    choices: ["present", "reverted", "absent", "new_snapshot"]
+    type: str
+  id:
+    description:
+      - Id of Snapshot
+    required: false
     type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
@@ -72,6 +77,15 @@ EXAMPLES = '''
     host: "server.example.com"
     state: present
 
+- name: "Create Snapshots with same name"
+  theforeman.foreman.snapshot:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "snapshot_before_software_upgrade"
+    host: "server.example.com"
+    state: new_snapshot
+
 - name: "Update a Snapshot"
   theforeman.foreman.snapshot:
     username: "admin"
@@ -81,6 +95,17 @@ EXAMPLES = '''
     host: "server.example.com"
     description: "description of snapshot"
     state: present
+
+- name: "Update a Snapshot with same name"
+  theforeman.foreman.snapshot:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "snapshot_before_software_upgrade"
+    host: "server.example.com"
+    description: "description of snapshot"
+    state: present
+    id: "snapshot-id"
 
 - name: "Revert a Snapshot"
   theforeman.foreman.snapshot:
@@ -124,20 +149,29 @@ class ForemanSnapshotModule(ForemanEntityAnsibleModule):
 def main():
     module = ForemanSnapshotModule(
         argument_spec=dict(
-            state=dict(default='present', choices=['present', 'absent', 'reverted']),
+            state=dict(default='present', choices=['present', 'absent', 'reverted', 'new_snapshot']),
         ),
         foreman_spec=dict(
             host=dict(type='entity', required=True, ensure=False),
             name=dict(required=True),
             description=dict(),
             include_ram=dict(type='bool'),
+            id=dict(),
         ),
         required_plugins=[('snapshot_management', ['*'])],
         entity_opts={'scope': ['host']},
     )
 
     with module.api_connection():
-        module.run()
+        host_val = module.lookup_entity('host')
+        params = {'host_id': host_val['id']}
+        if module.state == 'new_snapshot':
+            module.ensure_entity('snapshots', module.foreman_params, None, params=params)
+        elif module.state != 'new_snapshot' and module.foreman_params.get('id'):
+            snapshot = module.resource_action('snapshots', 'show', params={'id': module.params['id'], 'host_id': host_val['id']})
+            module.ensure_entity('snapshots', module.foreman_params, snapshot, params=params, state=module.state)
+        else:
+            module.run()
 
 
 if __name__ == '__main__':
