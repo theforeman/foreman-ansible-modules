@@ -966,6 +966,8 @@ class ForemanAnsibleModule(AnsibleModule):
         elif state == 'reverted':
             if current_entity is not None:
                 updated_entity = self._revert_entity(resource, current_entity, params)
+        elif state == 'new_snapshot':
+            updated_entity = self._create_entity(resource, desired_entity, params, foreman_spec)
         elif state == 'absent':
             if current_entity is not None:
                 updated_entity = self._delete_entity(resource, current_entity, params)
