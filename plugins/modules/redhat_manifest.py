@@ -194,6 +194,8 @@ def delete_manifest(module, uuid):
 
 def get_manifest(module):
     path = "/subscription/owners/%s/consumers?type=satellite" % (module.params['rhsm_owner'])
+    if module.params['uuid']:
+        path += '&uuid={0}'.format(module.params['uuid'])
     resp, info = fetch_portal(module, path, 'GET')
     manifests = json.loads(to_text(resp.read()))
     if module.params['name']:
