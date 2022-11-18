@@ -186,7 +186,8 @@ def main():
             upstream_url=dict(required=False),
             upstream_username=dict(required=False),
             upstream_password=dict(required=False,no_log=True),
-            upstream_ca_cert=dict(required=False, type='entity', resource_type='content_credentials', scope=['organization'),
+            upstream_ca_cert=dict(required=False, type='entity', resource_type='content_credentials', scope=['organization']),
+
             upstream_organization=dict(required=False),
             upstream_lifecycle_environment=dict(required=False),
             upstream_content_view=dict(required=False),
