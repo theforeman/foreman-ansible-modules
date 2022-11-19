@@ -208,28 +208,31 @@ def main():
         new_organization = module.run()
 
         if handle_cdn_configuration:
-            payload = {
-                'id': new_organization['id'],
-                'type': module.foreman_params['upstream_type'],
-            }
-
-            if module.foreman_params['upstream_type'] == 'redhat_cdn':
-                extra_payload = {
-                    'url': module.foreman_params['upstream_url'],
+            if organization:
+                payload = {
+                    'id': new_organization['id'],
+                    'type': module.foreman_params['upstream_type'],
                 }
-            if module.foreman_params['upstream_type'] == 'network_sync':
-                extra_payload = {
-                    'url': module.foreman_params['upstream_url'],
-                    'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert'],
-                    'username': module.foreman_params['upstream_username'],
-                    'password': module.foreman_params['upstream_password'],
-                    'upstream_organization_label': module.foreman_params['upstream_organization'],
-                    'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
-                    'upstream_content_view_label': module.foreman_params['upstream_content_view'],
-                }
+                extra_payload = {}
 
-            payload.update(extra_payload)
-            module.resource_action('organizations', 'cdn_configuration', payload)
+                if module.foreman_params['upstream_type'] == 'redhat_cdn':
+                    extra_payload = {
+                        'url': module.foreman_params['upstream_url'],
+                    }
+                if module.foreman_params['upstream_type'] == 'network_sync':
+                    extra_payload = {
+                        'url': module.foreman_params['upstream_url'],
+                        'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert'],
+                        'username': module.foreman_params['upstream_username'],
+                        'password': module.foreman_params['upstream_password'],
+                        'upstream_organization_label': module.foreman_params['upstream_organization'],
+                        'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
+                        'upstream_content_view_label': module.foreman_params['upstream_content_view'],
+                    }
+
+                if extra_payload:
+                    payload.update(extra_payload)
+                module.resource_action('organizations', 'cdn_configuration', payload)
 
 
 if __name__ == '__main__':
