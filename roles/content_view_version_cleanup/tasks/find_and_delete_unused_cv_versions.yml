@@ -17,4 +17,4 @@
     cv_name: "{{ cv.name }}"
     cv_versions: "{{ (versions.resources | rejectattr('environments') | rejectattr('composite_content_view_ids') |
       rejectattr('published_in_composite_content_view_ids') | map(attribute='version') | map('float') | sort |
-      map('string') | reverse | list )[foreman_content_view_version_cleanup_keep:] }}"
+      map('string') | reverse | list)[foreman_content_view_version_cleanup_keep:] }}"
