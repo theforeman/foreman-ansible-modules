@@ -96,6 +96,16 @@ DOCUMENTATION = '''
         ini:
           - section: callback_foreman
             key: dir_store
+      ignore_hosts:
+        description:
+          - Any hosts matching the set regex pattern will not be reported to Foreman.
+          - This can be useful for not reporting "localhost" facts.
+        env:
+          - name: FOREMAN_IGNORE_HOSTS
+        default: ''
+        ini:
+          - section: callback_foreman
+            key: ignore_hosts
       disable_callback:
         description:
           - Toggle to make the callback plugin disable itself even if it is loaded.
@@ -109,6 +119,7 @@ import os
 from datetime import datetime
 from collections import defaultdict
 import json
+import re
 import time
 
 try:
@@ -197,6 +208,8 @@ class CallbackModule(CallbackBase):
         ssl_cert = self.get_option('client_cert')
         ssl_key = self.get_option('client_key')
         self.dir_store = self.get_option('dir_store')
+        self.ignore_hosts = self.get_option('ignore_hosts')
+        self._ignored_hosts_notified = []
 
         if not HAS_REQUESTS:
             self._disable_plugin(u'The `requests` python module is not installed')
@@ -234,6 +247,12 @@ class CallbackModule(CallbackBase):
         return verify
 
     def _send_data(self, data_type, report_type, host, data):
+        if self.ignore_hosts and re.match(self.ignore_hosts, host):
+            if not host in self._ignored_hosts_notified:
+                self._display.warning(u'Not sending callback data for ignored host: {host}'.format(host=to_text(host)))
+                self._ignored_hosts_notified.append(host)
+            return
+
         if data_type == 'facts':
             url = self.foreman_url + '/api/v2/hosts/facts'
         elif data_type == 'report' and report_type == 'foreman':
