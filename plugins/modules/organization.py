@@ -186,8 +186,8 @@ def main():
             upstream_url=dict(required=False),
             upstream_username=dict(required=False),
             upstream_password=dict(required=False,no_log=True),
-            upstream_ca_cert=dict(required=False, type='entity', resource_type='content_credentials', scope=['organization']),
-
+            #upstream_ca_cert=dict(required=False, type='entity', resource_type='content_credentials', scope=['']),
+            upstream_ca_cert_id=dict(required=False),
             upstream_organization=dict(required=False),
             upstream_lifecycle_environment=dict(required=False),
             upstream_content_view=dict(required=False),
@@ -222,7 +222,7 @@ def main():
                 if module.foreman_params['upstream_type'] == 'network_sync':
                     extra_payload = {
                         'url': module.foreman_params['upstream_url'],
-                        'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert'],
+                        'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert_id'],
                         'username': module.foreman_params['upstream_username'],
                         'password': module.foreman_params['upstream_password'],
                         'upstream_organization_label': module.foreman_params['upstream_organization'],
