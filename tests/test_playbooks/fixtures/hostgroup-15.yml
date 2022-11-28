@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.4","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.5.0-rc1","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -72,12 +70,12 @@ interactions:
     body:
       string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"title=\\\"New host group\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"subnet_id\":1,\"subnet_name\":\"Test
-        subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS 7.6\",\"domain_id\":2,\"domain_name\":\"foo.example.com\",\"environment_id\":1,\"environment_name\":\"production\",\"compute_profile_id\":4,\"compute_profile_name\":\"myprofile\",\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"ptable_id\":133,\"ptable_name\":\"Part
-        table\",\"medium_id\":13,\"medium_name\":\"TestOS Mirror\",\"pxe_loader\":\"Grub2
-        UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\":1,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2021-11-15
-        08:33:48 UTC\",\"updated_at\":\"2021-11-15 08:33:48 UTC\",\"id\":8,\"name\":\"New
-        host group\",\"title\":\"New host group\",\"description\":\"New host group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos7-foreman-2-5.tanso.example.com\",\"puppet_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"puppet_ca_proxy\":{\"name\":\"centos7-foreman-2-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos7-foreman-2-5.tanso.example.com:8443\"},\"inherited_compute_profile_id\":null,\"inherited_environment_id\":null,\"inherited_domain_id\":null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\":null,\"inherited_compute_resource_id\":null,\"inherited_operatingsystem_id\":null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\":null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\":null,\"inherited_pxe_loader\":null}]\n}\n"
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"subnet_id\":2,\"subnet_name\":\"Test
+        subnet4\",\"operatingsystem_id\":2,\"operatingsystem_name\":\"TestOS 7.6\",\"domain_id\":3,\"domain_name\":\"foo.example.com\",\"compute_profile_id\":4,\"compute_profile_name\":\"myprofile\",\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"ptable_id\":144,\"ptable_name\":\"Part
+        table\",\"medium_id\":17,\"medium_name\":\"TestOS Mirror\",\"pxe_loader\":\"Grub2
+        UEFI\",\"subnet6_id\":null,\"subnet6_name\":null,\"compute_resource_id\":1,\"compute_resource_name\":\"libvirt-cr\",\"architecture_id\":1,\"architecture_name\":\"x86_64\",\"realm_id\":null,\"realm_name\":null,\"created_at\":\"2022-11-28
+        08:31:20 UTC\",\"updated_at\":\"2022-11-28 08:31:20 UTC\",\"id\":4,\"name\":\"New
+        host group\",\"title\":\"New host group\",\"description\":\"New host group\",\"puppet_proxy_id\":1,\"puppet_proxy_name\":\"centos8-stream-foreman-3-5.tanso.example.com\",\"puppet_ca_proxy_id\":1,\"puppet_ca_proxy_name\":\"centos8-stream-foreman-3-5.tanso.example.com\",\"puppet_proxy\":{\"name\":\"centos8-stream-foreman-3-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos8-stream-foreman-3-5.tanso.example.com:8443\"},\"puppet_ca_proxy\":{\"name\":\"centos8-stream-foreman-3-5.tanso.example.com\",\"id\":1,\"url\":\"https://centos8-stream-foreman-3-5.tanso.example.com:8443\"},\"inherited_compute_profile_id\":null,\"inherited_domain_id\":null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\":null,\"inherited_compute_resource_id\":null,\"inherited_operatingsystem_id\":null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\":null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\":null,\"inherited_pxe_loader\":null,\"environment_id\":1,\"environment_name\":\"production\",\"inherited_environment_id\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -96,13 +94,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -113,8 +111,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '1814'
     status:
       code: 200
       message: OK
@@ -130,18 +126,20 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/hostgroups/8
+    uri: https://foreman.example.org/api/hostgroups/4
   response:
     body:
-      string: '{"subnet_id":1,"subnet_name":"Test subnet4","operatingsystem_id":2,"operatingsystem_name":"TestOS
-        7.6","domain_id":2,"domain_name":"foo.example.com","environment_id":1,"environment_name":"production","compute_profile_id":4,"compute_profile_name":"myprofile","ancestry":null,"parent_id":null,"parent_name":null,"ptable_id":133,"ptable_name":"Part
-        table","medium_id":13,"medium_name":"TestOS Mirror","pxe_loader":"Grub2 UEFI","subnet6_id":null,"subnet6_name":null,"compute_resource_id":1,"compute_resource_name":"libvirt-cr","architecture_id":1,"architecture_name":"x86_64","realm_id":null,"realm_name":null,"created_at":"2021-11-15
-        08:33:48 UTC","updated_at":"2021-11-15 08:33:48 UTC","id":8,"name":"New host
-        group","title":"New host group","description":"New host group","puppet_proxy_id":1,"puppet_proxy_name":"centos7-foreman-2-5.tanso.example.com","puppet_ca_proxy_id":1,"puppet_ca_proxy_name":"centos7-foreman-2-5.tanso.example.com","puppet_proxy":{"name":"centos7-foreman-2-5.tanso.example.com","id":1,"url":"https://centos7-foreman-2-5.tanso.example.com:8443"},"puppet_ca_proxy":{"name":"centos7-foreman-2-5.tanso.example.com","id":1,"url":"https://centos7-foreman-2-5.tanso.example.com:8443"},"inherited_compute_profile_id":null,"inherited_environment_id":null,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":null,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[{"priority":60,"created_at":"2021-11-15
-        08:33:48 UTC","updated_at":"2021-11-15 08:33:59 UTC","id":15,"name":"subnet_param1","parameter_type":"string","value":"new_value1"},{"priority":60,"created_at":"2021-11-15
-        08:33:59 UTC","updated_at":"2021-11-15 08:33:59 UTC","id":19,"name":"subnet_param3","parameter_type":"string","value":"value3"}],"template_combinations":[],"puppetclasses":[],"config_groups":[{"created_at":"2021-11-15
-        08:31:39 UTC","updated_at":"2021-11-15 08:31:39 UTC","id":1,"name":"cfg_group1","puppetclasses":[]},{"created_at":"2021-11-15
-        08:31:40 UTC","updated_at":"2021-11-15 08:31:40 UTC","id":2,"name":"cfg_group2","puppetclasses":[]}],"all_puppetclasses":[],"locations":[{"id":11,"name":"Bar","title":"Bar","description":null},{"id":9,"name":"Foo","title":"Foo","description":null},{"id":10,"name":"Baz","title":"Foo/Baz","description":null}],"organizations":[{"id":12,"name":"Test
+      string: '{"subnet_id":2,"subnet_name":"Test subnet4","operatingsystem_id":2,"operatingsystem_name":"TestOS
+        7.6","domain_id":3,"domain_name":"foo.example.com","compute_profile_id":4,"compute_profile_name":"myprofile","ancestry":null,"parent_id":null,"parent_name":null,"ptable_id":144,"ptable_name":"Part
+        table","medium_id":17,"medium_name":"TestOS Mirror","pxe_loader":"Grub2 UEFI","subnet6_id":null,"subnet6_name":null,"compute_resource_id":1,"compute_resource_name":"libvirt-cr","architecture_id":1,"architecture_name":"x86_64","realm_id":null,"realm_name":null,"created_at":"2022-11-28
+        08:31:20 UTC","updated_at":"2022-11-28 08:31:20 UTC","id":4,"name":"New host
+        group","title":"New host group","description":"New host group","puppet_proxy_id":1,"puppet_proxy_name":"centos8-stream-foreman-3-5.tanso.example.com","puppet_ca_proxy_id":1,"puppet_ca_proxy_name":"centos8-stream-foreman-3-5.tanso.example.com","puppet_proxy":{"name":"centos8-stream-foreman-3-5.tanso.example.com","id":1,"url":"https://centos8-stream-foreman-3-5.tanso.example.com:8443"},"puppet_ca_proxy":{"name":"centos8-stream-foreman-3-5.tanso.example.com","id":1,"url":"https://centos8-stream-foreman-3-5.tanso.example.com:8443"},"inherited_compute_profile_id":null,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":null,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[{"priority":60,"created_at":"2022-11-28
+        08:31:20 UTC","updated_at":"2022-11-28 08:31:33 UTC","id":4,"name":"subnet_param1","parameter_type":"string","value":"new_value1"},{"priority":60,"created_at":"2022-11-28
+        08:31:33 UTC","updated_at":"2022-11-28 08:31:33 UTC","id":8,"name":"subnet_param3","parameter_type":"string","value":"value3"}],"environment_id":1,"environment_name":"production","inherited_environment_id":null,"template_combinations":[],"puppet":{"puppetclasses":[],"config_groups":[{"created_at":"2022-11-25
+        12:00:02 UTC","updated_at":"2022-11-25 12:00:02 UTC","id":3,"name":"cfg_group1","puppetclasses":[]},{"created_at":"2022-11-25
+        12:00:02 UTC","updated_at":"2022-11-25 12:00:02 UTC","id":4,"name":"cfg_group2","puppetclasses":[]}],"all_puppetclasses":[]},"puppetclasses":[],"config_groups":[{"created_at":"2022-11-25
+        12:00:02 UTC","updated_at":"2022-11-25 12:00:02 UTC","id":3,"name":"cfg_group1","puppetclasses":[]},{"created_at":"2022-11-25
+        12:00:02 UTC","updated_at":"2022-11-25 12:00:02 UTC","id":4,"name":"cfg_group2","puppetclasses":[]}],"all_puppetclasses":[],"locations":[{"id":11,"name":"Bar","title":"Bar","description":null},{"id":9,"name":"Foo","title":"Foo","description":null},{"id":10,"name":"Baz","title":"Foo/Baz","description":null}],"organizations":[{"id":12,"name":"Test
         Org1","title":"Test Org1","description":"A test organization"},{"id":13,"name":"Test
         Org2","title":"Test Org2","description":"A test organization"}]}'
     headers:
@@ -162,13 +160,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.4
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -179,8 +177,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '2700'
     status:
       code: 200
       message: OK
