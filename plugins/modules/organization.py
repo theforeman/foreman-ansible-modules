@@ -207,29 +207,35 @@ def main():
         organization = module.lookup_entity('entity')
         new_organization = module.run()
 
-        if handle_cdn_configuration:
-            if organization:
-                payload = {
-                    'id': new_organization['id'],
-                    'type': module.foreman_params['upstream_type'],
+        if handle_cdn_configuration and not module.desired_absent:
+            payload = {
+                'id': organization['id'],
+            }
+            extra_payload = {
+                'type': module.foreman_params['upstream_type'],
+            }
+
+            if module.foreman_params['upstream_type'] == 'redhat_cdn':
+                cdn_config = {
+                    'url': module.foreman_params['upstream_url'],
                 }
-                extra_payload = {}
+                extra_payload.update(cdn_config)
+            if module.foreman_params['upstream_type'] == 'network_sync':
+                cdn_config = {
+                    'url': module.foreman_params['upstream_url'],
+                    'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert_id'],
+                    'username': module.foreman_params['upstream_username'],
+                    'password': module.foreman_params['upstream_password'],
+                    'upstream_organization_label': module.foreman_params['upstream_organization'],
+                    'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
+                    'upstream_content_view_label': module.foreman_params['upstream_content_view'],
+                }
+                extra_payload.update(cdn_config)
 
-                if module.foreman_params['upstream_type'] == 'redhat_cdn':
-                    extra_payload = {
-                        'url': module.foreman_params['upstream_url'],
-                    }
-                if module.foreman_params['upstream_type'] == 'network_sync':
-                    extra_payload = {
-                        'url': module.foreman_params['upstream_url'],
-                        'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert_id'],
-                        'username': module.foreman_params['upstream_username'],
-                        'password': module.foreman_params['upstream_password'],
-                        'upstream_organization_label': module.foreman_params['upstream_organization'],
-                        'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
-                        'upstream_content_view_label': module.foreman_params['upstream_content_view'],
-                    }
+            current_cdn_config = {k: v for k, v in organization['cdn_configuration'].items() if v is not None}
+            del current_cdn_config['password_exists']
 
+            if current_cdn_config != extra_payload:
                 if extra_payload:
                     payload.update(extra_payload)
                 module.resource_action('organizations', 'cdn_configuration', payload)
