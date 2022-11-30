@@ -62,13 +62,13 @@ options:
     required: false
     type: str
     choices:
-      - 'redhat_cdn'
-      - 'network_sync'
-      - 'export_sync'
+      - redhat_cdn
+      - network_sync
+      - export_sync
   upstream_url:
     description:
       - URL of the upstream resource
-      - Required when I(upstream_type) is 'redhat_cdn' or 'network_sync'
+      - Required when I(upstream_type) is C(redhat_cdn) or C(network_sync)
     required: false
     type: str
   upstream_ca_cert:
@@ -79,31 +79,31 @@ options:
   upstream_username:
     description:
       - Username to authenticate to the upstream Foreman server
-      - Required when I(upstream_type) is 'network_sync'
+      - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
   upstream_password:
     description:
       - Password to authenticate to the upstream Foreman server
-      - Required when I(upstream_type) is 'network_sync'
+      - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
   upstream_organization:
     description:
       - Organization in the upstream Foreman server to synchronize
-      - Required when I(upstream_type) is 'network_sync'
+      - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
   upstream_content_view:
     description:
       - Content View in the upstream Foreman server to synchronize
-      - Required when I(upstream_type) is 'network_sync'
+      - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
   upstream_lifecycle_environment:
     description:
       - Lifecycle Environment in the upstream Foreman server to synchronize
-      - Required when I(upstream_type) is 'network_sync'
+      - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
 extends_documentation_fragment:
@@ -121,7 +121,7 @@ EXAMPLES = '''
     name: "My Cool New Organization"
     state: present
 
-- name: "Configure Red Hat CDN on a different URL'
+- name: "Configure Red Hat CDN on a different URL"
   theforeman.foreman.organization:
     username: "admin"
     password: "changeme"
