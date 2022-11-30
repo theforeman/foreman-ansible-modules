@@ -204,8 +204,7 @@ def main():
 
         handle_cdn_configuration = 'upstream_type' in module.foreman_params
 
-        organization = module.lookup_entity('entity')
-        new_organization = module.run()
+        organization = module.run()
 
         if handle_cdn_configuration and not module.desired_absent:
             payload = {
