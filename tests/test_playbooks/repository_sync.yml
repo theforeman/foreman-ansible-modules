@@ -30,6 +30,12 @@
       include_tasks: tasks/katello_sync.yml
       vars:
         repository: "Test Repository"
+    - name: sync missing repository
+      include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: "Test Repository That Doesn't Exist"
+        expected_fail: true
+        expected_fail_msg: "Found no results while searching for repositories with name"
 
 - hosts: localhost
   collections:
