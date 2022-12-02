@@ -147,6 +147,11 @@ options:
         description:
           - The value contains sensitive information and should't be normally visible, useful e.g. for passwords
         type: bool
+      default:
+        description:
+          - Default value for user input
+        type: str
+        version_added: 3.8.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -331,6 +336,7 @@ template_input_foreman_spec = {
     ]),
     'resource_type': dict(),
     'hidden_value': dict(type='bool'),
+    'default': dict(),
 }
 
 
