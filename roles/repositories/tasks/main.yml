@@ -45,7 +45,7 @@
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
 
-- name: 'Create Repositories'
+- name: 'Create Repositories'   # noqa: args[module]
   theforeman.foreman.repository:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
