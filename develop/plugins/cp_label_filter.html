@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>theforeman.foreman.cp_label filter &mdash; Foreman Ansible Modules  documentation</title>
+  <title>theforeman.foreman.cp_label filter – Convert strings to Candlepin labels &mdash; Foreman Ansible Modules  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/ansible-basic-sphinx-ext.css" type="text/css" />
@@ -52,7 +52,7 @@
 <li class="toctree-l3"><a class="reference internal" href="index.html#filter-plugins">Filter Plugins</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman callback – Sends events to Foreman</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.cp_label filter</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.cp_label filter – Convert strings to Candlepin labels</a></li>
 <li class="toctree-l4"><a class="reference internal" href="foreman_inventory.html">theforeman.foreman.foreman inventory – Foreman inventory source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key module – Manage Activation Keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="architecture_module.html">theforeman.foreman.architecture module – Manage Architectures</a></li>
@@ -135,7 +135,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../filters.html">Filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../roles/index.html">Role Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
 </ul>
@@ -166,7 +165,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Theforeman.Foreman</a></li>
-      <li class="breadcrumb-item active">theforeman.foreman.cp_label filter</li>
+      <li class="breadcrumb-item active">theforeman.foreman.cp_label filter – Convert strings to Candlepin labels</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/plugins/cp_label_filter.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -176,17 +175,93 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-theforeman-foreman-cp-label-filter"></span><section id="theforeman-foreman-cp-label-filter">
-<h1>theforeman.foreman.cp_label filter<a class="headerlink" href="#theforeman-foreman-cp-label-filter" title="Permalink to this heading"></a></h1>
-<p>The documentation for the filter plugin, theforeman.foreman.cp_label,  was malformed.</p>
-<p>The errors were:</p>
-<ul>
-<li><div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="nt">Missing documentation or could not parse documentation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">No documentation available for theforeman.foreman.cp_label (/home/runner/work/foreman-ansible-modules/foreman-ansible-modules/build/collections/ansible_collections/theforeman/foreman/plugins/filter/foreman.py)</span><span class="w"></span>
+  <span class="target" id="ansible-collections-theforeman-foreman-cp-label-filter"></span><section id="theforeman-foreman-cp-label-filter-convert-strings-to-candlepin-labels">
+<h1>theforeman.foreman.cp_label filter – Convert strings to Candlepin labels<a class="headerlink" href="#theforeman-foreman-cp-label-filter-convert-strings-to-candlepin-labels" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This filter plugin is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.8.0-dev).</p>
+<p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.cp_label</span></code>.</p>
+</div>
+<p class="ansible-version-added">New in theforeman.foreman 0.1.0</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#input" id="id2">Input</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-value" id="id4">Return Value</a></p></li>
+</ul>
+</div>
+<section id="synopsis">
+<h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Converts an arbitrary string to a valid Candlepin label</p></li>
+</ul>
+</section>
+<section id="input">
+<h2><a class="toc-backref" href="#id2">Input</a><a class="headerlink" href="#input" title="Permalink to this heading"></a></h2>
+<p>This describes the input of the filter, the value before <code class="docutils literal notranslate"><span class="pre">|</span> <span class="pre">theforeman.foreman.cp_label</span></code>.</p>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-_input"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-cp-label-filter-parameter-input"><strong>Input</strong></p>
+<a class="ansibleOptionLink" href="#parameter-_input" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>String that should be converted</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="examples">
+<h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="nt">organization_label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="s1">&#39;Default Organization&#39;</span> <span class="o">|</span> <span class="nf">cp_label</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="w"></span>
+<span class="c1"># =&gt; &#39;Default_Organization&#39;</span><span class="w"></span>
 </pre></div>
 </div>
-</li>
+</section>
+<section id="return-value">
+<h2><a class="toc-backref" href="#id4">Return Value</a><a class="headerlink" href="#return-value" title="Permalink to this heading"></a></h2>
+<table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="return-_value"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-cp-label-filter-return-value"><strong>Return value</strong></p>
+<a class="ansibleOptionLink" href="#return-_value" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The converted Candlepin label</p>
+<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
+</div></td>
+</tr>
+</tbody>
+</table>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Matthias Dellweg</p></li>
 </ul>
-<p>File a bug with the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/issues">theforeman.foreman collection</a> in order to have it corrected.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.</p>
+</div>
+</section>
+<section id="collection-links">
+<h3>Collection links<a class="headerlink" href="#collection-links" title="Permalink to this heading"></a></h3>
+<p class="ansible-links">
+  <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+  <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+  <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+</p></section>
+</section>
 </section>
 
 

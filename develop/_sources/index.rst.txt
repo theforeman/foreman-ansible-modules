@@ -12,7 +12,6 @@ Welcome to Foreman Ansible Modules' documentation!
 
    README
    plugins/index
-   Filters <filters>
    roles/index
    cvmanager
 
