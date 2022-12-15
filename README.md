@@ -89,7 +89,7 @@ You can also specify a branch to use such as `devel` (below) or a feature branch
 
 To install from a `requirements.yml` file (useful when installing multiple collections) add a snippet to your `requirements.yml` like
 
-```yml
+```yaml
 ---
 collections:
   - name: https://github.com/theforeman/foreman-ansible-modules.git
