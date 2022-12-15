@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="theforeman.foreman.activation_key module – Manage Activation Keys" href="activation_key_module.html" />
-    <link rel="prev" title="theforeman.foreman.foreman callback – Sends events to Foreman" href="foreman_callback.html" /> 
+    <link rel="prev" title="theforeman.foreman.cp_label filter" href="cp_label_filter.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,8 +49,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#plugin-index">Plugin Index</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="index.html#modules">Modules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#filter-plugins">Filter Plugins</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html#inventory-plugins">Inventory Plugins</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="foreman_callback.html">theforeman.foreman.foreman callback – Sends events to Foreman</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cp_label_filter.html">theforeman.foreman.cp_label filter</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.foreman inventory – Foreman inventory source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="activation_key_module.html">theforeman.foreman.activation_key module – Manage Activation Keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="architecture_module.html">theforeman.foreman.architecture module – Manage Architectures</a></li>
@@ -186,28 +188,28 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#synopsis" id="id97">Synopsis</a></p></li>
-<li><p><a class="reference internal" href="#requirements" id="id98">Requirements</a></p></li>
-<li><p><a class="reference internal" href="#parameters" id="id99">Parameters</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id100">Examples</a></p></li>
+<li><p><a class="reference internal" href="#synopsis" id="id113">Synopsis</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id114">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id115">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id116">Examples</a></p></li>
 </ul>
 </div>
 <section id="synopsis">
-<h2><a class="toc-backref" href="#id97">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id113">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Get inventory hosts from Foreman.</p></li>
 <li><p>Uses a YAML configuration file that ends with ``foreman.(yml|yaml)``.</p></li>
 </ul>
 </section>
 <section id="requirements">
-<span id="ansible-collections-theforeman-foreman-foreman-inventory-requirements"></span><h2><a class="toc-backref" href="#id98">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<span id="ansible-collections-theforeman-foreman-foreman-inventory-requirements"></span><h2><a class="toc-backref" href="#id114">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>The below requirements are needed on the local controller node that executes this inventory.</p>
 <ul class="simple">
 <li><p>requests &gt;= 1.1</p></li>
 </ul>
 </section>
 <section id="parameters">
-<h2><a class="toc-backref" href="#id99">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id115">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -241,7 +243,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </pre></div>
 </div>
 </li>
-<li><p>Environment variable: ANSIBLE_INVENTORY_CACHE</p></li>
+<li><p>Environment variable: <span class="target" id="index-0"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_INVENTORY_CACHE" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_CACHE</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -262,8 +264,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </pre></div>
 </div>
 </li>
-<li><p>Environment variable: ANSIBLE_CACHE_PLUGIN_CONNECTION</p></li>
-<li><p>Environment variable: ANSIBLE_INVENTORY_CACHE_CONNECTION</p></li>
+<li><p>Environment variable: <span class="target" id="index-1"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_CACHE_PLUGIN_CONNECTION" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_CACHE_PLUGIN_CONNECTION</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-2"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_INVENTORY_CACHE_CONNECTION" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_CACHE_CONNECTION</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -285,8 +287,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </pre></div>
 </div>
 </li>
-<li><p>Environment variable: ANSIBLE_CACHE_PLUGIN</p></li>
-<li><p>Environment variable: ANSIBLE_INVENTORY_CACHE_PLUGIN</p></li>
+<li><p>Environment variable: <span class="target" id="index-3"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_CACHE_PLUGIN" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_CACHE_PLUGIN</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-4"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_INVENTORY_CACHE_PLUGIN" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_CACHE_PLUGIN</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -303,13 +305,20 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <span class="l l-Scalar l-Scalar-Plain">fact_caching_prefix = ansible_inventory_</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Removed in: version 2.16 of ansible.builtin</p>
+<p>Why: Fixes typing error in INI section name</p>
+<p>Alternative: Use the ‘defaults’ section instead</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span><span class="nv">defaults</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">fact_caching_prefix = ansible_inventory_</span><span class="w"></span>
+</pre></div>
+</div>
 <div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span><span class="nv">inventory</span><span class="p p-Indicator">]</span><span class="w"></span>
 <span class="l l-Scalar l-Scalar-Plain">cache_prefix = ansible_inventory_</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
-<li><p>Environment variable: ANSIBLE_CACHE_PLUGIN_PREFIX</p></li>
-<li><p>Environment variable: ANSIBLE_INVENTORY_CACHE_PLUGIN_PREFIX</p></li>
+<li><p>Environment variable: <span class="target" id="index-5"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_CACHE_PLUGIN_PREFIX" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_CACHE_PLUGIN_PREFIX</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-6"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_INVENTORY_CACHE_PLUGIN_PREFIX" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_CACHE_PLUGIN_PREFIX</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -331,8 +340,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </pre></div>
 </div>
 </li>
-<li><p>Environment variable: ANSIBLE_CACHE_PLUGIN_TIMEOUT</p></li>
-<li><p>Environment variable: ANSIBLE_INVENTORY_CACHE_TIMEOUT</p></li>
+<li><p>Environment variable: <span class="target" id="index-7"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_CACHE_PLUGIN_TIMEOUT" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_CACHE_PLUGIN_TIMEOUT</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-8"></span><a class="reference external" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_INVENTORY_CACHE_TIMEOUT" title="(in Ansible v7)"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_CACHE_TIMEOUT</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -387,13 +396,84 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-keyed_groups"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups"><strong>keyed_groups</strong></p>
-<a class="ansibleOptionLink" href="#parameter-keyed_groups" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Add hosts to group based on the values of a variable.</p>
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id21"><span class="problematic" id="id22">:ansible-option-default:`[]`</span></a></p>
 </div></td>
 </tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/default_value"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-default-value"><strong>default_value</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/default_value" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<p><span class="ansible-option-versionadded">added in ansible-core 2.12</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>The default value when the host variable’s value is an empty string.</p>
+<p>This option is mutually exclusive with <code class="docutils literal notranslate"><span class="pre">trailing_separator</span></code>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/key"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-key"><strong>key</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/key" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>The key from input dictionary used to generate groups</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/parent_group"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-parent-group"><strong>parent_group</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/parent_group" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>parent group for keyed group</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/prefix"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-prefix"><strong>prefix</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/prefix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A keyed group name will start with this prefix</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id23"><span class="problematic" id="id24">:ansible-option-default:`&quot;&quot;`</span></a></p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/separator"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-separator"><strong>separator</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/separator" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>separator used to build the keyed group name</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id25"><span class="problematic" id="id26">:ansible-option-default:`&quot;\_&quot;`</span></a></p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-keyed_groups/trailing_separator"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-keyed-groups-trailing-separator"><strong>trailing_separator</strong></p>
+<a class="ansibleOptionLink" href="#parameter-keyed_groups/trailing_separator" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<p><span class="ansible-option-versionadded">added in ansible-core 2.12</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Set this option to <em>False</em> to omit the <code class="docutils literal notranslate"><span class="pre">separator</span></code> after the host variable when the value is an empty string.</p>
+<p>This option is mutually exclusive with <code class="docutils literal notranslate"><span class="pre">default_value</span></code>.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><a href="#id27"><span class="problematic" id="id28">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id29"><span class="problematic" id="id30">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-leading_separator"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-leading-separator"><strong>leading_separator</strong></p>
+<a class="ansibleOptionLink" href="#parameter-leading_separator" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<p><span class="ansible-option-versionadded">added in ansible-core 2.11</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Use in conjunction with keyed_groups.</p>
+<p>By default, a keyed group that does not have a prefix or a separator provided will have a name that starts with an underscore.</p>
+<p>This is because the default prefix is “” and the default separator is “_”.</p>
+<p>Set this option to False to omit the leading underscore (or other separator) if no prefix is given.</p>
+<p>If the group name is derived from a mapping the separator is still used to concatenate the items.</p>
+<p>To not use a separator in the group name at all, set the separator for the keyed group to an empty string instead.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><a href="#id31"><span class="problematic" id="id32">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id33"><span class="problematic" id="id34">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-legacy_hostvars"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-legacy-hostvars"><strong>legacy_hostvars</strong></p>
 <a class="ansibleOptionLink" href="#parameter-legacy_hostvars" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -401,50 +481,50 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id23"><span class="problematic" id="id24">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><a href="#id25"><span class="problematic" id="id26">:ansible-option-choices-entry:`true`</span></a></p></li>
+<li><p><a href="#id35"><span class="problematic" id="id36">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id37"><span class="problematic" id="id38">:ansible-option-choices-entry:`true`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-max_timeout"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-max-timeout"><strong>max_timeout</strong></p>
 <a class="ansibleOptionLink" href="#parameter-max_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Timeout before falling back to old host API when using report_data endpoint while polling.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id27"><span class="problematic" id="id28">:ansible-option-default:`600`</span></a></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id39"><span class="problematic" id="id40">:ansible-option-default:`600`</span></a></p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-password"><strong>password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
 <p class="ansible-option-line"><span class="ansible-option-configuration">Configuration:</span></p>
 <ul class="simple">
-<li><p>Environment variable: FOREMAN_PASSWORD</p></li>
+<li><p>Environment variable: <span class="target" id="index-9"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_PASSWORD"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-plugin"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-plugin"><strong>plugin</strong></p>
 <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>token that ensures this is a source file for the <code class="docutils literal notranslate"><span class="pre">foreman</span></code> plugin.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id29"><span class="problematic" id="id30">:ansible-option-choices-entry:`&quot;theforeman.foreman.foreman&quot;`</span></a></p></li>
+<li><p><a href="#id41"><span class="problematic" id="id42">:ansible-option-choices-entry:`&quot;theforeman.foreman.foreman&quot;`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-poll_interval"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-poll-interval"><strong>poll_interval</strong></p>
 <a class="ansibleOptionLink" href="#parameter-poll_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The polling interval between 2 calls to the report_data endpoint while polling.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id31"><span class="problematic" id="id32">:ansible-option-default:`10`</span></a></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id43"><span class="problematic" id="id44">:ansible-option-default:`10`</span></a></p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-report"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-report"><strong>report</strong></p>
 <a class="ansibleOptionLink" href="#parameter-report" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
@@ -453,7 +533,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>Only for backward compatibility.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-strict"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-strict"><strong>strict</strong></p>
 <a class="ansibleOptionLink" href="#parameter-strict" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -461,22 +541,45 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id33"><span class="problematic" id="id34">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><a href="#id35"><span class="problematic" id="id36">:ansible-option-choices-entry:`true`</span></a></p></li>
+<li><p><a href="#id45"><span class="problematic" id="id46">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id47"><span class="problematic" id="id48">:ansible-option-choices-entry:`true`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-url"><strong>url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id37"><span class="problematic" id="id38">:ansible-option-default:`&quot;http://localhost:3000&quot;`</span></a></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id49"><span class="problematic" id="id50">:ansible-option-default:`&quot;http://localhost:3000&quot;`</span></a></p>
 <p class="ansible-option-line"><span class="ansible-option-configuration">Configuration:</span></p>
 <ul class="simple">
-<li><p>Environment variable: FOREMAN_SERVER</p></li>
-<li><p>Environment variable: FOREMAN_SERVER_URL</p></li>
-<li><p>Environment variable: FOREMAN_URL</p></li>
+<li><p>Environment variable: <span class="target" id="index-10"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_SERVER"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_SERVER</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-11"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_SERVER_URL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-12"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_URL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_URL</span></code></a></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-use_extra_vars"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-foreman-inventory-parameter-use-extra-vars"><strong>use_extra_vars</strong></p>
+<a class="ansibleOptionLink" href="#parameter-use_extra_vars" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<p><span class="ansible-option-versionadded">added in ansible-core 2.11</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Merge extra vars into the available variables for composition (highest precedence).</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><a href="#id51"><span class="problematic" id="id52">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id53"><span class="problematic" id="id54">:ansible-option-choices-entry:`true`</span></a></p></li>
+</ul>
+<p class="ansible-option-line"><span class="ansible-option-configuration">Configuration:</span></p>
+<ul>
+<li><p>INI entry:</p>
+<div class="highlight-YAML+Jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span><span class="nv">inventory_plugins</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">use_extra_vars = false</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Environment variable: <span class="target" id="index-13"></span><a class="reference internal" href="environment_variables.html#envvar-ANSIBLE_INVENTORY_USE_EXTRA_VARS"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">ANSIBLE_INVENTORY_USE_EXTRA_VARS</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -487,8 +590,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Use Reporting API.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id39"><span class="problematic" id="id40">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id41"><span class="problematic" id="id42">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id55"><span class="problematic" id="id56">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id57"><span class="problematic" id="id58">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -499,8 +602,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
 <p class="ansible-option-line"><span class="ansible-option-configuration">Configuration:</span></p>
 <ul class="simple">
-<li><p>Environment variable: FOREMAN_USER</p></li>
-<li><p>Environment variable: FOREMAN_USERNAME</p></li>
+<li><p>Environment variable: <span class="target" id="index-14"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_USER"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_USER</span></code></a></p></li>
+<li><p>Environment variable: <span class="target" id="index-15"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_USERNAME"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -511,12 +614,12 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id43"><span class="problematic" id="id44">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id45"><span class="problematic" id="id46">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id59"><span class="problematic" id="id60">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id61"><span class="problematic" id="id62">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 <p class="ansible-option-line"><span class="ansible-option-configuration">Configuration:</span></p>
 <ul class="simple">
-<li><p>Environment variable: FOREMAN_VALIDATE_CERTS</p></li>
+<li><p>Environment variable: <span class="target" id="index-16"></span><a class="reference internal" href="environment_variables.html#envvar-FOREMAN_VALIDATE_CERTS"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">FOREMAN_VALIDATE_CERTS</span></code></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -525,7 +628,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <a class="ansibleOptionLink" href="#parameter-vars_prefix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>prefix to apply to host variables, does not include facts nor params</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id47"><span class="problematic" id="id48">:ansible-option-default:`&quot;foreman\_&quot;`</span></a></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <a href="#id63"><span class="problematic" id="id64">:ansible-option-default:`&quot;foreman\_&quot;`</span></a></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -535,8 +638,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch content view details that the host is tied to.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id49"><span class="problematic" id="id50">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id51"><span class="problematic" id="id52">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id65"><span class="problematic" id="id66">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id67"><span class="problematic" id="id68">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -547,8 +650,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if True the plugin will retrieve host facts from the server</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id53"><span class="problematic" id="id54">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><a href="#id55"><span class="problematic" id="id56">:ansible-option-choices-entry:`true`</span></a></p></li>
+<li><p><a href="#id69"><span class="problematic" id="id70">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id71"><span class="problematic" id="id72">:ansible-option-choices-entry:`true`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -559,8 +662,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch host_groups and create groupings for the same.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id57"><span class="problematic" id="id58">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id59"><span class="problematic" id="id60">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id73"><span class="problematic" id="id74">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id75"><span class="problematic" id="id76">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -571,8 +674,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the plugin will create Ansible groups for host collections</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id61"><span class="problematic" id="id62">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><a href="#id63"><span class="problematic" id="id64">:ansible-option-choices-entry:`true`</span></a></p></li>
+<li><p><a href="#id77"><span class="problematic" id="id78">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id79"><span class="problematic" id="id80">:ansible-option-choices-entry:`true`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -583,8 +686,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch ipv4 address of the host.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id65"><span class="problematic" id="id66">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id67"><span class="problematic" id="id68">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id81"><span class="problematic" id="id82">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id83"><span class="problematic" id="id84">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -595,8 +698,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch ipv6 address of the host.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id69"><span class="problematic" id="id70">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id71"><span class="problematic" id="id72">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id85"><span class="problematic" id="id86">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id87"><span class="problematic" id="id88">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -607,8 +710,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id73"><span class="problematic" id="id74">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id75"><span class="problematic" id="id76">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id89"><span class="problematic" id="id90">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id91"><span class="problematic" id="id92">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -619,8 +722,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id77"><span class="problematic" id="id78">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id79"><span class="problematic" id="id80">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id93"><span class="problematic" id="id94">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id95"><span class="problematic" id="id96">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -631,8 +734,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will retrieve ‘all_parameters’ information as host vars</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id81"><span class="problematic" id="id82">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><a href="#id83"><span class="problematic" id="id84">:ansible-option-choices-entry:`true`</span></a></p></li>
+<li><p><a href="#id97"><span class="problematic" id="id98">:ansible-option-choices-entry-default:`false`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id99"><span class="problematic" id="id100">:ansible-option-choices-entry:`true`</span></a></p></li>
 </ul>
 </div></td>
 </tr>
@@ -643,8 +746,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch smart proxy that the host is registered to.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id85"><span class="problematic" id="id86">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id87"><span class="problematic" id="id88">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id101"><span class="problematic" id="id102">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id103"><span class="problematic" id="id104">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -655,8 +758,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch subnet.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id89"><span class="problematic" id="id90">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id91"><span class="problematic" id="id92">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id105"><span class="problematic" id="id106">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id107"><span class="problematic" id="id108">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -667,8 +770,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <td><div class="ansible-option-cell"><p>Toggle, if true the inventory will fetch ipv6 subnet.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><a href="#id93"><span class="problematic" id="id94">:ansible-option-choices-entry:`false`</span></a></p></li>
-<li><p><a href="#id95"><span class="problematic" id="id96">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><a href="#id109"><span class="problematic" id="id110">:ansible-option-choices-entry:`false`</span></a></p></li>
+<li><p><a href="#id111"><span class="problematic" id="id112">:ansible-option-choices-entry-default:`true`</span></a> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -676,7 +779,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </table>
 </section>
 <section id="examples">
-<h2><a class="toc-backref" href="#id100">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id116">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="c1"># my.foreman.yml</span><span class="w"></span>
 <span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.foreman</span><span class="w"></span>
 <span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
@@ -711,7 +814,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="foreman_callback.html" class="btn btn-neutral float-left" title="theforeman.foreman.foreman callback – Sends events to Foreman" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cp_label_filter.html" class="btn btn-neutral float-left" title="theforeman.foreman.cp_label filter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="activation_key_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.activation_key module – Manage Activation Keys" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
