@@ -24,6 +24,12 @@ jobs:
           python-version: "3.9"
       - name: Install dependencies
         run: make doc-setup
+      - name: Generate changelog
+        run: |
+          git checkout -b develop-release-prep
+          antsibull-changelog release
+          git commit -m "update changelog" CHANGELOG.rst changelogs/changelog.yaml || true
+        if: github.ref_name == 'develop'
       - name: Build docs
         run: make doc
       - name: commit docs

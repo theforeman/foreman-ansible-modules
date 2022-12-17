@@ -98,6 +98,8 @@ jobs:
           cache-dependency-path: '**/requirements*.txt'
       - name: Install dependencies
         run: make doc-setup
+      - name: Generate changelog
+        run: antsibull-changelog release
       - name: Build docs
         run: make doc
       - name: Upload docs artifact
