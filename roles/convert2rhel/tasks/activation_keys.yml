@@ -22,7 +22,7 @@
       - name: "{{ foreman_convert2rhel_oracle8_product }}"
   when: not foreman_convert2rhel_org_info['organization']['simple_content_access']
 
-- name: "Create '{{ foreman_convert2rhel_key_centos7 }}' activation key"
+- name: "Create activation key '{{ foreman_convert2rhel_key_centos7 }}'"
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -34,7 +34,7 @@
     content_view: "{{ foreman_convert2rhel_key_centos7 }}"
   when: foreman_content_rhel_enable_rhel7
 
-- name: "Create '{{ foreman_convert2rhel_key_centos8 }}' activation key"
+- name: "Create activation key '{{ foreman_convert2rhel_key_centos8 }}'"
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -46,7 +46,7 @@
     content_view: "{{ foreman_convert2rhel_key_centos8 }}"
   when: foreman_content_rhel_enable_rhel8
 
-- name: "Create '{{ foreman_convert2rhel_key_oracle7 }}' activation key"  # noqa: args[module]
+- name: "Create activation key '{{ foreman_convert2rhel_key_oracle7 }}'"  # noqa: args[module]
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -59,7 +59,7 @@
     subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_ol7_subs) }}"
   when: foreman_convert2rhel_enable_oracle7
 
-- name: "Create '{{ foreman_convert2rhel_key_oracle8 }}' activation key"  # noqa: args[module]
+- name: "Create activation key '{{ foreman_convert2rhel_key_oracle8 }}'"  # noqa: args[module]
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -72,7 +72,7 @@
     subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_ol8_subs) }}"
   when: foreman_convert2rhel_enable_oracle8
 
-- name: "Create '{{ foreman_convert2rhel_key_rhel7 }}' activation key"
+- name: "Create activation key '{{ foreman_convert2rhel_key_rhel7 }}'"
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -85,7 +85,7 @@
     auto_attach: false
   when: foreman_content_rhel_enable_rhel7
 
-- name: "Create '{{ foreman_convert2rhel_key_rhel8 }}' activation key"
+- name: "Create activation key '{{ foreman_convert2rhel_key_rhel8 }}'"
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"

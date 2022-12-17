@@ -17,7 +17,7 @@
       lookup('url', 'https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem', split_lines=False)) }}"
     state: present
 
-- name: "Create '{{ foreman_convert2rhel_rhel7_product }}' product and repositories"
+- name: "Create product and repositories '{{ foreman_convert2rhel_rhel7_product }}'"
   ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
@@ -35,7 +35,7 @@
             state: present
   when: foreman_content_rhel_enable_rhel7
 
-- name: "Create '{{ foreman_convert2rhel_rhel8_product }}' product and repositories"
+- name: "Create product and repositories '{{ foreman_convert2rhel_rhel8_product }}'"
   ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
@@ -53,7 +53,7 @@
             state: present
   when: foreman_content_rhel_enable_rhel8
 
-- name: "Create '{{ foreman_convert2rhel_oracle7_product }}' product and repositories"
+- name: "Create product and repositories '{{ foreman_convert2rhel_oracle7_product }}'"
   ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
@@ -70,7 +70,7 @@
             state: present
   when: foreman_convert2rhel_enable_oracle7
 
-- name: "Create '{{ foreman_convert2rhel_oracle8_product }}' product and repositories"
+- name: "Create product and repositories '{{ foreman_convert2rhel_oracle8_product }}'"
   ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
