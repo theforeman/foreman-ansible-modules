@@ -9,20 +9,23 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         python:
-          - "3.8"
+          - "3.9"
         ansible:
-          - stable-2.9
-          - stable-2.10
           - stable-2.11
           - stable-2.12
           - stable-2.13
+          - stable-2.14
           - devel
         include:
+          - python: "3.8"
+            ansible: "stable-2.9"
+          - python: "3.8"
+            ansible: "stable-2.10"
           - python: "2.7"
             ansible: "stable-2.11"
           - python: "3.5"
@@ -31,14 +34,14 @@ jobs:
             ansible: "stable-2.11"
           - python: "3.7"
             ansible: "stable-2.11"
-          - python: "3.9"
-            ansible: "devel"
           - python: "3.10"
+            ansible: "devel"
+          - python: "3.11"
             ansible: "devel"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
@@ -62,16 +65,16 @@ jobs:
         run: make dist-test
       - name: Run sanity tests
         run: make SANITY_OPTS="--local" sanity
-        if: matrix.ansible != 'stable-2.9'
+        if: matrix.ansible != 'stable-2.9' && matrix.ansible != 'stable-2.10' && matrix.ansible != 'stable-2.11'
 
   checkmode:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
       - name: Install Ansible
@@ -88,13 +91,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
       - name: Install dependencies
         run: make doc-setup
+      - name: Generate changelog
+        run: antsibull-changelog release
       - name: Build docs
         run: make doc
       - name: Upload docs artifact
@@ -108,9 +113,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
       - name: Install dependencies
@@ -130,9 +135,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.8"
+          python-version: "3.9"
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
       - name: Install dependencies

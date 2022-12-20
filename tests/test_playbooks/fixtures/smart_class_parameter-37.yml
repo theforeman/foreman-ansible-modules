@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.3","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.5.0-rc1","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.3
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -67,20 +65,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/smart_class_parameters?search=puppetclass_name%3Dntp+and+parameter%3Dburst&per_page=4294967296
+    uri: https://foreman.example.org/foreman_puppet/api/smart_class_parameters?search=puppetclass_name%3Dntp+and+parameter%3Dburst&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 1117,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"puppetclass_name=ntp and parameter=burst\"\
-        ,\n  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"description\":\"\",\"override\":true,\"parameter_type\":\"boolean\"\
-        ,\"hidden_value?\":false,\"omit\":false,\"required\":false,\"validator_type\"\
-        :null,\"validator_rule\":null,\"merge_overrides\":false,\"merge_default\"\
-        :false,\"avoid_duplicates\":false,\"override_value_order\":\"fqdn\\nhostgroup\\\
-        nos\\ndomain\",\"created_at\":\"2020-10-02 10:48:41 UTC\",\"updated_at\":\"\
-        2020-10-02 11:16:48 UTC\",\"parameter\":\"burst\",\"id\":1052,\"puppetclass_id\"\
-        :52,\"override_values_count\":1,\"default_value\":false,\"puppetclass_name\"\
-        :\"ntp\"}]\n}\n"
+      string: "{\n  \"total\": 71,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"puppetclass_name=ntp and parameter=burst\",\n
+        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
+        [{\"description\":\"\",\"override\":true,\"parameter_type\":\"boolean\",\"hidden_value?\":false,\"omit\":false,\"required\":false,\"validator_type\":null,\"validator_rule\":null,\"merge_overrides\":false,\"merge_default\":false,\"avoid_duplicates\":false,\"override_value_order\":\"fqdn\\nhostgroup\\nos\\ndomain\",\"created_at\":\"2022-11-25
+        11:45:14 UTC\",\"updated_at\":\"2022-11-25 11:47:11 UTC\",\"parameter\":\"burst\",\"id\":2,\"puppetclass_id\":2,\"override_values_count\":1,\"default_value\":false,\"puppetclass_name\":\"ntp\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -99,13 +91,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.3
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -116,8 +108,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '682'
     status:
       code: 200
       message: OK
@@ -133,12 +123,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/smart_class_parameters/1052
+    uri: https://foreman.example.org/foreman_puppet/api/smart_class_parameters/2
   response:
     body:
-      string: '{"description":"","override":true,"parameter_type":"boolean","hidden_value?":false,"omit":false,"required":false,"validator_type":null,"validator_rule":null,"merge_overrides":false,"merge_default":false,"avoid_duplicates":false,"override_value_order":"fqdn\nhostgroup\nos\ndomain","created_at":"2020-10-02
-        10:48:41 UTC","updated_at":"2020-10-02 11:16:48 UTC","parameter":"burst","id":1052,"puppetclass_id":52,"override_values_count":1,"default_value":false,"puppetclass_name":"ntp","environments":[{"id":1,"name":"production"}],"puppetclass":{"id":52,"name":"ntp","module_name":"ntp"},"override_values":[{"created_at":"2020-10-02
-        11:16:50 UTC","updated_at":"2020-10-02 11:16:50 UTC","id":15,"match":"domain=example.com","value":true,"omit":false}]}'
+      string: '{"description":"","override":true,"parameter_type":"boolean","hidden_value?":false,"omit":false,"required":false,"validator_type":null,"validator_rule":null,"merge_overrides":false,"merge_default":false,"avoid_duplicates":false,"override_value_order":"fqdn\nhostgroup\nos\ndomain","created_at":"2022-11-25
+        11:45:14 UTC","updated_at":"2022-11-25 11:47:11 UTC","parameter":"burst","id":2,"puppetclass_id":2,"override_values_count":1,"default_value":false,"puppetclass_name":"ntp","environments":[{"name":"production","id":1}],"puppetclass":{"id":2,"name":"ntp","module_name":"ntp"},"override_values":[{"created_at":"2022-11-25
+        11:47:13 UTC","updated_at":"2022-11-25 11:47:13 UTC","id":3,"match":"domain=example.com","value":true,"omit":false}]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -157,13 +147,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.3
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -174,8 +164,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '748'
     status:
       code: 200
       message: OK

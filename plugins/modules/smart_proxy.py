@@ -51,10 +51,14 @@ options:
     description:
       - The download policy for the Smart Proxy
       - Only available for Katello installations.
+      - The download policy C(background) is deprecated and not available since Katello 4.3.
+      - The download policy C(streamed) is available since Katello 4.5.
     choices:
       - background
       - immediate
       - on_demand
+      - streamed
+      - inherit
     required: false
     type: str
 notes:
@@ -112,7 +116,7 @@ def main():
             name=dict(required=True),
             url=dict(required=True),
             lifecycle_environments=dict(required=False, type='entity_list'),
-            download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand']),
+            download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand', 'streamed', 'inherit']),
         ),
         required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
     )

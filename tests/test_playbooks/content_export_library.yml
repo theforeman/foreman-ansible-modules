@@ -1,0 +1,69 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_export_library.yml # Full export
+      vars:
+        expected_change: true
+        incremental: false
+        destination_server: "airgapped.example.com"
+      register: result
+    - include_tasks: tasks/content_export_library.yml # Incremental export
+      vars:
+        expected_change: true
+        incremental: true
+        # from_history_id: "{{ result.task.output.export_history_id }}" # (not required; will use most recent export by default)
+        destination_server: "airgapped.example.com"
+      tags: library-export
+      register: result
+    - include_tasks: tasks/content_export_show.yml
+      vars:
+        id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
+        destination_server: "airgapped.example.com"
+      when:
+        # when in check mode, no export has been done, so we can't check it
+        - not ansible_check_mode
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Clean up metadata.json
+      ansible.builtin.file:
+        path: ./metadata.json
+        state: absent
+
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

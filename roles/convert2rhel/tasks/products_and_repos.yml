@@ -1,6 +1,6 @@
 ---
 - name: Check /etc/rhsm/ca/redhat-uep.pem
-  stat:
+  ansible.builtin.stat:
     path: "/etc/rhsm/ca/redhat-uep.pem"
   register: ct
 
@@ -18,7 +18,7 @@
     state: present
 
 - name: "Create '{{ foreman_convert2rhel_rhel7_product }}' product and repositories"
-  include_role:
+  ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
     foreman_products:
@@ -36,7 +36,7 @@
   when: foreman_content_rhel_enable_rhel7
 
 - name: "Create '{{ foreman_convert2rhel_rhel8_product }}' product and repositories"
-  include_role:
+  ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
     foreman_products:
@@ -54,7 +54,7 @@
   when: foreman_content_rhel_enable_rhel8
 
 - name: "Create '{{ foreman_convert2rhel_oracle7_product }}' product and repositories"
-  include_role:
+  ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
     foreman_products:
@@ -71,7 +71,7 @@
   when: foreman_convert2rhel_enable_oracle7
 
 - name: "Create '{{ foreman_convert2rhel_oracle8_product }}' product and repositories"
-  include_role:
+  ansible.builtin.include_role:
     name: theforeman.foreman.repositories
   vars:
     foreman_products:

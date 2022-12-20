@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.5.0-rc1","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,13 +33,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.2
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -70,10 +68,9 @@ interactions:
     uri: https://foreman.example.org/api/hosts?thin=true&search=name%3D%22test-host.example.net%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"\
-        sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"\
-        id\":14,\"name\":\"test-host.example.net\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"test-host.example.net\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"id\":7,\"name\":\"test-host.example.net\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -92,13 +89,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.2
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -109,8 +106,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '227'
     status:
       code: 200
       message: OK
@@ -128,10 +123,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/hosts/14
+    uri: https://foreman.example.org/api/hosts/7
   response:
     body:
-      string: '{"id":14,"name":"test-host.example.net","last_compile":null,"last_report":null,"updated_at":"2021-09-07T12:50:31.441Z","created_at":"2021-09-07T12:50:31.441Z","root_pass":null,"architecture_id":null,"operatingsystem_id":null,"environment_id":1,"ptable_id":null,"medium_id":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_type":"User","enabled":true,"puppet_ca_proxy_id":null,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"puppet_proxy_id":null,"certname":"test-host.example.net","image_id":null,"organization_id":7,"location_id":8,"otp":null,"realm_id":null,"compute_profile_id":null,"provision_method":"build","grub_pass":"","global_status":0,"lookup_value_matcher":"fqdn=test-host.example.net","pxe_loader":null,"initiated_at":null,"build_errors":null}'
+      string: '{"id":7,"name":"test-host.example.net","last_compile":null,"last_report":null,"updated_at":"2022-11-25T11:52:03.544Z","created_at":"2022-11-25T11:52:03.544Z","root_pass":null,"architecture_id":null,"operatingsystem_id":null,"ptable_id":null,"medium_id":null,"build":false,"comment":null,"disk":null,"installed_at":null,"model_id":null,"hostgroup_id":null,"owner_id":4,"owner_type":"User","enabled":true,"puppet_ca_proxy_id":null,"managed":false,"use_image":null,"image_file":"","uuid":null,"compute_resource_id":null,"puppet_proxy_id":null,"certname":"test-host.example.net","image_id":null,"organization_id":5,"location_id":6,"otp":null,"realm_id":null,"compute_profile_id":null,"provision_method":"build","grub_pass":null,"global_status":0,"lookup_value_matcher":"fqdn=test-host.example.net","pxe_loader":null,"initiated_at":null,"build_errors":null,"puppet_attributes":{"id":2,"host_id":7,"environment_id":1,"puppet_proxy_id":null,"created_at":"2022-11-25T11:52:03.569Z","updated_at":"2022-11-25T11:52:03.569Z"}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -150,13 +145,13 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.2
+      - 3.5.0-rc1
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -167,8 +162,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '870'
     status:
       code: 200
       message: OK

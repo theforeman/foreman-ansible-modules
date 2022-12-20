@@ -18,7 +18,7 @@ Example Playbook
 ```yaml
 - hosts: localhost
   roles:
-    - role: theforeman.foreman.content_view
+    - role: theforeman.foreman.content_view_publish
       vars:
         foreman_server_url: https://foreman.example.com
         foreman_username: "admin"

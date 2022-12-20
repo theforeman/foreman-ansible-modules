@@ -93,7 +93,7 @@ options:
   owner_group:
     description:
       - Owner (user group) of the host.
-      - Mutually excluside with I(owner).
+      - Mutually exclusive with I(owner).
     type: str
     required: false
   provision_method:

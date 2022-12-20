@@ -98,14 +98,17 @@ options:
       - Archlinux
       - Coreos
       - Debian
+      - Fcos
       - Freebsd
       - Gentoo
       - Junos
       - NXOS
       - Rancheros
       - Redhat
+      - Rhcos
       - Solaris
       - Suse
+      - VRP
       - Windows
       - Xenserver
     type: str

@@ -8,6 +8,10 @@
 ##
 ## You also need the libvirt compute resource support enabled:
 ## $ foreman-installer --enable-foreman-compute-libvirt
+## And libvirt up and running:
+## $ dnf install libvirt
+## $ systemctl enable --now libvirtd
+## $ usermod -aG libvirt foreman
 ##
 ## You also need the proxy to be setup with the DNS feature:
 ## $ foreman-installer --foreman-proxy-dns true
@@ -83,9 +87,9 @@
     - include_tasks: tasks/compute_profile.yml
       vars:
         compute_profile_name: "{{ hostgroup.compute_profile.name }}"
-        compute_profile_attibutes:
+        compute_profile_attributes:
           - compute_resource: "{{ hostgroup.compute_resource.name }}"
-            vm_attrs: "{{ libvirt.compute_resource.attrs }}"
+            vm_attrs: "{{ libvirt.compute_profile.attrs }}"
         compute_profile_state: present
     - include_tasks: tasks/config_group.yml
       vars:

@@ -1,0 +1,65 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: present
+      register: result
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_export_repository.yml # Full export
+      vars:
+        product: "Export Test Product"
+        repository: "TestRepo"
+        expected_change: true
+        incremental: false
+    - include_tasks: tasks/content_export_repository.yml # Incremental export
+      vars:
+        product: "Export Test Product"
+        repository: "TestRepo"
+        expected_change: true
+        incremental: true
+    - include_tasks: tasks/content_export_show.yml
+      vars:
+        id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
+      when:
+        - not ansible_check_mode
+- hosts: localhost # Teardown
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

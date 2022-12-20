@@ -134,7 +134,7 @@ def main():
     module = ForemanAnsibleModule(
         foreman_spec=dict(
             resource=dict(type='str', required=True),
-            search=dict(default=""),
+            search=dict(),
             full_details=dict(type='bool', aliases=['info'], default='false'),
             params=dict(type='dict'),
             organization=dict(),
@@ -143,7 +143,7 @@ def main():
 
     module_params = module.foreman_params
     resource = module_params['resource']
-    search = module_params['search']
+    search = module_params.get('search')
     params = module_params.get('params', {})
 
     with module.api_connection():

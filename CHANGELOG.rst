@@ -6,6 +6,83 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.8.0
+======
+
+Minor Changes
+-------------
+
+- job_template - add ``default`` option to the ``template_inputs`` parameter
+- location, organization - add ``ignore_types`` parameter to adjust automatic association of resources
+- redhat_manifest - Search by UUID on the server side if UUID is known. This is faster and allows fetching of manifest in big accounts (>1000 allocations).
+- redhat_manifest - return the UUID of the manifest so it can be reused later
+- redhat_manifest - set default ``quantity`` to 1 (https://github.com/theforeman/foreman-ansible-modules/pull/1499)
+
+Bugfixes
+--------
+
+- activation_key - properly fetch *all* repositories when managing content overrides (https://bugzilla.redhat.com/show_bug.cgi?id=2134605)
+- redhat_manifest - properly report http errors (https://github.com/theforeman/foreman-ansible-modules/issues/1497)
+- repository_sync - report an error instead of syncing the whole product when the repository could not be found
+
+New Modules
+-----------
+
+- theforeman.foreman.snapshot_info - Fetch information about Foreman Snapshots
+
+v3.7.0
+======
+
+Minor Changes
+-------------
+
+- repository - add support for ``include_tags`` and ``exclude_tags`` parameters for Katello 4.4+
+- subscription_manifest - increase the import timeout to 10 minutes (https://github.com/theforeman/foreman-ansible-modules/issues/1474)
+- sync_plans role - document the ``enabled`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+- sync_plans role - expose the ``state`` parameter of the underlying module, thus allowing to delete plans (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+
+Bugfixes
+--------
+
+- Properly use FQCN notation when redirecting the old ``foreman_*`` and ``katello_*`` module names. (https://github.com/theforeman/foreman-ansible-modules/issues/1484)
+- convert2rhel role - Content views for activation keys (https://bugzilla.redhat.com/2118790)
+
+v3.6.0
+======
+
+New Modules
+-----------
+
+- theforeman.foreman.content_export_repository - Manage repository content exports
+- theforeman.foreman.content_export_version - Manage content view version content exports
+
+v3.5.0
+======
+
+Minor Changes
+-------------
+
+- add execution environment metadata
+- installation_medium, operatingsystem, partition_table - add ``Fcos``, ``Rhcos``, ``VRP`` OS families
+- job_template - add ``hidden_value`` to ``template_inputs`` parameters
+- job_template - allow ``value_type`` to be ``resource``
+- operatingsystems role - make ``provisioning_template`` parameter optional
+- repositories role - add ``ansible_collection_requirements``
+- repositories role - add ``arch`` and ``os_versions`` parameters
+- repositories role - support ``mirroring_policy``
+- repository, smart_proxy - document deprecation/removal status of ``download_policy=background``
+- setting - the ``foreman_setting`` return entry is deprecated and kept for backwards compatibility, please use ``entity`` as with any other module
+- smart_proxy - add ``inherit`` to possible values of ``download_policy`` (https://github.com/theforeman/foreman-ansible-modules/issues/1438)
+- smart_proxy - add ``streamed`` download policy
+- snapshot - add include_ram option when creating VMWare snapshot
+
+New Modules
+-----------
+
+- theforeman.foreman.content_export_info - List pulp3 content exports
+- theforeman.foreman.content_export_library - Manage content exports
+- theforeman.foreman.discovery_rule - Manage Host Discovery Rules
+
 v3.4.0
 ======
 

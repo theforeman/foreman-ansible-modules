@@ -15,6 +15,7 @@
     name: "{{ repository_name }}"
     label: "{{ repository_label | default(omit) }}"
     mirror_on_sync: "{{ repository_mirror_on_sync | default(omit) }}"
+    mirroring_policy: "{{ repository_mirroring_policy | default(omit) }}"
     state: "{{ repository_state }}"
     product: "{{ product_name }}"
     content_type: "{{ repository_content_type }}"
@@ -26,6 +27,8 @@
     deb_architectures: "{{ repository_deb_architectures | default(omit) }}"
     docker_upstream_name: "{{ repository_docker_upstream_name | default(omit) }}"
     docker_tags_whitelist: "{{ repository_docker_tags_whitelist | default(omit) }}"
+    include_tags: "{{ repository_include_tags | default(omit) }}"
+    exclude_tags: "{{ repository_exclude_tags | default(omit) }}"
     download_policy: "{{ repository_download_policy | default(omit) }}"
     download_concurrency: "{{ repository_download_concurrency | default(omit) }}"
     gpg_key: "{{ repository_gpg_key | default(omit) }}"
@@ -34,7 +37,7 @@
     ssl_client_key: "{{ repository_ssl_client_key | default(omit) }}"
   register: result
 - assert:
-    fail_msg: "Ensuring repositroy is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring repository is {{ repository_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
