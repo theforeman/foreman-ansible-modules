@@ -5,5 +5,8 @@ build_arg_defaults:
   EE_BASE_IMAGE: 'quay.io/ansible/ansible-runner:latest'
 
 dependencies:
-  python: ../requirements.txt
-  system: ../bindep.txt
+  # File paths are relative to collection root folder when collection is
+  # installed but relative to meta/ when it is built, so we need symlink magic
+  # See https://github.com/ansible/ansible-builder/issues/406#issuecomment-1195584188
+  python: requirements.txt
+  system: bindep.txt

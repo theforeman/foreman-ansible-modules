@@ -1,0 +1,32 @@
+---
+- name: "Ensure Discovery Rule '{{ discovery_rule_name }}' is {{ discovery_rule_state }}"
+  vars:
+    - discovery_rule_name: "Test Discovery Rule"
+  discovery_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ discovery_rule_name }}"
+    search: "{{ discovery_rule_search | default(omit) }}"
+    hostgroup: "{{ discovery_rule_hostgroup | default(omit) }}"
+    hostname: "{{ discovery_rule_hostname | default(omit) }}"
+    max_count: "{{ discovery_rule_max_count | default(omit) }}"
+    organizations: "{{ discovery_rule_organizations | default(omit) }}"
+    locations: "{{ discovery_rule_locations | default(omit) }}"
+    state: "{{ discovery_rule_state }}"
+  register: result
+  ignore_errors: "{{ expected_error is defined and expected_error }}"
+- assert:
+    fail_msg: "Ensuring discovery_rule is {{ discovery_rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- assert:
+    fail_msg: "Ensuring discovery_rule is {{ discovery_rule_state }} did fail! (expected_error: {{ expected_error | default('unknown') }})"
+    that:
+      - result is failed
+  when:
+    - expected_error is defined
+    - expected_error
+...

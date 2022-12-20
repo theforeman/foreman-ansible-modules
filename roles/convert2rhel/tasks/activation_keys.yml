@@ -9,7 +9,7 @@
   register: foreman_convert2rhel_org_info
 
 - name: "Set non SCA facts"
-  set_fact:
+  ansible.builtin.set_fact:
     foreman_convert2rhel_centos7_subs:
       - name: "Convert2RHEL7"
     foreman_convert2rhel_centos8_subs:
@@ -31,8 +31,7 @@
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_centos7 }}"
     lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
-    subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_centos7_subs) }}"
+    content_view: "{{ foreman_convert2rhel_key_centos7 }}"
   when: foreman_content_rhel_enable_rhel7
 
 - name: "Create '{{ foreman_convert2rhel_key_centos8 }}' activation key"
@@ -44,12 +43,10 @@
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_centos8 }}"
     lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
-    auto_attach: false
-    subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_centos8_subs) }}"
+    content_view: "{{ foreman_convert2rhel_key_centos8 }}"
   when: foreman_content_rhel_enable_rhel8
 
-- name: "Create '{{ foreman_convert2rhel_key_oracle7 }}' activation key"
+- name: "Create '{{ foreman_convert2rhel_key_oracle7 }}' activation key"  # noqa: args[module]
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -62,7 +59,7 @@
     subscriptions: "{{ foreman_convert2rhel_org_info['organization']['simple_content_access'] | ternary(omit, foreman_convert2rhel_ol7_subs) }}"
   when: foreman_convert2rhel_enable_oracle7
 
-- name: "Create '{{ foreman_convert2rhel_key_oracle8 }}' activation key"
+- name: "Create '{{ foreman_convert2rhel_key_oracle8 }}' activation key"  # noqa: args[module]
   theforeman.foreman.activation_key:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"

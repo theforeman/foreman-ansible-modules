@@ -8,15 +8,16 @@ ROLES := $(wildcard roles/*)
 PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
 RUNTIME_YML := meta/runtime.yml
 METADATA := galaxy.yml LICENSE README.md $(RUNTIME_YML) requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt PSF-license.txt meta/execution-environment.yml
-$(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py))))
+$(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py)) $(wildcard plugins/$(PLUGIN_TYPE)/*.yml)))
 DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*)) $(foreach ROLE,$(ROLES),$(ROLE)/README.md)
 
 PYTHON_VERSION = $(shell $(PYTHON_COMMAND) -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
+ANSIBLE_SUPPORTS_REDIRECTS = $(shell ansible --version | grep -q 'ansible 2.9' && echo 0 || echo 1)
 COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST =
 FLAGS =
-PYTEST = pytest -n 4 --boxed -vv
+PYTEST = pytest -n 4 --forked -vv
 
 APIPIE_VERSION ?= v0.3.2
 
@@ -95,6 +96,9 @@ tests/test_playbooks/vars/server.yml:
 
 dist-test: $(MANIFEST)
 	FOREMAN_SERVER_URL=https://foreman.example.test ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme name=collectiontest" localhost | grep -q "Failed to connect to Foreman server.*foreman.example.test"
+ifeq ($(ANSIBLE_SUPPORTS_REDIRECTS),1)
+	FOREMAN_SERVER_URL=https://foreman.example.test ansible -m $(NAMESPACE).$(NAME).foreman_organization -a "username=admin password=changeme name=collectiontest" localhost | grep -q "Failed to connect to Foreman server.*foreman.example.test"
+endif
 	FOREMAN_SERVER_URL=http://foreman.example.test ansible -m $(NAMESPACE).$(NAME).organization -a "username=admin password=changeme name=collectiontest" localhost 2>&1| grep -q "You have configured a plain HTTP server URL."
 	ansible-doc $(NAMESPACE).$(NAME).organization | grep -q "Manage Organization"
 

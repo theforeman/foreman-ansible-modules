@@ -1,0 +1,23 @@
+---
+
+- name: "{{ 'Export repository (incremental)' if (incremental is defined and incremental) else 'Export repository (full)' }}"
+  vars:
+    - organization_name: "Test Organization"
+  content_export_repository:
+    repository: "{{ repository }}"
+    product: "{{ product }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    incremental: "{{ incremental | default(false) }}"
+    from_history_id: "{{ from_history_id | default(omit) }}"
+  register: result
+
+- assert:
+    fail_msg: "Repository export failed!"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...

@@ -11,6 +11,11 @@
       vars:
         organization_name: "Test Organization"
         organization_state: "present"
+    - name: ensure org has a manifest
+      include_tasks: tasks/subscription_manifest.yml
+      vars:
+        manifest_path: "{{ subscription_manifest_path }}"
+        manifest_state: present
 
 - hosts: tests
   collections:
@@ -41,11 +46,3 @@
               - name: BaseOS x86_64
                 content_type: yum
                 url: http://mirror.centos.org/centos/8/BaseOS/x86_64/os/
-          - name: Debian 10
-            repositories:
-              - name: main
-                content_type: deb
-                url: http://deb.debian.org/debian
-                deb_components: main
-                deb_architectures: amd64
-                deb_releases: buster

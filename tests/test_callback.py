@@ -41,13 +41,17 @@ def drop_incompatible_items(d):
     """
     dd = {}
     for k, v in d.items():
+        if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection', 'extended_allitems', 'loop_control']:
+            continue
+
         if isinstance(v, dict):
             dd[k] = drop_incompatible_items(v)
         elif isinstance(v, (list, set, tuple)):
             dd[k] = type(v)(drop_incompatible_items(vv) if isinstance(vv, dict) else vv
                             for vv in v)
-        elif k not in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn']:
+        else:
             dd[k] = v
+
     return dd
 
 

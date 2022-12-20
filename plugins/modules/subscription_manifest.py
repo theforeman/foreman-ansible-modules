@@ -84,7 +84,7 @@ def main():
         supports_check_mode=False,
     )
 
-    module.task_timeout = 5 * 60
+    module.task_timeout = 10 * 60
 
     with module.api_connection():
         organization = module.lookup_entity('organization')

@@ -20,6 +20,14 @@
     - include_tasks: tasks/product.yml
       vars:
         product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+        repository_name: "{{ item }}"
+      loop:
+        - "Test Repository"
+        - "Test Repository 2"
+        - "Test Docker Repository"
 
 - hosts: tests
   collections:
@@ -35,22 +43,22 @@
             repository_state: present
             expected_change: true
             repository_label: "just_a_test_repo"
-            repository_mirror_on_sync: false
+            repository_mirroring_policy: additive
             repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: false
+            repository_mirroring_policy: additive
             expected_change: false
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: true
+            repository_mirroring_policy: mirror_content_only
             expected_change: true
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: true
+            repository_mirroring_policy: mirror_content_only
             expected_change: false
         - include_tasks: tasks/repository.yml
           vars:
@@ -89,24 +97,24 @@
             repository_ssl_ca_cert: "Test SSL Cert"
             repository_ssl_client_cert: "Test SSL Cert"
             repository_ssl_client_key: "Test SSL Cert"
-            repository_mirror_on_sync: false
+            repository_mirroring_policy: additive
             repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: false
+            repository_mirroring_policy: additive
             expected_change: false
             repository_name: "Test Repository 2"
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: true
+            repository_mirroring_policy: mirror_content_only
             expected_change: true
             repository_name: "Test Repository 2"
         - include_tasks: tasks/repository.yml
           vars:
             repository_state: present
-            repository_mirror_on_sync: true
+            repository_mirroring_policy: mirror_content_only
             expected_change: false
             repository_name: "Test Repository 2"
         - include_tasks: tasks/repository.yml

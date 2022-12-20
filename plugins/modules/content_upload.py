@@ -98,6 +98,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 try:
     from debian import debfile
     HAS_DEBFILE = True
+    DEBFILE_IMP_ERR = None
 except ImportError:
     HAS_DEBFILE = False
     DEBFILE_IMP_ERR = traceback.format_exc()
@@ -105,6 +106,7 @@ except ImportError:
 try:
     import rpm
     HAS_RPM = True
+    RPM_IMP_ERR = None
 except ImportError:
     HAS_RPM = False
     RPM_IMP_ERR = traceback.format_exc()

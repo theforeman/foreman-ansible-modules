@@ -1,0 +1,84 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: present
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        repositories:
+          - name: "TestRepo"
+            product: "Export Test Product"
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        version: 1.0
+        state: present
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_export_version.yml # Full export
+      vars:
+        destination_server: "airgapped.example.com"
+        content_view: "Test Content View"
+        content_view_version: "1.0"
+        incremental: false
+      register: result
+
+    - include_tasks: tasks/content_export_version.yml # Incremental export
+      vars:
+        expected_change: true
+        incremental: true
+        content_view: "Test Content View"
+        content_view_version: "1.0"
+        destination_server: "airgapped.example.com"
+    - include_tasks: tasks/content_export_show.yml
+      vars:
+        id: "{{ result['task']['output']['export_history_id'] | default(12345) }}"
+        destination_server: "airgapped.example.com"
+      when:
+        - not ansible_check_mode
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        state: absent
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Export Test Product"
+        repository_name: "TestRepo"
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_name: "Export Test Product"
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

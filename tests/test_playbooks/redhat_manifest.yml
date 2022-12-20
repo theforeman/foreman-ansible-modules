@@ -6,40 +6,37 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: Load server config
-      # To remove this task it is probably necessary to rerecord
-      include_vars:
-        file: vars/server.yml
-    - include_tasks: tasks/redhat_manifest.yml
+    - name: Create new manifest
+      include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: true
         pool_state: present
         manifest_state: present
         pool_quantity: 1
-      # Check independence
-    - include_tasks: tasks/redhat_manifest.yml
+    - name: No change to existing manifest
+      include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: false
         pool_state: present
         manifest_state: present
         pool_quantity: 1
-      # Test adding more subs
-    - include_tasks: tasks/redhat_manifest.yml
+    - name: Test adding more subs
+      include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: true
         pool_state: present
         manifest_state: present
         pool_quantity: 3
-      # Test removing subs & export
-    - include_tasks: tasks/redhat_manifest.yml
+    - name: Test removing subs and export
+      include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: true
         pool_state: present
         manifest_state: present
         pool_quantity: 2
         manifest_export_path: "/tmp/manifest_export.zip"
-      # Delete manifest
-    - include_tasks: tasks/redhat_manifest.yml
+    - name: Delete manifest
+      include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: true
         pool_state: absent

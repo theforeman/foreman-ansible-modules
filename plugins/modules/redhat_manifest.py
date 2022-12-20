@@ -55,6 +55,7 @@ options:
     description:
       - quantity of pool_id Subscriptions
     type: int
+    default: 1
   pool_state:
     description:
       - Subscription state
@@ -123,7 +124,14 @@ EXAMPLES = '''
     pool_state: absent
 '''
 
-RETURN = '''# '''
+RETURN = '''
+uuid:
+    description: Manifest UUID
+    returned: success
+    type: str
+    sample: 5349d1d0-5bda-480a-b7bd-ff41e2c29e03
+    version_added: 3.8.0
+'''
 
 import json
 import os
@@ -155,7 +163,7 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
                         "Talking to the Red Hat portal might fail without validate_certs=False. Please update.")
         del fetch_kwargs['ca_path']
         resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
-    if resp is None:
+    if resp is None or info["status"] >= 400:
         try:
             error = json.loads(info['body'])['displayMessage']
         except Exception:
@@ -186,6 +194,8 @@ def delete_manifest(module, uuid):
 
 def get_manifest(module):
     path = "/subscription/owners/%s/consumers?type=satellite" % (module.params['rhsm_owner'])
+    if module.params['uuid']:
+        path += '&uuid={0}'.format(module.params['uuid'])
     resp, info = fetch_portal(module, path, 'GET')
     manifests = json.loads(to_text(resp.read()))
     if module.params['name']:
@@ -287,7 +297,7 @@ def main():
             password=dict(required=True, no_log=True),
             content_access_mode=dict(choices=['org_environment', 'entitlement'], default='entitlement'),
             pool_id=dict(type='str'),
-            quantity=dict(type='int'),
+            quantity=dict(type='int', default=1),
             pool_state=dict(choices=['present', 'absent'], default='present'),
             state=dict(choices=['present', 'absent'], default='present'),
             path=dict(type='path'),
@@ -321,8 +331,13 @@ def main():
     if module.params['path'] and manifest:
         export_manifest(module, manifest)
 
+    if manifest:
+        manifest_uuid = manifest.get('uuid')
+    else:
+        manifest_uuid = None
+
     changed = man_changed or sub_changed
-    module.exit_json(changed=changed)
+    module.exit_json(changed=changed, uuid=manifest_uuid)
 
 
 if __name__ == '__main__':

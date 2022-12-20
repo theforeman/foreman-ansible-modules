@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sys
 import vcr
 import json
@@ -111,7 +112,12 @@ def filter_response(response):
 
 
 def filter_request_uri(request):
-    request.uri = urlunparse(urlparse(request.uri)._replace(netloc="foreman.example.org"))
+    uri = urlparse(request.uri)
+    if uri.hostname != 'subscription.rhsm.redhat.com':
+        uri = uri._replace(netloc="foreman.example.org")
+    if uri.hostname == 'subscription.rhsm.redhat.com' and re.match('/subscription/users/[^/]+/owners', uri.path):
+        uri = uri._replace(path='/subscription/users/john-smith/owners')
+    request.uri = urlunparse(uri)
     return request
 
 
@@ -161,7 +167,7 @@ else:
     if test_params['test_name'] in ['domain', 'hostgroup', 'katello_hostgroup', 'luna_hostgroup', 'realm', 'subnet', 'puppetclasses_import']:
         fam_vcr.register_matcher('query_ignore_proxy', query_matcher_ignore_proxy)
         query_matcher = 'query_ignore_proxy'
-    elif test_params['test_name'] == 'snapshot':
+    elif test_params['test_name'] in ['snapshot', 'snapshot_info']:
         fam_vcr.register_matcher('snapshot_query', snapshot_query_matcher)
         query_matcher = 'snapshot_query'
 

@@ -37,6 +37,7 @@ try:
         from plugins.module_utils import _apypie as apypie
     import requests.exceptions
     HAS_APYPIE = True
+    APYPIE_IMP_ERR = None
     inflector = apypie.Inflector()
 except ImportError:
     HAS_APYPIE = False
@@ -45,6 +46,7 @@ except ImportError:
 try:
     import yaml
     HAS_PYYAML = True
+    PYYAML_IMP_ERR = None
 except ImportError:
     HAS_PYYAML = False
     PYYAML_IMP_ERR = traceback.format_exc()
@@ -79,6 +81,8 @@ ENTITY_KEYS = dict(
     scap_contents='title',
     users='login',
 )
+
+PER_PAGE = 2 << 31
 
 
 class NoEntity(object):
@@ -422,45 +426,6 @@ class ForemanAnsibleModule(AnsibleModule):
             _host_update_taxonomy_param = next(x for x in _host_update['params'] if x['name'] == param)
             _host_update['params'].remove(_host_update_taxonomy_param)
 
-    @_check_patch_needed(fixed_version='2.0.0')
-    def _patch_templates_resource_name(self):
-        """
-        Need to support both singular and plural form.
-        Not checking for the templates plugin here, as the check relies on the new name.
-        The resource was made plural per https://projects.theforeman.org/issues/28750
-        """
-        if 'template' in self.foremanapi.apidoc['docs']['resources']:
-            self.foremanapi.apidoc['docs']['resources']['templates'] = self.foremanapi.apidoc['docs']['resources']['template']
-
-    @_check_patch_needed(fixed_version='1.23.0')
-    def _patch_location_api(self):
-        """This is a workaround for the broken taxonomies apidoc in foreman.
-            see https://projects.theforeman.org/issues/10359
-        """
-
-        _location_organizations_parameter = {
-            u'validations': [],
-            u'name': u'organization_ids',
-            u'show': True,
-            u'description': u'\n<p>Organization IDs</p>\n',
-            u'required': False,
-            u'allow_nil': True,
-            u'allow_blank': False,
-            u'full_name': u'location[organization_ids]',
-            u'expected_type': u'array',
-            u'metadata': None,
-            u'validator': u'',
-        }
-        _location_methods = self.foremanapi.apidoc['docs']['resources']['locations']['methods']
-
-        _location_create = next(x for x in _location_methods if x['name'] == 'create')
-        _location_create_params_location = next(x for x in _location_create['params'] if x['name'] == 'location')
-        _location_create_params_location['params'].append(_location_organizations_parameter)
-
-        _location_update = next(x for x in _location_methods if x['name'] == 'update')
-        _location_update_params_location = next(x for x in _location_update['params'] if x['name'] == 'location')
-        _location_update_params_location['params'].append(_location_organizations_parameter)
-
     @_check_patch_needed(fixed_version='2.2.0', plugins=['remote_execution'])
     def _patch_subnet_rex_api(self):
         """
@@ -521,23 +486,6 @@ class ForemanAnsibleModule(AnsibleModule):
         _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
         _subnet_update_params_subnet['params'].append(_subnet_externalipam_group_parameter)
 
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_content_uploads_update_api(self):
-        """
-        This is a workaround for the broken content_uploads update apidoc in Katello.
-        See https://projects.theforeman.org/issues/27590
-        """
-
-        _content_upload_methods = self.foremanapi.apidoc['docs']['resources']['content_uploads']['methods']
-
-        _content_upload_update = next(x for x in _content_upload_methods if x['name'] == 'update')
-        _content_upload_update_params_id = next(x for x in _content_upload_update['params'] if x['name'] == 'id')
-        _content_upload_update_params_id['expected_type'] = 'string'
-
-        _content_upload_destroy = next(x for x in _content_upload_methods if x['name'] == 'destroy')
-        _content_upload_destroy_params_id = next(x for x in _content_upload_destroy['params'] if x['name'] == 'id')
-        _content_upload_destroy_params_id['expected_type'] = 'string'
-
     @_check_patch_needed(plugins=['katello'])
     def _patch_organization_update_api(self):
         """
@@ -550,50 +498,6 @@ class ForemanAnsibleModule(AnsibleModule):
         _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
         _organization_update_params_organization = next(x for x in _organization_update['params'] if x['name'] == 'organization')
         _organization_update_params_organization['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_subscription_index_api(self):
-        """
-        This is a workaround for the broken subscriptions apidoc in Katello.
-        See https://projects.theforeman.org/issues/27575
-        """
-
-        _subscription_methods = self.foremanapi.apidoc['docs']['resources']['subscriptions']['methods']
-
-        _subscription_index = next(x for x in _subscription_methods if x['name'] == 'index')
-        _subscription_index_params_organization_id = next(x for x in _subscription_index['params'] if x['name'] == 'organization_id')
-        _subscription_index_params_organization_id['required'] = False
-
-    @_check_patch_needed(fixed_version='1.24.0', plugins=['katello'])
-    def _patch_sync_plan_api(self):
-        """
-        This is a workaround for the broken sync_plan apidoc in Katello.
-        See https://projects.theforeman.org/issues/27532
-        """
-
-        _organization_parameter = {
-            u'validations': [],
-            u'name': u'organization_id',
-            u'show': True,
-            u'description': u'\n<p>Filter sync plans by organization name or label</p>\n',
-            u'required': False,
-            u'allow_nil': False,
-            u'allow_blank': False,
-            u'full_name': u'organization_id',
-            u'expected_type': u'numeric',
-            u'metadata': None,
-            u'validator': u'Must be a number.',
-        }
-
-        _sync_plan_methods = self.foremanapi.apidoc['docs']['resources']['sync_plans']['methods']
-
-        _sync_plan_add_products = next(x for x in _sync_plan_methods if x['name'] == 'add_products')
-        if next((x for x in _sync_plan_add_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_add_products['params'].append(_organization_parameter)
-
-        _sync_plan_remove_products = next(x for x in _sync_plan_methods if x['name'] == 'remove_products')
-        if next((x for x in _sync_plan_remove_products['params'] if x['name'] == 'organization_id'), None) is None:
-            _sync_plan_remove_products['params'].append(_organization_parameter)
 
     @_check_patch_needed(plugins=['katello'])
     def _patch_cv_filter_rule_api(self):
@@ -612,6 +516,63 @@ class ForemanAnsibleModule(AnsibleModule):
             update_param = next((x for x in _content_view_filter_rule_update['params'] if x['name'] == param_name), None)
             if create_param is not None and update_param is None:
                 _content_view_filter_rule_update['params'].append(create_param)
+
+    @_check_patch_needed(fixed_version='3.5.0', plugins=['katello'])
+    def _patch_ak_product_content_per_page(self):
+        """
+        This is a workaround for the API not exposing the per_page param on the product_content endpoint
+        See https://projects.theforeman.org/issues/35633
+        """
+
+        _per_page_param = {
+            "name": "per_page",
+            "full_name": "per_page",
+            "description": "\n<p>Number of results per page to return</p>\n",
+            "required": False,
+            "allow_nil": False,
+            "allow_blank": False,
+            "validator": "Must be a number.",
+            "expected_type": "numeric",
+            "metadata": None,
+            "show": True,
+            "validations": []
+        }
+
+        _ak_methods = self.foremanapi.apidoc['docs']['resources']['activation_keys']['methods']
+
+        _ak_product_content = next(x for x in _ak_methods if x['name'] == 'product_content')
+
+        if next((x for x in _ak_product_content['params'] if x['name'] == 'per_page'), None) is None:
+            _ak_product_content['params'].append(_per_page_param)
+
+    @_check_patch_needed(fixed_version='3.5.0', plugins=['katello'])
+    def _patch_organization_ignore_types_api(self):
+        """
+        This is a workaround for the missing ignore_types in the organization apidoc in Katello.
+        See https://projects.theforeman.org/issues/35687
+        """
+
+        _ignore_types_param = {
+            "name": "ignore_types",
+            "full_name": "organization[ignore_types]",
+            "description": "\n<p>List of resources types that will be automatically associated</p>\n",
+            "required": False,
+            "allow_nil": True,
+            "allow_blank": False,
+            "validator": "Must be an array of any type",
+            "expected_type": "array",
+            "metadata": None,
+            "show": True,
+            "validations": []
+        }
+
+        _organization_methods = self.foremanapi.apidoc['docs']['resources']['organizations']['methods']
+
+        _organization_create = next(x for x in _organization_methods if x['name'] == 'create')
+        _organization_update = next(x for x in _organization_methods if x['name'] == 'update')
+        if next((x for x in _organization_create['params'] if x['name'] == 'ignore_types'), None) is None:
+            _organization_create['params'].append(_ignore_types_param)
+            _organization_update['params'].append(_ignore_types_param)
 
     def check_requirements(self):
         if not HAS_APYPIE:
@@ -650,17 +611,14 @@ class ForemanAnsibleModule(AnsibleModule):
 
         self._patch_host_update()
 
-        self._patch_templates_resource_name()
-        self._patch_location_api()
         self._patch_subnet_rex_api()
         self._patch_subnet_externalipam_group_api()
 
         # Katello
-        self._patch_content_uploads_update_api()
         self._patch_organization_update_api()
-        self._patch_subscription_index_api()
-        self._patch_sync_plan_api()
         self._patch_cv_filter_rule_api()
+        self._patch_ak_product_content_per_page()
+        self._patch_organization_ignore_types_api()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def status(self):
@@ -729,7 +687,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
         if search is not None:
             params['search'] = search
-        params['per_page'] = 2 << 31
+        params['per_page'] = PER_PAGE
 
         params = self._resource_prepare_params(resource, 'index', params)
 
@@ -1221,7 +1179,7 @@ class ForemanAnsibleModule(AnsibleModule):
         while task['state'] not in ['paused', 'stopped']:
             duration -= self.task_poll
             if duration <= 0:
-                self.fail_json(msg="Timout waiting for Task {0}".format(task['id']))
+                self.fail_json(msg="Timeout waiting for Task {0}".format(task['id']))
             time.sleep(self.task_poll)
 
             resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})
@@ -1833,14 +1791,17 @@ OS_LIST = ['AIX',
            'Archlinux',
            'Coreos',
            'Debian',
+           'Fcos',
            'Freebsd',
            'Gentoo',
            'Junos',
            'NXOS',
            'Rancheros',
            'Redhat',
+           'Rhcos',
            'Solaris',
            'Suse',
+           'VRP',
            'Windows',
            'Xenserver',
            ]

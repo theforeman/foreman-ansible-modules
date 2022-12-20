@@ -45,7 +45,7 @@
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
 
-- name: 'Create Repositories'
+- name: 'Create Repositories'   # noqa: args[module]
   theforeman.foreman.repository:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
@@ -55,6 +55,7 @@
     name: "{{ item.1.name }}"
     url: "{{ item.1.url | default(omit) }}"
     product: "{{ item.0.name }}"
+    arch: "{{ item.1.arch | default(omit) }}"
     auto_enabled: "{{ item.1.auto_enabled | default(omit) }}"
     checksum_type: "{{ item.1.checksum_type | default(omit) }}"
     content_type: "{{ item.1.content_type }}"
@@ -65,6 +66,8 @@
     description: "{{ item.1.description | default(omit) }}"
     docker_tags_whitelist: "{{ item.1.docker_tags_whitelist | default(omit) }}"
     docker_upstream_name: "{{ item.1.docker_upstream_name | default(omit) }}"
+    include_tags: "{{ item.1.include_tags | default(omit) }}"
+    exclude_tags: "{{ item.1.exclude_tags | default(omit) }}"
     download_policy: "{{ item.1.download_policy | default(omit) }}"
     gpg_key: "{{ item.1.gpg_key | default(omit) }}"
     http_proxy: "{{ item.1.http_proxy | default(omit) }}"
@@ -72,7 +75,9 @@
     ignorable_content: "{{ item.1.ignorable_content | default(omit) }}"
     ignore_global_proxy: "{{ item.1.ignore_global_proxy | default(omit) }}"
     label: "{{ item.1.label | default(omit) }}"
-    mirror_on_sync: "{{ item.1.mirror_on_sync | default(true) }}"
+    mirror_on_sync: "{{ item.1.mirror_on_sync | default(omit) }}"
+    mirroring_policy: "{{ item.1.mirroring_policy | default(omit) }}"
+    os_versions: "{{ item.1.os_versions | default(omit) }}"
     ssl_ca_cert: "{{ item.1.ssl_ca_cert | default(omit) }}"
     ssl_client_cert: "{{ item.1.ssl_client_cert | default(omit) }}"
     ssl_client_key: "{{ item.1.ssl_client_key | default(omit) }}"
@@ -81,6 +86,7 @@
     upstream_password: "{{ item.1.upstream_password | default(omit) }}"
     upstream_username: "{{ item.1.upstream_username | default(omit) }}"
     verify_ssl_on_sync: "{{ item.1.verify_ssl_on_sync | default(omit) }}"
+    ansible_collection_requirements: "{{ item.1.ansible_collection_requirements | default(omit) }}"
   with_subelements:
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
     - repositories

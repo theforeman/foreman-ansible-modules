@@ -12,4 +12,5 @@
     cron_expression: "{{ item.cron_expression | default(omit) }}"
     enabled: "{{ item.enabled | default(true) }}"
     products: "{{ item.products }}"
+    state: "{{ item.state | default(omit) }}"
   with_items: "{{ foreman_sync_plans | default([]) }}"

@@ -611,3 +611,94 @@ releases:
     - repository-rhel9.yml
     - smaller-diffs.yml
     release_date: '2022-05-17'
+  3.5.0:
+    changes:
+      minor_changes:
+      - add execution environment metadata
+      - installation_medium, operatingsystem, partition_table - add ``Fcos``, ``Rhcos``,
+        ``VRP`` OS families
+      - job_template - add ``hidden_value`` to ``template_inputs`` parameters
+      - job_template - allow ``value_type`` to be ``resource``
+      - operatingsystems role - make ``provisioning_template`` parameter optional
+      - repositories role - add ``ansible_collection_requirements``
+      - repositories role - add ``arch`` and ``os_versions`` parameters
+      - repositories role - support ``mirroring_policy``
+      - repository, smart_proxy - document deprecation/removal status of ``download_policy=background``
+      - setting - the ``foreman_setting`` return entry is deprecated and kept for
+        backwards compatibility, please use ``entity`` as with any other module
+      - smart_proxy - add ``inherit`` to possible values of ``download_policy`` (https://github.com/theforeman/foreman-ansible-modules/issues/1438)
+      - smart_proxy - add ``streamed`` download policy
+      - snapshot - add include_ram option when creating VMWare snapshot
+    fragments:
+    - 1438-smart_proxy-download_policy-inherit.yml
+    - setting-return-deprecate.yml
+    modules:
+    - description: List pulp3 content exports
+      name: content_export_info
+      namespace: ''
+    - description: Manage content exports
+      name: content_export_library
+      namespace: ''
+    - description: Manage Host Discovery Rules
+      name: discovery_rule
+      namespace: ''
+    release_date: '2022-08-22'
+  3.6.0:
+    modules:
+    - description: Manage repository content exports
+      name: content_export_repository
+      namespace: ''
+    - description: Manage content view version content exports
+      name: content_export_version
+      namespace: ''
+    release_date: '2022-09-01'
+  3.7.0:
+    changes:
+      bugfixes:
+      - Properly use FQCN notation when redirecting the old ``foreman_*`` and ``katello_*``
+        module names. (https://github.com/theforeman/foreman-ansible-modules/issues/1484)
+      - convert2rhel role - Content views for activation keys (https://bugzilla.redhat.com/2118790)
+      minor_changes:
+      - repository - add support for ``include_tags`` and ``exclude_tags`` parameters
+        for Katello 4.4+
+      - subscription_manifest - increase the import timeout to 10 minutes (https://github.com/theforeman/foreman-ansible-modules/issues/1474)
+      - sync_plans role - document the ``enabled`` parameter (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+      - sync_plans role - expose the ``state`` parameter of the underlying module,
+        thus allowing to delete plans (https://github.com/theforeman/foreman-ansible-modules/issues/1477)
+    fragments:
+    - 1474-subscription_manifest-timeout.yaml
+    - 1477-sync_plans-enhancements.yml
+    - 1484-redirect-fqcn.yaml
+    - bz2118790.yml
+    - repository-include-exclude-tags.yaml
+    release_date: '2022-10-05'
+  3.8.0:
+    changes:
+      bugfixes:
+      - activation_key - properly fetch *all* repositories when managing content overrides
+        (https://bugzilla.redhat.com/show_bug.cgi?id=2134605)
+      - redhat_manifest - properly report http errors (https://github.com/theforeman/foreman-ansible-modules/issues/1497)
+      - repository_sync - report an error instead of syncing the whole product when
+        the repository could not be found
+      minor_changes:
+      - job_template - add ``default`` option to the ``template_inputs`` parameter
+      - location, organization - add ``ignore_types`` parameter to adjust automatic
+        association of resources
+      - redhat_manifest - Search by UUID on the server side if UUID is known. This
+        is faster and allows fetching of manifest in big accounts (>1000 allocations).
+      - redhat_manifest - return the UUID of the manifest so it can be reused later
+      - redhat_manifest - set default ``quantity`` to 1 (https://github.com/theforeman/foreman-ansible-modules/pull/1499)
+    fragments:
+    - 1497-redhat_manifest-report-error.yml
+    - 1509-taxonomy-ignore_types.yaml
+    - 1519-job_template-input-default.yml
+    - 2134605-ak-product_contents-per_page.yml
+    - manifest-uuid-return.yml
+    - redhat_manifest-default_quantity.yml
+    - redhat_manifest-uuid-search.yml
+    - repository_sync-no-failsaife-repository.yml
+    modules:
+    - description: Fetch information about Foreman Snapshots
+      name: snapshot_info
+      namespace: ''
+    release_date: '2022-12-20'

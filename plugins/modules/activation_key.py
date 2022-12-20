@@ -196,7 +196,7 @@ entity:
       elements: dict
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule, PER_PAGE
 
 
 def override_to_boolnone(override):
@@ -329,7 +329,8 @@ def main():
                         'activation_keys',
                         'product_content',
                         params={'id': activation_key['id'],
-                                'content_access_mode_all': True},
+                                'content_access_mode_all': True,
+                                'per_page': PER_PAGE},
                         ignore_check_mode=True,
                     )
                 else:

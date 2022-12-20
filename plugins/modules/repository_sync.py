@@ -66,9 +66,7 @@ def main():
     module = KatelloAnsibleModule(
         foreman_spec=dict(
             product=dict(type='entity', scope=['organization'], required=True),
-            repository=dict(type='entity', scope=['product'], failsafe=True),
-            # This should be scoped more explicit for better serch performance, but needs rerecording
-            # repository=dict(type='entity', scope=['organization', 'product'], failsafe=True),
+            repository=dict(type='entity', scope=['product']),
         ),
     )
 

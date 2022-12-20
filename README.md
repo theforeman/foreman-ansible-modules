@@ -51,6 +51,7 @@ Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only P
      loop: "{{ compute_resources }}"
      no_log: yes
    ```
+* Modules require write access to `~/.cache` (or wherever `$XDG_CACHE_HOME` points at). Otherwise the API documentation cannot be downloaded and you get errors like `[Errno 13] Permission denied: '/home/runner/.cache/apypie`. If on your system `~/.cache` is not writeable, please set the `$XDG_CACHE_HOME` environment variable to a directory Ansible can write to.
 
 ## Installation
 
@@ -76,19 +77,25 @@ For development or testing purposes, you can install the collection from source 
 
 With Ansible >= 2.10, you can install from a Github repository (such as this one or your fork):
 
-`ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git`
+```console
+$ ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git
+```
 
 If you have configured GitHub to use SSH instead of HTTPS, you can do:
 
-`ansible-galaxy collection install git@github.com/theforeman/foreman-ansible-modules.git`
+```console
+$ ansible-galaxy collection install git@github.com/theforeman/foreman-ansible-modules.git
+```
 
 You can also specify a branch to use such as `devel` (below) or a feature branch that you are working with:
 
-`ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git,devel`
+```console
+$ ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git,devel
+```
 
 To install from a `requirements.yml` file (useful when installing multiple collections) add a snippet to your `requirements.yml` like
 
-```yml
+```yaml
 ---
 collections:
   - name: https://github.com/theforeman/foreman-ansible-modules.git
@@ -102,11 +109,15 @@ And install all specified requirements with `ansible-galaxy install -r requireme
 
 For all currently supported versions of Ansible (i.e. Ansible >= 2.9, and particularly Ansible < 2.10 where the above approach is not yet supported), you can build the collection locally:
 
-`make dist`
+```console
+$ make dist
+```
 
 And install it with:
 
-`ansible-galaxy collection install ./theforeman-foreman-*.tar.gz`
+```console
+$ ansible-galaxy collection install ./theforeman-foreman-*.tar.gz
+```
 
 ## Dependencies
 
