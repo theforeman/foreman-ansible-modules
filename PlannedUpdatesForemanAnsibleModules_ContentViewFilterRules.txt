@@ -1,0 +1,352 @@
+Below is the ansible documentation for the recommended changes.
+The current filter module munges filters and filter rules. This needs an update. My suggestion is to make it look like hammer.
+So for a filter the following methods should be wrapped into the module.
+
+state: present | absent (manadatory)
+
+state present will create or update the filter
+state absent will delete the filter and associated rules
+
+Updates: from Evgeny - an _info module is the standard implementation to get a thing out of foreman
+content_view_filter_info
+content_view_filter_rule_info 
+
+
+
+rule must be an object on its own. 
+  - a package or stream filter has multiple "rules" associated with it 
+    - for packages, it is the rpm name and can accept wildcards
+    - for streams, it is the stream name and can accept wildcards
+    - for errata_by_date, there is only one rule
+    - for errata_by_id, this is a list of errata, each erratum is considered a rule
+    - for package groups, this is a list of package groups, each package group is considered a rule
+
+
+
+so, the content_view_filter module should only accept the values associated directly
+
+An example of defining a content view
+
+  - name: "SOE_RHEL8"
+    desc: "Red Hat Enterprise Linux 8 Standard Operating Environment Content"
+    org: "{{ foreman_initial_organization }}"
+    repositories:
+    - name: "Red Hat Ansible Engine 2.9 RPMs for RHEL 8 Server x86_64"
+      product: "Red Hat Ansible Engine"
+    - name: "Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8"
+      product: "Red Hat Enterprise Linux for x86_64"
+    - name: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS RPMs 8"
+      product: "Red Hat Enterprise Linux for x86_64"
+    - name: "Red Hat Enterprise Linux 8 for x86_64 - Supplementary RPMs 8"
+      product: "Red Hat Enterprise Linux for x86_64"
+    - name: "Red Hat Enterprise Linux 8 for x86_64 - AppStream Kickstart 8.5"
+      product: "Red Hat Enterprise Linux for x86_64"
+    - name: "Red Hat Enterprise Linux 8 for x86_64 - BaseOS Kickstart 8.5"
+      product: "Red Hat Enterprise Linux for x86_64"
+    - name: "Red Hat Satellite Tools 6.10 for RHEL 8 x86_64 RPMs"
+      product: "Red Hat Enterprise Linux Server"
+    filters:
+    - name: "IncludeAllPackagesNoErrata"
+      type: "rpm"
+      inclusion: "true"
+      description: "Include all packages with no errata for all repositories"
+      original_packages: true
+      repositories: "[]"
+    - name: "IncludeAllStreamsNoErrata"
+      type: "modulemd"
+      inclusion: "true"
+      description: "Include all packages with no errata for all repositories"
+      original_packages: true
+      repositories: "[]"
+    - name: "IncludeErrataByDate"
+      type: "erratum"
+      inclusion: "true"
+      description: "Include all errata updated as of {{ filter_enddate }}"
+      repositories: "[]"
+      rules:
+      - name: "errata-by-date-{{ filter_enddate }}"
+        end_date: "{{ filter_enddate }}"
+        date_type: "updated"
+        types:
+        - "enhancement"
+        - "bugfix"
+        - "security"
+    - name: "ExcludeFireFox"
+      type: "rpm"
+      inclusion: "false"
+      description: "Do not provide Firefox to servers"
+      original_packages: true
+      repositories: "[]"
+      rules:
+      - name: "firefox*"
+        basearch: "x86_64"
+    environments:
+    - "Dev"
+    - "QA"
+    - "Prod"
+
+
+
+---
+module: content_view_filter
+version_added: 3.4.x
+short_description: Manage content view filters
+description:
+    - Create and manage content view filters
+author: 
+    - "Sean O'Keeffe (@sean797)"
+    - "Paul Armstrong (parmstro)"
+options:
+  name:
+    description:
+      - set the name of the content view filter
+    type: str
+    required: true
+  description:
+    description:
+      - set the description of the content view filter
+    type: str
+  content_view:
+    description:
+      - name of the content view to add the filter to
+    required: true
+    type: str
+  state:
+    description:
+      - set the presence or absence of the content view filter
+    default: present
+    choices:
+      - present
+      - absent
+    type: str
+  repositories:
+    description:
+      - list of repositories that the filter applies to including name and product
+      - An empty Array means all current and future repositories
+    default: []
+    type: list
+    elements: dict
+  filter_type:
+    description:
+      - the type of content to apply the filter to
+    required: true
+    choices:
+      - rpm
+      - module_stream
+      - package_group
+      - erratum
+      - docker
+    type: str
+  inclusion:
+    description:
+      - true creates an include filter
+      - false creates an exclude filter
+    default: False
+    type: bool
+extends_documentation_fragment:
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
+'''
+
+EXAMPLES = '''
+- name: "Include all rpms with no errata - does not need a rule attached"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    name: "all_rpms_no_errata"
+    filter_type: "rpm"
+    repositories: []
+    inclusion: True
+    all_no_errata: True
+
+- name: "Include all module streams with no errata - does not need a rule attached"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    name: "all_streams_no_errata"
+    filter_type: "modulemd"
+    repositories: []
+    inclusion: True
+    all_no_errata: True
+
+- name: "Include errata by date - needs a rule attached"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    name: "errata_by_date"
+    filter_type: "erratum"
+    repositories: []
+    inclusion: True
+    original_packages: True
+
+- name: "Exclude old versions of csh - needs one or more rules attached"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    name: "package filter 1"
+    filter_type: "rpm"
+'''
+
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    content_view_filters:
+      description: List of content view filters.
+      type: list
+      elements: dict
+'''
+
+
+---
+module: content_view_filter_rule
+version_added: 3.4.x
+short_description: Manage content view filter rules
+description:
+    - Create and manage content view filter rules
+author: 
+    - "Paul Armstrong (parmstro)"
+options:
+  content_view_filter:
+    description:
+      - the name of the content view filter that the rule applies to
+    required: true 
+    type: str
+  architecture:
+    description:
+      - set package architecture that the rule applies to
+    type: str
+  state:
+    description:
+      - set the presence or absence of the content view filter rule
+    default: present
+    choices:
+      - present
+      - absent
+    type: str
+  name:
+    description:
+      - Content view filter rule name, package name, package_group name, module stream or docker tag
+      - If omitted, the value of I(name) will be used if necessary
+    aliases:
+      - module_name
+      - package_name
+      - package_group
+      - tag
+    type: str
+  date_type:
+    description:
+      - set whether rule applied to erratum using the 'Issued On' or 'Updated On' date
+      - Only valid on I(filter_type=erratum).
+    default: updated
+    choices:
+      - issued
+      - updated
+    type: str
+  end_date:
+    description:
+      - the rule limit for erratum end date (YYYY-MM-DD)
+      - see date_type for the date the rule applies to
+      - Only valid on I(filter_type=erratum).
+    type: str
+  start_date:
+    description:
+      - the rule limit for erratum start date (YYYY-MM-DD)
+      - see date_type for the date the rule applies to
+      - Only valid on I(filter_type=erratum).
+    type: str
+  errata_id:
+    description:
+      - erratum id
+    type: str
+  max_version:
+    description:
+      - package maximum version
+    type: str
+  min_version:
+    description:
+      - package minimum version
+    type: str
+  errata_types:
+    description:
+      - errata types the ruel applies to (enhancement, bugfix, security)
+      - Only valid on I(filter_type=erratum)
+    default: ["bugfix", "enhancement", "security"]
+    type: list
+    elements: str
+  version:
+    description:
+      - package version
+    type: str
+extends_documentation_fragment:
+  - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.organization
+'''
+
+EXAMPLES = '''
+
+- name: "Include errata by date"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    content_view_filter_name: "all_rpms_no_errata"
+    content_view_filter_name: "errata_by_date"
+    state: present
+    date_type: updated
+    types:
+      - bugfix
+      - security
+      - enhancement
+    end_date: "2022-05-25"
+
+- name: "Exclude csh versions 6.20 and older"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    content_view_filter_name: "package filter 1"
+    name: "tcsh"
+    max_version: "6.20.00" 
+
+- name: "Exclude csh version 6.23 due to example policy"
+  theforeman.foreman.content_view_filter:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    content_view_filter_name: "package filter 1"
+    name: "tcsh"
+    version: "6.23.00" 
+'''
+
+RETURN = '''
+entity:
+  description: Final state of the affected entities grouped by their type.
+  returned: success
+  type: dict
+  contains:
+    content_view_filters:
+      description: List of content view filters.
+      type: list
+      elements: dict
+'''
