@@ -24,28 +24,47 @@
       vars:
         repository_state: present
         repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-    - name: "Create repository"
+    - name: "Create Module repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: "Test Modular Repository"
+        repository_content_type: yum
+        repository_url: "https://dl.fedoraproject.org/pub/epel/8/Modular/x86_64"
+
+    - name: "Create Docker repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_name: Test Docker Repository
         repository_content_type: docker
         repository_url: https://registry.access.redhat.com
-        repository_docker_upstream_name: ubi9
+        repository_docker_upstream_name: ubi8
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Docker Repository
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Modular Repository
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
         repositories:
           - name: "Test Repository"
             product: "Test Product"
+          - name: "Test Docker Repository"
+            product: "Test Product"
+          - name: "Test Modular Repository"
+            product: "Test Product"
 
-- name: "Test content_view_filter"
+    - name: "Create content view filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+
+- name: "Test content_view_filter_rule"
   hosts: tests
   collections:
     - theforeman.foreman
@@ -53,38 +72,26 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: "Create/Update/Delete Content View Filter"
-      vars:
-        content_view_filter_name: "Test Package Content View Filter"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-        repositories:
-          - name: "Test Repository"
-            product: "Test Product"
-        filter_state: present
-      content_view_filter:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        name: "{{ content_view_filter_name }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        type: "rpm"
-        repositories: "{{ repositories }}"
-        inclusion: "{{ inclusion | default(omit) }}"
-        original_packages: "{{ original_packages | default(omit) }}"
-        original_module_streams: "{{ original_module_streams | default(omit) }}"
-        state: "{{ filter_state }}"
-      register: result
-    - name: "Assert success"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
-        that:
-          - result.changed == expected_change
-      when: expected_change is defined
-      vars:
-        filter_state: present
+    - name: "Create Content View Filter Rule for packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_packages.yml
+
+    - name: "Create Content View Filter Rule for package groups"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_package_groups.yml
+
+    - name: "Create Content View Filter Rule for errata_id"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_id.yml
+
+    - name: "Create Content View Filter Rule for errata_by_date"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_date.yml
+
+    - name: "Create Content View Filter Rule for containers"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_containers.yml
+
+    - name: "Create Content View Filter Rule for module_streams"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
+
+    #- name: "Cleanuup Content View Filter Rules"
+    #  ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
 
 - name: "Clean up test dependencies"
   hosts: localhost
