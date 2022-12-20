@@ -1,8 +1,8 @@
 ---
 - name: "Create katello content view"
   vars:
-    - content_view_name: "Test Content View"
-    - organization_name: "Test Organization"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
   content_view:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -18,11 +18,13 @@
     solve_dependencies: "{{ solve_dependencies | default(omit) }}"
   register: result
 
-- assert:
+- name: "Assert Result"
+  ansible.builtin.assert:
     fail_msg: "Ensuring content_view is {{ content_view_state | default('present') }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
+
 - include_tasks: _assert_diff.yml
   vars:
     module: content_view

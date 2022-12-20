@@ -1,0 +1,244 @@
+---
+- name: "Create Content View Filter - All RPM"
+  vars:
+    content_view_filter_name: "Test Content View Filter - AllRPMNoErrata"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    inclusion: True
+    original_packages: True
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "rpm"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+
+- name: "Create Content View Filter - All Modules"
+  vars:
+    content_view_filter_name: "Test Content View Filter - AllModuleStreamsNoErrata"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    inclusion: True
+    original_module_streams: True
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "modulemd"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+
+- name: "Create Content View Filter - rpm"
+  vars:
+    content_view_filter_name: "Test Content View Filter - rpm"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "rpm"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+
+- name: "Create Content View Filter - package_group"
+  vars:
+    content_view_filter_name: "Test Content View Filter - package_group"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "package_group"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+- name: "Create Content View Filter - erratum_by_id"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_id"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "erratum_id"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+- name: "Create Content View Filter - erratum_by_date"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_date"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "erratum_date"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+
+- name: "Create Content View Filter - docker"
+  vars:
+    content_view_filter_name: "Test Content View Filter - docker"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "docker"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+- name: "Create Content View Filter - modulemd"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    filter_state: present
+  content_view_filter:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ content_view_filter_name }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    type: "modulemd"
+    inclusion: "{{ inclusion | default(omit) }}"
+    original_packages: "{{ original_packages | default(omit) }}"
+    original_module_streams: "{{ original_module_streams | default(omit) }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    filter_state: present
+
+...
