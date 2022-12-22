@@ -191,7 +191,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
-- name: Create livirt compute resource
+- name: Create libvirt compute resource
   theforeman.foreman.compute_resource:
     name: example_compute_resource
     locations:
