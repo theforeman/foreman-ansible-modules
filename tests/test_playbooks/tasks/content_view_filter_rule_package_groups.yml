@@ -13,7 +13,7 @@
     content_view_name: "Test Content View"
     organization_name: "Test Organization"
     package_group: "birds"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -23,17 +23,17 @@
     content_view: "{{ content_view_name }}"
     content_view_filter: "{{ content_view_filter_name }}"
     name: "{{ package_group }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
   register: result
 
 - name: "Assert success"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present
 
 - name: "Create Content View Filter Rule - package_group 2"
   vars:
@@ -41,7 +41,7 @@
     content_view_name: "Test Content View"
     organization_name: "Test Organization"
     package_group: "mammals"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -51,15 +51,15 @@
     content_view: "{{ content_view_name }}"
     content_view_filter: "{{ content_view_filter_name }}"
     name: "{{ package_group }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
 
   register: result
 
 - name: "Assert success"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present

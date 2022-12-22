@@ -2,10 +2,10 @@
 # Create and Delete a filter rule for module stream filter
 # A module stream filter rule is referenced a series of elements
 # to get to a specific module stream
-# This is the general principle using NSVCA 
-# name - this can be a list or a single module name. If it is a single module name, you get to use more args. 
-#        Otherwise the filter created will filter everything in the filters repos that has that name. 
-# stream - using this, we filter to get a list of all the module ids that have the name 
+# This is the general principle using NSVCA
+# name - this can be a list or a single module name. If it is a single module name, you get to use more args.
+#        Otherwise the filter created will filter everything in the filters repos that has that name.
+# stream - using this, we filter to get a list of all the module ids that have the name
 #          and stream matching within the scope of the repos of the filter
 # version - adding this should generate a shorter list of ids
 # context - adding this should generate a single id
@@ -26,7 +26,7 @@
     module_stream: "next"
     module_version: "820220325123957"
     module_context: "9edba152"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -39,18 +39,18 @@
     stream: "{{ module_stream | default(omit) }}"
     version: "{{ module_version | default(omit) }}"
     context: "{{ module_context | default(omit) }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
   register: result
 
 
 - name: "Assert success"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present
 
 
 - name: "Create Content View Filter Rule for module 2"
@@ -62,7 +62,7 @@
     module_stream: "23"
     module_version: "820220801190052"
     module_context: "nx4"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -75,15 +75,15 @@
     stream: "{{ module_stream | default(omit) }}"
     version: "{{ module_version | default(omit) }}"
     context: "{{ module_context | default(omit) }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
   register: result
 
 
 - name: "Assert success"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present

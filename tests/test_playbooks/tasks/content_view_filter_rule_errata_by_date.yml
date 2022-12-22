@@ -6,7 +6,7 @@
     organization_name: "Test Organization"
     end_date: "2018-01-03"
     start_date: "2017-01-03"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -19,18 +19,18 @@
     start_date: "{{ start_date | default(omit) }}"
     types: "{{ types | default(omit) }}"
     date_type: "{{ date_type | default(omit) }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
   register: result
 
 
 - name: "Assert Result"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present
 
 
 - name: "Update Content View Filter Rule - erratum_by_date"
@@ -40,7 +40,7 @@
     organization_name: "Test Organization"
     end_date: "2019-01-03"
     start_date: "2017-01-03"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -53,15 +53,15 @@
     start_date: "{{ start_date | default(omit) }}"
     types: "{{ types | default(omit) }}"
     date_type: "{{ date_type | default(omit) }}"
-    state: "{{ filter_state }}"
+    state: "{{ rule_state }}"
   register: result
 
 
 - name: "Assert Result"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present

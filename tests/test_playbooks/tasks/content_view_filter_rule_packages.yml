@@ -2,8 +2,9 @@
 # Create and Delete a filter rule for packages
 # A package filter is referenced by the name of the package
 # It is not updated - it is created or deleted
-# - create 1st rule Check to see if it exists
-# - create 2nd rule Check to see if both exits
+# - create 1st rule Check to see if it exists - should succeed with changed
+# - create 2nd rule Check to see if both exits - should succeed with changed
+# - call 1st rule again with present - should succeed with no change
 
 - name: "Create Content View Filter Rule for package 1"
   vars:
@@ -11,7 +12,7 @@
     content_view_name: "Test Content View"
     organization_name: "Test Organization"
     package_name: "bear"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -21,18 +22,19 @@
     content_view: "{{ content_view_name }}"
     content_view_filter: "{{ content_view_filter_name }}"
     name: "{{ package_name }}"
-    state: "{{ filter_state }}"
-
+    state: "{{ rule_state }}"
   register: result
 
-- name: "Assert success"
+- name: "Assert Result"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present
+    expected_change: true
+
 
 - name: "Create Content View Filter Rule for package 2"
   vars:
@@ -40,7 +42,7 @@
     content_view_name: "Test Content View"
     organization_name: "Test Organization"
     package_name: "camel"
-    filter_state: present
+    rule_state: present
   content_view_filter_rule:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -50,15 +52,47 @@
     content_view: "{{ content_view_name }}"
     content_view_filter: "{{ content_view_filter_name }}"
     name: "{{ package_name }}"
-    state: "{{ filter_state }}"
-
+    state: "{{ rule_state }}"
   register: result
 
-- name: "Assert success"
+
+- name: "Assert Result"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
     that:
       - result.changed == expected_change
   when: expected_change is defined
   vars:
-    filter_state: present
+    rule_state: present
+    expected_change: true
+
+
+- name: "Retry Content View Filter Rule for package 1 - success, no change"
+  vars:
+    content_view_filter_name: "Test Content View Filter - rpm"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_name: "bear"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_name }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+    expected_change: false
