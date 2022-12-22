@@ -1,29 +1,58 @@
-Below is the ansible documentation for the recommended changes.
-The current filter module munges filters and filter rules. This needs an update. My suggestion is to make it look like hammer.
-So for a filter the following methods should be wrapped into the module.
+The planned separation of filter and filter rule is implemented in this branch.
+The below model for a content view works
+Multiple rules can be added and removed from a 
+- rpm filter
+- modulemd filter
+- package_group filter
+- erratum_id filter
+- docker filter
 
-state: present | absent (manadatory)
+Known Issues:
+- modulemd filter rule with state: absent does not remove the filter rule. It currently needs to be removed manually
+- supplying lists to content_view_filter_rule name or errata_ids is not confirmed to be supported
+- deb content is not supported
 
-state present will create or update the filter
-state absent will delete the filter and associated rules
+There are several remaining challenges related to usability.
+1) providing lists and the rules for providing lists.
+  1.1) you should be able to call the content_filter_view_rule module with lists for the following filter types
+    1.1.1) rpm
+    1.1.2) modulemd
+    1.1.3) package_group
+    1.1.4) erratum_id
+    1.1.5) docker
+    1.1.6) deb (no deb fitler is currently implemented)
 
-Updates: from Evgeny - an _info module is the standard implementation to get a thing out of foreman
-content_view_filter_info
-content_view_filter_rule_info 
+  1.2) you should be able to call the content_filter_view_rule module with 'present' for any of the above filter types and:
+    1.2.1) provide a list. This should mean one or more rules gets created for every element in the list, if it doesn't already exist, based on the criteria
+    1.2.2) provide a subset of the list in 1.1.1 resulting in the missing list element(s) being removed without affecting other rules, based on the criteria
+   
+  1.3) you should be able to call the content_filter_view_rule module with 'absent'  for any of the above filter types and:
+    1.3.1) provide a list. This should mean that one or more rules is removed based on the criteria.
+    1.3.2) providing '*' with absent, should result in all rules being removed from the filter.
+  
+  1.4) erratum_date filters do not support lists, please create multiple filters
 
+  Discussion:
+  In general we do not want to work directly with ids as this makes any ansible code non-portable.
+  rpm, package_group, errata_ids, docker should already support lists
+  - this needs to be verified through testing whether the behaviour above is met.
+  - this is apparent in app/controllers/katello/api/v2/content_view_filter_rules_controller.rb 
 
+  The erratum filter rule types are lumped into one implementation
+  - errata_ids are *not* internal ids, but erratum references in the form of RHEA-2012:0004
 
-rule must be an object on its own. 
-  - a package or stream filter has multiple "rules" associated with it 
-    - for packages, it is the rpm name and can accept wildcards
-    - for streams, it is the stream name and can accept wildcards
-    - for errata_by_date, there is only one rule
-    - for errata_by_id, this is a list of errata, each erratum is considered a rule
-    - for package groups, this is a list of package groups, each package group is considered a rule
+  The modulemd filter rule api requires a list of module_stream_ids to create filter rules. 
+  - these are internal ids and not something that is specific to the module, like module_spec (N:S:V:C:A)
+    we need to abbreviate architecture to arch for the search of the module id and/or restrict the search by repositories
+  - we need to supply search parameters to find the module stream that we want
+  - with the existing available search params, there is the possibility of multiple return values, especially, if there are multiple architectures in a content view
 
+  In order to remove even a single module_stream rule we need to perform a search (or provide a name). 
+  The challenge being in order to get a unique name, you need to fully qualify a module using NSVA
+  It is probably better to use search criteria, get and array and create/remove related rules that way.
 
-
-so, the content_view_filter module should only accept the values associated directly
+2) creating rules limited to specific repositories has not been tested and the behaviour of the module when passing repositories is undefined.
+   
 
 An example of defining a content view
 
@@ -84,269 +113,3 @@ An example of defining a content view
     - "Dev"
     - "QA"
     - "Prod"
-
-
-
----
-module: content_view_filter
-version_added: 3.4.x
-short_description: Manage content view filters
-description:
-    - Create and manage content view filters
-author: 
-    - "Sean O'Keeffe (@sean797)"
-    - "Paul Armstrong (parmstro)"
-options:
-  name:
-    description:
-      - set the name of the content view filter
-    type: str
-    required: true
-  description:
-    description:
-      - set the description of the content view filter
-    type: str
-  content_view:
-    description:
-      - name of the content view to add the filter to
-    required: true
-    type: str
-  state:
-    description:
-      - set the presence or absence of the content view filter
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
-  repositories:
-    description:
-      - list of repositories that the filter applies to including name and product
-      - An empty Array means all current and future repositories
-    default: []
-    type: list
-    elements: dict
-  filter_type:
-    description:
-      - the type of content to apply the filter to
-    required: true
-    choices:
-      - rpm
-      - module_stream
-      - package_group
-      - erratum
-      - docker
-    type: str
-  inclusion:
-    description:
-      - true creates an include filter
-      - false creates an exclude filter
-    default: False
-    type: bool
-extends_documentation_fragment:
-  - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.organization
-'''
-
-EXAMPLES = '''
-- name: "Include all rpms with no errata - does not need a rule attached"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    name: "all_rpms_no_errata"
-    filter_type: "rpm"
-    repositories: []
-    inclusion: True
-    all_no_errata: True
-
-- name: "Include all module streams with no errata - does not need a rule attached"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    name: "all_streams_no_errata"
-    filter_type: "modulemd"
-    repositories: []
-    inclusion: True
-    all_no_errata: True
-
-- name: "Include errata by date - needs a rule attached"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    name: "errata_by_date"
-    filter_type: "erratum"
-    repositories: []
-    inclusion: True
-    original_packages: True
-
-- name: "Exclude old versions of csh - needs one or more rules attached"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    name: "package filter 1"
-    filter_type: "rpm"
-'''
-
-RETURN = '''
-entity:
-  description: Final state of the affected entities grouped by their type.
-  returned: success
-  type: dict
-  contains:
-    content_view_filters:
-      description: List of content view filters.
-      type: list
-      elements: dict
-'''
-
-
----
-module: content_view_filter_rule
-version_added: 3.4.x
-short_description: Manage content view filter rules
-description:
-    - Create and manage content view filter rules
-author: 
-    - "Paul Armstrong (parmstro)"
-options:
-  content_view_filter:
-    description:
-      - the name of the content view filter that the rule applies to
-    required: true 
-    type: str
-  architecture:
-    description:
-      - set package architecture that the rule applies to
-    type: str
-  state:
-    description:
-      - set the presence or absence of the content view filter rule
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
-  name:
-    description:
-      - Content view filter rule name, package name, package_group name, module stream or docker tag
-      - If omitted, the value of I(name) will be used if necessary
-    aliases:
-      - module_name
-      - package_name
-      - package_group
-      - tag
-    type: str
-  date_type:
-    description:
-      - set whether rule applied to erratum using the 'Issued On' or 'Updated On' date
-      - Only valid on I(filter_type=erratum).
-    default: updated
-    choices:
-      - issued
-      - updated
-    type: str
-  end_date:
-    description:
-      - the rule limit for erratum end date (YYYY-MM-DD)
-      - see date_type for the date the rule applies to
-      - Only valid on I(filter_type=erratum).
-    type: str
-  start_date:
-    description:
-      - the rule limit for erratum start date (YYYY-MM-DD)
-      - see date_type for the date the rule applies to
-      - Only valid on I(filter_type=erratum).
-    type: str
-  errata_id:
-    description:
-      - erratum id
-    type: str
-  max_version:
-    description:
-      - package maximum version
-    type: str
-  min_version:
-    description:
-      - package minimum version
-    type: str
-  errata_types:
-    description:
-      - errata types the ruel applies to (enhancement, bugfix, security)
-      - Only valid on I(filter_type=erratum)
-    default: ["bugfix", "enhancement", "security"]
-    type: list
-    elements: str
-  version:
-    description:
-      - package version
-    type: str
-extends_documentation_fragment:
-  - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.organization
-'''
-
-EXAMPLES = '''
-
-- name: "Include errata by date"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    content_view_filter_name: "all_rpms_no_errata"
-    content_view_filter_name: "errata_by_date"
-    state: present
-    date_type: updated
-    types:
-      - bugfix
-      - security
-      - enhancement
-    end_date: "2022-05-25"
-
-- name: "Exclude csh versions 6.20 and older"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    content_view_filter_name: "package filter 1"
-    name: "tcsh"
-    max_version: "6.20.00" 
-
-- name: "Exclude csh version 6.23 due to example policy"
-  theforeman.foreman.content_view_filter:
-    username: "admin"
-    password: "changeme"
-    server_url: "https://foreman.example.com"
-    organization: "Default Organization"
-    content_view: "Standard Operating Environment"
-    content_view_filter_name: "package filter 1"
-    name: "tcsh"
-    version: "6.23.00" 
-'''
-
-RETURN = '''
-entity:
-  description: Final state of the affected entities grouped by their type.
-  returned: success
-  type: dict
-  contains:
-    content_view_filters:
-      description: List of content view filters.
-      type: list
-      elements: dict
-'''
