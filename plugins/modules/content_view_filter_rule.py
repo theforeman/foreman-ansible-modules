@@ -26,7 +26,7 @@ module: content_view_filter_rule
 version_added: 3.4.x
 short_description: Manage content view filter rules
 description:
-    - Create and manage content view filter rules
+    - Create, manage and remove content view filter rules
 author: 
     - "Paul Armstrong (parmstro)"
 options:
@@ -37,7 +37,7 @@ options:
     type: str
   architecture:
     description:
-      - set package architecture that the rule applies to
+      - set package, module_stream, etc. architecture that the rule applies to
     type: str
   state:
     description:
@@ -51,6 +51,7 @@ options:
     description:
       - Content view filter rule name, package name, package_group name, module stream or docker tag
       - If omitted, the value of I(name) will be used if necessary
+      - for module stream filters, this is the name of the module stream to search for
     aliases:
       - rule_name
       - module_name
@@ -163,8 +164,7 @@ entity:
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloMixin, ForemanStatelessEntityAnsibleModule
 
-
-content_filter_rule_erratum_date_spec = {
+content_filter_rule_erratum_spec = {
     'id': {},
     'date_type': {},
     'end_date': {},
@@ -175,31 +175,32 @@ content_filter_rule_erratum_date_spec = {
 content_filter_rule_erratum_id_spec = {
     'id': {},
     'errata_id': {},
+    'errata_ids': {'type': 'list'},
 }
 
 content_filter_rule_rpm_spec = {
     'id': {},
-    'name': {},
-    'end_date': {},
+    'rule_name': {'flat_name': 'name'},
     'max_version': {},
     'min_version': {},
     'version': {},
     'architecture': {},
 }
 
-content_filter_rule_module_stream_spec = {
+content_filter_rule_modulemd_spec = {
     'id': {},
-    'module_stream_ids': {},
+    'module_stream_ids': {'type': 'list'},
 }
 
 content_filter_rule_package_group_spec = {
     'id': {},
-    'name': {},
+    'rule_name': {'flat_name': 'name'},
+    'uuid': {},
 }
 
 content_filter_rule_docker_spec = {
     'id': {},
-    'name': {},
+    'rule_name': {'flat_name': 'name'},
 }
 
 class KatelloContentViewFilterRuleModule(KatelloMixin, ForemanStatelessEntityAnsibleModule):
@@ -213,6 +214,7 @@ def main():
             name=dict(aliases=['rule_name','module_name','package_name', 'package_group', 'tag']),
             state=dict(default='present', choices=['present', 'absent']),
             errata_id=dict(),
+            errata_ids=dict(type='list', elements='str'),
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             date_type=dict(default='updated', choices=['issued', 'updated']),
             start_date=dict(),
@@ -227,57 +229,87 @@ def main():
         entity_opts=dict(scope=['content_view_filter']),
     )
 
+    # Do we want to make sure it exists or doesn't exist
     rule_state = module.foreman_params.pop('state')
 
     with module.api_connection():
 
-        scope = module.scope_for('organization')
-        cv_scope = module.scope_for('content_view')
-        cvf_scope = module.scope_for('content_view_filter')
-
-        content_view_filter_rule = module.lookup_entity('entity')
+        # A filter always exists before we create a rule
+        # Get a reference to the content filter that owns the rule we want to manage
+        org_scope = module.scope_for('organization')
+        cv_scope= module.scope_for('content_view')
+        cvf_scope=module.scope_for('content_view_filter')
+        cvf = module.lookup_entity('content_view_filter', params=cv_scope)
         
-        if content_view_filter_rule is not None:    
-            if 'errata_id' in module.foreman_params:
-                rule_spec = content_filter_rule_erratum_id_spec
-                search_scope = {'errata_id': module.foreman_params['errata_id']}
-                search_scope.update(cvf_scope)
-                search = None
-            else:
-                rule_spec = globals()['content_filter_rule_%s_spec' % (module.foreman_params['filter_type'])]
-                search_scope = cv_scope
-                if module.foreman_params['name'] is not None:
-                    search = 'name="{0}"'.format(module.foreman_params['name'])
-                else:
-                    search = None
-            # not using find_resource_by_name here, because not all filters (errata) have names
-            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True) if entity else None
+        # figure out what kind of filter we are working with
+        filter_type = cvf['type']
+        rule_spec = globals()['content_filter_rule_%s_spec' % (filter_type)]
+        
+        # trying to find the existing rule is not simple...
+        search = None
+        search_scope = cvf_scope
+        content_view_filter_rule = None
 
-            if module.foreman_params['filter_type'] == 'package_group':
-                package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=scope)
-                module.foreman_params['uuid'] = package_group['uuid']
+        if 'errata_id' in module.foreman_params:
+        # this filter type supports may rules
+        # we need to search by errata_id, because it really doesn't have a name.
+            rule_spec = content_filter_rule_erratum_id_spec
+            search_scope = {'errata_id': module.foreman_params['errata_id']}
+            search_scope.update(cvf_scope)
+            search = None
+            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
-            if module.foreman_params['filter_type'] == 'module_stream':
-                search_scope = cvf_scope
-                if module.foreman_params['name'] is not None:
-                  search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context', 'architecture'))
-                else:
-                  search = None
-
-                rule_spec['module_stream_ids'] = module.find_resource('module_streams', search, params=search_scope, failsafe=True)
+        if filter_type == 'erratum':
+        # for an erratum filter rule == errata_by_date rule, there can be only one rule per filter. So that's easy, its the only one
+        # if the state is present, we create it or update it, if absent, we delete it
+            search = None
+            content_view_filter_rule =  module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
             
-            # drop 'name' from the dict, as otherwise it might override 'rule_name'
-            rule_dict = module.foreman_params.copy()
-            # rule_dict.pop('name', None)
+        if filter_type in ('rpm', 'docker'):
+        # these filter types support many rules
+        # the name is the key to finding the proper one and is required for these types
+            if module.foreman_params['name'] is not None:
+                search = 'name="{0}"'.format(module.foreman_params['name'])
+                content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+            else:
+                # raise an error as name is required for this kind of rule
+                search = None
+        
+        if filter_type == 'package_group':
+        # this filter type support many rules
+        # the name is the key to finding the proper one and is required for these types
+        # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
+            search = 'name="{0}"'.format(module.foreman_params['name'])
+            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+            
+            package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=cv_scope)
+            module.foreman_params['uuid'] = package_group['uuid']
+            
+        if filter_type == 'modulemd':
+        # this filter type support many rules
+            content_view_filter_rule = None
+            if module.foreman_params['name'] is not None:
+                # we have to dig to find the right rule
+                # find the module stream's id
+                module.foreman_params['module_stream_ids']=[]
+                search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
+                module_stream = module.find_resource('module_streams', search, failsafe=True)
+                # get all the rules for this filter
+                # get the rule id of the rule that has our module stream id
+                # search = 'module_stream_id={0}'.format(module_stream['id'])
+                # find that specific content_view_filter_rule
+                # content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+                module.foreman_params['module_stream_ids'].append(module_stream['id']) 
 
-            module.ensure_entity(
-                'content_view_filter_rules',
-                rule_dict,
-                content_view_filter_rule,
-                params=cvf_scope,
-                state=rule_state,
-                foreman_spec=rule_spec,
-            )
+        
+        module.ensure_entity(
+            'content_view_filter_rules',
+            module.foreman_params,
+            content_view_filter_rule,
+            params=cvf_scope,
+            state=rule_state,
+            foreman_spec=rule_spec,
+        )
 
 
 if __name__ == '__main__':
