@@ -77,21 +77,40 @@
 
     - name: "Create Content View Filter Rule for package groups"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_package_groups.yml
+      vars:
+        expected_change: true
 
     - name: "Create Content View Filter Rule for errata_id"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_id.yml
+      vars:
+        expected_change: true
 
     - name: "Create Content View Filter Rule for errata_by_date"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_date.yml
+      vars:
+        expected_change: true
 
     - name: "Create Content View Filter Rule for containers"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_containers.yml
+      vars:
+        expected_change: true
 
     - name: "Create Content View Filter Rule for module_streams"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
+      vars:
+        expected_change: true
 
-    #- name: "Cleanuup Content View Filter Rules"
-    #  ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
+    - name: 'Stop the test if we want to manually inspect'
+      ansible.builtin.fail:
+        msg: "Stopping for inspection"
+      when: inspect_cvfr == true
+      vars:
+        inspect_cvfr: false
+
+    - name: "Cleanup Content View Filter Rules"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
+      #vars:
+      #  expected_change: true
 
 - name: "Clean up test dependencies"
   hosts: localhost
