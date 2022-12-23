@@ -22,8 +22,8 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: content_view_info
-version_added: 2.1.0
+module: content_view_filter_info
+version_added: 3.9.0
 short_description: Fetch information about a Content View Filter
 description:
   - Fetch information about a Content View Filter
