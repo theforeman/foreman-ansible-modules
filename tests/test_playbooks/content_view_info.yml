@@ -1,34 +1,41 @@
 ---
-- hosts: localhost
+- name: Setup content view info test prerequistes
+  hosts: localhost
   collections:
     - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-    - include_tasks: tasks/organization.yml
+    - name: Setup the organization
+      ansible.builtin.include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include_tasks: tasks/product.yml
+    - name: Setup product 1
+      ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include_tasks: tasks/repository.yml
+    - name: Setup the repositories for product 1
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include_tasks: tasks/product.yml
+    - name: Setup product 2
+      ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: present
-    - include_tasks: tasks/repository.yml
+    - name: Setup the repositories for product 2
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: present
-    - include_tasks: tasks/content_view.yml
+    - name: Ensure Test Composite Content View is absent
+      ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
         content_view_state: absent
     - name: Create content view
-      include_tasks: tasks/content_view.yml
+      ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
         content_view_state: present
         expected_change: true
@@ -36,14 +43,15 @@
           - name: "Test Repository"
             product: "Test Product"
 
-- hosts: tests
+- name: Test the content view info module
+  hosts: tests
   collections:
     - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-    - name: fetch content_view info
+    - name: Fetch content_view info
       content_view_info:
         username: "{{ foreman_username }}"
         password: "{{ foreman_password }}"
@@ -51,13 +59,14 @@
         validate_certs: "{{ foreman_validate_certs }}"
         name: "Test Content View"
       register: content_view_info
-    - name: check content_view details
-      assert:
+
+    - name: Check content_view details
+      ansible.builtin.assert:
         that:
           - content_view_info['content_view']['name'] == "Test Content View"
           - content_view_info['content_view']['repositories'][0]['name'] == "Test Repository"
 
-    - name: search content_view info
+    - name: Search content_view info
       content_view_info:
         username: "{{ foreman_username }}"
         password: "{{ foreman_password }}"
@@ -65,29 +74,50 @@
         validate_certs: "{{ foreman_validate_certs }}"
         search: 'name = "Test Content View"'
       register: content_view_info
-    - name: check content_view details
-      assert:
+
+    - name: Check content_view details
+      ansible.builtin.assert:
         that:
           - content_view_info['content_views'][0]['name'] == "Test Content View"
 
-- hosts: localhost
+- name: Perform content view info test cleanup
+  hosts: localhost
   collections:
     - theforeman.foreman
   gather_facts: false
   vars_files:
     - vars/server.yml
   tasks:
-    - include_tasks: tasks/content_view.yml
+    - name: Clean up the content view
+      ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
         content_view_state: absent
-    - include_tasks: tasks/repository.yml
+
+    - name: Clean up repos for product 2
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         product_name: "Test Product 2"
         repository_state: absent
-    - include_tasks: tasks/product.yml
+
+    - name: Clean up product 2
+      ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_name: "Test Product 2"
         product_state: absent
-    - include_tasks: tasks/organization.yml
+
+    - name: Clean up repos for product 1
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        product_name: "Test Product"
+        repository_state: absent
+
+    - name: Clean up product 1
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_name: "Test Product"
+        product_state: absent
+
+    - name: Clean up organization
+      include_tasks: tasks/organization.yml
       vars:
         organization_state: absent
