@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2016, Eric D Helms <ericdhelms@gmail.com>
 # (c) 2017, Matthias M Dellweg <dellweg@atix.de> (ATIX AG)
+# (c) 2022, Jeffrey van Pelt <jeff@vanpelt.one>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +31,7 @@ description:
 author:
     - "Eric D Helms (@ehelms)"
     - "Matthias M Dellweg (@mdellweg) ATIX AG"
+    - "Jeffrey van Pelt (@Thulium-Drake)"
 options:
   name:
     description:
@@ -54,6 +56,56 @@ options:
     aliases:
       - select_all_types
     version_added: 3.8.0
+  upstream_type:
+    description:
+      - Type of upstream content source
+    required: false
+    type: str
+    choices:
+      - 'redhat_cdn'
+      - 'network_sync'
+      - 'export_sync'
+  upstream_url:
+    description:
+      - URL of the upstream resource
+      - Required when I(upstream_type) is 'redhat_cdn' or 'network_sync'
+    required: false
+    type: str
+  upstream_ca_cert:
+    description:
+      - SSL CA certificate used to validate I(upstream_url)
+    required: false
+    type: str
+  upstream_username:
+    description:
+      - Username to authenticate to the upstream Foreman server
+      - Required when I(upstream_type) is 'network_sync'
+    required: false
+    type: str
+  upstream_password:
+    description:
+      - Password to authenticate to the upstream Foreman server
+      - Required when I(upstream_type) is 'network_sync'
+    required: false
+    type: str
+  upstream_organization:
+    description:
+      - Organization in the upstream Foreman server to synchronize
+      - Required when I(upstream_type) is 'network_sync'
+    required: false
+    type: str
+  upstream_content_view:
+    description:
+      - Content View in the upstream Foreman server to synchronize
+      - Required when I(upstream_type) is 'network_sync'
+    required: false
+    type: str
+  upstream_lifecycle_environment:
+    description:
+      - Lifecycle Environment in the upstream Foreman server to synchronize
+      - Required when I(upstream_type) is 'network_sync'
+    required: false
+    type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -68,6 +120,38 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     name: "My Cool New Organization"
     state: present
+
+- name: "Configure Red Hat CDN on a different URL'
+  theforeman.foreman.organization:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Cool New Organization"
+    upstream_type: "redhat_cdn"
+    upstream_url: "https://internal-cdn.example.com"
+
+- name: "Configure ISS Export Sync"
+  theforeman.foreman.organization:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Cool New Organization"
+    upstream_type: "export_sync"
+
+- name: "Configure ISS Network Sync"
+  theforeman.foreman.organization:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "My Cool New Organization"
+    upstream_type: "network_sync"
+    upstream_url: "https://upstream-foreman.example.com"
+    upstream_ca_cert: "Upstream Foreman"
+    upstream_username: sync_user
+    upstream_password: changeme2
+    upstream_organization: "Default Organization"
+    upstream_lifecycle_environment: "Library"
+    upstream_content_view: "Foreman_Network_Sync_View"
 '''
 
 RETURN = '''
@@ -98,6 +182,14 @@ def main():
             label=dict(),
             ignore_types=dict(type='list', elements='str', required=False, aliases=['select_all_types']),
             select_all_types=dict(type='list', invisible=True, flat_name='ignore_types'),
+            upstream_type=dict(required=False, choices=['redhat_cdn', 'export_sync', 'network_sync']),
+            upstream_url=dict(required=False),
+            upstream_username=dict(required=False),
+            upstream_password=dict(required=False,no_log=True),
+            upstream_ca_cert=dict(required=False, type='entity', resource_type='content_credentials', scope=['organization'),
+            upstream_organization=dict(required=False),
+            upstream_lifecycle_environment=dict(required=False),
+            upstream_content_view=dict(required=False),
         ),
     )
 
@@ -109,7 +201,34 @@ def main():
         if entity and 'select_all_types' in entity:
             entity['ignore_types'] = entity.pop('select_all_types')
 
-        module.run()
+        handle_cdn_configuration = 'upstream_type' in module.foreman_params
+
+        organization = module.lookup_entity('entity')
+        new_organization = module.run()
+
+        if handle_cdn_configuration:
+            payload = {
+                'id': new_organization['id'],
+                'type': module.foreman_params['upstream_type'],
+            }
+
+            if module.foreman_params['upstream_type'] == 'redhat_cdn':
+                extra_payload = {
+                    'url': module.foreman_params['upstream_url'],
+                }
+            if module.foreman_params['upstream_type'] == 'network_sync':
+                extra_payload = {
+                    'url': module.foreman_params['upstream_url'],
+                    'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert'],
+                    'username': module.foreman_params['upstream_username'],
+                    'password': module.foreman_params['upstream_password'],
+                    'upstream_organization_label': module.foreman_params['upstream_organization'],
+                    'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
+                    'upstream_content_view_label': module.foreman_params['upstream_content_view'],
+                }
+
+            payload.update(extra_payload)
+            module.resource_action('organizations', 'cdn_configuration', payload)
 
 
 if __name__ == '__main__':
