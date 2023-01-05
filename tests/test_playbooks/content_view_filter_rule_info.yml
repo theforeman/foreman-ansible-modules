@@ -1,0 +1,298 @@
+---
+- name: "Setup content_view_filter_info test prerequisites"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Test Organization"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+
+    - name: "Create Test Product"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+
+    - name: "Create Test Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+
+    - name: "Create Additional Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+
+    - name: "Create Module repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: "Test Modular Repository"
+        repository_content_type: yum
+        repository_url: "https://dl.fedoraproject.org/pub/epel/8/Modular/x86_64"
+
+    - name: "Create Container Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Docker Repository
+        repository_content_type: docker
+        repository_url: https://registry.access.redhat.com
+        repository_docker_upstream_name: ubi9
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Docker Repository
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Modular Repository
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+          - name: "Test Docker Repository"
+            product: "Test Product"
+          - name: "Test Modular Repository"
+            product: "Test Product"
+
+    - name: "Create content view filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+ 
+    - name: "Create Content View Filter Rule for packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_packages.yml
+
+    - name: "Create Content View Filter Rule for package groups"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_package_groups.yml
+ 
+    - name: "Create Content View Filter Rule for errata_id"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_id.yml
+ 
+    - name: "Create Content View Filter Rule for errata_by_date"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_date.yml
+ 
+    - name: "Create Content View Filter Rule for containers"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_containers.yml
+ 
+    - name: "Create Content View Filter Rule for module_streams"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
+ 
+- name: "Test content_view_filter_rule_info"
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Fetch content_view_filter_info - rpm exlude"
+      vars:
+        content_view_filter_rule_name: "bear"
+        content_view_filter_name: "Test Content View Filter - rpm"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        name: "{{ content_view_filter_rule_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter rule info is valid failed!"
+        that:
+          - result['content_view_filter_rule']['name'] == "bear"
+
+
+    - name: "Fetch content_view_filter_info - package_group exlude"
+      vars:
+        content_view_filter_rule_name: "birds"
+        content_view_filter_name: "Test Content View Filter - package_group"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        name: "{{ content_view_filter_rule_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter_rule']['name'] == "birds"
+          - result['content_view_filter_rule']['uuid'] != ""
+
+
+    - name: "Fetch content_view_filter_info - erratum_by_id exlude"
+      vars:
+        content_view_filter_rule_name: "RHEA-2012:0004"
+        content_view_filter_name: "Test Content View Filter - erratum_by_id"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        errata_id: "{{ content_view_filter_rule_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter_rules'][0]['errata_id'] == "RHEA-2012:0004"
+
+
+    - name: "Fetch content_view_filter_info - erratum_by_date exlude"
+      vars:
+        content_view_filter_name: "Test Content View Filter - erratum_by_date"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        # name: "{{ content_view_filter_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter_rules'][0]['end_date'] ==  "2019-01-03"
+          - result['content_view_filter_rules'][0]['start_date'] ==  "2017-01-03"
+          - result['content_view_filter_rules'][0]['date_type'] ==  "updated"
+
+    - name: "Fetch content_view_filter_info - container exlude"
+      vars:
+        content_view_filter_rule_name: "8.7-929"
+        content_view_filter_name: "Test Content View Filter - docker"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        name: "{{ content_view_filter_rule_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter_rule']['name'] == "8.7-929"
+
+
+    - name: "Fetch content_view_filter_info - modulemd exlude"
+      vars:
+        content_view_filter_name: "Test Content View Filter - modulemd"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        # name: "{{ content_view_filter_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - "{{ result['content_view_filter_rules']|length }} != 0"
+
+- name: "Clean up test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Cleanup Content View Filter Rules"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
+
+    - name: "Cleanup Content View Filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+      vars:
+        filter_state: absent
+
+    - name: Clean up the content view
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Modular Repository
+        repository_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Docker Repository
+        repository_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+
+    - name: "Clean up products"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+
+    - name: "Clean up Organizations"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
