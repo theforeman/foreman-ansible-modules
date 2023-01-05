@@ -7,23 +7,27 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - name: "Create organizations"
+    - name: "Create Test Organization"
       ansible.builtin.include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - name: "Create products"
+
+    - name: "Create Test Product"
       ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - name: "Create repository"
+
+    - name: "Create Test Repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - name: "Create repository"
+
+    - name: "Create Addititional Repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+
     - name: "Create Module repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
@@ -32,7 +36,7 @@
         repository_content_type: yum
         repository_url: "https://dl.fedoraproject.org/pub/epel/8/Modular/x86_64"
 
-    - name: "Create Docker repository"
+    - name: "Create Container repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
@@ -40,16 +44,20 @@
         repository_content_type: docker
         repository_url: https://registry.access.redhat.com
         repository_docker_upstream_name: ubi8
+
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
+
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Docker Repository
+
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Modular Repository
+
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
