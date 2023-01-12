@@ -94,19 +94,19 @@
 <h2>Example Playbook<a class="headerlink" href="#example-playbook" title="Permalink to this heading"></a></h2>
 <p>Create a custom template <code class="docutils literal notranslate"><span class="pre">CloudInit</span> <span class="pre">vSphere</span></code> using the file <code class="docutils literal notranslate"><span class="pre">files/cloudinit_vsphere.erb</span></code> and assign it to the
 operating systems <code class="docutils literal notranslate"><span class="pre">RedHat</span> <span class="pre">7.9</span></code> and <code class="docutils literal notranslate"><span class="pre">RedHat</span> <span class="pre">8.5</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.provisioning_templates</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_provisioning_templates</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CloudInit vSphere</span><span class="w"></span>
-<span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">lookup(&#39;file&#39;,</span><span class="nv"> </span><span class="s">&#39;cloudinit_vsphere.erb&#39;)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">operatingsystems</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RedHat 7.9</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RedHat 8.5</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.provisioning_templates</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_provisioning_templates</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CloudInit vSphere</span>
+<span class="w">            </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">lookup(&#39;file&#39;,</span><span class="nv"> </span><span class="s">&#39;cloudinit_vsphere.erb&#39;)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">            </span><span class="nt">operatingsystems</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RedHat 7.9</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RedHat 8.5</span>
 </pre></div>
 </div>
 </section>
@@ -120,7 +120,7 @@ operating systems <code class="docutils literal notranslate"><span class="pre">R
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

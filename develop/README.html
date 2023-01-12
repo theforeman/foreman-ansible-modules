@@ -143,21 +143,21 @@ As Ansible has facilities to do so, the modules will wait unconditionally. See t
 Please make sure to set a high enough <code class="docutils literal notranslate"><span class="pre">async</span></code> value, as otherwise Ansible might abort the execution of the module while there is still a task running on the server, making status reporting fail.</p></li>
 <li><p>According to <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html">Ansible documentation</a>, using loop over Ansible resources can leak sensitive data. This applies to all modules, but especially those which require more secrets than the API credentials (<code class="docutils literal notranslate"><span class="pre">auth_source_ldap</span></code>, <code class="docutils literal notranslate"><span class="pre">compute_resource</span></code>, <code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">hostgroup</span></code>, <code class="docutils literal notranslate"><span class="pre">http_proxy</span></code>, <code class="docutils literal notranslate"><span class="pre">image</span></code>, <code class="docutils literal notranslate"><span class="pre">repository</span></code>, <code class="docutils literal notranslate"><span class="pre">scc_account</span></code>, <code class="docutils literal notranslate"><span class="pre">user</span></code>). You can prevent this by using <code class="docutils literal notranslate"><span class="pre">no_log:</span> <span class="pre">yes</span></code> on the task.</p>
 <p>eg:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create compute resources</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.compute_resource</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">changeme</span><span class="w"></span>
-<span class="w">    </span><span class="nt">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.name</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.organizations</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">locations</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.locations</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.description</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.provider</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">provider_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.provider_params</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.state</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(&#39;present&#39;)</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">loop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">compute_resources</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">no_log</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create compute resources</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.compute_resource</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">changeme</span>
+<span class="w">    </span><span class="nt">validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.name</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">organizations</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.organizations</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">locations</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.locations</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.description</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.provider</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">provider_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.provider_params</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(omit)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">item.state</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default(&#39;present&#39;)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">loop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">compute_resources</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">no_log</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
 </pre></div>
 </div>
 </li>
@@ -185,23 +185,23 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
 <section id="installation-from-github-repository">
 <h3>Installation from Github Repository<a class="headerlink" href="#installation-from-github-repository" title="Permalink to this heading"></a></h3>
 <p>With Ansible &gt;= 2.10, you can install from a Github repository (such as this one or your fork):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>git+https://github.com/theforeman/foreman-ansible-modules.git
 </pre></div>
 </div>
 <p>If you have configured GitHub to use SSH instead of HTTPS, you can do:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy collection install git@github.com/theforeman/foreman-ansible-modules.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>git@github.com/theforeman/foreman-ansible-modules.git
 </pre></div>
 </div>
 <p>You can also specify a branch to use such as <code class="docutils literal notranslate"><span class="pre">devel</span></code> (below) or a feature branch that you are working with:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy collection install git+https://github.com/theforeman/foreman-ansible-modules.git,devel
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>git+https://github.com/theforeman/foreman-ansible-modules.git,devel
 </pre></div>
 </div>
 <p>To install from a <code class="docutils literal notranslate"><span class="pre">requirements.yml</span></code> file (useful when installing multiple collections) add a snippet to your <code class="docutils literal notranslate"><span class="pre">requirements.yml</span></code> like</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
-<span class="nt">collections</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/theforeman/foreman-ansible-modules.git</span><span class="w"></span>
-<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">git</span><span class="w"></span>
-<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devel</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="nt">collections</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/theforeman/foreman-ansible-modules.git</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">git</span>
+<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devel</span>
 </pre></div>
 </div>
 <p>And install all specified requirements with <code class="docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.yml</span></code></p>
@@ -209,11 +209,11 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
 <section id="building-and-installing-the-collection-locally">
 <h3>Building and Installing the Collection Locally<a class="headerlink" href="#building-and-installing-the-collection-locally" title="Permalink to this heading"></a></h3>
 <p>For all currently supported versions of Ansible (i.e. Ansible &gt;= 2.9, and particularly Ansible &lt; 2.10 where the above approach is not yet supported), you can build the collection locally:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make dist
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>dist
 </pre></div>
 </div>
 <p>And install it with:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy collection install ./theforeman-foreman-*.tar.gz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ansible-galaxy<span class="w"> </span>collection<span class="w"> </span>install<span class="w"> </span>./theforeman-foreman-*.tar.gz
 </pre></div>
 </div>
 </section>
@@ -260,7 +260,7 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

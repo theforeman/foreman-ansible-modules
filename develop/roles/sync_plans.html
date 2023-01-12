@@ -91,70 +91,70 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">foreman_sync_plans</span></code>: List of sync plans to create. Each sync plan is represented as a dictionary which specifies the <code class="docutils literal notranslate"><span class="pre">name</span></code> of the sync plan and the <code class="docutils literal notranslate"><span class="pre">products</span></code> assigned to the sync plan. It also specifies the <code class="docutils literal notranslate"><span class="pre">interval</span></code> which can be ‘hourly’, ‘daily’, ‘weekly’, or ‘custom cron’. In case the ‘custom cron’ <code class="docutils literal notranslate"><span class="pre">interval</span></code> is used, it should also specify the <code class="docutils literal notranslate"><span class="pre">cron_expression</span></code>. Finally the sync plan should have a <code class="docutils literal notranslate"><span class="pre">sync_date</span></code> which specifies the first time that the sync plan will run. Optionally the sync plan can be enabled and disabled using the <code class="docutils literal notranslate"><span class="pre">enabled</span></code> parameter, and its state can be managed using <code class="docutils literal notranslate"><span class="pre">state</span></code>.</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_sync_plans</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span><span class="w"></span>
-<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span><span class="w"></span>
-<span class="w">    </span><span class="nt">products</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CentOS 8</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Debian 10</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Monthly Foreman Client Sync</span><span class="w"></span>
-<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom cron</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cron_expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0 6 8 * *</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-08 00:06:00 UTC</span><span class="w"></span>
-<span class="w">    </span><span class="nt">products</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foreman Client</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weeky Ubuntu Sync (disabled)</span><span class="w"></span>
-<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span><span class="w"></span>
-<span class="w">    </span><span class="nt">products</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ubuntu 22.04</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">foreman_sync_plans</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span>
+<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span>
+<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span>
+<span class="w">    </span><span class="nt">products</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CentOS 8</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Debian 10</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Monthly Foreman Client Sync</span>
+<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom cron</span>
+<span class="w">    </span><span class="nt">cron_expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0 6 8 * *</span>
+<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-08 00:06:00 UTC</span>
+<span class="w">    </span><span class="nt">products</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Foreman Client</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weeky Ubuntu Sync (disabled)</span>
+<span class="w">    </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span>
+<span class="w">    </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span>
+<span class="w">    </span><span class="nt">products</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ubuntu 22.04</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 </section>
 <section id="example-playbooks">
 <h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this heading"></a></h2>
 <p>Create two sync plans:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.sync_plans</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plans</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span><span class="w"></span>
-<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span><span class="w"></span>
-<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span><span class="w"></span>
-<span class="w">            </span><span class="nt">products</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily Sync</span><span class="w"></span>
-<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span><span class="w"></span>
-<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-08 00:00:00 UTC</span><span class="w"></span>
-<span class="w">            </span><span class="nt">products</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.sync_plans</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">foreman_sync_plans</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span>
+<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span>
+<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span>
+<span class="w">            </span><span class="nt">products</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux Server</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Enterprise Linux for x86_64</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily Sync</span>
+<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
+<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-08 00:00:00 UTC</span>
+<span class="w">            </span><span class="nt">products</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Red Hat Software Collections (for RHEL Server)</span>
 </pre></div>
 </div>
 <p>Create a single sync plan which has all defined products (those defined in the <code class="docutils literal notranslate"><span class="pre">foreman_products</span></code> dictionary in ansible vars, for example as defined in the role documentation for <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/tree/develop/roles/repositories#role-variables">theforeman.foreman.repositories</a>) assigned to it:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.sync_plans</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plans</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span><span class="w"></span>
-<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span><span class="w"></span>
-<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span><span class="w"></span>
-<span class="w">            </span><span class="nt">products</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">foreman_products</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">map(attribute=&#39;name&#39;)</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">list</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.sync_plans</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">foreman_sync_plans</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Weekly Sync</span>
+<span class="w">            </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">weekly</span>
+<span class="w">            </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-11-07 00:00:00 UTC</span>
+<span class="w">            </span><span class="nt">products</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">foreman_products</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">map(attribute=&#39;name&#39;)</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">list</span><span class="nv"> </span><span class="s">}}&quot;</span>
 </pre></div>
 </div>
 <p>The above example assumes that a yaml dictionary <code class="docutils literal notranslate"><span class="pre">foreman_products</span></code> is already defined in Ansible variables. It uses yaml methods to select the name of each product from that dictionary, convert them all to a list, and pass that list to the definition of the sync plan.</p>
@@ -169,7 +169,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

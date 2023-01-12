@@ -119,36 +119,36 @@
 <section id="example-playbooks">
 <h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this heading"></a></h2>
 <p>Create a basic Activation Key that uses Library LCE, Default Organization View, and performs auto-attach from the set of all available Subscriptions (i.e. auto-attach=true and no Subscriptions are assigned to the Activation Key).</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.activation_keys</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_activation_keys</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Basic</span><span class="nv"> </span><span class="s">Activation</span><span class="nv"> </span><span class="s">Key&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Registers</span><span class="nv"> </span><span class="s">hosts</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Library/Default</span><span class="nv"> </span><span class="s">Organization</span><span class="nv"> </span><span class="s">View</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">tries</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">attach</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">best</span><span class="nv"> </span><span class="s">fitting</span><span class="nv"> </span><span class="s">subscription(s)</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">available</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">organization&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.activation_keys</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">foreman_activation_keys</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Basic</span><span class="nv"> </span><span class="s">Activation</span><span class="nv"> </span><span class="s">Key&quot;</span>
+<span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Registers</span><span class="nv"> </span><span class="s">hosts</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Library/Default</span><span class="nv"> </span><span class="s">Organization</span><span class="nv"> </span><span class="s">View</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">tries</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">attach</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">best</span><span class="nv"> </span><span class="s">fitting</span><span class="nv"> </span><span class="s">subscription(s)</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">all</span><span class="nv"> </span><span class="s">available</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">organization&quot;</span>
 </pre></div>
 </div>
 <p>Define two Activation Keys. The first registers hosts in the “ACME” organization and attaches the Subscription for the custom product “ACME_App”. The second assigns the “Test” LCE and “RHEL7_Base” Content View, and auto-attaches the best fitting subscription(s) from all which are available in the ACME Organization:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.activation_keys</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_activation_keys</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_App_Key&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">auto_attach</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">            </span><span class="nt">subscriptions</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_App&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_RHEL7_Base_Test&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">lifecycle_environment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL7_Base&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.activation_keys</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span>
+<span class="w">        </span><span class="nt">foreman_activation_keys</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_App_Key&quot;</span>
+<span class="w">            </span><span class="nt">auto_attach</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">            </span><span class="nt">subscriptions</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_App&quot;</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME_RHEL7_Base_Test&quot;</span>
+<span class="w">            </span><span class="nt">lifecycle_environment</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span>
+<span class="w">            </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL7_Base&quot;</span>
 </pre></div>
 </div>
 <p>Following the second example, a Host which is registered using <code class="docutils literal notranslate"><span class="pre">subscription-manager</span> <span class="pre">register</span> <span class="pre">--activationkey</span> <span class="pre">ACME_App_Key,ACME_RHEL7_Base_Test</span></code> will get the ACME_App subscription, Test LCE, RHEL7_Base Content View, and auto-attach any additional necessary subscriptions from ACME Organization to cover the Base OS and any other products which require an entitlement certificate.</p>
@@ -163,7 +163,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

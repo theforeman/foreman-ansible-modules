@@ -139,19 +139,19 @@ We run these tests with the <code class="docutils literal notranslate"><span cla
 <section id="id1">
 <h3>Unit tests<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <p>To run the unit tests, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make test-other
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>test-other
 </pre></div>
 </div>
 </section>
 <section id="id2">
 <h3>Integration tests<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <p>To run all integration tests, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span><span class="nb">test</span>
 </pre></div>
 </div>
 <p>To run a specific test or a set of tests, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make test_global_parameter  <span class="c1"># single test</span>
-<span class="gp">$ </span>make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;-k &#39;organzation or global_parameter&#39;&quot;</span>  <span class="c1"># select tests by expression (see `pytest -h`)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>test_global_parameter<span class="w">  </span><span class="c1"># single test</span>
+<span class="gp">$ </span>make<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;-k &#39;organzation or global_parameter&#39;&quot;</span><span class="w">  </span><span class="c1"># select tests by expression (see `pytest -h`)</span>
 </pre></div>
 </div>
 <p>By default, tests are run with prerecorded server responses using <a class="reference external" href="https://vcrpy.readthedocs.io/">VCRpy</a>.
@@ -159,22 +159,22 @@ When tests or modules are changed, those responses might not match anymore and y
 <p>To be able to re-record, you need a running instance of Foreman, probably with Katello (use <a class="reference external" href="https://github.com/theforeman/forklift">forklift</a> if unsure).
 You also need to update <code class="docutils literal notranslate"><span class="pre">tests/test_playbooks/vars/server.yml</span></code> with the URL and credentials of said instance.</p>
 <p>To re-record, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make record_global_parameter
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>record_global_parameter
 </pre></div>
 </div>
 <p>Callback tests are part of integration tests, to run just callback tests, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;tests/test_callback.py&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;tests/test_callback.py&quot;</span>
 </pre></div>
 </div>
 <p>To re-record just callback JSON fixtures, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make <span class="nb">test</span> <span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;tests/test_callback.py --vcrmode record&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="nv">TEST</span><span class="o">=</span><span class="s2">&quot;tests/test_callback.py --vcrmode record&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id3">
 <h3>Ansible Sanity<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>To run the Ansible Sanity tests, execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make sanity
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make<span class="w"> </span>sanity
 </pre></div>
 </div>
 </section>
@@ -217,7 +217,7 @@ If you need a setup with different plugins enabled, just get <code class="docuti
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

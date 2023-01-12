@@ -110,73 +110,73 @@
 <section id="example-playbooks">
 <h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this heading"></a></h2>
 <p>This minimal example assumes the manifest has already been downloaded to ~/manifest.zip on localhost (the Ansible control node) and uploads that manifest to the ACME organization. It enables RHEL7 and RHEL8 repositories, creates the role default sync plan for them, and also syncs the repositories immediately. It creates an activation key with the role default name <code class="docutils literal notranslate"><span class="pre">base_rhel_key</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span>
 </pre></div>
 </div>
 <p>This example is identical to the above example, except instead of assuming the manifest is already downloaded at ~/manifest.zip, we first use the provided rhsm_{username,password} and manifest_uuid to download it from the Red Hat Customer Portal.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_rhsm_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;happycustomer&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_rhsm_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$ecur3p4$$w0rd&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_uuid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">        </span><span class="nt">foreman_rhsm_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;happycustomer&quot;</span>
+<span class="w">        </span><span class="nt">foreman_rhsm_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$ecur3p4$$w0rd&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_uuid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span>
 </pre></div>
 </div>
 <p>This example downloads a manifest with the provided UUID from the RHSM portal using the provided credentials and copies it to ~/manifest.zip before uploading it to “Default Organization”. It then enables the RHEL7 and RHEL8 repositories without syncing them immediately, but creates a sync_plan which syncs the repositories at midnight each day. It creates an activation key “RHEL_Key” to register existing RHEL content hosts.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_rhsm_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;happycustomer&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_rhsm_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$ecur3p4$$w0rd&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_uuid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_content_rhel_sync_now</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Daily</span><span class="nv"> </span><span class="s">RHEL</span><span class="nv"> </span><span class="s">Sync&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021-02-02 00:00:00 UTC</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_activation_key_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL_Key&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_content_rhel_rhel8_releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.4</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">        </span><span class="nt">foreman_rhsm_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;happycustomer&quot;</span>
+<span class="w">        </span><span class="nt">foreman_rhsm_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$ecur3p4$$w0rd&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_uuid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01234567-89ab-cdef-0123-456789abcdef&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/manifest.zip&quot;</span>
+<span class="w">        </span><span class="nt">foreman_content_rhel_sync_now</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Daily</span><span class="nv"> </span><span class="s">RHEL</span><span class="nv"> </span><span class="s">Sync&quot;</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daily</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021-02-02 00:00:00 UTC</span>
+<span class="w">        </span><span class="nt">foreman_activation_key_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL_Key&quot;</span>
+<span class="w">        </span><span class="nt">foreman_content_rhel_rhel8_releasever</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.4</span>
 </pre></div>
 </div>
 <p>This example assumes the manifest has already been downloaded to ~/my_subscription_manifesst.zip on localhost and uploads that manifest to the ACME organization. It enables the rhel-7-server-rpms repository only, syncs it immediately, and also creates a custom cron sync plan for it. It creates an activation key “RHEL_Key” to register existing RHEL content hosts.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/my_subscription_manifest.zip&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_content_rhel_enable_rhel8</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL</span><span class="nv"> </span><span class="s">Sync</span><span class="nv"> </span><span class="s">Plan&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom cron</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_cron_expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0 6 8 * *</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_sync_plan_sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021-02-02 00:00:00 UTC</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_activation_key_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL_Key&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_rhel</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ACME&quot;</span>
+<span class="w">        </span><span class="nt">foreman_manifest_download</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">        </span><span class="nt">foreman_manifest_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;~/my_subscription_manifest.zip&quot;</span>
+<span class="w">        </span><span class="nt">foreman_content_rhel_enable_rhel8</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL</span><span class="nv"> </span><span class="s">Sync</span><span class="nv"> </span><span class="s">Plan&quot;</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom cron</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_cron_expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0 6 8 * *</span>
+<span class="w">        </span><span class="nt">foreman_sync_plan_sync_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2021-02-02 00:00:00 UTC</span>
+<span class="w">        </span><span class="nt">foreman_activation_key_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;RHEL_Key&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -190,7 +190,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

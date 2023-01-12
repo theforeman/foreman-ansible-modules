@@ -98,15 +98,15 @@
 <section id="cleanup-of-old-content-views">
 <h2>Cleanup of old Content Views<a class="headerlink" href="#cleanup-of-old-content-views" title="Permalink to this heading"></a></h2>
 <p>To ease cleanup of old Content Views, we ship the <code class="docutils literal notranslate"><span class="pre">content_view_version_cleanup</span></code> role which will identify unused Content View Versions and remove them, much like <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> did:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w"></span>
-<span class="w">  </span><span class="nt">roles</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_view_version_cleanup</span><span class="w"></span>
-<span class="w">      </span><span class="nt">vars</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="nt">foreman_content_view_version_cleanup_keep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">theforeman.foreman.content_view_version_cleanup</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">foreman_server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://foreman.example.com</span>
+<span class="w">        </span><span class="nt">foreman_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">        </span><span class="nt">foreman_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">        </span><span class="nt">foreman_organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">foreman_content_view_version_cleanup_keep</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </pre></div>
 </div>
 </section>
@@ -115,26 +115,26 @@
 <p>When <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> was initially written, Composite Content Views did not support setting individual components to <code class="docutils literal notranslate"><span class="pre">latest</span></code> and thus this feature was implemented inside <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code>.
 As Composite Content Views gained <code class="docutils literal notranslate"><span class="pre">latest</span></code> support since then, the “Automated Updates” feature of <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> is not really needed anymore and users are encouraged to configure their Composite Content Views accordingly.</p>
 <p>If, for example, the old <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> configuration contained the following entries:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">:ccv</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">ccv-RHEL7-automated</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cv-RHEL7</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cv-tools</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">:ccv</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ccv-RHEL7-automated</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cv-RHEL7</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">    </span><span class="nt">cv-tools</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span>
 </pre></div>
 </div>
 <p>You can achieve the same using the <code class="docutils literal notranslate"><span class="pre">content_view</span></code> module:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">components</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span><span class="w"></span>
-<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span><span class="w"></span>
-<span class="w">        </span><span class="nt">latest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span>
+<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">components</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span>
+<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span>
+<span class="w">        </span><span class="nt">latest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p>Configurations that also used the <code class="docutils literal notranslate"><span class="pre">:cv</span></code> entry, which resulted in <em>all</em> Composite Content Views that contained entries from <code class="docutils literal notranslate"><span class="pre">:cv</span></code> being updated,
@@ -142,40 +142,40 @@ will need to be migrated to a more declarative approach as seen above.</p>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">latest</span></code> feature in Composite Content Views with multiple componets set to <code class="docutils literal notranslate"><span class="pre">latest:</span> <span class="pre">true</span></code> will result in automatic publishes whenever one of the components is updated.
 This might be not desired if the components are updated in bulk, thus generating multiple publishes.
 To avoid that, you still can use individual versions instead of <code class="docutils literal notranslate"><span class="pre">latest:</span> <span class="pre">true</span></code> by looking up the latest version using the <code class="docutils literal notranslate"><span class="pre">resource_info</span></code> module:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Get</span><span class="nv"> </span><span class="s">info</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">cv-tools</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.resource_info</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_views</span><span class="w"></span>
-<span class="w">    </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;name=&quot;cv-tools&quot;&#39;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv_tools</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Get</span><span class="nv"> </span><span class="s">info</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">cv-tools</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.resource_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">resource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content_views</span>
+<span class="w">    </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;name=&quot;cv-tools&quot;&#39;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv_tools</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create/Update</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">components</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span><span class="w"></span>
-<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span><span class="w"></span>
-<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">cv_tools.resources[0].latest_version</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ccv_rhel</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create/Update</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span>
+<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">components</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span>
+<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span>
+<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">cv_tools.resources[0].latest_version</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ccv_rhel</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Publish</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ccv_rhel.changed</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Publish</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ccv_rhel.changed</span>
 </pre></div>
 </div>
 </section>
@@ -183,31 +183,31 @@ To avoid that, you still can use individual versions instead of <code class="doc
 <h2>Automated Publishes<a class="headerlink" href="#automated-publishes" title="Permalink to this heading"></a></h2>
 <p>Since the inception of <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code>, Composite Content Views gained the “Auto Publish” feature, which means that Composite Content Views will automatically be published whenever a component (that is configured as <code class="docutils literal notranslate"><span class="pre">latest</span></code>) is published.</p>
 <p>To configure this using Ansible, add <code class="docutils literal notranslate"><span class="pre">auto_publish:</span> <span class="pre">true</span></code> to the <code class="docutils literal notranslate"><span class="pre">content_view</span></code> module invocation:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">auto_publish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">components</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span><span class="w"></span>
-<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span><span class="w"></span>
-<span class="w">        </span><span class="nt">latest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span>
+<span class="w">    </span><span class="nt">composite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">auto_publish</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">components</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-RHEL7</span>
+<span class="w">        </span><span class="nt">content_view_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23.0</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cv-tools</span>
+<span class="w">        </span><span class="nt">latest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> also supports automating publishing for regular Content Views, by inspecting the history of the included Repositories to decide whether a publish is necessary or not.
 As the underlying logic is too fragile, there is no equivalent for doing conditional publish using Ansible. Non-conditional publishes can be done using the <code class="docutils literal notranslate"><span class="pre">content_view_version</span></code> module:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Publish</span><span class="nv"> </span><span class="s">cv-tools</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View,</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">idempotent&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cv-tools&quot;</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Publish</span><span class="nv"> </span><span class="s">cv-tools</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View,</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">idempotent&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cv-tools&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -215,16 +215,16 @@ As the underlying logic is too fragile, there is no equivalent for doing conditi
 <h2>Automated Promotes<a class="headerlink" href="#automated-promotes" title="Permalink to this heading"></a></h2>
 <p>To not have clients attached to “Library”, <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> has an “Automated Promotes” feature which essentially ensures that a given (Composite) Content View has the same version in “Library” and another user-selected Lifecycle Environment.</p>
 <p>The same can be achieved using the <code class="docutils literal notranslate"><span class="pre">content_view_version</span></code> module:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ensure</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">version</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Library</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Dev&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">current_lifecycle_environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Library</span><span class="w"></span>
-<span class="w">    </span><span class="nt">lifecycle_environments</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dev</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ensure</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">version</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Library</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Dev&quot;</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.content_view_version</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">    </span><span class="nt">content_view</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ccv-RHEL7-automated&quot;</span>
+<span class="w">    </span><span class="nt">current_lifecycle_environment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Library</span>
+<span class="w">    </span><span class="nt">lifecycle_environments</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dev</span>
 </pre></div>
 </div>
 </section>
@@ -241,7 +241,7 @@ As the underlying logic is too fragile, there is no equivalent for doing conditi
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, The Foreman Project.</p>
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
