@@ -148,7 +148,7 @@ def main():
         ),
     )
 
-    module.task_timeout = 60 * 30
+    module.task_timeout = 12 * 60 * 60
 
     with module.api_connection():
         module.auto_lookup_entities()
