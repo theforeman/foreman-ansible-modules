@@ -275,7 +275,7 @@ EXAMPLES = '''
     organization: "Default Organization"
     url: "http://yum.theforeman.org/plugins/latest/el7/x86_64/"
     mirror_on_sync: true
-    download_policy: background
+    download_policy: immediate
 
 - name: "Create repository with content credentials"
   theforeman.foreman.repository:
@@ -288,7 +288,7 @@ EXAMPLES = '''
     product: "My Product"
     organization: "Default Organization"
     url: "http://yum.theforeman.org/releases/latest/el7/x86_64/"
-    download_policy: background
+    download_policy: on_demand
     mirror_on_sync: true
     gpg_key: RPM-GPG-KEY-my-product2
 '''
