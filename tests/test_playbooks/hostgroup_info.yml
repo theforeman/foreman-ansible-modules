@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars:
+    test_hostgroup: "test_hostgroup"
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch hostgroup info
+      hostgroup_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "{{ test_hostgroup }}"
+      register: hostgroup_info
+    - debug: var=hostgroup_info
+    - name: check hostgroup details
+      assert:
+        that:
+          - hostgroup_info['hostgroup']['name'] == test_hostgroup
+          - "'name' in hostgroup_info['hostgroup']"
+
+    - name: search hostgroup info
+      hostgroup_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name ~ {{ test_hostgroup }}"
+      register: hostgroup_info
+    - name: check hostgroup details
+      assert:
+        that:
+          - hostgroup_info['hostgroups'][0]['name'] == test_hostgroup
+          - "'name' in hostgroup_info['hostgroups'][0]"
