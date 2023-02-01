@@ -27,7 +27,7 @@ short_description: Get information about hostgroup(s)
 description:
   - Get information about hostgroup(s)
 author:
-  - "Louis Tiches"
+  - "Louis Tiches (@TheRedGreek)"
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.infomodule
@@ -65,14 +65,17 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
     ForemanInfoAnsibleModule,
 )
 
+
 class ForemanHostgroupInfo(ForemanInfoAnsibleModule):
     pass
+
 
 def main():
     module = ForemanHostgroupInfo()
 
     with module.api_connection():
         module.run()
+
 
 if __name__ == '__main__':
     main()
