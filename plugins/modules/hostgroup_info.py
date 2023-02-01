@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: hostgroup_info
-version_added: n/a
+version_added: 3.9.0
 short_description: Get information about hostgroup(s)
 description:
   - Get information about hostgroup(s)
