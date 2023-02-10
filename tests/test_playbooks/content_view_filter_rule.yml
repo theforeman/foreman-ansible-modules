@@ -1,0 +1,141 @@
+---
+- name: "Create test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Test Organization"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+
+    - name: "Create Test Product"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+
+    - name: "Create Test Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+
+    - name: "Create Addititional Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+
+    - name: "Create Module repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: "Test Modular Repository"
+        repository_content_type: yum
+        repository_url: "https://dl.fedoraproject.org/pub/epel/8/Modular/x86_64"
+
+    - name: "Create Container repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Docker Repository
+        repository_content_type: docker
+        repository_url: https://registry.access.redhat.com
+        repository_docker_upstream_name: ubi8
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Docker Repository
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Modular Repository
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+          - name: "Test Docker Repository"
+            product: "Test Product"
+          - name: "Test Modular Repository"
+            product: "Test Product"
+
+    - name: "Create content view filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+
+- name: "Test content_view_filter_rule"
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Content View Filter Rule for packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_packages.yml
+
+    - name: "Create Content View Filter Rule for package groups"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_package_groups.yml
+      vars:
+        expected_change: true
+
+    - name: "Create Content View Filter Rule for errata_id"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_id.yml
+      vars:
+        expected_change: true
+
+    - name: "Create Content View Filter Rule for errata_by_date"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_errata_by_date.yml
+      vars:
+        expected_change: true
+
+    - name: "Create Content View Filter Rule for containers"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_containers.yml
+      vars:
+        expected_change: true
+
+    - name: "Create Content View Filter Rule for module_streams"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
+      vars:
+        expected_change: true
+
+    - name: "Cleanup Content View Filter Rules"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
+      vars:
+        expected_change: true
+
+- name: "Clean up test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Docker Repository
+        repository_state: absent
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - name: "Clean up products"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - name: "Clean up Organizations"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

@@ -1,0 +1,65 @@
+---
+# Create and Delete a filter rule for package groups
+# A package group filter is referenced by the name of the package group
+# It is not updated - it is created or deleted
+
+# A Filter should support multiple package group rules.
+# - create 1st rule. Check to see if it exists.
+# - create 2nd rule. Check to see if both exits.
+
+- name: "Create Content View Filter Rule - package_groups 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - package_group"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_group: "birds"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_group }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+
+- name: "Create Content View Filter Rule - package_group 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - package_group"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_group: "mammals"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_group }}"
+    state: "{{ rule_state }}"
+
+  register: result
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
