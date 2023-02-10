@@ -276,6 +276,9 @@ def main():
         search_scope = cvf_scope
         content_view_filter_rule = None
 
+        if filter_type != 'erratum' and module.foreman_params['name'] is None:
+            module.fail_json(msg="The 'name' parameter is required when creating a filter rule for rpm, container, package_group or modulemd filters.")
+
         if filter_type == 'erratum':
             # this filter type supports many rules
             # there are really 2 erratum filter types by_date and by_id
@@ -307,28 +310,24 @@ def main():
             # this filter type support many rules
             # module_stream_ids are internal and non-searchable
             # find the module_stream_id by NSVCA
-            content_view_filter_rule = None
-            if module.foreman_params['name'] is not None:
-                # we have to dig to find the right rule
-                # find the module stream's id
-                module.foreman_params['module_stream_ids'] = []
-                search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
-                module_stream = module.find_resource('module_streams', search, failsafe=True)
-                # determine if there is a rule for the module_stream
-                existing_rule = [rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']]
-                # if the rule exists, return it in a form ammenable to the API
-                if len(existing_rule) > 0:
-                    content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule[0]['id'], params=search_scope, failsafe=True)
+            module.foreman_params['module_stream_ids'] = []
+            search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
+            module_stream = module.find_resource('module_streams', search, failsafe=True)
+            # determine if there is a rule for the module_stream
+            existing_rule = [rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']]
+            # if the rule exists, return it in a form ammenable to the API
+            if len(existing_rule) > 0:
+                content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule[0]['id'], params=search_scope, failsafe=True)
 
-                if not module.desired_absent:
-                    # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
-                    if len(existing_rule) == 0:
-                        module.foreman_params['module_stream_ids'].append(module_stream['id'])
+            if not module.desired_absent:
+                # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
+                if len(existing_rule) == 0:
+                    module.foreman_params['module_stream_ids'].append(module_stream['id'])
 
-                    # if the state is present and the module_id IS in the list,
-                    # make sure that the current and desired state are identical
-                    elif len(existing_rule) > 0:
-                        content_view_filter_rule = module.foreman_params
+                # if the state is present and the module_id IS in the list,
+                # make sure that the current and desired state are identical
+                elif len(existing_rule) > 0:
+                    content_view_filter_rule = module.foreman_params
 
         module.ensure_entity(
             'content_view_filter_rules',
