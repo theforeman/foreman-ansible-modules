@@ -288,7 +288,7 @@ def main():
                 search_scope['errata_id'] = module.foreman_params['errata_id']
             content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
-        if filter_type in ('rpm', 'docker'):
+        elif filter_type in ('rpm', 'docker'):
             # these filter types support many rules
             # the name is the key to finding the proper one and is required for these types
             if module.foreman_params['name'] is not None:
@@ -298,7 +298,7 @@ def main():
                 # raise an error as name is required for this kind of rule
                 search = None
 
-        if filter_type == 'package_group':
+        elif filter_type == 'package_group':
             # this filter type support many rules
             # the name is the key to finding the proper one and is required for these types
             # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
@@ -308,7 +308,7 @@ def main():
             package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=cv_scope)
             module.foreman_params['uuid'] = package_group['uuid']
 
-        if filter_type == 'modulemd':
+        elif filter_type == 'modulemd':
             # this filter type support many rules
             # module_stream_ids are internal and non-searchable
             # find the module_stream_id by NSVCA
