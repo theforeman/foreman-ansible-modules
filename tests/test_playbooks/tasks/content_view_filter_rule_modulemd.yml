@@ -1,0 +1,244 @@
+---
+# Create and Delete a filter rule for module stream filter
+# A module stream filter rule is referenced a series of elements
+# to get to a specific module stream
+# This is the general principle using NSVCA
+# name - this can be a list or a single module name. If it is a single module name, you get to use more args.
+#        Otherwise the filter created will filter everything in the filters repos that has that name.
+# stream - using this, we filter to get a list of all the module ids that have the name
+#          and stream matching within the scope of the repos of the filter
+# version - adding this should generate a shorter list of ids
+# context - adding this should generate a single id
+# architecture - == arch - this will get to a single id for multi-architecture content views
+#
+# You may find that depending on the modules made available through the repository, the model does not exactly deliver
+# examples are evident in our test repository, where modules have different versions, but the same context
+# We are using EPEL8 Modular
+# As long as we can filter down to a single entity we are good
+# https://fedorapeople.org/~sgallagh/docs/modularity/modularity/architecture/nsvca/
+
+
+- name: "Create Content View Filter Rule for module 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+
+
+- name: "Create Content View Filter Rule for module 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "nextcloud"
+    module_stream: "23"
+    module_version: "820220801190052"
+    module_context: "nx4"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+
+
+- name: "Try to add Content View Filter Rule for module 1 again - should be no change"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: Set expected_change
+  ansible.builtin.set_fact:
+    my_expected_change: false
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == my_expected_change
+  when: my_expected_change is defined
+  vars:
+    rule_state: present
+
+- name: "Try to remove Content View Filter Rule for module 1 - should be changed"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: Set expected_change
+  ansible.builtin.set_fact:
+    my_expected_change: true
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == my_expected_change
+  when: my_expected_change is defined
+  vars:
+    rule_state: absent
+
+- name: "Try to remove Content View Filter Rule for module 1 again - should no change"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: Set expected_change
+  ansible.builtin.set_fact:
+    my_expected_change: false
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == my_expected_change
+  when: my_expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Try to add Content View Filter Rule for module 1 again - should be changed"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: Set expected_change
+  ansible.builtin.set_fact:
+    my_expected_change: true
+
+- name: "Assert success"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == my_expected_change
+  when: my_expected_change is defined
+  vars:
+    rule_state: present

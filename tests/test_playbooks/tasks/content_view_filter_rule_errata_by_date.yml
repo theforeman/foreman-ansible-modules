@@ -1,0 +1,67 @@
+---
+- name: "Create Content View Filter Rule - erratum_by_date"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_date"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    end_date: "2018-01-03"
+    start_date: "2017-01-03"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    end_date: "{{ end_date }}"
+    start_date: "{{ start_date | default(omit) }}"
+    types: "{{ types | default(omit) }}"
+    date_type: "{{ date_type | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+
+
+- name: "Update Content View Filter Rule - erratum_by_date"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_date"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    end_date: "2019-01-03"
+    start_date: "2017-01-03"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    end_date: "{{ end_date }}"
+    start_date: "{{ start_date | default(omit) }}"
+    types: "{{ types | default(omit) }}"
+    date_type: "{{ date_type | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present

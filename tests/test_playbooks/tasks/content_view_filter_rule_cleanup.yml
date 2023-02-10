@@ -1,0 +1,346 @@
+---
+# Clean up all the content view filter rules
+
+- name: "Delete Content View Filter Rule for package 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - rpm"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_name: "bear"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_name }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule for package 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - rpm"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_name: "camel"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_name }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete a Content View Filter Rule - package_group 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - package_group"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_group: "birds"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_group }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete a Content View Filter Rule - package_group 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - package_group"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    package_group: "mammals"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ package_group }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - erratum id 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_id"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    errata_id: "RHEA-2012:0004"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    errata_id: "{{ errata_id }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - erratum id 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_id"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    errata_id: "RHEA-2012:0003"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    errata_id: "{{ errata_id }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - erratum_by_date"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_date"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    end_date: "2019-01-03"
+    start_date: "2017-01-03"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    end_date: "{{ end_date }}"
+    start_date: "{{ start_date }}"
+    types: "{{ types | default(omit) }}"
+    date_type: "{{ date_type | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - docker 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - docker"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    tag: "8.7-929"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    tag: "{{ tag }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - docker 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - docker"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    tag: "8.6-990"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    tag: "{{ tag }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - modulemd 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "389-directory-server"
+    module_stream: "next"
+    module_version: "820220325123957"
+    module_context: "9edba152"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - modulemd 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    module_name: "nextcloud"
+    module_stream: "23"
+    module_version: "820220801190052"
+    module_context: "nx4"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "{{ module_name }}"
+    stream: "{{ module_stream | default(omit) }}"
+    version: "{{ module_version | default(omit) }}"
+    context: "{{ module_context | default(omit) }}"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: absent

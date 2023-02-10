@@ -1,0 +1,61 @@
+---
+# Again for an erratum by id filter rule, add / remove multiple rules.
+
+- name: "Create Content View Filter Rule - erratum id 1"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_id"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    errata_id: "RHEA-2012:0004"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    errata_id: "{{ errata_id }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
+
+
+- name: "Create Content View Filter Rule - erratum id 2"
+  vars:
+    content_view_filter_name: "Test Content View Filter - erratum_by_id"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    errata_id: "RHEA-2012:0003"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    errata_id: "{{ errata_id }}"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Assert Result"
+  ansible.builtin.assert:
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+  vars:
+    rule_state: present
