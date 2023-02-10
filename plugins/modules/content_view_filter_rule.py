@@ -334,18 +334,15 @@ def main():
                     search = 'id={0}'.format(existing_rule[0]['id'])
                     content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
-                # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
-                if not module.desired_absent and len(existing_rule) == 0:
-                    module.foreman_params['module_stream_ids'].append(module_stream['id'])
+                if not module.desired_absent:
+                    # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
+                    if len(existing_rule) == 0:
+                        module.foreman_params['module_stream_ids'].append(module_stream['id'])
 
-                # if the state is present and the module_id IS in the list,
-                # make sure that the current and desired state are identical
-                elif not module.desired_absent and len(existing_rule) > 0:
-                    content_view_filter_rule = module.foreman_params
-
-                # if the state is absent and the module_id IS in the existing list, add the module_stream_id.
-                elif module.desired_absent:
-                    module.foreman_params['module_stream_ids'].append(module_stream['id'])
+                    # if the state is present and the module_id IS in the list,
+                    # make sure that the current and desired state are identical
+                    elif len(existing_rule) > 0:
+                        content_view_filter_rule = module.foreman_params
 
         module.ensure_entity(
             'content_view_filter_rules',
