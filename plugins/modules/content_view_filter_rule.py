@@ -290,21 +290,16 @@ def main():
                 search_scope['errata_id'] = module.foreman_params['errata_id']
             content_view_filter_rule = module.find_resource('content_view_filter_rules', None, params=search_scope, failsafe=True)
 
-        elif filter_type in ('rpm', 'docker'):
+        elif filter_type in ('rpm', 'docker', 'package_group'):
             # these filter types support many rules
             # the name is the key to finding the proper one and is required for these types
             content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
                                                                     params=search_scope, failsafe=True)
 
-        elif filter_type == 'package_group':
-            # this filter type support many rules
-            # the name is the key to finding the proper one and is required for these types
-            # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
-            content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
-                                                                    params=search_scope, failsafe=True)
-
-            package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=cv_scope)
-            module.foreman_params['uuid'] = package_group['uuid']
+            if filter_type == 'package_group':
+                # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
+                package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=cv_scope)
+                module.foreman_params['uuid'] = package_group['uuid']
 
         elif filter_type == 'modulemd':
             # this filter type support many rules
