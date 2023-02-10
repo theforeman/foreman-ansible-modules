@@ -319,9 +319,7 @@ def main():
                 existing_rule = [rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']]
                 # if the rule exists, return it in a form ammenable to the API
                 if len(existing_rule) > 0:
-                    search_scope = cvf_scope
-                    search = 'id={0}'.format(existing_rule[0]['id'])
-                    content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+                    content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule[0]['id'], params=search_scope, failsafe=True)
 
                 if not module.desired_absent:
                     # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
