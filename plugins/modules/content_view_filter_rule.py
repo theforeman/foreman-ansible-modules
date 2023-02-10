@@ -314,19 +314,19 @@ def main():
             search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
             module_stream = module.find_resource('module_streams', search, failsafe=True)
             # determine if there is a rule for the module_stream
-            existing_rule = [rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']]
+            existing_rule = next((rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']), None)
             # if the rule exists, return it in a form ammenable to the API
-            if len(existing_rule) > 0:
-                content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule[0]['id'], params=search_scope, failsafe=True)
+            if existing_rule:
+                content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule['id'], params=search_scope, failsafe=True)
 
             if not module.desired_absent:
                 # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
-                if len(existing_rule) == 0:
+                if not existing_rule:
                     module.foreman_params['module_stream_ids'].append(module_stream['id'])
 
                 # if the state is present and the module_id IS in the list,
                 # make sure that the current and desired state are identical
-                elif len(existing_rule) > 0:
+                else:
                     content_view_filter_rule = module.foreman_params
 
         module.ensure_entity(
