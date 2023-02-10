@@ -310,7 +310,6 @@ def main():
             # this filter type support many rules
             # module_stream_ids are internal and non-searchable
             # find the module_stream_id by NSVCA
-            module.foreman_params['module_stream_ids'] = []
             search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
             module_stream = module.find_resource('module_streams', search, failsafe=True)
             # determine if there is a rule for the module_stream
@@ -319,15 +318,9 @@ def main():
             if existing_rule:
                 content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule['id'], params=search_scope, failsafe=True)
 
-            if not module.desired_absent:
-                # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
-                if not existing_rule:
-                    module.foreman_params['module_stream_ids'].append(module_stream['id'])
-
-                # if the state is present and the module_id IS in the list,
-                # make sure that the current and desired state are identical
-                else:
-                    content_view_filter_rule = module.foreman_params
+            # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
+            if not module.desired_absent and not existing_rule:
+                module.foreman_params['module_stream_ids'] = [module_stream['id']]
 
         module.ensure_entity(
             'content_view_filter_rules',
