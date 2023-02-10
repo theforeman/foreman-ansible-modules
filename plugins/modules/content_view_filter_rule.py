@@ -273,7 +273,6 @@ def main():
         rule_spec = globals()['content_filter_rule_%s_spec' % (filter_type)]
 
         # trying to find the existing rule is not simple...
-        search = None
         search_scope = cvf_scope
         content_view_filter_rule = None
 
@@ -286,7 +285,7 @@ def main():
                 # we need to search by errata_id, because it really doesn't have a name field.
                 rule_spec = content_filter_rule_erratum_id_spec
                 search_scope['errata_id'] = module.foreman_params['errata_id']
-            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+            content_view_filter_rule = module.find_resource('content_view_filter_rules', None, params=search_scope, failsafe=True)
 
         elif filter_type in ('rpm', 'docker'):
             # these filter types support many rules
