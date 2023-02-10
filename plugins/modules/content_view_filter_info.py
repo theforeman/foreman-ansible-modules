@@ -34,11 +34,6 @@ options:
       - the name of the content view that the filter applies to
     required: true
     type: str
-  name:
-    description:
-      - the name of the content view filter to return info for
-    type: str
-    required: true
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.katelloinfomodule
@@ -58,9 +53,14 @@ EXAMPLES = '''
 
 RETURN = '''
 content_view_filter:
-  description: Details about the found content_view
+  description: Details about the found content view filter
   returned: success and I(name) was passed
   type: dict
+content_view_filters:
+  description: Details about the found content view filters
+  returned: success and I(search) was passed
+  type: list
+  elements: dict
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
@@ -76,7 +76,6 @@ def main():
     module = KatelloContentViewFilterInfo(
         foreman_spec=dict(
             content_view=dict(type='entity', scope=['organization'], required=True),
-            name=dict(required=True),
         ),
         entity_opts=dict(scope=['content_view']),
     )
