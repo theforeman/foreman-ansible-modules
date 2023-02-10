@@ -291,19 +291,15 @@ def main():
         elif filter_type in ('rpm', 'docker'):
             # these filter types support many rules
             # the name is the key to finding the proper one and is required for these types
-            if module.foreman_params['name'] is not None:
-                search = 'name="{0}"'.format(module.foreman_params['name'])
-                content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
-            else:
-                # raise an error as name is required for this kind of rule
-                search = None
+            content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
+                                                                    params=search_scope, failsafe=True)
 
         elif filter_type == 'package_group':
             # this filter type support many rules
             # the name is the key to finding the proper one and is required for these types
             # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
-            search = 'name="{0}"'.format(module.foreman_params['name'])
-            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
+            content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
+                                                                    params=search_scope, failsafe=True)
 
             package_group = module.find_resource_by_name('package_groups', module.foreman_params['name'], params=cv_scope)
             module.foreman_params['uuid'] = package_group['uuid']
