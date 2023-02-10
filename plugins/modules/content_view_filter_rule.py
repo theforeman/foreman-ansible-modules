@@ -277,22 +277,15 @@ def main():
         search_scope = cvf_scope
         content_view_filter_rule = None
 
-        # there are really 2 erratum filter types by_date and by_id
-        # however the table backing them is denormalized to support both, as is the api
-
-        if 'errata_id' in module.foreman_params:
-            # this filter type supports many rules
-            # we need to search by errata_id, because it really doesn't have a name field.
-            rule_spec = content_filter_rule_erratum_id_spec
-            search_scope = {'errata_id': module.foreman_params['errata_id']}
-            search_scope.update(cvf_scope)
-            search = None
-            content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
-
         if filter_type == 'erratum':
+            # this filter type supports many rules
+            # there are really 2 erratum filter types by_date and by_id
+            # however the table backing them is denormalized to support both, as is the api
             # for an erratum filter rule == errata_by_date rule, there can be only one rule per filter. So that's easy, its the only one
-            # if the state is present, we create it or update it, if absent, we delete it
-            search = None
+            if 'errata_id' in module.foreman_params:
+                # we need to search by errata_id, because it really doesn't have a name field.
+                rule_spec = content_filter_rule_erratum_id_spec
+                search_scope['errata_id'] = module.foreman_params['errata_id']
             content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
         if filter_type in ('rpm', 'docker'):
