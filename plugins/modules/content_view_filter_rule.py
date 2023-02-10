@@ -193,7 +193,7 @@ entity:
       elements: dict
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloMixin, ForemanStatelessEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
 
 content_filter_rule_erratum_spec = {
     'id': {},
@@ -234,7 +234,7 @@ content_filter_rule_docker_spec = {
 }
 
 
-class KatelloContentViewFilterRuleModule(KatelloMixin, ForemanStatelessEntityAnsibleModule):
+class KatelloContentViewFilterRuleModule(KatelloEntityAnsibleModule):
     pass
 
 
@@ -259,9 +259,6 @@ def main():
         ),
         entity_opts=dict(scope=['content_view_filter']),
     )
-
-    # Do we want to make sure it exists or doesn't exist
-    rule_state = module.foreman_params.pop('state')
 
     with module.api_connection():
 
@@ -338,16 +335,16 @@ def main():
                     content_view_filter_rule = module.find_resource('content_view_filter_rules', search, params=search_scope, failsafe=True)
 
                 # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
-                if rule_state == 'present' and len(existing_rule) == 0:
+                if not module.desired_absent and len(existing_rule) == 0:
                     module.foreman_params['module_stream_ids'].append(module_stream['id'])
 
                 # if the state is present and the module_id IS in the list,
                 # make sure that the current and desired state are identical
-                elif rule_state == 'present' and len(existing_rule) > 0:
+                elif not module.desired_absent and len(existing_rule) > 0:
                     content_view_filter_rule = module.foreman_params
 
                 # if the state is absent and the module_id IS in the existing list, add the module_stream_id.
-                elif rule_state == 'absent':
+                elif module.desired_absent:
                     module.foreman_params['module_stream_ids'].append(module_stream['id'])
 
         module.ensure_entity(
@@ -355,7 +352,6 @@ def main():
             module.foreman_params,
             content_view_filter_rule,
             params=cvf_scope,
-            state=rule_state,
             foreman_spec=rule_spec,
         )
 
