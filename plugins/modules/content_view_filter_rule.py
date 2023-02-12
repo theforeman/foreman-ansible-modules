@@ -95,14 +95,6 @@ options:
       - see date_type for the date the rule applies to
       - Only valid on I(filter_type=erratum).
     type: str
-  state:
-    description:
-      - set the presence or absence of the content view filter rule
-    default: present
-    choices:
-      - present
-      - absent
-    type: str
   stream:
     description:
       - the context for a module
@@ -121,6 +113,7 @@ options:
     type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
+  - theforeman.foreman.foreman.entity_state
   - theforeman.foreman.foreman.organization
 '''
 
@@ -244,7 +237,6 @@ def main():
             content_view=dict(type='entity', scope=['organization'], required=True),
             content_view_filter=dict(type='entity', scope=['content_view'], required=True),
             name=dict(aliases=['rule_name', 'module_name', 'package_name', 'package_group', 'tag']),
-            state=dict(default='present', choices=['present', 'absent']),
             errata_id=dict(),
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             date_type=dict(default='updated', choices=['issued', 'updated']),
