@@ -9,7 +9,7 @@ PLUGIN_TYPES := $(filter-out __%,$(notdir $(wildcard plugins/*)))
 RUNTIME_YML := meta/runtime.yml
 METADATA := galaxy.yml LICENSE README.md $(RUNTIME_YML) requirements.txt changelogs/changelog.yaml CHANGELOG.rst bindep.txt PSF-license.txt meta/execution-environment.yml
 $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(eval _$(PLUGIN_TYPE) := $(filter-out %__init__.py,$(wildcard plugins/$(PLUGIN_TYPE)/*.py)) $(wildcard plugins/$(PLUGIN_TYPE)/*.yml)))
-DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*)) $(foreach ROLE,$(ROLES),$(ROLE)/README.md)
+DEPENDENCIES := $(METADATA) $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES),$(_$(PLUGIN_TYPE))) $(foreach ROLE,$(ROLES),$(wildcard $(ROLE)/*/*)) $(foreach ROLE,$(ROLES),$(ROLE)/README.md) $(wildcard tests/ignore-*)
 
 PYTHON_VERSION = $(shell $(PYTHON_COMMAND) -c 'import sys; print("{}.{}".format(sys.version_info.major, sys.version_info.minor))')
 ANSIBLE_SUPPORTS_REDIRECTS = $(shell ansible --version | grep -q 'ansible 2.9' && echo 0 || echo 1)

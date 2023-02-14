@@ -6,7 +6,7 @@ import os.path
 # header lines we want to have, disabling some annoying pylint checks
 # and adhering to Ansible standards
 header_lines = [
-    '# pylint: disable=ansible-format-automatic-specification,raise-missing-from',
+    '# pylint: disable=raise-missing-from',
     'from __future__ import absolute_import, division, print_function',
     '__metaclass__ = type',
 ]
