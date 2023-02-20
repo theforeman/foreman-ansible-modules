@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Releasing the collection &mdash; Foreman Ansible Modules  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/antsibull-minimal.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="theforeman.foreman Release Notes" href="CHANGELOG.html" />
+    <link rel="prev" title="Testing Foreman Ansible Modules" href="testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Foreman Ansible Modules
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html">Foreman Ansible Modules </a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#foreman-ansible-roles">Foreman Ansible Roles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Theforeman.Foreman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roles/index.html">Role Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cvmanager.html">Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developing.html">How to write modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html"><code class="docutils literal notranslate"><span class="pre">foreman_helper</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing Foreman Ansible Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Releasing the collection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vendoring-apypie">Vendoring <code class="docutils literal notranslate"><span class="pre">apypie</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Foreman Ansible Modules</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Releasing the collection</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/releasing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="releasing-the-collection">
+<h1>Releasing the collection<a class="headerlink" href="#releasing-the-collection" title="Permalink to this heading"></a></h1>
+<p>To release the collection the following steps are required:</p>
+<ul>
+<li><p>Create a pull request with the following changes:</p>
+<ul>
+<li><p>Updated <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code>:</p>
+<ul>
+<li><p>Version bump</p></li>
+<li><p>Updated list of authors.</p>
+<p>You can generate that list via <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">shortlog</span> <span class="pre">-e</span> <span class="pre">-s</span> <span class="pre">|</span> <span class="pre">sed</span> <span class="pre">-E</span> <span class="pre">'s/^\s+[[:digit:]]+\s+(.*)$/</span>&#160; <span class="pre">-</span> <span class="pre">&quot;\1&quot;/'</span></code>.</p>
+</li>
+</ul>
+</li>
+<li><p>Updated changelog by running <code class="docutils literal notranslate"><span class="pre">antsibull-changelog</span> <span class="pre">release</span></code> – it will pick up the version from <code class="docutils literal notranslate"><span class="pre">galaxy.yml</span></code></p></li>
+</ul>
+</li>
+<li><p>After merging, tag the merge commit with <code class="docutils literal notranslate"><span class="pre">v&lt;version</span> <span class="pre">number&gt;</span></code> (i.e. v0.1.1).
+Please use signed tags.</p></li>
+<li><p>Bump the version once more to <code class="docutils literal notranslate"><span class="pre">&lt;next</span> <span class="pre">version</span> <span class="pre">number&gt;-dev</span></code> (i.e. 1.4.0-dev or 0.1.2-dev on a release branch).</p></li>
+</ul>
+<p>Consider filing a packaging PR on <a class="reference external" href="https://github.com/theforeman/foreman-packaging">foreman-packaging</a>.</p>
+<section id="vendoring-apypie">
+<h2>Vendoring <code class="docutils literal notranslate"><span class="pre">apypie</span></code><a class="headerlink" href="#vendoring-apypie" title="Permalink to this heading"></a></h2>
+<p>To make installations easier, we vendor a copy of <code class="docutils literal notranslate"><span class="pre">apypie</span></code> in our <code class="docutils literal notranslate"><span class="pre">module_utils</span></code>.</p>
+<p>To update the copy, call <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">vendor</span></code> and either pass <code class="docutils literal notranslate"><span class="pre">APYPIE_VERSION=vX.Y.Z</span></code> to the <code class="docutils literal notranslate"><span class="pre">make</span></code> invocation or update the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="testing.html" class="btn btn-neutral float-left" title="Testing Foreman Ansible Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CHANGELOG.html" class="btn btn-neutral float-right" title="theforeman.foreman Release Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, The Foreman Project.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
