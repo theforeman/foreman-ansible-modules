@@ -285,7 +285,7 @@ EXAMPLES = '''
     lastname: Userson
     mail: test.userson@example.com
     description: Dr. Test Userson
-    admin: no
+    admin: false
     user_password: s3cret
     default_location: Test Location
     default_organization: Test Organization

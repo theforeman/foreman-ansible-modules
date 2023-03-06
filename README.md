@@ -30,7 +30,7 @@ Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only P
   As Ansible has facilities to do so, the modules will wait unconditionally. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_async.html) for putting tasks in the background.
   Please make sure to set a high enough `async` value, as otherwise Ansible might abort the execution of the module while there is still a task running on the server, making status reporting fail.
 
-* According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. This applies to all modules, but especially those which require more secrets than the API credentials (`auth_source_ldap`, `compute_resource`, `host`, `hostgroup`, `http_proxy`, `image`, `repository`, `scc_account`, `user`). You can prevent this by using `no_log: yes` on the task.
+* According to [Ansible documentation](https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html), using loop over Ansible resources can leak sensitive data. This applies to all modules, but especially those which require more secrets than the API credentials (`auth_source_ldap`, `compute_resource`, `host`, `hostgroup`, `http_proxy`, `image`, `repository`, `scc_account`, `user`). You can prevent this by using `no_log: true` on the task.
   
   eg:
 
@@ -40,7 +40,7 @@ Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only P
        server_url: https://foreman.example.com
        username: admin
        password: changeme
-       validate_certs: yes
+       validate_certs: true
        name: "{{ item.name }}"
        organizations: "{{ item.organizations | default(omit) }}"
        locations: "{{ item.locations | default(omit) }}"
@@ -49,7 +49,7 @@ Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only P
        provider_params: "{{ item.provider_params | default(omit) }}"
        state: "{{ item.state | default('present') }}"
      loop: "{{ compute_resources }}"
-     no_log: yes
+     no_log: true
    ```
 * Modules require write access to `~/.cache` (or wherever `$XDG_CACHE_HOME` points at). Otherwise the API documentation cannot be downloaded and you get errors like `[Errno 13] Permission denied: '/home/runner/.cache/apypie`. If on your system `~/.cache` is not writeable, please set the `$XDG_CACHE_HOME` environment variable to a directory Ansible can write to.
 

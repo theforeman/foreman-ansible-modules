@@ -79,7 +79,7 @@ options:
   validate_certs:
     description:
      - Validate Portal SSL
-    default: True
+    default: true
     type: bool
   portal:
     description:

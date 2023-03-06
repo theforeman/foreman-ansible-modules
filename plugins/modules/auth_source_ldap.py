@@ -138,7 +138,7 @@ EXAMPLES = '''
   theforeman.foreman.auth_source_ldap:
     name: "Example LDAP"
     host: "ldap.example.org"
-    onthefly_register: True
+    onthefly_register: true
     account: uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com
     account_password: secret
     base_dn: dc=example,dc=com
@@ -158,7 +158,7 @@ EXAMPLES = '''
   theforeman.foreman.auth_source_ldap:
     name: "Example AD"
     host: "ad.example.org"
-    onthefly_register: True
+    onthefly_register: true
     account: EXAMPLE\\ansible
     account_password: secret
     base_dn: cn=Users,dc=example,dc=com

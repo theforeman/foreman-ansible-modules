@@ -38,18 +38,18 @@ options:
     description:
       - URL of the HTTP Proxy
       - Required when creating a new HTTP Proxy.
-    required: False
+    required: false
     type: str
   proxy_username:
     description:
       - Username used to authenticate with the HTTP Proxy
-    required: False
+    required: false
     type: str
   proxy_password:
     description:
       - Password used to authenticate with the HTTP Proxy
       - When this parameter is set, the module will not be idempotent.
-    required: False
+    required: false
     type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman

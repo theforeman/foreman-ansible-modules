@@ -1,6 +1,6 @@
 ---
 - hosts: testhost
-  gather_facts: no
+  gather_facts: false
   vars:
     foo: foo bar
   tasks:
@@ -16,7 +16,7 @@
     - name: Failed task
       fail:
         msg: no reason
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Skipped task
       command: echo foo
@@ -51,7 +51,7 @@
 - hosts:
   - testhostA
   - testhostB
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Changed task
       command: echo foo
@@ -64,7 +64,7 @@
     - name: Failed task
       fail:
         msg: no reason
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Skipped task
       command: echo foo

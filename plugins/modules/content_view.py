@@ -89,7 +89,7 @@ options:
         description:
           - Always use the latest Content View Version
         type: bool
-        default: False
+        default: false
       content_view_version:
         description:
           - Version of the Content View to add

@@ -130,7 +130,7 @@ options:
   inclusion:
     description:
       - Create an include filter
-    default: False
+    default: false
     type: bool
   original_packages:
     description:
@@ -164,7 +164,7 @@ EXAMPLES = '''
     filter_type: "rpm"
     package_name: tcsh
     min_version: 6.20.00
-    inclusion: True
+    inclusion: true
 '''
 
 RETURN = '''
