@@ -43,7 +43,7 @@ Download the Subscription Manifest from the Red Hat Customer Portal to localhost
         foreman_password: "changeme"
         foreman_organization: "Default Organization"
         foreman_manifest_path: "~/manifest.zip"
-        foreman_manifest_download: True
+        foreman_manifest_download: true
         foreman_rhsm_username: "happycustomer"
         foreman_rhsm_password: "$ecur3p4$$w0rd"
         foreman_manifest_uuid: "01234567-89ab-cdef-0123-456789abcdef"

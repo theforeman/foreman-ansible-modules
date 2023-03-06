@@ -34,7 +34,7 @@ Configure FreeIPA as an authentication source, with automatic registration:
         foreman_auth_sources_ldap:
           - name: "Example LDAP"
             host: "ldap.example.org"
-            onthefly_register: True
+            onthefly_register: true
             account: uid=ansible,cn=sysaccounts,cn=etc,dc=example,dc=com
             account_password: secret
             base_dn: dc=example,dc=com
@@ -62,7 +62,7 @@ To instead integrate with Active Directory, only allowing users who are member o
         foreman_auth_sources_ldap:
           - name: "Example AD"
             host: "ad.example.org"
-            onthefly_register: True
+            onthefly_register: true
             account: EXAMPLE\ansible
             account_password: secret
             base_dn: cn=Users,dc=example,dc=com
