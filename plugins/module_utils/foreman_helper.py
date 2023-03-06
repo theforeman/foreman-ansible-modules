@@ -423,8 +423,9 @@ class ForemanAnsibleModule(AnsibleModule):
 
         _host_update = next(x for x in _host_methods if x['name'] == 'update')
         for param in ['location_id', 'organization_id']:
-            _host_update_taxonomy_param = next(x for x in _host_update['params'] if x['name'] == param)
-            _host_update['params'].remove(_host_update_taxonomy_param)
+            _host_update_taxonomy_param = next((x for x in _host_update['params'] if x['name'] == param), None)
+            if _host_update_taxonomy_param is not None:
+                _host_update['params'].remove(_host_update_taxonomy_param)
 
     @_check_patch_needed(fixed_version='2.2.0', plugins=['remote_execution'])
     def _patch_subnet_rex_api(self):
