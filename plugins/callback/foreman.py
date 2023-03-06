@@ -35,7 +35,7 @@ DOCUMENTATION = '''
           - name: FOREMAN_URL
           - name: FOREMAN_SERVER_URL
           - name: FOREMAN_SERVER
-        required: True
+        required: true
         ini:
           - section: callback_foreman
             key: url

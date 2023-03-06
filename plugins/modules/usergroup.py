@@ -72,7 +72,7 @@ EXAMPLES = '''
 - name: Create a user group
   theforeman.foreman.usergroup:
     name: test
-    admin: no
+    admin: false
     roles:
       - Manager
     users:

@@ -32,12 +32,12 @@ options:
   smart_proxy:
     description:
       - Smart Proxy to import Puppet Classes from
-    required: True
+    required: true
     type: str
   environment:
     description:
       - Puppet Environment to import Puppet Classes from
-    required: False
+    required: false
     type: str
   except:
     description:
@@ -46,7 +46,7 @@ options:
       - new
       - updated
       - obsolete
-    required: False
+    required: false
     type: list
     elements: str
 extends_documentation_fragment:

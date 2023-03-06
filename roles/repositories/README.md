@@ -11,7 +11,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 - `foreman_products`: List of products to manage.
   Each product is represented as a dictionary and can include `repository_sets` which represent Red Hat Repositories and should be used when the product name matches an existing Red Hat Product.
   Each element of `repository_sets` must have a `name` and should specify the `basearch` and/or `releasever` only when multiple versions are available for that Product.
-  All repository sets for a Red Hat Product can be enabled by omitting `repository_sets` and instead specifying that the Product has `all_repositories: True`. When using this option it is also necessary to specify a list of repository `label`s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
+  All repository sets for a Red Hat Product can be enabled by omitting `repository_sets` and instead specifying that the Product has `all_repositories: true`. When using this option it is also necessary to specify a list of repository `label`s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
   Custom (i.e. non Red Hat) Products can also be defined, with associated `repositories` which represent custom repositories, and are required to have a `name`, `url`, and `content_type`; they may require additional fields and can take any parameter supported by [theforeman.foreman.repository](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html).
   A variety of examples are demonstrated in the data structure below:
 
@@ -45,7 +45,7 @@ foreman_products:
       - name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
         releasever: 8
   - name: Red Hat Software Collections (for RHEL Server)
-    all_repositories: True
+    all_repositories: true
     labels:
       - rhel-server-rhscl-7-rpms
   - name: CentOS Stream 8

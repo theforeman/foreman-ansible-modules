@@ -179,7 +179,7 @@ EXAMPLES = '''
     content_overrides:
         - label: rhel-7-server-optional-rpms
           override: enabled
-    auto_attach: False
+    auto_attach: false
     release_version: 7Server
     service_level: Standard
 '''

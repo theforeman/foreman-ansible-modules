@@ -23,7 +23,7 @@ DOCUMENTATION = '''
     options:
       plugin:
         description: token that ensures this is a source file for the C(foreman) plugin.
-        required: True
+        required: true
         choices: ['theforeman.foreman.foreman']
       url:
         description:
@@ -36,21 +36,21 @@ DOCUMENTATION = '''
       user:
         description:
           - Username accessing the Foreman server.
-        required: True
+        required: true
         env:
             - name: FOREMAN_USER
             - name: FOREMAN_USERNAME
       password:
         description:
           - Password of the user accessing the Foreman server.
-        required: True
+        required: true
         env:
             - name: FOREMAN_PASSWORD
       validate_certs:
         description:
           - Whether or not to verify the TLS certificates of the Foreman server.
         type: boolean
-        default: True
+        default: true
         env:
             - name: FOREMAN_VALIDATE_CERTS
       group_prefix:
@@ -62,21 +62,21 @@ DOCUMENTATION = '''
       want_facts:
         description: Toggle, if True the plugin will retrieve host facts from the server
         type: boolean
-        default: False
+        default: false
       want_params:
         description: Toggle, if true the inventory will retrieve 'all_parameters' information as host vars
         type: boolean
-        default: False
+        default: false
       want_hostcollections:
         description: Toggle, if true the plugin will create Ansible groups for host collections
         type: boolean
-        default: False
+        default: false
       legacy_hostvars:
         description:
             - Toggle, if true the plugin will build legacy hostvars present in the foreman script
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
         type: boolean
-        default: False
+        default: false
       host_filters:
         description: This can be used to restrict the list of returned host
         type: string
@@ -87,7 +87,7 @@ DOCUMENTATION = '''
       use_reports_api:
         description: Use Reporting API.
         type: boolean
-        default: True
+        default: true
       foreman:
         description:
           - Foreman server related configuration, deprecated.
@@ -110,39 +110,39 @@ DOCUMENTATION = '''
       want_organization:
         description: Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
         type: boolean
-        default: True
+        default: true
       want_location:
         description: Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
         type: boolean
-        default: True
+        default: true
       want_ipv4:
         description: Toggle, if true the inventory will fetch ipv4 address of the host.
         type: boolean
-        default: True
+        default: true
       want_ipv6:
         description: Toggle, if true the inventory will fetch ipv6 address of the host.
         type: boolean
-        default: True
+        default: true
       want_host_group:
         description: Toggle, if true the inventory will fetch host_groups and create groupings for the same.
         type: boolean
-        default: True
+        default: true
       want_subnet:
         description: Toggle, if true the inventory will fetch subnet.
         type: boolean
-        default: True
+        default: true
       want_subnet_v6:
         description:  Toggle, if true the inventory will fetch ipv6 subnet.
         type: boolean
-        default: True
+        default: true
       want_smart_proxies:
         description: Toggle, if true the inventory will fetch smart proxy that the host is registered to.
         type: boolean
-        default: True
+        default: true
       want_content_facet_attributes:
         description: Toggle, if true the inventory will fetch content view details that the host is tied to.
         type: boolean
-        default: True
+        default: true
       hostnames:
         description:
           - A list of templates in order of precedence to compose inventory_hostname.

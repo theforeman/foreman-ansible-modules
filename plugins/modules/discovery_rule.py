@@ -32,7 +32,7 @@ options:
   name:
     description:
       - Name of the Discovery Rule
-    required: True
+    required: true
     type: str
   search:
     description:
