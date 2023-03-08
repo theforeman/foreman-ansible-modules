@@ -47,6 +47,11 @@ options:
        - URL to retrieve content from
     aliases: [ redhat_repository_url ]
     type: str
+attributes:
+  check_mode:
+    support: none
+  diff_mode:
+    support: partial
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
