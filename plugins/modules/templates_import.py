@@ -90,6 +90,11 @@ options:
       - The directory within Git repo containing the templates.
     required: false
     type: str
+attributes:
+  check_mode:
+    support: none
+  diff_mode:
+    support: none
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.taxonomy

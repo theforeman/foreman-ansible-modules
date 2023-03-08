@@ -49,6 +49,11 @@ options:
     required: false
     type: list
     elements: str
+attributes:
+  check_mode:
+    support: none
+  diff_mode:
+    support: none
 extends_documentation_fragment:
   - theforeman.foreman.foreman
 '''
