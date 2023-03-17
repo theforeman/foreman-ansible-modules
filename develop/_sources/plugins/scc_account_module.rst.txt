@@ -96,7 +96,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
