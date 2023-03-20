@@ -78,6 +78,7 @@ options:
       - package_group
       - erratum
       - docker
+      - modulemd
     type: str
   rule_name:
     description:
@@ -136,6 +137,12 @@ options:
     description:
       - Include all RPMs with no errata
     type: bool
+  original_module_streams:
+    description:
+      - Include all module streams with no errata
+      - Only valid on I(filter_type=modulemd).
+    type: bool
+    version_added: 3.10.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -190,6 +197,7 @@ content_filter_spec = {
     'content_view': {'type': 'entity'},
     'filter_type': {'flat_name': 'type'},
     'original_packages': {},
+    'original_module_streams': {},
 }
 
 content_filter_rule_erratum_spec = {
@@ -241,7 +249,7 @@ def main():
             inclusion=dict(type='bool', default=False),
             original_packages=dict(type='bool'),
             content_view=dict(type='entity', scope=['organization'], required=True),
-            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker']),
+            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker', 'modulemd']),
             filter_state=dict(default='present', choices=['present', 'absent']),
             rule_state=dict(default='present', choices=['present', 'absent']),
             rule_name=dict(aliases=['package_name', 'package_group', 'tag']),
@@ -254,6 +262,7 @@ def main():
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             version=dict(),
             architecture=dict(),
+            original_module_streams=dict(type='bool'),
         ),
         entity_opts=dict(scope=['content_view']),
     )
