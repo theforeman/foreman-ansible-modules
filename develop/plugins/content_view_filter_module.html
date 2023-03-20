@@ -291,6 +291,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;package_group&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;erratum&quot;</span></code></p></li>
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;docker&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;modulemd&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -335,6 +336,20 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-original_module_streams"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-original-module-streams"><strong>original_module_streams</strong></p>
+<a class="ansibleOptionLink" href="#parameter-original_module_streams" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<p><span class="ansible-option-versionadded">added in theforeman.foreman 3.10.0</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Include all module streams with no errata</p>
+<p>Only valid on <em>filter_type=modulemd</em>.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-original_packages"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-original-packages"><strong>original_packages</strong></p>
 <a class="ansibleOptionLink" href="#parameter-original_packages" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -346,7 +361,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-password"><strong>password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -354,7 +369,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_PASSWORD</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-repositories"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-repositories"><strong>repositories</strong></p>
 <a class="ansibleOptionLink" href="#parameter-repositories" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
 </div></td>
@@ -363,7 +378,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[]</span></code></p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-rule_name"></div>
 <div class="ansibleOptionAnchor" id="parameter-package_name"></div>
 <div class="ansibleOptionAnchor" id="parameter-package_group"></div>
@@ -375,7 +390,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If omitted, the value of <em>name</em> will be used if necessary</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-rule_state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-rule-state"><strong>rule_state</strong></p>
 <a class="ansibleOptionLink" href="#parameter-rule_state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -387,7 +402,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-server-url"><strong>server_url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -395,14 +410,14 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-start_date"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-start-date"><strong>start_date</strong></p>
 <a class="ansibleOptionLink" href="#parameter-start_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>erratum start date (YYYY-MM-DD)</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-types"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-types"><strong>types</strong></p>
 <a class="ansibleOptionLink" href="#parameter-types" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
@@ -410,7 +425,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[&quot;bugfix&quot;,</span> <span class="pre">&quot;enhancement&quot;,</span> <span class="pre">&quot;security&quot;]</span></code></p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-username"><strong>username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -418,7 +433,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-validate-certs"><strong>validate_certs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -431,7 +446,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-version"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-content-view-filter-module-parameter-version"><strong>version</strong></p>
 <a class="ansibleOptionLink" href="#parameter-version" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
