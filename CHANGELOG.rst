@@ -6,6 +6,23 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.10.0
+=======
+
+Minor Changes
+-------------
+
+- content_export_library, content_export_repository, content_export_version - add ``format`` option to control the export format
+- content_view_filter - add support for creating modulemd filters
+- content_view_publish role - also accept a list of dicts as the ``content_views`` role for publishing (https://github.com/theforeman/foreman-ansible-modules/issues/1436)
+- setting - document how to obtain valid setting names (https://bugzilla.redhat.com/show_bug.cgi?id=2174367)
+
+Bugfixes
+--------
+
+- auth_sources_ldap role - don't assume ``account`` and ``account_password`` are set, they are documented as optional
+- auth_sources_ldap role, compute_resources role, repositories role - do not log loop data when it contains sensitive data (https://bugzilla.redhat.com/show_bug.cgi?id=2183357)
+
 v3.9.0
 ======
 
