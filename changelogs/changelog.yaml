@@ -559,6 +559,28 @@ releases:
     - explicit-http-warning.yml
     - inventory-facts-batch-size.yml
     release_date: '2022-01-14'
+  3.10.0:
+    changes:
+      bugfixes:
+      - auth_sources_ldap role - don't assume ``account`` and ``account_password``
+        are set, they are documented as optional
+      - auth_sources_ldap role, compute_resources role, repositories role - do not
+        log loop data when it contains sensitive data (https://bugzilla.redhat.com/show_bug.cgi?id=2183357)
+      minor_changes:
+      - content_export_library, content_export_repository, content_export_version
+        - add ``format`` option to control the export format
+      - content_view_filter - add support for creating modulemd filters
+      - content_view_publish role - also accept a list of dicts as the ``content_views``
+        role for publishing (https://github.com/theforeman/foreman-ansible-modules/issues/1436)
+      - setting - document how to obtain valid setting names (https://bugzilla.redhat.com/show_bug.cgi?id=2174367)
+    fragments:
+    - 1436-cv-publish-vars.yml
+    - 1573-cv-filter-modulemd.yml
+    - auth_sources_ldap_role-dont_force_account.yml
+    - bz2174367.yml
+    - bz2183357-role-log.yml
+    - content-export-format.yml
+    release_date: '2023-04-04'
   3.2.0:
     changes:
       bugfixes:
