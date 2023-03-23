@@ -49,6 +49,16 @@ options:
       - Split the exported content into archives no greater than the specified size in gigabytes.
     required: false
     type: int
+  format:
+    description:
+      - Export format.
+      - Choose C(syncable) if the exported content needs to be in a yum format.
+    required: false
+    type: str
+    choices:
+      - syncable
+      - importable
+    version_added: 3.10.0
   fail_on_missing_content:
     description:
       - Fails if any of the repositories belonging to this version are unexportable.
@@ -140,6 +150,7 @@ def main():
             content_view=dict(type='entity', scope=['organization'], required=True),
             destination_server=dict(required=False, type='str'),
             chunk_size_gb=dict(required=False, type='int'),
+            format=dict(required=False, type='str', choices=['syncable', 'importable']),
             fail_on_missing_content=dict(required=False, type='bool'),
             from_history_id=dict(required=False, type='int'),
         ),
