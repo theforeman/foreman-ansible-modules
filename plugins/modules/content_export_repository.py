@@ -44,6 +44,16 @@ options:
       - Split the exported content into archives no greater than the specified size in gigabytes.
     required: false
     type: int
+  format:
+    description:
+      - Export format.
+      - Choose C(syncable) if the exported content needs to be in a yum format.
+    required: false
+    type: str
+    choices:
+      - syncable
+      - importable
+    version_added: 3.10.0
   incremental:
     description:
       - Export only the content that has changed since the last export.
@@ -114,6 +124,7 @@ def main():
             repository=dict(type='entity', flat_name='id', scope=['product'], required=True),
             product=dict(type='entity', scope=['organization'], required=True),
             chunk_size_gb=dict(required=False, type='int'),
+            format=dict(required=False, type='str', choices=['syncable', 'importable']),
             from_history_id=dict(required=False, type='int'),
         ),
         argument_spec=dict(
