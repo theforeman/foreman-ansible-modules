@@ -40,6 +40,10 @@ options:
       - if missing, reset to default
     required: false
     type: raw
+notes:
+  - To obtain a list of possible settings for your installation, use the M(theforeman.foreman.setting_info) module
+    or the C(hammer settings list) command and look for the C(name) attribute.
+  - The web interface by default shows the C(full_name) attribute, which can't be used with this module.
 extends_documentation_fragment:
   - theforeman.foreman.foreman
 '''
