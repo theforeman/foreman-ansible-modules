@@ -44,39 +44,15 @@ options:
       - Destination server name; optional parameter to differentiate between exports
     required: false
     type: str
-  chunk_size_gb:
-    description:
-      - Split the exported content into archives no greater than the specified size in gigabytes.
-    required: false
-    type: int
-  format:
-    description:
-      - Export format.
-      - Choose C(syncable) if the exported content needs to be in a yum format.
-    required: false
-    type: str
-    choices:
-      - syncable
-      - importable
-    version_added: 3.10.0
   fail_on_missing_content:
     description:
       - Fails if any of the repositories belonging to this version are unexportable.
     required: false
     type: bool
-  incremental:
-    description:
-      - Export only the content that has changed since the last export.
-    required: false
-    type: bool
-  from_history_id:
-    description:
-      - Export history identifier used for incremental export. If not provided the most recent export history will be used.
-    required: false
-    type: int
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
+  - theforeman.foreman.foreman.katelloexport
 '''
 
 EXAMPLES = '''
