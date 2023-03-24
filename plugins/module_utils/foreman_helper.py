@@ -1530,6 +1530,43 @@ class KatelloEntityAnsibleModule(KatelloScopedMixin, ForemanEntityAnsibleModule)
     pass
 
 
+class KatelloContentExportBaseModule(KatelloAnsibleModule):
+
+    def __init__(self, **kwargs):
+        foreman_spec = dict(
+            chunk_size_gb=dict(required=False, type='int'),
+            format=dict(required=False, type='str', choices=['syncable', 'importable']),
+            from_history_id=dict(required=False, type='int'),
+        )
+        argument_spec = dict(
+            incremental=dict(required=False, type='bool'),
+        )
+
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        argument_spec.update(kwargs.pop('argument_spec', {}))
+
+        self.export_action = kwargs.pop('export_action')
+
+        super(KatelloContentExportBaseModule, self).__init__(foreman_spec=foreman_spec, argument_spec=argument_spec, **kwargs)
+
+        # needs to happen after super().__init__()
+        self.task_timeout = 12 * 60 * 60
+
+    def run(self, **kwargs):
+        self.auto_lookup_entities()
+
+        incremental = self.params['incremental']
+        endpoint = 'content_export_incrementals' if incremental else 'content_exports'
+
+        if self.params.get('from_history_id') and incremental is not True:
+            self.fail_json(msg='from_history_id is only valid for incremental exports')
+
+        payload = _flatten_entity(self.foreman_params, self.foreman_spec)
+        task = self.resource_action(endpoint, self.export_action, payload)
+
+        self.exit_json(task=task)
+
+
 def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
     Extract Ansible compatible argument_spec on the way.
