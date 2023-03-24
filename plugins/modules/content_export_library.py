@@ -116,10 +116,10 @@ EXAMPLES = '''
     from_history_id: 12345
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, _flatten_entity
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloContentExportBaseModule
 
 
-class KatelloContentExportModule(KatelloAnsibleModule):
+class KatelloContentExportModule(KatelloContentExportBaseModule):
     pass
 
 
@@ -127,31 +127,13 @@ def main():
     module = KatelloContentExportModule(
         foreman_spec=dict(
             destination_server=dict(required=False, type='str'),
-            chunk_size_gb=dict(required=False, type='int'),
-            format=dict(required=False, type='str', choices=['syncable', 'importable']),
             fail_on_missing_content=dict(required=False, type='bool'),
-            from_history_id=dict(required=False, type='int'),
         ),
-        argument_spec=dict(
-            incremental=dict(required=False, type='bool'),
-        ),
+        export_action='library'
     )
 
-    module.task_timeout = 12 * 60 * 60
-
     with module.api_connection():
-        module.auto_lookup_entities()
-
-        incremental = module.params['incremental']
-        endpoint = 'content_export_incrementals' if incremental else 'content_exports'
-
-        if module.params.get('from_history_id') and incremental is not True:
-            module.fail_json(msg='from_history_id is only valid for incremental exports')
-
-        payload = _flatten_entity(module.foreman_params, module.foreman_spec)
-        task = module.resource_action(endpoint, 'library', payload)
-
-        module.exit_json(task=task)
+        module.run()
 
 
 if __name__ == '__main__':
