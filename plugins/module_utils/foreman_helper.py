@@ -1553,13 +1553,13 @@ class KatelloContentExportBaseModule(KatelloAnsibleModule):
         self.task_timeout = 12 * 60 * 60
 
     def run(self, **kwargs):
-        self.auto_lookup_entities()
-
         incremental = self.params['incremental']
         endpoint = 'content_export_incrementals' if incremental else 'content_exports'
 
         if self.params.get('from_history_id') and incremental is not True:
             self.fail_json(msg='from_history_id is only valid for incremental exports')
+
+        self.auto_lookup_entities()
 
         payload = _flatten_entity(self.foreman_params, self.foreman_spec)
         task = self.resource_action(endpoint, self.export_action, payload)
