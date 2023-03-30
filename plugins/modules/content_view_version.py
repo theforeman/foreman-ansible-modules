@@ -163,7 +163,7 @@ entity:
 
 
 import re
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule, _flatten_entity
 
 
 def promote_content_view_version(module, content_view_version, environments, force, force_yum_metadata_regeneration):
@@ -179,10 +179,7 @@ def promote_content_view_version(module, content_view_version, environments, for
             'force_yum_metadata_regeneration': force_yum_metadata_regeneration,
         }
 
-        module.record_before('content_view_versions', {'id': content_view_version['id'], 'environments': content_view_version['environments']})
         module.resource_action('content_view_versions', 'promote', params=payload)
-        module.record_after('content_view_versions', {'id': content_view_version['id'], 'environments': environments})
-        module.record_after_full('content_view_versions', {'id': content_view_version['id'], 'environments': environments})
 
 
 class KatelloContentViewVersionModule(KatelloEntityAnsibleModule):
@@ -195,7 +192,7 @@ def main():
             content_view=dict(type='entity', required=True, scope=['organization']),
             description=dict(),
             version=dict(),
-            lifecycle_environments=dict(type='entity_list', scope=['organization']),
+            lifecycle_environments=dict(type='entity_list', scope=['organization'], flat_name='environments'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
             current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope=['organization']),
@@ -230,6 +227,12 @@ def main():
             module.ensure_entity('content_view_versions', None, content_view_version, params=scope)
         else:
             module.auto_lookup_entities()
+
+            # only need to record if not desired_absent, as ensure_entity already does all the proper recording for us
+            content_view_version_record = _flatten_entity(content_view_version, module.foreman_spec)
+            content_view_version_record['environments'] = [environment['name'] for environment in content_view_version_record.get('environments', [])]
+            module.record_before('content_view_versions', content_view_version_record)
+
             if content_view_version is None:
                 payload = {
                     'id': content_view['id'],
@@ -259,6 +262,13 @@ def main():
                     force=module.foreman_params['force_promote'],
                     force_yum_metadata_regeneration=module.foreman_params['force_yum_metadata_regeneration'],
                 )
+
+                content_view_version['environments'] = module.foreman_params['lifecycle_environments']
+
+            content_view_version_record = _flatten_entity(content_view_version, module.foreman_spec)
+            content_view_version_record['environments'] = [environment['name'] for environment in content_view_version_record.get('environments', [])]
+            module.record_after('content_view_versions', content_view_version_record)
+            module.record_after_full('content_view_versions', content_view_version)
 
 
 if __name__ == '__main__':
