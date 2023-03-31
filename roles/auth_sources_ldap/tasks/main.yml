@@ -25,3 +25,4 @@
     use_netgroups: "{{ item.use_netgroups | default(omit) }}"
     state: "{{ item.state | default('present') }}"
   loop: "{{ foreman_auth_sources_ldap }}"
+  no_log: "{{ item.account_password is defined }}"

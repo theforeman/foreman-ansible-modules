@@ -30,3 +30,4 @@
     uuid: "{{ item.1.uuid | default(omit) }}"
     state: "{{ item.1.state | default('present') }}"
   loop: "{{ foreman_compute_resources | subelements('images', {'skip_missing': True}) }}"
+  no_log: "{{ item.1.image_password is defined }}"
