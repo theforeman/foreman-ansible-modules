@@ -7,6 +7,6 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
-    content_type: "{{ item.content_type }}"
-    content: "{{ item.content }}"
+    content_type: "{{ item.content_type | default(omit) }}"
+    content: "{{ item.content | default(omit) }}"
   with_items: "{{ foreman_content_credentials | default([]) }}"

@@ -36,15 +36,15 @@ options:
   content_type:
     description:
     - Type of credential
+    - Required when creating a new credential
     choices:
     - gpg_key
     - cert
-    required: true
     type: str
   content:
     description:
     - Content of the content credential
-    required: true
+    - Required when creating a new credential
     type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
@@ -87,8 +87,8 @@ def main():
     module = KatelloContentCredentialModule(
         foreman_spec=dict(
             name=dict(required=True),
-            content_type=dict(required=True, choices=['gpg_key', 'cert']),
-            content=dict(required=True),
+            content_type=dict(choices=['gpg_key', 'cert']),
+            content=dict(),
         ),
     )
 
