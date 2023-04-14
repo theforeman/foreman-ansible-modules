@@ -195,19 +195,14 @@ import json
 from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 from time import sleep
 from ansible.errors import AnsibleError
-from ansible.module_utils._text import to_bytes, to_native, to_text
+from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.common._collections_compat import MutableMapping
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, to_safe_group_name, Constructable
 
-# 3rd party imports
 try:
-    import requests
-    if LooseVersion(requests.__version__) < LooseVersion('1.1.0'):
-        raise ImportError
-    from requests.auth import HTTPBasicAuth
-    HAS_REQUESTS = True
+    from ansible_collections.theforeman.foreman.plugins.module_utils.ansible_requests import RequestSession
 except ImportError:
-    HAS_REQUESTS = False
+    from plugins.module_utils.ansible_requests import RequestSession
 
 
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
@@ -226,9 +221,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.cache_key = None
         self.use_cache = None
 
-        if not HAS_REQUESTS:
-            raise AnsibleError('This script requires python-requests 1.1 as a minimum version')
-
     def verify_file(self, path):
 
         valid = False
@@ -241,8 +233,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
     def _get_session(self):
         if not self.session:
-            self.session = requests.session()
-            self.session.auth = HTTPBasicAuth(self.get_option('user'), to_bytes(self.get_option('password')))
+            self.session = RequestSession()
+            self.session.auth = (self.get_option('user'), self.get_option('password'))
             self.session.verify = self.get_option('validate_certs')
         return self.session
 

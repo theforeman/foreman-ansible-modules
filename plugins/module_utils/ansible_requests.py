@@ -114,5 +114,8 @@ class RequestSession(Request):
         result = self.open(method, url, validate_certs=validate_certs, data=data, headers=headers, **kwargs)
         return RequestResponse(result)
 
+    def get(self, url, **kwargs):
+        return self.request('GET', url, **kwargs)
+
     def post(self, url, data=None, json=None, **kwargs):
         return self.request('POST', url, data=data, json=json, **kwargs)
