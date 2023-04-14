@@ -34,10 +34,30 @@ class RequestResponse(object):
     def headers(self):
         return self._resp.headers
 
+    @property
+    def url(self):
+        if hasattr(self._resp, 'url'):
+            url = self._resp.url
+        else:
+            url = self._resp.geturl()
+        return url
+
+    @property
+    def reason(self):
+        if hasattr(self._resp, 'reason'):
+            reason = self._resp.reason
+        else:
+            reason = ""
+        return reason
+
     def raise_for_status(self):
         http_error_msg = ""
-        if self.status_code > 400:
-            http_error_msg = "you failed"
+
+        if 400 <= self.status_code < 500:
+            http_error_msg = "{0} Client Error: {1} for url: {2}".format(self.status_code, self.reason, self.url)
+        elif 500 <= self.status_code < 600:
+            http_error_msg = "{0} Server Error: {1} for url: {2}".format(self.status_code, self.reason, self.url)
+
         if http_error_msg:
             raise Exception(http_error_msg)
 
