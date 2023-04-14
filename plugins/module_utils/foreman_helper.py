@@ -37,7 +37,6 @@ try:
     except ImportError:
         from plugins.module_utils import _apypie as apypie
         from plugins.module_utils.ansible_requests import RequestSession
-    import requests.exceptions
     HAS_APYPIE = True
     APYPIE_IMP_ERR = None
     inflector = apypie.Inflector()
@@ -1222,7 +1221,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def fail_from_exception(self, exc, msg):
         fail = {'msg': msg}
-        if isinstance(exc, requests.exceptions.HTTPError):
+        if hasattr(exc, 'response'):
             try:
                 response = exc.response.json()
                 if 'error' in response:
