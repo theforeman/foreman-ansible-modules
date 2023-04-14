@@ -308,7 +308,7 @@ class Api(object):
         self.apidoc_cache_dir = kwargs.get('apidoc_cache_dir', apidoc_cache_dir_default)
         self.apidoc_cache_name = kwargs.get('apidoc_cache_name', self._find_cache_name())
 
-        self._session = kwargs.get('session') or requests.Session()
+        self._session = kwargs.get('session')
         self._session.verify = kwargs.get('verify_ssl', True)
 
         self._session.headers['Accept'] = 'application/json;version={}'.format(self.api_version)
