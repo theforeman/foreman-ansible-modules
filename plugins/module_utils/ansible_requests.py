@@ -83,6 +83,14 @@ class RequestSession(Request):
     def verify(self, value):
         self.validate_certs = value
 
+    @property
+    def cert(self):
+        return (self.client_cert, self.client_key)
+
+    @cert.setter
+    def cert(self, value):
+        self.client_cert, self.client_key = value
+
     def request(self, method, url, **kwargs):
         validate_certs = kwargs.pop('verify', None)
         params = kwargs.pop('params', None)
@@ -105,3 +113,6 @@ class RequestSession(Request):
             headers['Content-Type'] = 'application/json'
         result = self.open(method, url, validate_certs=validate_certs, data=data, headers=headers, **kwargs)
         return RequestResponse(result)
+
+    def post(self, url, data=None, json=None, **kwargs):
+        return self.request('POST', url, data=data, json=json, **kwargs)
