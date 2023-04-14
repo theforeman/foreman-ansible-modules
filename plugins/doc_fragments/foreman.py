@@ -22,8 +22,6 @@ class ModuleDocFragment(object):
 
     # Foreman documentation fragment
     DOCUMENTATION = '''
-requirements:
-  - requests
 options:
   server_url:
     description:

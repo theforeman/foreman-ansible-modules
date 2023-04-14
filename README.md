@@ -124,7 +124,6 @@ $ ansible-galaxy collection install ./theforeman-foreman-*.tar.gz
 These dependencies are required for the Ansible controller, not the Foreman server.
 
 * [`PyYAML`](https://pypi.org/project/PyYAML/)
-* [`requests`](https://pypi.org/project/requests/)
 * [`ipaddress`](https://pypi.org/project/ipaddress/) for the `subnet` module on Python 2.7
 * `rpm` for the RPM support in the `content_upload` module
 * `debian` for the DEB support in the `content_upload` module

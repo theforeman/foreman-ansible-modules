@@ -12,8 +12,6 @@ __metaclass__ = type
 DOCUMENTATION = '''
     name: foreman
     short_description: Foreman inventory source
-    requirements:
-        - requests >= 1.1
     description:
         - Get inventory hosts from Foreman.
         - Can use the Reports API (default) or the Hosts API to fetch information about the hosts.
