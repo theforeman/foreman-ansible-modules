@@ -18,14 +18,23 @@ except ImportError:
         raise NotImplementedError
 
 
+class RequestException(Exception):
+    def __init__(self, msg, response):
+        super(RequestException, self).__init__(msg)
+        self.response = response
+
+
 class RequestResponse(object):
     def __init__(self, resp):
         self._resp = resp
+        self._body = None
 
     @property
     def status_code(self):
         if hasattr(self._resp, 'status'):
             status = self._resp.status
+        elif hasattr(self._resp, 'code'):
+            status = self._resp.code
         else:
             status = self._resp.getcode()
         return status
@@ -38,8 +47,10 @@ class RequestResponse(object):
     def url(self):
         if hasattr(self._resp, 'url'):
             url = self._resp.url
-        else:
+        elif hasattr(self._resp, 'geturl'):
             url = self._resp.geturl()
+        else:
+            url = ""
         return url
 
     @property
@@ -50,6 +61,19 @@ class RequestResponse(object):
             reason = ""
         return reason
 
+    @property
+    def body(self):
+        if self._body is None:
+            try:
+                self._body = self._resp.read()
+            except Exception:
+                pass
+        return self._body
+
+    @property
+    def text(self):
+        return to_native(self.body)
+
     def raise_for_status(self):
         http_error_msg = ""
 
@@ -59,10 +83,10 @@ class RequestResponse(object):
             http_error_msg = "{0} Server Error: {1} for url: {2}".format(self.status_code, self.reason, self.url)
 
         if http_error_msg:
-            raise Exception(http_error_msg)
+            raise RequestException(http_error_msg, response=self)
 
     def json(self, **kwargs):
-        return json.loads(to_native(self._resp.read()), **kwargs)
+        return json.loads(to_native(self.body), **kwargs)
 
 
 class RequestSession(Request):
@@ -111,8 +135,11 @@ class RequestSession(Request):
             if headers is None:
                 headers = {}
             headers['Content-Type'] = 'application/json'
-        result = self.open(method, url, validate_certs=validate_certs, data=data, headers=headers, **kwargs)
-        return RequestResponse(result)
+        try:
+            result = self.open(method, url, validate_certs=validate_certs, data=data, headers=headers, **kwargs)
+            return RequestResponse(result)
+        except six.moves.urllib.error.HTTPError as e:
+            return RequestResponse(e)
 
     def get(self, url, **kwargs):
         return self.request('GET', url, **kwargs)
