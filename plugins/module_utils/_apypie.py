@@ -248,10 +248,6 @@ import errno
 import glob
 import json
 try:
-    import requests
-except ImportError:
-    pass
-try:
     from json.decoder import JSONDecodeError  # type: ignore
 except ImportError:
     JSONDecodeError = ValueError  # type: ignore

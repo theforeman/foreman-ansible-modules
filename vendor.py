@@ -46,9 +46,9 @@ with fileinput.input() as f:
         # drop apypie imports (we have one file now) and future imports (they are already present in the header)
         elif line.startswith('from apypie') or line.startswith('from __future__'):
             continue
-        # we can't just import requests, Ansible's "import" sanity test fails without the try/except
+        # drop requests import, we use a different implementation
         elif line == 'import requests':
-            output_lines.extend(['try:', '    import requests', 'except ImportError:', '    pass'])
+            continue
         # drop blocks that only handle typing imports (fenced by either try or if TYPE_CHECKING)
         elif line in ['try:', 'if TYPE_CHECKING:'] or buffer_lines:
             buffer_lines.append(line)
