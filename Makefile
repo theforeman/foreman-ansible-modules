@@ -87,7 +87,7 @@ clean_%: FORCE $(MANIFEST)
 setup: test-setup
 
 test-setup: | tests/test_playbooks/vars/server.yml
-	pip install --upgrade pip
+	pip install --upgrade --force-reinstall 'pip<23.1'
 	pip install --upgrade -r requirements-dev.txt
 
 tests/test_playbooks/vars/server.yml:
