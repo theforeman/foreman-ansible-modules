@@ -49,6 +49,8 @@ jobs:
           cache-dependency-path: '**/requirements*.txt'
       - name: Install libyaml-dev for PyYAML
         run: sudo apt-get install -y libyaml-dev
+      - name: Install RPM Python bindings
+        run: sudo apt-get install -y python-rpm python3-rpm
       - name: Install Ansible
         run: pip install --upgrade https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
       - name: Install dependencies
