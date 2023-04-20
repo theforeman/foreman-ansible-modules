@@ -58,8 +58,14 @@ jobs:
         run: apt-get update && apt-get install -y sudo
         if: matrix.container != null
       - name: Install system dependencies
-        # libyaml-dev for PyYAML, rpm for py-rpm-installer
-        run: sudo apt-get install -y libyaml-dev rpm
+        # libyaml-dev for PyYAML, rpm for rpm-py-installer, python3-rpm for rpm-shim
+        run: sudo apt-get install -y libyaml-dev rpm python3-rpm
+      - name: Fix up Python RPM binding filenames so that other Pythons find it
+        run: |
+          for file in /usr/lib/python3/dist-packages/rpm/_rpm*.cpython-*.so; do
+            sudo ln -s ${file} $(echo ${file} | sed 's/\.cpython[^.]*//');
+          done
+        if: matrix.container == null
       - name: Install Ansible
         run: pip install --upgrade https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
       - name: Ensure Jinja version is old enough for Ansible 2.9
@@ -92,6 +98,14 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
           cache-dependency-path: '**/requirements*.txt'
+      - name: Install system dependencies
+        # libyaml-dev for PyYAML, rpm for rpm-py-installer, python3-rpm for rpm-shim
+        run: sudo apt-get install -y libyaml-dev rpm python3-rpm
+      - name: Fix up Python RPM binding filenames so that other Pythons find it
+        run: |
+          for file in /usr/lib/python3/dist-packages/rpm/_rpm*.cpython-*.so; do
+            sudo ln -s ${file} $(echo ${file} | sed 's/\.cpython[^.]*//');
+          done
       - name: Install Ansible
         run: pip install --upgrade ansible-core
       - name: Install dependencies
