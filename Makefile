@@ -105,8 +105,8 @@ endif
 $(MANIFEST): $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 	ansible-galaxy collection install -p build/collections $< --force
 
-build/src/%: %
-	install -m 644 -DT $< $@
+build/src/%:
+	install -m 644 -DT $* $@
 
 $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz: $(addprefix build/src/,$(DEPENDENCIES))
 	ansible-galaxy collection build build/src --force
