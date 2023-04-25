@@ -103,7 +103,7 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
 
 
 def get_ansible_version():
-    ansible_version = None
+    ansible_version = '2.14.0'
     for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
         try:
             ansible_version = pkg_resources.get_distribution(ansible_name).version
