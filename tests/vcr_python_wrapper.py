@@ -3,7 +3,6 @@
 import os
 import re
 import sys
-import vcr
 import json
 try:
     from urlparse import urlparse, urlunparse
@@ -145,6 +144,7 @@ if VCR_PARAMS_FILE is None:
         code = compile(f.read(), sys.argv[0], 'exec')
         exec(code)
 else:
+    import vcr
     # Run the program wrapped within vcr cassette recorder
     # Load recording parameters from file
     with open(VCR_PARAMS_FILE, 'r') as params_file:
