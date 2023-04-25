@@ -6,7 +6,6 @@ try:
     from ansible.module_utils.compat.version import LooseVersion
 except ImportError:
     from distutils.version import LooseVersion
-import pytest
 
 from .conftest import run_playbook, get_ansible_version
 
@@ -14,8 +13,6 @@ from .conftest import run_playbook, get_ansible_version
 def run_playbook_callback(tmpdir, report_type):
     extra_env = {}
     ansible_version = get_ansible_version()
-    if ansible_version is None:
-        pytest.skip("Couldn't figure out Ansible version?!")
     if LooseVersion(ansible_version) < LooseVersion('2.11'):
         extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
         extra_env['ANSIBLE_COMMAND_WARNINGS'] = "0"
