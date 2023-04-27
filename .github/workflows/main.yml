@@ -7,6 +7,10 @@ env:
   TERM: 'xterm-256color'
   PYTEST_ADDOPTS: '--color=yes'
 
+concurrency:
+  group: ${{ github.ref_name }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-20.04
