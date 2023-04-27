@@ -7,6 +7,10 @@ on:
     branches:
       - develop
 
+concurrency:
+  group: ${{ github.ref_name }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   docs:
     runs-on: ubuntu-latest
