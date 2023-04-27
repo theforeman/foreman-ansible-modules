@@ -135,6 +135,9 @@ doc: $(MANIFEST)
 		echo " * :doc:\`$$(basename $$(dirname $$role_readme))\`" >> ./docs/roles/index.rst; \
 	done
 	antsibull-docs collection --use-current --squash-hierarchy --dest-dir ./docs/plugins $(NAMESPACE).$(NAME)
+	for role in $(notdir $(ROLES)); do \
+		$(PYTHON_COMMAND) ./docs/copy-role-examples.py roles/$${role}/examples.rst docs/plugins/$${role}_role.rst; \
+	done
 	make -C docs html
 
 vendor:
