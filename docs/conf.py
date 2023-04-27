@@ -170,4 +170,4 @@ texinfo_documents = [
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'python': ('https://docs.python.org/2', None), 'ansible': ('https://docs.ansible.com/ansible/latest/', None)}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None), 'ansible': ('https://docs.ansible.com/ansible/latest/', None)}
