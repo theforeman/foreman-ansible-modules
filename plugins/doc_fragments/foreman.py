@@ -256,7 +256,7 @@ options:
     type: str
   content_source:
     description:
-      - Content source.
+      - Content Source (Smart Proxy with Content) name.
       - Only available for Katello installations.
     required: false
     type: str
