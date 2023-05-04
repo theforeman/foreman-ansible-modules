@@ -188,6 +188,11 @@ options:
           - Should this interface be used for TFTP of PXELinux (or SSH for image-based hosts)?
           - Each managed hosts needs to have one provision interface.
         type: bool
+      execution:
+        description:
+          - Should this interface be used for Remote Execution?
+          - Each managed hosts should have one remote execution interface.
+        type: bool
       username:
         description:
           - Username for BMC authentication.
