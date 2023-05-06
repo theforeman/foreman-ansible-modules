@@ -23,6 +23,22 @@
       vars:
         product_name: "Test Product 2"
         repository_state: present
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Test
+          label: test
+          prior: Library
+        - name: QA
+          label: qa
+          prior: Test
+        - name: Prod
+          label: prod
+          prior: QA
     - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
@@ -54,8 +70,15 @@
         foreman_organization: "Test Organization"
         foreman_content_views:
           - Test Content View
+        foreman_lifecycle_environments:
+          - qa
+    - role: content_view_publish
+      vars:
+        foreman_organization: "Test Organization"
+        foreman_content_views:
+          - Test Content View
   post_tasks:
-    - name: search content view version info
+    - name: search content view version info 1.0
       content_view_version_info:
         username: "{{ foreman_username }}"
         password: "{{ foreman_password }}"
@@ -69,6 +92,21 @@
       assert:
         that:
           - content_view_version_info['content_view_versions'][0]['version'] == "1.0"
+          - content_view_version_info['content_view_versions'][0]['environments'][1]['label'] == "qa"
+    - name: search content view version info 2.0
+      content_view_version_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        content_view: "Test Content View"
+        search: 'version = "2.0"'
+      register: content_view_version_info
+    - name: check content_view details
+      assert:
+        that:
+          - content_view_version_info['content_view_versions'][0]['version'] == "2.0"
 
 - hosts: localhost
   collections:
