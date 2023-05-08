@@ -10,10 +10,12 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 ### Required
 
-- `foreman_content_views`: List of content views to publish
+- `foreman_content_views`: List of Content Views to publish. It can be either a list of Content View names or a list of dictionaries with the parameters as accepted by the `content_view_version` module or the `content_views` role.
 
 Example Playbook
 ----------------
+
+### List of Content View names
 
 ```yaml
 - hosts: localhost
@@ -28,6 +30,26 @@ Example Playbook
           - RHEL 7 View
           - RHEL 8 View
 ```
+
+### List of dictionaries as accepted by the `content_view_version` module
+
+```yaml
+- hosts: localhost
+  roles:
+    - role: theforeman.foreman.content_view_publish
+      vars:
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "Default Organization"
+        foreman_content_views:
+          - content_view: RHEL 7 View
+            description: "daily publish of RHEL 7 View"
+          - content_view: RHEL 8 View
+            description: "daily publish of RHEL 8 View"
+```
+
+### List of dictionaries as accepted by the `content_views` role
 
 ```yaml
 - hosts: localhost
