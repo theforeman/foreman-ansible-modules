@@ -1843,6 +1843,7 @@ interfaces_spec = dict(
     managed=dict(type='bool'),
     primary=dict(type='bool'),
     provision=dict(type='bool'),
+    execution=dict(type='bool'),
     username=dict(),
     password=dict(no_log=True),
     provider=dict(choices=['IPMI', 'Redfish', 'SSH']),
