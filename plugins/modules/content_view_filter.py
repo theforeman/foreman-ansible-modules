@@ -297,7 +297,7 @@ def main():
             foreman_spec=content_filter_spec,
         )
 
-        if content_view_filter is not None:
+        if content_view_filter is not None and module.foreman_params['filter_type'] not in ['modulemd']:
             cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
             if 'errata_id' in module.foreman_params:
                 # should we try to find the errata the user is asking for? or just pass it blindly?
