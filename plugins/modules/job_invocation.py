@@ -92,6 +92,10 @@ options:
         description:
           - Perform no more executions after this time
         type: str
+      purpose:
+        description:
+          - Designation of a special purpose
+        type: str
   scheduling:
     description:
       - Schedule the job to start at a later time
@@ -118,6 +122,10 @@ options:
         description:
           - Maximum jobs to be executed at once
         type: int
+  description_format:
+    description:
+      - Override the description format from the template for this invocation only
+    type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
 '''
@@ -167,6 +175,7 @@ recurrence_foreman_spec = {
     'cron_line': dict(),
     'max_iteration': dict(type='int'),
     'end_time': dict(),
+    'purpose': dict(),
 }
 
 scheduling_foreman_spec = {
@@ -199,6 +208,7 @@ def main():
             recurrence=dict(type='dict', options=recurrence_foreman_spec),
             scheduling=dict(type='dict', options=scheduling_foreman_spec),
             concurrency_control=dict(type='dict', options=concurrency_control_foreman_spec),
+            description_format=dict(),
         ),
         required_one_of=[['search_query', 'bookmark']],
         required_if=[
