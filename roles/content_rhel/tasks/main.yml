@@ -38,7 +38,7 @@
     product: Red Hat Enterprise Linux Server
   async: 14400
   poll: 0
-  register: rhel7_sync
+  register: __foreman_rhel7_sync
   when: foreman_content_rhel_enable_rhel7 and foreman_content_rhel_sync_now
 
 - name: "Sync RHEL8 repositories"
@@ -51,7 +51,7 @@
     product: Red Hat Enterprise Linux for x86_64
   async: 14400
   poll: 0
-  register: rhel8_sync
+  register: __foreman_rhel8_sync
   when: foreman_content_rhel_enable_rhel8 and foreman_content_rhel_sync_now
 
 - name: "Create Sync Plan"
@@ -78,18 +78,18 @@
 
 - name: "Wait for RHEL7 sync completion"  # noqa: args[module]
   ansible.builtin.async_status:
-    jid: "{{ rhel7_sync.ansible_job_id }}"
-  register: rhel7_job_result
-  until: rhel7_job_result.finished
+    jid: "{{ __foreman_rhel7_sync.ansible_job_id }}"
+  register: __foreman_rhel7_job_result
+  until: __foreman_rhel7_job_result.finished
   retries: 99999
   delay: 10
   when: foreman_content_rhel_enable_rhel7 and foreman_content_rhel_sync_now and foreman_content_rhel_wait_for_syncs
 
 - name: "Wait for RHEL8 sync completion"  # noqa: args[module]
   ansible.builtin.async_status:
-    jid: "{{ rhel8_sync.ansible_job_id }}"
-  register: rhel8_job_result
-  until: rhel8_job_result.finished
+    jid: "{{ __foreman_rhel8_sync.ansible_job_id }}"
+  register: __foreman_rhel8_job_result
+  until: __foreman_rhel8_job_result.finished
   retries: 99999
   delay: 10
   when: foreman_content_rhel_enable_rhel8 and foreman_content_rhel_sync_now and foreman_content_rhel_wait_for_syncs

@@ -22,13 +22,13 @@
 
 - name: 'Set default templates for Operatingsystems'
   vars:
-    default_os_name: "{{ item.0.name }} {{ item.0.major }}.{{ item.0.minor | default('0') }}"
+    __foreman_default_os_name: "{{ item.0.name }} {{ item.0.major }}.{{ item.0.minor | default('0') }}"
   theforeman.foreman.os_default_template:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    operatingsystem: "{{ item.0.description | default(default_os_name) }}"
+    operatingsystem: "{{ item.0.description | default(__foreman_default_os_name) }}"
     provisioning_template: "{{ item.1.provisioning_template | default(omit) }}"
     template_kind: "{{ item.1.template_kind }}"
     state: "{{ item.1.state | default('present') }}"

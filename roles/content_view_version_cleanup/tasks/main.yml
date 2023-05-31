@@ -14,24 +14,24 @@
     organization: "{{ foreman_organization }}"
     resource: content_views
     search: "{{ foreman_content_view_version_cleanup_search | default(omit) }}"
-  register: all_cvs
+  register: __foreman_all_cvs
 
 - name: "Delete unused composite content view versions"
   ansible.builtin.include_tasks: delete_cv_versions.yml
   vars:
-    cv_name: "{{ ccv.name }}"
-    cv_versions: "{{ (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | map('float') | sort
+    foreman_cv_name: "{{ __foreman_ccv.name }}"
+    foreman_cv_versions: "{{ (__foreman_ccv.versions | rejectattr('environment_ids') | map(attribute='version') | map('float') | sort
       | map('string') | reverse | list)[foreman_content_view_version_cleanup_keep:] }}"
-  loop: "{{ all_cvs.resources | selectattr('composite') | list }}"
+  loop: "{{ __foreman_all_cvs.resources | selectattr('composite') | list }}"
   loop_control:
-    label: "{{ ccv.label }}"
-    loop_var: "ccv"
-  when: (ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:]
+    label: "{{ __foreman_ccv.label }}"
+    loop_var: "__foreman_ccv"
+  when: (__foreman_ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:]
 
 - name: "Find and delete unused content view versions"
   ansible.builtin.include_tasks: find_and_delete_unused_cv_versions.yml
-  loop: "{{ all_cvs.resources | rejectattr('composite') | list }}"
+  loop: "{{ __foreman_all_cvs.resources | rejectattr('composite') | list }}"
   loop_control:
-    label: "{{ cv.label }}"
-    loop_var: "cv"
-  when: (cv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:]
+    label: "{{ foreman_cv.label }}"
+    loop_var: "foreman_cv"
+  when: (foreman_cv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[foreman_content_view_version_cleanup_keep:]
