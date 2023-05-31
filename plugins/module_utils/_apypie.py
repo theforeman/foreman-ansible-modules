@@ -868,6 +868,11 @@ class Resource(object):
 Apypie Route module
 """
 
+try:
+    from urllib.parse import quote  # type: ignore
+except ImportError:
+    from urllib import quote  # type: ignore
+
 
 class Route(object):
     """
@@ -901,7 +906,7 @@ class Route(object):
         if params is not None:
             for param in self.params_in_path:
                 if param in params:
-                    result = result.replace(':{}'.format(param), str(params[param]))
+                    result = result.replace(':{}'.format(param), quote(str(params[param]), safe=''))
                 else:
                     raise KeyError("missing param '{}' in parameters".format(param))
         return result
