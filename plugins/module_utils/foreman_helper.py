@@ -775,7 +775,8 @@ class ForemanAnsibleModule(AnsibleModule):
 
         # workaround for https://projects.theforeman.org/issues/31874
         if compute_resource['provider'].lower() == 'vmware':
-            cluster['_api_identifier'] = cluster['name']
+            path_or_name = cluster.get('full_path', cluster['name'])
+            cluster['_api_identifier'] = path_or_name
         else:
             cluster['_api_identifier'] = cluster['id']
 
@@ -799,11 +800,18 @@ class ForemanAnsibleModule(AnsibleModule):
 
         additional_params = {'id': compute_resource['id']}
         if cluster is not None:
-            additional_params['cluster_id'] = cluster['_api_identifier']
+            # apypie will quote the params for us, but we need to do it twice for the cluster_id
+            # see https://projects.theforeman.org/issues/35438
+            # and https://github.com/theforeman/hammer-cli-foreman/pull/604
+            # and https://github.com/theforeman/foreman/pull/9383
+            # and https://httpd.apache.org/docs/current/mod/core.html#allowencodedslashes
+            additional_params['cluster_id'] = six.moves.urllib.parse.quote(cluster['_api_identifier'], safe='')
         api_name = 'available_{0}'.format(part_name)
         available_parts = self.resource_action('compute_resources', api_name, params=additional_params,
                                                ignore_check_mode=True, record_change=False)['results']
-        part = next((part for part in available_parts if str(part['name']) == str(name) or str(part['id']) == str(name)), None)
+        part = next((part for part in available_parts
+                     if str(part['name']) == str(name) or str(part['id']) == str(name) or part.get('full_path') == str(name)),
+                    None)
         if part is None:
             err_msg = "Could not find {0} '{1}' on compute resource '{2}'.".format(part_name, name, compute_resource.get('name'))
             self.fail_json(msg=err_msg)
