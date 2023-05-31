@@ -38,7 +38,7 @@ def drop_incompatible_items(d):
     """
     dd = {}
     for k, v in d.items():
-        if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection', 'extended_allitems', 'loop_control']:
+        if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection', 'extended_allitems', 'loop_control', 'expand_argument_vars']:
             continue
 
         if isinstance(v, dict):
@@ -66,6 +66,7 @@ def run_callback(tmpdir, report_type, vcrmode):
             contents = re.sub(r", \\\"msg\\\": \\\"\\\"", "", contents)
             contents = re.sub(r"\\\"_ansible_no_log\\\": [^,]+, ", "", contents)
             contents = re.sub(r", \\\"warn\\\": false", "", contents)
+            contents = re.sub(r", \\\"expand_argument_vars\\\": true", "", contents)
         real_contents = json.loads(contents)
         if report_type == "foreman":
             real_contents['config_report']['metrics']['time']['total'] = 1
