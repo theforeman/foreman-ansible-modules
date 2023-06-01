@@ -79,6 +79,7 @@ options:
       - erratum
       - docker
       - modulemd
+      - deb
     type: str
   rule_name:
     description:
@@ -249,7 +250,7 @@ def main():
             inclusion=dict(type='bool', default=False),
             original_packages=dict(type='bool'),
             content_view=dict(type='entity', scope=['organization'], required=True),
-            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker', 'modulemd']),
+            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker', 'modulemd', 'deb']),
             filter_state=dict(default='present', choices=['present', 'absent']),
             rule_state=dict(default='present', choices=['present', 'absent']),
             rule_name=dict(aliases=['package_name', 'package_group', 'tag']),
@@ -297,7 +298,7 @@ def main():
             foreman_spec=content_filter_spec,
         )
 
-        if content_view_filter is not None and module.foreman_params['filter_type'] not in ['modulemd']:
+        if content_view_filter is not None and module.foreman_params['filter_type'] not in ['modulemd', 'deb']:
             cv_filter_scope = {'content_view_filter_id': content_view_filter['id']}
             if 'errata_id' in module.foreman_params:
                 # should we try to find the errata the user is asking for? or just pass it blindly?

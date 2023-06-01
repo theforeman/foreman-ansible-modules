@@ -226,6 +226,12 @@ content_filter_rule_docker_spec = {
     'rule_name': {'flat_name': 'name'},
 }
 
+content_filter_rule_deb_spec = {
+    'id': {},
+    'rule_name': {'flat_name': 'name'},
+    'architecture': {},
+}
+
 
 class KatelloContentViewFilterRuleModule(KatelloEntityAnsibleModule):
     pass
@@ -269,7 +275,7 @@ def main():
         content_view_filter_rule = None
 
         if filter_type != 'erratum' and module.foreman_params['name'] is None:
-            module.fail_json(msg="The 'name' parameter is required when creating a filter rule for rpm, container, package_group or modulemd filters.")
+            module.fail_json(msg="The 'name' parameter is required when creating a filter rule for rpm, container, package_group, modulemd or deb filters.")
 
         if filter_type == 'erratum':
             # this filter type supports many rules
@@ -282,7 +288,7 @@ def main():
                 search_scope['errata_id'] = module.foreman_params['errata_id']
             content_view_filter_rule = module.find_resource('content_view_filter_rules', None, params=search_scope, failsafe=True)
 
-        elif filter_type in ('rpm', 'docker', 'package_group'):
+        elif filter_type in ('rpm', 'docker', 'package_group', 'deb'):
             # these filter types support many rules
             # the name is the key to finding the proper one and is required for these types
             content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
