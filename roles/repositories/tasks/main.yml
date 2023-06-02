@@ -43,7 +43,7 @@
     gpg_key: "{{ item.gpg_key | default(omit) }}"
     state: present
   with_items:
-    - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
+    - "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
 
 - name: 'Create Repositories'   # noqa: args[module]
   theforeman.foreman.repository:
