@@ -18,6 +18,8 @@ The following fields are optional in the sense that the server will use default 
 - `description`: The description of the organization.
 - `state`: The state of the organization. Can be `present` or `absent`.
 
+Additionally you can pass any other parameters accepted by the `organization` module.
+
 Example Playbooks
 -----------------
 
