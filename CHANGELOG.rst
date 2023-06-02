@@ -6,6 +6,26 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.11.0
+=======
+
+Minor Changes
+-------------
+
+- content_view_promote role - also accept all parameters of the `content_view_version` module (https://github.com/theforeman/foreman-ansible-modules/issues/1591)
+- content_view_version - include information about the published version in the return value of the module
+- job-invocation - add ``recurrence purpose`` and ``description_format`` parameters
+- organizations role - accept ``parameters`` and ``ignore_types`` like the module does
+
+Bugfixes
+--------
+
+- compute_profile, host - properly support nested VMware clusters (https://bugzilla.redhat.com/show_bug.cgi?id=2211394)
+- content_credential - don't require ``content_type`` and ``content`` parameters when removing credentials (https://github.com/theforeman/foreman-ansible-modules/issues/1588)
+- content_credentials role - don't require ``content_type`` and ``content`` parameters when removing credentials
+- content_view_filter - don't fail when creating a modulemd filter (https://github.com/theforeman/foreman-ansible-modules/issues/1608, https://bugzilla.redhat.com/show_bug.cgi?id=2208557)
+- repositories role - don't log repository information when creating products (https://bugzilla.redhat.com/show_bug.cgi?id=2183357)
+
 v3.10.0
 =======
 
