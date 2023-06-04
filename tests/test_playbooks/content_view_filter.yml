@@ -6,36 +6,69 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include_tasks: tasks/organization.yml
+    - name: "Create Test Organization"
+      ansible.builtin.include_tasks: tasks/organization.yml
       vars:
         organization_state: present
-    - include_tasks: tasks/product.yml
+
+    - name: "Create Test Product"
+      ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_state: present
-    - include_tasks: tasks/repository.yml
+
+    - name: "Create Test Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
-    - include_tasks: tasks/repository.yml
+
+    - name: "Create Addititional Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
-    - include_tasks: tasks/repository.yml
+
+    - name: "Create Container repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_name: Test Docker Repository
         repository_content_type: docker
-        repository_url: https://registry.hub.docker.com
-        repository_docker_upstream_name: library/busybox
-    - include_tasks: tasks/katello_sync.yml
-    - include_tasks: tasks/katello_sync.yml
+        repository_url: https://quay.io
+        repository_docker_upstream_name: quay/busybox
+
+    - name: "Create Deb Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Debian Repository
+        repository_content_type: deb
+        repository_url: https://ftp.debian.org/debian
+        repository_deb_releases: buster
+        repository_deb_components: contrib
+        repository_deb_architectures: amd64
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Docker Repository
-    - include_tasks: tasks/content_view.yml
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Debian Repository
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
         repositories:
           - name: "Test Repository"
             product: "Test Product"
-    - include_tasks: tasks/content_view_filter_modulemd.yml
+
+    - name: "Make sure Content View Filter Rule for module_streams is absent"
+      ansible.builtin.include_tasks: tasks/content_view_filter_modulemd.yml
       vars:
         filter_state: absent
 
@@ -185,6 +218,25 @@
         - include_tasks: tasks/content_view_filter_modulemd.yml
           vars:
             filter_state: absent
+            expected_change: true
+
+    - name: Test Content View Filter deb
+      block:
+        - include_tasks: tasks/content_view_filter_deb.yml
+          vars:
+            expected_change: true
+        - include_tasks: tasks/content_view_filter_deb.yml
+          vars:
+            expected_change: false
+
+        - include_tasks: tasks/content_view_filter_deb.yml
+          vars:
+            inclusion: true
+            expected_change: true
+        - include_tasks: tasks/content_view_filter_deb.yml
+          vars:
+            filter_state: absent
+            rule_state: absent
             expected_change: true
 
 - hosts: localhost
