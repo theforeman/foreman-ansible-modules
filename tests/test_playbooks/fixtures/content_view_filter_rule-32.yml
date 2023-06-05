@@ -200,7 +200,8 @@ interactions:
         Repository","label":"Test_Repository","content_type":"yum"},{"id":32,"name":"Test
         Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":33,"name":"Test
         Docker Repository","label":"Test_Docker_Repository","content_type":"docker"},{"id":34,"name":"Test
-        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"deb","rules":[]}]}
+        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"deb","rules":[{"content_view_filter_id":64,"id":4,"name":"camel","created_at":"2023-06-05
+        22:35:21 UTC","updated_at":"2023-06-05 22:35:21 UTC"}]}]}
 
         '
     headers:
@@ -209,7 +210,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1589'
+      - '1718'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -253,10 +254,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules?search=name%3D%22bear%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules?search=name%3D%22camel%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"bear\"","sort":{"by":"id","order":"asc"},"results":[]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"camel\"","sort":{"by":"id","order":"asc"},"results":[{"content_view_filter_id":64,"id":4,"name":"camel","created_at":"2023-06-05
+        22:35:21 UTC","updated_at":"2023-06-05 22:35:21 UTC"}]}
 
         '
     headers:
@@ -265,7 +267,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '157'
+      - '287'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -298,7 +300,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "bear"}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -307,17 +309,15 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '16'
-      Content-Type:
-      - application/json
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules/4
   response:
     body:
-      string: '  {"content_view_filter_id":64,"id":3,"name":"bear","created_at":"2023-06-05
-        22:35:20 UTC","updated_at":"2023-06-05 22:35:20 UTC"}
+      string: '  {"content_view_filter_id":64,"id":4,"name":"camel","created_at":"2023-06-05
+        22:35:21 UTC","updated_at":"2023-06-05 22:35:21 UTC"}
 
         '
     headers:
@@ -326,7 +326,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '131'
+      - '132'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -356,6 +356,6 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
     status:
-      code: 201
-      message: Created
+      code: 200
+      message: OK
 version: 1

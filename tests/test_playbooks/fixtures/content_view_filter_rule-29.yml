@@ -187,20 +187,22 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_views/19/filters?search=name%3D%22Test+Content+View+Filter+-+deb%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_views/19/filters?search=name%3D%22Test+Content+View+Filter+-+modulemd%22&per_page=4294967296
   response:
     body:
       string: '{"total":10,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View Filter - deb\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":64,"name":"Test
-        Content View Filter - deb","description":null,"created_at":"2023-06-05 22:35:01
-        UTC","updated_at":"2023-06-05 22:35:01 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[31,32,33,34],"id":19,"name":"Test
+        Content View Filter - modulemd\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":63,"name":"Test
+        Content View Filter - modulemd","description":null,"created_at":"2023-06-05
+        22:35:00 UTC","updated_at":"2023-06-05 22:35:00 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[31,32,33,34],"id":19,"name":"Test
         Content View","label":"Test_Content_View","description":null,"organization_id":11,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":11},"created_at":"2023-06-05
         22:34:51 UTC","updated_at":"2023-06-05 22:34:51 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":31,"name":"Test
         Repository","label":"Test_Repository","content_type":"yum"},{"id":32,"name":"Test
         Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":33,"name":"Test
         Docker Repository","label":"Test_Docker_Repository","content_type":"docker"},{"id":34,"name":"Test
-        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"deb","rules":[]}]}
+        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"modulemd","rules":[{"content_view_filter_id":63,"module_stream_id":11,"id":5,"created_at":"2023-06-05
+        22:35:14 UTC","updated_at":"2023-06-05 22:35:14 UTC"},{"content_view_filter_id":63,"module_stream_id":24,"id":6,"created_at":"2023-06-05
+        22:35:19 UTC","updated_at":"2023-06-05 22:35:19 UTC"}]}]}
 
         '
     headers:
@@ -209,7 +211,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1589'
+      - '1877'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -253,10 +255,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules?search=name%3D%22bear%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/module_streams?search=name%3D%22389-directory-server%22%2Cstream%3D%22next%22%2Cversion%3D%22820220325123957%22%2Ccontext%3D%229edba152%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"bear\"","sort":{"by":"id","order":"asc"},"results":[]}
+      string: '{"total":24,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"389-directory-server\",stream=\"next\",version=\"820220325123957\",context=\"9edba152\"","sort":{"by":"name","order":"asc"},"results":[{"id":24,"name":"389-directory-server","pulp_id":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/","version":"820220325123957","context":"9edba152","stream":"next","arch":"x86_64","description":"389
+        Directory Server is an LDAPv3 compliant server.","summary":null,"module_spec":"389-directory-server:next:820220325123957:9edba152:x86_64","uuid":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/"}]}
 
         '
     headers:
@@ -265,7 +268,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '157'
+      - '685'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -298,7 +301,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "bear"}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -306,18 +309,14 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '16'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/content_view_filters/64/rules
+    method: GET
+    uri: https://foreman.example.org/katello/api/content_view_filters/63/rules?search=id%3D%226%22&per_page=4294967296
   response:
     body:
-      string: '  {"content_view_filter_id":64,"id":3,"name":"bear","created_at":"2023-06-05
-        22:35:20 UTC","updated_at":"2023-06-05 22:35:20 UTC"}
+      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"id=\"6\"","sort":{"by":"id","order":"asc"},"results":[{"content_view_filter_id":63,"module_stream_id":24,"id":6,"created_at":"2023-06-05
+        22:35:19 UTC","updated_at":"2023-06-05 22:35:19 UTC"}]}
 
         '
     headers:
@@ -326,7 +325,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '131'
+      - '288'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -356,6 +355,65 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
     status:
-      code: 201
-      message: Created
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/content_view_filters/63/rules/6
+  response:
+    body:
+      string: '  {"content_view_filter_id":63,"module_stream_id":24,"id":6,"created_at":"2023-06-05
+        22:35:19 UTC","updated_at":"2023-06-05 22:35:19 UTC"}
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '139'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.7.0-rc2
+      Keep-Alive:
+      - timeout=15, max=94
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1
