@@ -45,6 +45,17 @@
         repository_url: https://registry.access.redhat.com
         repository_docker_upstream_name: ubi9
 
+    - name: "Create Deb Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Debian Repository
+        repository_content_type: deb
+        repository_url: https://ftp.debian.org/debian
+        repository_deb_releases: buster
+        repository_deb_components: contrib
+        repository_deb_architectures: amd64
+
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
 
@@ -57,6 +68,11 @@
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Modular Repository
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Debian Repository
 
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
@@ -74,6 +90,8 @@
           - name: "Test Docker Repository"
             product: "Test Product"
           - name: "Test Modular Repository"
+            product: "Test Product"
+          - name: "Test Debian Repository"
             product: "Test Product"
 
     - name: "Create content view filters"
@@ -96,6 +114,9 @@
 
     - name: "Create Content View Filter Rule for module_streams"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
+
+    - name: "Create Content View Filter Rule for deb packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_deb.yml
 
 - name: "Test content_view_filter_rule_info"
   hosts: tests
@@ -247,6 +268,30 @@
         fail_msg: "Ensuring content view filter info is valid failed!"
         that:
           - "{{ result['content_view_filter_rules']|length }} != 0"
+
+
+    - name: "Fetch content_view_filter_info - deb exlude"
+      vars:
+        content_view_filter_rule_name: "bear"
+        content_view_filter_name: "Test Content View Filter - deb"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_rule_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        content_view_filter: "{{ content_view_filter_name }}"
+        name: "{{ content_view_filter_rule_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter rule info is valid failed!"
+        that:
+          - result['content_view_filter_rule']['name'] == "bear"
 
 - name: "Clean up test dependencies"
   hosts: localhost
