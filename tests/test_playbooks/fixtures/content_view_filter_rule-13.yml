@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"satellite_version":"6.12.0","result":"ok","status":200,"version":"3.3.0.17","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.7.0-rc2","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '66'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -70,14 +70,16 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-01-12
-        17:25:22 UTC\",\"updated_at\":\"2023-01-12 17:25:26 UTC\",\"id\":50,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-06-05
+        22:32:12 UTC\",\"updated_at\":\"2023-06-05 22:32:15 UTC\",\"id\":11,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '389'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -91,13 +93,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -123,17 +123,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/50/content_views?search=name%3D%22Test+Content+View%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/11/content_views?search=name%3D%22Test+Content+View%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"repository_ids":[132,133,134],"id":257,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":50,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":50},"created_at":"2023-01-12
-        17:33:20 UTC","updated_at":"2023-01-12 17:33:20 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":132,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum"},{"id":133,"name":"Test
-        Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":134,"name":"Test
-        Docker Repository","label":"Test_Docker_Repository","content_type":"docker"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]}]}
+        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[31,32,33,34],"id":19,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":11,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":11},"created_at":"2023-06-05
+        22:34:51 UTC","updated_at":"2023-06-05 22:34:51 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":31,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"},{"id":32,"name":"Test
+        Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":33,"name":"Test
+        Docker Repository","label":"Test_Docker_Repository","content_type":"docker"},{"id":34,"name":"Test
+        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]}]}
 
         '
     headers:
@@ -141,6 +142,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '1353'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -152,15 +155,13 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 50; Test Organization
+      - 11; Test Organization
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -186,21 +187,22 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_views/257/filters?search=name%3D%22Test+Content+View+Filter+-+modulemd%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_views/19/filters?search=name%3D%22Test+Content+View+Filter+-+modulemd%22&per_page=4294967296
   response:
     body:
-      string: '{"total":8,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View Filter - modulemd\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":1364,"name":"Test
-        Content View Filter - modulemd","description":null,"created_at":"2023-01-12
-        17:33:26 UTC","updated_at":"2023-01-12 17:33:26 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"repository_ids":[132,133,134],"id":257,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":50,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":50},"created_at":"2023-01-12
-        17:33:20 UTC","updated_at":"2023-01-12 17:33:20 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":132,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum"},{"id":133,"name":"Test
-        Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":134,"name":"Test
-        Docker Repository","label":"Test_Docker_Repository","content_type":"docker"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"modulemd","rules":[{"content_view_filter_id":1364,"module_stream_id":24,"id":166,"created_at":"2023-01-12
-        17:33:34 UTC","updated_at":"2023-01-12 17:33:34 UTC"},{"content_view_filter_id":1364,"module_stream_id":11,"id":167,"created_at":"2023-01-12
-        17:33:35 UTC","updated_at":"2023-01-12 17:33:35 UTC"}]}]}
+      string: '{"total":10,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Content View Filter - modulemd\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":63,"name":"Test
+        Content View Filter - modulemd","description":null,"created_at":"2023-06-05
+        22:35:00 UTC","updated_at":"2023-06-05 22:35:00 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[31,32,33,34],"id":19,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":11,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":11},"created_at":"2023-06-05
+        22:34:51 UTC","updated_at":"2023-06-05 22:34:51 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":31,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"},{"id":32,"name":"Test
+        Modular Repository","label":"Test_Modular_Repository","content_type":"yum"},{"id":33,"name":"Test
+        Docker Repository","label":"Test_Docker_Repository","content_type":"docker"},{"id":34,"name":"Test
+        Debian Repository","label":"Test_Debian_Repository","content_type":"deb"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"modulemd","rules":[{"content_view_filter_id":63,"module_stream_id":24,"id":4,"created_at":"2023-06-05
+        22:35:13 UTC","updated_at":"2023-06-05 22:35:13 UTC"},{"content_view_filter_id":63,"module_stream_id":11,"id":5,"created_at":"2023-06-05
+        22:35:14 UTC","updated_at":"2023-06-05 22:35:14 UTC"}]}]}
 
         '
     headers:
@@ -208,6 +210,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '1877'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -221,13 +225,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -256,7 +258,8 @@ interactions:
     uri: https://foreman.example.org/katello/api/module_streams?search=name%3D%22389-directory-server%22%2Cstream%3D%22next%22%2Cversion%3D%22820220325123957%22%2Ccontext%3D%229edba152%22&per_page=4294967296
   response:
     body:
-      string: '{"total":24,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"389-directory-server\",stream=\"next\",version=\"820220325123957\",context=\"9edba152\"","sort":{"by":"name","order":"asc"},"results":[{"id":24,"name":"389-directory-server","pulp_id":"/pulp/api/v3/content/rpm/modulemds/f1e7fd7f-2772-4f17-8e2c-110fc0c3c48b/","version":"820220325123957","context":"9edba152","stream":"next","arch":"x86_64","description":null,"summary":null,"module_spec":"389-directory-server:next:820220325123957:9edba152:x86_64","uuid":"/pulp/api/v3/content/rpm/modulemds/f1e7fd7f-2772-4f17-8e2c-110fc0c3c48b/"}]}
+      string: '{"total":24,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"389-directory-server\",stream=\"next\",version=\"820220325123957\",context=\"9edba152\"","sort":{"by":"name","order":"asc"},"results":[{"id":24,"name":"389-directory-server","pulp_id":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/","version":"820220325123957","context":"9edba152","stream":"next","arch":"x86_64","description":"389
+        Directory Server is an LDAPv3 compliant server.","summary":null,"module_spec":"389-directory-server:next:820220325123957:9edba152:x86_64","uuid":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/"}]}
 
         '
     headers:
@@ -264,6 +267,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '685'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -277,13 +282,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -312,8 +315,9 @@ interactions:
     uri: https://foreman.example.org/katello/api/module_streams/24
   response:
     body:
-      string: '  {"id":24,"name":"389-directory-server","pulp_id":"/pulp/api/v3/content/rpm/modulemds/f1e7fd7f-2772-4f17-8e2c-110fc0c3c48b/","version":"820220325123957","context":"9edba152","stream":"next","arch":"x86_64","description":null,"summary":null,"module_spec":"389-directory-server:next:820220325123957:9edba152:x86_64","uuid":"/pulp/api/v3/content/rpm/modulemds/f1e7fd7f-2772-4f17-8e2c-110fc0c3c48b/","artifacts":[{"id":411,"name":"389-ds-base-0:2.0.15-1.module_el8+14202+84d723da.src"},{"id":412,"name":"389-ds-base-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":413,"name":"389-ds-base-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":414,"name":"389-ds-base-debugsource-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":415,"name":"389-ds-base-devel-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":416,"name":"389-ds-base-libs-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":417,"name":"389-ds-base-libs-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":418,"name":"389-ds-base-snmp-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":419,"name":"389-ds-base-snmp-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":420,"name":"cockpit-389-ds-0:2.0.15-1.module_el8+14202+84d723da.noarch"},{"id":421,"name":"python3-lib389-0:2.0.15-1.module_el8+14202+84d723da.noarch"}],"repositories":[{"id":20,"name":"EPEL8Mods","product_id":11,"product_name":"EPELModular"},{"id":133,"name":"Test
-        Modular Repository","product_id":52,"product_name":"Test Product"}]}
+      string: '  {"id":24,"name":"389-directory-server","pulp_id":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/","version":"820220325123957","context":"9edba152","stream":"next","arch":"x86_64","description":"389
+        Directory Server is an LDAPv3 compliant server.","summary":null,"module_spec":"389-directory-server:next:820220325123957:9edba152:x86_64","uuid":"/pulp/api/v3/content/rpm/modulemds/0e721ce9-6995-40e8-8086-a5a47b89af0b/","artifacts":[{"id":411,"name":"389-ds-base-0:2.0.15-1.module_el8+14202+84d723da.src"},{"id":412,"name":"389-ds-base-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":413,"name":"389-ds-base-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":414,"name":"389-ds-base-debugsource-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":415,"name":"389-ds-base-devel-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":416,"name":"389-ds-base-libs-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":417,"name":"389-ds-base-libs-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":418,"name":"389-ds-base-snmp-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":419,"name":"389-ds-base-snmp-debuginfo-0:2.0.15-1.module_el8+14202+84d723da.x86_64"},{"id":420,"name":"cockpit-389-ds-0:2.0.15-1.module_el8+14202+84d723da.noarch"},{"id":421,"name":"python3-lib389-0:2.0.15-1.module_el8+14202+84d723da.noarch"}],"profiles":[{"id":50,"name":"default","rpms":[{"id":91,"name":"389-ds-base"},{"id":92,"name":"cockpit-389-ds"}]},{"id":51,"name":"minimal","rpms":[{"id":93,"name":"389-ds-base"}]}],"repositories":[{"id":32,"name":"Test
+        Modular Repository","product_id":10,"product_name":"Test Product"}]}
 
         '
     headers:
@@ -321,6 +325,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '1655'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -334,13 +340,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -366,11 +370,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_filters/1364/rules?search=id%3D%22166%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_view_filters/63/rules?search=id%3D%224%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"id=\"166\"","sort":{"by":"id","order":"asc"},"results":[{"content_view_filter_id":1364,"module_stream_id":24,"id":166,"created_at":"2023-01-12
-        17:33:34 UTC","updated_at":"2023-01-12 17:33:34 UTC"}]}
+      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"id=\"4\"","sort":{"by":"id","order":"asc"},"results":[{"content_view_filter_id":63,"module_stream_id":24,"id":4,"created_at":"2023-06-05
+        22:35:13 UTC","updated_at":"2023-06-05 22:35:13 UTC"}]}
 
         '
     headers:
@@ -378,6 +382,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '288'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -391,13 +397,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=94
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -423,11 +427,11 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_filters/1364/rules/166
+    uri: https://foreman.example.org/katello/api/content_view_filters/63/rules/4
   response:
     body:
-      string: '  {"content_view_filter_id":1364,"module_stream_id":24,"id":166,"created_at":"2023-01-12
-        17:33:34 UTC","updated_at":"2023-01-12 17:33:34 UTC"}
+      string: '  {"content_view_filter_id":63,"module_stream_id":24,"id":4,"created_at":"2023-06-05
+        22:35:13 UTC","updated_at":"2023-06-05 22:35:13 UTC"}
 
         '
     headers:
@@ -435,6 +439,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '139'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -448,13 +454,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0.17
+      - 3.7.0-rc2
       Keep-Alive:
       - timeout=15, max=93
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:

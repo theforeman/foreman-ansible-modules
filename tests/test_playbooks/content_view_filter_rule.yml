@@ -45,6 +45,17 @@
         repository_url: https://registry.access.redhat.com
         repository_docker_upstream_name: ubi8
 
+    - name: "Create Deb Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Debian Repository
+        repository_content_type: deb
+        repository_url: https://ftp.debian.org/debian
+        repository_deb_releases: buster
+        repository_deb_components: contrib
+        repository_deb_architectures: amd64
+
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
 
@@ -58,6 +69,11 @@
       vars:
         repository: Test Modular Repository
 
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Debian Repository
+
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
@@ -67,6 +83,8 @@
           - name: "Test Docker Repository"
             product: "Test Product"
           - name: "Test Modular Repository"
+            product: "Test Product"
+          - name: "Test Debian Repository"
             product: "Test Product"
 
     - name: "Create content view filters"
@@ -108,6 +126,9 @@
       vars:
         expected_change: true
 
+    - name: "Create Content View Filter Rule for deb packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_deb.yml
+
     - name: "Cleanup Content View Filter Rules"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml
       vars:
@@ -126,14 +147,17 @@
       vars:
         repository_name: Test Docker Repository
         repository_state: absent
+
     - name: "Clean up repositories"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: absent
+
     - name: "Clean up products"
       ansible.builtin.include_tasks: tasks/product.yml
       vars:
         product_state: absent
+
     - name: "Clean up Organizations"
       ansible.builtin.include_tasks: tasks/organization.yml
       vars:
