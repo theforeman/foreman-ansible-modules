@@ -41,8 +41,8 @@ help:
 
 info:
 	@echo "Building collection $(NAMESPACE)-$(NAME)-$(VERSION)"
-	@echo "  roles:\n $(foreach ROLE,$(notdir $(ROLES)),   - $(ROLE)\n)"
-	@echo " $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES), $(PLUGIN_TYPE):\n $(foreach PLUGIN,$(basename $(notdir $(_$(PLUGIN_TYPE)))),   - $(PLUGIN)\n)\n)"
+	@echo -e "  roles:\n $(foreach ROLE,$(notdir $(ROLES)),   - $(ROLE)\n)"
+	@echo -e " $(foreach PLUGIN_TYPE,$(PLUGIN_TYPES), $(PLUGIN_TYPE):\n $(foreach PLUGIN,$(basename $(notdir $(_$(PLUGIN_TYPE)))),   - $(PLUGIN)\n)\n)"
 
 lint: $(MANIFEST) $(RUNTIME_YML) | tests/test_playbooks/vars/server.yml
 	yamllint -f parsable tests/test_playbooks roles
