@@ -1,0 +1,12 @@
+---
+- name: Create locations  # noqa: args[module]
+  theforeman.foreman.location:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    name: "{{ item.name }}"
+    parent: "{{ item.parent | default(omit) }}"
+    organizations: "{{ item.organizations | default(omit) }}"
+    parameters: "{{ item.parameters | default(omit) }}"
+  loop: "{{ foreman_locations }}"
