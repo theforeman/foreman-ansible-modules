@@ -200,7 +200,7 @@ def main():
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
     )
 
-    module.task_timeout = 60 * 60
+    module.task_timeout = 180 * 60
 
     if 'version' in module.foreman_params and not re.match(r'^\d+\.\d+$', module.foreman_params['version']):
         try:
