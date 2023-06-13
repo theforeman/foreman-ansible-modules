@@ -9,8 +9,6 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-Role specific variables should be documented as below:
-
 The main data structure for this role is the list of `foreman_auth_sources_ldap`. Each `auth_source_ldap` requires the following fields:
 
 - `name`: The name of the authentication source.
