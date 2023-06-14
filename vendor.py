@@ -32,7 +32,7 @@ with fileinput.input() as f:
         # Ansible doesn't like `basestring` because it doesn't exist in Python3
         # but our code actually catches that and uses `str` in that case.
         # So let's use `base_string` instead, which doesn't trip Ansible's check.
-        if line == '    basestring':
+        if line == '    basestring  # type: ignore[used-before-def]  # pylint: disable=used-before-assignment':
             line = '    base_string = basestring'
         elif 'basestring' in line:
             line = line.replace('basestring', 'base_string')
@@ -54,7 +54,7 @@ with fileinput.input() as f:
             buffer_lines.append(line)
             if "from typing" in line:
                 typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:] if not element.strip(',') == 'TYPE_CHECKING'])
-            if ('pass' in line or 'TYPE_CHECKING =' in line or 'from apypie' in line) and ('from typing' in buffer_lines[1] or 'from apypie' in buffer_lines[1]):
+            if ('pass' in line or 'TYPE_CHECKING =' in line or ('from apypie' in line and 'if TYPE_CHECKING:' in buffer_lines)) and ('from typing' in buffer_lines[1] or 'from apypie' in buffer_lines[1]):
                 buffer_lines.clear()
         else:
             # inject a blank line before class or import statements
