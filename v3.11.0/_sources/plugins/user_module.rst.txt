@@ -1,0 +1,1292 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.user_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.user module -- Manage Users
+++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.11.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.user_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.user`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 1.0.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create, update, and delete users
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.user_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-admin"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-admin:
+
+      .. rst-class:: ansible-option-title
+
+      **admin**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-admin" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not the user is an administrator
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-auth_source"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-auth_source:
+
+      .. rst-class:: ansible-option-title
+
+      **auth_source**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-auth_source" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Authentication source where the user exists
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-default_location"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-default_location:
+
+      .. rst-class:: ansible-option-title
+
+      **default_location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-default_location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The location that the user uses by default
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-default_organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-default_organization:
+
+      .. rst-class:: ansible-option-title
+
+      **default_organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-default_organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The organizxation that the user uses by default
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Description of the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-firstname"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-firstname:
+
+      .. rst-class:: ansible-option-title
+
+      **firstname**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-firstname" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      First name of the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-lastname"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-lastname:
+
+      .. rst-class:: ansible-option-title
+
+      **lastname**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-lastname" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Last name of the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locale"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-locale:
+
+      .. rst-class:: ansible-option-title
+
+      **locale**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locale" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The language locale for the user
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"ca"`
+      - :ansible-option-choices-entry:`"de"`
+      - :ansible-option-choices-entry:`"en"`
+      - :ansible-option-choices-entry:`"en\_GB"`
+      - :ansible-option-choices-entry:`"es"`
+      - :ansible-option-choices-entry:`"fr"`
+      - :ansible-option-choices-entry:`"gl"`
+      - :ansible-option-choices-entry:`"it"`
+      - :ansible-option-choices-entry:`"ja"`
+      - :ansible-option-choices-entry:`"ko"`
+      - :ansible-option-choices-entry:`"nl\_NL"`
+      - :ansible-option-choices-entry:`"pl"`
+      - :ansible-option-choices-entry:`"pt\_BR"`
+      - :ansible-option-choices-entry:`"ru"`
+      - :ansible-option-choices-entry:`"sv\_SE"`
+      - :ansible-option-choices-entry:`"zh\_CN"`
+      - :ansible-option-choices-entry:`"zh\_TW"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-locations:
+
+      .. rst-class:: ansible-option-title
+
+      **locations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of locations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-login"></div>
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-login:
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **login**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: name`
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-mail"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-mail:
+
+      .. rst-class:: ansible-option-title
+
+      **mail**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-mail" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Email address of the user
+
+      Required when creating a new user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-organizations:
+
+      .. rst-class:: ansible-option-title
+
+      **organizations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of organizations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-roles"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-roles:
+
+      .. rst-class:: ansible-option-title
+
+      **roles**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-roles" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of roles assigned to the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the entity
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"absent"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-timezone"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-timezone:
+
+      .. rst-class:: ansible-option-title
+
+      **timezone**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-timezone" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Timezone for the user
+
+      If blank it will use the browser timezone.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"International Date Line West"`
+      - :ansible-option-choices-entry:`"American Samoa"`
+      - :ansible-option-choices-entry:`"Midway Island"`
+      - :ansible-option-choices-entry:`"Hawaii"`
+      - :ansible-option-choices-entry:`"Alaska"`
+      - :ansible-option-choices-entry:`"Pacific Time (US & Canada)"`
+      - :ansible-option-choices-entry:`"Tijuana"`
+      - :ansible-option-choices-entry:`"Arizona"`
+      - :ansible-option-choices-entry:`"Chihuahua"`
+      - :ansible-option-choices-entry:`"Mazatlan"`
+      - :ansible-option-choices-entry:`"Mountain Time (US & Canada)"`
+      - :ansible-option-choices-entry:`"Central America"`
+      - :ansible-option-choices-entry:`"Central Time (US & Canada)"`
+      - :ansible-option-choices-entry:`"Guadalajara"`
+      - :ansible-option-choices-entry:`"Mexico City"`
+      - :ansible-option-choices-entry:`"Monterrey"`
+      - :ansible-option-choices-entry:`"Saskatchewan"`
+      - :ansible-option-choices-entry:`"Bogota"`
+      - :ansible-option-choices-entry:`"Eastern Time (US & Canada)"`
+      - :ansible-option-choices-entry:`"Indiana (East)"`
+      - :ansible-option-choices-entry:`"Lima"`
+      - :ansible-option-choices-entry:`"Quito"`
+      - :ansible-option-choices-entry:`"Atlantic Time (Canada)"`
+      - :ansible-option-choices-entry:`"Caracas"`
+      - :ansible-option-choices-entry:`"Georgetown"`
+      - :ansible-option-choices-entry:`"La Paz"`
+      - :ansible-option-choices-entry:`"Puerto Rico"`
+      - :ansible-option-choices-entry:`"Santiago"`
+      - :ansible-option-choices-entry:`"Newfoundland"`
+      - :ansible-option-choices-entry:`"Brasilia"`
+      - :ansible-option-choices-entry:`"Buenos Aires"`
+      - :ansible-option-choices-entry:`"Greenland"`
+      - :ansible-option-choices-entry:`"Montevideo"`
+      - :ansible-option-choices-entry:`"Mid-Atlantic"`
+      - :ansible-option-choices-entry:`"Azores"`
+      - :ansible-option-choices-entry:`"Cape Verde Is."`
+      - :ansible-option-choices-entry:`"Dublin"`
+      - :ansible-option-choices-entry:`"Edinburgh"`
+      - :ansible-option-choices-entry:`"Lisbon"`
+      - :ansible-option-choices-entry:`"London"`
+      - :ansible-option-choices-entry:`"Monrovia"`
+      - :ansible-option-choices-entry:`"UTC"`
+      - :ansible-option-choices-entry:`"Amsterdam"`
+      - :ansible-option-choices-entry:`"Belgrade"`
+      - :ansible-option-choices-entry:`"Berlin"`
+      - :ansible-option-choices-entry:`"Bern"`
+      - :ansible-option-choices-entry:`"Bratislava"`
+      - :ansible-option-choices-entry:`"Brussels"`
+      - :ansible-option-choices-entry:`"Budapest"`
+      - :ansible-option-choices-entry:`"Casablanca"`
+      - :ansible-option-choices-entry:`"Copenhagen"`
+      - :ansible-option-choices-entry:`"Ljubljana"`
+      - :ansible-option-choices-entry:`"Madrid"`
+      - :ansible-option-choices-entry:`"Paris"`
+      - :ansible-option-choices-entry:`"Prague"`
+      - :ansible-option-choices-entry:`"Rome"`
+      - :ansible-option-choices-entry:`"Sarajevo"`
+      - :ansible-option-choices-entry:`"Skopje"`
+      - :ansible-option-choices-entry:`"Stockholm"`
+      - :ansible-option-choices-entry:`"Vienna"`
+      - :ansible-option-choices-entry:`"Warsaw"`
+      - :ansible-option-choices-entry:`"West Central Africa"`
+      - :ansible-option-choices-entry:`"Zagreb"`
+      - :ansible-option-choices-entry:`"Zurich"`
+      - :ansible-option-choices-entry:`"Athens"`
+      - :ansible-option-choices-entry:`"Bucharest"`
+      - :ansible-option-choices-entry:`"Cairo"`
+      - :ansible-option-choices-entry:`"Harare"`
+      - :ansible-option-choices-entry:`"Helsinki"`
+      - :ansible-option-choices-entry:`"Jerusalem"`
+      - :ansible-option-choices-entry:`"Kaliningrad"`
+      - :ansible-option-choices-entry:`"Kyiv"`
+      - :ansible-option-choices-entry:`"Pretoria"`
+      - :ansible-option-choices-entry:`"Riga"`
+      - :ansible-option-choices-entry:`"Sofia"`
+      - :ansible-option-choices-entry:`"Tallinn"`
+      - :ansible-option-choices-entry:`"Vilnius"`
+      - :ansible-option-choices-entry:`"Baghdad"`
+      - :ansible-option-choices-entry:`"Istanbul"`
+      - :ansible-option-choices-entry:`"Kuwait"`
+      - :ansible-option-choices-entry:`"Minsk"`
+      - :ansible-option-choices-entry:`"Moscow"`
+      - :ansible-option-choices-entry:`"Nairobi"`
+      - :ansible-option-choices-entry:`"Riyadh"`
+      - :ansible-option-choices-entry:`"St. Petersburg"`
+      - :ansible-option-choices-entry:`"Tehran"`
+      - :ansible-option-choices-entry:`"Abu Dhabi"`
+      - :ansible-option-choices-entry:`"Baku"`
+      - :ansible-option-choices-entry:`"Muscat"`
+      - :ansible-option-choices-entry:`"Samara"`
+      - :ansible-option-choices-entry:`"Tbilisi"`
+      - :ansible-option-choices-entry:`"Volgograd"`
+      - :ansible-option-choices-entry:`"Yerevan"`
+      - :ansible-option-choices-entry:`"Kabul"`
+      - :ansible-option-choices-entry:`"Ekaterinburg"`
+      - :ansible-option-choices-entry:`"Islamabad"`
+      - :ansible-option-choices-entry:`"Karachi"`
+      - :ansible-option-choices-entry:`"Tashkent"`
+      - :ansible-option-choices-entry:`"Chennai"`
+      - :ansible-option-choices-entry:`"Kolkata"`
+      - :ansible-option-choices-entry:`"Mumbai"`
+      - :ansible-option-choices-entry:`"New Delhi"`
+      - :ansible-option-choices-entry:`"Sri Jayawardenepura"`
+      - :ansible-option-choices-entry:`"Kathmandu"`
+      - :ansible-option-choices-entry:`"Almaty"`
+      - :ansible-option-choices-entry:`"Astana"`
+      - :ansible-option-choices-entry:`"Dhaka"`
+      - :ansible-option-choices-entry:`"Urumqi"`
+      - :ansible-option-choices-entry:`"Rangoon"`
+      - :ansible-option-choices-entry:`"Bangkok"`
+      - :ansible-option-choices-entry:`"Hanoi"`
+      - :ansible-option-choices-entry:`"Jakarta"`
+      - :ansible-option-choices-entry:`"Krasnoyarsk"`
+      - :ansible-option-choices-entry:`"Novosibirsk"`
+      - :ansible-option-choices-entry:`"Beijing"`
+      - :ansible-option-choices-entry:`"Chongqing"`
+      - :ansible-option-choices-entry:`"Hong Kong"`
+      - :ansible-option-choices-entry:`"Irkutsk"`
+      - :ansible-option-choices-entry:`"Kuala Lumpur"`
+      - :ansible-option-choices-entry:`"Perth"`
+      - :ansible-option-choices-entry:`"Singapore"`
+      - :ansible-option-choices-entry:`"Taipei"`
+      - :ansible-option-choices-entry:`"Ulaanbaatar"`
+      - :ansible-option-choices-entry:`"Osaka"`
+      - :ansible-option-choices-entry:`"Sapporo"`
+      - :ansible-option-choices-entry:`"Seoul"`
+      - :ansible-option-choices-entry:`"Tokyo"`
+      - :ansible-option-choices-entry:`"Yakutsk"`
+      - :ansible-option-choices-entry:`"Adelaide"`
+      - :ansible-option-choices-entry:`"Darwin"`
+      - :ansible-option-choices-entry:`"Brisbane"`
+      - :ansible-option-choices-entry:`"Canberra"`
+      - :ansible-option-choices-entry:`"Guam"`
+      - :ansible-option-choices-entry:`"Hobart"`
+      - :ansible-option-choices-entry:`"Melbourne"`
+      - :ansible-option-choices-entry:`"Port Moresby"`
+      - :ansible-option-choices-entry:`"Sydney"`
+      - :ansible-option-choices-entry:`"Vladivostok"`
+      - :ansible-option-choices-entry:`"Magadan"`
+      - :ansible-option-choices-entry:`"New Caledonia"`
+      - :ansible-option-choices-entry:`"Solomon Is."`
+      - :ansible-option-choices-entry:`"Srednekolymsk"`
+      - :ansible-option-choices-entry:`"Auckland"`
+      - :ansible-option-choices-entry:`"Fiji"`
+      - :ansible-option-choices-entry:`"Kamchatka"`
+      - :ansible-option-choices-entry:`"Marshall Is."`
+      - :ansible-option-choices-entry:`"Wellington"`
+      - :ansible-option-choices-entry:`"Chatham Is."`
+      - :ansible-option-choices-entry:`"Nuku'alofa"`
+      - :ansible-option-choices-entry:`"Samoa"`
+      - :ansible-option-choices-entry:`"Tokelau Is."`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-user_password"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-user_password:
+
+      .. rst-class:: ansible-option-title
+
+      **user_password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-user_password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password for the user.
+
+      When this parameter is set, the module will not be idempotent.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create a user
+      theforeman.foreman.user:
+        name: test
+        firstname: Test
+        lastname: Userson
+        mail: test.userson@example.com
+        description: Dr. Test Userson
+        admin: false
+        user_password: s3cret
+        default_location: Test Location
+        default_organization: Test Organization
+        auth_source: Internal
+        timezone: Stockholm
+        locale: sv_SE
+        roles:
+          - Manager
+        locations:
+          - Test Location
+        organizations:
+          - Test Organization
+        state: present
+
+    - name: Update a user
+      theforeman.foreman.user:
+        name: test
+        firstname: Tester
+        state: present
+
+    - name: Change password
+      theforeman.foreman.user:
+        name: test
+        user_password: newp@ss
+
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/users"></div>
+
+      .. _ansible_collections.theforeman.foreman.user_module__return-entity/users:
+
+      .. rst-class:: ansible-option-title
+
+      **users**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/users" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of users.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Christoffer Reijer (@ephracis) Basalt AB
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

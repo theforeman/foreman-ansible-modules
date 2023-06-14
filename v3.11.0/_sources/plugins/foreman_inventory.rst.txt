@@ -1,0 +1,2278 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.foreman_inventory:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.foreman inventory -- Foreman inventory source
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This inventory plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.11.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this inventory plugin,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.foreman_inventory_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.foreman`.
+
+.. version_added
+
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Get inventory hosts from Foreman.
+- Uses a YAML configuration file that ends with \`\`foreman.(yml|yaml)\`\`.
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.foreman_inventory_requirements:
+
+Requirements
+------------
+The below requirements are needed on the local controller node that executes this inventory.
+
+- requests \>= 1.1
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-batch_size"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-batch_size:
+
+      .. rst-class:: ansible-option-title
+
+      **batch_size**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-batch_size" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Number of hosts per batch that will be retrieved from the Foreman API per individual call
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`250`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cache"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-cache:
+
+      .. rst-class:: ansible-option-title
+
+      **cache**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cache" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle to enable/disable the caching of the inventory's source data, requires a cache plugin setup to work.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [inventory]
+          cache = false
+
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cache_connection"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-cache_connection:
+
+      .. rst-class:: ansible-option-title
+
+      **cache_connection**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cache_connection" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Cache connection data or path, read cache plugin documentation for specifics.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [defaults]
+          fact_caching_connection = VALUE
+
+
+
+        .. code-block::
+
+          [inventory]
+          cache_connection = VALUE
+
+
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_CONNECTION`
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_CONNECTION`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cache_plugin"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-cache_plugin:
+
+      .. rst-class:: ansible-option-title
+
+      **cache_plugin**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cache_plugin" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Cache plugin to use for the inventory's source data.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"memory"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [defaults]
+          fact_caching = memory
+
+
+
+        .. code-block::
+
+          [inventory]
+          cache_plugin = memory
+
+
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN`
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_PLUGIN`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cache_prefix"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-cache_prefix:
+
+      .. rst-class:: ansible-option-title
+
+      **cache_prefix**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cache_prefix" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Prefix to use for cache plugin files/tables
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"ansible\_inventory\_"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [default]
+          fact_caching_prefix = ansible_inventory_
+
+
+        Removed in: version 2.16 of ansible.builtin
+
+
+        Why: Fixes typing error in INI section name
+
+        Alternative: Use the 'defaults' section instead
+
+
+
+        .. code-block::
+
+          [defaults]
+          fact_caching_prefix = ansible_inventory_
+
+
+
+        .. code-block::
+
+          [inventory]
+          cache_prefix = ansible_inventory_
+
+
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_PREFIX`
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_PLUGIN\_PREFIX`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cache_timeout"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-cache_timeout:
+
+      .. rst-class:: ansible-option-title
+
+      **cache_timeout**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cache_timeout" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Cache duration in seconds
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`3600`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [defaults]
+          fact_caching_timeout = 3600
+
+
+
+        .. code-block::
+
+          [inventory]
+          cache_timeout = 3600
+
+
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_TIMEOUT`
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_TIMEOUT`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-compose"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-compose:
+
+      .. rst-class:: ansible-option-title
+
+      **compose**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-compose" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Create vars from jinja2 expressions.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-foreman"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-foreman:
+
+      .. rst-class:: ansible-option-title
+
+      **foreman**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-foreman" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Foreman server related configuration, deprecated.
+
+      You can pass \ :emphasis:`use\_reports\_api`\  in this dict to enable the Reporting API.
+
+      Only for backward compatibility.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-group_prefix"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-group_prefix:
+
+      .. rst-class:: ansible-option-title
+
+      **group_prefix**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-group_prefix" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      prefix to apply to foreman groups
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"foreman\_"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-groups"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-groups:
+
+      .. rst-class:: ansible-option-title
+
+      **groups**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-groups" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Add hosts to group based on Jinja2 conditionals.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-host_filters"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-host_filters:
+
+      .. rst-class:: ansible-option-title
+
+      **host_filters**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-host_filters" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      This can be used to restrict the list of returned host
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-hostnames"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-hostnames:
+
+      .. rst-class:: ansible-option-title
+
+      **hostnames**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-hostnames" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      A list of templates in order of precedence to compose inventory\_hostname.
+
+      If the template results in an empty string or None value it is ignored.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`["name"]`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups:
+
+      .. rst-class:: ansible-option-title
+
+      **keyed_groups**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Add hosts to group based on the values of a variable.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/default_value"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/default_value:
+
+      .. rst-class:: ansible-option-title
+
+      **default_value**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/default_value" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in ansible-core 2.12`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      The default value when the host variable's value is an empty string.
+
+      This option is mutually exclusive with \ :literal:`trailing\_separator`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/key"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/key:
+
+      .. rst-class:: ansible-option-title
+
+      **key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      The key from input dictionary used to generate groups
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/parent_group"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/parent_group:
+
+      .. rst-class:: ansible-option-title
+
+      **parent_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/parent_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      parent group for keyed group
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/prefix"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/prefix:
+
+      .. rst-class:: ansible-option-title
+
+      **prefix**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/prefix" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      A keyed group name will start with this prefix
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/separator"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/separator:
+
+      .. rst-class:: ansible-option-title
+
+      **separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      separator used to build the keyed group name
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"\_"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/trailing_separator"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-keyed_groups/trailing_separator:
+
+      .. rst-class:: ansible-option-title
+
+      **trailing_separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/trailing_separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.12`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Set this option to \ :emphasis:`False`\  to omit the \ :literal:`separator`\  after the host variable when the value is an empty string.
+
+      This option is mutually exclusive with \ :literal:`default\_value`\ .
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-leading_separator"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-leading_separator:
+
+      .. rst-class:: ansible-option-title
+
+      **leading_separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-leading_separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.11`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Use in conjunction with keyed\_groups.
+
+      By default, a keyed group that does not have a prefix or a separator provided will have a name that starts with an underscore.
+
+      This is because the default prefix is "" and the default separator is "\_".
+
+      Set this option to False to omit the leading underscore (or other separator) if no prefix is given.
+
+      If the group name is derived from a mapping the separator is still used to concatenate the items.
+
+      To not use a separator in the group name at all, set the separator for the keyed group to an empty string instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-legacy_hostvars"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-legacy_hostvars:
+
+      .. rst-class:: ansible-option-title
+
+      **legacy_hostvars**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-legacy_hostvars" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the plugin will build legacy hostvars present in the foreman script
+
+      Places hostvars in a dictionary with keys \`foreman\`, \`foreman\_facts\`, and \`foreman\_params\`
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-max_timeout"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-max_timeout:
+
+      .. rst-class:: ansible-option-title
+
+      **max_timeout**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-max_timeout" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Timeout before falling back to old host API when using report\_data endpoint while polling.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`600`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: :envvar:`FOREMAN\_PASSWORD`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-plugin:
+
+      .. rst-class:: ansible-option-title
+
+      **plugin**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      token that ensures this is a source file for the \ :literal:`foreman`\  plugin.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"theforeman.foreman.foreman"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-poll_interval"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-poll_interval:
+
+      .. rst-class:: ansible-option-title
+
+      **poll_interval**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-poll_interval" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The polling interval between 2 calls to the report\_data endpoint while polling.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`10`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-report"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-report:
+
+      .. rst-class:: ansible-option-title
+
+      **report**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-report" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Report API specific configuration, deprecated.
+
+      You can pass the Report API specific params as part of this dict, instead of the main configuration.
+
+      Only for backward compatibility.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-strict"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-strict:
+
+      .. rst-class:: ansible-option-title
+
+      **strict**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-strict" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If \ :literal:`yes`\  make invalid entries a fatal error, otherwise skip and continue.
+
+      Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-url"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"http://localhost:3000"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: :envvar:`FOREMAN\_SERVER`
+
+      - Environment variable: :envvar:`FOREMAN\_SERVER\_URL`
+
+      - Environment variable: :envvar:`FOREMAN\_URL`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-use_extra_vars"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-use_extra_vars:
+
+      .. rst-class:: ansible-option-title
+
+      **use_extra_vars**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-use_extra_vars" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.11`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Merge extra vars into the available variables for composition (highest precedence).
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [inventory_plugins]
+          use_extra_vars = false
+
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_USE\_EXTRA\_VARS`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-use_reports_api"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-use_reports_api:
+
+      .. rst-class:: ansible-option-title
+
+      **use_reports_api**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-use_reports_api" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Use Reporting API.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-user"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-user:
+
+      .. rst-class:: ansible-option-title
+
+      **user**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-user" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: :envvar:`FOREMAN\_USER`
+
+      - Environment variable: :envvar:`FOREMAN\_USERNAME`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: :envvar:`FOREMAN\_VALIDATE\_CERTS`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-vars_prefix"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-vars_prefix:
+
+      .. rst-class:: ansible-option-title
+
+      **vars_prefix**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-vars_prefix" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      prefix to apply to host variables, does not include facts nor params
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"foreman\_"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_content_facet_attributes"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_content_facet_attributes:
+
+      .. rst-class:: ansible-option-title
+
+      **want_content_facet_attributes**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_content_facet_attributes" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch content view details that the host is tied to.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_facts"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_facts:
+
+      .. rst-class:: ansible-option-title
+
+      **want_facts**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_facts" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if True the plugin will retrieve host facts from the server
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_host_group"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_host_group:
+
+      .. rst-class:: ansible-option-title
+
+      **want_host_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_host_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch host\_groups and create groupings for the same.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_hostcollections"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_hostcollections:
+
+      .. rst-class:: ansible-option-title
+
+      **want_hostcollections**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_hostcollections" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the plugin will create Ansible groups for host collections
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_ipv4"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_ipv4:
+
+      .. rst-class:: ansible-option-title
+
+      **want_ipv4**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_ipv4" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch ipv4 address of the host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_ipv6"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_ipv6:
+
+      .. rst-class:: ansible-option-title
+
+      **want_ipv6**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_ipv6" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch ipv6 address of the host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_location"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_location:
+
+      .. rst-class:: ansible-option-title
+
+      **want_location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_organization:
+
+      .. rst-class:: ansible-option-title
+
+      **want_organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_params"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_params:
+
+      .. rst-class:: ansible-option-title
+
+      **want_params**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_params" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will retrieve 'all\_parameters' information as host vars
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_smart_proxies"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_smart_proxies:
+
+      .. rst-class:: ansible-option-title
+
+      **want_smart_proxies**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_smart_proxies" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch smart proxy that the host is registered to.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_subnet"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_subnet:
+
+      .. rst-class:: ansible-option-title
+
+      **want_subnet**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_subnet" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch subnet.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-want_subnet_v6"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_inventory__parameter-want_subnet_v6:
+
+      .. rst-class:: ansible-option-title
+
+      **want_subnet_v6**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-want_subnet_v6" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle, if true the inventory will fetch ipv6 subnet.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    # my.foreman.yml
+    plugin: theforeman.foreman.foreman
+    url: https://foreman.example.com
+    user: ansibleinventory
+    password: changeme
+    host_filters: 'organization="Web Engineering"'
+
+    # shortname.foreman.yml
+    plugin: theforeman.foreman.foreman
+    url: https://foreman.example.com
+    user: ansibleinventory
+    password: changeme
+    hostnames:
+      - name.split('.')[0]
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+
+.. hint::
+    Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

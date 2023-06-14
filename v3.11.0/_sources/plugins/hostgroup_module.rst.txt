@@ -1,0 +1,1878 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.hostgroup_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Anchors: aliases
+
+
+
+.. Title
+
+theforeman.foreman.hostgroup module -- Manage Hostgroups
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.11.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.hostgroup_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.hostgroup`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 1.0.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create, update, and delete Hostgroups
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.hostgroup_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-activation_keys"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-activation_keys:
+
+      .. rst-class:: ansible-option-title
+
+      **activation_keys**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-activation_keys" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Activation Keys used for deployment.
+
+      Comma separated list.
+
+      Only available for Katello installations.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ansible_roles"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-ansible_roles:
+
+      .. rst-class:: ansible-option-title
+
+      **ansible_roles**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ansible_roles" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      A list of ansible roles to associate with the hostgroup.
+
+      The foreman-ansible plugin must be installed to use this parameter.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-architecture"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-architecture:
+
+      .. rst-class:: ansible-option-title
+
+      **architecture**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-architecture" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Architecture name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-compute_profile"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-compute_profile:
+
+      .. rst-class:: ansible-option-title
+
+      **compute_profile**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-compute_profile" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Compute profile name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-compute_resource"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-compute_resource:
+
+      .. rst-class:: ansible-option-title
+
+      **compute_resource**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-compute_resource" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Compute resource name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-config_groups"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-config_groups:
+
+      .. rst-class:: ansible-option-title
+
+      **config_groups**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-config_groups" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Config groups list
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_source"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-content_source:
+
+      .. rst-class:: ansible-option-title
+
+      **content_source**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_source" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Content Source (Smart Proxy with Content) name.
+
+      Only available for Katello installations.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_view"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-content_view:
+
+      .. rst-class:: ansible-option-title
+
+      **content_view**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_view" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Content view.
+
+      Only available for Katello installations.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Description of hostgroup
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-domain"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-domain:
+
+      .. rst-class:: ansible-option-title
+
+      **domain**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-domain" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Domain name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-environment"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-environment:
+
+      .. rst-class:: ansible-option-title
+
+      **environment**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-environment" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Puppet environment name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-kickstart_repository"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-kickstart_repository:
+
+      .. rst-class:: ansible-option-title
+
+      **kickstart_repository**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-kickstart_repository" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Kickstart repository name.
+
+      You need to provide this to use the "Synced Content" feature.
+
+      Mutually exclusive with \ :emphasis:`medium`\ .
+
+      Only available for Katello installations.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-lifecycle_environment"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-lifecycle_environment:
+
+      .. rst-class:: ansible-option-title
+
+      **lifecycle_environment**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-lifecycle_environment" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Lifecycle environment.
+
+      Only available for Katello installations.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-locations:
+
+      .. rst-class:: ansible-option-title
+
+      **locations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of locations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-medium"></div>
+        <div class="ansibleOptionAnchor" id="parameter-media"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-media:
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-medium:
+
+      .. rst-class:: ansible-option-title
+
+      **medium**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-medium" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: media`
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Medium name
+
+      Mutually exclusive with \ :emphasis:`kickstart\_repository`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of hostgroup
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-openscap_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-openscap_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **openscap_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-openscap_proxy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      OpenSCAP proxy name.
+
+      Only available when the OpenSCAP plugin is installed.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-operatingsystem:
+
+      .. rst-class:: ansible-option-title
+
+      **operatingsystem**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Operating systems are looked up by their title which is composed as "\<name\> \<major\>.\<minor\>".
+
+      You can omit the version part as long as you only have one operating system by that name.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-organization:
+
+      .. rst-class:: ansible-option-title
+
+      **organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Organization for scoped resources attached to the hostgroup.
+
+      Only used for Katello installations.
+
+      This organization will implicitly be added to the \ :emphasis:`organizations`\  parameter if needed.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-organizations:
+
+      .. rst-class:: ansible-option-title
+
+      **organizations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of organizations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parameters"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-parameters:
+
+      .. rst-class:: ansible-option-title
+
+      **parameters**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parameters" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Hostgroup specific host parameters
+
+
+      .. raw:: html
+
+        </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parameters/name"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-parameters/name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parameters/name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Name of the parameter
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parameters/parameter_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-parameters/parameter_type:
+
+      .. rst-class:: ansible-option-title
+
+      **parameter_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parameters/parameter_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Type of the parameter
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"string"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"boolean"`
+      - :ansible-option-choices-entry:`"integer"`
+      - :ansible-option-choices-entry:`"real"`
+      - :ansible-option-choices-entry:`"array"`
+      - :ansible-option-choices-entry:`"hash"`
+      - :ansible-option-choices-entry:`"yaml"`
+      - :ansible-option-choices-entry:`"json"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parameters/value"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-parameters/value:
+
+      .. rst-class:: ansible-option-title
+
+      **value**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parameters/value" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Value of the parameter
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-parent:
+
+      .. rst-class:: ansible-option-title
+
+      **parent**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Hostgroup parent name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ptable"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-ptable:
+
+      .. rst-class:: ansible-option-title
+
+      **ptable**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ptable" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Partition table name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-puppet_ca_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-puppet_ca_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **puppet_ca_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-puppet_ca_proxy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Puppet CA proxy name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-puppet_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-puppet_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **puppet_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-puppet_proxy" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Puppet server proxy name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-puppetclasses"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-puppetclasses:
+
+      .. rst-class:: ansible-option-title
+
+      **puppetclasses**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-puppetclasses" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of puppet classes to include in this host group. Must exist for hostgroup's puppet environment.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-pxe_loader"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-pxe_loader:
+
+      .. rst-class:: ansible-option-title
+
+      **pxe_loader**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-pxe_loader" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      PXE Bootloader
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"PXELinux BIOS"`
+      - :ansible-option-choices-entry:`"PXELinux UEFI"`
+      - :ansible-option-choices-entry:`"Grub UEFI"`
+      - :ansible-option-choices-entry:`"Grub2 BIOS"`
+      - :ansible-option-choices-entry:`"Grub2 ELF"`
+      - :ansible-option-choices-entry:`"Grub2 UEFI"`
+      - :ansible-option-choices-entry:`"Grub2 UEFI SecureBoot"`
+      - :ansible-option-choices-entry:`"Grub2 UEFI HTTP"`
+      - :ansible-option-choices-entry:`"Grub2 UEFI HTTPS"`
+      - :ansible-option-choices-entry:`"Grub2 UEFI HTTPS SecureBoot"`
+      - :ansible-option-choices-entry:`"iPXE Embedded"`
+      - :ansible-option-choices-entry:`"iPXE UEFI HTTP"`
+      - :ansible-option-choices-entry:`"iPXE Chain BIOS"`
+      - :ansible-option-choices-entry:`"iPXE Chain UEFI"`
+      - :ansible-option-choices-entry:`"None"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-realm"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-realm:
+
+      .. rst-class:: ansible-option-title
+
+      **realm**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-realm" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Realm name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-root_pass"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-root_pass:
+
+      .. rst-class:: ansible-option-title
+
+      **root_pass**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-root_pass" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Root password.
+
+      Will result in the entity always being updated, as the current password cannot be retrieved.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the entity
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"absent"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-subnet"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-subnet:
+
+      .. rst-class:: ansible-option-title
+
+      **subnet**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-subnet" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      IPv4 Subnet name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-subnet6"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-subnet6:
+
+      .. rst-class:: ansible-option-title
+
+      **subnet6**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-subnet6" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      IPv6 Subnet name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-updated_name:
+
+      .. rst-class:: ansible-option-title
+
+      **updated_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      New name of hostgroup. When this parameter is set, the module will not be idempotent.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Create a Hostgroup"
+      theforeman.foreman.hostgroup:
+        name: "new_hostgroup"
+        architecture: "architecture_name"
+        operatingsystem: "operatingsystem_name"
+        medium: "media_name"
+        ptable: "Partition_table_name"
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: "Update a Hostgroup"
+      theforeman.foreman.hostgroup:
+        name: "new_hostgroup"
+        architecture: "updated_architecture_name"
+        operatingsystem: "updated_operatingsystem_name"
+        organizations:
+          - Org One
+          - Org Two
+        locations:
+          - Loc One
+          - Loc Two
+          - Loc One/Nested loc
+        medium: "updated_media_name"
+        ptable: "updated_Partition_table_name"
+        root_pass: "password"
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: "My nested hostgroup"
+      theforeman.foreman.hostgroup:
+        parent: "new_hostgroup"
+        name: "my nested hostgroup"
+
+    - name: "My hostgroup with some proxies"
+      theforeman.foreman.hostgroup:
+        name: "my hostgroup"
+        environment: production
+        puppet_proxy: puppet-proxy.example.com
+        puppet_ca_proxy: puppet-proxy.example.com
+        openscap_proxy: openscap-proxy.example.com
+
+    - name: "My katello related hostgroup"
+      theforeman.foreman.hostgroup:
+        organization: "My Org"
+        name: "kt hostgroup"
+        content_source: capsule.example.com
+        lifecycle_environment: "Production"
+        content_view: "My content view"
+        parameters:
+          - name: "kt_activation_keys"
+            value: "my_prod_ak"
+
+    - name: "Delete a Hostgroup"
+      theforeman.foreman.hostgroup:
+        name: "new_hostgroup"
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: absent
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/hostgroups"></div>
+
+      .. _ansible_collections.theforeman.foreman.hostgroup_module__return-entity/hostgroups:
+
+      .. rst-class:: ansible-option-title
+
+      **hostgroups**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/hostgroups" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of hostgroups.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Manisha Singhal (@Manisha15) ATIX AG
+- Baptiste Agasse (@bagasse)
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+
