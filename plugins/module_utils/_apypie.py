@@ -74,7 +74,7 @@ class Action(object):
         return [Example.parse(example) for example in self.apidoc['examples']]
 
     def call(self, params=None, headers=None, options=None, data=None, files=None):  # pylint: disable=too-many-arguments
-        # type: (dict, Optional[dict], Optional[dict], Optional[Any], Optional[dict]) -> dict
+        # type: (Optional[dict], Optional[dict], Optional[dict], Optional[Any], Optional[dict]) -> Optional[dict]
         """
         Call the API to execute the action.
 
@@ -261,6 +261,8 @@ try:
 except ImportError:
     from urllib.parse import urljoin  # type: ignore
 
+NO_CONTENT = 204
+
 
 def _qs_param(param):
     # type: (Any) -> Any
@@ -282,6 +284,7 @@ class Api(object):
     :param apidoc_cache_dir: where to cache the JSON description of the API. Defaults to `apidoc_cache_base_dir/<URI>`.
     :param apidoc_cache_name: name of the cache file. If there is cache in the `apidoc_cache_dir`, it is used. Defaults to `default`.
     :param verify_ssl: should the SSL certificate be verified. Defaults to `True`.
+    :param session: a `requests.Session` compatible object. Defaults to `requests.Session()`.
 
     Usage::
 
@@ -306,7 +309,7 @@ class Api(object):
         self.apidoc_cache_dir = kwargs.get('apidoc_cache_dir', apidoc_cache_dir_default)
         self.apidoc_cache_name = kwargs.get('apidoc_cache_name', self._find_cache_name())
 
-        self._session = requests.Session()
+        self._session = kwargs.get('session') or requests.Session()
         self._session.verify = kwargs.get('verify_ssl', True)
 
         self._session.headers['Accept'] = 'application/json;version={}'.format(self.api_version)
@@ -354,8 +357,8 @@ class Api(object):
             cache_name = os.path.basename(cache_file)[:-len(self.cache_extension)]
         return cache_name
 
-    def validate_cache(self, cache_name):
-        # type: (str) -> None
+    def validate_cache(self, cache_name=None):
+        # type: (Optional[str]) -> None
         """
         Ensure the cached apidoc matches the one presented by the server.
 
@@ -410,7 +413,7 @@ class Api(object):
     def _load_apidoc(self):
         # type: () -> dict
         try:
-            with open(self.apidoc_cache_file, 'r') as apidoc_file:
+            with open(self.apidoc_cache_file, 'r') as apidoc_file:  # pylint:disable=all
                 api_doc = json.load(apidoc_file)
         except (IOError, JSONDecodeError):
             api_doc = self._retrieve_apidoc()
@@ -434,20 +437,24 @@ class Api(object):
                 response = self._retrieve_apidoc_call('/apidoc/v{}.json'.format(self.api_version))
             except Exception as exc:
                 raise DocLoadingError("""Could not load data from {0}: {1}
-                  - is your server down?
-                  - was rake apipie:cache run when using apipie cache? (typical production settings)""".format(self.uri, exc))
-        with open(self.apidoc_cache_file, 'w') as apidoc_file:
+                  - is your server down?""".format(self.uri, exc))
+        if not response:
+            raise DocLoadingError("""Could not load data from {0}""".format(self.uri))
+        with open(self.apidoc_cache_file, 'w') as apidoc_file:  # pylint:disable=all
             apidoc_file.write(json.dumps(response))
         return response
 
     def _retrieve_apidoc_call(self, path, safe=False):
+        # type: (str, bool) -> Optional[dict]
         try:
             return self.http_call('get', path)
-        except requests.exceptions.HTTPError:
+        except Exception:
             if not safe:
                 raise
+            return None
 
     def call(self, resource_name, action_name, params=None, headers=None, options=None, data=None, files=None):  # pylint: disable=too-many-arguments
+        # type: (str, str, Optional[dict], Optional[dict], Optional[dict], Optional[dict], Optional[dict]) -> Optional[dict]
         """
         Call an action in the API.
 
@@ -482,6 +489,7 @@ class Api(object):
         return self._call_action(action, params, headers, data, files)
 
     def _call_action(self, action, params=None, headers=None, data=None, files=None):  # pylint: disable=too-many-arguments
+        # type: (Action, Optional[dict], Optional[dict], Optional[dict], Optional[dict]) -> Optional[dict]
         if params is None:
             params = {}
 
@@ -494,6 +502,7 @@ class Api(object):
             headers, data, files)
 
     def http_call(self, http_method, path, params=None, headers=None, data=None, files=None):  # pylint: disable=too-many-arguments
+        # type: (str, str, Optional[dict], Optional[dict], Optional[dict], Optional[dict]) -> Optional[dict]
         """
         Execute an HTTP request.
 
@@ -531,12 +540,13 @@ class Api(object):
         request = self._session.request(http_method, full_path, **kwargs)
         request.raise_for_status()
         self.validate_cache(request.headers.get('apipie-checksum'))
-        if request.status_code == requests.codes['no_content']:
+        if request.status_code == NO_CONTENT:
             return None
         return request.json()
 
     @property
     def cache_extension(self):
+        # type: () -> str
         """
         File extension for the local cache file.
 
@@ -742,6 +752,7 @@ class Inflector(object):
         self.inflections.irregular('person', 'people')
         self.inflections.irregular('self', 'selves')
         self.inflections.irregular('sex', 'sexes')
+        self.inflections.irregular('erratum', 'errata')
 
         self.inflections.uncountable('equipment', 'information', 'money', 'species', 'series', 'fish', 'sheep', 'police')
 
@@ -847,7 +858,7 @@ class Resource(object):
         return name in self.actions
 
     def call(self, action, params=None, headers=None, options=None, data=None, files=None):  # pylint: disable=too-many-arguments
-        # type: (str, Optional[dict], Optional[dict], Optional[dict], Optional[Any], Optional[dict]) -> dict
+        # type: (str, Optional[dict], Optional[dict], Optional[dict], Optional[Any], Optional[dict]) -> Optional[dict]
         """
         Call the API to execute an action for this resource.
 

@@ -20,7 +20,7 @@ TEST =
 FLAGS =
 PYTEST = pytest -n 4 --forked -vv
 
-APIPIE_VERSION ?= v0.3.2
+APIPIE_VERSION ?= v0.4.0
 
 default: help
 help:
