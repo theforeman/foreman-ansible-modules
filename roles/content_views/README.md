@@ -31,6 +31,9 @@ This role also allows you to create Content View Filters and add them to the Con
 
 Additionally you can pass any other parameters accepted by the `content_view_filter` module.
 
+Optionally, set multiple rules by passing a list of dicts in the `rules` field.
+Each rule must have a `name`, and optionally any parameters accepted by the `content_view_filter_rule` module.
+
 Example Playbooks
 -----------------
 
@@ -67,4 +70,13 @@ Example Playbooks
                 latest: true
               - content_view: BearApp
                 latest: true
+            filters:
+              - name: "exclude packages from all repositories"
+                filter_type: "rpm"
+                inclusion: false
+                repositories: []
+                rule_state: absent
+                rules:
+                  - name: bad-package
+                  - name: worse-package
 ```
