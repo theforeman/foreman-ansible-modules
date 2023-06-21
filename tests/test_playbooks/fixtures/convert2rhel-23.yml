@@ -14,7 +14,7 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.3.0","api_version":2}'
+      string: '{"satellite_version":"6.14.0","result":"ok","status":200,"version":"3.7.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -33,7 +33,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -65,30 +65,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/hostgroups?search=title%3D%22Oracle+Linux+7+converting%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"title=\\\"Oracle Linux 7 converting\\\"\",\n\
-        \  \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\"\
-        : [{\"subnet_id\":null,\"subnet_name\":null,\"operatingsystem_id\":null,\"\
-        operatingsystem_name\":null,\"domain_id\":null,\"domain_name\":null,\"compute_profile_id\"\
-        :null,\"compute_profile_name\":null,\"ancestry\":null,\"parent_id\":null,\"\
-        parent_name\":null,\"ptable_id\":null,\"ptable_name\":null,\"medium_id\":null,\"\
-        medium_name\":null,\"pxe_loader\":null,\"subnet6_id\":null,\"subnet6_name\"\
-        :null,\"compute_resource_id\":null,\"compute_resource_name\":null,\"architecture_id\"\
-        :null,\"architecture_name\":null,\"realm_id\":null,\"realm_name\":null,\"\
-        created_at\":\"2022-08-29 11:37:08 UTC\",\"updated_at\":\"2022-09-09 12:53:18\
-        \ UTC\",\"id\":4,\"name\":\"Oracle Linux 7 converting\",\"title\":\"Oracle\
-        \ Linux 7 converting\",\"description\":\"\",\"puppet_proxy_id\":null,\"puppet_proxy_name\"\
-        :null,\"puppet_ca_proxy_id\":null,\"puppet_ca_proxy_name\":null,\"openscap_proxy_id\"\
-        :null,\"openscap_proxy_name\":null,\"puppet_proxy\":null,\"puppet_ca_proxy\"\
-        :null,\"openscap_proxy\":null,\"inherited_compute_profile_id\":null,\"inherited_domain_id\"\
-        :null,\"inherited_puppet_proxy_id\":null,\"inherited_puppet_ca_proxy_id\"\
-        :null,\"inherited_compute_resource_id\":null,\"inherited_operatingsystem_id\"\
-        :null,\"inherited_architecture_id\":null,\"inherited_medium_id\":null,\"inherited_ptable_id\"\
-        :null,\"inherited_subnet_id\":null,\"inherited_subnet6_id\":null,\"inherited_realm_id\"\
-        :null,\"inherited_pxe_loader\":null}]\n}\n"
+      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-06-21
+        13:24:35 UTC\",\"updated_at\":\"2023-06-21 13:24:38 UTC\",\"id\":5,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -107,7 +91,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -139,16 +123,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/hostgroups/4
+    uri: https://foreman.example.org/katello/api/organizations/5/activation_keys?search=name%3D%22convert2rhel_rhel7%22&per_page=4294967296
   response:
     body:
-      string: '{"content_source_id":null,"content_source_name":null,"content_view_id":1,"content_view_name":"Default
-        Organization View","lifecycle_environment_id":null,"lifecycle_environment_name":null,"kickstart_repository_id":null,"subnet_id":null,"subnet_name":null,"operatingsystem_id":null,"operatingsystem_name":null,"domain_id":null,"domain_name":null,"compute_profile_id":null,"compute_profile_name":null,"ancestry":null,"parent_id":null,"parent_name":null,"ptable_id":null,"ptable_name":null,"medium_id":null,"medium_name":null,"pxe_loader":null,"subnet6_id":null,"subnet6_name":null,"compute_resource_id":null,"compute_resource_name":null,"architecture_id":null,"architecture_name":null,"realm_id":null,"realm_name":null,"created_at":"2022-08-29
-        11:37:08 UTC","updated_at":"2022-09-09 12:53:18 UTC","id":4,"name":"Oracle
-        Linux 7 converting","title":"Oracle Linux 7 converting","description":"","puppet_proxy_id":null,"puppet_proxy_name":null,"puppet_ca_proxy_id":null,"puppet_ca_proxy_name":null,"openscap_proxy_id":null,"openscap_proxy_name":null,"puppet_proxy":null,"puppet_ca_proxy":null,"openscap_proxy":null,"inherited_compute_profile_id":null,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":null,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[{"priority":60,"created_at":"2022-08-29
-        11:37:08 UTC","updated_at":"2022-08-29 11:37:08 UTC","id":48,"name":"kt_activation_keys","parameter_type":"string","value":"convert2rhel_oracle7"}],"template_combinations":[],"locations":[{"id":2,"name":"Default
-        Location","title":"Default Location","description":null}],"organizations":[{"id":1,"name":"Default
-        Organization","title":"Default Organization","description":null}]}'
+      string: '{"total":4,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"convert2rhel_rhel7\"","sort":{"by":"name","order":"asc"},"results":[]}
+
+        '
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -165,9 +145,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 5; Test Organization
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -199,15 +179,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/5/environments?search=name%3D%22Library%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2022-09-13 13:05:58 UTC\",\"updated_at\"\
-        :\"2022-09-13 13:06:00 UTC\",\"id\":5,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":3,"name":"Library","label":"Library","description":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2023-06-21
+        13:24:36 UTC","updated_at":"2023-06-21 13:24:36 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":2,"packages":1773,"module_streams":0,"errata":{"security":4,"bugfix":2,"enhancement":12,"total":18},"yum_repositories":4,"docker_repositories":0,"ostree_repositories":0,"products":4,"debs":0,"deb_repositories":0},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[{"name":"convert2rhel_centos7","id":7},{"name":"convert2rhel_centos8","id":8}]}]}
+
+        '
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -224,9 +203,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 5; Test Organization
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
@@ -258,15 +237,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/5/content_views?search=name%3D%22Default+Organization+View%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2022-09-13 13:05:58 UTC\",\"updated_at\"\
-        :\"2022-09-13 13:06:00 UTC\",\"id\":5,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Default
+        Organization View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":true,"version_count":1,"latest_version":"1.0","latest_version_id":6,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"repository_ids":[],"id":6,"name":"Default
+        Organization View","label":"Default_Organization_View","description":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2023-06-21
+        13:24:37 UTC","updated_at":"2023-06-21 13:24:37 UTC","last_task":null,"latest_version_environments":[{"id":3,"name":"Library","label":"Library"}],"repositories":[],"versions":[{"id":6,"version":"1.0","published":"2023-06-21
+        13:24:37 UTC","environment_ids":[3]}],"components":[],"content_view_components":[],"activation_keys":[{"id":4,"name":"convert2rhel_oracle7"},{"id":5,"name":"convert2rhel_oracle8"}],"hosts":[],"next_version":"1.0","last_published":"2023-06-21
+        13:24:37 UTC","environments":[{"id":3,"label":"Library","name":"Library","activation_keys":[4,5],"hosts":[],"permissions":{"readable":true}}]}]}
+
+        '
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -283,9 +265,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 5; Test Organization
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=96
       Strict-Transport-Security:
@@ -306,7 +288,8 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"hostgroup": {"organization_ids": [5]}}'
+    body: '{"organization_id": 5, "name": "convert2rhel_rhel7", "environment_id":
+      3, "content_view_id": 6, "auto_attach": false}'
     headers:
       Accept:
       - application/json;version=2
@@ -315,21 +298,21 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '40'
+      - '117'
       Content-Type:
       - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: PUT
-    uri: https://foreman.example.org/api/hostgroups/4
+    method: POST
+    uri: https://foreman.example.org/katello/api/activation_keys
   response:
     body:
-      string: '{"subnet_id":null,"subnet_name":null,"operatingsystem_id":null,"operatingsystem_name":null,"domain_id":null,"domain_name":null,"compute_profile_id":null,"compute_profile_name":null,"ancestry":null,"parent_id":null,"parent_name":null,"ptable_id":null,"ptable_name":null,"medium_id":null,"medium_name":null,"pxe_loader":null,"subnet6_id":null,"subnet6_name":null,"compute_resource_id":null,"compute_resource_name":null,"architecture_id":null,"architecture_name":null,"realm_id":null,"realm_name":null,"created_at":"2022-08-29
-        11:37:08 UTC","updated_at":"2022-09-09 12:53:18 UTC","id":4,"name":"Oracle
-        Linux 7 converting","title":"Oracle Linux 7 converting","description":"","puppet_proxy_id":null,"puppet_proxy_name":null,"puppet_ca_proxy_id":null,"puppet_ca_proxy_name":null,"openscap_proxy_id":null,"openscap_proxy_name":null,"puppet_proxy":null,"puppet_ca_proxy":null,"openscap_proxy":null,"inherited_compute_profile_id":null,"inherited_domain_id":null,"inherited_puppet_proxy_id":null,"inherited_puppet_ca_proxy_id":null,"inherited_compute_resource_id":null,"inherited_operatingsystem_id":null,"inherited_architecture_id":null,"inherited_medium_id":null,"inherited_ptable_id":null,"inherited_subnet_id":null,"inherited_subnet6_id":null,"inherited_realm_id":null,"inherited_pxe_loader":null,"parameters":[{"priority":60,"created_at":"2022-08-29
-        11:37:08 UTC","updated_at":"2022-08-29 11:37:08 UTC","id":48,"name":"kt_activation_keys","parameter_type":"string","value":"convert2rhel_oracle7"}],"template_combinations":[],"locations":[{"id":2,"name":"Default
-        Location","title":"Default Location","description":null}],"organizations":[{"id":5,"name":"Test
-        Organization","title":"Test Organization","description":"A test organization"}]}'
+      string: '  {"service_level":null,"content_overrides":[],"id":6,"name":"convert2rhel_rhel7","description":null,"unlimited_hosts":true,"auto_attach":false,"content_view_id":6,"environment_id":3,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2023-06-21
+        13:29:37 UTC","updated_at":"2023-06-21 13:29:37 UTC","content_view":{"id":6,"name":"Default
+        Organization View"},"environment":{"name":"Library","id":3},"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+
+        '
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
@@ -346,9 +329,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 5; Test Organization
       Foreman_version:
-      - 3.3.0
+      - 3.7.0-develop
       Keep-Alive:
       - timeout=15, max=95
       Strict-Transport-Security:
@@ -366,6 +349,6 @@ interactions:
       X-XSS-Protection:
       - 1; mode=block
     status:
-      code: 200
-      message: OK
+      code: 201
+      message: Created
 version: 1
