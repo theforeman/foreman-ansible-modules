@@ -52,6 +52,8 @@ def test_check_mode(tmpdir, module):
 
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
 def test_inventory(tmpdir, module):
+    if sys.version_info[0] == 2 and 'GITHUB_ACTIONS' in os.environ.keys():
+        pytest.skip("Inventory tests currently don't work inside a container, but Python2 tests require a container on GHA.")
     inventory = [os.path.join(os.getcwd(), 'tests', 'inventory', inv) for inv in ['hosts', "{}.foreman.yml".format(module)]]
     run = run_playbook(module, inventory=inventory)
     assert run.rc == 0
