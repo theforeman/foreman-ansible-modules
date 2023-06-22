@@ -620,8 +620,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SKARO</span>
 <span class="w">    </span><span class="nt">organizations</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DALEK INC</span>
-<span class="w">    </span><span class="nt">with_fileglob</span><span class="p">:</span>
-<span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;./arsenal_templates/*.erb&quot;</span>
+<span class="w">  </span><span class="nt">with_fileglob</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;./arsenal_templates/*.erb&quot;</span>
 
 <span class="c1"># If the templates are stored locally and the ansible module is executed on a remote host</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure latest version of all your Job Templates</span>
@@ -631,6 +631,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
 <span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">lookup</span><span class="o">(</span><span class="s2">&quot;file&quot;</span><span class="o">,</span> <span class="nv">item.src</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&#39;</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;</span><span class="cp">{{</span> <span class="nv">item.path</span> <span class="cp">}}</span><span class="s">&#39;</span>
 <span class="w">  </span><span class="nt">with_filetree</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/path/to/job/templates&#39;</span>
 <span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">item.state == &#39;file&#39;</span>
 
