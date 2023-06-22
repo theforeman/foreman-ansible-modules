@@ -254,6 +254,7 @@ EXAMPLES = '''
     password: "changeme"
     state: present
     template: '{{ lookup("file", item.src) }}'
+    name: '{{ item }}'
   with_filetree: '/path/to/job/templates'
   when: item.state == 'file'
 
