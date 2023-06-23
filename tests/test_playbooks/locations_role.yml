@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Ensure test locations are deleted
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: "absent"
+      loop:
+        - "Test Location 1"
+        - "Test Location 2"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: locations
+      vars:
+        foreman_locations:
+          - name: "Test Location 1"
+          - name: "Test Location 2"
+            description: "2nd location"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Delete the test locations
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ item }}"
+        location_state: "absent"
+      loop:
+        - "Test Location 1"
+        - "Test Location 2"

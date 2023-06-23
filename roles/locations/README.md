@@ -1,7 +1,7 @@
 theforeman.foreman.locations
 ===================================
 
-This role creates and manages Satellite locations.
+This role creates and manages Foreman locations.
 
 Role Variables
 --------------
