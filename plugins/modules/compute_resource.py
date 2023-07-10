@@ -49,7 +49,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "proxmox", "EC2", "AzureRm", "GCE"]
+    choices: ["vmware", "libvirt", "ovirt", "proxmox", "EC2", "AzureRm", "GCE", "Openstack"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -74,7 +74,7 @@ options:
         type: str
       tenant:
         description:
-          - AzureRM tenant
+          - AzureRM tenant, Openstack project name
         type: str
       app_ident:
         description:
@@ -184,6 +184,18 @@ options:
           - X509 Certification Authorities, only valid for I(provider=ovirt)
         type: str
         version_added: 2.0.0
+      domain:
+        description:
+          - Auth domain for users, only valid for I(provider=Openstack)
+        type: str
+      project_domain_name:
+        description:
+          - Project domain name, only valid for I(provider=Openstack)
+        type: str
+      project_domain_id:
+        description:
+          - Project domain id, only valid for I(provider=Openstack)
+        type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -346,6 +358,28 @@ EXAMPLES = '''
     password: "changeme"
     state: present
 
+- name: create Openstack compute resource
+  theforeman.foreman.compute_resource:
+    name: Openstack compute resource
+    description: Openstack
+    locations:
+      - DC1
+    organizations:
+      - ACME
+    provider: Openstack
+    provider_params:
+      url: "https://Openstack.example.com:5000/v3"
+      user: admin
+      password: secret
+      tenant: "MyProject"
+      domain: "example.com"
+      project_domain_name: "example.com"
+      project_domain_id: "0123456789a0123456789b0123456789"
+    server_url: "https://foreman.example.com"
+    username: "admin"
+    password: "changeme"
+    state: present
+
 '''
 
 RETURN = '''
@@ -388,6 +422,9 @@ def get_provider_info(provider):
     elif provider_name == 'gce':
         return 'GCE', ['project', 'email', 'key_path', 'zone']
 
+    elif provider_name == 'openstack':
+        return 'Openstack', ['url', 'user', 'password', 'tenant', 'domain', 'project_domain_name', 'project_domain_id']
+
     else:
         return '', []
 
@@ -402,7 +439,7 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'proxmox', 'EC2', 'AzureRm', 'GCE']),
+            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'proxmox', 'EC2', 'AzureRm', 'GCE', 'Openstack']),
             display_type=dict(invisible=True),
             datacenter=dict(invisible=True),
             url=dict(invisible=True),
@@ -424,6 +461,9 @@ def main():
             keyboard_layout=dict(invisible=True),
             public_key=dict(invisible=True),
             sub_id=dict(invisible=True),
+            domain=dict(invisible=True),
+            project_domain_name=dict(invisible=True),
+            project_domain_id=dict(invisible=True),
         ),
         argument_spec=dict(
             provider_params=dict(type='dict', options=dict(
@@ -449,6 +489,9 @@ def main():
                                               'is', 'lt', 'nl', 'pl', 'ru', 'th', 'de', 'en-us', 'fi', 'fr-be', 'hr', 'it', 'lv', 'nl-be', 'pt', 'sl', 'tr']),
                 public_key=dict(),
                 sub_id=dict(),
+                domain=dict(),
+                project_domain_name=dict(),
+                project_domain_id=dict(),
             ),
                 mutually_exclusive=[['user', 'sub_id']],
             ),
