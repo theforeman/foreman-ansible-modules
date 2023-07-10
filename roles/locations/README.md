@@ -1,7 +1,7 @@
 theforeman.foreman.locations
 ===================================
 
-This role creates and manages Foreman locations.
+This role creates and manages locations.
 
 Role Variables
 --------------
