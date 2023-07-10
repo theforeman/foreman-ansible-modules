@@ -314,6 +314,7 @@ Parameters
       - :ansible-option-choices-entry:`"EC2"`
       - :ansible-option-choices-entry:`"AzureRm"`
       - :ansible-option-choices-entry:`"GCE"`
+      - :ansible-option-choices-entry:`"Openstack"`
 
 
       .. raw:: html
@@ -539,6 +540,40 @@ Parameters
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
       Display type to use for the remote console, only valid for \ :emphasis:`provider=libvirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/domain"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/domain:
+
+      .. rst-class:: ansible-option-title
+
+      **domain**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/domain" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Auth domain for users, only valid for \ :emphasis:`provider=Openstack`\ 
 
 
       .. raw:: html
@@ -794,6 +829,74 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/project_domain_id"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/project_domain_id:
+
+      .. rst-class:: ansible-option-title
+
+      **project_domain_id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/project_domain_id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Project domain id, only valid for \ :emphasis:`provider=Openstack`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/project_domain_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/project_domain_name:
+
+      .. rst-class:: ansible-option-title
+
+      **project_domain_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/project_domain_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Project domain name, only valid for \ :emphasis:`provider=Openstack`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-provider_params/public_key"></div>
 
       .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/public_key:
@@ -1013,7 +1116,7 @@ Parameters
 
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
-      AzureRM tenant
+      AzureRM tenant, Openstack project name
 
 
       .. raw:: html
@@ -1627,6 +1730,28 @@ Examples
           email: myname@atix.de
           key_path: "/usr/share/foreman/gce_orcharhino_key.json"
           zone: europe-west3-b
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create Openstack compute resource
+      theforeman.foreman.compute_resource:
+        name: Openstack compute resource
+        description: Openstack
+        locations:
+          - DC1
+        organizations:
+          - ACME
+        provider: Openstack
+        provider_params:
+          url: "https://Openstack.example.com:5000/v3"
+          user: admin
+          password: secret
+          tenant: "MyProject"
+          domain: "example.com"
+          project_domain_name: "example.com"
+          project_domain_id: "0123456789a0123456789b0123456789"
         server_url: "https://foreman.example.com"
         username: "admin"
         password: "changeme"
