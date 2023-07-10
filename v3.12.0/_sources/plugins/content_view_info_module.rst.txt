@@ -1,0 +1,657 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.content_view_info_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Title
+
+theforeman.foreman.content_view_info module -- Fetch information about Content Views
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.12.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.content_view_info_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.content_view_info`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 2.1.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Fetch information about Content Views
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.content_view_info_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Label of the Location to scope the search for.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the resource to fetch information for.
+
+      Mutually exclusive with \ :emphasis:`search`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-organization:
+
+      .. rst-class:: ansible-option-title
+
+      **organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of the Organization to scope the search for.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-search"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-search:
+
+      .. rst-class:: ansible-option-title
+
+      **search**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-search" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Search query to use
+
+      If None, and \ :emphasis:`name`\  is not set, all resources are returned.
+
+      Mutually exclusive with \ :emphasis:`name`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Show a content_view"
+      theforeman.foreman.content_view_info:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "CentOS 8"
+
+    - name: "Show all content_views with name CentOS 8"
+      theforeman.foreman.content_view_info:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        search: 'name = "CentOS 8"'
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-content_view"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__return-content_view:
+
+      .. rst-class:: ansible-option-title
+
+      **content_view**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-content_view" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Details about the found content\_view
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success and \ :emphasis:`name`\  was passed
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-content_views"></div>
+
+      .. _ansible_collections.theforeman.foreman.content_view_info_module__return-content_views:
+
+      .. rst-class:: ansible-option-title
+
+      **content_views**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-content_views" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of all found content\_views and their details
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success and \ :emphasis:`search`\  was passed
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Eric Helms (@ehelms)
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

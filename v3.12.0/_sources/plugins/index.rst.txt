@@ -1,0 +1,341 @@
+
+
+
+.. _plugins_in_theforeman.foreman:
+
+Theforeman.Foreman
+==================
+
+Collection version 3.12.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+Description
+-----------
+
+Ansible Modules to manage Foreman and Katello installations
+
+**Authors:**
+
+* @lessfoobar <59063885+lessfoobar@users.noreply.github.com>
+* Adam Růžička <aruzicka@redhat.com>
+* Alan.Wong <alawong@redhat.com>
+* AlanCoding <arominge@redhat.com>
+* Andrew Kofink <ajkofink@gmail.com>
+* Anthony Green <green@moxielogic.com>
+* Anton <nesanton@gmail.com>
+* Baptiste Agasse <baptiste.agasse@gmail.com>
+* Bernhard Hopfenmüller <hopfenmueller@atix.de>
+* Bernhard Suttner <sbernhard@users.noreply.github.com>
+* Bryan Kearney <bkearney@redhat.com>
+* Chris Forkner <gen2fish@gmail.com>
+* Chris Hindman <chindman@chindman.remote.csb>
+* Chris Snell <chsnell@users.noreply.github.com>
+* Christoffer Reijer <ephracis@gmail.com>
+* Dave Thomas <11580510+dthomastx@users.noreply.github.com>
+* Deric Crago <deric.crago@gmail.com>
+* Eric D. Helms <ericdhelms@gmail.com>
+* Eric L <ericzolf@users.noreply.github.com>
+* Ethan <smithe2413@gmail.com>
+* Evgeni Golov <evgeni@golov.de>
+* Ewoud Kohl van Wijngaarden <ewoud@kohlvanwijngaarden.nl>
+* Felix Fontein <felix@fontein.de>
+* Gerald Vogt <gvde@users.noreply.github.com>
+* Greg Swift <gregswift@gmail.com>
+* Griffin Sullivan <gsulliva@redhat.com>
+* Hideki Saito <saito@fgrep.org>
+* Ismael Puerto <ismaelpuerto@users.noreply.github.com>
+* Jameer Pathan <jpathan@redhat.com>
+* James Jeffers <jjeffers@redhat.com>
+* James Stuart <james@stuart.name>
+* Jeffrey van Pelt <jeff@vanpelt.one>
+* Jeremy Albinet <jalbinet@scaleway.com>
+* Jeremy Lenz <jlenz@redhat.com>
+* Jesper Reenberg <jesper.reenberg@gmail.com>
+* John Berninger <john.berninger@gmail.com>
+* Josh Swanson <jswanson@redhat.com>
+* Kenny Tordeurs <ktordeur@redhat.com>
+* Kirill Shirinkin <fodojyko@gmail.com>
+* Leos Stejskal <lstejska@redhat.com>
+* Lester Cheung <lcheung@threatmetrix.com>
+* Lester Claudio <claudiol@redhat.com>
+* Lucas Bickel <hairmare@rabe.ch>
+* Lukas Magauer <Lukas.Magauer@engel.at>
+* Lukáš Zapletal <lzap+git@redhat.com>
+* Manisha Singhal <manisha1595@gmail.com>
+* Manuel Bonk <githubMB@bonkii.com>
+* Marcelo Moreira de Mello <tchello.mello@gmail.com>
+* Marek Czernek <mczernek@redhat.com>
+* Mark Hlawatschek <hlawatschek@atix.de>
+* Markus Bucher <bucher@atix.de>
+* Martin Schlossarek <martin.schlossarek@gmail.com>
+* Matthias Dellweg <2500@gmx.de>
+* Miikka Joutsenvirta <miikka.joutsenvirta@dna.fi>
+* Nikhil Jain <jainnikhil30@gmail.com>
+* Olivier <oliverf1ca@yahoo.com>
+* Ondrej Prazak <oprazak@redhat.com>
+* Ondřej Ezr <oezr@redhat.com>
+* Ondřej Gajdušek <ogajduse@redhat.com>
+* Patrick C. F. Ernzer <pcfe@pcfe.net>
+* Patrick Creech <pcreech@redhat.com>
+* Paul Armstrong <parmstro@redhat.com>
+* Paul Belanger <pabelanger@redhat.com>
+* Paul Gration <pmgration@gmail.com>
+* Peter Ondrejka <pondrejk@redhat.com>
+* Philipp <philipp98.joos@gmail.com>
+* Quirin Pamp <pamp@atix.de>
+* Richard Stempfl <richielatk@gmail.com>
+* Richard Waax <40852459+riwael@users.noreply.github.com>
+* Sam <samcalvert@me.com>
+* Samir Jha <sjha4@ncsu.edu>
+* Sean O'Keeffe <seanokeeffe797@gmail.com>
+* Sorin Sbarnea <sorin.sbarnea@gmail.com>
+* Steffen Frömer <knumskull@users.noreply.github.com>
+* Stoned Elipot <stoned.elipot@gmail.com>
+* TTherouanne <thomas@therouanne.com>
+* Thomas Mueller <thomas@chaschperli.ch>
+* William Bradford Clark <wclark@redhat.com>
+* Yifat Makias <ymakias@redhat.com>
+* achevalet <anthony.chevalet@gmail.com>
+* bob <57952350+TheRedGreek@users.noreply.github.com>
+* calvingsmith <4283930+calvingsmith@users.noreply.github.com>
+* divialth <65872926+divialth@users.noreply.github.com>
+* furhouse <furhouse@users.noreply.github.com>
+* gardar <gardar@users.noreply.github.com>
+* igramic <36156377+igramic@users.noreply.github.com>
+* jerrejkw <43955357+jerrejkw@users.noreply.github.com>
+* marco <marco.markgraf@transporeon.com>
+* metalcated <mike.gomon@gmail.com>
+* russianguppie <46544650+russianguppie@users.noreply.github.com>
+* willtome <willtome@gmail.com>
+
+**Supported ansible-core versions:**
+
+* 2.9 or newer
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+
+
+.. toctree::
+    :maxdepth: 1
+
+
+Plugin Index
+------------
+
+These are the plugins in the theforeman.foreman collection:
+
+
+Modules
+~~~~~~~
+
+* :ansplugin:`activation_key module <theforeman.foreman.activation_key#module>` -- Manage Activation Keys
+* :ansplugin:`architecture module <theforeman.foreman.architecture#module>` -- Manage Architectures
+* :ansplugin:`auth_source_ldap module <theforeman.foreman.auth_source_ldap#module>` -- Manage LDAP Authentication Sources
+* :ansplugin:`bookmark module <theforeman.foreman.bookmark#module>` -- Manage Bookmarks
+* :ansplugin:`compute_attribute module <theforeman.foreman.compute_attribute#module>` -- Manage Compute Attributes
+* :ansplugin:`compute_profile module <theforeman.foreman.compute_profile#module>` -- Manage Compute Profiles
+* :ansplugin:`compute_resource module <theforeman.foreman.compute_resource#module>` -- Manage Compute Resources
+* :ansplugin:`config_group module <theforeman.foreman.config_group#module>` -- Manage (Puppet) Config Groups
+* :ansplugin:`content_credential module <theforeman.foreman.content_credential#module>` -- Manage Content Credentials
+* :ansplugin:`content_export_info module <theforeman.foreman.content_export_info#module>` -- List content exports
+* :ansplugin:`content_export_library module <theforeman.foreman.content_export_library#module>` -- Manage library content exports
+* :ansplugin:`content_export_repository module <theforeman.foreman.content_export_repository#module>` -- Manage repository content exports
+* :ansplugin:`content_export_version module <theforeman.foreman.content_export_version#module>` -- Manage content view version content exports
+* :ansplugin:`content_upload module <theforeman.foreman.content_upload#module>` -- Upload content to a repository
+* :ansplugin:`content_view module <theforeman.foreman.content_view#module>` -- Manage Content Views
+* :ansplugin:`content_view_filter module <theforeman.foreman.content_view_filter#module>` -- Manage Content View Filters
+* :ansplugin:`content_view_filter_info module <theforeman.foreman.content_view_filter_info#module>` -- Fetch information about a Content View Filter
+* :ansplugin:`content_view_filter_rule module <theforeman.foreman.content_view_filter_rule#module>` -- Manage content view filter rules
+* :ansplugin:`content_view_filter_rule_info module <theforeman.foreman.content_view_filter_rule_info#module>` -- Fetch information about a Content View Filter Rule
+* :ansplugin:`content_view_info module <theforeman.foreman.content_view_info#module>` -- Fetch information about Content Views
+* :ansplugin:`content_view_version module <theforeman.foreman.content_view_version#module>` -- Manage Content View Versions
+* :ansplugin:`content_view_version_info module <theforeman.foreman.content_view_version_info#module>` -- Fetch information about Content Views
+* :ansplugin:`discovery_rule module <theforeman.foreman.discovery_rule#module>` -- Manage Host Discovery Rules
+* :ansplugin:`domain module <theforeman.foreman.domain#module>` -- Manage Domains
+* :ansplugin:`domain_info module <theforeman.foreman.domain_info#module>` -- Fetch information about Domains
+* :ansplugin:`external_usergroup module <theforeman.foreman.external_usergroup#module>` -- Manage External User Groups
+* :ansplugin:`global_parameter module <theforeman.foreman.global_parameter#module>` -- Manage Global Parameters
+* :ansplugin:`hardware_model module <theforeman.foreman.hardware_model#module>` -- Manage Hardware Models
+* :ansplugin:`host module <theforeman.foreman.host#module>` -- Manage Hosts
+* :ansplugin:`host_collection module <theforeman.foreman.host_collection#module>` -- Manage Host Collections
+* :ansplugin:`host_errata_info module <theforeman.foreman.host_errata_info#module>` -- Fetch information about Host Errata
+* :ansplugin:`host_info module <theforeman.foreman.host_info#module>` -- Fetch information about Hosts
+* :ansplugin:`host_power module <theforeman.foreman.host_power#module>` -- Manage Power State of Hosts
+* :ansplugin:`hostgroup module <theforeman.foreman.hostgroup#module>` -- Manage Hostgroups
+* :ansplugin:`hostgroup_info module <theforeman.foreman.hostgroup_info#module>` -- Get information about hostgroup(s)
+* :ansplugin:`http_proxy module <theforeman.foreman.http_proxy#module>` -- Manage HTTP Proxies
+* :ansplugin:`image module <theforeman.foreman.image#module>` -- Manage Images
+* :ansplugin:`installation_medium module <theforeman.foreman.installation_medium#module>` -- Manage Installation Media
+* :ansplugin:`job_invocation module <theforeman.foreman.job_invocation#module>` -- Invoke Remote Execution Jobs
+* :ansplugin:`job_template module <theforeman.foreman.job_template#module>` -- Manage Job Templates
+* :ansplugin:`lifecycle_environment module <theforeman.foreman.lifecycle_environment#module>` -- Manage Lifecycle Environments
+* :ansplugin:`location module <theforeman.foreman.location#module>` -- Manage Locations
+* :ansplugin:`operatingsystem module <theforeman.foreman.operatingsystem#module>` -- Manage Operating Systems
+* :ansplugin:`organization module <theforeman.foreman.organization#module>` -- Manage Organizations
+* :ansplugin:`organization_info module <theforeman.foreman.organization_info#module>` -- Get information about organization(s)
+* :ansplugin:`os_default_template module <theforeman.foreman.os_default_template#module>` -- Manage Default Template Associations To Operating Systems
+* :ansplugin:`partition_table module <theforeman.foreman.partition_table#module>` -- Manage Partition Table Templates
+* :ansplugin:`product module <theforeman.foreman.product#module>` -- Manage Products
+* :ansplugin:`provisioning_template module <theforeman.foreman.provisioning_template#module>` -- Manage Provisioning Templates
+* :ansplugin:`puppet_environment module <theforeman.foreman.puppet_environment#module>` -- Manage Puppet Environments
+* :ansplugin:`puppetclasses_import module <theforeman.foreman.puppetclasses_import#module>` -- Import Puppet Classes from a Proxy
+* :ansplugin:`realm module <theforeman.foreman.realm#module>` -- Manage Realms
+* :ansplugin:`redhat_manifest module <theforeman.foreman.redhat_manifest#module>` -- Interact with a Red Hat Satellite Subscription Manifest
+* :ansplugin:`repository module <theforeman.foreman.repository#module>` -- Manage Repositories
+* :ansplugin:`repository_info module <theforeman.foreman.repository_info#module>` -- Fetch information about Repositories
+* :ansplugin:`repository_set module <theforeman.foreman.repository_set#module>` -- Enable/disable Red Hat Repositories available through subscriptions
+* :ansplugin:`repository_set_info module <theforeman.foreman.repository_set_info#module>` -- Fetch information about Red Hat Repositories
+* :ansplugin:`repository_sync module <theforeman.foreman.repository_sync#module>` -- Sync a Repository or Product
+* :ansplugin:`resource_info module <theforeman.foreman.resource_info#module>` -- Gather information about resources
+* :ansplugin:`role module <theforeman.foreman.role#module>` -- Manage Roles
+* :ansplugin:`scap_content module <theforeman.foreman.scap_content#module>` -- Manage SCAP content
+* :ansplugin:`scap_tailoring_file module <theforeman.foreman.scap_tailoring_file#module>` -- Manage SCAP Tailoring Files
+* :ansplugin:`scc_account module <theforeman.foreman.scc_account#module>` -- Manage SUSE Customer Center Accounts
+* :ansplugin:`scc_product module <theforeman.foreman.scc_product#module>` -- Subscribe SUSE Customer Center Account Products
+* :ansplugin:`setting module <theforeman.foreman.setting#module>` -- Manage Settings
+* :ansplugin:`setting_info module <theforeman.foreman.setting_info#module>` -- Fetch information about Settings
+* :ansplugin:`smart_class_parameter module <theforeman.foreman.smart_class_parameter#module>` -- Manage Smart Class Parameters
+* :ansplugin:`smart_proxy module <theforeman.foreman.smart_proxy#module>` -- Manage Smart Proxies
+* :ansplugin:`snapshot module <theforeman.foreman.snapshot#module>` -- Manage Snapshots
+* :ansplugin:`snapshot_info module <theforeman.foreman.snapshot_info#module>` -- Fetch information about Foreman Snapshots
+* :ansplugin:`status_info module <theforeman.foreman.status_info#module>` -- Get status info
+* :ansplugin:`subnet module <theforeman.foreman.subnet#module>` -- Manage Subnets
+* :ansplugin:`subnet_info module <theforeman.foreman.subnet_info#module>` -- Fetch information about Subnets
+* :ansplugin:`subscription_info module <theforeman.foreman.subscription_info#module>` -- Fetch information about Subscriptions
+* :ansplugin:`subscription_manifest module <theforeman.foreman.subscription_manifest#module>` -- Manage Subscription Manifests
+* :ansplugin:`sync_plan module <theforeman.foreman.sync_plan#module>` -- Manage Sync Plans
+* :ansplugin:`templates_import module <theforeman.foreman.templates_import#module>` -- Sync Templates from a repository
+* :ansplugin:`user module <theforeman.foreman.user#module>` -- Manage Users
+* :ansplugin:`usergroup module <theforeman.foreman.usergroup#module>` -- Manage User Groups
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    activation_key_module
+    architecture_module
+    auth_source_ldap_module
+    bookmark_module
+    compute_attribute_module
+    compute_profile_module
+    compute_resource_module
+    config_group_module
+    content_credential_module
+    content_export_info_module
+    content_export_library_module
+    content_export_repository_module
+    content_export_version_module
+    content_upload_module
+    content_view_module
+    content_view_filter_module
+    content_view_filter_info_module
+    content_view_filter_rule_module
+    content_view_filter_rule_info_module
+    content_view_info_module
+    content_view_version_module
+    content_view_version_info_module
+    discovery_rule_module
+    domain_module
+    domain_info_module
+    external_usergroup_module
+    global_parameter_module
+    hardware_model_module
+    host_module
+    host_collection_module
+    host_errata_info_module
+    host_info_module
+    host_power_module
+    hostgroup_module
+    hostgroup_info_module
+    http_proxy_module
+    image_module
+    installation_medium_module
+    job_invocation_module
+    job_template_module
+    lifecycle_environment_module
+    location_module
+    operatingsystem_module
+    organization_module
+    organization_info_module
+    os_default_template_module
+    partition_table_module
+    product_module
+    provisioning_template_module
+    puppet_environment_module
+    puppetclasses_import_module
+    realm_module
+    redhat_manifest_module
+    repository_module
+    repository_info_module
+    repository_set_module
+    repository_set_info_module
+    repository_sync_module
+    resource_info_module
+    role_module
+    scap_content_module
+    scap_tailoring_file_module
+    scc_account_module
+    scc_product_module
+    setting_module
+    setting_info_module
+    smart_class_parameter_module
+    smart_proxy_module
+    snapshot_module
+    snapshot_info_module
+    status_info_module
+    subnet_module
+    subnet_info_module
+    subscription_info_module
+    subscription_manifest_module
+    sync_plan_module
+    templates_import_module
+    user_module
+    usergroup_module
+
+
+Callback Plugins
+~~~~~~~~~~~~~~~~
+
+* :ansplugin:`foreman callback <theforeman.foreman.foreman#callback>` -- Sends events to Foreman
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    foreman_callback
+
+
+Filter Plugins
+~~~~~~~~~~~~~~
+
+* :ansplugin:`cp_label filter <theforeman.foreman.cp_label#filter>` -- Convert strings to Candlepin labels
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    cp_label_filter
+
+
+Inventory Plugins
+~~~~~~~~~~~~~~~~~
+
+* :ansplugin:`foreman inventory <theforeman.foreman.foreman#inventory>` -- Foreman inventory source
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    foreman_inventory
+
+
