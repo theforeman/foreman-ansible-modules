@@ -6,6 +6,21 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.12.0
+=======
+
+Minor Changes
+-------------
+
+- content_view_filter - add deb filter type
+- content_view_filter_rule - add spec for deb filter rules
+- locations role - New role to manage locations
+
+Bugfixes
+--------
+
+- convert2rhel role - Sync repos before CV publish (https://bugzilla.redhat.com/show_bug.cgi?id=2216907)
+
 v3.11.0
 =======
 
