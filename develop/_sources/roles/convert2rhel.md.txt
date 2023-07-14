@@ -1,7 +1,7 @@
 theforeman.foreman.convert2rhel
 ===============================
 
-This role creates a basic configuration for everything needed to register and convert CentOS clients to Red hat Enterprise Linux.
+This role creates a basic configuration for everything needed to register and convert CentOS clients to Red Hat Enterprise Linux.
 
 First step is upload of manifest and synchronization of RHEL repositories. For more detail see [content_rhel Role](https://github.com/theforeman/foreman-ansible-modules/blob/develop/roles/content_rhel/README.md).
 
