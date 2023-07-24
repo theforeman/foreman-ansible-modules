@@ -94,6 +94,24 @@
           vars:
             smart_class_parameter_state: present
             expected_change: false
+
+        - include_tasks: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: string
+            smart_class_parameter_override: false
+            smart_class_parameter_state: present
+            expected_change: true
+        - include_tasks: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_parameter_type: string
+            smart_class_parameter_override: false
+            smart_class_parameter_state: present
+            expected_change: false
+        - include_tasks: tasks/smart_class_parameter.yml
+          vars:
+            smart_class_parameter_state: present
+            expected_change: true
+
         - include_tasks: tasks/smart_class_parameter.yml
           vars:
             smart_class_parameter_parameter_type: none
