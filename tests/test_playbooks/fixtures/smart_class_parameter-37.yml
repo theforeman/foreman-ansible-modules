@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.5.0-rc1","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.7.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '62'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.5.0-rc1
+      - 3.7.0
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -71,13 +71,15 @@ interactions:
       string: "{\n  \"total\": 71,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"puppetclass_name=ntp and parameter=burst\",\n
         \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"description\":\"\",\"override\":true,\"parameter_type\":\"boolean\",\"hidden_value?\":false,\"omit\":false,\"required\":false,\"validator_type\":null,\"validator_rule\":null,\"merge_overrides\":false,\"merge_default\":false,\"avoid_duplicates\":false,\"override_value_order\":\"fqdn\\nhostgroup\\nos\\ndomain\",\"created_at\":\"2022-11-25
-        11:45:14 UTC\",\"updated_at\":\"2022-11-25 11:47:11 UTC\",\"parameter\":\"burst\",\"id\":2,\"puppetclass_id\":2,\"override_values_count\":1,\"default_value\":false,\"puppetclass_name\":\"ntp\"}]\n}\n"
+        [{\"description\":\"\",\"override\":true,\"parameter_type\":\"boolean\",\"hidden_value?\":false,\"omit\":false,\"required\":false,\"validator_type\":null,\"validator_rule\":null,\"merge_overrides\":false,\"merge_default\":false,\"avoid_duplicates\":false,\"override_value_order\":\"fqdn\\nhostgroup\\nos\\ndomain\",\"created_at\":\"2023-07-26
+        07:53:30 UTC\",\"updated_at\":\"2023-07-26 08:24:46 UTC\",\"parameter\":\"burst\",\"id\":2,\"puppetclass_id\":2,\"override_values_count\":0,\"default_value\":false,\"puppetclass_name\":\"ntp\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '676'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -91,13 +93,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.5.0-rc1
+      - 3.7.0
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -126,14 +126,15 @@ interactions:
     uri: https://foreman.example.org/foreman_puppet/api/smart_class_parameters/2
   response:
     body:
-      string: '{"description":"","override":true,"parameter_type":"boolean","hidden_value?":false,"omit":false,"required":false,"validator_type":null,"validator_rule":null,"merge_overrides":false,"merge_default":false,"avoid_duplicates":false,"override_value_order":"fqdn\nhostgroup\nos\ndomain","created_at":"2022-11-25
-        11:45:14 UTC","updated_at":"2022-11-25 11:47:11 UTC","parameter":"burst","id":2,"puppetclass_id":2,"override_values_count":1,"default_value":false,"puppetclass_name":"ntp","environments":[{"name":"production","id":1}],"puppetclass":{"id":2,"name":"ntp","module_name":"ntp"},"override_values":[{"created_at":"2022-11-25
-        11:47:13 UTC","updated_at":"2022-11-25 11:47:13 UTC","id":3,"match":"domain=example.com","value":true,"omit":false}]}'
+      string: '{"description":"","override":true,"parameter_type":"boolean","hidden_value?":false,"omit":false,"required":false,"validator_type":null,"validator_rule":null,"merge_overrides":false,"merge_default":false,"avoid_duplicates":false,"override_value_order":"fqdn\nhostgroup\nos\ndomain","created_at":"2023-07-26
+        07:53:30 UTC","updated_at":"2023-07-26 08:24:46 UTC","parameter":"burst","id":2,"puppetclass_id":2,"override_values_count":0,"default_value":false,"puppetclass_name":"ntp","environments":[{"name":"production","id":1}],"puppetclass":{"id":2,"name":"ntp","module_name":"ntp"},"override_values":[]}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '601'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -147,13 +148,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.5.0-rc1
+      - 3.7.0
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -167,4 +166,122 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: '{"override_value": {"match": "domain=example.com", "value": true}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '66'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/foreman_puppet/api/smart_class_parameters/2/override_values
+  response:
+    body:
+      string: '{"created_at":"2023-07-26 08:24:48 UTC","updated_at":"2023-07-26 08:24:48
+        UTC","id":27,"match":"domain=example.com","value":true,"omit":false}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '142'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.7.0
+      Keep-Alive:
+      - timeout=15, max=97
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 201
+      message: Created
+- request:
+    body: '{"override_value": {"match": "hostgroup=test_hostgroup", "omit": true}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '71'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/foreman_puppet/api/smart_class_parameters/2/override_values
+  response:
+    body:
+      string: '{"created_at":"2023-07-26 08:24:48 UTC","updated_at":"2023-07-26 08:24:48
+        UTC","id":28,"match":"hostgroup=test_hostgroup","value":null,"omit":true}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '147'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.7.0
+      Keep-Alive:
+      - timeout=15, max=96
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 201
+      message: Created
 version: 1

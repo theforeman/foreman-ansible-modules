@@ -252,7 +252,7 @@ def main():
         module.set_entity('entity', entity)
         # When override is set to false, foreman API don't accept parameter_type and all 'override options' have to be set to false if present
         if not module_params.get('override', False):
-            module_params['parameter_type'] = ''
+            module_params['parameter_type'] = None
             for override_option in ['merge_default', 'merge_overrides', 'avoid_duplicates']:
                 if override_option in entity and entity[override_option]:
                     module_params[override_option] = False
