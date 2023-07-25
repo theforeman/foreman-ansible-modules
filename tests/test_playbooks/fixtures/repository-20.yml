@@ -129,7 +129,7 @@ interactions:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
         Product\"","sort":{"by":"name","order":"asc"},"results":[{"id":1,"cp_id":"830157316014","name":"Test
         Product","label":"Test_Product","description":"A happy little test product","provider_id":3,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2023-07-26
-        13:04:59 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
+        13:05:21 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":2}]}
 
         '
@@ -183,15 +183,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Repository+2%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/1/repositories?search=name%3D%22Test+Docker+Repository%22&per_page=4294967296
   response:
     body:
       string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Repository 2\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"8d0a3018-7146-4e37-805a-a92b08fe3c1f","relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo2","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-9.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo2/","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/eca30b5c-cc28-4297-ba07-13aee12b9432/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/196ab34a-3a0e-41e2-aba3-ff880ecb00a0/","publication_href":"/pulp/api/v3/publications/rpm/rpm/1dce976a-2641-4376-887e-7ed44f6fd216/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":8,"name":"Test
-        Repository 2","label":"just_a_test_repo2","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
+        Docker Repository\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"35290fc5-7e87-48d4-94b7-27d92f4d44ec","relative_path":"test_organization-test_product-just_a_test_repo","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"centos8-stream-katello-4-9.tanso.example.com/test_organization-test_product-just_a_test_repo","library_instance_id":null,"version_href":"/pulp/api/v3/repositories/container/container/444a3a71-c664-444e-8de8-50fb7d0dcf88/versions/0/","remote_href":"/pulp/api/v3/remotes/container/container/234e6c24-e568-4ae5-b53c-05b3ae06d5b5/","publication_href":null,"content_counts":{"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0},"mirroring_policy":"mirror_content_only","id":9,"name":"Test
+        Docker Repository","label":"just_a_test_repo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","os_versions":[],"content_id":"1690376688252","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"830157316014","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo2","last_sync_words":null}],"org_repository_count":2}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","os_versions":null,"content_id":"1690376721395","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"830157316014","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo","last_sync_words":null}],"org_repository_count":2}
 
         '
     headers:
@@ -200,7 +200,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1671'
+      - '1586'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -241,21 +241,21 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/repositories/8
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/repositories/9
   response:
     body:
-      string: '  {"relative_path":"Test_Organization/Library/custom/Test_Product/just_a_test_repo2","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2023-07-26
-        13:04:48 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2023-07-26
-        13:04:47 UTC","updated_at":"2023-07-26 13:04:54 UTC","backend_identifier":"8d0a3018-7146-4e37-805a-a92b08fe3c1f","container_repository_name":null,"full_path":"https://centos8-stream-katello-4-9.tanso.example.com/pulp/content/Test_Organization/Library/custom/Test_Product/just_a_test_repo2/","version_href":"/pulp/api/v3/repositories/rpm/rpm/eca30b5c-cc28-4297-ba07-13aee12b9432/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/196ab34a-3a0e-41e2-aba3-ff880ecb00a0/","publication_href":"/pulp/api/v3/publications/rpm/rpm/1dce976a-2641-4376-887e-7ed44f6fd216/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":8,"name":"Test
-        Repository 2","label":"just_a_test_repo2","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
+      string: '  {"relative_path":"test_organization-test_product-just_a_test_repo","promoted":false,"content_view_version_id":2,"library_instance_id":null,"last_contents_changed":"2023-07-26
+        13:05:21 UTC","organization_id":3,"organization":{"name":"Test Organization","label":"Test_Organization","id":3},"created_at":"2023-07-26
+        13:05:20 UTC","updated_at":"2023-07-26 13:05:28 UTC","backend_identifier":"35290fc5-7e87-48d4-94b7-27d92f4d44ec","container_repository_name":"test_organization-test_product-just_a_test_repo","full_path":"centos8-stream-katello-4-9.tanso.example.com/test_organization-test_product-just_a_test_repo","version_href":"/pulp/api/v3/repositories/container/container/444a3a71-c664-444e-8de8-50fb7d0dcf88/versions/0/","remote_href":"/pulp/api/v3/remotes/container/container/234e6c24-e568-4ae5-b53c-05b3ae06d5b5/","publication_href":null,"content_counts":{"docker_manifest":0,"docker_manifest_list":0,"docker_tag":0},"mirroring_policy":"mirror_content_only","id":9,"name":"Test
+        Docker Repository","label":"just_a_test_repo","description":null,"content_view_versions":[],"last_sync":null,"content_view":{"id":2,"name":"Default
         Organization View"},"content_view_version":{"id":2,"name":"Default Organization
-        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"yum","url":"https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/","arch":"noarch","os_versions":[],"content_id":"1690376688252","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"830157316014","name":"Test
-        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Test_Product_just_a_test_repo2","last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":null,"docker_tags_whitelist":null,"include_tags":null,"exclude_tags":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":4,"ssl_ca_cert_id":5,"ssl_client_cert_id":5,"ssl_client_key_id":5,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"metadata_expire":null,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":5,"name":"Test
-        SSL Cert"},"ssl_client_cert":{"id":5,"name":"Test SSL Cert"},"ssl_client_key":{"id":5,"name":"Test
-        SSL Cert"},"gpg_key":{"id":4,"name":"Test GPG key"},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":false,"upstream_auth_exists":false}
+        View 1.0","content_view_id":2},"kt_environment":{"id":2,"name":"Library"},"content_type":"docker","url":"https://docker.io","arch":"noarch","os_versions":null,"content_id":"1690376721395","generic_remote_options":null,"major":null,"minor":null,"product":{"id":1,"cp_id":"830157316014","name":"Test
+        Product","orphaned":false,"redhat":false,"sync_plan":null},"content_label":null,"last_sync_words":null,"environment":{"id":2,"registry_unauthenticated_pull":false},"docker_upstream_name":"busybox","docker_tags_whitelist":["latest"],"include_tags":["latest"],"exclude_tags":["*-source"],"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"upstream_username":"dockeruser","deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"metadata_expire":null,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"gpg_key":{"id":null,"name":null},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":true,"upstream_auth_exists":true,"content_view_environments":[]}
 
         '
     headers:
@@ -264,7 +264,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '2844'
+      - '2752'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';

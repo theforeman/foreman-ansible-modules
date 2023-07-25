@@ -842,6 +842,8 @@ class ForemanAnsibleModule(AnsibleModule):
         return result
 
     def _lookup_entity(self, identifier, entity_spec, params=None):
+        if identifier is NoEntity:
+            return NoEntity
         resource_type = entity_spec['resource_type']
         failsafe = entity_spec.get('failsafe', False)
         thin = entity_spec.get('thin', True)

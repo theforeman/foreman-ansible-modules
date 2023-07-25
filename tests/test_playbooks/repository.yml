@@ -11,11 +11,15 @@
         organization_state: present
     - include_tasks: tasks/content_credential.yml
       vars:
+        content_credential_name: "Test GPG key"
+        content_credential_type: "gpg_key"
+        content_credential_content: "key"
         content_credential_state: present
     - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
+        content_credential_content: "key"
         content_credential_state: present
     - include_tasks: tasks/product.yml
       vars:
@@ -115,6 +119,24 @@
           vars:
             repository_state: present
             repository_mirroring_policy: mirror_content_only
+            expected_change: false
+            repository_name: "Test Repository 2"
+        - include_tasks: tasks/repository.yml
+          vars:
+            repository_state: present
+            repository_gpg_key: ""
+            repository_ssl_ca_cert: ""
+            repository_ssl_client_cert: ""
+            repository_ssl_client_key: ""
+            expected_change: true
+            repository_name: "Test Repository 2"
+        - include_tasks: tasks/repository.yml
+          vars:
+            repository_state: present
+            repository_gpg_key: ""
+            repository_ssl_ca_cert: ""
+            repository_ssl_client_cert: ""
+            repository_ssl_client_key: ""
             expected_change: false
             repository_name: "Test Repository 2"
         - include_tasks: tasks/repository.yml
