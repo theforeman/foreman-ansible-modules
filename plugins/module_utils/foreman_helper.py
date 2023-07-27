@@ -575,6 +575,21 @@ class ForemanAnsibleModule(AnsibleModule):
             _organization_create['params'].append(_ignore_types_param)
             _organization_update['params'].append(_ignore_types_param)
 
+    @_check_patch_needed(fixed_version='3.8.0', plugins=['katello'])
+    def _patch_products_repositories_allow_nil_credential(self):
+        """
+        This is a workaround for the missing allow_nil: true in the Products and Repositories controllers
+        See https://projects.theforeman.org/issues/36497
+        """
+
+        for resource in ['products', 'repositories']:
+            methods = self.foremanapi.apidoc['docs']['resources'][resource]['methods']
+            for action in ['create', 'update']:
+                resource_action = next(x for x in methods if x['name'] == action)
+                for param in ['gpg_key_id', 'ssl_ca_cert_id', 'ssl_client_cert_id', 'ssl_client_key_id']:
+                    resource_param = next(x for x in resource_action['params'] if x['name'] == param)
+                    resource_param['allow_nil'] = True
+
     def check_requirements(self):
         if not HAS_APYPIE:
             self.fail_json(msg=missing_required_lib("requests"), exception=APYPIE_IMP_ERR)
@@ -620,6 +635,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_cv_filter_rule_api()
         self._patch_ak_product_content_per_page()
         self._patch_organization_ignore_types_api()
+        self._patch_products_repositories_allow_nil_credential()
 
     @_exception2fail_json(msg="Failed to connect to Foreman server: {0}")
     def status(self):
