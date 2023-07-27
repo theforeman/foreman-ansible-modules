@@ -119,6 +119,21 @@ jobs:
           name: docs-html
           path: docs/_build/html/
 
+  galaxy-importer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          cache-dependency-path: '**/requirements*.txt'
+      - name: Install dependencies
+        run: pip install --upgrade py galaxy-importer
+      - name: Run galaxy-importer
+        run: make galaxy-importer
+
   lint:
     runs-on: ubuntu-latest
     steps:
