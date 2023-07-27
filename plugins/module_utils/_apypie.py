@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 try:
-    from typing import Any, Iterable, List, Optional, Tuple  # pylint: disable=unused-import
+    from typing import Any, Iterable, List, Optional, Tuple  # pylint: disable=unused-import  # noqa: F401
 except ImportError:
     pass
 

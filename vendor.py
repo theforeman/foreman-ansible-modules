@@ -67,5 +67,5 @@ with fileinput.input() as f:
         output_lines.extend(buffer_lines)
         buffer_lines.clear()
 
-typing_lines = ['try:', '    from typing import {}  # pylint: disable=unused-import'.format(', '.join(sorted(typing_imports))), 'except ImportError:', '    pass']
+typing_lines = ['try:', '    from typing import {}  # pylint: disable=unused-import  # noqa: F401'.format(', '.join(sorted(typing_imports))), 'except ImportError:', '    pass']
 print("\n".join(header_lines + typing_lines + output_lines))
