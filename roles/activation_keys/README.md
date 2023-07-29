@@ -14,6 +14,7 @@ The main data structure for this role is the list of `foreman_activation_keys`. 
 
 The following fields are required for an activation key but have defaults which make them optional for this role:
 
+- `organization`: Organization to create the activation key for. Defaults to `foreman_organization` variable.
 - `lifecycle_environment`: Lifecycle Environment to assign to hosts registered with this activation key. Defaults to "Library".
 - `content_view`: Content View to assign to hosts registered with this activation key. Defaults to "Default Organization View".
 

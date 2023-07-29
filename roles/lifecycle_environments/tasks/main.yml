@@ -5,7 +5,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.organization | default(foreman_organization) }}"
     name: "{{ item.name }}"
     description: "{{ item.description | default(omit) }}"
     prior: "{{ item.prior }}"

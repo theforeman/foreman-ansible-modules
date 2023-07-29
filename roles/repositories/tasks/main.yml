@@ -5,7 +5,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     product: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     all_repositories: false
@@ -23,7 +23,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     label: "{{ item.1 }}"
     all_repositories: true
     state: enabled
@@ -37,7 +37,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.organization | default(foreman_organization) }}"
     name: "{{ item.name }}"
     label: "{{ item.label | default(omit) }}"
     gpg_key: "{{ item.gpg_key | default(omit) }}"
@@ -51,7 +51,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     name: "{{ item.1.name }}"
     url: "{{ item.1.url | default(omit) }}"
     product: "{{ item.0.name }}"
