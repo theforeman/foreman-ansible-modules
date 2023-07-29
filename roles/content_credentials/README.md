@@ -8,7 +8,8 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `foreman_content_credentials`: List of content credentials to create. Each content credential is represented as a dictionary which specifies the `name`, `content_type` (which can be `gpg_key` or `cert`) and `content` of the content credential.
+- `foreman_content_credentials`: List of content credentials to create. Each content credential is represented as a dictionary which specifies the `name`, `content_type` (which can be `gpg_key` or `cert`) and `content` of the content credential. The `organization` field can be specified for a content credential. The `organization` field defaults to `foreman_organization` variable.
+
 
 ```yaml
 foreman_content_credentials:
