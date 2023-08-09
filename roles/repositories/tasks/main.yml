@@ -9,7 +9,7 @@
     product: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     all_repositories: false
-    state: enabled
+    state: "{{ item.1.state | default(omit) }}"
     repositories:
       - releasever: "{{ item.1.releasever | default(omit) }}"
         basearch: "{{ item.1.basearch | default(omit) }}"
@@ -26,7 +26,7 @@
     organization: "{{ foreman_organization }}"
     label: "{{ item.1 }}"
     all_repositories: true
-    state: enabled
+    state: "{{ item.1.state | default(omit) }}"
   with_subelements:
     - "{{ foreman_products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
     - labels
@@ -41,7 +41,7 @@
     name: "{{ item.name }}"
     label: "{{ item.label | default(omit) }}"
     gpg_key: "{{ item.gpg_key | default(omit) }}"
-    state: present
+    state: "{{ item.state | default(omit) }}"
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
 
@@ -81,7 +81,7 @@
     ssl_ca_cert: "{{ item.1.ssl_ca_cert | default(omit) }}"
     ssl_client_cert: "{{ item.1.ssl_client_cert | default(omit) }}"
     ssl_client_key: "{{ item.1.ssl_client_key | default(omit) }}"
-    state: present
+    state: "{{ item.1.state | default(omit) }}"
     unprotected: "{{ item.1.unprotected | default(omit) }}"
     upstream_password: "{{ item.1.upstream_password | default(omit) }}"
     upstream_username: "{{ item.1.upstream_username | default(omit) }}"
