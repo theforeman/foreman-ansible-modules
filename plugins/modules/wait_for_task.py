@@ -45,26 +45,38 @@ extends_documentation_fragment:
 
 
 EXAMPLES = '''
-- name: wait for a task to finish in at least 10 seconds
+- name: Wait for a task to finish
   theforeman.foreman.wait_for_task:
     server_url:  "https://foreman.example.com"
     password: changeme
     username: admin
-    task: "{{ item }}"
+    task: a03ba49f-4dc2-4ad6-a48b-b271b46f3347
     timeout: 60
-  loop: "{{ tasks.resources }}"
 
+- name: Sarch for previously created tasks
+  resource_info:
+    server_url:  "https://foreman.example.com"
+    password: changeme
+    username: admin
+    resource: foreman_tasks
+    search: "(label = Actions::Katello::Product::Destroy and action ~ 'Test Product' and state = running)"
+  register: tasks
+
+- name: Wait for all found tasks to finish
+  wait_for_task:
+    server_url:  "https://foreman.example.com"
+    password: changeme
+    username: admin
+    task: "{{ item }}"
+    timeout: 900
+  loop: "{{ tasks.resources | map(attribute='id') | list }}"
 '''
 
 RETURN = '''
-entity:
-  description: Designated task is finished
+task:
+  description: The finished task
   returned: success
   type: dict
-  contains:
-    task:
-        description: The finished task
-        type: dict
 '''
 
 
