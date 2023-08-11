@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>theforeman.foreman.image module – Manage Images &mdash; Foreman Ansible Modules  documentation</title>
+  <title>theforeman.foreman.wait_for_task module – Wait for a task &mdash; Foreman Ansible Modules  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/antsibull-minimal.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="theforeman.foreman.installation_medium module – Manage Installation Media" href="installation_medium_module.html" />
-    <link rel="prev" title="theforeman.foreman.http_proxy module – Manage HTTP Proxies" href="http_proxy_module.html" /> 
+    <link rel="next" title="theforeman.foreman.foreman callback – Sends events to Foreman" href="foreman_callback.html" />
+    <link rel="prev" title="theforeman.foreman.usergroup module – Manage User Groups" href="usergroup_module.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -87,7 +87,7 @@
 <li class="toctree-l4"><a class="reference internal" href="hostgroup_module.html">theforeman.foreman.hostgroup module – Manage Hostgroups</a></li>
 <li class="toctree-l4"><a class="reference internal" href="hostgroup_info_module.html">theforeman.foreman.hostgroup_info module – Get information about hostgroup(s)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="http_proxy_module.html">theforeman.foreman.http_proxy module – Manage HTTP Proxies</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.image module – Manage Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image_module.html">theforeman.foreman.image module – Manage Images</a></li>
 <li class="toctree-l4"><a class="reference internal" href="installation_medium_module.html">theforeman.foreman.installation_medium module – Manage Installation Media</a></li>
 <li class="toctree-l4"><a class="reference internal" href="job_invocation_module.html">theforeman.foreman.job_invocation module – Invoke Remote Execution Jobs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="job_template_module.html">theforeman.foreman.job_template module – Manage Job Templates</a></li>
@@ -130,7 +130,7 @@
 <li class="toctree-l4"><a class="reference internal" href="templates_import_module.html">theforeman.foreman.templates_import module – Sync Templates from a repository</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_module.html">theforeman.foreman.user module – Manage Users</a></li>
 <li class="toctree-l4"><a class="reference internal" href="usergroup_module.html">theforeman.foreman.usergroup module – Manage User Groups</a></li>
-<li class="toctree-l4"><a class="reference internal" href="wait_for_task_module.html">theforeman.foreman.wait_for_task module – Wait for a task</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">theforeman.foreman.wait_for_task module – Wait for a task</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="index.html#callback-plugins">Callback Plugins</a></li>
@@ -170,9 +170,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Theforeman.Foreman</a></li>
-      <li class="breadcrumb-item active">theforeman.foreman.image module – Manage Images</li>
+      <li class="breadcrumb-item active">theforeman.foreman.wait_for_task module – Wait for a task</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/plugins/image_module.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/plugins/wait_for_task_module.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -180,17 +180,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-theforeman-foreman-image-module"></span><section id="theforeman-foreman-image-module-manage-images">
-<h1>theforeman.foreman.image module – Manage Images<a class="headerlink" href="#theforeman-foreman-image-module-manage-images" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-theforeman-foreman-wait-for-task-module"></span><section id="theforeman-foreman-wait-for-task-module-wait-for-a-task">
+<h1>theforeman.foreman.wait_for_task module – Wait for a task<a class="headerlink" href="#theforeman-foreman-wait-for-task-module-wait-for-a-task" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/theforeman/foreman">theforeman.foreman collection</a> (version 3.13.0-dev).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">theforeman.foreman</span></code>.
 You need further requirements to be able to use this module,
-see <a class="reference internal" href="#ansible-collections-theforeman-foreman-image-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.image</span></code>.</p>
+see <a class="reference internal" href="#ansible-collections-theforeman-foreman-wait-for-task-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">theforeman.foreman.wait_for_task</span></code>.</p>
 </div>
-<p class="ansible-version-added">New in theforeman.foreman 1.0.0</p>
+<p class="ansible-version-added">New in theforeman.foreman 3.13.0</p>
 <nav class="contents local" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
@@ -204,12 +204,11 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Create, update, and delete Images</p></li>
+<li><p>Wait for a task to finish</p></li>
 </ul>
-<p>Aliases: foreman_image</p>
 </section>
 <section id="requirements">
-<span id="ansible-collections-theforeman-foreman-image-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<span id="ansible-collections-theforeman-foreman-wait-for-task-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>The below requirements are needed on the host that executes this module.</p>
 <ul class="simple">
 <li><p>requests</p></li>
@@ -225,50 +224,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-architecture"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-architecture"><strong>architecture</strong></p>
-<a class="ansibleOptionLink" href="#parameter-architecture" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>architecture of the image</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-compute_resource"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-compute-resource"><strong>compute_resource</strong></p>
-<a class="ansibleOptionLink" href="#parameter-compute_resource" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Compute resource the image is assigned to</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-image_password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-image-password"><strong>image_password</strong></p>
-<a class="ansibleOptionLink" href="#parameter-image_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Password that is used to login into the operating system</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-image_username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-image-username"><strong>image_username</strong></p>
-<a class="ansibleOptionLink" href="#parameter-image_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Username that is used to login into the operating system</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-name"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-name"><strong>name</strong></p>
-<a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Image name</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-operatingsystem"><strong>operatingsystem</strong></p>
-<a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Operating systems are looked up by their title which is composed as “&lt;name&gt; &lt;major&gt;.&lt;minor&gt;”.</p>
-<p>You can omit the version part as long as you only have one operating system by that name.</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-password"><strong>password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-password"><strong>password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password of the user accessing the Foreman server.</p>
@@ -276,7 +232,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-server-url"><strong>server_url</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-server-url"><strong>server_url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>URL of the Foreman server.</p>
@@ -284,31 +240,22 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-state"><strong>state</strong></p>
-<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-task"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-task"><strong>task</strong></p>
+<a class="ansibleOptionLink" href="#parameter-task" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>State of the entity</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;present&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>Task id to wait for.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-user_data"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-user-data"><strong>user_data</strong></p>
-<a class="ansibleOptionLink" href="#parameter-user_data" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<div class="ansibleOptionAnchor" id="parameter-timeout"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-timeout"><strong>timeout</strong></p>
+<a class="ansibleOptionLink" href="#parameter-timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Image supports user_data</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>How much time the task should take to be finished</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">60</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-username"><strong>username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-username"><strong>username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username accessing the Foreman server.</p>
@@ -316,16 +263,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-uuid"></div>
-<div class="ansibleOptionAnchor" id="parameter-image_uuid"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-uuid"><span id="ansible-collections-theforeman-foreman-image-module-parameter-image-uuid"></span><strong>uuid</strong></p>
-<a class="ansibleOptionLink" href="#parameter-uuid" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: image_uuid</span></p>
-<p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>UUID or Marketplace URN of the operatingsystem image</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-parameter-validate-certs"><strong>validate_certs</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-parameter-validate-certs"><strong>validate_certs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Whether or not to verify the TLS certificates of the Foreman server.</p>
@@ -351,7 +289,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-attribute-check-mode"><strong>check_mode</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-attribute-check-mode"><strong>check_mode</strong></p>
 <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a></div></td>
 <td><div class="ansible-option-cell"><p><span class="ansible-attribute-support-label">Support: </span><span class="ansible-attribute-support-full">full</span></p>
 </div></td>
@@ -359,7 +297,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-diff_mode"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-attribute-diff-mode"><strong>diff_mode</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-diff_mode"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-attribute-diff-mode"><strong>diff_mode</strong></p>
 <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a></div></td>
 <td><div class="ansible-option-cell"><p><span class="ansible-attribute-support-label">Support: </span><span class="ansible-attribute-support-full">full</span></p>
 </div></td>
@@ -371,14 +309,31 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">create Image for EC2</span>
-<span class="w">  </span><span class="nt">theforeman.foreman.image</span><span class="p">:</span>
-<span class="w">     </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CentOS</span>
-<span class="w">     </span><span class="nt">image_uuid</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ami-0ff760d16d9497662&quot;</span>
-<span class="w">     </span><span class="nt">image_username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;centos&quot;</span>
-<span class="w">     </span><span class="nt">operatingsystem</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CentOS</span><span class="nv"> </span><span class="s">7&quot;</span>
-<span class="w">     </span><span class="nt">compute_resource</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;AWS&quot;</span>
-<span class="w">     </span><span class="nt">architecture</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;x86_64&quot;</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wait for a task to finish</span>
+<span class="w">  </span><span class="nt">theforeman.foreman.wait_for_task</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">changeme</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">    </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a03ba49f-4dc2-4ad6-a48b-b271b46f3347</span>
+<span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sarch for previously created tasks</span>
+<span class="w">  </span><span class="nt">resource_info</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">changeme</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">    </span><span class="nt">resource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foreman_tasks</span>
+<span class="w">    </span><span class="nt">search</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(label</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">Actions::Katello::Product::Destroy</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">~</span><span class="nv"> </span><span class="s">&#39;Test</span><span class="nv"> </span><span class="s">Product&#39;</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">state</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">running)&quot;</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tasks</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Wait for all found tasks to finish</span>
+<span class="w">  </span><span class="nt">wait_for_task</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">changeme</span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+<span class="w">    </span><span class="nt">task</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">item</span> <span class="cp">}}</span><span class="s">&quot;</span>
+<span class="w">    </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">900</span>
+<span class="w">  </span><span class="nt">loop</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">tasks.resources</span> <span class="o">|</span> <span class="nf">map</span><span class="o">(</span><span class="nv">attribute</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="o">)</span> <span class="o">|</span> <span class="nf">list</span> <span class="cp">}}</span><span class="s">&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -393,18 +348,10 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-entity"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-return-entity"><strong>entity</strong></p>
-<a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
+<div class="ansibleOptionAnchor" id="return-task"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-wait-for-task-module-return-task"><strong>task</strong></p>
+<a class="ansibleOptionLink" href="#return-task" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Final state of the affected entities grouped by their type.</p>
-<p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-entity/images"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-image-module-return-entity-images"><strong>images</strong></p>
-<a class="ansibleOptionLink" href="#return-entity/images" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
-</div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of images.</p>
+<td><div class="ansible-option-cell"><p>The finished task</p>
 <p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success</p>
 </div></td>
 </tr>
@@ -413,7 +360,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Mark Hlawatschek (&#64;hlawatschek) ATIX AG</p></li>
+<li><p>Julien Godin (&#64;JGodin-C2C)</p></li>
 </ul>
 </section>
 <section id="collection-links">
@@ -430,8 +377,8 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="http_proxy_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.http_proxy module – Manage HTTP Proxies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="installation_medium_module.html" class="btn btn-neutral float-right" title="theforeman.foreman.installation_medium module – Manage Installation Media" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usergroup_module.html" class="btn btn-neutral float-left" title="theforeman.foreman.usergroup module – Manage User Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="foreman_callback.html" class="btn btn-neutral float-right" title="theforeman.foreman.foreman callback – Sends events to Foreman" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
