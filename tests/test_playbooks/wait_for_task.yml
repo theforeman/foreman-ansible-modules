@@ -6,4 +6,61 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include_tasks: tasks/wait_task.yml
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: "{{ item }}"
+      loop:
+        - "Test Repository 1"
+        - "Test Repository 2"
+        - "Test Repository 3"
+        - "Test Repository 4"
+        - "Test Repository 5"
+
+    - name: "Delete a Product"
+      vars:
+        - product_name: "Test Product"
+        - organization_name: "Test Organization"
+      product:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "{{ product_name }}"
+        organization: "{{ organization_name }}"
+        state: "absent"
+      async: 9999
+      poll: 0
+
+    - name: Wait for API to react
+      ansible.builtin.pause:
+        seconds: 2
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/wait_for_task.yml
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
