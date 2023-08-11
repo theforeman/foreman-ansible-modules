@@ -1,29 +1,4 @@
 ---
-- name: "Create katello content view version"
-  vars:
-    - content_view_name: "Test Content View"
-    - organization_name: "Test Organization"
-    - lifecycle_environments: Library
-  content_view_version:
-    username: "{{ foreman_username }}"
-    password: "{{ foreman_password }}"
-    server_url: "{{ foreman_server_url }}"
-    validate_certs: "{{ foreman_validate_certs }}"
-    content_view: "{{ content_view_name }}"
-    organization: "{{ organization_name }}"
-    description: "{{ description | default(omit)}}"
-    version: "{{ version | default(omit)}}"
-    lifecycle_environments: "{{ lifecycle_environments }}"
-    force_promote: "{{ force_promote | default(omit) }}"
-    force_yum_metadata_regeneration: "{{ force_yum_metadata_regeneration | default(omit) }}"
-    current_lifecycle_environment: "{{ current_lifecycle_environment | default(omit) }}"
-    state: "{{ state | default(omit) }}"
-  async: 9999
-
-- name: Wait for API to react
-  ansible.builtin.pause:
-    seconds: 10
-
 - name: "Search for previously created task"
   resource_info:
     username: "{{ foreman_username }}"
@@ -31,7 +6,11 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     resource: foreman_tasks
-    search: "(label = Actions::Katello::ContentView::Publish and state = running)"
+    search: "(label = Actions::Katello::Product::Destroy and action ~ 'Test Product' and state = running)"
+  register: tasks
+- assert:
+    fail_msg: "Verification that tasks are runing"
+    that: tasks.resources | length > 0
 
 - name: wait for the task to finish
   wait_for_task:
@@ -41,8 +20,7 @@
     validate_certs: "{{ foreman_validate_certs }}"
     task: "{{ item }}"
     timeout: 900
-  loop: "{{ tasks.resources }}"
-
+  loop: "{{ tasks.resources | map(attribute='id') | list }}"
 
 - name: "Search for previously created task"
   resource_info:
@@ -51,9 +29,9 @@
     server_url: "{{ foreman_server_url }}"
     validate_certs: "{{ foreman_validate_certs }}"
     resource: foreman_tasks
-    search: "(label = Actions::Katello::ContentView::Publish and state = running)"
+    search: "(label = Actions::Katello::Product::Destroy and action ~ 'Test Product' and state = running)"
   register: tasks
 - assert:
-    fail_msg: "Verification that '{{ resource }}' resource is not runing anymore"
-    that: result.resource | lenght == 0
+    fail_msg: "Verification that no task is runing anymore"
+    that: tasks.resources | length == 0
 ...
