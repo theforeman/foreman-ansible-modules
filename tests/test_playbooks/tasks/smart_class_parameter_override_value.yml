@@ -1,0 +1,20 @@
+---
+- name: "Ensure override value '{{ smart_class_parameter_override_value_puppetclass }}::{{ smart_class_parameter_override_value_parameter }}' is {{ smart_class_parameter_override_value_state }}"
+  vars:
+    smart_class_parameter_override_value_state: present
+  smart_class_parameter_override_value:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    puppetclass: "{{ smart_class_parameter_override_value_puppetclass }}"
+    smart_class_parameter: "{{ smart_class_parameter_override_value_parameter }}"
+    match: "{{ smart_class_parameter_override_value_match | default(omit) }}"
+    omit: "{{ smart_class_parameter_override_value_omit | default(omit) }}"
+    value: "{{ smart_class_parameter_override_value_value | default(omit) }}"
+    state: "{{ smart_class_parameter_override_value_state | default('present') }}"
+  register: result
+- fail:
+    msg: "Ensuring override value is {{ smart_class_parameter_override_value_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+  when: (expected_change is defined) and (result.changed != expected_change)
+...
