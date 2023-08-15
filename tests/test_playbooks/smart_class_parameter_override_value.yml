@@ -1,0 +1,245 @@
+---
+## To record cassettes using this playbook (record_smart_class_parameter)
+## some puppet classes need to be imported.
+## See comments in #582 for details. To import the classes run:
+##
+## $ puppet module install puppetlabs-ntp
+## $ hammer proxy import-classes --puppet-environment production --name $(hostname -f)
+##
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/smart_class_parameter.yml
+      vars:
+        smart_class_parameter_puppetclass_name: ntp
+        smart_class_parameter_parameter: "{{ item.param }}"
+        smart_class_parameter_override: true
+        smart_class_parameter_parameter_type: "{{ item.type }}"
+        smart_class_parameter_override_values: []
+        smart_class_parameter_override_value_order:
+          - fqdn
+          - hostgroup
+          - os
+          - domain
+        smart_class_parameter_state: present
+      loop:
+        - param: config_dir
+          type: string
+        - param: servers
+          type: array
+        - param: burst
+          type: boolean
+        - param: stepout
+          type: integer
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Test string smart class parameter override value
+      vars:
+        smart_class_parameter_override_value_puppetclass: ntp
+        smart_class_parameter_override_value_parameter: config_dir
+      block:
+        - name: create override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: "/etc/ntpd/foo"
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: create override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: "/etc/ntpd/foo"
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: update override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: "/etc/ntpd/foonew"
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: update override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: "/etc/ntpd/foonew"
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: delete override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: true
+        - include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: false
+
+    - name: Test array smart class parameter override value
+      vars:
+        smart_class_parameter_override_value_puppetclass: ntp
+        smart_class_parameter_override_value_parameter: servers
+      block:
+        - name: create override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: [ntp.example.org]
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: create override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: [ntp.example.org]
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: update override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: [ntp.example.com]
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: update override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: [ntp.example.com]
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: delete override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: true
+        - include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: false
+
+    - name: Test integer smart class parameter override value
+      vars:
+        smart_class_parameter_override_value_puppetclass: ntp
+        smart_class_parameter_override_value_parameter: stepout
+      block:
+        - name: create override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: 42
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: create override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: 42
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: update override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: 23
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: update override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: 23
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: delete override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: true
+        - include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: false
+
+    - name: Test boolean smart class parameter override value
+      vars:
+        smart_class_parameter_override_value_puppetclass: ntp
+        smart_class_parameter_override_value_parameter: burst
+      block:
+        - name: create override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: true
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: create override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: true
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: update override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: false
+            smart_class_parameter_override_value_state: present
+            expected_change: true
+        - name: update override value again, no change
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_value: false
+            smart_class_parameter_override_value_state: present
+            expected_change: false
+        - name: delete override value
+          include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: true
+        - include_tasks: tasks/smart_class_parameter_override_value.yml
+          vars:
+            smart_class_parameter_override_value_match: "domain=example.com"
+            smart_class_parameter_override_value_state: absent
+            expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/smart_class_parameter.yml
+      vars:
+        smart_class_parameter_puppetclass_name: ntp
+        smart_class_parameter_parameter: "{{ item }}"
+        smart_class_parameter_override: false
+        smart_class_parameter_state: present
+      loop:
+        - config_dir
+        - servers
+        - burst
+        - stepout
+...
