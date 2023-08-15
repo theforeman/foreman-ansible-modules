@@ -6,6 +6,26 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.13.0
+=======
+
+Minor Changes
+-------------
+
+- compute_resource - add support for OpenStack
+- repositories role - allow disabling/removing of repositories by setting the ``state`` parameter
+
+Bugfixes
+--------
+
+- repository - don't fail when removing a content credential from a repository (https://bugzilla.redhat.com/show_bug.cgi?id=2224122)
+- smart_class_parameter - correctly allow setting ``override`` to ``false`` (https://github.com/theforeman/foreman-ansible-modules/issues/1644)
+
+New Modules
+-----------
+
+- theforeman.foreman.wait_for_task - Wait for a task
+
 v3.12.0
 =======
 

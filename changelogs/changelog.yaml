@@ -623,6 +623,27 @@ releases:
     - 2023-06-26-forgotten-changelogs.yml
     - content_view_filter_deb_support.yml
     release_date: '2023-07-10'
+  3.13.0:
+    changes:
+      bugfixes:
+      - repository - don't fail when removing a content credential from a repository
+        (https://bugzilla.redhat.com/show_bug.cgi?id=2224122)
+      - smart_class_parameter - correctly allow setting ``override`` to ``false``
+        (https://github.com/theforeman/foreman-ansible-modules/issues/1644)
+      minor_changes:
+      - compute_resource - add support for OpenStack
+      - repositories role - allow disabling/removing of repositories by setting the
+        ``state`` parameter
+    fragments:
+    - 1641-openstack.yml
+    - 1644-smart_class_parameter-override_false.yml
+    - bz2224122-repo-org-scope.yml
+    - repositories_role-state_override.yml
+    modules:
+    - description: Wait for a task
+      name: wait_for_task
+      namespace: ''
+    release_date: '2023-08-15'
   3.2.0:
     changes:
       bugfixes:
