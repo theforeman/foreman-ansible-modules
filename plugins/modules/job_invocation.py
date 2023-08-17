@@ -117,6 +117,7 @@ options:
       time_span:
         description:
           - Distribute tasks over given number of seconds
+          - This is removed since foreman_remote_execution-11.0.0
         type: int
       concurrency_level:
         description:
