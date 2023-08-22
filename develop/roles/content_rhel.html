@@ -12,11 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -86,7 +86,7 @@
            <div itemprop="articleBody">
              
   <section id="theforeman-foreman-content-rhel">
-<h1>theforeman.foreman.content_rhel<a class="headerlink" href="#theforeman-foreman-content-rhel" title="Permalink to this heading"></a></h1>
+<h1>theforeman.foreman.content_rhel<a class="headerlink" href="#theforeman-foreman-content-rhel" title="Link to this heading"></a></h1>
 <p>This role is an opinionated reuse of other roles in the collection, which creates a basic configuration for everything needed to register and patch existing RHEL clients.</p>
 <p>That includes uploading a subscription manifest to an organization; enabling base RHEL7 and RHEL8 repositories (x86_64 architecture), syncing them immediately, and creating a sync plan for future syncs; and creating an activation key <code class="docutils literal notranslate"><span class="pre">base_rhel_key</span></code> to use when registering RHEL clients.</p>
 <p>The subscription manifest will be retrieved from the specified path on the Ansible target host; optionally, it can be fetched first from the RHSM portal using the provided login credentials and manifest UUID. It will be uploaded to the specified organization.</p>
@@ -94,7 +94,7 @@
 <p>The role creates a sync plan using any of the sync plan intervals supported by the basic <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/roles/sync_plans/README.md">Sync Plan Role</a>.</p>
 <p>The role creates an activation key with the provided name. This activation key will register client systems in the “Library” lifecycle environment and “Default Organization View” content view, using the subscription auto-attach feature.</p>
 <section id="role-variables">
-<h2>Role Variables<a class="headerlink" href="#role-variables" title="Permalink to this heading"></a></h2>
+<h2>Role Variables<a class="headerlink" href="#role-variables" title="Link to this heading"></a></h2>
 <p>This role supports the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables">Common Role Variables</a>.</p>
 <p>This role supports the same variables used in the <a class="reference external" href="https://github.com/theforeman/foreman-ansible-modules/blob/develop/roles/manifest/README.md#role-variables">Manifest Role</a>.</p>
 <p>It also supports customizing the included roles with:</p>
@@ -111,7 +111,7 @@
 <p><code class="docutils literal notranslate"><span class="pre">foreman_content_rhel_wait_for_syncs</span></code>: Monitor status of sync tasks. When false, the sync tasks will continue running in the background after the playbook has finished running. This option is most useful when other automation (for example, registering and patching a client) requires the repository syncs to have completed. Default true.</p>
 </section>
 <section id="example-playbooks">
-<h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Permalink to this heading"></a></h2>
+<h2>Example Playbooks<a class="headerlink" href="#example-playbooks" title="Link to this heading"></a></h2>
 <p>This minimal example assumes the manifest has already been downloaded to ~/manifest.zip on localhost (the Ansible control node) and uploads that manifest to the ACME organization. It enables RHEL7 and RHEL8 repositories, creates the role default sync plan for them, and also syncs the repositories immediately. It creates an activation key with the role default name <code class="docutils literal notranslate"><span class="pre">base_rhel_key</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
 <span class="w">  </span><span class="nt">roles</span><span class="p">:</span>

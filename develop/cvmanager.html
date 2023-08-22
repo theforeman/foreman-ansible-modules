@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -94,12 +94,12 @@
            <div itemprop="articleBody">
              
   <section id="migrating-from-cvmanager-to-foreman-ansible-modules">
-<h1>Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules<a class="headerlink" href="#migrating-from-cvmanager-to-foreman-ansible-modules" title="Permalink to this heading"></a></h1>
+<h1>Migrating from <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> to Foreman Ansible Modules<a class="headerlink" href="#migrating-from-cvmanager-to-foreman-ansible-modules" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/RedHatSatellite/katello-cvmanager">cvmanager</a> is a tool to automate Content View management workflows. It hasn’t been updated in a long time and users are encouraged to migrate to Ansible and the Foreman Ansible Modules.</p>
 <p>This document documents how the various workflows can be translated into Ansible playbooks.</p>
 <p>Please note that <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> configuration refers to Content Views by their labels, while Ansible uses the names of the Content Views for that.</p>
 <section id="cleanup-of-old-content-views">
-<h2>Cleanup of old Content Views<a class="headerlink" href="#cleanup-of-old-content-views" title="Permalink to this heading"></a></h2>
+<h2>Cleanup of old Content Views<a class="headerlink" href="#cleanup-of-old-content-views" title="Link to this heading"></a></h2>
 <p>To ease cleanup of old Content Views, we ship the <code class="docutils literal notranslate"><span class="pre">content_view_version_cleanup</span></code> role which will identify unused Content View Versions and remove them, much like <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> did:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
 <span class="w">  </span><span class="nt">roles</span><span class="p">:</span>
@@ -114,7 +114,7 @@
 </div>
 </section>
 <section id="automated-updates">
-<h2>Automated Updates<a class="headerlink" href="#automated-updates" title="Permalink to this heading"></a></h2>
+<h2>Automated Updates<a class="headerlink" href="#automated-updates" title="Link to this heading"></a></h2>
 <p>When <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> was initially written, Composite Content Views did not support setting individual components to <code class="docutils literal notranslate"><span class="pre">latest</span></code> and thus this feature was implemented inside <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code>.
 As Composite Content Views gained <code class="docutils literal notranslate"><span class="pre">latest</span></code> support since then, the “Automated Updates” feature of <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> is not really needed anymore and users are encouraged to configure their Composite Content Views accordingly.</p>
 <p>If, for example, the old <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> configuration contained the following entries:</p>
@@ -183,7 +183,7 @@ To avoid that, you still can use individual versions instead of <code class="doc
 </div>
 </section>
 <section id="automated-publishes">
-<h2>Automated Publishes<a class="headerlink" href="#automated-publishes" title="Permalink to this heading"></a></h2>
+<h2>Automated Publishes<a class="headerlink" href="#automated-publishes" title="Link to this heading"></a></h2>
 <p>Since the inception of <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code>, Composite Content Views gained the “Auto Publish” feature, which means that Composite Content Views will automatically be published whenever a component (that is configured as <code class="docutils literal notranslate"><span class="pre">latest</span></code>) is published.</p>
 <p>To configure this using Ansible, add <code class="docutils literal notranslate"><span class="pre">auto_publish:</span> <span class="pre">true</span></code> to the <code class="docutils literal notranslate"><span class="pre">content_view</span></code> module invocation:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Create</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">Composite</span><span class="nv"> </span><span class="s">Content</span><span class="nv"> </span><span class="s">View&quot;</span>
@@ -215,7 +215,7 @@ As the underlying logic is too fragile, there is no equivalent for doing conditi
 </div>
 </section>
 <section id="automated-promotes">
-<h2>Automated Promotes<a class="headerlink" href="#automated-promotes" title="Permalink to this heading"></a></h2>
+<h2>Automated Promotes<a class="headerlink" href="#automated-promotes" title="Link to this heading"></a></h2>
 <p>To not have clients attached to “Library”, <code class="docutils literal notranslate"><span class="pre">cvmanager</span></code> has an “Automated Promotes” feature which essentially ensures that a given (Composite) Content View has the same version in “Library” and another user-selected Lifecycle Environment.</p>
 <p>The same can be achieved using the <code class="docutils literal notranslate"><span class="pre">content_view_version</span></code> module:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ensure</span><span class="nv"> </span><span class="s">ccv-RHEL7-automated</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">same</span><span class="nv"> </span><span class="s">version</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">Library</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Dev&quot;</span>
