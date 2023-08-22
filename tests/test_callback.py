@@ -39,7 +39,7 @@ def drop_incompatible_items(d):
     dd = {}
     for k, v in d.items():
         if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection',
-                 'extended_allitems', 'loop_control', 'expand_argument_vars']:
+                 'extended_allitems', 'loop_control', 'expand_argument_vars', 'retries']:
             continue
 
         if isinstance(v, dict):
