@@ -62,6 +62,10 @@ Synopsis
 .. Description
 
 - Get inventory hosts from Foreman.
+- Can use the Reports API (default) or the Hosts API to fetch information about the hosts.
+- The Reports API is faster with many hosts.
+- The Reports API requires the \ :literal:`foreman\_ansible`\  plugin to be installed on the Foreman server.
+- Some options only work when using the Reports API.
 - Uses a YAML configuration file that ends with \`\`foreman.(yml|yaml)\`\`.
 
 
@@ -543,7 +547,7 @@ Parameters
 
       Foreman server related configuration, deprecated.
 
-      You can pass \ :emphasis:`use\_reports\_api`\  in this dict to enable the Reporting API.
+      You can pass \ :emphasis:`use\_reports\_api`\  in this dict to enable the Reports API.
 
       Only for backward compatibility.
 
@@ -1512,7 +1516,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Use Reporting API.
+      Use Reports API.
 
 
       .. rst-class:: ansible-option-line
@@ -1698,6 +1702,8 @@ Parameters
 
       Toggle, if true the inventory will fetch content view details that the host is tied to.
 
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
+
 
       .. rst-class:: ansible-option-line
 
@@ -1787,6 +1793,8 @@ Parameters
         <div class="ansible-option-cell">
 
       Toggle, if true the inventory will fetch host\_groups and create groupings for the same.
+
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
 
 
       .. rst-class:: ansible-option-line
@@ -1878,6 +1886,8 @@ Parameters
 
       Toggle, if true the inventory will fetch ipv4 address of the host.
 
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
+
 
       .. rst-class:: ansible-option-line
 
@@ -1922,6 +1932,8 @@ Parameters
         <div class="ansible-option-cell">
 
       Toggle, if true the inventory will fetch ipv6 address of the host.
+
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
 
 
       .. rst-class:: ansible-option-line
@@ -1968,6 +1980,8 @@ Parameters
 
       Toggle, if true the inventory will fetch location the host belongs to and create groupings for the same.
 
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
+
 
       .. rst-class:: ansible-option-line
 
@@ -2012,6 +2026,8 @@ Parameters
         <div class="ansible-option-cell">
 
       Toggle, if true the inventory will fetch organization the host belongs to and create groupings for the same.
+
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
 
 
       .. rst-class:: ansible-option-line
@@ -2103,6 +2119,8 @@ Parameters
 
       Toggle, if true the inventory will fetch smart proxy that the host is registered to.
 
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
+
 
       .. rst-class:: ansible-option-line
 
@@ -2148,6 +2166,8 @@ Parameters
 
       Toggle, if true the inventory will fetch subnet.
 
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
+
 
       .. rst-class:: ansible-option-line
 
@@ -2192,6 +2212,8 @@ Parameters
         <div class="ansible-option-cell">
 
       Toggle, if true the inventory will fetch ipv6 subnet.
+
+      Only applies to inventories using the Reports API - attribute is ignored otherwise.
 
 
       .. rst-class:: ansible-option-line
