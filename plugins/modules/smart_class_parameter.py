@@ -34,10 +34,14 @@ options:
     description: Name of the puppetclass that own the parameter
     required: true
     type: str
+    aliases:
+      - puppetclass
   parameter:
     description: Name of the parameter
     required: true
     type: str
+    aliases:
+      - smart_class_parameter
   description:
     description: Description of the Smart Class Parameter
     type: str
@@ -205,8 +209,8 @@ class ForemanSmartClassParameterModule(ForemanEntityAnsibleModule):
 def main():
     module = ForemanSmartClassParameterModule(
         argument_spec=dict(
-            puppetclass_name=dict(required=True),
-            parameter=dict(required=True),
+            puppetclass_name=dict(required=True, aliases=['puppetclass']),
+            parameter=dict(required=True, aliases=['smart_class_parameter']),
             state=dict(default='present', choices=['present_with_defaults', 'present']),
         ),
         foreman_spec=dict(
