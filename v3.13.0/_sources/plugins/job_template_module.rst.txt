@@ -1,0 +1,1675 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.job_template_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Title
+
+theforeman.foreman.job_template module -- Manage Job Templates
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.13.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.job_template_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.job_template`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 1.0.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Manage Remote Execution Job Templates
+
+
+.. Aliases
+
+Aliases: foreman_job_template
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.job_template_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-audit_comment"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-audit_comment:
+
+      .. rst-class:: ansible-option-title
+
+      **audit_comment**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-audit_comment" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Content of the audit comment field
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description_format"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-description_format:
+
+      .. rst-class:: ansible-option-title
+
+      **description_format**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description_format" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      description of the job template. Template inputs can be referenced.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-file_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-file_name:
+
+      .. rst-class:: ansible-option-title
+
+      **file_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-file_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`path`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The path of a template file, that shall be imported.
+
+      Either this or \ :emphasis:`template`\  is required as a source for the Job Template "content".
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-job_category"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-job_category:
+
+      .. rst-class:: ansible-option-title
+
+      **job_category**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-job_category" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The category the template should be assigend to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-locations:
+
+      .. rst-class:: ansible-option-title
+
+      **locations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of locations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locked"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-locked:
+
+      .. rst-class:: ansible-option-title
+
+      **locked**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locked" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Determines whether the template shall be locked
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the Job Template.
+
+      If omited, will be determined from the \ :literal:`name`\  header of the template or the filename (in that order).
+
+      The special value "\*" can be used to perform bulk actions (modify, delete) on all existing templates.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-organizations:
+
+      .. rst-class:: ansible-option-title
+
+      **organizations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of organizations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-provider_type:
+
+      .. rst-class:: ansible-option-title
+
+      **provider_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Determines via which provider the template shall be executed
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-snippet"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-snippet:
+
+      .. rst-class:: ansible-option-title
+
+      **snippet**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-snippet" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Determines whether the template shall be a snippet
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the entity
+
+      \ :literal:`present\_with\_defaults`\  will ensure the entity exists, but won't update existing ones
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"present\_with\_defaults"`
+      - :ansible-option-choices-entry:`"absent"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template:
+
+      .. rst-class:: ansible-option-title
+
+      **template**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The content of the Job Template.
+
+      Either this or \ :emphasis:`file\_name`\  is required as a source for the Job Template "content".
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs:
+
+      .. rst-class:: ansible-option-title
+
+      **template_inputs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The template inputs used in the Job Template
+
+
+      .. raw:: html
+
+        </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/advanced"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/advanced:
+
+      .. rst-class:: ansible-option-title
+
+      **advanced**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/advanced" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Template Input is advanced
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/default"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/default:
+
+      .. rst-class:: ansible-option-title
+
+      **default**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/default" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 3.8.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Default value for user input
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/description"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      description of the Template Input
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/fact_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/fact_name:
+
+      .. rst-class:: ansible-option-title
+
+      **fact_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/fact_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Fact name to use.
+
+      Required when \ :emphasis:`input\_type=fact`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/hidden_value"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/hidden_value:
+
+      .. rst-class:: ansible-option-title
+
+      **hidden_value**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/hidden_value" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      The value contains sensitive information and should't be normally visible, useful e.g. for passwords
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/input_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/input_type:
+
+      .. rst-class:: ansible-option-title
+
+      **input_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/input_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      input type
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"user"`
+      - :ansible-option-choices-entry:`"fact"`
+      - :ansible-option-choices-entry:`"variable"`
+      - :ansible-option-choices-entry:`"puppet\_parameter"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      name of the Template Input
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/options"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/options:
+
+      .. rst-class:: ansible-option-title
+
+      **options**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/options" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Template values for user inputs. Must be an array of any type.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/puppet_class_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/puppet_class_name:
+
+      .. rst-class:: ansible-option-title
+
+      **puppet_class_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/puppet_class_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Puppet class name.
+
+      Required when \ :emphasis:`input\_type=puppet\_parameter`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/puppet_parameter_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/puppet_parameter_name:
+
+      .. rst-class:: ansible-option-title
+
+      **puppet_parameter_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/puppet_parameter_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Puppet parameter name.
+
+      Required when \ :emphasis:`input\_type=puppet\_parameter`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/required"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/required:
+
+      .. rst-class:: ansible-option-title
+
+      **required**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/required" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Is the input required
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/resource_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/resource_type:
+
+      .. rst-class:: ansible-option-title
+
+      **resource_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/resource_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Type of the resource
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/value_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/value_type:
+
+      .. rst-class:: ansible-option-title
+
+      **value_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/value_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Type of the value
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"plain"`
+      - :ansible-option-choices-entry:`"search"`
+      - :ansible-option-choices-entry:`"date"`
+      - :ansible-option-choices-entry:`"resource"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-template_inputs/variable_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-template_inputs/variable_name:
+
+      .. rst-class:: ansible-option-title
+
+      **variable_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-template_inputs/variable_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Variable name to use.
+
+      Required when \ :emphasis:`input\_type=variable`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+
+    - name: "Create a Job Template inline"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: A New Job Template
+        state: present
+        template: |
+          <%#
+              name: A Job Template
+          %>
+          rm -rf <%= input("toDelete") %>
+        template_inputs:
+          - name: toDelete
+            input_type: user
+        locations:
+        - Gallifrey
+        organizations:
+        - TARDIS INC
+
+    - name: "Create a Job Template from a file"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: a new job template
+        file_name: timeywimey_template.erb
+        template_inputs:
+          - name: a new template input
+            input_type: user
+        state: present
+        locations:
+        - Gallifrey
+        organizations:
+        - TARDIS INC
+
+    - name: "remove a job template's template inputs"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: a new job template
+        template_inputs: []
+        state: present
+        locations:
+        - Gallifrey
+        organizations:
+        - TARDIS INC
+
+    - name: "Delete a Job Template"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: timeywimey
+        state: absent
+
+    - name: "Create a Job Template from a file and modify with parameter(s)"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        file_name: timeywimey_template.erb
+        name: Wibbly Wobbly Template
+        state: present
+        locations:
+        - Gallifrey
+        organizations:
+        - TARDIS INC
+
+    # Providing a name in this case wouldn't be very sensible.
+    # Alternatively make use of with_filetree to parse recursively with filter.
+    - name: Parsing a directory of Job templates
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        file_name: "{{ item }}"
+        state: present
+        locations:
+        - SKARO
+        organizations:
+        - DALEK INC
+      with_fileglob:
+        - "./arsenal_templates/*.erb"
+
+    # If the templates are stored locally and the ansible module is executed on a remote host
+    - name: Ensure latest version of all your Job Templates
+      theforeman.foreman.job_template:
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+        template: '{{ lookup("file", item.src) }}'
+        name: '{{ item.path }}'
+      with_filetree: '/path/to/job/templates'
+      when: item.state == 'file'
+
+
+    # with name set to "*" bulk actions can be performed
+    - name: "Delete *ALL* Job Templates"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "*"
+        state: absent
+
+    - name: "Assign all Job Templates to the same organization(s)"
+      theforeman.foreman.job_template:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "*"
+        state: present
+        organizations:
+        - DALEK INC
+        - sky.net
+        - Doc Brown's garage
+
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/job_templates"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__return-entity/job_templates:
+
+      .. rst-class:: ansible-option-title
+
+      **job_templates**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/job_templates" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of job templates.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/template_inputs"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_template_module__return-entity/template_inputs:
+
+      .. rst-class:: ansible-option-title
+
+      **template_inputs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/template_inputs" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of template inputs associated with the job template.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Manuel Bonk (@manuelbonk) ATIX AG
+- Matthias Dellweg (@mdellweg) ATIX AG
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

@@ -1,0 +1,628 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.foreman_callback:
+
+.. Anchors: short name for ansible.builtin
+
+.. Title
+
+theforeman.foreman.foreman callback -- Sends events to Foreman
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This callback plugin is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.13.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this callback plugin,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.foreman_callback_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.foreman`.
+
+.. version_added
+
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Callback plugin
+---------------
+
+This plugin is a **notification callback**. It sends information for a playbook run to other applications, services, or systems.
+See :ref:`callback_plugins` for more information on callback plugins.
+
+Synopsis
+--------
+
+.. Description
+
+- This callback will report facts and task events to Foreman
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.foreman_callback_requirements:
+
+Requirements
+------------
+The below requirements are needed on the local controller node that executes this callback.
+
+- whitelisting in configuration
+- requests (python library)
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-client_cert"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ssl_cert"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-client_cert:
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-ssl_cert:
+
+      .. rst-class:: ansible-option-title
+
+      **client_cert**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-client_cert" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: ssl_cert`
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      X509 certificate to authenticate to Foreman if https is used
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"/etc/foreman/client\_cert.pem"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [callback_foreman]
+          ssl_cert = /etc/foreman/client_cert.pem
+
+
+
+        .. code-block::
+
+          [callback_foreman]
+          client_cert = /etc/foreman/client_cert.pem
+
+
+      - Environment variable: :envvar:`FOREMAN\_SSL\_CERT`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-client_key"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ssl_key"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-client_key:
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-ssl_key:
+
+      .. rst-class:: ansible-option-title
+
+      **client_key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-client_key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: ssl_key`
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      the corresponding private key
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"/etc/foreman/client\_key.pem"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entries:
+
+        .. code-block::
+
+          [callback_foreman]
+          ssl_key = /etc/foreman/client_key.pem
+
+
+
+        .. code-block::
+
+          [callback_foreman]
+          client_key = /etc/foreman/client_key.pem
+
+
+      - Environment variable: :envvar:`FOREMAN\_SSL\_KEY`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-dir_store"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-dir_store:
+
+      .. rst-class:: ansible-option-title
+
+      **dir_store**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-dir_store" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      When set, callback does not perform HTTP calls but stores results in a given directory.
+
+      For each report, new file in the form of SEQ\_NO-hostname.json is created.
+
+      For each facts, new file in the form of SEQ\_NO-hostname.json is created.
+
+      The value must be a valid directory.
+
+      This is meant for debugging and testing purposes.
+
+      When set to blank (default) this functionality is turned off.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [callback_foreman]
+          dir_store = ""
+
+
+      - Environment variable: :envvar:`FOREMAN\_DIR\_STORE`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-disable_callback"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-disable_callback:
+
+      .. rst-class:: ansible-option-title
+
+      **disable_callback**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-disable_callback" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle to make the callback plugin disable itself even if it is loaded.
+
+      It can be set to '1' to prevent the plugin from being used even if it gets loaded.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`0`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: :envvar:`FOREMAN\_CALLBACK\_DISABLE`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-proxy_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-proxy_url:
+
+      .. rst-class:: ansible-option-title
+
+      **proxy_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-proxy_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman Smart Proxy server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [callback_foreman]
+          proxy_url = VALUE
+
+
+      - Environment variable: :envvar:`FOREMAN\_PROXY\_URL`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-report_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-report_type:
+
+      .. rst-class:: ansible-option-title
+
+      **report_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-report_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      endpoint type for reports: foreman or proxy
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"foreman"`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [callback_foreman]
+          report_type = foreman
+
+
+      - Environment variable: :envvar:`FOREMAN\_REPORT\_TYPE`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-url"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [callback_foreman]
+          url = VALUE
+
+
+      - Environment variable: :envvar:`FOREMAN\_URL`
+
+      - Environment variable: :envvar:`FOREMAN\_SERVER\_URL`
+
+      - Environment variable: :envvar:`FOREMAN\_SERVER`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-verify_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.foreman_callback__parameter-verify_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **verify_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-verify_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Toggle to decide whether to verify the Foreman certificate.
+
+      It can be set to '1' to verify SSL certificates using the installed CAs or to a path pointing to a CA bundle.
+
+      Set to '0' to disable certificate checking.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`1`
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [callback_foreman]
+          verify_certs = 1
+
+
+      - Environment variable: :envvar:`FOREMAN\_SSL\_VERIFY`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+
+
+.. Facts
+
+
+.. Return values
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+
+.. hint::
+    Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+

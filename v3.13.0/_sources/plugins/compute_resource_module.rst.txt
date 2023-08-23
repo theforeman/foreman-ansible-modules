@@ -1,0 +1,1894 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-default-mark
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.compute_resource_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Title
+
+theforeman.foreman.compute_resource module -- Manage Compute Resources
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/theforeman/foreman>`_ (version 3.13.0).
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.compute_resource_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.compute_resource`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 1.0.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Create, update, and delete Compute Resources
+
+
+.. Aliases
+
+Aliases: foreman_compute_resource
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.compute_resource_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      compute resource description
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-locations"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-locations:
+
+      .. rst-class:: ansible-option-title
+
+      **locations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-locations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of locations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      compute resource name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organizations"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-organizations:
+
+      .. rst-class:: ansible-option-title
+
+      **organizations**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organizations" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of organizations the entity should be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider:
+
+      .. rst-class:: ansible-option-title
+
+      **provider**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Compute resource provider. Required if \ :emphasis:`state=present\_with\_defaults`\ .
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"vmware"`
+      - :ansible-option-choices-entry:`"libvirt"`
+      - :ansible-option-choices-entry:`"ovirt"`
+      - :ansible-option-choices-entry:`"proxmox"`
+      - :ansible-option-choices-entry:`"EC2"`
+      - :ansible-option-choices-entry:`"AzureRm"`
+      - :ansible-option-choices-entry:`"GCE"`
+      - :ansible-option-choices-entry:`"Openstack"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params:
+
+      .. rst-class:: ansible-option-title
+
+      **provider_params**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Parameter specific to compute resource provider. Required if \ :emphasis:`state=present\_with\_defaults`\ .
+
+
+      .. raw:: html
+
+        </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/app_ident"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/app_ident:
+
+      .. rst-class:: ansible-option-title
+
+      **app_ident**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/app_ident" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      AzureRM client id
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/caching_enabled"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/caching_enabled:
+
+      .. rst-class:: ansible-option-title
+
+      **caching_enabled**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/caching_enabled" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      enable caching for \ :emphasis:`provider=vmware`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/cloud"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/cloud:
+
+      .. rst-class:: ansible-option-title
+
+      **cloud**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/cloud" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      cloud for \ :emphasis:`provider=AzureRm`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"azure"`
+      - :ansible-option-choices-entry:`"azureusgovernment"`
+      - :ansible-option-choices-entry:`"azurechina"`
+      - :ansible-option-choices-entry:`"azuregermancloud"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/datacenter"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/datacenter:
+
+      .. rst-class:: ansible-option-title
+
+      **datacenter**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/datacenter" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Datacenter the compute resource is in, not valid for \ :emphasis:`provider=libvirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/display_type"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/display_type:
+
+      .. rst-class:: ansible-option-title
+
+      **display_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/display_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Display type to use for the remote console, only valid for \ :emphasis:`provider=libvirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/domain"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/domain:
+
+      .. rst-class:: ansible-option-title
+
+      **domain**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/domain" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Auth domain for users, only valid for \ :emphasis:`provider=Openstack`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/email"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/email:
+
+      .. rst-class:: ansible-option-title
+
+      **email**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/email" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Email for \ :emphasis:`provider=GCE`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/key_path"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/key_path:
+
+      .. rst-class:: ansible-option-title
+
+      **key_path**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/key_path" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Certificate path for \ :emphasis:`provider=GCE`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/keyboard_layout"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/keyboard_layout:
+
+      .. rst-class:: ansible-option-title
+
+      **keyboard_layout**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/keyboard_layout" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Default VNC Keyboard for \ :emphasis:`provider=ovirt`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"ar"`
+      - :ansible-option-choices-entry:`"da"`
+      - :ansible-option-choices-entry:`"de"`
+      - :ansible-option-choices-entry:`"de-ch"`
+      - :ansible-option-choices-entry:`"en-gb"`
+      - :ansible-option-choices-entry:`"en-us"`
+      - :ansible-option-choices-entry:`"es"`
+      - :ansible-option-choices-entry:`"et"`
+      - :ansible-option-choices-entry:`"fi"`
+      - :ansible-option-choices-entry:`"fo"`
+      - :ansible-option-choices-entry:`"fr"`
+      - :ansible-option-choices-entry:`"fr-be"`
+      - :ansible-option-choices-entry:`"fr-ca"`
+      - :ansible-option-choices-entry:`"fr-ch"`
+      - :ansible-option-choices-entry:`"hr"`
+      - :ansible-option-choices-entry:`"hu"`
+      - :ansible-option-choices-entry:`"is"`
+      - :ansible-option-choices-entry:`"it"`
+      - :ansible-option-choices-entry:`"ja"`
+      - :ansible-option-choices-entry:`"lt"`
+      - :ansible-option-choices-entry:`"lv"`
+      - :ansible-option-choices-entry:`"mk"`
+      - :ansible-option-choices-entry:`"nl"`
+      - :ansible-option-choices-entry:`"nl-be"`
+      - :ansible-option-choices-entry:`"no"`
+      - :ansible-option-choices-entry:`"pl"`
+      - :ansible-option-choices-entry:`"pt"`
+      - :ansible-option-choices-entry:`"pt-br"`
+      - :ansible-option-choices-entry:`"ru"`
+      - :ansible-option-choices-entry:`"sl"`
+      - :ansible-option-choices-entry:`"sv"`
+      - :ansible-option-choices-entry:`"th"`
+      - :ansible-option-choices-entry:`"tr"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/ovirt_quota"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/ovirt_quota:
+
+      .. rst-class:: ansible-option-title
+
+      **ovirt_quota**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/ovirt_quota" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      oVirt quota ID, only valid for \ :emphasis:`provider=ovirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/password"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Password for the compute resource connection, not valid for \ :emphasis:`provider=libvirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/project"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/project:
+
+      .. rst-class:: ansible-option-title
+
+      **project**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/project" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Project id for \ :emphasis:`provider=GCE`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/project_domain_id"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/project_domain_id:
+
+      .. rst-class:: ansible-option-title
+
+      **project_domain_id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/project_domain_id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Project domain id, only valid for \ :emphasis:`provider=Openstack`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/project_domain_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/project_domain_name:
+
+      .. rst-class:: ansible-option-title
+
+      **project_domain_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/project_domain_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Project domain name, only valid for \ :emphasis:`provider=Openstack`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/public_key"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/public_key:
+
+      .. rst-class:: ansible-option-title
+
+      **public_key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/public_key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      X509 Certification Authorities, only valid for \ :emphasis:`provider=ovirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/region"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/region:
+
+      .. rst-class:: ansible-option-title
+
+      **region**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/region" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      AWS region, AZURE region
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/set_console_password"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/set_console_password:
+
+      .. rst-class:: ansible-option-title
+
+      **set_console_password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/set_console_password" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Set a randomly generated password on the display connection for \ :emphasis:`provider=vmware`\  and \ :emphasis:`provider=libvirt`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/ssl_verify_peer"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/ssl_verify_peer:
+
+      .. rst-class:: ansible-option-title
+
+      **ssl_verify_peer**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/ssl_verify_peer" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      verify ssl from provider \ :emphasis:`provider=proxmox`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/sub_id"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/sub_id:
+
+      .. rst-class:: ansible-option-title
+
+      **sub_id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/sub_id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 2.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Subscription ID for \ :emphasis:`provider=AzureRm`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/tenant"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/tenant:
+
+      .. rst-class:: ansible-option-title
+
+      **tenant**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/tenant" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      AzureRM tenant, Openstack project name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/url"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      URL of the compute resource
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/use_v4"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/use_v4:
+
+      .. rst-class:: ansible-option-title
+
+      **use_v4**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/use_v4" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Use oVirt API v4, only valid for \ :emphasis:`provider=ovirt`\ 
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/user"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/user:
+
+      .. rst-class:: ansible-option-title
+
+      **user**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/user" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Username for the compute resource connection, not valid for \ :emphasis:`provider=libvirt`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-provider_params/zone"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-provider_params/zone:
+
+      .. rst-class:: ansible-option-title
+
+      **zone**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-provider_params/zone" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      zone for \ :emphasis:`provider=GCE`\ 
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      State of the entity
+
+      \ :literal:`present\_with\_defaults`\  will ensure the entity exists, but won't update existing ones
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"present\_with\_defaults"`
+      - :ansible-option-choices-entry:`"absent"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-updated_name"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-updated_name:
+
+      .. rst-class:: ansible-option-title
+
+      **updated_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-updated_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      new compute resource name
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: Create libvirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: libvirt
+        provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+          display_type: spice
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Update libvirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        description: updated compute resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: libvirt
+        provider_params:
+          url: qemu+ssh://root@libvirt.example.com/system
+          display_type: spice
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Delete libvirt compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: absent
+
+    - name: Create vmware compute resource
+      theforeman.foreman.compute_resource:
+        name: example_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: vmware
+        provider_params:
+          caching_enabled: false
+          url: vsphere.example.com
+          user: admin
+          password: secret
+          datacenter: ax01
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Create ovirt compute resource
+      theforeman.foreman.compute_resource:
+        name: ovirt_compute_resource
+        locations:
+          - France/Toulouse
+        organizations:
+          - Example Org
+        provider: ovirt
+        provider_params:
+          url: ovirt.example.com
+          user: ovirt-admin@example.com
+          password: ovirtsecret
+          datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
+          ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
+          use_v4: true
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: Create proxmox compute resource
+      theforeman.foreman.compute_resource:
+        name: proxmox_compute_resource
+        locations:
+          - Munich
+        organizations:
+          - ACME
+        provider: proxmox
+        provider_params:
+          url: https://proxmox.example.com:8006/api2/json
+          user: root@pam
+          password: secretpassword
+          ssl_verify_peer: true
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create EC2 compute resource
+      theforeman.foreman.compute_resource:
+        name: EC2_compute_resource
+        description: EC2
+        locations:
+          - AWS
+        organizations:
+          - ACME
+        provider: EC2
+        provider_params:
+          user: AWS_ACCESS_KEY
+          password: AWS_SECRET_KEY
+          region: eu-west-1
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create Azure compute resource
+      theforeman.foreman.compute_resource:
+        name: AzureRm_compute_resource
+        description: AzureRm
+        locations:
+          - Azure
+        organizations:
+          - ACME
+        provider: AzureRm
+        provider_params:
+          sub_id: SUBSCRIPTION_ID
+          tenant: TENANT_ID
+          app_ident: CLIENT_ID
+          password: CLIENT_SECRET
+          region: westeurope
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create GCE compute resource
+      theforeman.foreman.compute_resource:
+        name: GCE compute resource
+        description: Google Cloud Engine
+        locations:
+          - GCE
+        organizations:
+          - ACME
+        provider: GCE
+        provider_params:
+          project: orcharhino
+          email: myname@atix.de
+          key_path: "/usr/share/foreman/gce_orcharhino_key.json"
+          zone: europe-west3-b
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: create Openstack compute resource
+      theforeman.foreman.compute_resource:
+        name: Openstack compute resource
+        description: Openstack
+        locations:
+          - DC1
+        organizations:
+          - ACME
+        provider: Openstack
+        provider_params:
+          url: "https://Openstack.example.com:5000/v3"
+          user: admin
+          password: secret
+          tenant: "MyProject"
+          domain: "example.com"
+          project_domain_name: "example.com"
+          project_domain_id: "0123456789a0123456789b0123456789"
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__return-entity:
+
+      .. rst-class:: ansible-option-title
+
+      **entity**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Final state of the affected entities grouped by their type.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-entity/compute_resources"></div>
+
+      .. _ansible_collections.theforeman.foreman.compute_resource_module__return-entity/compute_resources:
+
+      .. rst-class:: ansible-option-title
+
+      **compute_resources**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-entity/compute_resources" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      List of compute resources.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Philipp Joos (@philippj)
+- Baptiste Agasse (@bagasse)
+- Manisha Singhal (@Manisha15) ATIX AG
+- Mark Hlawatschek (@hlawatschek) ATIX AG
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/theforeman/foreman-ansible-modules/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://theforeman.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="https://github.com/theforeman/foreman-ansible-modules" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+.. Parsing errors
+
