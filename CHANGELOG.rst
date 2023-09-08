@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v3.14.0
+=======
+
+Bugfixes
+--------
+
+- content_view_publish role - correctly pass ``version`` not ``description`` to the module (https://bugzilla.redhat.com/show_bug.cgi?id=2234444)
+
+New Modules
+-----------
+
+- theforeman.foreman.smart_class_parameter_override_value - Manage Smart Class Parameter Override Values
+
 v3.13.0
 =======
 
