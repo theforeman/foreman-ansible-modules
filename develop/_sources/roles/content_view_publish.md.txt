@@ -12,6 +12,11 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 - `foreman_content_views`: List of Content Views to publish. It can be either a list of Content View names or a list of dictionaries with the parameters as accepted by the `content_view_version` module or the `content_views` role.
 
+### Optional  
+
+- `foreman_content_view_publish_async`: Asynchronous mode lets you control how long-running tasks execute. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_async.html#asynchronous-playbook-tasks) for details.
+- `foreman_content_view_publish_poll`: For asynchronous tasks, this is how often to check back on the status of those tasks.
+  
 Example Playbook
 ----------------
 
