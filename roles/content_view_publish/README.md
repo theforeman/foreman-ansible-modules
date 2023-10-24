@@ -14,8 +14,8 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 ### Optional  
 
-- `foreman_content_view_publish_async`: Asynchronous mode lets you control how long-running tasks execute.The default is 5 seconds. This can be too low on slower systems, or systems under heavy load.
-- `foreman_content_view_publish_poll`:  For asynchronous tasks in this is how often to check back on the status of those tasks when an explicit poll interval is not supplied. The default is a reasonably moderate 15 seconds which is a tradeoff between checking in frequently and providing a quick turnaround when something may have completed.
+- `foreman_content_view_publish_async`: Asynchronous mode lets you control how long-running tasks execute. See the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_async.html#asynchronous-playbook-tasks) for details.
+- `foreman_content_view_publish_poll`: For asynchronous tasks, this is how often to check back on the status of those tasks.
   
 Example Playbook
 ----------------
