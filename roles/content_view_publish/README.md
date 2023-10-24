@@ -12,6 +12,11 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 - `foreman_content_views`: List of Content Views to publish. It can be either a list of Content View names or a list of dictionaries with the parameters as accepted by the `content_view_version` module or the `content_views` role.
 
+### Optional  
+
+- `foreman_content_view_publish_async`: Asynchronous mode lets you control how long-running tasks execute.The default is 5 seconds. This can be too low on slower systems, or systems under heavy load.
+- `foreman_content_view_publish_poll`:  For asynchronous tasks in this is how often to check back on the status of those tasks when an explicit poll interval is not supplied. The default is a reasonably moderate 15 seconds which is a tradeoff between checking in frequently and providing a quick turnaround when something may have completed.
+  
 Example Playbook
 ----------------
 
