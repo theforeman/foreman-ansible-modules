@@ -656,6 +656,21 @@ releases:
       name: smart_class_parameter_override_value
       namespace: ''
     release_date: '2023-09-08'
+  3.15.0:
+    changes:
+      bugfixes:
+      - content_view_filter_rule - handle multiple rules for the same package but
+        different architectures and versions correctly (https://bugzilla.redhat.com/show_bug.cgi?id=2189687)
+      minor_changes:
+      - content_view_publish role - allow passing ``async`` and ``poll`` to the module
+        (https://github.com/theforeman/foreman-ansible-modules/pull/1676)
+      - convert2rhel role - install ``convert2rhel`` from ``cdn-public.redhat.com``,
+        dropping the requirement of a custom CA cert
+    fragments:
+    - 1672-convert2rhel-cdn-public.yml
+    - 1676-content_view_version-async-poll.yml
+    - bz2189687-content_view_filter_rule-handle-arch-version.yml
+    release_date: '2023-11-15'
   3.2.0:
     changes:
       bugfixes:
