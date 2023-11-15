@@ -1,22 +1,4 @@
 ---
-- name: Check /etc/rhsm/ca/redhat-uep.pem
-  ansible.builtin.stat:
-    path: "/etc/rhsm/ca/redhat-uep.pem"
-  register: __foreman_ct
-
-- name: "Create 'Convert2RHEL' credentials"
-  theforeman.foreman.content_credential:
-    username: "{{ foreman_username }}"
-    password: "{{ foreman_password }}"
-    server_url: "{{ foreman_server_url }}"
-    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
-    name: "Convert2RHEL CA"
-    content_type: cert
-    content: "{{ __foreman_ct.stat.exists | ternary(lookup('file', '/etc/rhsm/ca/redhat-uep.pem', errors='ignore', rstrip=False),
-      lookup('url', 'https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem', split_lines=False)) }}"
-    state: present
-
 - name: "Create product and repositories '{{ foreman_convert2rhel_rhel7_product }}'"
   ansible.builtin.include_role:
     name: theforeman.foreman.repositories
@@ -27,10 +9,9 @@
           - name: "{{ foreman_convert2rhel_rhel7_repo }}"
             content_type: "yum"
             product: "{{ foreman_convert2rhel_rhel7_product }}"
-            url: "https://cdn.redhat.com/content/public/convert2rhel/7/x86_64/os/"
+            url: "https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel/server/7/7Server/x86_64/os/"
             verify_ssl_on_sync: true
             download_policy: immediate
-            ssl_ca_cert: "Convert2RHEL CA"
             state: present
   when: foreman_content_rhel_enable_rhel7
 
@@ -44,10 +25,9 @@
           - name: "{{ foreman_convert2rhel_rhel8_repo }}"
             content_type: "yum"
             product: "{{ foreman_convert2rhel_rhel8_product }}"
-            url: "https://cdn.redhat.com/content/public/convert2rhel/8/x86_64/os/"
+            url: "https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/"
             verify_ssl_on_sync: true
             download_policy: immediate
-            ssl_ca_cert: "Convert2RHEL CA"
             state: present
   when: foreman_content_rhel_enable_rhel8
 
