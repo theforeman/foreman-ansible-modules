@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.7.0-rc2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.7.1","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '66'
+      - '62'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -35,7 +35,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.0-rc2
+      - 3.7.1
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -70,8 +70,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-06-04
-        21:31:10 UTC\",\"updated_at\":\"2023-06-04 21:31:12 UTC\",\"id\":5,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-11-15
+        10:37:36 UTC\",\"updated_at\":\"2023-11-15 10:37:38 UTC\",\"id\":6,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -93,7 +93,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.0-rc2
+      - 3.7.1
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -123,14 +123,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/content_views?search=name%3D%22Test+Content+View%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/6/content_views?search=name%3D%22Test+Content+View+with+Filter%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":false,"repository_ids":[11],"id":8,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2023-06-04
-        21:32:14 UTC","updated_at":"2023-06-04 21:32:14 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":11,"name":"Test
+      string: '{"total":4,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Content View with Filter\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[21],"id":14,"name":"Test
+        Content View with Filter","label":"Test_Content_View_with_Filter","description":null,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2023-11-15
+        10:37:44 UTC","updated_at":"2023-11-15 10:37:44 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":21,"name":"Test
         Repository","label":"Test_Repository","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]}]}
 
         '
@@ -140,7 +140,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1049'
+      - '1085'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -152,9 +152,9 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 6; Test Organization
       Foreman_version:
-      - 3.7.0-rc2
+      - 3.7.1
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -184,11 +184,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_views/8/filters?search=name%3D%22Test+Content+View+Filter+-+modulemd%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_views/14/filters?search=name%3D%22Test+Package+Content+View+Filter%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View Filter - modulemd\"","sort":{"by":"name","order":"asc"},"results":[]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Package Content View Filter\"","sort":{"by":"name","order":"asc"},"results":[{"inclusion":false,"id":15,"name":"Test
+        Package Content View Filter","description":null,"created_at":"2023-11-15 10:37:45
+        UTC","updated_at":"2023-11-15 10:37:45 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[21],"id":14,"name":"Test
+        Content View with Filter","label":"Test_Content_View_with_Filter","description":null,"organization_id":6,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":6},"created_at":"2023-11-15
+        10:37:44 UTC","updated_at":"2023-11-15 10:37:44 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":21,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"rpm","rules":[]}]}
 
         '
     headers:
@@ -197,7 +203,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '190'
+      - '1312'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -211,7 +217,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.0-rc2
+      - 3.7.1
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
@@ -230,8 +236,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Test Content View Filter - modulemd", "type": "modulemd", "inclusion":
-      false, "repository_ids": []}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -239,24 +244,13 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '109'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/content_views/8/filters
+    method: GET
+    uri: https://foreman.example.org/katello/api/content_view_filters/15/rules?search=name%3D%22bear%22&per_page=4294967296
   response:
     body:
-      string: '  {"inclusion":false,"original_module_streams":false,"id":21,"name":"Test
-        Content View Filter - modulemd","description":null,"created_at":"2023-06-04
-        21:32:53 UTC","updated_at":"2023-06-04 21:32:53 UTC","content_view":{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":true,"repository_ids":[11],"id":8,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2023-06-04
-        21:32:14 UTC","updated_at":"2023-06-04 21:32:14 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":11,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum","product":{"id":4,"name":"Test
-        Product"},"content_counts":{"docker_manifest":0,"docker_tag":0,"rpm":32,"package":32,"package_group":2,"erratum":4,"module_stream":0}}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]},"repositories":[],"type":"modulemd","rules":[]}
+      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"bear\"","sort":{"by":"id","order":"asc"},"results":[]}
 
         '
     headers:
@@ -265,7 +259,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1308'
+      - '157'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -279,9 +273,70 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.0-rc2
+      - 3.7.1
       Keep-Alive:
       - timeout=15, max=96
+      Strict-Transport-Security:
+      - max-age=631139040; includeSubdomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "bear"}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '16'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/katello/api/content_view_filters/15/rules
+  response:
+    body:
+      string: '  {"content_view_filter_id":15,"id":18,"name":"bear","created_at":"2023-11-15
+        10:37:46 UTC","updated_at":"2023-11-15 10:37:46 UTC"}
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '132'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.7.1
+      Keep-Alive:
+      - timeout=15, max=95
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
       X-Content-Type-Options:
