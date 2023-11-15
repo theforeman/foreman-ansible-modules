@@ -4,7 +4,6 @@
     content_view_filter_name: "Test Docker Content View Filter"
     content_view_name: "Test Content View"
     organization_name: "Test Organization"
-    tag: "birds"
     filter_state: present
   content_view_filter:
     username: "{{ foreman_username }}"
@@ -16,10 +15,8 @@
     content_view: "{{ content_view_name }}"
     filter_type: "docker"
     repositories: "{{ repositories | default(omit) }}"
-    tag: "{{ tag }}"
     inclusion: "{{ inclusion | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"

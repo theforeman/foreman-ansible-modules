@@ -7,8 +7,6 @@
     repositories:
       - name: "Test Repository"
         product: "Test Product"
-    end_date: "2018-01-03"
-    start_date: "2017-01-03"
     filter_state: present
   content_view_filter:
     username: "{{ foreman_username }}"
@@ -20,13 +18,8 @@
     content_view: "{{ content_view_name }}"
     filter_type: "erratum"
     repositories: "{{ repositories }}"
-    end_date: "{{ end_date }}"
-    start_date: "{{ start_date }}"
-    types: "{{ types | default(omit) }}"
-    date_type: "{{ date_type | default(omit) }}"
     inclusion: "{{ inclusion | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Ensuring content view filter is {{ filter_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
