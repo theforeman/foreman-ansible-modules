@@ -42,7 +42,7 @@ options:
       - Name of the content view
     required: true
     type: str
-  filter_state:
+  state:
     description:
       - State of the content view filter
     default: present
@@ -50,6 +50,8 @@ options:
       - present
       - absent
     type: str
+    aliases:
+      - filter_state
   repositories:
     description:
       - List of repositories that include name and product
@@ -127,22 +129,10 @@ entity:
       elements: dict
 '''
 
-from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloMixin, ForemanStatelessEntityAnsibleModule
-
-content_filter_spec = {
-    'id': {},
-    'name': {},
-    'description': {},
-    'repositories': {'type': 'entity_list'},
-    'inclusion': {},
-    'content_view': {'type': 'entity'},
-    'filter_type': {'flat_name': 'type'},
-    'original_packages': {},
-    'original_module_streams': {},
-}
+from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloMixin, ForemanEntityAnsibleModule
 
 
-class KatelloContentViewFilterModule(KatelloMixin, ForemanStatelessEntityAnsibleModule):
+class KatelloContentViewFilterModule(KatelloMixin, ForemanEntityAnsibleModule):
     pass
 
 
@@ -151,18 +141,18 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
-            repositories=dict(type='list', default=[], elements='dict'),
+            repositories=dict(type='entity_list', default=[], elements='dict'),
             inclusion=dict(type='bool', default=False),
             original_packages=dict(type='bool'),
             content_view=dict(type='entity', scope=['organization'], required=True),
-            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker', 'modulemd', 'deb']),
-            filter_state=dict(default='present', choices=['present', 'absent']),
+            filter_type=dict(required=True, choices=['rpm', 'package_group', 'erratum', 'docker', 'modulemd', 'deb'], flat_name='type'),
             original_module_streams=dict(type='bool'),
+        ),
+        argument_spec=dict(
+            state=dict(default='present', choices=['present', 'absent'], aliases=['filter_state']),
         ),
         entity_opts=dict(scope=['content_view']),
     )
-
-    filter_state = module.foreman_params.pop('filter_state')
 
     with module.api_connection():
         scope = module.scope_for('organization')
@@ -176,14 +166,14 @@ def main():
                 repositories.append(module.find_resource_by_name('repositories', repo['name'], params=product_scope, thin=True))
             module.foreman_params['repositories'] = repositories
 
+        if not module.desired_absent:
+            module.foreman_params.pop('organization')
         entity = module.lookup_entity('entity')
         module.ensure_entity(
             'content_view_filters',
             module.foreman_params,
             entity,
             params=cv_scope,
-            state=filter_state,
-            foreman_spec=content_filter_spec,
         )
 
 
