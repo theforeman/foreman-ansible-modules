@@ -291,8 +291,10 @@ def main():
         elif filter_type in ('rpm', 'docker', 'package_group', 'deb'):
             # these filter types support many rules
             # the name is the key to finding the proper one and is required for these types
-            content_view_filter_rule = module.find_resource_by_name('content_view_filter_rules', module.foreman_params['name'],
-                                                                    params=search_scope, failsafe=True)
+            search = [(key, module.foreman_params.get(key)) for key in ('name', 'architecture', 'version') if module.foreman_params.get(key)]
+            search_string = ','.join('{0}="{1}"'.format(key, val) for (key, val) in search)
+            content_view_filter_rule = module.find_resource('content_view_filter_rules', search_string,
+                                                            params=search_scope, failsafe=True)
 
             if filter_type == 'package_group':
                 # uuid is also a required value creating, but is implementation specific and not easily knowable to the end user - we find it for them
