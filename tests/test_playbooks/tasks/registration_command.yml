@@ -1,0 +1,18 @@
+---
+- name: "Generate Registration Command"
+  vars:
+    rc_organization: Test Organization
+    rc_location: Test Location
+  registration_command:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ rc_organization }}"
+    location: "{{ rc_location }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring registering command is generated failed!"
+    that:
+      - "'curl' in result.registration_command"
+...
