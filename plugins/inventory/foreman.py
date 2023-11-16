@@ -32,7 +32,7 @@ DOCUMENTATION = '''
       url:
         description:
           - URL of the Foreman server.
-        default: 'http://localhost:3000'
+        required: true
         env:
             - name: FOREMAN_SERVER
             - name: FOREMAN_SERVER_URL
