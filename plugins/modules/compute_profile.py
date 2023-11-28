@@ -208,7 +208,7 @@ def main():
                         for volume in ca_module_params['vm_attrs']['volumes_attributes'].values():
                             if 'storage_pod' in volume:
                                 storage_pod = module.find_storage_pod(volume['storage_pod'], compute_resource, cluster)
-                                volume['storage_pod'] = storage_pod['id']
+                                volume['storage_pod'] = storage_pod['name']
                             if 'storage_domain' in volume:
                                 storage_domain = module.find_storage_domain(volume['storage_domain'], compute_resource, cluster)
                                 volume['storage_domain'] = storage_domain['id']
