@@ -176,9 +176,9 @@ EXAMPLES = '''
       - name: toDelete
         input_type: user
     locations:
-    - Gallifrey
+      - Gallifrey
     organizations:
-    - TARDIS INC
+      - TARDIS INC
 
 - name: "Create a Job Template from a file"
   theforeman.foreman.job_template:
@@ -192,9 +192,9 @@ EXAMPLES = '''
         input_type: user
     state: present
     locations:
-    - Gallifrey
+      - Gallifrey
     organizations:
-    - TARDIS INC
+      - TARDIS INC
 
 - name: "remove a job template's template inputs"
   theforeman.foreman.job_template:
@@ -205,9 +205,9 @@ EXAMPLES = '''
     template_inputs: []
     state: present
     locations:
-    - Gallifrey
+      - Gallifrey
     organizations:
-    - TARDIS INC
+      - TARDIS INC
 
 - name: "Delete a Job Template"
   theforeman.foreman.job_template:
@@ -226,9 +226,9 @@ EXAMPLES = '''
     name: Wibbly Wobbly Template
     state: present
     locations:
-    - Gallifrey
+      - Gallifrey
     organizations:
-    - TARDIS INC
+      - TARDIS INC
 
 # Providing a name in this case wouldn't be very sensible.
 # Alternatively make use of with_filetree to parse recursively with filter.
@@ -240,9 +240,9 @@ EXAMPLES = '''
     file_name: "{{ item }}"
     state: present
     locations:
-    - SKARO
+      - SKARO
     organizations:
-    - DALEK INC
+      - DALEK INC
   with_fileglob:
     - "./arsenal_templates/*.erb"
 
@@ -276,9 +276,9 @@ EXAMPLES = '''
     name: "*"
     state: present
     organizations:
-    - DALEK INC
-    - sky.net
-    - Doc Brown's garage
+      - DALEK INC
+      - sky.net
+      - Doc Brown's garage
 
 '''
 
