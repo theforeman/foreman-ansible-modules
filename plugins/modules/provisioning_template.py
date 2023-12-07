@@ -167,8 +167,8 @@ EXAMPLES = '''
       - SKARO
     organizations:
       - DALEK INC
-    with_fileglob:
-       - "./arsenal_templates/*.erb"
+  with_fileglob:
+    - "./arsenal_templates/*.erb"
 
 # If the templates are stored locally and the ansible module is executed on a remote host
 - name: Ensure latest version of all Provisioning Community Templates
