@@ -1,0 +1,27 @@
+---
+- name: "Create/update Virt Who config"
+  vars:
+    virt_who_config_name: "Test Virt Who config"
+    virt_who_config_state: "present"
+    virt_who_config_organization: "Test Organization"
+  virt_who_config:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ virt_who_config_organization }}"
+    name: "{{ virt_who_config_name }}"
+    interval: "{{ virt_who_config_interval | default(120) }}"
+    filtering_mode:  "{{ virt_who_config_filtering_mode | default(0) }}"
+    hypervisor_id: "{{ virt_who_config_hypervisor_id | default('hostname') }}"
+    hypervisor_type: "{{ virt_who_config_hypervisor_type | default('libvirt') }}"
+    satellite_url: "{{ virt_who_config_satellite_url | default('foreman.example.com') }}"
+    state: "{{ virt_who_config_organization }}"
+- assert:
+    fail_msg: "Creating/updating Virt Who config failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+- include_tasks: _assert_diff.yml
+  vars:
+    module: virt_who_config
+...
