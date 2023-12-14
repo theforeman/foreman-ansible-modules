@@ -120,7 +120,6 @@ class KatelloProductModule(KatelloEntityAnsibleModule):
 
 def main():
     module = KatelloProductModule(
-        entity_name='product',
         foreman_spec=dict(
             name=dict(required=True),
             label=dict(),
