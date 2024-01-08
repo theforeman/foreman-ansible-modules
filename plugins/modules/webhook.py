@@ -88,7 +88,7 @@ options:
     type: str
   proxy_authorization:
     description:
-      - Authorize with Satellite client certificate and validate capsule CA from Settings
+      - Authorize with client certificate and validate CA from Settings
     type: bool
 extends_documentation_fragment:
   - theforeman.foreman.foreman
