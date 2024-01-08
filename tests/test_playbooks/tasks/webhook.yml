@@ -1,0 +1,32 @@
+---
+- name: "Create/Update/Delete Webhook"
+  vars:
+    webhook_state: "present"
+  webhook:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ webhook_name }}"
+    target_url: "{{ webhook_target_url | default(omit)}}"
+    http_method: "{{ webhook_http_method | default(omit) }}"
+    http_content_type: "{{ webhook_http_content_type | default(omit) }}"
+    event: "{{ webhook_event | default(omit) }}"
+    webhook_template: "{{ webhook_template | default(omit) }}"
+    enabled: "{{ webhook_enabled | default(true) }}"
+    verify_ssl: "{{ webhook_verify_ssl | default(omit) }}"
+    ssl_ca_certs: "{{ webhook_ssl_ca_certs | default(omit) }}"
+    webhook_username: "{{ webhook_username | default(omit) }}"
+    webhook_password: "{{ webhook_password | default(omit) }}"
+    http_headers: "{{ webhook_http_headers | default(omit) }}"
+    proxy_authorization: "{{ webhook_proxy_authorization | default(omit) }}"
+    locations: "{{ webhook_locations | default(omit) }}"
+    organizations: "{{ webhook_organizations | default(omit) }}"
+    state: "{{ webhook_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring webhook is {{ webhook_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...

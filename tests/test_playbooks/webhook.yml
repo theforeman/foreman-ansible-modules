@@ -1,0 +1,91 @@
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: create webhook
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_target_url: "http://example.org:3128"
+        webhook_event: "actions.katello.content_view.promote_succeeded.event.foreman"
+        webhook_template: "Katello Publish"
+        expected_change: true
+    - name: create webhook again, no change
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_target_url: "http://example.org:3128"
+        webhook_event: "actions.katello.content_view.promote_succeeded.event.foreman"
+        webhook_template: "Katello Publish"
+        expected_change: false
+    - name: delete webhook
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "absent"
+        webhook_name: "Test webhook"
+        expected_change: true
+    - name: delete webhook again, no change
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "absent"
+        webhook_name: "Test webhook"
+        expected_change: false
+
+    - name: create webhook with user/pass
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_target_url: "http://example.org:3128"
+        webhook_event: "actions.katello.content_view.promote_succeeded.event.foreman"
+        webhook_http_method: "POST"
+        webhook_username: "admin"
+        webhook_enabled: false
+        webhook_password: "secret_password"
+        webhook_template: "Katello Publish"
+        expected_change: true
+    - name: create webhook with user again, no change
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_target_url: "http://example.org:3128"
+        webhook_event: "actions.katello.content_view.promote_succeeded.event.foreman"
+        webhook_http_method: "POST"
+        webhook_username: "admin"
+        webhook_template: "Katello Publish"
+        webhook_enabled: false
+        # don't set webhook_password here
+        expected_change: false
+    - name: update webhook with http_method
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_http_method: "PUT"
+        expected_change: true
+    - name: update webhook with org/loc, no change
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "present"
+        webhook_name: "Test webhook"
+        webhook_http_method: "PUT"
+        expected_change: false
+    - name: delete webhook
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "absent"
+        webhook_name: "Test webhook"
+        expected_change: true
+    - name: delete webhook again, no change
+      include_tasks: tasks/webhook.yml
+      vars:
+        webhook_state: "absent"
+        webhook_name: "Test webhook"
+        expected_change: false
+...
