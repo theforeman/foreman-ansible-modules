@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: webhook
-version_added: 
+version_added: 4.0.0
 short_description: Manage Webhooks
 description:
   - Manage Webhooks
@@ -41,7 +41,13 @@ options:
     type: str
   http_method:
     description:
-      - Must be one of: POST, GET, PUT, DELETE, PATCH
+      - The HTTP method used in the webhook
+    choices:
+      - POST
+      - GET
+      - PUT
+      - DELETE
+      - PATCH
     type: str
   http_content_type:
     description:
@@ -49,12 +55,12 @@ options:
     type: str
   event:
     description:
-      - Must be one of: actions.katello.content_view.promote_succeeded, actions.katello.content_view.publish_succeeded, actions.katello.repository.sync_succeeded, actions.remote_execution.run_host_job_ansible_configure_cloud_connector_succeeded, actions.remote_execution.run_host_job_ansible_enable_web_console_succeeded, actions.remote_execution.run_host_job_ansible_run_capsule_upgrade_succeeded, actions.remote_execution.run_host_job_ansible_run_host_succeeded, actions.remote_execution.run_host_job_ansible_run_insights_plan_succeeded, actions.remote_execution.run_host_job_ansible_run_playbook_succeeded, actions.remote_execution.run_host_job_foreman_openscap_run_oval_scans_succeeded, actions.remote_execution.run_host_job_foreman_openscap_run_scans_succeeded, actions.remote_execution.run_host_job_katello_errata_install_by_search_succeeded, actions.remote_execution.run_host_job_katello_errata_install_succeeded, actions.remote_execution.run_host_job_katello_group_install_succeeded, actions.remote_execution.run_host_job_katello_group_remove_succeeded, actions.remote_execution.run_host_job_katello_group_update_succeeded, actions.remote_execution.run_host_job_katello_host_tracer_resolve_succeeded, actions.remote_execution.run_host_job_katello_module_stream_action_succeeded, actions.remote_execution.run_host_job_katello_package_install_by_search_succeeded, actions.remote_execution.run_host_job_katello_package_install_succeeded, actions.remote_execution.run_host_job_katello_package_remove_succeeded, actions.remote_execution.run_host_job_katello_package_update_succeeded, actions.remote_execution.run_host_job_katello_packages_remove_by_search_succeeded, actions.remote_execution.run_host_job_katello_packages_update_by_search_succeeded, actions.remote_execution.run_host_job_katello_service_restart_succeeded, actions.remote_execution.run_host_job_leapp_preupgrade_succeeded, actions.remote_execution.run_host_job_leapp_remediation_plan_succeeded, actions.remote_execution.run_host_job_leapp_upgrade_succeeded, actions.remote_execution.run_host_job_puppet_run_host_succeeded, actions.remote_execution.run_host_job_rh_cloud_connector_run_playbook_succeeded, actions.remote_execution.run_host_job_rh_cloud_remediate_hosts_succeeded, actions.remote_execution.run_host_job_run_script_succeeded, actions.remote_execution.run_host_job_succeeded, actions.remote_execution.run_hosts_job_running, actions.remote_execution.run_hosts_job_succeeded, build_entered, build_exited, content_view_created, content_view_destroyed, content_view_updated, domain_created, domain_destroyed, domain_updated, host_created, host_destroyed, host_updated, hostgroup_created, hostgroup_destroyed, hostgroup_updated, model_created, model_destroyed, model_updated, status_changed, subnet_created, subnet_destroyed, subnet_updated, user_created, user_destroyed, user_updated
+      - Name of the event that shall trigger the webhook
       - Required when creating a new webhook
     type: str
-  webhook_template_id:
+  webhook_template:
     description:
-      - ID of the webhook template
+      - Name of the webhook template
     type: str
   enabled:
     description:
@@ -139,10 +145,10 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             target_url=dict(),
-            http_method=dict(),
+            http_method=dict(choices=['POST', 'GET', 'PUT', 'DELETE', 'PATCH']),
             http_content_type=dict(),
             event=dict(),
-            webhook_template_id=dict(),
+            webhook_template=dict(type='entity'),
             verify_ssl=dict(type='bool'),
             enabled=dict(type='bool'),
             ssl_ca_certs=dict(),
