@@ -38,5 +38,6 @@
     content_view: "{{ item.content_view | default(omit) }}"
     activation_keys: "{{ item.activation_keys | default(omit) }}"
     state: "{{ item.state | default(omit) }}"
+  no_log: "{{ item.root_pass is defined }}"
   with_items:
     - "{{ foreman_hostgroups }}"
