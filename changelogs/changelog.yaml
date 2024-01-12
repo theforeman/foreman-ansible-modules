@@ -835,3 +835,24 @@ releases:
       name: hostgroup_info
       namespace: ''
     release_date: '2023-02-20'
+  4.0.0:
+    changes:
+      breaking_changes:
+      - content_view_filter - stop managing rules from this module, ``content_view_filter_rule``
+        should be used for that
+      - inventory plugin - do not default to ``http://localhost:3000`` as the Foreman
+        URL, providing a URL is now mandatory
+      bugfixes:
+      - compute_profile, host - refer to VMware storage pods by name, not id (https://github.com/theforeman/foreman-ansible-modules/issues/1247)
+    fragments:
+    - 1247-reference_storage_pod_name.yml
+    - content_view_filter-drop-rule-management.yml
+    - inventory-no-default-localhost.yml
+    modules:
+    - description: Manage Registration Command
+      name: registration_command
+      namespace: ''
+    - description: Manage Webhooks
+      name: webhook
+      namespace: ''
+    release_date: '2024-01-12'

@@ -6,6 +6,26 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v4.0.0
+======
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- content_view_filter - stop managing rules from this module, ``content_view_filter_rule`` should be used for that
+- inventory plugin - do not default to ``http://localhost:3000`` as the Foreman URL, providing a URL is now mandatory
+
+Bugfixes
+--------
+
+- compute_profile, host - refer to VMware storage pods by name, not id (https://github.com/theforeman/foreman-ansible-modules/issues/1247)
+
+New Modules
+-----------
+
+- theforeman.foreman.registration_command - Manage Registration Command
+- theforeman.foreman.webhook - Manage Webhooks
+
 v3.15.0
 =======
 
