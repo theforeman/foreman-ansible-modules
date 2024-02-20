@@ -1769,7 +1769,7 @@ def parameters_list_to_str_list(parameters):
     filtered_params = []
     for param in parameters:
         new_param = {k: v for (k, v) in param.items() if k in parameter_ansible_spec.keys()}
-        new_param['value'] = parameter_value_to_str(new_param['value'], new_param['parameter_type'])
+        new_param['value'] = parameter_value_to_str(new_param['value'], new_param.get('parameter_type', 'string'))
         filtered_params.append(new_param)
     return filtered_params
 
