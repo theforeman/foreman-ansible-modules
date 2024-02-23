@@ -17,4 +17,4 @@
     foreman_cv_name: "{{ foreman_cv.name }}"
     foreman_cv_versions: "{{ (__foreman_versions.resources | rejectattr('environments') | rejectattr('composite_content_view_ids') |
       rejectattr('published_in_composite_content_view_ids') | map(attribute='version') | map('float') | sort |
-      map('string') | reverse | list)[foreman_content_view_version_cleanup_keep:] }}"
+      map('string') | reverse | list)[(foreman_content_view_version_cleanup_keep | int):] }}"
