@@ -130,7 +130,6 @@ EXAMPLES = '''
     content_view: "Standard Operating Environment"
     content_view_filter: "errata_by_date"
     state: present
-    inclusion: true
     date_type: updated
     types:
       - bugfix
