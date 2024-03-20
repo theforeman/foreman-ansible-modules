@@ -102,7 +102,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
-- name: "List incremental exports of a specific content view version marked for a specific destination server"
+- name: "List incremental exports of a specific content view marked for a specific destination server"
   theforeman.foreman.content_export_info:
     content_view: RHEL8
     destination_server: "airgapped.example.com"

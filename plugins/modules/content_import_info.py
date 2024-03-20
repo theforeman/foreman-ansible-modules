@@ -31,7 +31,7 @@ author:
 options:
   id:
     description:
-      - Export history identifier.
+      - Import history identifier.
     required: false
     type: int
   content_view_version:
@@ -84,7 +84,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
-- name: "List incremental imports of a specific content view version"
+- name: "List incremental imports of a specific content view"
   theforeman.foreman.content_import_info:
     content_view: RHEL8
     type: incremental
