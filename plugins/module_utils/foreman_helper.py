@@ -1606,7 +1606,9 @@ class KatelloContentImportBaseModule(KatelloAnsibleModule):
 
         self.import_action = kwargs.pop('import_action')
 
-        super(KatelloContentImportBaseModule, self).__init__(foreman_spec=foreman_spec, argument_spec=argument_spec, **kwargs)
+        super(KatelloContentImportBaseModule, self).__init__(foreman_spec=foreman_spec,
+                                                             required_one_of=[['metadata', 'metadata_file']],
+                                                             argument_spec=argument_spec, **kwargs)
 
         # needs to happen after super().__init__()
         self.task_timeout = 12 * 60 * 60
@@ -1620,8 +1622,6 @@ class KatelloContentImportBaseModule(KatelloAnsibleModule):
             payload["metadata"] = json.load(open(metadata_file))
             payload.pop("metadata_file")
 
-        if payload.get("metadata") is None:
-            self.fail_json(msg="Metadata not specified.")
         endpoint = 'content_imports'
         task = self.resource_action(endpoint, self.import_action, payload)
         self.exit_json(task=task)

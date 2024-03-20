@@ -22,24 +22,12 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_import_repository
-version_added: 4.0.0
+version_added: 4.1.0
 short_description: Manage repository content imports
 description:
     - Import repository content to foreman.
 author:
     - "Partha Aji (@parthaa)"
-options:
-  path:
-    description:
-      - Directory containing the exported repository.
-    required: true
-    type: str
-  metadata:
-    description:
-      - Contents of the metadata.json file. This is not required if the metadata_file location is provided.
-  metadata_file:
-    description:
-      - Location of the metadata.json file. Not required if the metadata has been already provided via the other parameter
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization

@@ -415,3 +415,17 @@ options:
     required: false
     type: int
 '''
+    KATELLOIMPORT = '''
+options:
+  path:
+    description:
+      - Directory containing the exported repository, version or library.
+    required: true
+    type: str
+  metadata:
+    description:
+      - Contents of the metadata.json file. This is not required if the metadata_file location is provided.
+  metadata_file:
+    description:
+      - Location of the metadata.json file. Not required if the metadata has been already provided via the other parameter
+'''
