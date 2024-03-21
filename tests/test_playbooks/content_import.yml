@@ -1,18 +1,10 @@
 ---
 - hosts: foreman
   remote_user: root
-  collections:
-    - theforeman.foreman
   gather_facts: false
-  vars_files:
-    - vars/server.yml
   tasks:
-    - name: Extract import tgz
-      ansible.builtin.unarchive:
-        src: data/content-import.tgz
-        dest: /var/lib/pulp/imports
-        owner: pulp
-        group: pulp
+    - name: upload import
+      include_tasks: tasks/content_import_setup.yml
 
 - hosts: localhost
   collections:
@@ -62,14 +54,8 @@
 
 - hosts: foreman #tear down
   remote_user: root
-  collections:
-    - theforeman.foreman
   gather_facts: false
-  vars_files:
-    - vars/server.yml
   tasks:
-    - name: Delete the extracted tgz
-      ansible.builtin.file:
-        state: absent
-        path: /var/lib/pulp/imports/content-import
+    - name: cleanup imports
+      import_tasks: tasks/content_import_teardown.yml
 ...
