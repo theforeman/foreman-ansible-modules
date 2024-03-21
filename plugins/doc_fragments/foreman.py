@@ -426,7 +426,9 @@ options:
   metadata:
     description:
       - Contents of the metadata.json file. This is not required if the metadata_file location is provided.
+    type: dict
   metadata_file:
     description:
       - Location of the metadata.json file. Not required if the metadata has been already provided via the other parameter.
+    type: str
 '''
