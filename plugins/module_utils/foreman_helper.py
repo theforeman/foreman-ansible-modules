@@ -1592,6 +1592,7 @@ class KatelloContentExportBaseModule(KatelloAnsibleModule):
 
         self.exit_json(task=task)
 
+
 class KatelloContentImportBaseModule(KatelloAnsibleModule):
 
     def __init__(self, **kwargs):
@@ -1625,6 +1626,7 @@ class KatelloContentImportBaseModule(KatelloAnsibleModule):
         endpoint = 'content_imports'
         task = self.resource_action(endpoint, self.import_action, payload)
         self.exit_json(task=task)
+
 
 def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
