@@ -1,0 +1,14 @@
+---
+- name: "List all full imports in the organization"
+  vars:
+    organization_name: "Test Organization"
+  content_import_info:
+    type: complete
+    organization: "{{ organization_name }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+  tags: index
+  register: result
+...

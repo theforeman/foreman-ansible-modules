@@ -1593,6 +1593,41 @@ class KatelloContentExportBaseModule(KatelloAnsibleModule):
         self.exit_json(task=task)
 
 
+class KatelloContentImportBaseModule(KatelloAnsibleModule):
+
+    def __init__(self, **kwargs):
+        foreman_spec = dict(
+            path=dict(required=True, type='str'),
+            metadata_file=dict(required=False, type='str'),
+            metadata=dict(required=False, type='dict')
+        )
+        argument_spec = {}
+        foreman_spec.update(kwargs.pop('foreman_spec', {}))
+        argument_spec.update(kwargs.pop('argument_spec', {}))
+
+        self.import_action = kwargs.pop('import_action')
+
+        super(KatelloContentImportBaseModule, self).__init__(foreman_spec=foreman_spec,
+                                                             required_one_of=[['metadata', 'metadata_file']],
+                                                             argument_spec=argument_spec, **kwargs)
+
+        # needs to happen after super().__init__()
+        self.task_timeout = 12 * 60 * 60
+
+    def run(self, **kwargs):
+        metadata_file = self.params.get('metadata_file')
+        self.auto_lookup_entities()
+        payload = _flatten_entity(self.foreman_params, self.foreman_spec)
+
+        if payload.get("metadata") is None and metadata_file:
+            payload["metadata"] = json.load(open(metadata_file))
+            payload.pop("metadata_file")
+
+        endpoint = 'content_imports'
+        task = self.resource_action(endpoint, self.import_action, payload)
+        self.exit_json(task=task)
+
+
 def _foreman_spec_helper(spec):
     """Extend an entity spec by adding entries for all flat_names.
     Extract Ansible compatible argument_spec on the way.
