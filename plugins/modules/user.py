@@ -527,6 +527,7 @@ def main():
             timezone=dict(required=False, choices=timezone_list),
             locale=dict(required=False, choices=locale_list),
             roles=dict(required=False, type='entity_list'),
+            current_password=dict(required=False, no_log=True, invisible=True),
         ),
         entity_key='login',
     )
@@ -540,6 +541,8 @@ def main():
                     module.fail_json(msg="The 'mail' parameter is required when creating a new user.")
                 else:
                     module.foreman_params['mail'] = entity['mail']
+            if module.foreman_params['login'] == module._foremanapi_username and module.foreman_params.get('user_password') is not None:
+                module.foreman_params['current_password'] = module._foremanapi_password
 
         module.run()
 
