@@ -61,7 +61,6 @@ options:
     description:
       - Whether or not the user is an administrator
     required: false
-    default: false
     type: bool
   user_password:
     description:
@@ -519,7 +518,7 @@ def main():
             lastname=dict(required=False),
             mail=dict(required=False),
             description=dict(required=False),
-            admin=dict(required=False, type='bool', default=False),
+            admin=dict(required=False, type='bool'),
             user_password=dict(required=False, no_log=True, flat_name='password'),
             default_location=dict(required=False, type='entity', resource_type='locations'),
             default_organization=dict(required=False, type='entity', resource_type='organizations'),
