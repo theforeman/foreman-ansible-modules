@@ -60,13 +60,15 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 class KatelloContentImportModule(KatelloContentImportBaseModule):
     pass
 
+
 def main():
     module = KatelloContentImportModule(
-      import_action='version',
+        import_action='version',
     )
 
     with module.api_connection():
         module.run()
+
 
 if __name__ == '__main__':
     main()

@@ -63,7 +63,7 @@ class KatelloContentImportModule(KatelloContentImportBaseModule):
 
 def main():
     module = KatelloContentImportModule(
-      import_action='repository',
+        import_action='repository',
     )
 
     with module.api_connection():
