@@ -1,0 +1,8 @@
+---
+# reset the var value to the next lowest value
+# reversing the list and iterating downwards until first match would be more efficient
+- name: "Get closest lower version"
+  set_fact:
+    new_environments: "{{ new_environments | combine({version.key: item}) }}"
+  with_items: "{{ cv_versions | sort | list }}"
+  when: item | int < version.value | int
