@@ -41,7 +41,7 @@ def body_json_l2_matcher(r1, r2):
         for i, v in enumerate(body1):
             assert body1[i] == body2[i], "body contents at position {} dont't match: '{}' vs '{}'".format(i, body1[i], body2[i])
     else:
-        assert r1.body == r2.body, "{} != {}".format(r1.body, r2.body)
+        assert r1.body == r2.body, "{} != {} ({}, {})".format(r1.body, r2.body, r1.headers, r2.headers)
 
 
 def _query_without_search_matcher(r1, r2, path):

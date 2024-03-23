@@ -17,7 +17,6 @@ DOCUMENTATION = '''
       - This callback will report facts and task events to Foreman
     requirements:
       - whitelisting in configuration
-      - requests (python library)
     options:
       report_type:
         description:
@@ -112,10 +111,9 @@ import json
 import time
 
 try:
-    import requests
-    HAS_REQUESTS = True
+    from ansible_collections.theforeman.foreman.plugins.module_utils.ansible_requests import RequestSession
 except ImportError:
-    HAS_REQUESTS = False
+    from plugins.module_utils.ansible_requests import RequestSession
 
 from ansible.module_utils._text import to_text
 from ansible.module_utils.parsing.convert_bool import boolean as to_bool
@@ -198,10 +196,7 @@ class CallbackModule(CallbackBase):
         ssl_key = self.get_option('client_key')
         self.dir_store = self.get_option('dir_store')
 
-        if not HAS_REQUESTS:
-            self._disable_plugin(u'The `requests` python module is not installed')
-
-        self.session = requests.Session()
+        self.session = RequestSession()
         if self.foreman_url.startswith('https://'):
             if not os.path.exists(ssl_cert):
                 self._disable_plugin(u'FOREMAN_SSL_CERT %s not found.' % ssl_cert)
@@ -226,7 +221,6 @@ class CallbackModule(CallbackBase):
             verify = option
 
         if verify is False:  # is only set to bool if try block succeeds
-            requests.packages.urllib3.disable_warnings()
             self._display.warning(
                 u"SSL verification of %s disabled" % self.foreman_url,
             )
@@ -252,7 +246,7 @@ class CallbackModule(CallbackBase):
             try:
                 response = self.session.post(url=url, json=data)
                 response.raise_for_status()
-            except requests.exceptions.RequestException as err:
+            except Exception as err:
                 self._display.warning(u'Sending data to Foreman at {url} failed for {host}: {err}'.format(
                     host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
 
