@@ -1,0 +1,209 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_organizations:
+          - "{{ host.organization }}"
+        location_state: present
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "Dev"
+        lifecycle_environment_description: "The dev environment"
+        expected_change: true
+        organization: "{{ host.organization }}"
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        expected_change: true
+        lifecycle_environments: "Dev"
+        content_view_name: "Dev_CV"
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        content_view_name: "Dev_CV"
+        description: version-1.0
+        version: 1.0
+        lifecycle_environments:
+          - Dev
+        expected_change: true
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "Test"
+        lifecycle_environment_description: "The test environment"
+        expected_change: true
+        organization: "{{ host.organization }}"
+    - include: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        expected_change: true
+        lifecycle_environments: "test"
+        content_view_name: "Test_CV"
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        content_view_name: "Test_CV"
+        description: version-1.0
+        version: 1.0
+        lifecycle_environments:
+          - Test
+        expected_change: true
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "{{ host.domain }}"
+        domain_locations:
+          - "{{ host.location }}"
+        domain_organizations:
+          - "{{ host.organization }}"
+        domain_state: present
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - name: create host whith CV and LCE 
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_lifecycle_environment: "Dev" 
+        host_content_view: "Dev_CV"
+        host_managed: false
+        expected_change: true
+        host_state: present
+
+    - name: create host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_lifecycle_environment: "Dev"
+        host_content_view: "Dev_CV"
+        host_managed: false
+        expected_change: false
+        host_state: present
+
+    - name: update host, change CV and LCE
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_lifecycle_environment: "Test"
+        host_content_view: "Test_CV"
+        host_managed: false
+        expected_change: true
+        host_state: present
+
+    - name: update host, set CV and LCE again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_location: "{{ host.location }}"
+        host_lifecycle_environment: "Test"
+        host_content_view: "Test_CV"
+        host_managed: false
+        expected_change: false
+        host_state: present
+
+    - name: Remove LCE and CV from a host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
+        host_lifecycle_environment: ""
+        host_content_view: ""
+        host_managed: false
+        expected_change: true
+        host_state: present
+
+    - name: Add LCE and CV to host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
+        host_lifecycle_environment: "Dev"
+        host_content_view: "Dev_CV"
+        host_managed: false
+        expected_change: true
+        host_state: present
+
+    - name: Add LCE and CV to host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_subnet: "{{ host.subnet }}"
+        host_lifecycle_environment: "Dev"
+        host_content_view: "Dev_CV"
+        host_managed: false
+        expected_change: false
+        host_state: present
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+    - include: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: absent
+        lifecycle_environment_name: "{{ item }}"
+      loop:
+        - Test
+        - Dev
+    - include: tasks/content_view.yml
+      vars:
+        content_view_name: "{{ item }}"
+        content_view_state: absent
+      loop:
+        - Test_CV
+        - Dev_CV
+    - include_tasks: tasks/domain.yml
+      vars:
+        domain_name: "{{ host.domain }}"
+        domain_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: absent
+...
