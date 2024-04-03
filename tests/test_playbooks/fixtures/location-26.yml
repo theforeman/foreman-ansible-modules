@@ -65,19 +65,19 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location+1%22&per_page=4294967296
+    uri: https://foreman.example.org/api/locations?search=title%3D%22Test+Location%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 1,\n  \"subtotal\": 0,\n  \"page\": 1,\n  \"per_page\":
-        4294967296,\n  \"search\": \"title=\\\"Test Location 1\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
+        4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": []\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '182'
+      - '180'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -110,7 +110,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"location": {"name": "Test Location 1"}}'
+    body: '{"location": {"name": "Test Location", "description": "MyNewLocationWithADescription"}}'
     headers:
       Accept:
       - application/json;version=2
@@ -119,7 +119,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '41'
+      - '87'
       Content-Type:
       - application/json
       User-Agent:
@@ -128,9 +128,9 @@ interactions:
     uri: https://foreman.example.org/api/locations
   response:
     body:
-      string: '{"select_all_types":[],"description":null,"created_at":"2024-07-25
-        12:15:08 UTC","updated_at":"2024-07-25 12:15:08 UTC","ancestry":null,"parent_id":null,"parent_name":null,"id":13,"name":"Test
-        Location 1","title":"Test Location 1","users":[],"smart_proxies":[],"subnets":[],"compute_resources":[],"media":[],"ptables":[{"description":null,"os_family":"Suse","created_at":"2024-04-15
+      string: '{"select_all_types":[],"description":"MyNewLocationWithADescription","created_at":"2024-07-25
+        12:00:30 UTC","updated_at":"2024-07-25 12:00:30 UTC","ancestry":null,"parent_id":null,"parent_name":null,"id":12,"name":"Test
+        Location","title":"Test Location","users":[],"smart_proxies":[],"subnets":[],"compute_resources":[],"media":[],"ptables":[{"description":null,"os_family":"Suse","created_at":"2024-04-15
         09:11:36 UTC","updated_at":"2024-04-15 09:11:36 UTC","name":"AutoYaST entire
         virtual disk","id":127,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2024-04-15
         09:11:36 UTC","updated_at":"2024-04-15 09:11:36 UTC","name":"Jumpstart default","id":132,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2024-04-15
@@ -243,8 +243,7 @@ interactions:
         default finish","template_kind_id":7,"template_kind_name":"finish","inherited":false},{"id":57,"name":"Kickstart
         default","template_kind_id":6,"template_kind_name":"provision","inherited":false},{"id":58,"name":"Kickstart
         oVirt-RHVH","template_kind_id":6,"template_kind_name":"provision","inherited":false},{"id":149,"name":"disk_enc_clevis_tang","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":150,"name":"kickstart_network_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":94,"name":"pkg_manager","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":151,"name":"preseed_autoinstall_clevis_tang_wrapper","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":111,"name":"redhat_register","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":116,"name":"subscription_manager_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":121,"name":"Preseed
-        Autoinstall cloud-init user data","template_kind_id":9,"template_kind_name":"user_data","inherited":false}],"domains":[],"realms":[],"hostgroups":[],"organizations":[{"id":1,"name":"Default
-        Organization","title":"Default Organization","description":null}],"hosts_count":0,"parameters":[],"deprecations":{"environments":"Environments
+        Autoinstall cloud-init user data","template_kind_id":9,"template_kind_name":"user_data","inherited":false}],"domains":[],"realms":[],"hostgroups":[],"organizations":[],"hosts_count":0,"parameters":[],"deprecations":{"environments":"Environments
         got deprecated from this endpoint."}}'
     headers:
       Cache-Control:
@@ -252,7 +251,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '19207'
+      - '19142'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
