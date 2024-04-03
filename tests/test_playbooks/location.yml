@@ -194,6 +194,22 @@
         expected_change: false
         expected_error: false
 
+    - name: Add a description to "Test Location"
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: Test Location
+        location_description: MyNewLocationWithADescription
+        location_state: present
+        expected_change: true
+
+    - name: Add a description to "Test Location" a second time
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: Test Location
+        location_description: MyNewLocationWithADescription
+        location_state: present
+        expected_change: false
+
 - hosts: localhost
   collections:
     - theforeman.foreman

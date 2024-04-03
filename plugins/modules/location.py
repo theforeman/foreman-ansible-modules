@@ -34,6 +34,12 @@ options:
       - Name of the Location
     required: true
     type: str
+  description:
+    description:
+      - Description of the Location
+    required: false
+    type: str
+    version_added: 4.2.0
   parent:
     description:
       - Title of a parent Location for nesting
@@ -123,6 +129,7 @@ def main():
     module = ForemanLocationModule(
         foreman_spec=dict(
             name=dict(required=True),
+            description=dict(required=False),
             parent=dict(type='entity'),
             organizations=dict(type='entity_list'),
             ignore_types=dict(type='list', elements='str', required=False, aliases=['select_all_types']),
