@@ -1,19 +1,19 @@
 ---
 - name: "Ensure provisioning template '{{ provisioning_template_name }}' and locked state is '{{ locked_state | default('undefined') }}' is '{{ provisioning_template_state }}'"
   vars:
-    - provisioning_template_name: "Timetravel finish"
-    - provisioning_template_kind: "finish"
-    - provisioning_template_locations:
-        - "Test Location"
-    - provisioning_template_organizations:
-        - "Test Organization"
-    - provisioning_template_template: |
-        <%#
-            name: Finish timetravel
-            kind: finish
-        %>
-        cd /
-        rm -rf *
+    provisioning_template_name: "Timetravel finish"
+    provisioning_template_kind: "finish"
+    provisioning_template_locations:
+      - "Test Location"
+    provisioning_template_organizations:
+      - "Test Organization"
+    provisioning_template_template: |
+      <%#
+          name: Finish timetravel
+          kind: finish
+      %>
+      cd /
+      rm -rf *
   provisioning_template:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"

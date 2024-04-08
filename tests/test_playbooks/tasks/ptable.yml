@@ -1,18 +1,18 @@
 ---
 - name: "Ensure ptable '{{ ptable_name }}' is '{{ ptable_state }}' and locked state is '{{ locked_state | default('undefined') }}'"
   vars:
-    - ptable_name: "Timetravel finish"
-    - ptable_locations:
-        - "Test Location"
-    - ptable_organizations:
-        - "Test Organization"
-    - ptable_layout: |
-        <%#
-            name: A Partition Template
-        %>
-        zerombr
-        clearpart --all --initlabel
-        autopart
+    ptable_name: "Timetravel finish"
+    ptable_locations:
+      - "Test Location"
+    ptable_organizations:
+      - "Test Organization"
+    ptable_layout: |
+      <%#
+          name: A Partition Template
+      %>
+      zerombr
+      clearpart --all --initlabel
+      autopart
   partition_table:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
