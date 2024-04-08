@@ -1316,8 +1316,8 @@ class ForemanStatelessEntityAnsibleModule(ForemanAnsibleModule):
         ))[0])
 
         if 'parent' in self.foreman_spec and self.foreman_spec['parent'].get('type') == 'entity':
-            if 'resouce_type' not in self.foreman_spec['parent']:
-                self.foreman_spec['parent']['resource_type'] = self.foreman_spec['entity']['resource_type']
+            # ensure parent and entity are the same type
+            self.foreman_spec['parent']['resource_type'] = self.foreman_spec['entity']['resource_type']
             if 'failsafe' not in self.foreman_spec['parent']:
                 self.foreman_spec['parent']['failsafe'] = True
             current, parent = split_fqn(self.foreman_params[self.entity_key])
