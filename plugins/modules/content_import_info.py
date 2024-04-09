@@ -22,7 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: content_import_info
-version_added: 4.0.0
+version_added: 4.1.0
 short_description: List content imports
 description:
     - List information about content imports.
