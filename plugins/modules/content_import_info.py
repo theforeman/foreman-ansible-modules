@@ -68,14 +68,13 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
 - name: "Get a specific import history and register the result for the next task"
   vars:
-    organization_name: "Export Org"
+    organization_name: "Import Org"
   theforeman.foreman.content_import_info:
     id: 29
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
-  register: result
 - name: "List all imports of a specific content view version"
   theforeman.foreman.content_import_info:
     content_view: RHEL8
