@@ -1,0 +1,51 @@
+---
+- hosts: foreman
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: upload import
+      include_tasks: tasks/content_import_setup.yml
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Setup Org
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Test Import Library
+      include_tasks: tasks/content_import.yml # Full export
+      vars:
+        import_type: "library"
+        expected_change: true
+
+- hosts: localhost # Teardown
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+
+- hosts: foreman #tear down
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: cleanup imports
+      import_tasks: tasks/content_import_teardown.yml
+...

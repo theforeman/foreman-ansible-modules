@@ -1,0 +1,470 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/api/status
+  response:
+    body:
+      string: '{"result":"ok","status":200,"version":"3.11.0-develop","api_version":2}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '71'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=100
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 13,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2024-03-21
+        16:50:06 UTC\",\"updated_at\":\"2024-03-21 16:50:08 UTC\",\"id\":20,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '390'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=99
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"organization_id": 20, "path": "/var/lib/pulp/imports/content-import",
+      "metadata": {"organization": "barclay", "base_path": "/var/lib/pulp/exports",
+      "repositories": {"repo-latest-621368": {"name": "repo-latest", "label": "repo-latest",
+      "arch": "noarch", "content_type": "yum", "unprotected": true, "os_versions":
+      [], "download_policy": "immediate", "mirroring_policy": "mirror_content_only",
+      "product": {"label": "guard"}, "gpg_key": {}, "content": {"id": "1710950521397",
+      "label": "barclay_guard_repo-latest", "url": "/custom/guard/repo-latest"}, "redhat":
+      false}}, "content_view": {"name": "Export-SYNCABLE-repo-latest-62", "label":
+      "Export-SYNCABLE-repo-latest-62", "generated_for": "repository_export_syncable"},
+      "content_view_version": {"major": 1, "minor": 0, "description": ""}, "incremental":
+      false, "format": "syncable", "products": {"guard": {"name": "guard", "label":
+      "guard", "cp_id": "153297904033", "gpg_key": {}, "redhat": false}}, "gpg_keys":
+      {}}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '964'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: http://foreman.example.org/katello/api/content_imports/repository
+  response:
+    body:
+      string: '  {"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":true,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":false,"resumable":false}}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - Keep-Alive
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - 20; Test Organization
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=98
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 202
+      message: Accepted
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/077f9402-2680-40bc-8963-a3a1736d0d4f
+  response:
+    body:
+      string: '{"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":true,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":null,"duration":"5.149963","state":"running","result":"pending","progress":0.83,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '956'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=97
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/077f9402-2680-40bc-8963-a3a1736d0d4f
+  response:
+    body:
+      string: '{"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":true,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":null,"duration":"9.24703","state":"running","result":"pending","progress":0.83,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '955'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=96
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/077f9402-2680-40bc-8963-a3a1736d0d4f
+  response:
+    body:
+      string: '{"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":true,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":null,"duration":"13.312179","state":"running","result":"pending","progress":0.83,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '957'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=95
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/077f9402-2680-40bc-8963-a3a1736d0d4f
+  response:
+    body:
+      string: '{"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":true,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":null,"duration":"17.368012","state":"running","result":"pending","progress":0.83,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '957'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=94
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: http://foreman.example.org/foreman_tasks/api/tasks/077f9402-2680-40bc-8963-a3a1736d0d4f
+  response:
+    body:
+      string: '{"id":"077f9402-2680-40bc-8963-a3a1736d0d4f","label":"Actions::Katello::ContentViewVersion::ImportRepository","pending":false,"action":"Import
+        Repository organization ''Test Organization''","username":"admin","started_at":"2024-03-21
+        16:50:12 UTC","ended_at":"2024-03-21 16:50:30 UTC","duration":"18.195005","state":"stopped","result":"success","progress":1.0,"input":{"organization":{"id":20,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth","pulp3"],"locale":"en","current_request_id":"0e200553-7efe-4933-a682-26484b598460","current_timezone":"UTC","current_organization_id":20,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Repository","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/20/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-03-21
+        16:50:12 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '979'
+      Content-Security-Policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.11.0-develop
+      Keep-Alive:
+      - timeout=15, max=93
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - sameorigin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

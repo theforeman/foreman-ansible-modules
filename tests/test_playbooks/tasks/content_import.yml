@@ -1,0 +1,19 @@
+---
+- name: "{{ 'Import' + import_type }}"
+  vars:
+    organization_name: "Test Organization"
+  content_import_repository:
+    path: "/var/lib/pulp/imports/content-import"
+    metadata: "{{ lookup('file', 'data/metadata/metadata-' + import_type + '.json') | from_json }}"
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    organization: "{{ organization_name }}"
+  register: result
+
+- assert:
+    fail_msg: "Repository import failed!"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
