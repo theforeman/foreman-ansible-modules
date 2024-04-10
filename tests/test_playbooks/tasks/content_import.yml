@@ -1,7 +1,7 @@
 ---
 - name: "{{ 'Import' + import_type }}"
   vars:
-    - organization_name: "Test Organization"
+    organization_name: "Test Organization"
   content_import_repository:
     path: "/var/lib/pulp/imports/content-import"
     metadata: "{{ lookup('file', 'data/metadata/metadata-' + import_type + '.json') | from_json }}"
