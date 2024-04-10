@@ -24,7 +24,7 @@ module: content_import_library
 version_added: 4.1.0
 short_description: Manage library content imports
 description:
-    - Import library content to foreman.
+    - Import library content.
 author:
     - "Partha Aji (@parthaa)"
 extends_documentation_fragment:

@@ -66,9 +66,7 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-- name: "Get a specific import history and register the result for the next task"
-  vars:
-    organization_name: "Import Org"
+- name: "Get a specific import history entry"
   theforeman.foreman.content_import_info:
     id: 29
     username: "admin"

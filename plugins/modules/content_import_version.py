@@ -25,7 +25,7 @@ module: content_import_version
 version_added: 4.1.0
 short_description: Manage content view version content imports
 description:
-    - Import a content view version to a foreman.
+    - Import a content view version.
 author:
     - "Partha Aji (@parthaa)"
 extends_documentation_fragment:

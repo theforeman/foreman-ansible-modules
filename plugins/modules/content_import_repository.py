@@ -25,7 +25,7 @@ module: content_import_repository
 version_added: 4.1.0
 short_description: Manage repository content imports
 description:
-    - Import repository content to foreman.
+    - Import repository content.
 author:
     - "Partha Aji (@parthaa)"
 extends_documentation_fragment:
