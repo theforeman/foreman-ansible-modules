@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.0","api_version":2}'
+      string: '{"satellite_version":"6.16.0","result":"ok","status":200,"version":"3.11.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '100'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -70,17 +68,18 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2021-06-22 14:20:36 UTC\",\"updated_at\"\
-        :\"2021-06-22 14:20:38 UTC\",\"id\":4,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2024-04-15
+        16:24:33 UTC\",\"updated_at\":\"2024-04-15 16:24:34 UTC\",\"id\":4,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '388'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -94,13 +93,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -111,8 +108,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '388'
     status:
       code: 200
       message: OK
@@ -131,11 +126,11 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/4/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":6,"name":"Test
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":21,"name":"Test
         Activation Key","description":null,"unlimited_hosts":false,"auto_attach":true,"content_view_id":null,"environment_id":null,"usage_count":0,"user_id":4,"max_hosts":10,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2021-06-22
-        14:21:11 UTC","updated_at":"2021-06-22 14:21:12 UTC","content_view":null,"environment":null,"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
+        Organization","label":"Test_Organization","id":4},"created_at":"2024-04-15
+        16:25:05 UTC","updated_at":"2024-04-15 16:25:05 UTC","content_view":null,"environment":null,"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -143,6 +138,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '801'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -156,13 +153,11 @@ interactions:
       Foreman_current_organization:
       - 4; Test Organization
       Foreman_version:
-      - 2.5.0
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -173,8 +168,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '785'
     status:
       code: 200
       message: OK
@@ -192,18 +185,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/katello/api/activation_keys/6
+    uri: https://foreman.example.org/katello/api/activation_keys/21
   response:
     body:
-      string: '  {"id":"fda8bd94-7fe6-4ea1-9f48-7f3f45d6a96e","label":"Actions::Katello::ActivationKey::Destroy","pending":false,"action":"Delete
+      string: '  {"id":"dad7139b-2f38-49f3-80d3-f3b4309752a7","label":"Actions::Katello::ActivationKey::Destroy","pending":false,"action":"Delete
         Activation Key activation key ''Test Activation Key''; organization ''Test
-        Organization''","username":"admin","started_at":"2021-06-22 14:21:14 UTC","ended_at":"2021-06-22
-        14:21:14 UTC","state":"stopped","result":"success","progress":1.0,"input":{"activation_key":{"id":6,"name":"Test
-        Activation Key"},"organization":{"id":4,"name":"Test Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"current_request_id":"d5ba768b-5f9e-430c-acc2-ca22ce90d33f","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Delete
+        Organization''","username":"admin","started_at":"2024-04-15 16:25:07 UTC","ended_at":"2024-04-15
+        16:25:07 UTC","state":"stopped","result":"success","progress":1.0,"input":{"activation_key":{"id":21,"name":"Test
+        Activation Key"},"organization":{"id":4,"name":"Test Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"current_request_id":"c7cd26e7-b22a-480f-bda7-dc8812de8b03","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Delete
         Activation Key","input":[["activation_key",{"text":"activation key ''Test
-        Activation Key''","link":"/activation_keys/6/info"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-06-22
-        14:21:14 UTC","available_actions":{"cancellable":false,"resumable":false}}
+        Activation Key''","link":"/activation_keys/21/info"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-04-15
+        16:25:07 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -224,7 +217,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
