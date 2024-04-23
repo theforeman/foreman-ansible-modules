@@ -12,6 +12,7 @@
     - include_tasks: tasks/organization.yml
       vars:
         organization_state: "present"
+    - include_tasks: tasks/activation_key.yml
 
 - hosts: tests
   collections:
@@ -23,6 +24,9 @@
     - vars/server.yml
   tasks:
     - include_tasks: tasks/registration_command.yml
+      vars:
+        rc_activation_keys:
+          - "Test Activation Key"
 
 - hosts: localhost
   collections:
@@ -31,6 +35,9 @@
   vars_files:
     - vars/server.yml
   tasks:
+    - include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_state: "absent"
     - include_tasks: tasks/location.yml
       vars:
         location_state: "absent"

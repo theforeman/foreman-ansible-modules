@@ -10,6 +10,7 @@
     validate_certs: "{{ foreman_validate_certs }}"
     organization: "{{ rc_organization }}"
     location: "{{ rc_location }}"
+    activation_keys: "{{ rc_activation_keys | default(omit) }}"
   register: result
 - assert:
     fail_msg: "Ensuring registering command is generated failed!"

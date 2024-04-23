@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.9.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.16.0","result":"ok","status":200,"version":"3.11.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '70'
+      - '100'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -35,7 +35,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.9.0-develop
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
@@ -65,13 +65,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2023-11-16
-        08:49:34 UTC\",\"updated_at\":\"2023-11-16 08:49:34 UTC\",\"id\":4,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2024-04-23
+        19:34:19 UTC\",\"updated_at\":\"2024-04-23 19:34:22 UTC\",\"id\":10,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -79,7 +79,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '412'
+      - '389'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -93,7 +93,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.9.0-develop
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
@@ -128,8 +128,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"title=\\\"Test Location\\\"\",\n  \"sort\": {\n
-        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2023-11-16
-        08:49:33 UTC\",\"updated_at\":\"2023-11-16 08:49:33 UTC\",\"id\":3,\"name\":\"Test
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"ancestry\":null,\"parent_id\":null,\"parent_name\":null,\"created_at\":\"2024-04-23
+        19:34:17 UTC\",\"updated_at\":\"2024-04-23 19:34:17 UTC\",\"id\":9,\"name\":\"Test
         Location\",\"title\":\"Test Location\",\"description\":null}]\n}\n"
     headers:
       Cache-Control:
@@ -151,7 +151,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.9.0-develop
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
@@ -170,8 +170,8 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"location_id": 3, "organization_id": 4, "registration_command": {"organization_id":
-      4, "location_id": 3}}'
+    body: '{"location_id": 9, "organization_id": 10, "registration_command": {"organization_id":
+      10, "location_id": 9, "activation_keys": ["Test Activation Key"]}}'
     headers:
       Accept:
       - application/json;version=2
@@ -180,7 +180,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '106'
+      - '152'
       Content-Type:
       - application/json
       User-Agent:
@@ -189,8 +189,8 @@ interactions:
     uri: https://foreman.example.org/api/registration_commands
   response:
     body:
-      string: '{"registration_command":"curl -sS  ''https://centos8-stream-foreman-nightly.tanso.example.com/register?location_id=3\u0026organization_id=4''
-        -H ''Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3MDAxMjQ1NzUsImp0aSI6ImFkYWI4Yjk3ODM2YjE3MDMyODkzZDFhZjdhZjVmZWU3NWQ5ODc4OWRjNThjMzY1NmRhYTdkMTZkY2Y2ODdjYjAiLCJleHAiOjE3MDAxMzg5NzUsInNjb3BlIjoicmVnaXN0cmF0aW9uI2dsb2JhbCByZWdpc3RyYXRpb24jaG9zdCJ9.Yhj65zPC-9D91P5SdBxKThVsskRyq5sGCAAGdG4fgis''
+      string: '{"registration_command":"set -o pipefail \u0026\u0026 curl -sS  ''https://foreman.example.com/register?activation_keys=Test+Activation+Key\u0026location_id=9\u0026organization_id=10''
+        -H ''Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3MTM5MDA4NjUsImp0aSI6ImQ4NGY2ZjI3MjUyYWZkYmZjYjVjMWY2NGJhOWRkN2I0MDIzZTg5ZTE5NGFkYWYxNTY2YjJkNDRkNjVkZjZhMTIiLCJleHAiOjE3MTM5MTUyNjUsInNjb3BlIjoicmVnaXN0cmF0aW9uI2dsb2JhbCByZWdpc3RyYXRpb24jaG9zdCJ9.Vt6d52ufdFfl_gH4Ul9LdkhKXS7oBDA_lHlhiPgTAQQ''
         | bash"}'
     headers:
       Cache-Control:
@@ -198,7 +198,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '465'
+      - '535'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -208,11 +208,11 @@ interactions:
       Foreman_api_version:
       - '2'
       Foreman_current_location:
-      - 3; Test Location
+      - 9; Test Location
       Foreman_current_organization:
-      - 4; Test Organization
+      - 10; Test Organization
       Foreman_version:
-      - 3.9.0-develop
+      - 3.11.0-develop
       Keep-Alive:
       - timeout=15, max=97
       Strict-Transport-Security:
