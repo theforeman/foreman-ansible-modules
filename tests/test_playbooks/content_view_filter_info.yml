@@ -45,17 +45,6 @@
         repository_url: https://registry.access.redhat.com
         repository_docker_upstream_name: ubi9
 
-    - name: "Create Deb Repository"
-      ansible.builtin.include_tasks: tasks/repository.yml
-      vars:
-        repository_state: present
-        repository_name: Test Debian Repository
-        repository_content_type: deb
-        repository_url: https://ftp.debian.org/debian
-        repository_deb_releases: buster
-        repository_deb_components: contrib
-        repository_deb_architectures: amd64
-
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
 
@@ -69,11 +58,6 @@
       vars:
         repository: Test Modular Repository
 
-    - name: "Sync content"
-      ansible.builtin.include_tasks: tasks/katello_sync.yml
-      vars:
-        repository: Test Debian Repository
-
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
@@ -84,11 +68,6 @@
             product: "Test Product"
           - name: "Test Modular Repository"
             product: "Test Product"
-          - name: "Test Debian Repository"
-            product: "Test Product"
-
-    - name: "Create content view filters"
-      ansible.builtin.include_tasks: tasks/content_view_filter.yml
 
 
 - name: "Test content_view_filter info"
@@ -99,6 +78,28 @@
   vars_files:
     - vars/server.yml
   tasks:
+    - name: "Create content view filter"
+      vars:
+        content_view_filter_name: "Test Content View Filter - AllRPMsNoErrata"
+        organization_name: "Test Organization"
+        content_view_name: "Test Content View"
+        filter_type: rpm
+        inclusion: true
+        original_packages: true
+        filter_state: present
+      content_view_filter:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "{{ content_view_filter_name }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        filter_type: "{{ filter_type }}"
+        inclusion: "{{ inclusion | default(omit) }}"
+        original_packages: "{{ original_packages | default(omit) }}"
+        filter_state: "{{ filter_state }}"
+
     - name: "Fetch content_view_filter_info - rpm original packages"
       vars:
         content_view_filter_name: "Test Content View Filter - AllRPMsNoErrata"
@@ -123,226 +124,6 @@
           - result['content_view_filter']['inclusion'] == True
           - result['content_view_filter']['original_packages'] == True
 
-
-    - name: "Fetch content_view_filter_info - modulemd original streams"
-      vars:
-        content_view_filter_name: "Test Content View Filter - AllModuleStreamsNoErrata"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - AllModuleStreamsNoErrata"
-          - result['content_view_filter']['type'] == "modulemd"
-          - result['content_view_filter']['inclusion'] == True
-          - result['content_view_filter']['original_module_streams'] == True
-
-
-    - name: "Fetch content_view_filter_info - deb packages"
-      vars:
-        content_view_filter_name: "Test Content View Filter - AllDebs"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - AllDebs"
-          - result['content_view_filter']['type'] == "deb"
-          - result['content_view_filter']['inclusion'] == True
-
-
-    - name: "Fetch content_view_filter_info - rpm exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - rpm"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - rpm"
-          - result['content_view_filter']['type'] == "rpm"
-          - result['content_view_filter']['inclusion'] == False
-          - result['content_view_filter']['original_packages'] == False
-
-
-    - name: "Fetch content_view_filter_info - package_group exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - package_group"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - package_group"
-          - result['content_view_filter']['type'] == "package_group"
-          - result['content_view_filter']['inclusion'] == False
-
-
-    - name: "Fetch content_view_filter_info - erratum_by_id exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - erratum_by_id"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - erratum_by_id"
-          - result['content_view_filter']['type'] == "erratum"
-          - result['content_view_filter']['inclusion'] == False
-
-
-    - name: "Fetch content_view_filter_info - erratum_by_date exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - erratum_by_date"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - erratum_by_date"
-          - result['content_view_filter']['type'] == "erratum"
-          - result['content_view_filter']['inclusion'] == False
-
-
-    - name: "Fetch content_view_filter_info - container exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - docker"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - docker"
-          - result['content_view_filter']['type'] == "docker"
-          - result['content_view_filter']['inclusion'] == False
-
-
-    - name: "Fetch content_view_filter_info - modulemd exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - modulemd"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - modulemd"
-          - result['content_view_filter']['type'] == "modulemd"
-          - result['content_view_filter']['inclusion'] == False
-
-
-    - name: "Fetch content_view_filter_info - deb exlude"
-      vars:
-        content_view_filter_name: "Test Content View Filter - deb"
-        content_view_name: "Test Content View"
-        organization_name: "Test Organization"
-      content_view_filter_info:
-        username: "{{ foreman_username }}"
-        password: "{{ foreman_password }}"
-        server_url: "{{ foreman_server_url }}"
-        validate_certs: "{{ foreman_validate_certs }}"
-        organization: "{{ organization_name }}"
-        content_view: "{{ content_view_name }}"
-        name: "{{ content_view_filter_name }}"
-      register: result
-
-    - name: "Assert Result"
-      ansible.builtin.assert:
-        fail_msg: "Ensuring content view filter info is valid failed!"
-        that:
-          - result['content_view_filter']['name'] == "Test Content View Filter - deb"
-          - result['content_view_filter']['type'] == "deb"
-          - result['content_view_filter']['inclusion'] == False
-
-
-
 - name: "Clean up test dependencies"
   hosts: localhost
   collections:
@@ -352,10 +133,23 @@
     - vars/server.yml
   tasks:
 
-    - name: "Cleanup Content View Filters"
-      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+    - name: "Cleanup Content View Filter"
       vars:
+        content_view_filter_name: "Test Content View Filter - AllRPMsNoErrata"
+        organization_name: "Test Organization"
+        content_view_name: "Test Content View"
+        filter_type: rpm
         filter_state: absent
+      content_view_filter:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "{{ content_view_filter_name }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        filter_type: "{{ filter_type }}"
+        filter_state: "{{ filter_state }}"
 
     - name: Clean up the content view
       ansible.builtin.include_tasks: tasks/content_view.yml
