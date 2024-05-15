@@ -19,6 +19,9 @@
         repository_name: "TestRepo"
         repository_state: present
       register: result
+    - name: Wait for Repository metadata generation
+      ansible.builtin.pause:
+        seconds: 2
 - hosts: tests
   collections:
     - theforeman.foreman
