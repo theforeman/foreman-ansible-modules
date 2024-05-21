@@ -24,7 +24,7 @@ about: Create a report to help us improve
 ```
 
 ##### KATELLO/FOREMAN VERSION
-<!-- Paste, BELOW THIS COMMENT, verbatim output from "rpm -q tfm-rubygem-katello foreman"-->
+<!-- Paste, BELOW THIS COMMENT, verbatim output from "rpm -q rubygem-katello foreman"-->
 ```
 
 ```
