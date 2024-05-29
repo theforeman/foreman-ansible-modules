@@ -3189,11 +3189,11 @@ Examples
         server_url: "https://foreman.example.com"
         name: "new_host"
         interfaces_attributes:
-        - type: "interface"
-          compute_attributes:
-            name: "nic1"
-            network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
-            interface: "virtio"
+          - type: "interface"
+            compute_attributes:
+              name: "nic1"
+              network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
+              interface: "virtio"
         state: present
 
     - name: "Create a VM with 2 NICs on specific ovirt networks"
@@ -3203,19 +3203,19 @@ Examples
         server_url: "https://foreman.example.com"
         name: "new_host"
         interfaces_attributes:
-        - type: "interface"
-          primary: true
-          compute_attributes:
-            name: "nic1"
-            network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
-            interface: "virtio"
-        - type: "interface"
-          name: "new_host_nic2"
-          managed: true
-          compute_attributes:
-            name: "nic2"
-            network: "969efbe6-f9e0-4383-a19a-a7ee65ad5008"
-            interface: "e1000"
+          - type: "interface"
+            primary: true
+            compute_attributes:
+              name: "nic1"
+              network: "969efbe6-f9e0-4383-a19a-a7ee65ad5007"
+              interface: "virtio"
+          - type: "interface"
+            name: "new_host_nic2"
+            managed: true
+            compute_attributes:
+              name: "nic2"
+              network: "969efbe6-f9e0-4383-a19a-a7ee65ad5008"
+              interface: "e1000"
         state: present
 
     - name: "Delete a host"
