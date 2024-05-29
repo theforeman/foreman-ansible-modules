@@ -547,7 +547,6 @@ Release Summary
 
 Documentation fixes to reflect the correct module names.
 
-
 v1.0.0
 ======
 
@@ -555,7 +554,6 @@ Release Summary
 ---------------
 
 This is the first stable release of the ``theforeman.foreman`` collection.
-
 
 Breaking Changes / Porting Guide
 --------------------------------
