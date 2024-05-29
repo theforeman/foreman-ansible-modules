@@ -46,7 +46,7 @@ info:
 
 lint: $(MANIFEST) $(RUNTIME_YML) | tests/test_playbooks/vars/server.yml
 	yamllint -f parsable tests/test_playbooks roles
-	ansible-lint -v --offline roles/*
+	ansible-lint -v --offline
 	ansible-playbook --syntax-check tests/test_playbooks/*.yml | grep -v '^$$'
 	flake8 --ignore=E402,W503 --max-line-length=160 plugins/ tests/
 	@echo "Check that there are no changes to $(RUNTIME_YML)"
