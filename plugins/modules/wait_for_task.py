@@ -47,7 +47,7 @@ extends_documentation_fragment:
 EXAMPLES = '''
 - name: Wait for a task to finish
   theforeman.foreman.wait_for_task:
-    server_url:  "https://foreman.example.com"
+    server_url: "https://foreman.example.com"
     password: changeme
     username: admin
     task: a03ba49f-4dc2-4ad6-a48b-b271b46f3347
@@ -55,7 +55,7 @@ EXAMPLES = '''
 
 - name: Sarch for previously created tasks
   resource_info:
-    server_url:  "https://foreman.example.com"
+    server_url: "https://foreman.example.com"
     password: changeme
     username: admin
     resource: foreman_tasks
@@ -64,7 +64,7 @@ EXAMPLES = '''
 
 - name: Wait for all found tasks to finish
   wait_for_task:
-    server_url:  "https://foreman.example.com"
+    server_url: "https://foreman.example.com"
     password: changeme
     username: admin
     task: "{{ item }}"

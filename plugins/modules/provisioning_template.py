@@ -202,7 +202,6 @@ EXAMPLES = '''
       - DALEK INC
       - sky.net
       - Doc Brown's garage
-
 '''
 
 RETURN = '''

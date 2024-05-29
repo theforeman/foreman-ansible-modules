@@ -187,12 +187,12 @@ EXAMPLES = '''
     vlanid: 452
     mtu: 9000
     domains:
-    - "foo.example.com"
-    - "bar.example.com"
+      - "foo.example.com"
+      - "bar.example.com"
     organizations:
-    - "Example Org"
+      - "Example Org"
     locations:
-    - "Toulouse"
+      - "Toulouse"
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"

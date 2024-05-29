@@ -171,11 +171,11 @@ EXAMPLES = '''
     lifecycle_environment: "Library"
     content_view: 'client content view'
     host_collections:
-        - rhel7-servers
-        - rhel7-production
+      - rhel7-servers
+      - rhel7-production
     content_overrides:
-        - label: rhel-7-server-optional-rpms
-          override: enabled
+      - label: rhel-7-server-optional-rpms
+        override: enabled
     auto_attach: false
     release_version: 7Server
     service_level: Standard

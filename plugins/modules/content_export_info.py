@@ -119,7 +119,6 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     organization: "Default Organization"
-
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloInfoAnsibleModule

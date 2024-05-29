@@ -58,7 +58,6 @@ EXAMPLES = '''
     content_view: "SOE_RHEL9"
     content_view_filter: "NoFireFox"
     name: firefox
-
 '''
 
 RETURN = '''
