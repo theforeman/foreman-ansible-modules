@@ -63,7 +63,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     hostname: "test-host.domain.test"
-    state: on
+    state: 'on'
 
 - name: "Switch a host off"
   theforeman.foreman.host_power:
@@ -71,7 +71,7 @@ EXAMPLES = '''
     password: "changeme"
     server_url: "https://foreman.example.com"
     hostname: "test-host.domain.test"
-    state: off
+    state: 'off'
 
 - name: "Query host power state"
   theforeman.foreman.host_power:
@@ -83,8 +83,6 @@ EXAMPLES = '''
     register: result
 - debug:
     msg: "Host power state is {{ result.power_state }}"
-
-
 '''
 
 RETURN = '''

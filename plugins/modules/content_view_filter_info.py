@@ -48,7 +48,6 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     content_view: "SOE_RHEL9"
     name: "AllRPMNoErrata"
-
 '''
 
 RETURN = '''

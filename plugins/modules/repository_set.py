@@ -91,14 +91,14 @@ EXAMPLES = '''
     organization: "Default Organization"
     product: "Red Hat Enterprise Linux Server"
     repositories:
-    - releasever: "7.0"
-      basearch: "x86_64"
-    - releasever: "7.1"
-      basearch: "x86_64"
-    - releasever: "7.2"
-      basearch: "x86_64"
-    - releasever: "7.3"
-      basearch: "x86_64"
+      - releasever: "7.0"
+        basearch: "x86_64"
+      - releasever: "7.1"
+        basearch: "x86_64"
+      - releasever: "7.2"
+        basearch: "x86_64"
+      - releasever: "7.3"
+        basearch: "x86_64"
     state: enabled
 
 - name: "Enable RHEL 7 RPMs repositories with label"
@@ -109,14 +109,14 @@ EXAMPLES = '''
     organization: "Default Organization"
     label: rhel-7-server-rpms
     repositories:
-    - releasever: "7.0"
-      basearch: "x86_64"
-    - releasever: "7.1"
-      basearch: "x86_64"
-    - releasever: "7.2"
-      basearch: "x86_64"
-    - releasever: "7.3"
-      basearch: "x86_64"
+      - releasever: "7.0"
+        basearch: "x86_64"
+      - releasever: "7.1"
+        basearch: "x86_64"
+      - releasever: "7.2"
+        basearch: "x86_64"
+      - releasever: "7.3"
+        basearch: "x86_64"
     state: enabled
 
 - name: "Disable RHEL 7 Extras RPMs repository"

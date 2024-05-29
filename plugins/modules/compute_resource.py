@@ -379,7 +379,6 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     state: present
-
 '''
 
 RETURN = '''

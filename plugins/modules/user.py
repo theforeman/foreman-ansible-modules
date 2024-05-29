@@ -309,7 +309,6 @@ EXAMPLES = '''
   theforeman.foreman.user:
     name: test
     user_password: newp@ss
-
 '''
 
 RETURN = '''
