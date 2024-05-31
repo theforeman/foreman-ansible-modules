@@ -174,7 +174,8 @@ DOCUMENTATION = '''
         default: ['name']
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
+---
 # my.foreman.yml
 plugin: theforeman.foreman.foreman
 url: https://foreman.example.com
@@ -182,6 +183,7 @@ user: ansibleinventory
 password: changeme
 host_filters: 'organization="Web Engineering"'
 
+---
 # shortname.foreman.yml
 plugin: theforeman.foreman.foreman
 url: https://foreman.example.com
@@ -190,6 +192,7 @@ password: changeme
 hostnames:
   - name.split('.')[0]
 '''
+
 import copy
 import json
 from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
