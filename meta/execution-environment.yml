@@ -1,8 +1,9 @@
 ---
-version: 1
+version: 3
 
-build_arg_defaults:
-  EE_BASE_IMAGE: 'quay.io/ansible/ansible-runner:latest'
+images:
+  base_image:
+    name: quay.io/centos/centos:stream9
 
 dependencies:
   # File paths are relative to collection root folder when collection is
@@ -10,3 +11,7 @@ dependencies:
   # See https://github.com/ansible/ansible-builder/issues/406#issuecomment-1195584188
   python: requirements.txt
   system: bindep.txt
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
