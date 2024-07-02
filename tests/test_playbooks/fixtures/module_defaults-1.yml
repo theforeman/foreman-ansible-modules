@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.16.0","result":"ok","status":200,"version":"3.12.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '100'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0-develop
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '70'
     status:
       code: 200
       message: OK
@@ -70,17 +68,19 @@ interactions:
     uri: https://foreman.example.org/api/settings?search=name%3D%22login_text%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 181,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+      string: "{\n  \"total\": 0,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"login_text\\\"\",\n  \"sort\": {\n    \"by\":
         null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":\"Text
-        to be shown in the login-page footer\",\"category\":\"Setting::General\",\"settings_type\":null,\"default\":null,\"created_at\":\"2021-04-08
-        18:01:52 UTC\",\"updated_at\":\"2021-04-13 18:24:31 UTC\",\"id\":\"login_text\",\"name\":\"login_text\",\"full_name\":\"Login
-        page footer text\",\"value\":\"\",\"category_name\":\"General\",\"readonly\":false,\"config_file\":\"settings.yaml\",\"encrypted\":false,\"select_values\":null}]\n}\n"
+        to be shown in the login-page footer. Keyword $VERSION is replaced by current
+        version.\",\"settings_type\":\"string\",\"default\":\"Version $VERSION\",\"updated_at\":null,\"id\":\"login_text\",\"name\":\"login_text\",\"full_name\":\"Login
+        page footer text\",\"value\":\"Version $VERSION\",\"category\":\"general\",\"category_name\":\"General\",\"readonly\":false,\"config_file\":null,\"encrypted\":false,\"select_values\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '581'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -94,13 +94,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0-develop
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -111,8 +109,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '579'
     status:
       code: 200
       message: OK
@@ -131,14 +127,17 @@ interactions:
     uri: https://foreman.example.org/api/settings/login_text
   response:
     body:
-      string: '{"description":"Text to be shown in the login-page footer","category":"Setting::General","settings_type":null,"default":null,"created_at":"2021-04-08
-        18:01:52 UTC","updated_at":"2021-04-13 18:24:31 UTC","id":"login_text","name":"login_text","full_name":"Login
-        page footer text","value":"","category_name":"General","readonly":false,"config_file":"settings.yaml","encrypted":false,"select_values":null}'
+      string: '{"description":"Text to be shown in the login-page footer. Keyword
+        $VERSION is replaced by current version.","settings_type":"string","default":"Version
+        $VERSION","updated_at":null,"id":"login_text","name":"login_text","full_name":"Login
+        page footer text","value":"Version $VERSION","category":"general","category_name":"General","readonly":false,"config_file":null,"encrypted":false,"select_values":null}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '405'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -152,13 +151,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0-develop
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -169,8 +166,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '401'
     status:
       code: 200
       message: OK
