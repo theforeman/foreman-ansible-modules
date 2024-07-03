@@ -12,11 +12,14 @@
     - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_state: present
+        content_credential_type: "gpg_key"
+        content_credential_content: "{{ lookup('file', 'data/gpg_key.asc') }}"
     - include_tasks: tasks/content_credential.yml
       vars:
         content_credential_name: "Test SSL Cert"
         content_credential_type: "cert"
         content_credential_state: present
+        content_credential_content: "{{ lookup('file', 'data/gpg_key.asc') }}"
     - include_tasks: tasks/sync_plan.yml
       vars:
         sync_plan_state: present
