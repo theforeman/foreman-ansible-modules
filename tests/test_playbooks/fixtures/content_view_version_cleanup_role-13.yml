@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.5.0","api_version":2}'
+      string: '{"satellite_version":"6.16.0","result":"ok","status":200,"version":"3.12.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '100'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -70,17 +68,18 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2021-06-29 08:33:23 UTC\",\"updated_at\"\
-        :\"2021-06-29 08:33:25 UTC\",\"id\":7,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2024-07-09
+        14:29:57 UTC\",\"updated_at\":\"2024-07-09 14:29:59 UTC\",\"id\":26,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '389'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -94,13 +93,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.5.0
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -111,8 +108,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '388'
     status:
       code: 200
       message: OK
@@ -128,24 +123,26 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/7/content_views?search=name+~+cleanup&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/26/content_views?search=name+~+cleanup&per_page=4294967296
   response:
     body:
-      string: '{"total":3,"subtotal":2,"page":1,"per_page":"4294967296","error":null,"search":"name
-        ~ cleanup","sort":{"by":"name","order":"asc"},"results":[{"composite":true,"component_ids":[21],"default":false,"version_count":1,"latest_version":"5.0","latest_version_id":26,"auto_publish":false,"solve_dependencies":false,"import_only":false,"repository_ids":[],"id":10,"name":"cleanup-testccv","label":"cleanup-testccv","description":null,"organization_id":7,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":7},"created_at":"2021-06-29
-        08:33:29 UTC","updated_at":"2021-06-29 08:34:22 UTC","last_task":{"id":"23e7eca9-3adb-48a2-9778-a4f4e6db4435","result":"successful","last_sync_words":"1
-        minute"},"latest_version_environments":[{"id":6,"name":"Library","label":"Library"}],"environments":[{"id":6,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[],"versions":[{"id":26,"version":"5.0","published":"2021-06-29
-        08:34:22 UTC","environment_ids":[6]}],"components":[{"id":21,"name":"cleanup-testcv
-        5.0","content_view_id":9,"version":"5.0","environments":[{"id":6,"name":"Library","label":"Library"}],"content_view":{"id":9,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"next_version":6,"latest_version":"5.0"},"repositories":[]}],"content_view_components":[{"latest":true,"id":2,"created_at":"2021-06-29
-        08:33:29 UTC","updated_at":"2021-06-29 08:33:29 UTC","composite_content_view":{"id":10,"name":"cleanup-testccv","label":"cleanup-testccv","description":null,"next_version":6,"latest_version":"5.0","version_count":1},"content_view":{"id":9,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"next_version":6,"latest_version":"5.0","version_count":1},"content_view_version":{"id":21,"name":"cleanup-testcv
-        5.0","content_view_id":9,"version":"5.0","content_view":{"id":9,"name":"cleanup-testcv","label":"cleanup-testcv","description":null},"environments":[{"id":6,"name":"Library","label":"Library"}],"repositories":[]}}],"activation_keys":[],"hosts":[],"next_version":"6.0","last_published":"2021-06-29
-        08:34:22 UTC","permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}},{"composite":false,"component_ids":[],"default":false,"version_count":1,"latest_version":"5.0","latest_version_id":21,"auto_publish":false,"solve_dependencies":false,"import_only":false,"repository_ids":[],"id":9,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"organization_id":7,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":7},"created_at":"2021-06-29
-        08:33:27 UTC","updated_at":"2021-06-29 08:33:54 UTC","last_task":{"id":"d23c2127-d267-416e-87bd-3d856a80fdd2","result":"successful","last_sync_words":"1
-        minute"},"latest_version_environments":[{"id":6,"name":"Library","label":"Library"}],"environments":[{"id":6,"name":"Library","label":"Library","permissions":{"readable":true}}],"repositories":[],"versions":[{"id":21,"version":"5.0","published":"2021-06-29
-        08:33:54 UTC","environment_ids":[6]}],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"6.0","last_published":"2021-06-29
-        08:33:54 UTC","permissions":{"view_content_views":true,"edit_content_views":true,"destroy_content_views":true,"publish_content_views":true,"promote_or_remove_content_views":true}}]}
+      string: '{"total":3,"subtotal":2,"selectable":2,"page":1,"per_page":"4294967296","error":null,"search":"name
+        ~ cleanup","sort":{"by":"name","order":"asc"},"results":[{"composite":true,"component_ids":[46],"duplicate_repositories_to_publish":[],"default":false,"version_count":1,"latest_version":"5.0","latest_version_id":51,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":1,"related_composite_cvs":[],"filtered":false,"repository_ids":[],"id":19,"name":"cleanup-testccv","label":"cleanup-testccv","description":null,"organization_id":26,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":26},"created_at":"2024-07-09
+        14:30:02 UTC","updated_at":"2024-07-09 14:30:58 UTC","last_task":{"id":"aec3029e-8c8f-4ae7-bba9-cb504e1b4d0e","started_at":"2024-07-09
+        14:30:58 UTC","result":"success","last_sync_words":"1 minute"},"latest_version_environments":[{"id":15,"name":"Library","label":"Library"}],"repositories":[],"versions":[{"id":51,"version":"5.0","published":"2024-07-09
+        14:30:58 UTC","description":null,"environment_ids":[15],"filters_applied":false,"published_at_words":"1
+        minute"}],"components":[{"id":46,"name":"cleanup-testcv 5.0","content_view_id":18,"version":"5.0","environments":[{"id":15,"name":"Library","label":"Library"}],"content_view":{"id":18,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"next_version":6,"latest_version":"5.0"},"repositories":[]}],"content_view_components":[{"latest":true,"id":2,"created_at":"2024-07-09
+        14:30:03 UTC","updated_at":"2024-07-09 14:30:03 UTC","composite_content_view":{"id":19,"name":"cleanup-testccv","label":"cleanup-testccv","description":null,"next_version":6,"latest_version":"5.0","version_count":1},"content_view":{"id":18,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"next_version":6,"latest_version":"5.0","version_count":1},"content_view_version":{"id":46,"name":"cleanup-testcv
+        5.0","content_view_id":18,"version":"5.0","content_view":{"id":18,"name":"cleanup-testcv","label":"cleanup-testcv","description":null},"environments":[{"id":15,"name":"Library","label":"Library"}],"repositories":[]},"component_content_view_versions":[{"id":46,"version":"5.0","description":null,"published_at_words":"1
+        minute"}]}],"activation_keys":[],"hosts":[],"next_version":"6.0","last_published":"2024-07-09
+        14:30:58 UTC","environments":[{"id":15,"label":"Library","name":"Library","activation_keys":[],"hosts":[],"permissions":{"readable":true}}]},{"composite":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":false,"version_count":1,"latest_version":"5.0","latest_version_id":46,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":1,"related_composite_cvs":[{"id":19,"name":"cleanup-testccv"}],"filtered":false,"repository_ids":[],"id":18,"name":"cleanup-testcv","label":"cleanup-testcv","description":null,"organization_id":26,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":26},"created_at":"2024-07-09
+        14:30:00 UTC","updated_at":"2024-07-09 14:30:29 UTC","last_task":{"id":"6da31077-1ece-4449-882a-4057308558e4","started_at":"2024-07-09
+        14:30:29 UTC","result":"success","last_sync_words":"1 minute"},"latest_version_environments":[{"id":15,"name":"Library","label":"Library"}],"repositories":[],"versions":[{"id":46,"version":"5.0","published":"2024-07-09
+        14:30:29 UTC","description":null,"environment_ids":[15],"filters_applied":false,"published_at_words":"1
+        minute"}],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"6.0","last_published":"2024-07-09
+        14:30:29 UTC","environments":[{"id":15,"label":"Library","name":"Library","activation_keys":[],"hosts":[],"permissions":{"readable":true}}]}]}
 
         '
     headers:
@@ -153,6 +150,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '3823'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -164,15 +163,13 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 7; Test Organization
+      - 26; Test Organization
       Foreman_version:
-      - 2.5.0
+      - 3.12.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -183,8 +180,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '3433'
     status:
       code: 200
       message: OK
