@@ -1,4 +1,17 @@
 ---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/redhat_manifest.yml
+      vars:
+        pool_state: absent
+        manifest_state: absent
+        manifest_content_access_mode: "org_environment"
+
 - hosts: tests
   collections:
     - theforeman.foreman
@@ -12,34 +25,18 @@
         expected_change: true
         pool_state: present
         manifest_state: present
-        pool_quantity: 1
+        manifest_content_access_mode: org_environment
     - name: No change to existing manifest
       include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: false
         pool_state: present
         manifest_state: present
-        pool_quantity: 1
-    - name: Test adding more subs
-      include_tasks: tasks/redhat_manifest.yml
-      vars:
-        expected_change: true
-        pool_state: present
-        manifest_state: present
-        pool_quantity: 3
-    - name: Test removing subs and export
-      include_tasks: tasks/redhat_manifest.yml
-      vars:
-        expected_change: true
-        pool_state: present
-        manifest_state: present
-        pool_quantity: 2
-        manifest_export_path: "/tmp/manifest_export.zip"
+        manifest_content_access_mode: org_environment
     - name: Delete manifest
       include_tasks: tasks/redhat_manifest.yml
       vars:
         expected_change: true
         pool_state: absent
         manifest_state: absent
-        pool_quantity: 2
 ...
