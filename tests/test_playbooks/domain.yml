@@ -47,13 +47,13 @@
       include_tasks: tasks/domain.yml
       vars:
         domain_state: "present"
-        domain_dns_proxy: "{{ foreman_proxy }}"
+        domain_dns_proxy: "{{ foreman_host }}"
         expected_change: true
     - name: assign dns_proxy again, no change
       include_tasks: tasks/domain.yml
       vars:
         domain_state: "present"
-        domain_dns_proxy: "{{ foreman_proxy }}"
+        domain_dns_proxy: "{{ foreman_host }}"
         expected_change: false
     - name: unset dns_proxy
       include_tasks: tasks/domain.yml
