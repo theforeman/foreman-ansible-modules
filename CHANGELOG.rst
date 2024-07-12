@@ -6,6 +6,22 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v4.1.0
+======
+
+Minor Changes
+-------------
+
+- redhat_manifest - report ``changed`` when manifest is regenerated and downloaded (https://github.com/theforeman/foreman-ansible-modules/issues/1473)
+
+New Modules
+-----------
+
+- theforeman.foreman.content_import_info - List content imports
+- theforeman.foreman.content_import_library - Manage library content imports
+- theforeman.foreman.content_import_repository - Manage repository content imports
+- theforeman.foreman.content_import_version - Manage content view version content imports
+
 v4.0.0
 ======
 
