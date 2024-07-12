@@ -70,8 +70,8 @@
     - name: check remaining content view versions
       assert:
         that:
-          - remaining_cvs.resources[0].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
-          - remaining_cvs.resources[1].versions|map(attribute='version')|list == ['3.0', '4.0', '5.0']
+          - remaining_cvs.resources[0].versions|map(attribute='version')|sort|list == ['3.0', '4.0', '5.0']
+          - remaining_cvs.resources[1].versions|map(attribute='version')|sort|list == ['3.0', '4.0', '5.0']
     - name: clean up all unused CVs
       include_role:
         name: content_view_version_cleanup
