@@ -1,0 +1,1178 @@
+
+.. Document meta
+
+:orphan:
+
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. meta::
+  :antsibull-docs: 2.12.0
+
+.. Anchors
+
+.. _ansible_collections.theforeman.foreman.registration_command_module:
+
+.. Anchors: short name for ansible.builtin
+
+.. Title
+
+theforeman.foreman.registration_command module -- Manage Registration Command
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. Collection note
+
+.. note::
+    This module is part of the `theforeman.foreman collection <https://galaxy.ansible.com/ui/repo/published/theforeman/foreman/>`_ (version 4.1.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install theforeman.foreman`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.theforeman.foreman.registration_command_module_requirements>` for details.
+
+    To use it in a playbook, specify: :code:`theforeman.foreman.registration_command`.
+
+.. version_added
+
+.. rst-class:: ansible-version-added
+
+New in theforeman.foreman 4.0.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+.. Deprecated
+
+
+Synopsis
+--------
+
+.. Description
+
+- Manage Registration Command
+
+
+.. Aliases
+
+
+.. Requirements
+
+.. _ansible_collections.theforeman.foreman.registration_command_module_requirements:
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- requests
+
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+  :class: longtable ansible-option-table
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-activation_keys"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-activation_keys:
+
+      .. rst-class:: ansible-option-title
+
+      **activation_keys**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-activation_keys" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Activation keys for subscription-manager client, required for CentOS and Red Hat Enterprise Linux.
+
+      Required only if host group has no activation keys.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-force"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-force:
+
+      .. rst-class:: ansible-option-title
+
+      **force**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Clear any previous registration and run \ :literal:`subscription-manager`\  with \ :literal:`--force`\ .
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-hostgroup"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-hostgroup:
+
+      .. rst-class:: ansible-option-title
+
+      **hostgroup**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-hostgroup" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Host group to register the host in.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ignore_subman_errors"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-ignore_subman_errors:
+
+      .. rst-class:: ansible-option-title
+
+      **ignore_subman_errors**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ignore_subman_errors" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Ignore \ :literal:`subscription-manager`\  errors for \ :literal:`subscription-manager register`\  command.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-insecure"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-insecure:
+
+      .. rst-class:: ansible-option-title
+
+      **insecure**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-insecure" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Enable insecure argument for the initial \ :literal:`curl`\ .
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-jwt_expiration"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-jwt_expiration:
+
+      .. rst-class:: ansible-option-title
+
+      **jwt_expiration**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-jwt_expiration" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`integer`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Expiration of the authorization token (in hours).
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-lifecycle_environment"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-lifecycle_environment:
+
+      .. rst-class:: ansible-option-title
+
+      **lifecycle_environment**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-lifecycle_environment" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Lifecycle environment for the host.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Location to register the host in.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-operatingsystem"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-operatingsystem:
+
+      .. rst-class:: ansible-option-title
+
+      **operatingsystem**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-operatingsystem" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Operating System to register the host in.
+
+      Operating system must have a \ :literal:`host\_init\_config`\  template assigned.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-organization"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-organization:
+
+      .. rst-class:: ansible-option-title
+
+      **organization**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-organization" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Organization to register the host in.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-packages"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-packages:
+
+      .. rst-class:: ansible-option-title
+
+      **packages**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-packages" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Packages to install on the host when registered.
+
+      Multiple packages are to be given as a space delimited string.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-password"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-password:
+
+      .. rst-class:: ansible-option-title
+
+      **password**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Password of the user accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-remote_execution_interface"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-remote_execution_interface:
+
+      .. rst-class:: ansible-option-title
+
+      **remote_execution_interface**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-remote_execution_interface" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Identifier of the Host interface for Remote execution.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-repo"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-repo:
+
+      .. rst-class:: ansible-option-title
+
+      **repo**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-repo" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Repository URL (yum/dnf) or full sources.list entry (apt).
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-repo_gpg_key_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-repo_gpg_key_url:
+
+      .. rst-class:: ansible-option-title
+
+      **repo_gpg_key_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-repo_gpg_key_url" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the GPG key for the repository.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-server_url"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-server_url:
+
+      .. rst-class:: ansible-option-title
+
+      **server_url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-setup_insights"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-setup_insights:
+
+      .. rst-class:: ansible-option-title
+
+      **setup_insights**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-setup_insights" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If this is set to \ :literal:`true`\ , \ :literal:`insights-client`\  will be installed and registered on Red Hat family operating systems.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-setup_remote_execution"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-setup_remote_execution:
+
+      .. rst-class:: ansible-option-title
+
+      **setup_remote_execution**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-setup_remote_execution" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If this is set to true, SSH keys will be installed on the host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-setup_remote_execution_pull"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-setup_remote_execution_pull:
+
+      .. rst-class:: ansible-option-title
+
+      **setup_remote_execution_pull**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-setup_remote_execution_pull" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If this is set to true, pull provider client will be deployed on the host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-smart_proxy"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-smart_proxy:
+
+      .. rst-class:: ansible-option-title
+
+      **smart_proxy**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-smart_proxy" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of Smart Proxy.
+
+      This Proxy must have both the \ :literal:`Templates`\  and \ :literal:`Registration`\  features enabled.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-update_packages"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-update_packages:
+
+      .. rst-class:: ansible-option-title
+
+      **update_packages**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-update_packages" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Update all packages on the host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Username accessing the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Whether or not to verify the TLS certificates of the Foreman server.
+
+      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
+
+Attributes
+----------
+
+.. tabularcolumns:: \X{2}{10}\X{3}{10}\X{5}{10}
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+  :class: longtable ansible-option-table
+
+  * - Attribute
+    - Support
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-check_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__attribute-check_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **check_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Can run in check\_mode and return changed status prediction without modifying the entity
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="attribute-diff_mode"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__attribute-diff_mode:
+
+      .. rst-class:: ansible-option-title
+
+      **diff_mode**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#attribute-diff_mode" title="Permalink to this attribute"></a>
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      :ansible-attribute-support-label:`Support: \ `\ :ansible-attribute-support-full:`full`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will return details on what has changed (or possibly needs changing in check\_mode), when in diff mode
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+.. Notes
+
+
+.. Seealso
+
+
+.. Examples
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+
+    
+    - name: "Generate registration command"
+      theforeman.foreman.registration_command:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+      register: command
+
+    - name: "Perform registration"
+      ansible.builtin.shell:
+        cmd: "{{ command.registration_command }}"
+
+
+
+
+.. Facts
+
+
+.. Return values
+
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
+
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+  :class: longtable ansible-option-table
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-registration_command"></div>
+
+      .. _ansible_collections.theforeman.foreman.registration_command_module__return-registration_command:
+
+      .. rst-class:: ansible-option-title
+
+      **registration_command**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-registration_command" title="Permalink to this return value"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The generated registration command.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
+
+..  Status (Presently only deprecated)
+
+
+.. Authors
+
+Authors
+~~~~~~~
+
+- Evgeni Golov (@evgeni)
+
+
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. ansible-links::
+
+  - title: "Issue Tracker"
+    url: "https://github.com/theforeman/foreman-ansible-modules/issues"
+    external: true
+  - title: "Homepage"
+    url: "https://theforeman.org/"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/theforeman/foreman-ansible-modules"
+    external: true
+
+
+.. Parsing errors
+
