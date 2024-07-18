@@ -57,7 +57,8 @@ options:
     type: bool
   sync_date:
     description:
-      - Start date and time of the first synchronization
+      - Start date and time of the first synchronization.
+      - Multiple formats are accepted, but only C(YYYY-mm-dd HH:MM:SS +z) (e.g. C(2024-08-01 00:00:00 +0000)) will be idempotent.
     required: true
     type: str
   cron_expression:
