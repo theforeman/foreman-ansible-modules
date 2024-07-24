@@ -49,18 +49,6 @@
         repository_docker_upstream_name: ubi8
         repository_download_policy: "on_demand"
 
-    - name: "Create Deb Repository"
-      ansible.builtin.include_tasks: tasks/repository.yml
-      vars:
-        repository_state: present
-        repository_name: Test Debian Repository
-        repository_content_type: deb
-        repository_url: https://ftp.debian.org/debian
-        repository_deb_releases: buster
-        repository_deb_components: contrib
-        repository_deb_architectures: amd64
-        repository_download_policy: "on_demand"
-
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
@@ -78,12 +66,6 @@
         repository: Test Modular Repository
         expected_time: false
 
-    - name: "Sync content"
-      ansible.builtin.include_tasks: tasks/katello_sync.yml
-      vars:
-        repository: Test Debian Repository
-        expected_time: false
-
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
       vars:
@@ -93,8 +75,6 @@
           - name: "Test Docker Repository"
             product: "Test Product"
           - name: "Test Modular Repository"
-            product: "Test Product"
-          - name: "Test Debian Repository"
             product: "Test Product"
 
     - name: "Create content view filters"
@@ -135,9 +115,6 @@
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_modulemd.yml
       vars:
         expected_change: true
-
-    - name: "Create Content View Filter Rule for deb packages"
-      ansible.builtin.include_tasks: tasks/content_view_filter_rule_deb.yml
 
     - name: "Cleanup Content View Filter Rules"
       ansible.builtin.include_tasks: tasks/content_view_filter_rule_cleanup.yml

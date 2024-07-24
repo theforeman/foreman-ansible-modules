@@ -1,0 +1,87 @@
+---
+- name: "Create test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Test Organization"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+
+    - name: "Create Test Product"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+
+    - name: "Create Deb Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Debian Repository
+        repository_content_type: deb
+        repository_url: https://ftp.debian.org/debian
+        repository_deb_releases: buster
+        repository_deb_components: contrib
+        repository_deb_architectures: amd64
+        repository_download_policy: "on_demand"
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Debian Repository
+        expected_time: false
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        repositories:
+          - name: "Test Debian Repository"
+            product: "Test Product"
+
+    - name: "Create content view filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+
+- name: "Test content_view_filter_rule"
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Content View Filter Rule for deb packages"
+      ansible.builtin.include_tasks: tasks/content_view_filter_rule_deb.yml
+
+- name: "Clean up test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Docker Repository
+        repository_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+
+    - name: "Clean up products"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+
+    - name: "Clean up Organizations"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
