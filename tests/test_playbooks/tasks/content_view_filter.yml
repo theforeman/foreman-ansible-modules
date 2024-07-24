@@ -8,7 +8,6 @@
     inclusion: true
     original_packages: true
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -21,13 +20,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -49,7 +42,6 @@
     inclusion: true
     original_module_streams: true
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -62,13 +54,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -89,7 +75,6 @@
     filter_type: deb
     inclusion: true
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -102,13 +87,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -128,7 +107,6 @@
     content_view_name: "Test Content View"
     filter_type: rpm
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -141,13 +119,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -167,8 +139,6 @@
     content_view_name: "Test Content View"
     filter_type: package_group
     filter_state: present
-    package_group: birds
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -181,13 +151,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -205,10 +169,8 @@
     content_view_filter_name: "Test Content View Filter - erratum_by_id"
     organization_name: "Test Organization"
     content_view_name: "Test Content View"
-    errata_id: "RHEA-2012:0004"
     filter_type: erratum
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -221,13 +183,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -246,10 +202,7 @@
     organization_name: "Test Organization"
     content_view_name: "Test Content View"
     filter_type: erratum
-    end_date: "2018-01-03"
-    start_date: "2017-01-03"
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -262,13 +215,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -287,9 +234,7 @@
     organization_name: "Test Organization"
     content_view_name: "Test Content View"
     filter_type: docker
-    tag: birds
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -302,13 +247,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -328,7 +267,6 @@
     content_view_name: "Test Content View"
     filter_type: modulemd
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -341,13 +279,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
@@ -367,7 +299,6 @@
     content_view_name: "Test Content View"
     filter_type: deb
     filter_state: present
-    rule_state: absent
   content_view_filter:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
@@ -380,13 +311,7 @@
     inclusion: "{{ inclusion | default(omit) }}"
     original_module_streams: "{{ original_module_streams | default(omit) }}"
     original_packages: "{{ original_packages | default(omit) }}"
-    errata_id: "{{ errata_id | default(omit) }}"
-    end_date: "{{ end_date | default(omit) }}"
-    start_date: "{{ start_date | default(omit) }}"
-    package_group: "{{ package_group | default(omit) }}"
-    tag: "{{ tag | default(omit) }}"
     filter_state: "{{ filter_state }}"
-    rule_state: "{{ rule_state }}"
   register: result
 
 - name: "Assert Result"
