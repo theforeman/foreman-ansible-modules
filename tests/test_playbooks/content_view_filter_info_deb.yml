@@ -1,0 +1,149 @@
+---
+- name: "Setup content_view_filter_info test prerequisites"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Create Test Organization"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+
+    - name: "Create Test Product"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+
+    - name: "Create Deb Repository"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+        repository_name: Test Debian Repository
+        repository_content_type: deb
+        repository_url: https://ftp.debian.org/debian
+        repository_deb_releases: buster
+        repository_deb_components: contrib
+        repository_deb_architectures: amd64
+        repository_download_policy: "on_demand"
+
+    - name: "Sync content"
+      ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        repository: Test Debian Repository
+        expected_time: false
+
+    - name: "Create Content View"
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        repositories:
+          - name: "Test Debian Repository"
+            product: "Test Product"
+
+    - name: "Create content view filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+
+
+- name: "Test content_view_filter info"
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: "Fetch content_view_filter_info - deb packages"
+      vars:
+        content_view_filter_name: "Test Content View Filter - AllDebs"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        name: "{{ content_view_filter_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter']['name'] == "Test Content View Filter - AllDebs"
+          - result['content_view_filter']['type'] == "deb"
+          - result['content_view_filter']['inclusion'] == True
+
+
+    - name: "Fetch content_view_filter_info - deb exlude"
+      vars:
+        content_view_filter_name: "Test Content View Filter - deb"
+        content_view_name: "Test Content View"
+        organization_name: "Test Organization"
+      content_view_filter_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "{{ organization_name }}"
+        content_view: "{{ content_view_name }}"
+        name: "{{ content_view_filter_name }}"
+      register: result
+
+    - name: "Assert Result"
+      ansible.builtin.assert:
+        fail_msg: "Ensuring content view filter info is valid failed!"
+        that:
+          - result['content_view_filter']['name'] == "Test Content View Filter - deb"
+          - result['content_view_filter']['type'] == "deb"
+          - result['content_view_filter']['inclusion'] == False
+
+- name: "Clean up test dependencies"
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+
+    - name: "Cleanup Content View Filters"
+      ansible.builtin.include_tasks: tasks/content_view_filter.yml
+      vars:
+        filter_state: absent
+
+    - name: Clean up the content view
+      ansible.builtin.include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Modular Repository
+        repository_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_name: Test Docker Repository
+        repository_state: absent
+
+    - name: "Clean up repositories"
+      ansible.builtin.include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+
+    - name: "Clean up products"
+      ansible.builtin.include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+
+    - name: "Clean up Organizations"
+      ansible.builtin.include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...
