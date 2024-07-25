@@ -1585,6 +1585,9 @@ class KatelloContentExportBaseModule(KatelloAnsibleModule):
         if self.params.get('from_history_id') and incremental is not True:
             self.fail_json(msg='from_history_id is only valid for incremental exports')
 
+        if 'chunk_size_gb' in self.foreman_params and self.foreman_params['format'] == 'syncable':
+            self.fail_json(msg='chunk_size_gb is only valid for importable exports')
+
         self.auto_lookup_entities()
 
         payload = _flatten_entity(self.foreman_params, self.foreman_spec)
