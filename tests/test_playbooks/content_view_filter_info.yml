@@ -21,12 +21,14 @@
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
+        repository_download_policy: "on_demand"
 
     - name: "Create Additional Repository"
       ansible.builtin.include_tasks: tasks/repository.yml
       vars:
         repository_state: present
         repository_url: "https://repos.fedorapeople.org/pulp/pulp/demo_repos/zoo/"
+        repository_download_policy: "on_demand"
 
     - name: "Create Module repository"
       ansible.builtin.include_tasks: tasks/repository.yml
@@ -35,6 +37,7 @@
         repository_name: "Test Modular Repository"
         repository_content_type: yum
         repository_url: "https://dl.fedoraproject.org/pub/epel/8/Modular/x86_64"
+        repository_download_policy: "on_demand"
 
     - name: "Create Container Repository"
       ansible.builtin.include_tasks: tasks/repository.yml
@@ -44,6 +47,7 @@
         repository_content_type: docker
         repository_url: https://registry.access.redhat.com
         repository_docker_upstream_name: ubi9
+        repository_download_policy: "on_demand"
 
     - name: "Create Deb Repository"
       ansible.builtin.include_tasks: tasks/repository.yml
@@ -55,6 +59,7 @@
         repository_deb_releases: buster
         repository_deb_components: contrib
         repository_deb_architectures: amd64
+        repository_download_policy: "on_demand"
 
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
