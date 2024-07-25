@@ -392,6 +392,7 @@ options:
   chunk_size_gb:
     description:
       - Split the exported content into archives no greater than the specified size in gigabytes.
+      - Only applicable for C(format=importable). C(syncable) exports can't be split.
     required: false
     type: int
   format:
