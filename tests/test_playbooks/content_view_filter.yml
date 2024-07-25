@@ -53,16 +53,20 @@
 
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
+      vars:
+        expected_time: false
 
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Docker Repository
+        expected_time: false
 
     - name: "Sync content"
       ansible.builtin.include_tasks: tasks/katello_sync.yml
       vars:
         repository: Test Debian Repository
+        expected_time: false
 
     - name: "Create Content View"
       ansible.builtin.include_tasks: tasks/content_view.yml
