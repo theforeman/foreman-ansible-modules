@@ -65,6 +65,7 @@ options:
       - redhat_cdn
       - network_sync
       - export_sync
+      - custom_cdn
   upstream_url:
     description:
       - URL of the upstream resource
@@ -106,6 +107,11 @@ options:
       - Required when I(upstream_type) is C(network_sync)
     required: false
     type: str
+  upstream_custom_cdn_auth_enabled:
+    description:
+      - If product certificates should be used to authenticate to a custom CDN.
+    type: bool
+    required: false
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -182,7 +188,7 @@ def main():
             label=dict(),
             ignore_types=dict(type='list', elements='str', required=False, aliases=['select_all_types']),
             select_all_types=dict(type='list', invisible=True, flat_name='ignore_types'),
-            upstream_type=dict(required=False, choices=['redhat_cdn', 'export_sync', 'network_sync']),
+            upstream_type=dict(required=False, choices=['redhat_cdn', 'export_sync', 'network_sync', 'custom_cdn']),
             upstream_url=dict(required=False),
             upstream_username=dict(required=False),
             upstream_password=dict(required=False, no_log=True),
@@ -190,6 +196,7 @@ def main():
             upstream_organization=dict(required=False),
             upstream_lifecycle_environment=dict(required=False),
             upstream_content_view=dict(required=False),
+            upstream_custom_cdn_auth_enabled=dict(required=False, type='bool'),
         ),
     )
 
@@ -227,6 +234,18 @@ def main():
                     'upstream_organization_label': module.foreman_params['upstream_organization'],
                     'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
                     'upstream_content_view_label': module.foreman_params['upstream_content_view'],
+                }
+                extra_payload.update(cdn_config)
+            if module.foreman_params['upstream_type'] == 'custom_cdn':
+                cdn_config = {
+                    'url': module.foreman_params['upstream_url'],
+                    'ssl_ca_credential_id': module.foreman_params['upstream_ca_cert'],
+                    'username': module.foreman_params['upstream_username'],
+                    'password': module.foreman_params['upstream_password'],
+                    'upstream_organization_label': module.foreman_params['upstream_organization'],
+                    'upstream_lifecycle_environment_label': module.foreman_params['upstream_lifecycle_environment'],
+                    'upstream_content_view_label': module.foreman_params['upstream_content_view'],
+                    'custom_cdn_auth_enabled': module.foreman_params['upstream_custom_cdn_auth_enabled'],
                 }
                 extra_payload.update(cdn_config)
 
