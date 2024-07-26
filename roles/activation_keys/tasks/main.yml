@@ -22,5 +22,5 @@
     purpose_role: "{{ item.purpose_role | default(omit) }}"
     purpose_addons: "{{ item.purpose_addons | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-  loop:
+  with_items:
     - "{{ foreman_activation_keys }}"
