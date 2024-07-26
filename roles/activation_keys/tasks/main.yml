@@ -1,5 +1,5 @@
 ---
-- name: 'Create Activation Keys'  # noqa: args[module]
+- name: 'Create or Delete Activation Keys'  # noqa: args[module]
   theforeman.foreman.activation_key:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
@@ -21,6 +21,6 @@
     purpose_usage: "{{ item.purpose_usage | default(omit) }}"
     purpose_role: "{{ item.purpose_role | default(omit) }}"
     purpose_addons: "{{ item.purpose_addons | default(omit) }}"
-    state: present
+    state: "{{ item.state | default('present') }}"
   with_items:
     - "{{ foreman_activation_keys }}"

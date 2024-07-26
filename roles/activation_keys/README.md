@@ -77,3 +77,19 @@ Define two Activation Keys. The first registers hosts in the "ACME" organization
 ```
 
 Following the second example, a Host which is registered using `subscription-manager register --activationkey ACME_App_Key,ACME_RHEL7_Base_Test` will get the ACME_App subscription, Test LCE, RHEL7_Base Content View, and auto-attach any additional necessary subscriptions from ACME Organization to cover the Base OS and any other products which require an entitlement certificate.
+
+To delete multiple activation_keys
+```yaml
+- hosts: localhost
+  roles:
+    - role: theforeman.foreman.activation_keys
+      vars:
+        foreman_server_url: https://foreman.example.com
+        foreman_username: "admin"
+        foreman_password: "changeme"
+        foreman_organization: "ACME"
+        foreman_activation_keys:
+          - name: "ACME_App_Key"
+            state: absent
+          - name: "ACME_OS_Key"
+            state: absent
