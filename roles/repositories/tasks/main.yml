@@ -39,9 +39,14 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ item.name }}"
+    description: "{{ item.description | default(omit) }}"
     label: "{{ item.label | default(omit) }}"
     gpg_key: "{{ item.gpg_key | default(omit) }}"
+    ssl_ca_cert: "{{ item.ssl_ca_cert | default(omit) }}"
+    ssl_client_cert: "{{ item.ssl_client_cert | default(omit) }}"
+    ssl_client_key: "{{ item.ssl_client_key | default(omit) }}"
     state: "{{ item.state | default(omit) }}"
+    sync_plan: "{{ item.sync_plan | default(omit) }}"
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
 
