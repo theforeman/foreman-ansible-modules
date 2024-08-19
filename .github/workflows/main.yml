@@ -80,7 +80,7 @@ jobs:
       - name: prepare a redhat-uep.pem, even if we run on Ubuntu
         run: sudo mkdir -p /etc/rhsm/ca/ && sudo curl -o /etc/rhsm/ca/redhat-uep.pem https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem
       - name: Install required collections for ansible-base (2.10+)
-        run: ansible-galaxy collection install community.docker
+        run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-3.12.0.tar.gz
         if: matrix.ansible != 'v2.9.17'
       - name: Run crud tests
         run: make test-crud
