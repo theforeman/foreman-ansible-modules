@@ -3,6 +3,13 @@
   gather_facts: false
   vars:
     foo: foo bar
+    crypt: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62343962363339363461373565656663663734393265636161313466326163666638333735303061
+          6134346238366533616262663462396332363535363662660a323339326635373330633230336332
+          38363334373037356466383063616532656632303636333839313831626264386132386661303535
+          3864663564356332390a633631363962353163316236323038363861623763616265343762366435
+          6237
   tasks:
     - name: Changed task
       command: echo foo
@@ -33,6 +40,13 @@
         - 3
       loop_control:
         label: foo-{{ item }}
+
+    - name: Vault command
+      command: echo {{ crypt }}
+
+    - name: Vault fact
+      set_fact:
+        geheim: "{{ crypt }}"
 
   handlers:
     - name: Test handler 1

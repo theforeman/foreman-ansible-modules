@@ -44,14 +44,11 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "name": "Changed task",
         "notify": [
           "test handlers"
         ],
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -91,11 +88,8 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "name": "Ok task",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -114,12 +108,9 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "ignore_errors": true,
         "name": "Failed task",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -156,11 +147,8 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "name": "Task with var in name (foo bar)",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -256,7 +244,6 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "loop": [
           1,
           2,
@@ -264,8 +251,67 @@
         ],
         "name": "Loop task",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
+        "throttle": 0
+      }
+    },
+    {
+      "failed": false,
+      "result": {
+        "changed": true,
+        "cmd": [
+          "echo",
+          "admin"
+        ],
+        "invocation": {
+          "module_args": {
+            "_raw_params": "echo admin",
+            "_uses_shell": false,
+            "stdin_add_newline": true,
+            "strip_empty_ends": true
+          }
+        },
+        "rc": 0,
+        "stderr": "",
+        "stdout": "admin",
+        "stdout_lines": [
+          "admin"
+        ]
+      },
+      "task": {
+        "action": "command",
+        "any_errors_fatal": false,
+        "async": 0,
+        "async_val": 0,
+        "become": false,
+        "become_method": "sudo",
+        "check_mode": false,
+        "delay": 5,
+        "diff": false,
+        "name": "Vault command",
+        "poll": 15,
+        "throttle": 0
+      }
+    },
+    {
+      "failed": false,
+      "result": {
+        "ansible_facts": {
+          "geheim": "admin"
+        },
+        "changed": false
+      },
+      "task": {
+        "action": "set_fact",
+        "any_errors_fatal": false,
+        "async": 0,
+        "async_val": 0,
+        "become": false,
+        "become_method": "sudo",
+        "check_mode": false,
+        "delay": 5,
+        "diff": false,
+        "name": "Vault fact",
+        "poll": 15,
         "throttle": 0
       }
     },
@@ -302,13 +348,9 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "is_handler": true,
-        "listen": "test handlers",
         "name": "Test handler 1",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -348,13 +390,9 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "is_handler": true,
-        "listen": "test handlers",
         "name": "Test handler 2",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     },
@@ -391,22 +429,18 @@
         "check_mode": false,
         "delay": 5,
         "diff": false,
-        "finalized": true,
         "is_handler": true,
-        "listen": "test handlers",
         "name": "Test handler 3",
         "poll": 15,
-        "retries": 3,
-        "squashed": true,
         "throttle": 0
       }
     }
   ],
   "summary": {
-    "changed": 5,
+    "changed": 6,
     "failures": 0,
     "ignored": 1,
-    "ok": 8,
+    "ok": 10,
     "rescued": 0,
     "skipped": 1,
     "unreachable": 0
