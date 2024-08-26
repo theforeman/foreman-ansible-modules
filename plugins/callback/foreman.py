@@ -244,7 +244,7 @@ class CallbackModule(CallbackBase):
             self._display.warning(u'Unknown report_type: {rt}'.format(rt=report_type))
 
         if len(self.dir_store) > 0:
-            filename = u'{host}.json'.format(host=to_text(host))
+            filename = u'{host}-{dt}.json'.format(host=to_text(host), dt=data_type)
             filename = os.path.join(self.dir_store, filename)
             with open(filename, 'w') as f:
                 json.dump(data, f, indent=2, sort_keys=True)

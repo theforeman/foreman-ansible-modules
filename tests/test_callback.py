@@ -26,6 +26,7 @@ def run_playbook_callback(tmpdir, report_type):
     extra_env['FOREMAN_SSL_CERT'] = "/dev/zero"
     extra_env['FOREMAN_SSL_KEY'] = "/dev/zero"
     extra_env['FOREMAN_DIR_STORE'] = tmpdir.strpath
+    extra_env['ANSIBLE_VAULT_PASSWORD_FILE'] = os.path.join(os.getcwd(), 'tests', 'callback', 'vault-pass')
     playbook = os.path.join('..', 'callback', 'three_hosts')
     inventory = os.path.join(os.getcwd(), 'tests', 'callback', 'three_hosts')
     return run_playbook(playbook, inventory=inventory, extra_env=extra_env)
@@ -71,7 +72,10 @@ def run_callback(tmpdir, report_type, vcrmode):
             contents = re.sub(r", \\\"expand_argument_vars\\\": true", "", contents)
         real_contents = json.loads(contents)
         if report_type == "foreman":
-            real_contents['config_report']['metrics']['time']['total'] = 1
+            try:
+                real_contents['config_report']['metrics']['time']['total'] = 1
+            except KeyError:
+                pass
         else:
             real_contents['metrics']['time']['total'] = 1
             real_contents = drop_incompatible_items(real_contents)
