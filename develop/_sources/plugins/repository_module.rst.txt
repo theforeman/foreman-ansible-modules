@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -7,7 +6,7 @@
     :trim:
 
 .. meta::
-  :antsibull-docs: 2.12.0
+  :antsibull-docs: 2.13.1
 
 .. Anchors
 
@@ -153,7 +152,7 @@ Parameters
 
       Architecture of content in the repository
 
-      Set to \ :literal:`noarch`\  to disable the architecture restriction again.
+      Set to :literal:`noarch` to disable the architecture restriction again.
 
 
       .. raw:: html
@@ -320,7 +319,7 @@ Parameters
 
       comma separated list of architectures to be synced from deb-archive
 
-      only available for \ :emphasis:`content\_type=deb`\ 
+      only available for :emphasis:`content\_type=deb`
 
 
       .. raw:: html
@@ -356,7 +355,7 @@ Parameters
 
       comma separated list of repo components to be synced from deb-archive
 
-      only available for \ :emphasis:`content\_type=deb`\ 
+      only available for :emphasis:`content\_type=deb`
 
 
       .. raw:: html
@@ -394,7 +393,7 @@ Parameters
 
       only available on Orcharhino
 
-      only available for \ :emphasis:`content\_type=deb`\ 
+      only available for :emphasis:`content\_type=deb`
 
 
       .. raw:: html
@@ -430,7 +429,7 @@ Parameters
 
       comma separated list of releases to be synced from deb-archive
 
-      only available for \ :emphasis:`content\_type=deb`\ 
+      only available for :emphasis:`content\_type=deb`
 
 
       .. raw:: html
@@ -500,7 +499,7 @@ Parameters
 
       list of tags to sync for Container Image repository
 
-      only available for \ :emphasis:`content\_type=docker`\ 
+      only available for :emphasis:`content\_type=docker`
 
       Deprecated since Katello 4.4
 
@@ -538,7 +537,7 @@ Parameters
 
       name of the upstream docker repository
 
-      only available for \ :emphasis:`content\_type=docker`\ 
+      only available for :emphasis:`content\_type=docker`
 
 
       .. raw:: html
@@ -613,7 +612,7 @@ Parameters
 
       The download policy for sync from upstream.
 
-      The download policy \ :literal:`background`\  is deprecated and not available since Katello 4.3.
+      The download policy :literal:`background` is deprecated and not available since Katello 4.3.
 
 
       .. rst-class:: ansible-option-line
@@ -729,7 +728,7 @@ Parameters
 
       Name of the http proxy to use for content synching
 
-      Should be combined with \ :emphasis:`http\_proxy\_policy='use\_selected\_http\_proxy'`\ 
+      Should be combined with :emphasis:`http\_proxy\_policy='use\_selected\_http\_proxy'`
 
 
       .. raw:: html
@@ -846,7 +845,7 @@ Parameters
 
       This is deprecated with Katello 3.13
 
-      It has been superseeded by \ :emphasis:`http\_proxy\_policy`\ 
+      It has been superseeded by :emphasis:`http\_proxy\_policy`
 
 
       .. rst-class:: ansible-option-line
@@ -963,7 +962,7 @@ Parameters
 
       This is deprecated with Katello 4.3
 
-      It has been superseeded by \ :emphasis:`mirroring\_policy=mirror\_content\_only`\ 
+      It has been superseeded by :emphasis:`mirroring\_policy=mirror\_content\_only`
 
 
       .. rst-class:: ansible-option-line
@@ -1122,7 +1121,7 @@ Parameters
 
       A maximum of one OS version can be selected.
 
-      Set to \ :literal:`[]`\  to disable filtering again.
+      Set to :literal:`[]` to disable filtering again.
 
 
       .. rst-class:: ansible-option-line
@@ -1168,7 +1167,7 @@ Parameters
 
       Password of the user accessing the Foreman server.
 
-      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_PASSWORD`\  will be used instead.
+      If the value is not specified in the task, the value of environment variable :literal:`FOREMAN\_PASSWORD` will be used instead.
 
 
       .. raw:: html
@@ -1238,7 +1237,7 @@ Parameters
 
       URL of the Foreman server.
 
-      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_SERVER\_URL`\  will be used instead.
+      If the value is not specified in the task, the value of environment variable :literal:`FOREMAN\_SERVER\_URL` will be used instead.
 
 
       .. raw:: html
@@ -1376,7 +1375,7 @@ Parameters
 
       State of the entity
 
-      \ :literal:`present\_with\_defaults`\  will ensure the entity exists, but won't update existing ones
+      :literal:`present\_with\_defaults` will ensure the entity exists, but won't update existing ones
 
 
       .. rst-class:: ansible-option-line
@@ -1567,7 +1566,7 @@ Parameters
 
       Username accessing the Foreman server.
 
-      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_USERNAME`\  will be used instead.
+      If the value is not specified in the task, the value of environment variable :literal:`FOREMAN\_USERNAME` will be used instead.
 
 
       .. raw:: html
@@ -1603,7 +1602,7 @@ Parameters
 
       Whether or not to verify the TLS certificates of the Foreman server.
 
-      If the value is not specified in the task, the value of environment variable \ :literal:`FOREMAN\_VALIDATE\_CERTS`\  will be used instead.
+      If the value is not specified in the task, the value of environment variable :literal:`FOREMAN\_VALIDATE\_CERTS` will be used instead.
 
 
       .. rst-class:: ansible-option-line
@@ -1770,8 +1769,8 @@ Notes
 -----
 
 .. note::
-   - You can configure certain aspects of existing Red Hat Repositories (like \ :emphasis:`download\_policy`\ ) using this module, but you can't create (enable) or delete (disable) them.
-   - If you want to enable or disable Red Hat Repositories available through your subscription, please use the \ :ref:`theforeman.foreman.repository\_set <ansible_collections.theforeman.foreman.repository_set_module>`\  module instead.
+   - You can configure certain aspects of existing Red Hat Repositories (like :emphasis:`download\_policy`\ ) using this module, but you can't create (enable) or delete (disable) them.
+   - If you want to enable or disable Red Hat Repositories available through your subscription, please use the :ref:`theforeman.foreman.repository\_set <ansible_collections.theforeman.foreman.repository_set_module>` module instead.
 
 .. Seealso
 
@@ -1783,7 +1782,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
     - name: "Create repository"
       theforeman.foreman.repository:
         username: "admin"
@@ -1812,7 +1810,6 @@ Examples
         download_policy: on_demand
         mirror_on_sync: true
         gpg_key: RPM-GPG-KEY-my-product2
-
 
 
 
@@ -1875,7 +1872,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         </div>
 
-    
+
   * - .. raw:: html
 
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
@@ -1957,4 +1954,3 @@ Collection links
 
 
 .. Parsing errors
-
