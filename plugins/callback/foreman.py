@@ -118,6 +118,7 @@ except ImportError:
     HAS_REQUESTS = False
 
 from ansible.module_utils._text import to_text
+from ansible.module_utils.common.json import AnsibleJSONEncoder
 from ansible.module_utils.parsing.convert_bool import boolean as to_bool
 from ansible.plugins.callback import CallbackBase
 
@@ -170,6 +171,15 @@ def get_now():
     DateTime can easily parse it.
     """
     return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S+00:00")
+
+
+class AnsibleNoVaultJSONEncoder(AnsibleJSONEncoder):
+    def default(self, o):
+        if getattr(o, '__ENCRYPTED__', False):
+            value = 'ENCRYPTED_VAULT_VALUE_NOT_REPORTED'
+        else:
+            value = super(AnsibleNoVaultJSONEncoder, self).default(o)
+        return value
 
 
 class CallbackModule(CallbackBase):
@@ -243,14 +253,17 @@ class CallbackModule(CallbackBase):
         else:
             self._display.warning(u'Unknown report_type: {rt}'.format(rt=report_type))
 
+        json_data = json.dumps(data, indent=2, sort_keys=True, cls=AnsibleNoVaultJSONEncoder)
+
         if len(self.dir_store) > 0:
             filename = u'{host}-{dt}.json'.format(host=to_text(host), dt=data_type)
             filename = os.path.join(self.dir_store, filename)
             with open(filename, 'w') as f:
-                json.dump(data, f, indent=2, sort_keys=True)
+                f.write(json_data)
         else:
             try:
-                response = self.session.post(url=url, json=data)
+                headers = {'content-type': 'application/json'}
+                response = self.session.post(url=url, data=json_data, headers=headers)
                 response.raise_for_status()
             except requests.exceptions.RequestException as err:
                 self._display.warning(u'Sending data to Foreman at {url} failed for {host}: {err}'.format(
