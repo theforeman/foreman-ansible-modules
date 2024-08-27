@@ -146,16 +146,16 @@ REDHAT_UEP = '/etc/rhsm/ca/redhat-uep.pem'
 
 
 def fetch_portal(module, path, method, data=None, accept_header='application/json'):
-    if data is None:
-        data = {}
+    headers = {'accept': accept_header}
+    if data is not None:
+        data = json.dumps(data)
+        headers['content-type'] = 'application/json'
     url = module.params['portal'] + path
-    headers = {'accept': accept_header,
-               'content-type': 'application/json'}
     fetch_kwargs = {'timeout': 30}
     if os.path.exists(REDHAT_UEP):
         fetch_kwargs['ca_path'] = REDHAT_UEP
     try:
-        resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
+        resp, info = fetch_url(module, url, data, headers, method, **fetch_kwargs)
     except TypeError:
         # ca_path was added in Ansible 2.9 and backported to 2.8 in 2.8.6
         # older Ansible releases don't support that and we have to omit the CA cert here
@@ -163,7 +163,7 @@ def fetch_portal(module, path, method, data=None, accept_header='application/jso
             module.warn("Your Ansible version does not support providing custom CA certificates for HTTP requests. "
                         "Talking to the Red Hat portal might fail without validate_certs=False. Please update.")
         del fetch_kwargs['ca_path']
-        resp, info = fetch_url(module, url, json.dumps(data), headers, method, **fetch_kwargs)
+        resp, info = fetch_url(module, url, data, headers, method, **fetch_kwargs)
     if resp is None or info["status"] >= 400:
         try:
             error = json.loads(info['body'])['displayMessage']
