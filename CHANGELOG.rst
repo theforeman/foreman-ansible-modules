@@ -6,6 +6,22 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v4.2.0
+======
+
+Minor Changes
+-------------
+
+- content_export_* - document that ``chunk_size_gb`` parameter is only applicable for ``importable`` exports (https://github.com/theforeman/foreman-ansible-modules/issues/1738)
+- lifecycle_environments role - allow setting ``state`` for the LCE, allowing deletion of existing ones
+- location, locations role - add ``description`` parameter to set the description
+
+Bugfixes
+--------
+
+- callback plugin - correctly catch facts with vault data and replace it with ``ENCRYPTED_VAULT_VALUE_NOT_REPORTED``, preventing ``Object of type AnsibleVaultEncryptedUnicode is not JSON serializable`` errors
+- redhat_manifest - do not send empty JSON bodies in GET requests which confuse the portal sometimes (https://github.com/theforeman/foreman-ansible-modules/issues/1768)
+
 v4.1.0
 ======
 
