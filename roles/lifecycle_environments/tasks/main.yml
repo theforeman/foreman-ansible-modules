@@ -10,6 +10,6 @@
     description: "{{ item.description | default(omit) }}"
     prior: "{{ item.prior }}"
     label: "{{ item.label | default(omit) }}"
-    state: present
+    state: "{{ item.state | default('present') }}"
   with_items:
     - "{{ foreman_lifecycle_environments }}"
