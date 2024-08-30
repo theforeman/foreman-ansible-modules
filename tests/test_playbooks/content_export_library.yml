@@ -15,6 +15,9 @@
     - include_tasks: tasks/repository.yml
       vars:
         repository_state: present
+    - name: Wait for Repository metadata generation
+      ansible.builtin.pause:
+        seconds: 2
 
 - hosts: tests
   collections:
