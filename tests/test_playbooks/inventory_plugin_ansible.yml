@@ -1,5 +1,7 @@
 ---
 - hosts: container
+  vars_files:
+    - vars/inventory.yml
   vars:
     foreman_groups:
       - name: group_a
@@ -19,10 +21,6 @@
     postgres_version: "13"
     postgres_host: "postgresansible"
     postgres_port: 5433
-    inventory_use_container: true
-    inventory_foreman_url: http://127.0.0.1:{{ foreman_port }}
-    inventory_username: admin
-    inventory_password: changeme
   collections:
     - community.docker
     - theforeman.foreman
