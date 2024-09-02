@@ -27,7 +27,7 @@
     image: "{{ foreman_container }}:{{ foreman_version }}"
     command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
     env:
-      SEED_ADMIN_PASSWORD: changeme
+      SEED_ADMIN_PASSWORD: "{{ inventory_password }}"
       RAILS_ENV: production
       DATABASE_URL: postgres://foreman:foreman@{{ ansible_default_ipv4['address'] }}:{{ postgres_port }}/foreman?pool=5
     published_ports:
@@ -35,9 +35,9 @@
 
 - name: wait for foreman to start
   status_info:
-    username: admin
-    password: changeme
-    server_url: http://127.0.0.1:{{ foreman_port }}/
+    username: "{{ inventory_username }}"
+    password: "{{ inventory_password }}"
+    server_url: "{{ inventory_foreman_url }}"
   register: result
   until:
     - result is success
