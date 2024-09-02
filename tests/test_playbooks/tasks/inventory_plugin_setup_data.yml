@@ -1,9 +1,10 @@
 ---
 - name: create test hostgroups
   hostgroup:
-    username: admin
-    password: changeme
-    server_url: http://127.0.0.1:{{ foreman_port }}/
+    username: "{{ inventory_username }}"
+    password: "{{ inventory_password }}"
+    server_url: "{{ inventory_foreman_url }}"
+    validate_certs: false
     name: "{{ item.name }}"
     parent: "{{ item.parent | default(omit) }}"
     organizations:
@@ -14,9 +15,10 @@
 
 - name: create test hosts
   host:
-    username: admin
-    password: changeme
-    server_url: http://127.0.0.1:{{ foreman_port }}/
+    username: "{{ inventory_username }}"
+    password: "{{ inventory_password }}"
+    server_url: "{{ inventory_foreman_url }}"
+    validate_certs: false
     name: "{{ item.key }}"
     hostgroup: "{{ item.value }}"
     build: false
@@ -32,9 +34,9 @@
 
 - name: submit facts for hosts
   uri:
-    url: http://127.0.0.1:{{ foreman_port }}/api/hosts/facts
-    url_username: admin
-    url_password: changeme
+    url: "{{ inventory_foreman_url }}/api/hosts/facts"
+    url_username: "{{ inventory_username }}"
+    url_password: "{{ inventory_password }}"
     validate_certs: false
     method: POST
     body:
