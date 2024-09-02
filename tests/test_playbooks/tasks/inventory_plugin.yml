@@ -1,6 +1,8 @@
 ---
 - name: setup containers
   include_tasks: inventory_plugin_setup_container.yml
+  when:
+    - inventory_use_container | bool
 
 - name: setup data
   include_tasks: inventory_plugin_setup_data.yml
@@ -21,3 +23,5 @@
         - "{{ foreman_host }}"
         - "{{ foreman_host }}dynflow"
         - "{{ postgres_host }}"
+      when:
+        - inventory_use_container | bool
