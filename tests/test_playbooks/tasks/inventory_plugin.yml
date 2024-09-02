@@ -1,6 +1,9 @@
 ---
-- name: setup
-  include_tasks: inventory_plugin_setup.yml
+- name: setup containers
+  include_tasks: inventory_plugin_setup_container.yml
+
+- name: setup data
+  include_tasks: inventory_plugin_setup_data.yml
 
 - name: Refresh inventory to ensure new instances exist in inventory
   meta: refresh_inventory
