@@ -85,6 +85,9 @@ jobs:
       - name: Install required collections for ansible-base (2.10+)
         run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-3.12.0.tar.gz
         if: matrix.ansible != 'v2.9.17'
+      - name: Install required collections for ansible 2.9
+        run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-2.7.12.tar.gz
+        if: matrix.ansible == 'v2.9.17'
       - name: Run crud tests
         run: make test-crud
       - name: Run other tests
