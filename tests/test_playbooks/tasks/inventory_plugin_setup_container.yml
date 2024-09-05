@@ -1,16 +1,16 @@
 ---
 - name: fetch PostgreSQL container
-  docker_image:
+  community.docker.docker_image:
     name: docker.io/library/postgres:{{ postgres_version }}
     source: pull
 
 - name: fetch Foreman container
-  docker_image:
+  community.docker.docker_image:
     name: "{{ foreman_container }}:{{ foreman_version }}"
     source: pull
 
 - name: start PostgreSQL container
-  docker_container:
+  community.docker.docker_container:
     name: "{{ postgres_host }}"
     image: docker.io/library/postgres:{{ postgres_version }}
     env:
@@ -22,7 +22,7 @@
       - "0.0.0.0:{{ postgres_port }}:5432"
 
 - name: start Foreman container
-  docker_container:
+  community.docker.docker_container:
     name: "{{ foreman_host }}"
     image: "{{ foreman_container }}:{{ foreman_version }}"
     command: bash -c "bundle exec bin/rails db:create db:migrate && bundle exec bin/rails db:seed && bundle exec bin/rails server -b 0.0.0.0"
@@ -46,7 +46,7 @@
   delay: 10
 
 - name: start dynflow container
-  docker_container:
+  community.docker.docker_container:
     name: "{{ foreman_host }}dynflow"
     image: "{{ foreman_container }}:{{ foreman_version }}"
     command: bash -c "bundle exec rake dynflow:executor"

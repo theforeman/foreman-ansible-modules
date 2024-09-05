@@ -1,0 +1,9 @@
+---
+- name: remove containers
+  community.docker.docker_container:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ foreman_host }}"
+    - "{{ foreman_host }}dynflow"
+    - "{{ postgres_host }}"

@@ -16,12 +16,6 @@
       include_tasks: inventory_plugin_tests.yml
   always:
     - name: remove containers
-      docker_container:
-        name: "{{ item }}"
-        state: absent
-      loop:
-        - "{{ foreman_host }}"
-        - "{{ foreman_host }}dynflow"
-        - "{{ postgres_host }}"
+      include_tasks: inventory_plugin_teardown_container.yml
       when:
         - inventory_use_container | bool
