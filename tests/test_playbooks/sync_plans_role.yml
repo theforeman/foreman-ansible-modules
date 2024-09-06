@@ -11,20 +11,17 @@
       vars:
         organization_name: "Test Organization"
         organization_state: "present"
-  roles:
-    - role: repositories
+    - name: create products and repos
+      include_role:
+        name: repositories
       vars:
         foreman_organization: "Test Organization"
         foreman_products:
-          - name: Red Hat Enterprise Linux Server
-            repository_sets:
-              - name: Red Hat Satellite Tools 6.7 (for RHEL 7 Server) (RPMs)
-                basearch: x86_64
-              - name: Red Hat Enterprise Linux 7 Server - Extras (RPMs)
-                basearch: x86_64
-          - name: Red Hat Enterprise Linux for x86_64
-            repository_sets:
-              - name: Red Hat Satellite Tools 6.7 for RHEL 8 x86_64 (RPMs)
+          - name: CentOS Stream 9
+            repositories:
+              - name: BaseOS x86_64
+                content_type: yum
+                url: https://mirror.stream.centos.org/9-stream/BaseOS/x86_64/os/
 
 - hosts: tests
   collections:
@@ -41,5 +38,17 @@
             interval: weekly
             sync_date: 2020-11-19 00:00:00 UTC
             products:
-              - Red Hat Enterprise Linux Server
-              - Red Hat Enterprise Linux for x86_64
+              - CentOS Stream 9
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: delete test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "absent"
