@@ -35,7 +35,7 @@
         return_length: 1
     - include_tasks: tasks/search_facts.yml
       vars:
-        resource: subnets
+        resource: http_proxies
         return_length: 0
     - include_tasks: tasks/search_facts.yml
       vars:
@@ -74,7 +74,7 @@
       ignore_errors: true
     - fail:
         msg: "{{ result.msg }} should have contained all available resources"
-      when: "'config_groups' not in result.msg"
+      when: "'hostgroups' not in result.msg"
 
 - hosts: localhost
   collections:
