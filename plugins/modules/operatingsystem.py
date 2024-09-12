@@ -221,7 +221,7 @@ def main():
 
         if not entity and (module.state == 'present' or module.state == 'present_with_defaults'):
             # we actually attempt to create a new one...
-            for param_name in ['major', 'os_family', 'password_hash']:
+            for param_name in ['major', 'os_family']:
                 if param_name not in module_params.keys():
                     module.fail_json(msg='{0} is a required parameter to create a new operating system.'.format(param_name))
 
