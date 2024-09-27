@@ -5,6 +5,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
     - name: ensure test organization
       include_tasks: tasks/organization.yml
@@ -32,8 +33,7 @@
         compute_resource_locations:
           - Test Location
         compute_resource_provider: 'libvirt'
-        compute_resource_provider_params:
-          url: qemu:///system
+        compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
         compute_resource_state: present
 
 - hosts: tests
