@@ -99,6 +99,22 @@
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_state: absent
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_state: absent
+        hostgroup_name: "{{ item }}"
+      loop:
+        - "Nested New host group"
+        - "New host group/Nested New host group 1"
+        - "New host group/Nested New host group 10"
+        - "New host group/Nested New host group 2"
+        - "New host group/Nested New host group/New host group with nested parent"
+        - "New host group/Whatever Child"
+        - "New host group"
+        - "New host group with nested parent"
+        - "New host group with puppet classes"
+        - "Super New host group"
+        - "Super New host group 2"
 
 - hosts: tests
   collections:
@@ -575,6 +591,22 @@
     - vars/server.yml
     - vars/hostgroup.yml
   tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_state: absent
+        hostgroup_name: "{{ item }}"
+      loop:
+        - "Nested New host group"
+        - "New host group/Nested New host group 1"
+        - "New host group/Nested New host group 10"
+        - "New host group/Nested New host group 2"
+        - "New host group/Nested New host group/New host group with nested parent"
+        - "New host group/Whatever Child"
+        - "New host group"
+        - "New host group with nested parent"
+        - "New host group with puppet classes"
+        - "Super New host group"
+        - "Super New host group 2"
     - include_tasks: tasks/config_group.yml
       vars:
         config_group_name: "{{ item }}"
