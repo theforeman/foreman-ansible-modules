@@ -56,6 +56,7 @@ parameter_foreman_spec = dict(
     name=dict(required=True),
     value=dict(type='raw', required=True),
     parameter_type=dict(default='string', choices=['string', 'boolean', 'integer', 'real', 'array', 'hash', 'yaml', 'json']),
+    hidden_value=dict(type='bool'),
 )
 
 parameter_ansible_spec = {k: v for (k, v) in parameter_foreman_spec.items() if k != 'id'}
@@ -265,6 +266,8 @@ class NestedParametersMixin(ParametersMixinBase):
                     desired_parameter['value'] = parameter_value_to_str(desired_parameter['value'], desired_parameter['parameter_type'])
                     current_parameter = current_parameters.pop(name, None)
                     if current_parameter:
+                        if 'hidden_value?' in current_parameter:
+                            current_parameter['hidden_value'] = current_parameter.pop('hidden_value?')
                         if 'parameter_type' not in current_parameter:
                             current_parameter['parameter_type'] = 'string'
                         current_parameter['value'] = parameter_value_to_str(current_parameter['value'], current_parameter['parameter_type'])
@@ -1090,6 +1093,15 @@ class ForemanAnsibleModule(AnsibleModule):
             # however this is not set for flattened entries and setting it
             # confuses _flatten_entity
             elif foreman_type == 'list' and value and isinstance(value[0], dict):
+                # special handling for parameters created by ParametersMixin
+                # they are defined as a list of dict, but the dicts should be really handled like
+                # entities, which means we only want to update the user-provided details
+                if key.endswith('_parameters_attributes'):
+                    for new_param in new_value:
+                        old_param = next((x for x in old_value if x['name'] == new_param['name']), None)
+                        if old_param is not None:
+                            for pop_key in set(old_param.keys()) - set(new_param.keys()):
+                                old_param.pop(pop_key)
                 if 'name' in value[0]:
                     sort_key = 'name'
                 else:
@@ -1806,6 +1818,8 @@ def parameter_value_to_str(value, parameter_type):
 def parameters_list_to_str_list(parameters):
     filtered_params = []
     for param in parameters:
+        if 'hidden_value?' in param:
+            param['hidden_value'] = param.pop('hidden_value?')
         new_param = {k: v for (k, v) in param.items() if k in parameter_ansible_spec.keys()}
         new_param['value'] = parameter_value_to_str(new_param['value'], new_param.get('parameter_type', 'string'))
         filtered_params.append(new_param)
