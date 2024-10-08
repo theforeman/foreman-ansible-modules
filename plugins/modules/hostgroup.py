@@ -183,7 +183,7 @@ def main():
 
     module_params = module.foreman_params
     with module.api_connection():
-        old_entity = module.lookup_entity('entity')
+        old_entity = module.lookup_entity('entity', params={'show_hidden_parameters': True})
         if not module.desired_absent:
             if 'organization' in module_params:
                 if 'organizations' in module_params:
