@@ -214,7 +214,7 @@ class ParametersMixin(ParametersMixinBase):
         self.validate_parameters()
 
     def run(self, **kwargs):
-        entity = self.lookup_entity('entity')
+        entity = self.lookup_entity('entity', params={'show_hidden_parameters': True})
         if not self.desired_absent:
             if entity and 'parameters' in entity:
                 entity['parameters'] = parameters_list_to_str_list(entity['parameters'])
