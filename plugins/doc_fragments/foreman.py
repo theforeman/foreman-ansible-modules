@@ -91,6 +91,11 @@ options:
           - 'yaml'
           - 'json'
         type: str
+      hidden_value:
+        description:
+          - Should the value be hidden
+        required: false
+        type: bool
 '''
 
     OS_FAMILY = '''

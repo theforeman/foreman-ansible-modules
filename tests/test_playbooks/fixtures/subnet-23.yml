@@ -14,12 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.1.0","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.13.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '71'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -33,13 +35,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.0
+      - 3.13.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -50,8 +50,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '62'
     status:
       code: 200
       message: OK
@@ -70,25 +68,19 @@ interactions:
     uri: https://foreman.example.org/api/subnets?search=name%3D%22Test+Subnet+2%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 3,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Subnet 2\\\"\",\n  \"sort\":\
-        \ {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\"\
-        :\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\"\
-        ,\"priority\":null,\"vlanid\":42,\"mtu\":9000,\"gateway\":\"192.168.200.1\"\
-        ,\"dns_primary\":\"1.1.1.1\",\"dns_secondary\":\"1.1.1.2\",\"from\":\"192.168.200.10\"\
-        ,\"to\":\"192.168.200.20\",\"created_at\":\"2020-09-03 06:57:24 UTC\",\"updated_at\"\
-        :\"2020-09-03 06:57:24 UTC\",\"ipam\":\"Internal DB\",\"boot_mode\":\"Static\"\
-        ,\"id\":34,\"name\":\"Test Subnet 2\",\"description\":\"My subnet description\"\
-        ,\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\":null,\"\
-        tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\":null,\"\
-        externalipam_id\":null,\"externalipam_name\":null,\"dns_id\":null,\"template_id\"\
-        :null,\"template_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\":null,\"\
-        externalipam\":null,\"dns\":null,\"template\":null}]\n}\n"
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Subnet 2\\\"\",\n  \"sort\": {\n
+        \   \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"network\":\"192.168.200.0\",\"network_type\":\"IPv4\",\"cidr\":27,\"mask\":\"255.255.255.224\",\"priority\":null,\"vlanid\":42,\"mtu\":9000,\"gateway\":\"192.168.200.1\",\"dns_primary\":\"1.1.1.1\",\"dns_secondary\":\"1.1.1.2\",\"from\":\"192.168.200.10\",\"to\":\"192.168.200.20\",\"created_at\":\"2024-10-08
+        14:38:54 UTC\",\"updated_at\":\"2024-10-08 14:38:54 UTC\",\"ipam\":\"Internal
+        DB\",\"boot_mode\":\"Static\",\"nic_delay\":null,\"id\":14,\"name\":\"Test
+        Subnet 2\",\"description\":\"My subnet description\",\"network_address\":\"192.168.200.0/27\",\"dhcp_id\":null,\"dhcp_name\":null,\"tftp_id\":null,\"tftp_name\":null,\"httpboot_id\":null,\"httpboot_name\":null,\"externalipam_id\":null,\"externalipam_name\":null,\"dns_id\":null,\"template_id\":null,\"template_name\":null,\"bmc_id\":null,\"bmc_name\":null,\"dhcp\":null,\"tftp\":null,\"httpboot\":null,\"externalipam\":null,\"dns\":null,\"template\":null,\"bmc\":null}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '1001'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -102,13 +94,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.0
+      - 3.13.0-develop
       Keep-Alive:
       - timeout=15, max=99
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -119,8 +109,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '943'
     status:
       code: 200
       message: OK
@@ -138,18 +126,20 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/subnets/34
+    uri: https://foreman.example.org/api/subnets/14
   response:
     body:
-      string: '{"id":34,"network":"192.168.200.0","mask":"255.255.255.224","priority":null,"name":"Test
-        Subnet 2","vlanid":42,"created_at":"2020-09-03T06:57:24.893Z","updated_at":"2020-09-03T06:57:24.893Z","dhcp_id":null,"tftp_id":null,"gateway":"192.168.200.1","dns_primary":"1.1.1.1","dns_secondary":"1.1.1.2","from":"192.168.200.10","to":"192.168.200.20","dns_id":null,"boot_mode":"Static","ipam":"Internal
-        DB","description":"My subnet description","mtu":9000,"template_id":null,"httpboot_id":null,"nic_delay":null,"externalipam_id":null,"externalipam_group":null,"to_label":"Test
+      string: '{"id":14,"network":"192.168.200.0","mask":"255.255.255.224","priority":null,"name":"Test
+        Subnet 2","vlanid":42,"created_at":"2024-10-08T14:38:54.672Z","updated_at":"2024-10-08T14:38:54.672Z","dhcp_id":null,"tftp_id":null,"gateway":"192.168.200.1","dns_primary":"1.1.1.1","dns_secondary":"1.1.1.2","from":"192.168.200.10","to":"192.168.200.20","dns_id":null,"boot_mode":"Static","ipam":"Internal
+        DB","description":"My subnet description","mtu":9000,"template_id":null,"httpboot_id":null,"nic_delay":null,"externalipam_id":null,"externalipam_group":null,"bmc_id":null,"to_label":"Test
         Subnet 2 (192.168.200.0/27)","type":"Subnet::Ipv4"}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
+      Content-Length:
+      - '634'
       Content-Security-Policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -163,13 +153,11 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.1.0
+      - 3.13.0-develop
       Keep-Alive:
       - timeout=15, max=98
       Strict-Transport-Security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -180,8 +168,6 @@ interactions:
       - none
       X-XSS-Protection:
       - 1; mode=block
-      content-length:
-      - '620'
     status:
       code: 200
       message: OK
