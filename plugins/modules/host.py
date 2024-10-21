@@ -485,7 +485,7 @@ def main():
             module.foreman_params['owner_type'] = 'Usergroup'
 
     with module.api_connection():
-        entity = module.lookup_entity('entity')
+        entity = module.lookup_entity('entity', params={'show_hidden_parameters': True})
 
         if not module.desired_absent:
             module.auto_lookup_entities()
