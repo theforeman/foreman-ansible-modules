@@ -17,6 +17,10 @@ The main data structure for this role is the list of `foreman_lifecycle_environm
   the environments are listed in the order the path would exist. It can't be
   changed after the lifecycle environment has been created.
 
+The following fields are required for a lifecycle environment but have defaults which make them optional for this role:
+
+- `organization`: Organization to create thw lifecycle environment for. Defaults to `foreman_organization` variable.
+
 The following fields are optional and will be omitted by default:
 
 - `description`: Description of the lifecycle environment
