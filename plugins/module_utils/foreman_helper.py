@@ -13,7 +13,6 @@ import json
 import os
 import operator
 import re
-import time
 import traceback
 
 from contextlib import contextmanager
@@ -397,7 +396,6 @@ class ForemanAnsibleModule(AnsibleModule):
             self.fail_json(msg="The server URL needs to be either HTTPS or HTTP!")
 
         self.task_timeout = 60
-        self.task_poll = 4
 
         self._thin_default = False
         self.state = 'undefined'
@@ -608,12 +606,12 @@ class ForemanAnsibleModule(AnsibleModule):
         that are required by the module.
         """
 
-        self.foremanapi = apypie.Api(
+        self.foremanapi = apypie.ForemanApi(
             uri=self._foremanapi_server_url,
             username=to_bytes(self._foremanapi_username),
             password=to_bytes(self._foremanapi_password),
-            api_version=2,
             verify_ssl=self._foremanapi_validate_certs,
+            task_timeout=self.task_timeout,
         )
 
         _status = self.status()
@@ -651,18 +649,6 @@ class ForemanAnsibleModule(AnsibleModule):
 
         return self.foremanapi.resource('home').call('status')
 
-    def _resource(self, resource):
-        if resource not in self.foremanapi.resources:
-            raise Exception("The server doesn't know about {0}, is the right plugin installed?".format(resource))
-        return self.foremanapi.resource(resource)
-
-    def _resource_call(self, resource, *args, **kwargs):
-        return self._resource(resource).call(*args, **kwargs)
-
-    def _resource_prepare_params(self, resource, action, params):
-        api_action = self._resource(resource).action(action)
-        return api_action.prepare_params(params)
-
     @_exception2fail_json(msg='Failed to show resource: {0}')
     def show_resource(self, resource, resource_id, params=None):
         """
@@ -676,16 +662,7 @@ class ForemanAnsibleModule(AnsibleModule):
         :type params: Union[dict,None], optional
         """
 
-        if params is None:
-            params = {}
-        else:
-            params = params.copy()
-
-        params['id'] = resource_id
-
-        params = self._resource_prepare_params(resource, 'show', params)
-
-        return self._resource_call(resource, 'show', params)
+        return self.foremanapi.show(resource, resource_id, params)
 
     @_exception2fail_json(msg='Failed to list resource: {0}')
     def list_resource(self, resource, search=None, params=None):
@@ -700,18 +677,7 @@ class ForemanAnsibleModule(AnsibleModule):
         :type params: Union[dict,None], optional
         """
 
-        if params is None:
-            params = {}
-        else:
-            params = params.copy()
-
-        if search is not None:
-            params['search'] = search
-        params['per_page'] = PER_PAGE
-
-        params = self._resource_prepare_params(resource, 'index', params)
-
-        return self._resource_call(resource, 'index', params)['results']
+        return self.foremanapi.list(resource, search, params)
 
     def find_resource(self, resource, search, params=None, failsafe=False, thin=None):
         list_params = {}
@@ -1024,9 +990,7 @@ class ForemanAnsibleModule(AnsibleModule):
         :return: The payload as it can be submitted to the API
         :rtype: dict
         """
-        filtered_payload = self._resource_prepare_params(resource, action, payload)
-        # On Python 2 dict.keys() is just a list, but we need a set here.
-        unsupported_parameters = set(payload.keys()) - set(_recursive_dict_keys(filtered_payload))
+        filtered_payload, unsupported_parameters = self.foremanapi.validate_payload(resource, action, payload)
         if unsupported_parameters:
             warn_msg = "The following parameters are not supported by your server when performing {0} on {1}: {2}. They were ignored."
             self.warn(warn_msg.format(action, resource, unsupported_parameters))
@@ -1050,14 +1014,12 @@ class ForemanAnsibleModule(AnsibleModule):
         """
         payload = _flatten_entity(desired_entity, foreman_spec)
         self._validate_supported_payload(resource, 'create', payload)
+        self.set_changed()
         if not self.check_mode:
-            if params:
-                payload.update(params)
-            return self.resource_action(resource, 'create', payload)
+            return self.foremanapi.create(resource, payload, params)
         else:
             fake_entity = desired_entity.copy()
             fake_entity['id'] = -1
-            self.set_changed()
             return fake_entity
 
     def _update_entity(self, resource, desired_entity, current_entity, params, foreman_spec):
@@ -1111,16 +1073,14 @@ class ForemanAnsibleModule(AnsibleModule):
             if new_value != old_value:
                 payload[key] = value
         if self._validate_supported_payload(resource, 'update', payload):
+            self.set_changed()
             payload['id'] = current_flat_entity['id']
             if not self.check_mode:
-                if params:
-                    payload.update(params)
-                return self.resource_action(resource, 'update', payload)
+                return self.foremanapi.update(resource, payload, params)
             else:
                 # In check_mode we emulate the server updating the entity
                 fake_entity = current_flat_entity.copy()
                 fake_entity.update(payload)
-                self.set_changed()
                 return fake_entity
         else:
             # Nothing needs changing
@@ -1183,29 +1143,18 @@ class ForemanAnsibleModule(AnsibleModule):
         :return: The new current state of the entity
         :rtype: Union[dict,None]
         """
-        payload = {'id': current_entity['id']}
-        if params:
-            payload.update(params)
-        entity = self.resource_action(resource, 'destroy', payload)
-
-        # this is a workaround for https://projects.theforeman.org/issues/26937
-        if entity and isinstance(entity, dict) and 'error' in entity and 'message' in entity['error']:
-            self.fail_json(msg=entity['error']['message'])
-
-        return None
+        self.set_changed()
+        if not self.check_mode:
+            return self.foremanapi.delete(resource, current_entity, params)
+        else:
+            return None
 
     def resource_action(self, resource, action, params, options=None, data=None, files=None,
                         ignore_check_mode=False, record_change=True, ignore_task_errors=False):
-        resource_payload = self._resource_prepare_params(resource, action, params)
-        if options is None:
-            options = {}
         try:
             result = None
             if ignore_check_mode or not self.check_mode:
-                result = self._resource_call(resource, action, resource_payload, options=options, data=data, files=files)
-                is_foreman_task = isinstance(result, dict) and 'action' in result and 'state' in result and 'started_at' in result
-                if is_foreman_task:
-                    result = self.wait_for_task(result, ignore_errors=ignore_task_errors)
+                result = self.foremanapi.resource_action(resource, action, params, options, data, files, ignore_task_errors)
         except Exception as e:
             msg = 'Error while performing {0} on {1}: {2}'.format(
                 action, resource, to_native(e))
@@ -1216,18 +1165,7 @@ class ForemanAnsibleModule(AnsibleModule):
         return result
 
     def wait_for_task(self, task, ignore_errors=False):
-        duration = self.task_timeout
-        while task['state'] not in ['paused', 'stopped']:
-            duration -= self.task_poll
-            if duration <= 0:
-                self.fail_json(msg="Timeout waiting for Task {0}".format(task['id']))
-            time.sleep(self.task_poll)
-
-            resource_payload = self._resource_prepare_params('foreman_tasks', 'show', {'id': task['id']})
-            task = self._resource_call('foreman_tasks', 'show', resource_payload)
-        if not ignore_errors and task['result'] != 'success':
-            self.fail_json(msg='Task {0}({1}) did not succeed. Task information: {2}'.format(task['action'], task['id'], task['humanized']['errors']))
-        return task
+        return self.foremanapi.wait_for_task(task, ignore_errors)
 
     def fail_from_exception(self, exc, msg):
         fail = {'msg': msg}
@@ -1757,15 +1695,6 @@ def _flatten_entity(entity, foreman_spec):
             else:
                 result[flat_name] = value
     return result
-
-
-def _recursive_dict_keys(a_dict):
-    """Find all keys of a nested dictionary"""
-    keys = set(a_dict.keys())
-    for _k, v in a_dict.items():
-        if isinstance(v, dict):
-            keys.update(_recursive_dict_keys(v))
-    return keys
 
 
 def _recursive_dict_without_none(a_dict, exclude=None):
