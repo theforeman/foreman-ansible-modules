@@ -28,8 +28,6 @@ description:
   - Create, update, and delete Subnets
 author:
   - "Baptiste Agasse (@bagasse)"
-requirements:
-  - ipaddress
 options:
   name:
     description: Subnet name
@@ -211,17 +209,10 @@ entity:
       elements: dict
 '''
 
-import traceback
+import ipaddress
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
-    ForemanTaxonomicEntityAnsibleModule, ParametersMixin, missing_required_lib
+    ForemanTaxonomicEntityAnsibleModule, ParametersMixin
 )
-try:
-    import ipaddress
-    HAS_IPADDRESS = True
-    IPADDRESS_IMP_ERR = None
-except ImportError:
-    HAS_IPADDRESS = False
-    IPADDRESS_IMP_ERR = traceback.format_exc()
 
 
 class ForemanSubnetModule(ParametersMixin, ForemanTaxonomicEntityAnsibleModule):
@@ -266,9 +257,6 @@ def main():
             ('remote_execution', ['remote_execution_proxies']),
         ],
     )
-
-    if not HAS_IPADDRESS:
-        module.fail_json(msg=missing_required_lib("ipaddress"), exception=IPADDRESS_IMP_ERR)
 
     module_params = module.foreman_params
 

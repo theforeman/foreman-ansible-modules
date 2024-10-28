@@ -22,7 +22,8 @@ You can find the list of maintained Ansible versions [here](https://docs.ansible
 
 ### Supported Python Versions
 
-Ansible only supports Python 2.7 and 3.5 (and higher). These are also the only Python versions we develop and test the modules against.
+The supported Python versions are aligned with the currently supported Python versions by maintained Ansible releases.
+You can find the list of maintained Ansible releases and their supported Python versions versions [here](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html).
 
 ### Known issues
 
@@ -125,7 +126,6 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 
 * [`PyYAML`](https://pypi.org/project/PyYAML/)
 * [`requests`](https://pypi.org/project/requests/)
-* [`ipaddress`](https://pypi.org/project/ipaddress/) for the `subnet` module on Python 2.7
 * `rpm` for the RPM support in the `content_upload` module
 * `debian` for the DEB support in the `content_upload` module
 
