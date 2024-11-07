@@ -29,9 +29,7 @@ jobs:
           - devel
         include:
           - python: "3.8"
-            ansible: "v2.9.17"
-          - python: "3.8"
-            ansible: "stable-2.10"
+            ansible: "v2.10.4"
           - python: "3.6"
             ansible: "stable-2.11"
           - python: "3.7"
@@ -69,19 +67,19 @@ jobs:
         if: matrix.container == null
       - name: Install Ansible
         run: pip install --upgrade https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
-      - name: Ensure Jinja version is old enough for Ansible 2.9
+      - name: Ensure Jinja version is old enough for Ansible 2.10
         run: pip install --upgrade 'Jinja2<3.1'
-        if: matrix.ansible == 'v2.9.17'
+        if: matrix.ansible == 'v2.10.4'
       - name: Install dependencies
         run: make test-setup
       - name: prepare a redhat-uep.pem, even if we run on Ubuntu
         run: sudo mkdir -p /etc/rhsm/ca/ && sudo curl -o /etc/rhsm/ca/redhat-uep.pem https://ftp.redhat.com/redhat/convert2rhel/redhat-uep.pem
-      - name: Install required collections for ansible-base (2.10+)
+      - name: Install required collections
         run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-3.12.0.tar.gz
-        if: matrix.ansible != 'v2.9.17'
-      - name: Install required collections for ansible 2.9
+        if: matrix.ansible != 'v2.10.4'
+      - name: Install required collections for ansible 2.10
         run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-2.7.12.tar.gz
-        if: matrix.ansible == 'v2.9.17'
+        if: matrix.ansible == 'v2.10.4'
       - name: Run crud tests
         run: make test-crud
       - name: Run other tests
@@ -90,7 +88,7 @@ jobs:
         run: make dist-test
       - name: Run sanity tests
         run: make SANITY_OPTS="--docker" sanity
-        if: matrix.ansible != 'v2.9.17' && matrix.ansible != 'stable-2.10' && matrix.ansible != 'stable-2.11'
+        if: matrix.ansible != 'v2.10.4' && matrix.ansible != 'stable-2.11'
 
   checkmode:
     runs-on: ubuntu-latest

@@ -17,7 +17,7 @@ We actively test the modules against the latest stable Foreman release and the m
 
 ### Supported Ansible Versions
 
-The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.9+).
+The supported Ansible versions are aligned with currently maintained Ansible versions that support Collections (2.10+).
 You can find the list of maintained Ansible versions [here](https://docs.ansible.com/ansible/devel/reference_appendices/release_and_maintenance.html).
 
 ### Supported Python Versions
@@ -108,7 +108,7 @@ And install all specified requirements with `ansible-galaxy install -r requireme
 
 ### Building and Installing the Collection Locally
 
-For all currently supported versions of Ansible (i.e. Ansible >= 2.9, and particularly Ansible < 2.10 where the above approach is not yet supported), you can build the collection locally:
+For all currently supported versions of Ansible, you can build the collection locally:
 
 ```console
 $ make dist
