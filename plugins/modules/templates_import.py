@@ -90,6 +90,23 @@ options:
       - The directory within Git repo containing the templates.
     required: false
     type: str
+  http_proxy_policy:
+    description:
+      - HTTP proxy policy for template sync.
+      - You can choose no HTTP proxy, global HTTP proxy, or a custom HTTP proxy (C(selected))
+      - If you choose 'selected', provide the C(http_proxy) parameter.
+    required: false
+    type: str
+    choices:
+      - none
+      - global
+      - selected
+  http_proxy:
+    description:
+      - HTTP proxy to use for template sync.
+      - Use this parameter together with C(http_proxy_policy=selected)
+    required: false
+    type: str
 attributes:
   check_mode:
     support: none
@@ -156,9 +173,12 @@ def main():
             force=dict(type='bool'),
             lock=dict(type='bool'),
             negate=dict(type='bool'),
+            http_proxy_policy=dict(choices=['global', 'none', 'selected']),
+            http_proxy=dict(type='entity'),
         ),
         supports_check_mode=False,
         required_plugins=[('templates', ['*'])],
+        required_if=[('http_proxy_policy', 'selected', ['http_proxy'])],
     )
 
     with module.api_connection():
