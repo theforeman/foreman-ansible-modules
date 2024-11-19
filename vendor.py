@@ -56,6 +56,8 @@ with fileinput.input() as f:
                 typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:] if not element.strip(',') == 'TYPE_CHECKING'])
             if ('pass' in line or 'TYPE_CHECKING =' in line or ('from apypie' in line and 'if TYPE_CHECKING:' in buffer_lines)) and ('from typing' in buffer_lines[1] or 'from apypie' in buffer_lines[1]):
                 buffer_lines.clear()
+        elif "from typing" in line:
+            typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:] if not element.strip(',') == 'TYPE_CHECKING'])
         else:
             # inject a blank line before class or import statements
             if (line.startswith('class ') or line.startswith('import ') or line.startswith('def ')) and not output_lines[-1].startswith('import '):
