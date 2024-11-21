@@ -1,10 +1,7 @@
 # pylint: disable=ansible-format-automatic-specification,raise-missing-from
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
-try:
-    from typing import Any, Iterable, List, Optional, Set, Tuple, cast  # pylint: disable=unused-import  # noqa: F401
-except ImportError:
-    pass
+from typing import Any, Iterable, List, Optional, Set, Tuple, cast  # pylint: disable=unused-import  # noqa: F401
 
 
 """
