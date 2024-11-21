@@ -23,7 +23,7 @@ PYTEST = $(PYTEST_COMMAND) -n 4 --forked
 PYTEST_ADDOPTS ?= -vv
 export PYTEST_ADDOPTS
 
-APIPIE_VERSION ?= v0.4.0
+APIPIE_VERSION ?= v0.5.0
 
 default: help
 help:
