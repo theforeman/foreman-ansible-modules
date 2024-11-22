@@ -6,6 +6,20 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.0.0
+======
+
+Minor Changes
+-------------
+
+- host, hostgroup, domain, operatingsystem, subnet, organization, location - support setting hidden parameters
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Drop support for Ansible 2.9.
+- Drop support for Python 2.7 and 3.5.
+
 v4.2.0
 ======
 
