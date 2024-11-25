@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import fileinput
 import os.path
 
@@ -53,8 +51,10 @@ with fileinput.input() as f:
         elif line in ['try:', 'if TYPE_CHECKING:'] or buffer_lines:
             buffer_lines.append(line)
             if "from typing" in line:
-                typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:] if not element.strip(',') == 'TYPE_CHECKING'])
-            if ('pass' in line or 'TYPE_CHECKING =' in line or ('from apypie' in line and 'if TYPE_CHECKING:' in buffer_lines)) and ('from typing' in buffer_lines[1] or 'from apypie' in buffer_lines[1]):
+                typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:]
+                                       if not element.strip(',') == 'TYPE_CHECKING'])
+            if (('pass' in line or 'TYPE_CHECKING =' in line or ('from apypie' in line and 'if TYPE_CHECKING:' in buffer_lines)) and
+               ('from typing' in buffer_lines[1] or 'from apypie' in buffer_lines[1])):
                 buffer_lines.clear()
         elif "from typing" in line:
             typing_imports.update([element.strip(',') for element in line.split('#')[0].strip().split(' ')[3:] if not element.strip(',') == 'TYPE_CHECKING'])

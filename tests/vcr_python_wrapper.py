@@ -27,7 +27,8 @@ def body_json_l2_matcher(r1, r2):
         body1 = json.loads(r1.body.decode('utf8'))
         body2 = json.loads(r2.body.decode('utf8'))
         if 'common_parameter' in body1 and 'common_parameter' in body2:
-            if body1['common_parameter'].get('parameter_type') == body2['common_parameter'].get('parameter_type') in ['hash', 'json', 'yaml']:
+            if (body1['common_parameter'].get('parameter_type') == body2['common_parameter'].get('parameter_type')
+                    and body1['common_parameter'].get('parameter_type') in ['hash', 'json', 'yaml']):
                 body1['common_parameter']['value'] = json.loads(body1['common_parameter'].get('value'))
                 body2['common_parameter']['value'] = json.loads(body2['common_parameter'].get('value'))
         assert body1 == body2, "{} != {}".format(body1, body2)
@@ -39,7 +40,7 @@ def body_json_l2_matcher(r1, r2):
         body2 = sorted(r2.body.replace(b'~', b'%7E').split(b'&'))
         assert len(body1) == len(body2), "the body lengths don't match"
         for i, v in enumerate(body1):
-            assert body1[i] == body2[i], "body contents at position {} dont't match: '{}' vs '{}'".format(i, body1[i], body2[i])
+            assert body1[i] == body2[i], "body contents at position {} dont't match: '{}' vs '{}'".format(i, body1[i], body2[i])  # pylint:disable=all
     else:
         assert r1.body == r2.body, "{} != {}".format(r1.body, r2.body)
 
