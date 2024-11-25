@@ -12,6 +12,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  sanity:
+    name: Sanity (Ⓐ${{ matrix.ansible }})
+    strategy:
+      matrix:
+        ansible:
+          - stable-2.15
+          - stable-2.16
+          - stable-2.17
+          - stable-2.18
+          - devel
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Run sanity tests inside a Docker container.
+      # The docker container has all the pinned dependencies that are
+      # required and all Python versions Ansible supports.
+      - name: Perform sanity testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: sanity
+          pull-request-change-detection: false
+
   build:
     runs-on: ubuntu-20.04
     container: ${{ matrix.container }}
@@ -86,9 +110,6 @@ jobs:
         run: make test-other
       - name: Run dist tests
         run: make dist-test
-      - name: Run sanity tests
-        run: make SANITY_OPTS="--docker" sanity
-        if: matrix.ansible != 'v2.10.4' && matrix.ansible != 'stable-2.11'
 
   checkmode:
     runs-on: ubuntu-latest
