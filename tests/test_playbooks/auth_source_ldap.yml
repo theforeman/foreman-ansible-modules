@@ -31,7 +31,8 @@
     - include_tasks: tasks/auth_source_ldap.yml
       vars:
         auth_source_ldap_state: present
-        auth_source_ldap_account_password: changeme
+        # we only set this once at creation, as otherwise idempotency tests would fail
+        auth_source_ldap_account_password: "{{ default_auth_source_ldap_account_password }}"
         expected_change: true
     - include_tasks: tasks/auth_source_ldap.yml
       vars:
