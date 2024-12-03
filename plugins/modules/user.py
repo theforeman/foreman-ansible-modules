@@ -75,7 +75,7 @@ options:
     type: str
   default_organization:
     description:
-      - The organizxation that the user uses by default
+      - The organization that the user uses by default
     required: false
     type: str
   auth_source:
