@@ -474,13 +474,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _populate_report_api(self):
         self.groups = dict()
         self.hosts = dict()
-        try:
-            # We need a deep copy of the data, as we modify it below and this would also modify the cache
-            host_data = copy.deepcopy(self._post_request())
-        except Exception as exc:
-            self.display.warning("Failed to use Reports API, falling back to Hosts API: {0}".format(exc))
-            self._populate_host_api()
-            return
+
+        # We need a deep copy of the data, as we modify it below and this would also modify the cache
+        host_data = copy.deepcopy(self._post_request())
+
         self.group_prefix = self.get_option('group_prefix')
 
         hostnames = self.get_option('hostnames')
