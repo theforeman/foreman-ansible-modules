@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.1.0
+======
+
+Minor Changes
+-------------
+
+- templates_import - Support configuring HTTP Proxy behaviour for template import
+
+Bugfixes
+--------
+
+- inventory - Drop fallback to Host API when Reports API fails, as this leads to possibly wrong data being used
+
 v5.0.0
 ======
 
