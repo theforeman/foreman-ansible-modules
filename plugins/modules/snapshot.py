@@ -52,6 +52,11 @@ options:
       - Option to add RAM (only available for VMWare compute-resource)
     required: false
     type: bool
+  quiesce:
+    description:
+      - Option to create quiesce snapshot (only available for VMWare compute-resource)
+    required: false
+    type: bool
   state:
     description:
       - State of Snapshot
@@ -157,6 +162,7 @@ def main():
             description=dict(),
             include_ram=dict(type='bool'),
             id=dict(),
+            quiesce=dict(type='bool'),
         ),
         required_plugins=[('snapshot_management', ['*'])],
         entity_opts={'scope': ['host']},
