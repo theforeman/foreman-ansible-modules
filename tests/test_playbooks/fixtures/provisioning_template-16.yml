@@ -5153,7 +5153,7 @@ interactions:
         indent(2) { @host.diskLayout } %>\n<%= indent(2) { snippet_if_exists(template_name
         + \" custom root\") } -%>\n  late-commands:\n<%= indent(2) { snippet ''preseed_autoinstall_clevis_tang_wrapper''
         if host_param(''disk_enc_tang_servers'') && os_major >= 22 && os_minor >=
-        3 } %>\n  - wget -Y off <%= @static ? \"''#{foreman_url(''finish'', static:
+        3 } %>\n  - wget --no-proxy <%= @static ? \"''#{foreman_url(''finish'', static:
         ''true'')}''\" : foreman_url(''finish'') %> -O /target/tmp/finish.sh\n  -
         curtin in-target -- chmod +x /tmp/finish.sh\n  - curtin in-target -- /tmp/finish.sh\n","locked":false,"snippet":false,"description":"The
         provisioning template for Autoinstall based distributions. To customize the
@@ -5303,7 +5303,7 @@ interactions:
         grub-pc/timeout string 10\nd-i grub-installer/only_debian boolean true\nd-i
         grub-installer/with_other_os boolean true\nd-i finish-install/reboot_in_progress
         note\n\n<%= snippet_if_exists(template_name + \" custom post\") -%>\n\nd-i
-        preseed/late_command string wget -Y off <%= @static ? \"''#{foreman_url(''finish'',
+        preseed/late_command string wget --no-proxy <%= @static ? \"''#{foreman_url(''finish'',
         static: ''true'')}''\" : foreman_url(''finish'') %> -O /target/tmp/finish.sh
         && in-target chmod +x /tmp/finish.sh && in-target /tmp/finish.sh\n","locked":false,"snippet":false,"description":"The
         provisioning template for preseed based distributions. The output is fetched
