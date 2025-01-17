@@ -11,6 +11,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 The main data structure for this role is the list of `foreman_lifecycle_environments`. Each `lifecycle_environment` requires the following fields:
 
 - `name`: The name of the lifecycle environment.
+- `organization` - The explicit organization of this resource will overwrite the default of `foreman_organization`
 - `prior`: The name of the previous lifecycle environment to attach to in
   sequence. For the first lifecycle environment in a new path, set the prior
   lifecycle environment to Library. The order of definition matters, ensure that
@@ -68,8 +69,11 @@ Create two lifecycle environment paths: Library -> Dev -> Test -> Prod and Libra
 
           - name: "QA"
             prior: "Library"
+            organization: ACME
           - name: "Stage"
             prior: "QA"
+            organization: ACME
           - name: "Prod"
             prior: "Stage"
+            organization: ACME
 ```
