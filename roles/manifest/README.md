@@ -19,6 +19,16 @@ Additionally the following parameters can be used.
 - `uuid`: UUID of the Manifest to download, corresponding to a [Subscription Allocation](https://access.redhat.com/management/subscription_allocations) defined on your Red Hat account. Required when `download` is `True`.
 - `username`: Your username for the Red Hat Customer Portal. Required when `download` is `true`.
 - `password`: Your password for the Red Hat Customer Portal. Required when `download` is `true`.
+- `state`: Define if manifest is present or absent.
+
+Deprecated Values
+-----------------
+
+- `foreman_manifest_path`
+- `foreman_manifest_download`
+- `foreman_rhsm_username`
+- `foreman_rhsm_password`
+- `foreman_manifest_uuid`
 
 Example Playbooks
 -----------------

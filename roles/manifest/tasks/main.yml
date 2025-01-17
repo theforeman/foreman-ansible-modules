@@ -1,11 +1,19 @@
 ---
 - name: Download Subscription Manifest from Red Hat Customer Portal
   theforeman.foreman.redhat_manifest:
-    uuid: "{{ item.uuid }}"
-    username: "{{ item.rhsm_username }}"
-    password: "{{ item.rhsm_password }}"
-    path: "{{ item.path }}"
+    uuid: "{{ item.uuid | default(foreman_manifest_uuid) }}"
+    username: "{{ item.rhsm_username | default(foreman_rhsm_username) }}"
+    password: "{{ item.rhsm_password | default(foreman_rhsm_password) }}"
+    path: "{{ item.path | default(foreman_manifest_path) }}"
   with_items: "{{ foreman_manifest | selectattr('download', 'defined') | list | default([]) }}"
+
+- name: Deprecated!!! Download Subscription Manifest from Red Hat Customer Portal
+  theforeman.foreman.redhat_manifest:
+    uuid: "{{ foreman_manifest_uuid }}"
+    username: "{{ foreman_rhsm_username }}"
+    password: "{{ foreman_rhsm_password }}"
+    path: "{{ foreman_manifest_path }}"
+  when: foreman_manifest_download
 
 - name: Upload Subscription Manifest to Foreman
   theforeman.foreman.subscription_manifest:
@@ -14,7 +22,7 @@
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ item.organization | default(foreman_organization) }}"
-    manifest_path: "{{ item.path }}"
+    manifest_path: "{{ item.path | default(foreman_manifest_path) }}"
     state: "{{ item.state | default('present') }}"
   with_items:
     - "{{ foreman_manifest | default([]) }}"
