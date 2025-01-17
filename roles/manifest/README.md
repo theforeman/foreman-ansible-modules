@@ -8,11 +8,17 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `foreman_manifest_path`: Path to subscription Manifest file on Ansible target host. When using `manifest_download`, it is first downloaded to this location from the Red Hat Customer Portal before being uploaded to the Foreman server.
-- `foreman_manifest_download`: Whether to first download the Manifest from the Red Hat Customer Portal. Defaults to `False`.
-- `foreman_manifest_uuid`: UUID of the Manifest to download, corresponding to a [Subscription Allocation](https://access.redhat.com/management/subscription_allocations) defined on your Red Hat account. Required when `manifest_download` is `True`.
-- `foreman_rhsm_username`: Your username for the Red Hat Customer Portal. Required when `foreman_manifest_download` is `true`.
-- `foreman_rhsm_password`: Your password for the Red Hat Customer Portal. Required when `foreman_manifest_download` is `true`.
+The main data structure for this role is the list of `foreman_manifest`. Each `manifest` requires the following field:
+
+- `path`: Path to subscription Manifest file on Ansible target host. When using `download`, it is first downloaded to this location from the Red Hat Customer Portal before being uploaded to the Foreman server.
+
+Additionally the following parameters can be used.
+
+- `organization`: The where the manifest should be uploaded.
+- `download`: Whether to first download the Manifest from the Red Hat Customer Portal. Defaults to `False`.
+- `uuid`: UUID of the Manifest to download, corresponding to a [Subscription Allocation](https://access.redhat.com/management/subscription_allocations) defined on your Red Hat account. Required when `download` is `True`.
+- `username`: Your username for the Red Hat Customer Portal. Required when `download` is `true`.
+- `password`: Your password for the Red Hat Customer Portal. Required when `download` is `true`.
 
 Example Playbooks
 -----------------
@@ -28,7 +34,8 @@ Use a Subscription Manifest which has already been downloaded on localhost at `~
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "Default Organization"
-        foreman_manifest_path: "~/manifest.zip"
+        foreman_manifest:
+          - path: "~/manifest.zip"
 ```
 
 Download the Subscription Manifest from the Red Hat Customer Portal to localhost before uploading to Foreman server:
@@ -42,11 +49,12 @@ Download the Subscription Manifest from the Red Hat Customer Portal to localhost
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "Default Organization"
-        foreman_manifest_path: "~/manifest.zip"
-        foreman_manifest_download: true
-        foreman_rhsm_username: "happycustomer"
-        foreman_rhsm_password: "$ecur3p4$$w0rd"
-        foreman_manifest_uuid: "01234567-89ab-cdef-0123-456789abcdef"
+        foreman_manifest:
+          - path: "~/manifest.zip"
+            download: true
+            rhsm_username: "happycustomer"
+            rhsm_password: "$ecur3p4$$w0rd"
+            uuid: "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
 Download the Subscription Manifest from the Red Hat Customer Portal, via a proxy, to localhost before uploading to Foreman server:
@@ -63,9 +71,11 @@ Download the Subscription Manifest from the Red Hat Customer Portal, via a proxy
         foreman_username: "admin"
         foreman_password: "changeme"
         foreman_organization: "Default Organization"
-        foreman_manifest_path: "~/manifest.zip"
-        foreman_manifest_download: true
-        foreman_rhsm_username: "happycustomer"
-        foreman_rhsm_password: "$ecur3p4$$w0rd"
-        foreman_manifest_uuid: "01234567-89ab-cdef-0123-456789abcdef"
+        foreman_manifest:
+          - path: "~/manifest.zip"
+          - organization: "Explicit Organization"
+          - download: true
+          - rhsm_username: "happycustomer"
+          - rhsm_password: "$ecur3p4$$w0rd"
+          - uuid: "01234567-89ab-cdef-0123-456789abcdef"
 ```
