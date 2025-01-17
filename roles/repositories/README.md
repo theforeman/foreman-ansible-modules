@@ -85,6 +85,7 @@ This example enables several Red Hat Repositories. There are a few important poi
 - RHEL 8 repos have a different product name than previous RHEL versions.
 - The RHEL 8 product already contains the `basearch` so it should not be specified on the RHEL 8 `repository_sets`, and the naming convention for `releasever` changed with RHEL 8 since system purpose removes the need for separate distributions like `Server` and `Workstation`.
 - The optional and extras repositories do not have point releases so `releasever` should be omitted.
+- The second Product is explicitly specified for "Other Organization" and thereby overwrites the default value of `foreman_organization`.
 
 ```yaml
 - hosts: localhost
@@ -110,6 +111,7 @@ This example enables several Red Hat Repositories. There are a few important poi
                 basearch: x86_64
                 releasever: 7Server
           - name: Red Hat Enterprise Linux for x86_64
+            organization: "Other Organization"
             repository_sets:
               - name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
                 releasever: 8

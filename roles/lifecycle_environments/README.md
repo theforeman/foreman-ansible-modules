@@ -72,8 +72,11 @@ Create two lifecycle environment paths: Library -> Dev -> Test -> Prod and Libra
 
           - name: "QA"
             prior: "Library"
+            organization: ACME
           - name: "Stage"
             prior: "QA"
+            organization: ACME
           - name: "Prod"
             prior: "Stage"
+            organization: ACME
 ```

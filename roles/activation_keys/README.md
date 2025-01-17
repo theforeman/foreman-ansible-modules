@@ -53,10 +53,10 @@ Create a basic Activation Key that uses Library LCE, Default Organization View, 
         foreman_organization: "Default Organization"
         foreman_activation_keys:
           - name: "Basic Activation Key"
-            description: "Registers hosts in Library/Default Organization View and tries to attach the best fitting subscription(s) from all available in the organization"
+            description: "Registers hosts in Library/Default Organization View and tries to attach the best fitting subscription(s) from all available in the default organization"
 ```
 
-Define two Activation Keys. The first registers hosts in the "ACME" organization and attaches the Subscription for the custom product "ACME_App". The second assigns the "Test" LCE and "RHEL7_Base" Content View, and auto-attaches the best fitting subscription(s) from all which are available in the ACME Organization:
+Define two Activation Keys. The first registers hosts in the "ACME" organization and attaches the Subscription for the custom product "ACME_App". The second assigns the "Test" LCE and "RHEL7_Base" Content View, and auto-attaches the best fitting subscription(s) from all which are available in the ACME Organization. Additionally the organization of the second Activation Key is explicitly specified as "Base_Test".
 
 ```yaml
 - hosts: localhost
@@ -75,6 +75,7 @@ Define two Activation Keys. The first registers hosts in the "ACME" organization
           - name: "ACME_RHEL7_Base_Test"
             lifecycle_environment: "Test"
             content_view: "RHEL7_Base"
+            organization: "Base_Test"
 ```
 
 Following the second example, a Host which is registered using `subscription-manager register --activationkey ACME_App_Key,ACME_RHEL7_Base_Test` will get the ACME_App subscription, Test LCE, RHEL7_Base Content View, and auto-attach any additional necessary subscriptions from ACME Organization to cover the Base OS and any other products which require an entitlement certificate.

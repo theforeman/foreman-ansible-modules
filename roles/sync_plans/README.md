@@ -38,7 +38,7 @@ foreman_sync_plans:
 Example Playbooks
 -----------------
 
-Create two sync plans:
+Create two sync plans for two Organizations:
 
 ```yaml
 - hosts: localhost
@@ -48,17 +48,18 @@ Create two sync plans:
         foreman_server_url: https://foreman.example.com
         foreman_username: "admin"
         foreman_password: "changeme"
-        foreman_organization: "Default Organization"
         foreman_sync_plans:
           - name: Weekly Sync
             interval: weekly
             sync_date: 2020-11-07 00:00:00 UTC
+            organization: RHEL
             products:
               - Red Hat Enterprise Linux Server
               - Red Hat Enterprise Linux for x86_64
           - name: Daily Sync
             interval: daily
             sync_date: 2020-11-08 00:00:00 UTC
+            organization: ACME
             products:
               - Red Hat Software Collections (for RHEL Server)
 ```

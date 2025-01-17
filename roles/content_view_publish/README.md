@@ -75,6 +75,7 @@ Example Playbook
               - name: Red Hat Satellite Tools 6.8 (for RHEL 7 Server) (RPMs)
                 product: 'Red Hat Enterprise Linux Server'
           - name: BearApp
+            organization: "ACME"
             repositories:
               - name: MyApps
                 product: ACME
