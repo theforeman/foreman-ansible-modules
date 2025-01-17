@@ -21,8 +21,8 @@ Additionally the following parameters can be used.
 - `password`: Your password for the Red Hat Customer Portal. Required when `download` is `true`.
 - `state`: Define if manifest is present or absent.
 
-Deprecated Values
------------------
+Define Manifest with multiple variables
+---------------------------------------
 
 - `foreman_manifest_path`
 - `foreman_manifest_download`

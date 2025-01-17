@@ -1,5 +1,5 @@
 ---
-- name: Download Subscription Manifest from Red Hat Customer Portal
+- name: Download all Subscription Manifests from Red Hat Customer Portal
   theforeman.foreman.redhat_manifest:
     uuid: "{{ item.uuid | default(foreman_manifest_uuid) }}"
     username: "{{ item.rhsm_username | default(foreman_rhsm_username) }}"
@@ -7,7 +7,19 @@
     path: "{{ item.path | default(foreman_manifest_path) }}"
   with_items: "{{ foreman_manifest | selectattr('download', 'defined') | list | default([]) }}"
 
-- name: Deprecated!!! Download Subscription Manifest from Red Hat Customer Portal
+- name: Upload all Subscription Manifests to Foreman
+  theforeman.foreman.subscription_manifest:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ item.organization | default(foreman_organization) }}"
+    manifest_path: "{{ item.path | default(foreman_manifest_path) }}"
+    state: "{{ item.state | default('present') }}"
+  with_items:
+    - "{{ foreman_manifest | default([]) }}"
+
+- name: Download Subscription Manifest from Red Hat Customer Portal
   theforeman.foreman.redhat_manifest:
     uuid: "{{ foreman_manifest_uuid }}"
     username: "{{ foreman_rhsm_username }}"
@@ -21,8 +33,7 @@
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ item.organization | default(foreman_organization) }}"
-    manifest_path: "{{ item.path | default(foreman_manifest_path) }}"
-    state: "{{ item.state | default('present') }}"
-  with_items:
-    - "{{ foreman_manifest | default([]) }}"
+    organization: "{{ foreman_organization }}"
+    manifest_path: "{{ foreman_manifest_path }}"
+    state: "{{ foreman_manifest_state | default('present') }}"
+  when: foreman_manifest_path is defined
