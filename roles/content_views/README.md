@@ -15,6 +15,7 @@ The main data structure for this role is the list of `foreman_content_views`. Ea
 Each content view also requires either a list of repositories or components (for a composite content view):
 - `repositories` - List of repositories to add to the content view. Each repository requires the following fields:
   - `name` - The name of the repository
+  - `organization` - The explicit organization of this resource will overwrite the default of `foreman_organization`
   - `product` - The product which the repository belongs to
 - `components` - List of content views to add to the composite content view. Each component requires the following fields:
   - `content_view` - The name of the content view
@@ -53,6 +54,7 @@ Example Playbooks
               - name: Red Hat Satellite Tools 6.8 (for RHEL 7 Server) (RPMs)
                 product: 'Red Hat Enterprise Linux Server'
           - name: BearApp
+            organization: ACME
             repositories:
               - name: MyApps
                 product: ACME
