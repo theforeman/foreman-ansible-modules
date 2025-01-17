@@ -8,7 +8,7 @@ Role Variables
 
 This role supports the [Common Role Variables](https://github.com/theforeman/foreman-ansible-modules/blob/develop/README.md#common-role-variables).
 
-- `foreman_sync_plans`: List of sync plans to create. Each sync plan is represented as a dictionary which specifies the `name` of the sync plan and the `products` assigned to the sync plan. It also specifies the `interval` which can be 'hourly', 'daily', 'weekly', or 'custom cron'. In case the 'custom cron' `interval` is used, it should also specify the `cron_expression`. Finally the sync plan should have a `sync_date` which specifies the first time that the sync plan will run. Optionally the sync plan can be enabled and disabled using the `enabled` parameter, and its state can be managed using `state`.
+- `foreman_sync_plans`: List of sync plans to create. Each sync plan is represented as a dictionary which specifies the `name` of the sync plan and the `products` assigned to the sync plan. It also specifies the `interval` which can be 'hourly', 'daily', 'weekly', or 'custom cron'. In case the 'custom cron' `interval` is used, it should also specify the `cron_expression`. Finally the sync plan should have a `sync_date` which specifies the first time that the sync plan will run. Optionally the sync plan can be enabled and disabled using the `enabled` parameter, and its state can be managed using `state`. If needed the organization for each sync plan can be explicitly overwrite the default of `foreman_organization`.
 
 ```yaml
 foreman_sync_plans:
@@ -38,7 +38,7 @@ foreman_sync_plans:
 Example Playbooks
 -----------------
 
-Create two sync plans:
+Create two sync plans for two Organizations:
 
 ```yaml
 - hosts: localhost
@@ -48,17 +48,18 @@ Create two sync plans:
         foreman_server_url: https://foreman.example.com
         foreman_username: "admin"
         foreman_password: "changeme"
-        foreman_organization: "Default Organization"
         foreman_sync_plans:
           - name: Weekly Sync
             interval: weekly
             sync_date: 2020-11-07 00:00:00 UTC
+            organization: RHEL
             products:
               - Red Hat Enterprise Linux Server
               - Red Hat Enterprise Linux for x86_64
           - name: Daily Sync
             interval: daily
             sync_date: 2020-11-08 00:00:00 UTC
+            organization: ACME
             products:
               - Red Hat Software Collections (for RHEL Server)
 ```
