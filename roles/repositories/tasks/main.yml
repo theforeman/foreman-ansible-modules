@@ -1,11 +1,11 @@
 ---
-- name: 'Enable Red Hat Repositories'
+- name: "Enable Red Hat Repositories"
   theforeman.foreman.repository_set:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     product: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     all_repositories: false
@@ -17,13 +17,13 @@
     - "{{ foreman_products | selectattr('repository_sets', 'defined') | list }}"
     - repository_sets
 
-- name: 'Enable Red Hat Repository Sets'
+- name: "Enable Red Hat Repository Sets"
   theforeman.foreman.repository_set:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     label: "{{ item.1 }}"
     all_repositories: true
     state: "{{ item.1.state | default(omit) }}"
@@ -31,13 +31,13 @@
     - "{{ foreman_products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
     - labels
 
-- name: 'Create Products'
+- name: "Create Products"
   theforeman.foreman.product:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.organization | default(foreman_organization) }}"
     name: "{{ item.name }}"
     description: "{{ item.description | default(omit) }}"
     label: "{{ item.label | default(omit) }}"
@@ -50,13 +50,13 @@
   with_items:
     - "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
 
-- name: 'Create Repositories'   # noqa: args[module]
+- name: "Create Repositories" # noqa: args[module]
   theforeman.foreman.repository:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
     server_url: "{{ foreman_server_url | default(omit) }}"
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
-    organization: "{{ foreman_organization }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
     name: "{{ item.1.name }}"
     url: "{{ item.1.url | default(omit) }}"
     product: "{{ item.0.name }}"
