@@ -14,6 +14,7 @@ ansible_version = get_ansible_version()
 
 def run_playbook_callback(tmpdir, report_type):
     extra_env = {}
+    diff_mode = True
     if LooseVersion(ansible_version) < LooseVersion('2.11'):
         extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
         extra_env['ANSIBLE_COMMAND_WARNINGS'] = "0"
@@ -24,13 +25,14 @@ def run_playbook_callback(tmpdir, report_type):
     extra_env['FOREMAN_URL'] = "http://localhost"
     if report_type == "proxy":
         extra_env['FOREMAN_PROXY_URL'] = "http://localhost"
+        diff_mode = False
     extra_env['FOREMAN_SSL_CERT'] = "/dev/zero"
     extra_env['FOREMAN_SSL_KEY'] = "/dev/zero"
     extra_env['FOREMAN_DIR_STORE'] = tmpdir.strpath
     extra_env['ANSIBLE_VAULT_PASSWORD_FILE'] = os.path.join(os.getcwd(), 'tests', 'callback', 'vault-pass')
     playbook = os.path.join('..', 'callback', 'three_hosts')
     inventory = os.path.join(os.getcwd(), 'tests', 'callback', 'three_hosts')
-    return run_playbook(playbook, inventory=inventory, extra_env=extra_env)
+    return run_playbook(playbook, inventory=inventory, diff_mode=diff_mode, extra_env=extra_env)
 
 
 def drop_incompatible_items(d):
@@ -42,7 +44,8 @@ def drop_incompatible_items(d):
     for k, v in d.items():
         if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection',
                  'extended_allitems', 'loop_control', 'expand_argument_vars', 'retries', 'parent', 'parent_type', 'finalized', 'squashed', 'no_log',
-                 'listen', '_ansible_internal_redirect_list', 'exception', 'resolved_action', 'delay', '_resolved_action', 'is_handler']:
+                 'listen', '_ansible_internal_redirect_list', 'exception', 'resolved_action', 'delay', '_resolved_action', 'is_handler',
+                 '_original_basename', 'src', 'owner', 'group', 'uid', 'gid', 'diff']:
             continue
 
         if isinstance(v, dict):
@@ -76,10 +79,16 @@ def run_callback(tmpdir, report_type, vcrmode):
             contents = re.sub(r", \\\"expand_argument_vars\\\": true", "", contents)
             contents = re.sub(r", \\\"cmd\\\": null", "", contents)
             contents = re.sub(r", \\\"exception\\\": [^,]+", "", contents)
+            contents = re.sub(r"(\+\+\+ after:)[^\\]*", "\\1", contents)
         real_contents = json.loads(contents)
         if report_type == "foreman":
             try:
                 real_contents['config_report']['metrics']['time']['total'] = 1
+                logs = []
+                for log in real_contents['config_report']['logs']:
+                    log['log']['messages']['message'] = json.loads(log['log']['messages']['message'])
+                    logs.append(log)
+                real_contents['config_report']['logs'] = logs
             except KeyError:
                 pass
         else:

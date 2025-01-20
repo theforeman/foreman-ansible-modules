@@ -42,8 +42,6 @@
           true
         ],
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "name": "Changed task",
         "notify": [
           "test handlers"
@@ -86,8 +84,6 @@
           false
         ],
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "name": "Ok task",
         "poll": 15,
         "throttle": 0
@@ -106,8 +102,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "ignore_errors": true,
         "name": "Failed task",
         "poll": 15,
@@ -145,8 +139,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "name": "Task with var in name (foo bar)",
         "poll": 15,
         "throttle": 0
@@ -242,8 +234,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "loop": [
           1,
           2,
@@ -285,8 +275,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "name": "Vault command",
         "poll": 15,
         "throttle": 0
@@ -310,9 +298,75 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "name": "Vault fact",
+        "poll": 15,
+        "throttle": 0
+      }
+    },
+    {
+      "failed": false,
+      "result": {
+        "changed": true,
+        "checksum": "640ab2bae07bedc4c163f679a746f7ab7fb5d1fa",
+        "dest": "/tmp/test_proxy.txt",
+        "invocation": {
+          "module_args": {
+            "backup": false,
+            "checksum": "640ab2bae07bedc4c163f679a746f7ab7fb5d1fa",
+            "dest": "/tmp/test_proxy.txt",
+            "follow": false,
+            "force": true,
+            "mode": "0644",
+            "remote_src": false,
+            "unsafe_writes": false
+          }
+        },
+        "md5sum": "0cbc6611f5540bd0809a388dc95a615b",
+        "mode": "0644",
+        "size": 4,
+        "state": "file"
+      },
+      "task": {
+        "action": "copy",
+        "any_errors_fatal": false,
+        "async": 0,
+        "async_val": 0,
+        "become": false,
+        "become_method": "sudo",
+        "check_mode": false,
+        "name": "Generate a diff",
+        "poll": 15,
+        "throttle": 0
+      }
+    },
+    {
+      "failed": false,
+      "result": {
+        "changed": true,
+        "invocation": {
+          "module_args": {
+            "access_time_format": "%Y%m%d%H%M.%S",
+            "follow": true,
+            "force": false,
+            "modification_time_format": "%Y%m%d%H%M.%S",
+            "path": "/tmp/test_proxy.txt",
+            "recurse": false,
+            "state": "absent",
+            "unsafe_writes": false
+          }
+        },
+        "path": "/tmp/test_proxy.txt",
+        "state": "absent"
+      },
+      "task": {
+        "action": "file",
+        "any_errors_fatal": false,
+        "async": 0,
+        "async_val": 0,
+        "become": false,
+        "become_method": "sudo",
+        "check_mode": false,
+        "name": "Remove file",
         "poll": 15,
         "throttle": 0
       }
@@ -348,8 +402,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "is_handler": true,
         "name": "Test handler 1",
         "poll": 15,
@@ -390,8 +442,6 @@
           false
         ],
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "is_handler": true,
         "name": "Test handler 2",
         "poll": 15,
@@ -429,8 +479,6 @@
         "become": false,
         "become_method": "sudo",
         "check_mode": false,
-        "delay": 5,
-        "diff": false,
         "is_handler": true,
         "name": "Test handler 3",
         "poll": 15,
@@ -439,10 +487,10 @@
     }
   ],
   "summary": {
-    "changed": 6,
+    "changed": 8,
     "failures": 0,
     "ignored": 1,
-    "ok": 10,
+    "ok": 12,
     "rescued": 0,
     "skipped": 1,
     "unreachable": 0
