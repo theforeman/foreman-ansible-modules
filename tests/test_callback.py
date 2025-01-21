@@ -59,6 +59,8 @@ def run_callback(tmpdir, report_type, vcrmode):
     run = run_playbook_callback(tmpdir, report_type)
     assert run.rc == 0
     assert len(tmpdir.listdir()) > 0, "Directory with results is empty"
+    fixture_directory = os.path.join(os.getcwd(), 'tests', 'fixtures', 'callback', 'dir_store', report_type)
+    assert len(tmpdir.listdir()) == len(os.listdir(fixture_directory)), "Fixture directory and output directory have a different number of files"
     for real_file in tmpdir.listdir(sort=True):
         contents = real_file.read()
         contents = re.sub(r"\d+-\d+-\d+ \d+:\d+:\d+\+\d+:\d+", "2000-01-01 12:00:00+00:00", contents)
@@ -80,7 +82,7 @@ def run_callback(tmpdir, report_type, vcrmode):
             real_contents['metrics']['time']['total'] = 1
             real_contents = drop_incompatible_items(real_contents)
         fixture_name = real_file.basename
-        fixture = os.path.join(os.getcwd(), 'tests', 'fixtures', 'callback', 'dir_store', report_type, fixture_name)
+        fixture = os.path.join(fixture_directory, fixture_name)
         if vcrmode == "record":
             print("Writing: ", str(fixture))
             with open(fixture, 'w') as f:
