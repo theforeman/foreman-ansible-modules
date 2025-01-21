@@ -146,7 +146,7 @@ def build_log_foreman(data_list):
                     'source': task.get('name'),
                 },
                 'messages': {
-                    'message': json.dumps(result, sort_keys=True),
+                    'message': json.dumps(result, sort_keys=True, cls=AnsibleNoVaultJSONEncoder),
                 },
                 'level': level,
             }
