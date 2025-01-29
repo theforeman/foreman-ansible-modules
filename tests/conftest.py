@@ -124,4 +124,4 @@ def assert_no_warnings(run):
 
         # check for task level warnings
         event_warnings = [warning for warning in event.get('event_data', {}).get('res', {}).get('warnings', []) if warning not in IGNORED_WARNINGS]
-        assert [] == event_warnings, str(event_warnings)
+        assert not event_warnings
