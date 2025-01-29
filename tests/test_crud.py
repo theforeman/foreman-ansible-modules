@@ -7,12 +7,7 @@ try:
 except ImportError:
     from distutils.version import LooseVersion
 
-from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version
-
-IGNORED_WARNINGS = [
-    "Activation Key 'Test Activation Key Copy' already exists.",
-    "You have configured a plain HTTP server URL. All communication will happen unencrypted.",
-]
+from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_playbook_vcr, get_ansible_version, assert_no_warnings
 
 ANSIBLE_SUPPORTS_MODULE_DEFAULTS = LooseVersion(get_ansible_version()) >= LooseVersion('2.12')
 
@@ -35,7 +30,7 @@ def test_crud(tmpdir, module, vcrmode):
         run = run_playbook_vcr(tmpdir, module, record=record)
     assert run.rc == 0
 
-    _assert_no_warnings(run)
+    assert_no_warnings(run)
 
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
@@ -47,7 +42,7 @@ def test_check_mode(tmpdir, module):
     run = run_playbook_vcr(tmpdir, module, check_mode=True)
     assert run.rc == 0
 
-    _assert_no_warnings(run)
+    assert_no_warnings(run)
 
 
 @pytest.mark.parametrize('module', INVENTORY_PLAYBOOKS)
@@ -59,14 +54,4 @@ def test_inventory(tmpdir, module):
     run = run_playbook(module, inventory=inventory)
     assert run.rc == 0
 
-    _assert_no_warnings(run)
-
-
-def _assert_no_warnings(run):
-    for event in run.events:
-        # check for play level warnings
-        assert not event.get('event_data', {}).get('warning', False)
-
-        # check for task level warnings
-        event_warnings = [warning for warning in event.get('event_data', {}).get('res', {}).get('warnings', []) if warning not in IGNORED_WARNINGS]
-        assert [] == event_warnings, str(event_warnings)
+    assert_no_warnings(run)

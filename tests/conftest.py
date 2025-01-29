@@ -8,6 +8,11 @@ import py.path
 import yaml
 
 
+IGNORED_WARNINGS = [
+    "Activation Key 'Test Activation Key Copy' already exists.",
+    "You have configured a plain HTTP server URL. All communication will happen unencrypted.",
+]
+
 TEST_PLAYBOOKS_PATH = py.path.local(__file__).realpath() / '..' / 'test_playbooks'
 
 
@@ -110,3 +115,13 @@ def get_ansible_version():
         except pkg_resources.DistributionNotFound:
             pass
     return ansible_version
+
+
+def assert_no_warnings(run):
+    for event in run.events:
+        # check for play level warnings
+        assert not event.get('event_data', {}).get('warning', False)
+
+        # check for task level warnings
+        event_warnings = [warning for warning in event.get('event_data', {}).get('res', {}).get('warnings', []) if warning not in IGNORED_WARNINGS]
+        assert [] == event_warnings, str(event_warnings)

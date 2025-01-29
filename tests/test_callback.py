@@ -7,7 +7,7 @@ try:
 except ImportError:
     from distutils.version import LooseVersion
 
-from .conftest import run_playbook, get_ansible_version
+from .conftest import run_playbook, get_ansible_version, assert_no_warnings
 
 
 def run_playbook_callback(tmpdir, report_type):
@@ -61,6 +61,7 @@ def run_callback(tmpdir, report_type, vcrmode):
     assert len(tmpdir.listdir()) > 0, "Directory with results is empty"
     fixture_directory = os.path.join(os.getcwd(), 'tests', 'fixtures', 'callback', 'dir_store', report_type)
     assert len(tmpdir.listdir()) == len(os.listdir(fixture_directory)), "Fixture directory and output directory have a different number of files"
+    assert_no_warnings(run)
     for real_file in tmpdir.listdir(sort=True):
         contents = real_file.read()
         contents = re.sub(r"\d+-\d+-\d+ \d+:\d+:\d+\+\d+:\d+", "2000-01-01 12:00:00+00:00", contents)
