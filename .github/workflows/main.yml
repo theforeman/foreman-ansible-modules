@@ -23,7 +23,7 @@ jobs:
           - stable-2.18
           - devel
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       # Run sanity tests inside a Docker container.
@@ -39,7 +39,7 @@ jobs:
           coverage: never
 
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container: ${{ matrix.container }}
     strategy:
       fail-fast: false
@@ -114,7 +114,7 @@ jobs:
         run: make dist-test
 
   checkmode:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -141,7 +141,7 @@ jobs:
         run: make test-check-mode
 
   docs:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -163,7 +163,7 @@ jobs:
           path: docs/_build/html/
 
   galaxy-importer:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -178,7 +178,7 @@ jobs:
         run: make galaxy-importer
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -200,7 +200,7 @@ jobs:
           path: theforeman-foreman-*.tar.gz
 
   execution_environment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
