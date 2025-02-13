@@ -58,8 +58,10 @@ jobs:
             ansible: "v2.10.4"
           - python: "3.6"
             ansible: "stable-2.11"
+            container: "python:3.6"
           - python: "3.7"
             ansible: "stable-2.11"
+            container: "python:3.7"
           - python: "3.9"
             ansible: "stable-2.11"
           - python: "3.10"
@@ -90,7 +92,6 @@ jobs:
           for file in /usr/lib/python3/dist-packages/rpm/_rpm*.cpython-*.so; do
             sudo ln -s ${file} $(echo ${file} | sed 's/\.cpython[^.]*//');
           done
-        if: matrix.container == null
       - name: Install Ansible
         run: pip install --upgrade https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
       - name: Ensure Jinja version is old enough for Ansible 2.10
