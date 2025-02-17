@@ -138,10 +138,10 @@ def main():
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
             updated_name=dict(),
         ),
-        required_if=(
+        required_if=[
             ['state', 'present_with_defaults', ['value']],
             ['state', 'present', ['value']],
-        ),
+        ],
     )
 
     with module.api_connection():

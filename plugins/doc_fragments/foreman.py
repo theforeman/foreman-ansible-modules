@@ -35,19 +35,25 @@ options:
     description:
       - Username accessing the Foreman server.
       - If the value is not specified in the task, the value of environment variable C(FOREMAN_USERNAME) will be used instead.
-    required: true
+    required: false
     type: str
   password:
     description:
       - Password of the user accessing the Foreman server.
       - If the value is not specified in the task, the value of environment variable C(FOREMAN_PASSWORD) will be used instead.
-    required: true
+    required: false
     type: str
   validate_certs:
     description:
       - Whether or not to verify the TLS certificates of the Foreman server.
       - If the value is not specified in the task, the value of environment variable C(FOREMAN_VALIDATE_CERTS) will be used instead.
     default: true
+    type: bool
+  use_gssapi:
+    description:
+      - Use GSSAPI to perform the authentication, typically this is for Kerberos or Kerberos through Negotiate authentication.
+      - Requires the Python library L(requests-gssapi,https://github.com/pythongssapi/requests-gssapi) to be installed.
+    default: false
     type: bool
 attributes:
   check_mode:

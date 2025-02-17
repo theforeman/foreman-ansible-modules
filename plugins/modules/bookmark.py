@@ -138,10 +138,10 @@ def main():
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        required_if=(
+        required_if=[
             ['state', 'present', ['query']],
             ['state', 'present_with_defaults', ['query']],
-        ),
+        ],
     )
 
     with module.api_connection():

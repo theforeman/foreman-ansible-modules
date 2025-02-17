@@ -496,9 +496,9 @@ def main():
             ),
             state=dict(type='str', default='present', choices=['present', 'absent', 'present_with_defaults']),
         ),
-        required_if=(
+        required_if=[
             ['state', 'present_with_defaults', ['provider', 'provider_params']],
-        ),
+        ],
     )
 
     if not module.desired_absent:

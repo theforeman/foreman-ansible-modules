@@ -115,10 +115,10 @@ def main():
             template_kind=dict(required=True, choices=TEMPLATE_KIND_LIST, type='entity'),
             provisioning_template=dict(type='entity', thin=False),
         ),
-        required_if=(
+        required_if=[
             ['state', 'present', ['provisioning_template']],
             ['state', 'present_with_defaults', ['provisioning_template']],
-        ),
+        ],
         entity_opts={'scope': ['operatingsystem']},
     )
 

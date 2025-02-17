@@ -357,11 +357,11 @@ def main():
             template_inputs=dict(
                 type='nested_list',
                 foreman_spec=template_input_foreman_spec,
-                required_if=(
+                required_if=[
                     ['input_type', 'fact', ('fact_name',)],
                     ['input_type', 'variable', ('variable_name',)],
                     ['input_type', 'puppet_parameter', ('puppet_class_name', 'puppet_parameter_name')],
-                ),
+                ],
             ),
         ),
         argument_spec=dict(
