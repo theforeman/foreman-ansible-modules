@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.2.0
+======
+
+Minor Changes
+-------------
+
+- snapshot - add ``quiesce`` option (https://github.com/theforeman/foreman-ansible-modules/pull/1810)
+
+Bugfixes
+--------
+
+- callback plugin - fix another exception when serializing secrets (https://github.com/theforeman/foreman-ansible-modules/pull/1819)
+
 v5.1.0
 ======
 
