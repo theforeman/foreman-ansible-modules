@@ -53,8 +53,14 @@ options:
     description:
       - Use GSSAPI to perform the authentication, typically this is for Kerberos or Kerberos through Negotiate authentication.
       - Requires the Python library L(requests-gssapi,https://github.com/pythongssapi/requests-gssapi) to be installed.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_USE_GSSAPI) will be used instead.
     default: false
     type: bool
+  ca_path:
+    description:
+      - PEM formatted file that contains a CA certificate to be used for validation.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_CA_PATH) will be used instead.
+    type: path
 attributes:
   check_mode:
     description: Can run in check_mode and return changed status prediction without modifying the entity

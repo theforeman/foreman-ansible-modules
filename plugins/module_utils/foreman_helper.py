@@ -372,6 +372,7 @@ class ForemanAnsibleModule(AnsibleModule):
             password=dict(required=False, no_log=True, fallback=(env_fallback, ['FOREMAN_PASSWORD'])),
             validate_certs=dict(type='bool', default=True, fallback=(env_fallback, ['FOREMAN_VALIDATE_CERTS'])),
             use_gssapi=dict(type='bool', default=False, fallback=(env_fallback, ['FOREMAN_USE_GSSAPI'])),
+            ca_path=dict(type='path', default=None, fallback=(env_fallback, ['FOREMAN_CA_PATH'])),
         )
         argument_spec.update(gen_args)
         argument_spec.update(kwargs.pop('argument_spec', {}))
@@ -392,6 +393,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._foremanapi_username = self.foreman_params.pop('username', None)
         self._foremanapi_password = self.foreman_params.pop('password', None)
         self._foremanapi_validate_certs = self.foreman_params.pop('validate_certs')
+        self._foremanapi_ca_path = self.foreman_params.pop('ca_path', None)
         self._foremanapi_use_gssapi = self.foreman_params.pop('use_gssapi')
 
         if self._foremanapi_server_url.lower().startswith('http://'):
@@ -610,11 +612,12 @@ class ForemanAnsibleModule(AnsibleModule):
         that are required by the module.
         """
 
+        verify_ssl = self._foremanapi_ca_path if (self._foremanapi_validate_certs and self._foremanapi_ca_path) else self._foremanapi_validate_certs
         self.foremanapi = apypie.ForemanApi(
             uri=self._foremanapi_server_url,
             username=to_bytes(self._foremanapi_username),
             password=to_bytes(self._foremanapi_password),
-            verify_ssl=self._foremanapi_validate_certs,
+            verify_ssl=verify_ssl,
             kerberos=self._foremanapi_use_gssapi,
             task_timeout=self.task_timeout,
         )
