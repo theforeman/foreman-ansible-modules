@@ -49,7 +49,7 @@ options:
   provider:
     description: Compute resource provider. Required if I(state=present_with_defaults).
     required: false
-    choices: ["vmware", "libvirt", "ovirt", "proxmox", "EC2", "AzureRm", "GCE", "Openstack"]
+    choices: ["vmware", "libvirt", "proxmox", "EC2", "AzureRm", "GCE", "Openstack"]
     type: str
   provider_params:
     description: Parameter specific to compute resource provider. Required if I(state=present_with_defaults).
@@ -87,14 +87,6 @@ options:
       display_type:
         description:
           - Display type to use for the remote console, only valid for I(provider=libvirt)
-        type: str
-      use_v4:
-        description:
-          - Use oVirt API v4, only valid for I(provider=ovirt)
-        type: bool
-      ovirt_quota:
-        description:
-          - oVirt quota ID, only valid for I(provider=ovirt)
         type: str
       project:
         description:
@@ -140,9 +132,6 @@ options:
           - Set a randomly generated password on the display connection for I(provider=vmware) and I(provider=libvirt)
         type: bool
         version_added: 2.0.0
-      keyboard_layout:
-        description:
-          - Default VNC Keyboard for I(provider=ovirt)
         type: str
         version_added: 2.0.0
         choices:
@@ -179,11 +168,6 @@ options:
           - 'sv'
           - 'th'
           - 'tr'
-      public_key:
-        description:
-          - X509 Certification Authorities, only valid for I(provider=ovirt)
-        type: str
-        version_added: 2.0.0
       domain:
         description:
           - Auth domain for users, only valid for I(provider=Openstack)
@@ -258,26 +242,6 @@ EXAMPLES = '''
       user: admin
       password: secret
       datacenter: ax01
-    server_url: "https://foreman.example.com"
-    username: "admin"
-    password: "changeme"
-    state: present
-
-- name: Create ovirt compute resource
-  theforeman.foreman.compute_resource:
-    name: ovirt_compute_resource
-    locations:
-      - France/Toulouse
-    organizations:
-      - Example Org
-    provider: ovirt
-    provider_params:
-      url: ovirt.example.com
-      user: ovirt-admin@example.com
-      password: ovirtsecret
-      datacenter: aa92fb54-0736-4066-8fa8-b8b9e3bd75ac
-      ovirt_quota: 24868ab9-c2a1-47c3-87e7-706f17d215ac
-      use_v4: true
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
@@ -403,9 +367,6 @@ def get_provider_info(provider):
     if provider_name == 'libvirt':
         return 'Libvirt', ['url', 'display_type', 'set_console_password']
 
-    elif provider_name == 'ovirt':
-        return 'Ovirt', ['url', 'user', 'password', 'datacenter', 'use_v4', 'ovirt_quota', 'keyboard_layout', 'public_key']
-
     elif provider_name == 'proxmox':
         return 'Proxmox', ['url', 'user', 'password', 'ssl_verify_peer']
 
@@ -438,7 +399,7 @@ def main():
             name=dict(required=True),
             updated_name=dict(),
             description=dict(),
-            provider=dict(choices=['vmware', 'libvirt', 'ovirt', 'proxmox', 'EC2', 'AzureRm', 'GCE', 'Openstack']),
+            provider=dict(choices=['vmware', 'libvirt', 'proxmox', 'EC2', 'AzureRm', 'GCE', 'Openstack']),
             display_type=dict(invisible=True),
             datacenter=dict(invisible=True),
             url=dict(invisible=True),
@@ -449,7 +410,6 @@ def main():
             tenant=dict(invisible=True),
             app_ident=dict(invisible=True),
             use_v4=dict(invisible=True),
-            ovirt_quota=dict(invisible=True),
             project=dict(invisible=True),
             email=dict(invisible=True),
             key_path=dict(invisible=True),
@@ -476,7 +436,6 @@ def main():
                 datacenter=dict(),
                 caching_enabled=dict(type='bool'),
                 use_v4=dict(type='bool'),
-                ovirt_quota=dict(),
                 project=dict(),
                 email=dict(),
                 key_path=dict(no_log=False),

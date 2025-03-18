@@ -260,7 +260,6 @@ options:
           - Additional compute resource specific attributes for the interface.
           - When this parameter is set, the module will not be idempotent.
           - When you provide a I(network) here and I(compute_resource) is set, the network id will be automatically looked up.
-          - On oVirt/RHV I(cluster) is required in the hosts I(compute_attributes) for the lookup to work.
         type: dict
 extends_documentation_fragment:
   - theforeman.foreman.foreman
@@ -320,7 +319,7 @@ EXAMPLES = '''
       start: "1"
     state: present
 
-- name: "Create a VM on specific ovirt network"
+- name: "Create a VM on specific vmware network"
   theforeman.foreman.host:
     username: "admin"
     password: "changeme"
@@ -334,7 +333,7 @@ EXAMPLES = '''
           interface: "virtio"
     state: present
 
-- name: "Create a VM with 2 NICs on specific ovirt networks"
+- name: "Create a VM with 2 NICs on specific vmware networks"
   theforeman.foreman.host:
     username: "admin"
     password: "changeme"

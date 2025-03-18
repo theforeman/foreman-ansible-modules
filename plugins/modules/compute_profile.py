@@ -73,7 +73,7 @@ EXAMPLES = '''
   theforeman.foreman.compute_profile:
     name: another_example_compute_profile
     compute_attributes:
-      - compute_resource: ovirt_compute_resource1
+      - compute_resource: vmware_compute_resource1
         vm_attrs:
           cluster: 'a96d44a4-f14a-1015-82c6-f80354acdf01'
           template: 'c88af4b7-a24a-453b-9ac2-bc647ca2ef99'
@@ -87,7 +87,7 @@ EXAMPLES = '''
   theforeman.foreman.compute_profile:
     name: example_compute_profile2
     compute_attributes:
-      - compute_resource: ovirt_compute_resource01
+      - compute_resource: vmware_compute_resource01
         vm_attrs:
           cluster: a96d44a4-f14a-1015-82c6-f80354acdf01
           cores: 1

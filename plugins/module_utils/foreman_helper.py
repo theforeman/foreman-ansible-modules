@@ -764,7 +764,7 @@ class ForemanAnsibleModule(AnsibleModule):
         return [self.find_puppetclass(name, **kwargs) for name in names]
 
     def find_cluster(self, name, compute_resource):
-        cluster = self.find_compute_resource_parts('clusters', name, compute_resource, None, ['ovirt', 'vmware'])
+        cluster = self.find_compute_resource_parts('clusters', name, compute_resource, None, ['vmware'])
 
         # workaround for https://projects.theforeman.org/issues/31874
         if compute_resource['provider'].lower() == 'vmware':
@@ -776,10 +776,10 @@ class ForemanAnsibleModule(AnsibleModule):
         return cluster
 
     def find_network(self, name, compute_resource, cluster=None):
-        return self.find_compute_resource_parts('networks', name, compute_resource, cluster, ['ovirt', 'vmware', 'google', 'azurerm'])
+        return self.find_compute_resource_parts('networks', name, compute_resource, cluster, ['vmware', 'google', 'azurerm'])
 
     def find_storage_domain(self, name, compute_resource, cluster=None):
-        return self.find_compute_resource_parts('storage_domains', name, compute_resource, cluster, ['ovirt', 'vmware'])
+        return self.find_compute_resource_parts('storage_domains', name, compute_resource, cluster, ['vmware'])
 
     def find_storage_pod(self, name, compute_resource, cluster=None):
         return self.find_compute_resource_parts('storage_pods', name, compute_resource, cluster, ['vmware'])
