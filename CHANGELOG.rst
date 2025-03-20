@@ -6,6 +6,16 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.3.0
+======
+
+Minor Changes
+-------------
+
+- Support Kerberos/GSSAPI authentication by passing ``use_gssapi: true`` instead of ``username`` and ``password``.
+- Support setting a specific CA file for certificate validation
+- activation_keys, content_credentials, content_view_publish, content_views, lifecycle_environments, repositories, sync_plans roles - Allow specifying the organization for each item individually (https://github.com/theforeman/foreman-ansible-modules/issues/1653)
+
 v5.2.0
 ======
 
