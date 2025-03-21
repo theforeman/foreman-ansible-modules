@@ -180,13 +180,9 @@ plugin: theforeman.foreman.foreman
 url: https://foreman.example.com
 user: ansibleinventory
 password: changeme
+# Only fetch hosts in the Web Engineering organization
 host_filters: 'organization="Web Engineering"'
-
-# shortname.foreman.yml
-plugin: theforeman.foreman.foreman
-url: https://foreman.example.com
-user: ansibleinventory
-password: changeme
+# Use short names (not FQDN) for the hosts in the intentory
 hostnames:
   - name.split('.')[0]
 '''
