@@ -27,14 +27,6 @@ with fileinput.input() as f:
             output_lines.extend(['', ''])
         line = line.rstrip()
 
-        # Ansible doesn't like `basestring` because it doesn't exist in Python3
-        # but our code actually catches that and uses `str` in that case.
-        # So let's use `base_string` instead, which doesn't trip Ansible's check.
-        if line == '    basestring  # type: ignore[used-before-def]  # pylint: disable=used-before-assignment':
-            line = '    base_string = basestring'
-        elif 'basestring' in line:
-            line = line.replace('basestring', 'base_string')
-
         # empty lines trigger buffer flushes
         if line == '':
             output_lines.extend(buffer_lines)
