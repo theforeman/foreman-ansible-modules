@@ -236,6 +236,7 @@ options:
       - rhel-7
       - rhel-8
       - rhel-9
+      - rhel-10
   arch:
     description:
       - Architecture of content in the repository
@@ -347,7 +348,7 @@ def main():
             ignorable_content=dict(type='list', elements='str'),
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
-            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8', 'rhel-9']),
+            os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8', 'rhel-9', 'rhel-10']),
             arch=dict(),
             include_tags=dict(type='list', elements='str'),
             exclude_tags=dict(type='list', elements='str'),
