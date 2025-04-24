@@ -256,6 +256,12 @@ options:
     elements: str
     required: false
     version_added: 3.7.0
+  retain_package_versions_count:
+    description:
+      - The maximum number of versions of each package to keep.
+    type: int
+    required: false
+    version_added: 5.4.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -351,6 +357,7 @@ def main():
             arch=dict(),
             include_tags=dict(type='list', elements='str'),
             exclude_tags=dict(type='list', elements='str'),
+            retain_package_versions_count=dict(type='int'),
         ),
         mutually_exclusive=[
             ['mirror_on_sync', 'mirroring_policy']
