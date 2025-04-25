@@ -26,7 +26,7 @@
   loop_control:
     label: "{{ __foreman_ccv.label }}"
     loop_var: "__foreman_ccv"
-  when: (__foreman_ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[(foreman_content_view_version_cleanup_keep | int):]
+  when: (__foreman_ccv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[(foreman_content_view_version_cleanup_keep | int):] | length > 0
 
 - name: "Find and delete unused content view versions"  # noqa: jinja[spacing]
   ansible.builtin.include_tasks: find_and_delete_unused_cv_versions.yml
@@ -34,4 +34,4 @@
   loop_control:
     label: "{{ foreman_cv.label }}"
     loop_var: "foreman_cv"
-  when: (foreman_cv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[(foreman_content_view_version_cleanup_keep | int):]
+  when: (foreman_cv.versions | rejectattr('environment_ids') | map(attribute='version') | reverse | list)[(foreman_content_view_version_cleanup_keep | int):] | length > 0

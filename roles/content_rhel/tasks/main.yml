@@ -80,7 +80,7 @@
   ansible.builtin.async_status:
     jid: "{{ __foreman_rhel7_sync.ansible_job_id }}"
   register: __foreman_rhel7_job_result
-  until: __foreman_rhel7_job_result.finished
+  until: __foreman_rhel7_job_result is finished
   retries: 99999
   delay: 10
   when: foreman_content_rhel_enable_rhel7 and foreman_content_rhel_sync_now and foreman_content_rhel_wait_for_syncs
@@ -89,7 +89,7 @@
   ansible.builtin.async_status:
     jid: "{{ __foreman_rhel8_sync.ansible_job_id }}"
   register: __foreman_rhel8_job_result
-  until: __foreman_rhel8_job_result.finished
+  until: __foreman_rhel8_job_result is finished
   retries: 99999
   delay: 10
   when: foreman_content_rhel_enable_rhel8 and foreman_content_rhel_sync_now and foreman_content_rhel_wait_for_syncs

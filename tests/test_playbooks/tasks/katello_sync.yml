@@ -26,7 +26,8 @@
   when:
     - expected_time is not defined or expected_time
     - expected_fail is not defined or not expected_fail
-    - result.task
+    - result.task is defined
+    - result.task is mapping
 - assert:
     fail_msg: "repository_sync didn't fail as expected!"
     that:
