@@ -1,5 +1,5 @@
 ---
-- name: "Ensure host '{{ host_name }}' is {{ host_state }}"
+- name: "Ensure host '{{ host_name }}' is {{ host_state | default('present') }}"
   host:
     username: "{{ foreman_username }}"
     password: "{{ foreman_password }}"
