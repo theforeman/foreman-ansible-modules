@@ -674,6 +674,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
         super(InventoryModule, self).parse(inventory, loader, path)
 
+        self.load_cache_plugin()
+
         # read config from file, this sets 'options'
         self._read_config_data(path)
 
