@@ -65,6 +65,8 @@ options:
   lifecycle_environment:
     description:
     - Lifecycle environment for the host.
+    - "Deprecated: The Lifecycle Environment of a Host should be set by the Activation Key."
+    - Removed from the API since Katello 4.12.
     required: false
     type: str
   operatingsystem:
