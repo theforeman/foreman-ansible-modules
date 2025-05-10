@@ -268,6 +268,7 @@ options:
       - Set the metadata expiration time (in seconds) for a yum repository.
     type: int
     required: false
+    version_added: 5.4.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
