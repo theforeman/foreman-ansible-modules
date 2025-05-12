@@ -42,7 +42,9 @@ options:
     required: false
     type: str
   parent:
-    description: Hostgroup parent name
+    description:
+      - Title of the parent Hostgroup.
+      - Can be nested in the form "Main Group/Sub Group".
     required: false
     type: str
   organization:
@@ -125,9 +127,7 @@ EXAMPLES = '''
     content_source: capsule.example.com
     lifecycle_environment: "Production"
     content_view: "My content view"
-    parameters:
-      - name: "kt_activation_keys"
-        value: "my_prod_ak"
+    activation_keys: "my_prod_ak"
 
 - name: "Delete a Hostgroup"
   theforeman.foreman.hostgroup:
