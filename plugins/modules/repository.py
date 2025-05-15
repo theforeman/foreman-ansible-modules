@@ -64,6 +64,7 @@ options:
       - puppet
       - yum
       - ansible_collection
+      - python
     type: str
   url:
     description:
@@ -269,6 +270,89 @@ options:
     type: int
     required: false
     version_added: 5.4.0
+  ansible_collection_auth_token:
+    description:
+      - The token key to use for authentication.
+    type: str
+    required: false
+    version_added: 5.5.0
+  ansible_collection_auth_url:
+    description:
+      - The URL to receive a session token from, e.g. used with Automation Hub.
+    type: str
+    required: false
+    version_added: 5.5.0
+  depth:
+    description:
+      - An option to specify how many ostree commits to traverse.
+    type: int
+    required: false
+    version_added: 5.5.0
+  exclude_refs:
+    description:
+      - List of tags to exclude during an ostree sync.
+      - The wildcards C(*), C(?) are recognized.
+      - C(exclude_refs) is evaluated after C(include_refs).
+    type: list
+    elements: str
+    required: false
+    version_added: 5.5.0
+  excludes:
+    description:
+      - Python packages to exclude from the upstream URL.
+      - "You may also specify versions, for example: C(django~=2.0)."
+    type: list
+    elements: str
+    required: false
+    version_added: 5.5.0
+  include_refs:
+    description:
+      - List of refs to include during an ostree sync.
+      - The wildcards C(*), C(?) are recognized.
+    type: list
+    elements: str
+    required: false
+    version_added: 5.5.0
+  includes:
+    description:
+      - Python packages to include from the upstream URL,
+      - "You may also specify versions, for example: C(django~=2.0)."
+      - Leave empty to include every package.
+    type: list
+    elements: str
+    required: false
+    version_added: 5.5.0
+  keep_latest_packages:
+    description:
+      - The amount of latest versions of a package to keep on sync, includes pre-releases if synced.
+      - Defaults to keep all versions.
+    type: int
+    required: false
+    version_added: 5.5.0
+  package_types:
+    description:
+      - Package types to sync for Python content, separated by comma. FIXME
+      - Leave empty to get every package type.
+    choices:
+      - bdist_dmg
+      - bdist_dumb
+      - bdist_egg
+      - bdist_msi
+      - bdist_rpm
+      - bdist_wheel
+      - bdist_wininst
+      - sdist
+    type: list
+    elements: str
+    required: false
+    version_added: 5.5.0
+  upstream_authentication_token:
+    description:
+      - Upstream authentication token string for yum repositories.
+    type: str
+    required: false
+    version_added: 5.5.0
+
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state_with_defaults
@@ -332,7 +416,7 @@ def main():
             product=dict(type='entity', scope=['organization'], required=True),
             label=dict(),
             name=dict(required=True),
-            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb', 'ansible_collection']),
+            content_type=dict(required=True, choices=['docker', 'ostree', 'yum', 'puppet', 'file', 'deb', 'ansible_collection', 'python']),
             url=dict(),
             ignore_global_proxy=dict(type='bool'),
             http_proxy_policy=dict(choices=['global_default_http_proxy', 'none', 'use_selected_http_proxy']),
@@ -366,6 +450,17 @@ def main():
             exclude_tags=dict(type='list', elements='str'),
             retain_package_versions_count=dict(type='int'),
             metadata_expire=dict(type="int"),
+            ansible_collection_auth_token=dict(no_log=True),
+            ansible_collection_auth_url=dict(),
+            depth=dict(type='int'),
+            exclude_refs=dict(type='list', elements='str'),
+            excludes=dict(type='list', elements='str'),
+            include_refs=dict(type='list', elements='str'),
+            includes=dict(type='list', elements='str'),
+            keep_latest_packages=dict(type='int'),
+            package_types=dict(type='list', elements='str',
+                               choices=['bdist_dmg', 'bdist_dumb', 'bdist_egg', 'bdist_msi', 'bdist_rpm', 'bdist_wheel', 'bdist_wininst', 'sdist']),
+            upstream_authentication_token=dict(no_log=True),
         ),
         mutually_exclusive=[
             ['mirror_on_sync', 'mirroring_policy']
@@ -391,14 +486,26 @@ def main():
             module.fail_json(msg="({0}) can only be used with content_type 'deb'".format(",".join(invalid_list)))
 
     if module.foreman_params['content_type'] != 'ansible_collection':
-        invalid_list = [key for key in ['ansible_collection_requirements'] if key in module.foreman_params]
+        invalid_list = [
+            key for key in ['ansible_collection_requirements', 'ansible_collection_auth_token', 'ansible_collection_auth_url'] if key in module.foreman_params
+        ]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'ansible_collection'".format(",".join(invalid_list)))
 
     if module.foreman_params['content_type'] != 'yum':
-        invalid_list = [key for key in ['ignorable_content', 'os_versions', 'metadata_expire'] if key in module.foreman_params]
+        invalid_list = [key for key in ['ignorable_content', 'os_versions', 'metadata_expire', 'upstream_authentication_token'] if key in module.foreman_params]
         if invalid_list:
             module.fail_json(msg="({0}) can only be used with content_type 'yum'".format(",".join(invalid_list)))
+
+    if module.foreman_params['content_type'] != 'ostree':
+        invalid_list = [key for key in ['depth', 'exclude_refs', 'include_refs'] if key in module.foreman_params]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'ostree'".format(",".join(invalid_list)))
+
+    if module.foreman_params['content_type'] != 'python':
+        invalid_list = [key for key in ['excludes', 'includes', 'package_types', 'keep_latest_packages'] if key in module.foreman_params]
+        if invalid_list:
+            module.fail_json(msg="({0}) can only be used with content_type 'python'".format(",".join(invalid_list)))
 
     if 'ignore_global_proxy' in module.foreman_params and 'http_proxy_policy' not in module.foreman_params:
         module.foreman_params['http_proxy_policy'] = 'none' if module.foreman_params['ignore_global_proxy'] else 'global_default_http_proxy'
