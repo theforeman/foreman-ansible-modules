@@ -1,0 +1,65 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: present
+        flatpak_remote_url: https://registry.fedoraproject.org
+        expected_change: true
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: present
+        flatpak_remote_url: https://registry.fedoraproject.org
+        expected_change: false
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: present
+        flatpak_remote_description: "The new description"
+        expected_change: true
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: present
+        flatpak_remote_description: "The new description"
+        expected_change: false
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: absent
+        expected_change: true
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: absent
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

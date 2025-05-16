@@ -1,0 +1,24 @@
+---
+- name: "Ensure Flatpak Remote '{{ flatpak_remote_name }}' is {{ flatpak_remote_state }}"
+  vars:
+    flatpak_remote_name: "Fedora"
+    organization_name: "Test Organization"
+  flatpak_remote:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    name: "{{ flatpak_remote_name }}"
+    url: "{{ flatpak_remote_url | default(omit) }}"
+    description: "{{ flatpak_remote_description | default(omit) }}"
+    remote_username: "{{ flatpak_remote_username | default(omit) }}"
+    token: "{{ flatpak_remote_token | default(omit) }}"
+    state: "{{ flatpak_remote_state | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring Flatpak Remote is {{ flatpak_remote_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
