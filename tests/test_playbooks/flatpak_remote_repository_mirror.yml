@@ -1,0 +1,58 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: present
+        flatpak_remote_url: https://registry.fedoraproject.org
+    - include_tasks: tasks/flatpak_remote_scan.yml
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/flatpak_remote_repository_mirror.yml
+      vars:
+        flatpak_remote_repository_name: "f42/flatpak-runtime"
+        product_name: "Test Product"
+        expected_change: true
+    - include_tasks: tasks/flatpak_remote_repository_mirror.yml
+      vars:
+        flatpak_remote_repository_name: "f42/flatpak-runtime"
+        product_name: "Test Product"
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/flatpak_remote.yml
+      vars:
+        flatpak_remote_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

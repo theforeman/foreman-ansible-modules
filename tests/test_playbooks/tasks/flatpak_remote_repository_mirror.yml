@@ -1,0 +1,21 @@
+---
+- name: "Mirror Flatpak Remote Repository '{{ flatpak_remote_repository_name }}'"
+  vars:
+    flatpak_remote_name: "Fedora"
+    organization_name: "Test Organization"
+  flatpak_remote_repository_mirror:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    flatpak_remote: "{{ flatpak_remote_name }}"
+    flatpak_remote_repository: "{{ flatpak_remote_repository_name }}"
+    product: "{{ product_name }}"
+  register: result
+- assert:
+    fail_msg: "Mirroring Flatpak Remote Repository '{{ flatpak_remote_repository_name }}' failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined
+...
