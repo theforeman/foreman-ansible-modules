@@ -1,0 +1,14 @@
+---
+- name: "Scan Flatpak Remote '{{ flatpak_remote_name }}'"
+  vars:
+    flatpak_remote_name: "Fedora"
+    organization_name: "Test Organization"
+  flatpak_remote_scan:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    flatpak_remote: "{{ flatpak_remote_name }}"
+  register: result
+...
