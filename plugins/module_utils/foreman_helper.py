@@ -1080,6 +1080,13 @@ class ForemanAnsibleModule(AnsibleModule):
                 old_value = sorted(old_value, key=operator.itemgetter(sort_key))
             if new_value != old_value:
                 payload[key] = value
+        # workaround to ensure LCE and CV are always sent together, even if only one changed
+        # using the values from the existing entity, so the user doesn't need to pass it in their playbook
+        if resource == 'hosts':
+            if 'content_view_id' in payload and 'lifecycle_environment_id' not in payload:
+                payload['lifecycle_environment_id'] = current_flat_entity['lifecycle_environment_id']
+            elif 'lifecycle_environment_id' in payload and 'content_view_id' not in payload:
+                payload['content_view_id'] = current_flat_entity['content_view_id']
         if self._validate_supported_payload(resource, 'update', payload):
             self.set_changed()
             payload['id'] = current_flat_entity['id']
