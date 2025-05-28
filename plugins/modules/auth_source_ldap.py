@@ -101,10 +101,10 @@ options:
     description: Base DN where groups reside.
     required: false
     type: str
-  use_netgroups:
-    description: Whether to use NIS netgroups instead of posix groups, not valid for I(server_type=active_directory)
+  ldap_group_membership:
+    description: Which group membership method to use, not valid for I(server_type=active_directory). Option I(rfc4519) is valid only for I(server_type=posix).
     required: false
-    type: bool
+    choices: ["posix", "nis_netgroups", "rfc4519"]
   server_type:
     description: Type of the LDAP server
     required: false
@@ -215,14 +215,19 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
-            use_netgroups=dict(type='bool'),
+            ldap_group_membership=dict(choices=["posix", "nis_netgroups", "rfc4519"]),
         ),
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
     )
 
     # additional parameter checks
-    if 'use_netgroups' in module.foreman_params and module.foreman_params['server_type'] == 'active_directory':
-        module.fail_json(msg='use_netgroups cannot be used when server_type=active_directory')
+    server_type = module.foreman_params['server_type']
+    if 'ldap_group_membership' in module.foreman_params and server_type == 'active_directory'
+        module.fail_json(msg='ldap_group_membership cannot be used when server_type=active_directory')
+
+
+    if 'ldap_group_membership' in module.foreman_params and module.foreman_params['ldap_group_membership'] == 'rfc4519' and server_type != 'posix':
+        module.fail_json(msg=f'ldap_group_membership=rfc4519 cannot be used when server_type={{ server_type }}')
 
     with module.api_connection():
         module.run()
