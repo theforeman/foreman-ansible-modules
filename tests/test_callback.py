@@ -9,10 +9,11 @@ except ImportError:
 
 from .conftest import run_playbook, get_ansible_version, assert_no_warnings
 
+ansible_version = get_ansible_version()
+
 
 def run_playbook_callback(tmpdir, report_type):
     extra_env = {}
-    ansible_version = get_ansible_version()
     if LooseVersion(ansible_version) < LooseVersion('2.11'):
         extra_env['ANSIBLE_CALLBACK_WHITELIST'] = "theforeman.foreman.foreman"
         extra_env['ANSIBLE_COMMAND_WARNINGS'] = "0"
@@ -90,7 +91,10 @@ def run_callback(tmpdir, report_type, vcrmode):
                 json.dump(real_contents, f, indent=2, sort_keys=True)
         else:
             with open(fixture, 'r') as f:
-                expected_contents = json.load(f)
+                fixture_data = f.read()
+                if LooseVersion(ansible_version) >= LooseVersion('2.19'):
+                    fixture_data = fixture_data.replace('ENCRYPTED_VAULT_VALUE_NOT_REPORTED', 'admin')
+                expected_contents = json.loads(fixture_data)
                 expected_contents = drop_incompatible_items(expected_contents)
                 real_contents = drop_incompatible_items(real_contents)
                 assert expected_contents == real_contents, "Fixture {fixture_name} differs, run with -vvvv to see the diff".format(fixture_name=fixture_name)
