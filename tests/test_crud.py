@@ -11,13 +11,6 @@ from .conftest import TEST_PLAYBOOKS, INVENTORY_PLAYBOOKS, run_playbook, run_pla
 
 ANSIBLE_SUPPORTS_MODULE_DEFAULTS = LooseVersion(get_ansible_version()) >= LooseVersion('2.12')
 
-if sys.version_info[0] == 2:
-    for envvar in os.environ.keys():
-        try:
-            os.environ[envvar] = os.environ[envvar].decode('utf-8').encode('ascii', 'ignore')
-        except UnicodeError:
-            os.environ.pop(envvar)
-
 
 @pytest.mark.parametrize('module', TEST_PLAYBOOKS)
 def test_crud(tmpdir, module, vcrmode):
