@@ -42,7 +42,7 @@ def drop_incompatible_items(d):
     for k, v in d.items():
         if k in ['msg', 'start', 'end', 'delta', 'uuid', 'timeout', '_ansible_no_log', 'warn', 'connection',
                  'extended_allitems', 'loop_control', 'expand_argument_vars', 'retries', 'parent', 'parent_type', 'finalized', 'squashed', 'no_log',
-                 'listen', '_ansible_internal_redirect_list']:
+                 'listen', '_ansible_internal_redirect_list', 'exception', 'resolved_action', 'delay']:
             continue
 
         if isinstance(v, dict):
@@ -74,6 +74,8 @@ def run_callback(tmpdir, report_type, vcrmode):
             contents = re.sub(r"\\\"_ansible_no_log\\\": [^,]+, ", "", contents)
             contents = re.sub(r", \\\"warn\\\": false", "", contents)
             contents = re.sub(r", \\\"expand_argument_vars\\\": true", "", contents)
+            contents = re.sub(r", \\\"cmd\\\": null", "", contents)
+            contents = re.sub(r", \\\"exception\\\": [^,]+", "", contents)
         real_contents = json.loads(contents)
         if report_type == "foreman":
             try:
