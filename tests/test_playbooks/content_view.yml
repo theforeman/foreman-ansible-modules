@@ -209,6 +209,43 @@
         content_view_state: absent
         expected_change: false
 
+    # Rolling Content Views
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        expected_change: true
+        rolling: true
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+        expected_diff: true
+        expected_diff_before: "{}"
+        expected_diff_after: "Test Content View"
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        expected_change: false
+        rolling: true
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+        expected_change: true
+        rolling: true
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+        expected_change: false
+        rolling: true
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+
 - hosts: localhost
   collections:
     - theforeman.foreman

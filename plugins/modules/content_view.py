@@ -73,6 +73,11 @@ options:
       - Designate this Content View for importing from upstream servers only.
     type: bool
     version_added: 3.14.0
+  rolling:
+    description:
+      - A rolling content view contains latest synced state of repositories.
+    type: bool
+    version_added: 5.5.0
   composite:
     description:
       - A composite view contains other content views.
@@ -133,6 +138,18 @@ EXAMPLES = '''
         content_view_version: 1.0
       - content_view: Internal CV
         latest: true
+
+- name: "Create or update rolling content view"
+  theforeman.foreman.content_view:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "Fedora RCV"
+    organization: "My Cool new Organization"
+    rolling: true
+    repositories:
+      - name: 'Fedora 26'
+        product: 'Fedora'
 '''
 
 RETURN = '''
@@ -170,6 +187,7 @@ def main():
             description=dict(),
             label=dict(),
             composite=dict(type='bool', default=False),
+            rolling=dict(type='bool'),
             auto_publish=dict(type='bool', default=False),
             solve_dependencies=dict(type='bool'),
             import_only=dict(type='bool'),
