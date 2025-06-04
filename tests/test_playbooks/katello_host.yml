@@ -1,0 +1,112 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_organizations:
+          - "{{ host.organization }}"
+        location_state: present
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "Dev"
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_name: "{{ foreman_proxy }}"
+        smart_proxy_locations:
+          - "{{ host.location }}"
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_name: "MyCV"
+        content_view_state: present
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        content_view_name: "MyCV"
+        lifecycle_environments:
+          - Library
+          - Dev
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - name: create host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_content_source: "{{ foreman_proxy }}"
+        host_content_view_environments: Dev/MyCV
+        host_managed: false
+        host_state: present
+        expected_change: true
+
+    - name: create host again, no change
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_organization: "{{ host.organization }}"
+        host_location: "{{ host.location }}"
+        host_content_source: "{{ foreman_proxy }}"
+        host_content_view_environments: Dev/MyCV
+        host_managed: false
+        host_state: present
+        expected_change: false
+
+    - name: delete host
+      include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+        expected_change: true
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+    - vars/host.yml
+  tasks:
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_name: "MyCV"
+        content_view_state: absent
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: absent
+        lifecycle_environment_name: "Dev"
+    - include_tasks: tasks/host.yml
+      vars:
+        host_name: "test-host.{{ host.domain }}"
+        host_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "{{ host.location }}"
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "{{ host.organization }}"
+        organization_state: absent
+...
