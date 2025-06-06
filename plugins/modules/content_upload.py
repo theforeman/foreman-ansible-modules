@@ -111,7 +111,7 @@ except ImportError:
     HAS_RPM = False
     RPM_IMP_ERR = traceback.format_exc()
 
-CONTENT_CHUNK_SIZE = 2 * 1024 * 1024
+CONTENT_CHUNK_SIZE = 1 * 1024 * 1024
 
 
 def get_deb_info(path):
