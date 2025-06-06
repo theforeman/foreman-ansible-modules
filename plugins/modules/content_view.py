@@ -78,6 +78,14 @@ options:
       - A rolling content view contains latest synced state of repositories.
     type: bool
     version_added: 5.5.0
+  lifecycle_environments:
+    description:
+      - List of lifecycle environments that content of this rolling content view will be promoted to.
+      - Only valid for I(rolling=True).
+    required: False
+    type: list
+    elements: str
+    version_added: 5.9.0
   composite:
     description:
       - A composite view contains other content views.
@@ -192,6 +200,7 @@ def main():
             solve_dependencies=dict(type='bool'),
             import_only=dict(type='bool'),
             components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
+            lifecycle_environments=dict(type='entity_list', flat_name='environment_ids'),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
@@ -200,7 +209,7 @@ def main():
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
         ),
-        mutually_exclusive=[['repositories', 'components']],
+        mutually_exclusive=[['repositories', 'components'], ['lifecycle_environments', 'components']],
         entity_opts=dict(thin=False),
     )
 
@@ -225,6 +234,10 @@ def main():
                         product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
                         repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
                     module.foreman_params['repositories'] = repositories
+
+            if 'lifecycle_environments' in module.foreman_params:
+                if module.foreman_params['rolling'] is not True:
+                    module.fail_json(msg="Lifecycle Environments can only be specified for Rolling Content View.")
 
         if entity and module.desired_absent:
             for lce in entity.get('environments', []):

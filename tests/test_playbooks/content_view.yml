@@ -23,6 +23,22 @@
       vars:
         product_name: "Test Product 2"
         repository_state: present
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Test
+          label: test
+          prior: Library
+        - name: QA
+          label: qa
+          prior: Test
+        - name: Prod
+          label: prod
+          prior: QA
     - include_tasks: tasks/content_view.yml
       vars:
         content_view_name: "Test Composite Content View"
@@ -214,6 +230,10 @@
       vars:
         content_view_state: present
         expected_change: true
+        lifecycle_environments:
+          - QA
+          - Test
+          - Prod
         rolling: true
         repositories:
           - name: "Test Repository"
@@ -225,6 +245,10 @@
       vars:
         content_view_state: present
         expected_change: false
+        lifecycle_environments:
+          - QA
+          - Prod
+          - Test
         rolling: true
         repositories:
           - name: "Test Repository"
@@ -233,6 +257,10 @@
       vars:
         content_view_state: absent
         expected_change: true
+        lifecycle_environments:
+          - Test
+          - QA
+          - Prod
         rolling: true
         repositories:
           - name: "Test Repository"

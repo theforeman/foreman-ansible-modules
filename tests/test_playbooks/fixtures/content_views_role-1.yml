@@ -14,18 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.7.1","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.17.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '62'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '71'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -35,21 +31,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,8 +72,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-11-15
-        10:37:36 UTC\",\"updated_at\":\"2023-11-15 10:37:38 UTC\",\"id\":6,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-09-10
+        16:29:02 UTC\",\"updated_at\":\"2025-09-10 16:29:07 UTC\",\"id\":3,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -80,10 +82,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '388'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -93,21 +91,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -123,10 +127,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/6/content_views?search=name%3D%22Test+Composite+Content+View%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/content_views?search=name%3D%22Test+Composite+Content+View%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
+      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
         Composite Content View\"","sort":{"by":"name","order":"asc"},"results":[]}
 
         '
@@ -136,11 +140,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '182'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '180'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -148,29 +148,35 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 6; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Test Composite Content View", "composite": true, "auto_publish":
-      false}'
+    body: '{"name": "Test Composite Content View", "composite": true, "rolling": false,
+      "auto_publish": false}'
     headers:
       Accept:
       - application/json;version=2
@@ -179,19 +185,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '81'
+      - '99'
       Content-Type:
       - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://foreman.example.org/katello/api/organizations/6/content_views
+    uri: https://foreman.example.org/katello/api/organizations/3/content_views
   response:
     body:
-      string: '  {"content_host_count":0,"composite":true,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":false,"repository_ids":[],"id":13,"name":"Test
-        Composite Content View","label":"Test_Composite_Content_View","description":null,"organization_id":6,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":6},"created_at":"2023-11-15
-        10:37:43 UTC","updated_at":"2023-11-15 10:37:43 UTC","last_task":null,"latest_version_environments":[],"repositories":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[],"duplicate_repositories_to_publish":[],"errors":null}
+      string: '  {"content_host_count":0,"composite":true,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":true,"environment_ids":[],"repository_ids":[],"id":4,"name":"Test
+        Composite Content View","label":"Test_Composite_Content_View","description":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2025-09-10
+        16:29:21 UTC","updated_at":"2025-09-10 16:29:21 UTC","last_task":null,"latest_version_environments":[],"repositories":[],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[],"errors":null}
 
         '
     headers:
@@ -200,11 +206,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '893'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '929'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -212,23 +214,29 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 6; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 201
       message: Created
@@ -244,14 +252,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/6/content_views?search=name%3D%22Test+Content+View%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/3/content_views?search=name%3D%22Test+Content+View%22&per_page=4294967296
   response:
     body:
-      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":false,"repository_ids":[21],"id":12,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":6,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":6},"created_at":"2023-11-15
-        10:37:43 UTC","updated_at":"2023-11-15 10:37:43 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":21,"name":"Test
+      string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
+        Content View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":true,"environment_ids":[],"repository_ids":[1],"id":3,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2025-09-10
+        16:29:19 UTC","updated_at":"2025-09-10 16:29:19 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":1,"name":"Test
         Repository","label":"Test_Repository","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]}]}
 
         '
@@ -261,11 +269,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1050'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '1121'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -273,23 +277,29 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 6; Test Organization
+      - 3; Test Organization
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=96
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -305,14 +315,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_views/12
+    uri: https://foreman.example.org/katello/api/content_views/3
   response:
     body:
-      string: '  {"content_host_count":0,"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":false,"repository_ids":[21],"id":12,"name":"Test
-        Content View","label":"Test_Content_View","description":null,"organization_id":6,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":6},"created_at":"2023-11-15
-        10:37:43 UTC","updated_at":"2023-11-15 10:37:43 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":21,"name":"Test
-        Repository","label":"Test_Repository","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[],"duplicate_repositories_to_publish":[],"errors":null}
+      string: '  {"content_host_count":0,"composite":false,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":true,"environment_ids":[],"repository_ids":[1],"id":3,"name":"Test
+        Content View","label":"Test_Content_View","description":null,"organization_id":3,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":3},"created_at":"2025-09-10
+        16:29:19 UTC","updated_at":"2025-09-10 16:29:19 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":1,"name":"Test
+        Repository","label":"Test_Repository","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[],"errors":null}
 
         '
     headers:
@@ -321,11 +331,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '957'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '991'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -335,26 +341,32 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=95
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
 - request:
-    body: '{"components": [{"latest": true, "content_view_id": 12}]}'
+    body: '{"components": [{"latest": true, "content_view_id": 3}]}'
     headers:
       Accept:
       - application/json;version=2
@@ -363,18 +375,18 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '57'
+      - '56'
       Content-Type:
       - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://foreman.example.org/katello/api/content_views/13/content_view_components/add
+    uri: https://foreman.example.org/katello/api/content_views/4/content_view_components/add
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":null,"per_page":null,"error":null,"search":null,"sort":{"by":null,"order":null},"results":[{"latest":true,"id":1,"created_at":"2023-11-15
-        10:37:43 UTC","updated_at":"2023-11-15 10:37:43 UTC","composite_content_view":{"id":13,"name":"Test
-        Composite Content View","label":"Test_Composite_Content_View","description":null,"next_version":1,"latest_version":null,"version_count":0},"content_view":{"id":12,"name":"Test
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":null,"per_page":null,"error":null,"search":null,"sort":{"by":null,"order":null},"results":[{"latest":true,"id":1,"created_at":"2025-09-10
+        16:29:22 UTC","updated_at":"2025-09-10 16:29:22 UTC","composite_content_view":{"id":4,"name":"Test
+        Composite Content View","label":"Test_Composite_Content_View","description":null,"next_version":1,"latest_version":null,"version_count":0},"content_view":{"id":3,"name":"Test
         Content View","label":"Test_Content_View","description":null,"next_version":1,"latest_version":null,"version_count":0},"content_view_version":null,"component_content_view_versions":[]}]}
 
         '
@@ -384,11 +396,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '647'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '645'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -398,21 +406,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.17.0-develop
       Keep-Alive:
       - timeout=15, max=94
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
