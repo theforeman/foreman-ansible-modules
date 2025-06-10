@@ -960,3 +960,18 @@ releases:
       - ca_path.yml
       - kerberos.yml
     release_date: '2025-03-20'
+  5.4.0:
+    changes:
+      bugfixes:
+        - content_upload - lower chunk size to 1MB to avoid generating too big requests
+          (https://github.com/theforeman/foreman-ansible-modules/issues/1862)
+        - host - ensure LCE and CV are always sent together when updating one of them
+      minor_changes:
+        - repository - add ``rhel-10`` to os version filter choices
+        - repository - add support for the ``retain_package_versions_count`` parameter
+    fragments:
+      - 1862-content-upload-chunk-size.yml
+      - 1867-host-always-send-lce-cv.yml
+      - repository-retain_package_versions_count.yml
+      - repository-rhel-10.yml
+    release_date: '2025-06-10'

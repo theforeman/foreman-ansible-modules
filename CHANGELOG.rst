@@ -6,6 +6,21 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.4.0
+======
+
+Minor Changes
+-------------
+
+- repository - add ``rhel-10`` to os version filter choices
+- repository - add support for the ``retain_package_versions_count`` parameter
+
+Bugfixes
+--------
+
+- content_upload - lower chunk size to 1MB to avoid generating too big requests (https://github.com/theforeman/foreman-ansible-modules/issues/1862)
+- host - ensure LCE and CV are always sent together when updating one of them
+
 v5.3.0
 ======
 
