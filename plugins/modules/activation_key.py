@@ -82,7 +82,7 @@ options:
   content_overrides:
     description:
       - List of content overrides that include label and override state
-      - Label refers to repository in the format: <organizationLabel>_<productLabel>_<repositoryLabel>, e.g. ExampleOrganization_ExampleProduct_ExampleRepository
+      - Label refers to repository in the format: <organizationLabel>_<productLabel>_<repositoryLabel>, e.g. ExampleOrg_ExampleProduct_ExampleRepository
       - Override state ('enabled', 'disabled', or 'default') sets initial state of repository for newly registered hosts
     type: list
     elements: dict
