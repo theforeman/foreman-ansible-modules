@@ -176,7 +176,9 @@ EXAMPLES = '''
       - rhel7-servers
       - rhel7-production
     content_overrides:
-      - label: ExampleOrganization_ExampleProduct_ExampleRepository
+      - label: rhel-7-server-rpms
+        override: enabled
+      - label: ExampleOrganization_ExampleCustomProduct_ExampleRepository
         override: enabled
     auto_attach: false
     release_version: 7Server
