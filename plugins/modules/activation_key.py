@@ -82,7 +82,7 @@ options:
   content_overrides:
     description:
       - List of content overrides that include label and override state
-      - Label refers to repository C(content_label), e.g. rhel-7-server-rpms
+      - Label refers to repository in the format: <organizationLabel>_<productLabel>_<repositoryLabel>, e.g. ExampleOrganization_ExampleProduct_ExampleRepository
       - Override state ('enabled', 'disabled', or 'default') sets initial state of repository for newly registered hosts
     type: list
     elements: dict
@@ -174,7 +174,7 @@ EXAMPLES = '''
       - rhel7-servers
       - rhel7-production
     content_overrides:
-      - label: rhel-7-server-optional-rpms
+      - label: ExampleOrganization_ExampleProduct_ExampleRepository
         override: enabled
     auto_attach: false
     release_version: 7Server
