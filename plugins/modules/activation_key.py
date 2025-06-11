@@ -82,7 +82,9 @@ options:
   content_overrides:
     description:
       - List of content overrides that include label and override state
-      - Label refers to repository in the format: <organizationLabel>_<productLabel>_<repositoryLabel>, e.g. ExampleOrg_ExampleProduct_ExampleRepository
+      - Label refers to repository C(content_label).
+      - For Red Hat products for example C(rhel-7-server-rpms).
+      - For custom products it's in the format: C(<organization_label>_<product_label>_<repositoryLabel>), e.g. C(ExampleOrg_ExampleProduct_ExampleRepository).
       - Override state ('enabled', 'disabled', or 'default') sets initial state of repository for newly registered hosts
     type: list
     elements: dict
