@@ -259,7 +259,9 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <a class="ansibleOptionLink" href="#parameter-content_overrides" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>List of content overrides that include label and override state</p>
-<p>Label refers to repository <code class="docutils literal notranslate"><span class="pre">content_label</span></code>, e.g. rhel-7-server-rpms</p>
+<p>Label refers to repository <code class="docutils literal notranslate"><span class="pre">content_label</span></code>.</p>
+<p>For Red Hat products for example <code class="docutils literal notranslate"><span class="pre">rhel-7-server-rpms</span></code>.</p>
+<p>For custom products it’s in the format <code class="docutils literal notranslate"><span class="pre">&lt;organization_label&gt;_&lt;product_label&gt;_&lt;repository_label&gt;</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">ExampleOrg_ExampleProduct_ExampleRepository</span></code>.</p>
 <p>Override state (‘enabled’, ‘disabled’, or ‘default’) sets initial state of repository for newly registered hosts</p>
 </div></td>
 </tr>
@@ -543,7 +545,9 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel7-servers</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel7-production</span>
 <span class="w">    </span><span class="nt">content_overrides</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel-7-server-optional-rpms</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rhel-7-server-rpms</span>
+<span class="w">        </span><span class="nt">override</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enabled</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExampleOrganization_ExampleCustomProduct_ExampleRepository</span>
 <span class="w">        </span><span class="nt">override</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enabled</span>
 <span class="w">    </span><span class="nt">auto_attach</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">release_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7Server</span>

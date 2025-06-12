@@ -29,6 +29,8 @@ The following fields are optional and will be omitted by default:
 - `host_collections`: List of Host Collections to associate with the activation key.
 - `subscriptions`: List of Subscriptions to associate with the activation key. Each Subscription is required to have one of `name`, `pool_id`, or `upstream_pool_id`. Of these, only the `pool_id` is guaranteed to be unique. `upstream_pool_id` only exists for subscriptions imported from a 3rd party organization (e.g. on a Red Hat Subscription Manifest). When uniqueness is not an issue, `name` or `upstream_pool_id` can be easier to work with since the `pool_id` does not get determined until the subscription is imported or created and therefore may not yet be determined when you are writing playbooks.
 - `content_overrides`: List of Content Overrides for the activation key. Each Content Override is required to have a `label` which refers to a repository and `override` which refers to one of the states enabled, disabled, or default.
+For Red Hat products the `label` is the repository label, e.g. `rhel-7-server-rpms`.
+For custom products it's in the format `<organization_label>_<product_label>_<repository_label>`, e.g. `ExampleOrg_ExampleCustomProduct_ExampleRepository`.
 - `release_version`: Release Version to set when registering hosts with the activation key.
 - `service_level`: Service Level to set when registering hosts with the activation key. Premium, Standard, or Self-Support. This will limit Subscriptions available to hosts to those matching this service level.
 - `purpose_usage`: System Purpose Usage to set when registering hosts with the activation key. Production, Development/Test, Disaster Recovery. When left unset this will not set System Purpose Usage on registering hosts. This should only be used when it is supported by the OS of registering hosts (RHEL 8 only at the time of writing).
@@ -76,6 +78,11 @@ Define two Activation Keys. The first registers hosts in the "ACME" organization
             lifecycle_environment: "Test"
             content_view: "RHEL7_Base"
             organization: "Base_Test"
+            content_overrides:
+              - label: rhel-7-server-rpms
+                override: enabled
+              - label: ExampleOrganization_ExampleCustomProduct_ExampleRepository
+                override: enabled
 ```
 
 Following the second example, a Host which is registered using `subscription-manager register --activationkey ACME_App_Key,ACME_RHEL7_Base_Test` will get the ACME_App subscription, Test LCE, RHEL7_Base Content View, and auto-attach any additional necessary subscriptions from ACME Organization to cover the Base OS and any other products which require an entitlement certificate.

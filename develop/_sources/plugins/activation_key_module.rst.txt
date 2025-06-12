@@ -196,7 +196,11 @@ Parameters
 
       List of content overrides that include label and override state
 
-      Label refers to repository :literal:`content\_label`\ , e.g. rhel-7-server-rpms
+      Label refers to repository :literal:`content\_label`.
+
+      For Red Hat products for example :literal:`rhel-7-server-rpms`.
+
+      For custom products it's in the format :literal:`\<organization\_label\>\_\<product\_label\>\_\<repository\_label\>`\ , e.g. :literal:`ExampleOrg\_ExampleProduct\_ExampleRepository`.
 
       Override state ('enabled', 'disabled', or 'default') sets initial state of repository for newly registered hosts
 
@@ -1347,7 +1351,9 @@ Examples
           - rhel7-servers
           - rhel7-production
         content_overrides:
-          - label: rhel-7-server-optional-rpms
+          - label: rhel-7-server-rpms
+            override: enabled
+          - label: ExampleOrganization_ExampleCustomProduct_ExampleRepository
             override: enabled
         auto_attach: false
         release_version: 7Server
