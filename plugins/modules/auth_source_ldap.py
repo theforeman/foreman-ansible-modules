@@ -101,9 +101,17 @@ options:
     description: Base DN where groups reside.
     required: false
     type: str
+  use_netgroups:
+    description:
+      - Whether to use NIS netgroups instead of posix groups, not valid for I(server_type=active_directory)
+      - "Deprecated: The I(use_netgroups) parameter is deprecated with Foreman 3.16
+         in favor of I(ldap_group_membership) and will be removed in a future release."
+    required: false
+    type: bool
   ldap_group_membership:
     description: Which group membership method to use, not valid for I(server_type=active_directory). Option I(rfc4519) is valid only for I(server_type=posix).
     required: false
+    type: str
     choices: ["posix", "nis_netgroups", "rfc4519"]
   server_type:
     description: Type of the LDAP server
@@ -215,21 +223,34 @@ def main():
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
+            use_netgroups=dict(type='bool'),
             ldap_group_membership=dict(choices=["posix", "nis_netgroups", "rfc4519"]),
         ),
         required_if=[['onthefly_register', True, ['attr_login', 'attr_firstname', 'attr_lastname', 'attr_mail']]],
     )
 
     # additional parameter checks
-    server_type = module.foreman_params['server_type']
-    if 'ldap_group_membership' in module.foreman_params and server_type == 'active_directory'
-        module.fail_json(msg='ldap_group_membership cannot be used when server_type=active_directory')
+    use_netgroups = module.foreman_params.get('use_netgroups')
+    server_type = module.foreman_params.get('server_type', 'posix')
 
+    if server_type == 'active_directory' and ('ldap_group_membership' in module.foreman_params or 'use_netgroups' in module.foreman_params):
+        module.fail_json(msg='ldap_group_membership and use_netgroup params cannot be used when server_type=active_directory')
 
     if 'ldap_group_membership' in module.foreman_params and module.foreman_params['ldap_group_membership'] == 'rfc4519' and server_type != 'posix':
-        module.fail_json(msg=f'ldap_group_membership=rfc4519 cannot be used when server_type={{ server_type }}')
+        module.fail_json(msg=f'ldap_group_membership=rfc4519 cannot be used when server_type={server_type}')
 
     with module.api_connection():
+        _supported_params, unsupported_params = module.foremanapi.validate_payload('auth_source_ldaps', 'create', module.foreman_params)
+        # Priority: ldap_group_membership > use_netgroups > use_netgroups derived from ldap_group_membership
+        if 'ldap_group_membership' in unsupported_params:
+            ldap_group_membership = module.foreman_params.pop('ldap_group_membership')
+            if use_netgroups is None:
+                derived = ldap_group_membership == 'nis_netgroups'
+                module.warn(
+                    f"Server does not support ldap_group_membership parameter and no use_netgroups value was provided, using derived use_netgroups={derived}"
+                )
+                module.foreman_params['use_netgroups'] = derived
+
         module.run()
 
 
