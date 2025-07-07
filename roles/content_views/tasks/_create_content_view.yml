@@ -9,7 +9,7 @@
     name: "{{ content_view.name }}"
     auto_publish: "{{ content_view.auto_publish | default(omit) }}"
     components: "{{ content_view.components | default(omit) }}"
-    composite: "{{ content_view.composite | default(false) | ternary(true, false) }}"
+    composite: "{{ content_view.components | default(content_view.composite) | default(false) | ternary(true, false) }}"
     description: "{{ content_view.description | default(omit) }}"
     label: "{{ content_view.label | default(omit) }}"
     repositories: "{{ content_view.repositories | default(omit) }}"
