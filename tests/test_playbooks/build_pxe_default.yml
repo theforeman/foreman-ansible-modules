@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Build PXE default
+      include_tasks: tasks/build_pxe_default.yml
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
+...

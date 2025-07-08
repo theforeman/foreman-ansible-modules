@@ -1,0 +1,20 @@
+---
+- name: "Build PXE default"
+  vars:
+    organization_name: "Test Organization"
+    location_name: "Test Location"
+  build_pxe_default:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    location: "{{ location_name }}"
+  register: result
+  ignore_errors: "{{ expected_fail | default(false) }}"
+- assert:
+    fail_msg: "Building PXE default failed! (expected_change: True)"
+    that:
+      - result.changed
+  when:
+    - expected_fail is not defined or not expected_fail
