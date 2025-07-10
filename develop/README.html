@@ -65,6 +65,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-defaults-groups">Module defaults groups</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#foreman-ansible-roles">Foreman Ansible Roles</a><ul>
@@ -231,6 +232,33 @@ Please make sure to set a high enough <code class="docutils literal notranslate"
 <li><p><code class="docutils literal notranslate"><span class="pre">rpm</span></code> for the RPM support in the <code class="docutils literal notranslate"><span class="pre">content_upload</span></code> module</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">debian</span></code> for the DEB support in the <code class="docutils literal notranslate"><span class="pre">content_upload</span></code> module</p></li>
 </ul>
+</section>
+<section id="module-defaults-groups">
+<h2>Module defaults groups<a class="headerlink" href="#module-defaults-groups" title="Link to this heading"></a></h2>
+<p>With ansible-core &gt;= 2.12 and version &gt;= 3.4.0 of the collection it is possible to specify defaults parameters for all modules in this collection using <a class="reference external" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_module_defaults.html#module-defaults-groups">Module defaults groups</a>. Use it like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure Foreman</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foreman.example.com</span>
+
+<span class="w">  </span><span class="nt">module_defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">group/theforeman.foreman.foreman</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://foreman.example.com&quot;</span>
+<span class="w">      </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;admin&quot;</span>
+<span class="w">      </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;changeme&quot;</span>
+
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup architecture</span>
+<span class="w">      </span><span class="nt">theforeman.foreman.architecture</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;x86_64&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Setup sync plan</span>
+<span class="w">      </span><span class="nt">theforeman.foreman.sync_plan</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">organization</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Default</span><span class="nv"> </span><span class="s">Organization&quot;</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Daily&quot;</span>
+<span class="w">        </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;daily&quot;</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">sync_date</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2025-07-10</span><span class="nv"> </span><span class="s">00:00:00</span><span class="nv"> </span><span class="s">+0000&quot;</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="foreman-ansible-roles">

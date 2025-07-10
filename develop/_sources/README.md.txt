@@ -129,6 +129,34 @@ These dependencies are required for the Ansible controller, not the Foreman serv
 * `rpm` for the RPM support in the `content_upload` module
 * `debian` for the DEB support in the `content_upload` module
 
+## Module defaults groups
+
+With ansible-core >= 2.12 and version >= 3.4.0 of the collection it is possible to specify defaults parameters for all modules in this collection using [Module defaults groups](https://docs.ansible.com/ansible/latest/user_guide/playbooks_module_defaults.html#module-defaults-groups). Use it like this:
+
+```yaml
+---
+- name: Configure Foreman
+  hosts: foreman.example.com
+
+  module_defaults:
+    group/theforeman.foreman.foreman:
+      server_url: "https://foreman.example.com"
+      username: "admin"
+      password: "changeme"
+
+  tasks:
+    - name: Setup architecture
+      theforeman.foreman.architecture:
+        name: "x86_64"
+    - name: Setup sync plan
+      theforeman.foreman.sync_plan:
+        organization: "Default Organization"
+        name: "Daily"
+        interval: "daily"
+        enabled: true
+        sync_date: "2025-07-10 00:00:00 +0000"
+```
+
 # Foreman Ansible Roles
 
 Roles using the Foreman Ansible Modules to configure Foreman and its plugins.
