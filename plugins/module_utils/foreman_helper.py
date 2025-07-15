@@ -1087,6 +1087,11 @@ class ForemanAnsibleModule(AnsibleModule):
                 payload['lifecycle_environment_id'] = current_flat_entity['lifecycle_environment_id']
             elif 'lifecycle_environment_id' in payload and 'content_view_id' not in payload:
                 payload['content_view_id'] = current_flat_entity['content_view_id']
+        elif resource == 'activation_keys':
+            if 'content_view_id' in payload and 'environment_id' not in payload:
+                payload['environment_id'] = current_flat_entity['environment_id']
+            elif 'environment_id' in payload and 'content_view_id' not in payload:
+                payload['content_view_id'] = current_flat_entity['content_view_id']
         if self._validate_supported_payload(resource, 'update', payload):
             self.set_changed()
             payload['id'] = current_flat_entity['id']
