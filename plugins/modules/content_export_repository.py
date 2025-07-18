@@ -29,6 +29,11 @@ description:
 author:
     - "Jeremy Lenz (@jeremylenz)"
 options:
+  destination_server:
+    description:
+      - Destination server name; optional parameter to differentiate between exports
+    required: false
+    type: str
   repository:
     description:
       - Name of the repository to export.
