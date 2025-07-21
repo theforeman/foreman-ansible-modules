@@ -198,15 +198,31 @@ def main():
             ensure_puppetclasses(module, 'hostgroup', entity, expected_puppetclasses)
 
         ansible_roles = module_params.get('ansible_roles')
+
+        parent_ansible_role_ids = []
+
         if not module.desired_absent and ansible_roles is not None:
             desired_ansible_role_ids = [item['id'] for item in ansible_roles]
+
+            if entity.get('parent_id') is not None:
+                parent_ansible_role_ids = [
+                    item['id']
+                    for item in module.resource_action(
+                        'hostgroups',
+                        'ansible_roles',
+                        {'id': entity['parent_id']},
+                        ignore_check_mode=True,
+                        record_change=False,
+                    )
+                ]
+
             current_ansible_role_ids = [
                 item['id'] for item in module.resource_action(
                     'hostgroups', 'ansible_roles', {'id': entity['id']},
                     ignore_check_mode=True, record_change=False,
                 )
             ] if old_entity else []
-            if set(current_ansible_role_ids) != set(desired_ansible_role_ids):
+            if set(current_ansible_role_ids) != set(desired_ansible_role_ids + parent_ansible_role_ids):
                 module.resource_action(
                     'hostgroups', 'assign_ansible_roles',
                     {'id': entity['id'], 'ansible_role_ids': desired_ansible_role_ids},
