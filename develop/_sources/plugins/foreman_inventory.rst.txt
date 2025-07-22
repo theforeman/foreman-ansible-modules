@@ -6,7 +6,7 @@
     :trim:
 
 .. meta::
-  :antsibull-docs: 2.18.0
+  :antsibull-docs: 2.19.1
 
 .. Anchors
 
@@ -773,7 +773,7 @@ Parameters
 
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
-      The default value when the host variable's value is an empty string.
+      The default value when the host variable's value is :ansval:`None` or an empty string.
 
       This option is mutually exclusive with :ansopt:`theforeman.foreman.foreman#inventory:keyed\_groups[].trailing\_separator`.
 
@@ -1011,7 +1011,7 @@ Parameters
 
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
-      Set this option to :ansval:`false` to omit the :ansopt:`theforeman.foreman.foreman#inventory:keyed\_groups[].separator` after the host variable when the value is an empty string.
+      Set this option to :ansval:`false` to omit the :ansopt:`theforeman.foreman.foreman#inventory:keyed\_groups[].separator` after the host variable when the value is :ansval:`None` or an empty string.
 
       This option is mutually exclusive with :ansopt:`theforeman.foreman.foreman#inventory:keyed\_groups[].default\_value`.
 
@@ -2246,11 +2246,24 @@ Parameters
         </div>
 
 
+.. note::
+
+    Configuration entries listed above for each entry type (Ansible variable, environment variable, and so on) have a low to high priority order.
+    For example, a variable that is lower in the list will override a variable that is higher up.
+    The entry types are also ordered by precedence from low to high priority order.
+    For example, an ansible.cfg entry (further up in the list) is overwritten by an Ansible variable (further down in the list).
+
 .. Attributes
 
 
 .. Notes
 
+Notes
+-----
+
+.. note::
+   - Inventories are not finalized at this stage, so the auto populated :literal:`all` and :literal:`ungrouped` groups will only reflect what previous inventory sources explicitly added to them.
+   - Runtime 'magic variables' are not available during inventory construction. For example, :literal:`groups` and :literal:`hostvars` do not exist yet.
 
 .. Seealso
 
@@ -2286,9 +2299,6 @@ Examples
 
 .. Authors
 
-
-.. hint::
-    Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
 
 .. Extra links
 
