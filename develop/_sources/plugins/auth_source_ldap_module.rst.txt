@@ -514,6 +514,49 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-ldap_group_membership"></div>
+
+      .. _ansible_collections.theforeman.foreman.auth_source_ldap_module__parameter-ldap_group_membership:
+
+      .. rst-class:: ansible-option-title
+
+      **ldap_group_membership**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-ldap_group_membership" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Which group membership method to use, not valid for :emphasis:`server\_type=active\_directory`. Option :emphasis:`rfc4519` is valid only for :emphasis:`server\_type=posix`.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"posix"`
+      - :ansible-option-choices-entry:`"nis\_netgroups"`
+      - :ansible-option-choices-entry:`"rfc4519"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-locations"></div>
 
       .. _ansible_collections.theforeman.foreman.auth_source_ldap_module__parameter-locations:
@@ -966,6 +1009,8 @@ Parameters
         <div class="ansible-option-cell">
 
       Whether to use NIS netgroups instead of posix groups, not valid for :emphasis:`server\_type=active\_directory`
+
+      Deprecated: The :emphasis:`use\_netgroups` parameter is deprecated with Foreman 3.16 in favor of :emphasis:`ldap\_group\_membership` and will be removed in a future release.
 
 
       .. rst-class:: ansible-option-line
