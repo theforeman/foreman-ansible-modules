@@ -36,6 +36,11 @@ Create a compute resource for vSphere, with a single image for RHEL 8.4.
         foreman_organization: "Default Organization"
         foreman_compute_resources:
           - name: "VMware"
+            organizations:
+              - "Default Organization"
+              - "Second Organization"
+            locations:
+              - "Default Location"
             provider: "vmware"
             provider_params:
               url: "vcenter.example.com"
