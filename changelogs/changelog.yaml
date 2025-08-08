@@ -975,3 +975,27 @@ releases:
       - repository-retain_package_versions_count.yml
       - repository-rhel-10.yml
     release_date: '2025-06-10'
+  5.5.0:
+    changes:
+      bugfixes:
+        - activation_key - ensure LCE and CV are always sent together when updating
+          one of them
+        - hostgroup - fix idempotency of hostgroup module when assigning Ansible roles
+          to a hostgroup with a parent hostgroup (https://github.com/theforeman/foreman-ansible-modules/issues/1865)
+      minor_changes:
+        - content_view - add ``rolling``-flag to create a Rolling Content View
+    fragments:
+      - ak-always-send-lce-cv.yml
+      - content_view-add_rolling.yml
+      - hostgroup_idempotency.yml
+    modules:
+      - description: Manage Flatpak Remotes
+        name: flatpak_remote
+        namespace: ''
+      - description: Mirror a Flatpak Remote Repository
+        name: flatpak_remote_repository_mirror
+        namespace: ''
+      - description: Scan a Flatpak Remote
+        name: flatpak_remote_scan
+        namespace: ''
+    release_date: '2025-08-08'

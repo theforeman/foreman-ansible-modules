@@ -6,6 +6,27 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.5.0
+======
+
+Minor Changes
+-------------
+
+- content_view - add ``rolling``-flag to create a Rolling Content View
+
+Bugfixes
+--------
+
+- activation_key - ensure LCE and CV are always sent together when updating one of them
+- hostgroup - fix idempotency of hostgroup module when assigning Ansible roles to a hostgroup with a parent hostgroup (https://github.com/theforeman/foreman-ansible-modules/issues/1865)
+
+New Modules
+-----------
+
+- theforeman.foreman.flatpak_remote - Manage Flatpak Remotes
+- theforeman.foreman.flatpak_remote_repository_mirror - Mirror a Flatpak Remote Repository
+- theforeman.foreman.flatpak_remote_scan - Scan a Flatpak Remote
+
 v5.4.0
 ======
 
