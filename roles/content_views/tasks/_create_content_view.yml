@@ -54,3 +54,6 @@
     architecture: "{{ item.architecture | default(omit) }}"
     rule_state: "{{ item.rule_state | default(omit) }}"
   loop: "{{ content_view.filters | default([]) }}"
+  when:
+    - not (item.original_packages | default(omit)) | bool
+    - not (item.original_module_streams | default(omit)) | bool
