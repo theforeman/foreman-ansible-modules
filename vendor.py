@@ -29,6 +29,9 @@ with fileinput.input() as f:
 
         # empty lines trigger buffer flushes
         if line == '':
+            # we got an empty try/except because we dropped all code inbetween
+            if len(buffer_lines) >= 2 and buffer_lines[0] == 'try:' and buffer_lines[1].startswith('except'):
+                buffer_lines.clear()
             output_lines.extend(buffer_lines)
             buffer_lines.clear()
             if output_lines and output_lines[-1] != '':
@@ -36,9 +39,12 @@ with fileinput.input() as f:
         # drop apypie imports (we have one file now) and future imports (they are already present in the header)
         elif line.startswith('from apypie') or line.startswith('from __future__'):
             continue
-        # we can't just import requests, Ansible's "import" sanity test fails without the try/except
-        elif line == 'import requests':
-            output_lines.extend(['try:', '    import requests', 'except ImportError:', '    pass'])
+        # drop requests imports, we use a different implementation
+        elif line in ['import requests', '    from requests_gssapi import HTTPKerberosAuth  # type: ignore',
+                      '        from requests_kerberos import HTTPKerberosAuth  # type: ignore']:
+            continue
+        elif line == '        HTTPKerberosAuth = None':
+            output_lines.append(line.strip())
         # drop blocks that only handle typing imports (fenced by either try or if TYPE_CHECKING)
         elif line in ['try:', 'if TYPE_CHECKING:'] or buffer_lines:
             buffer_lines.append(line)
@@ -54,6 +60,8 @@ with fileinput.input() as f:
             # inject a blank line before class or import statements
             if (line.startswith('class ') or line.startswith('import ') or line.startswith('def ')) and not output_lines[-1].startswith('import '):
                 output_lines.append('')
+            if line.endswith(' or requests.Session()'):
+                line = line.replace(' or requests.Session()', '')
             output_lines.append(line)
 
     # anything left in the buffer? flush it!

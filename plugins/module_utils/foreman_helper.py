@@ -21,7 +21,7 @@ from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
-from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils._text import to_native
 from ansible.module_utils import six
 
 try:
@@ -32,9 +32,10 @@ except ImportError:
 try:
     try:
         from ansible_collections.theforeman.foreman.plugins.module_utils import _apypie as apypie
+        from ansible_collections.theforeman.foreman.plugins.module_utils.ansible_requests import RequestSession
     except ImportError:
         from plugins.module_utils import _apypie as apypie
-    import requests.exceptions
+        from plugins.module_utils.ansible_requests import RequestSession
     HAS_APYPIE = True
     APYPIE_IMP_ERR = None
     inflector = apypie.Inflector()
@@ -615,12 +616,14 @@ class ForemanAnsibleModule(AnsibleModule):
         verify_ssl = self._foremanapi_ca_path if (self._foremanapi_validate_certs and self._foremanapi_ca_path) else self._foremanapi_validate_certs
         self.foremanapi = apypie.ForemanApi(
             uri=self._foremanapi_server_url,
-            username=to_bytes(self._foremanapi_username),
-            password=to_bytes(self._foremanapi_password),
+            username=self._foremanapi_username,
+            password=self._foremanapi_password,
             verify_ssl=verify_ssl,
-            kerberos=self._foremanapi_use_gssapi,
             task_timeout=self.task_timeout,
+            session=RequestSession(use_gssapi=self._foremanapi_use_gssapi),
         )
+        if self._foremanapi_use_gssapi:
+            self.foremanapi.call('users', 'extlogin')
 
         _status = self.status()
         self.foreman_version = LooseVersion(_status.get('version', '0.0.0'))
@@ -1189,7 +1192,7 @@ class ForemanAnsibleModule(AnsibleModule):
 
     def fail_from_exception(self, exc, msg):
         fail = {'msg': msg}
-        if isinstance(exc, requests.exceptions.HTTPError):
+        if hasattr(exc, 'response'):
             try:
                 response = exc.response.json()
                 if 'error' in response:
