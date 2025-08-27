@@ -17,7 +17,7 @@ COLLECTION_COMMAND ?= ansible-galaxy
 SANITY_OPTS = --venv
 TEST =
 FLAGS =
-PYTEST_COMMAND ?= pytest
+PYTEST_COMMAND ?= $(PYTHON_COMMAND) -m pytest
 PYTEST = $(PYTEST_COMMAND) -n 4 --forked
 # PYTEST_ADDOPTS is exported to sub-shells and picked up by *all* pytest invocations
 PYTEST_ADDOPTS ?= -vv
@@ -93,8 +93,8 @@ clean_%: FORCE $(MANIFEST)
 setup: test-setup
 
 test-setup: | tests/test_playbooks/vars/server.yml
-	pip install --upgrade pip
-	pip install --upgrade -r requirements-dev.txt
+	$(PYTHON_COMMAND) -m pip install --upgrade pip
+	$(PYTHON_COMMAND) -m pip install --upgrade -r requirements-dev.txt
 
 tests/test_playbooks/vars/server.yml:
 	cp $@.example $@
@@ -127,7 +127,7 @@ clean:
 	rm -rf build docs/plugins
 
 doc-setup:
-	pip install --upgrade -r docs/requirements.txt
+	$(PYTHON_COMMAND) -m pip install --upgrade -r docs/requirements.txt
 doc: $(MANIFEST)
 	mkdir -p ./docs/plugins ./docs/roles
 	cat ./docs/roles.rst.template > ./docs/roles/index.rst
