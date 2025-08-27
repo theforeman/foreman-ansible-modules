@@ -36,6 +36,7 @@ help:
 	@echo "  sanity           to run santy tests"
 	@echo "  setup            to set up test, lint"
 	@echo "  test-setup       to install test dependencies"
+	@echo "  lint-setup       to install lint dependencies"
 	@echo "  test_<test>      to run a specific unittest"
 	@echo "  livetest_<test>  to run a specific unittest live (without vcr)"
 	@echo "  record_<test>    to (re-)record the server answers for a specific test"
@@ -92,6 +93,10 @@ clean_%: FORCE $(MANIFEST)
 
 setup: test-setup
 
+lint-setup: | tests/test_playbooks/vars/server.yml
+	$(PYTHON_COMMAND) -m pip install --upgrade pip
+	$(PYTHON_COMMAND) -m pip install --upgrade -r requirements-lint.txt
+
 test-setup: | tests/test_playbooks/vars/server.yml
 	$(PYTHON_COMMAND) -m pip install --upgrade pip
 	$(PYTHON_COMMAND) -m pip install --upgrade -r requirements-dev.txt
@@ -147,4 +152,4 @@ $(RUNTIME_YML): FORCE
 
 FORCE:
 
-.PHONY: help dist lint sanity test test-crud test-check-mode test-other livetest setup test-setup doc-setup doc publish FORCE
+.PHONY: help dist lint sanity test test-crud test-check-mode test-other livetest setup test-setup lint-setup doc-setup doc publish FORCE
