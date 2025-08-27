@@ -56,7 +56,7 @@ lint: $(MANIFEST) $(RUNTIME_YML) | tests/test_playbooks/vars/server.yml
 	git diff --exit-code $(RUNTIME_YML)
 
 galaxy-importer: $(MANIFEST)
-	GALAXY_IMPORTER_CONFIG=tests/galaxy-importer.cfg python -m galaxy_importer.main $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
+	GALAXY_IMPORTER_CONFIG=tests/galaxy-importer.cfg $(PYTHON_COMMAND) -m galaxy_importer.main $(NAMESPACE)-$(NAME)-$(VERSION).tar.gz
 
 sanity: $(MANIFEST)
 	# Fake a fresh git repo for ansible-test
@@ -140,7 +140,7 @@ doc: $(MANIFEST)
 
 vendor:
 	git clone --depth=1 --branch=$(APIPIE_VERSION) https://github.com/Apipie/apypie/ build/apypie-git
-	python vendor.py build/apypie-git/apypie/*.py > plugins/module_utils/_apypie.py
+	$(PYTHON_COMMAND) vendor.py build/apypie-git/apypie/*.py > plugins/module_utils/_apypie.py
 
 $(RUNTIME_YML): FORCE
 	$(PYTHON_COMMAND) generate_action_groups.py
