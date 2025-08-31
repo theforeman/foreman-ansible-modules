@@ -101,7 +101,7 @@ To install from a `requirements.yml` file (useful when installing multiple colle
 collections:
   - name: https://github.com/theforeman/foreman-ansible-modules.git
     type: git
-    version: devel
+    version: develop
 ```
 
 And install all specified requirements with `ansible-galaxy install -r requirements.yml`
