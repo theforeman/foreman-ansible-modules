@@ -117,8 +117,8 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-from ansible.module_utils._text import to_text
 from ansible.module_utils.common.json import AnsibleJSONEncoder
+from ansible.module_utils.common.text.converters import to_text
 from ansible.module_utils.parsing.convert_bool import boolean as to_bool
 from ansible.plugins.callback import CallbackBase
 

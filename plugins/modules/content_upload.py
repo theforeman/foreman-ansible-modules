@@ -92,7 +92,7 @@ RETURN = ''' # '''
 import os
 import traceback
 
-from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils.common.text.converters import to_bytes, to_native
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule, missing_required_lib
 
 try:

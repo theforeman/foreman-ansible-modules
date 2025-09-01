@@ -21,7 +21,7 @@ from collections import defaultdict
 from functools import wraps
 
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib, env_fallback
-from ansible.module_utils._text import to_bytes, to_native
+from ansible.module_utils.common.text.converters import to_bytes, to_native
 from ansible.module_utils import six
 
 try:
