@@ -90,6 +90,7 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import os
+import subprocess
 import traceback
 
 from ansible.module_utils.common.text.converters import to_bytes, to_native
@@ -103,13 +104,15 @@ except ImportError:
     HAS_DEBFILE = False
     DEBFILE_IMP_ERR = traceback.format_exc()
 
+HAS_RPM_LIB = False
+HAS_RPM_BIN = os.path.exists('/usr/bin/rpm')
 try:
     import rpm
-    HAS_RPM = True
+    HAS_RPM_LIB = True
     RPM_IMP_ERR = None
 except ImportError:
-    HAS_RPM = False
     RPM_IMP_ERR = traceback.format_exc()
+HAS_RPM = HAS_RPM_LIB or HAS_RPM_BIN
 
 CONTENT_CHUNK_SIZE = 1 * 1024 * 1024
 
@@ -120,6 +123,12 @@ def get_deb_info(path):
 
 
 def get_rpm_info(path):
+    if HAS_RPM_LIB:
+        return get_rpm_info_lib(path)
+    return get_rpm_info_bin(path)
+
+
+def get_rpm_info_lib(path):
     ts = rpm.TransactionSet()
 
     # disable signature checks, we might not have the key or the file might be unsigned
@@ -139,6 +148,19 @@ def get_rpm_info(path):
     release = to_native(rpmhdr[rpm.RPMTAG_RELEASE])
     arch = to_native(rpmhdr[rpm.RPMTAG_ARCH])
     if arch == 'noarch' and rpmhdr[rpm.RPMTAG_SOURCEPACKAGE] == 1:
+        arch = 'src'
+
+    return (name, epoch, version, release, arch)
+
+
+def get_rpm_info_bin(path):
+    rpmresult = subprocess.check_output(
+        ['rpm', '--nosignature', '--queryformat', '%{NAME} %{EPOCHNUM} %{VERSION} %{RELEASE} %{ARCH} %{SOURCEPACKAGE}',
+         '-qp', path]).decode('ascii')
+
+    name, epoch, version, release, arch, sourcepackage = rpmresult.split()
+
+    if arch == 'noarch' and sourcepackage == '1':
         arch = 'src'
 
     return (name, epoch, version, release, arch)
