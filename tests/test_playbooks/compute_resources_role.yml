@@ -30,6 +30,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/compute_profile.yml
   roles:
     - role: compute_resources
       vars:
@@ -42,8 +43,7 @@
             locations:
               - Test Location
             provider: 'libvirt'
-            provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
+            provider_params: "{{ libvirt.compute_resource.params }}"
             images:
               - name: "RHEL-8.4"
                 operatingsystem: "RedHat-8.4"

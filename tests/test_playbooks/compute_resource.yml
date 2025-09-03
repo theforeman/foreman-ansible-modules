@@ -18,6 +18,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
     - name: 'Libvirt compute resource'
       block:
@@ -31,8 +32,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
@@ -45,8 +45,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
             compute_resource_state: present
             expected_change: false
         - name: Update libvirt compute resource
@@ -60,8 +59,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
@@ -74,8 +72,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
             compute_resource_state: present
             expected_change: false
         - name: Update libvirt compute resource
@@ -88,9 +85,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
-              display_type: spice
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params | ansible.builtin.combine({'display_type': 'spice'}) }}"
             compute_resource_state: present
             expected_change: true
         - name: Update libvirt compute resource
@@ -103,9 +98,7 @@
             compute_resource_locations:
               - Test Location
             compute_resource_provider: 'libvirt'
-            compute_resource_provider_params:
-              url: qemu+ssh://root@libvirt.example.com/system
-              display_type: spice
+            compute_resource_provider_params: "{{ libvirt.compute_resource.params | ansible.builtin.combine({'display_type': 'spice'}) }}"
             compute_resource_state: present
             expected_change: false
         - name: Delete libvirt compute resource

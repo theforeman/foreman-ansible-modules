@@ -5,6 +5,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/compute_profile.yml
 
   tasks:
     - include_tasks: tasks/organization.yml
@@ -18,8 +19,7 @@
         compute_resource_name: "MYCR"
         compute_resource_state: present
         compute_resource_provider: libvirt
-        compute_resource_provider_params:
-          url: qemu+ssh://root@libvirt.example.com/system
+        compute_resource_provider_params: "{{ libvirt.compute_resource.params }}"
     - include_tasks: tasks/operatingsystem.yml
       vars:
         operatingsystem_description: "MYOS SP1"
@@ -39,15 +39,6 @@
           - "MY2NDOS"
         architecture_name: "MY1024"
         architecture_state: present
-    - include_tasks: tasks/compute_resource.yml
-      vars:
-        compute_resource_name: "MYCR"
-        compute_resource_description: 'A compute_resource'
-        compute_resource_provider: 'libvirt'
-        compute_resource_provider_params:
-          url: qemu+ssh://root@libvirt.example.com/system
-          display_type: spice
-        compute_resource_state: present
     - include_tasks: tasks/image.yml
       vars:
         image_name: "MYOS 1"
