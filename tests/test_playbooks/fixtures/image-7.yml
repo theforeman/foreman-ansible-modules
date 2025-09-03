@@ -14,32 +14,32 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: !!python/unicode '{"result":"ok","status":200,"version":"1.24.2","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.16.0-rc2","api_version":2}'
     headers:
-      cache-control:
+      Cache-Control:
       - max-age=0, private, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-length:
-      - '63'
+      Content-Length:
+      - '67'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0-rc2
+      Keep-Alive:
+      - timeout=15, max=100
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      content-type:
-      - application/json; charset=utf-8
-      foreman_api_version:
-      - '2'
-      foreman_current_location:
-      - ; ANY
-      foreman_current_organization:
-      - ; ANY
-      foreman_version:
-      - 1.24.2
-      keep-alive:
-      - timeout=5, max=10000
-      status:
-      - 200 OK
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       strict-transport-security:
       - max-age=631139040; includeSubdomains
       x-content-type-options:
@@ -51,7 +51,7 @@ interactions:
       x-permitted-cross-domain-policies:
       - none
       x-xss-protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK
@@ -67,43 +67,40 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/compute_resources?per_page=4294967296&search=name%3D%22MYCR%22
+    uri: https://foreman.example.org/api/compute_resources?search=name%3D%22MYCR%22&per_page=4294967296
   response:
     body:
-      string: !!python/unicode "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\":
-        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"MYCR\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":\"A
-        compute_resource\",\"url\":\"qemu+ssh://root@libvirt.example.com/system\",\"created_at\":\"2020-08-31
-        15:14:59 UTC\",\"updated_at\":\"2020-08-31 15:16:22 UTC\",\"id\":8,\"name\":\"MYCR\",\"provider\":\"Libvirt\",\"provider_friendly_name\":\"Libvirt\",\"display_type\":\"spice\",\"set_console_password\":true}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"MYCR\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":null,\"url\":\"qemu+ssh://libvirtuser@localhost/system\",\"created_at\":\"2025-09-03
+        08:23:55 UTC\",\"updated_at\":\"2025-09-03 08:23:55 UTC\",\"id\":4,\"name\":\"MYCR\",\"provider\":\"Libvirt\",\"provider_friendly_name\":\"Libvirt\",\"display_type\":\"vnc\",\"set_console_password\":true}]\n}\n"
     headers:
-      cache-control:
+      Cache-Control:
       - max-age=0, private, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-length:
-      - '463'
+      Content-Length:
+      - '442'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0-rc2
+      Keep-Alive:
+      - timeout=15, max=99
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      content-type:
-      - application/json; charset=utf-8
-      foreman_api_version:
-      - '2'
-      foreman_current_location:
-      - ; ANY
-      foreman_current_organization:
-      - ; ANY
-      foreman_version:
-      - 1.24.2
-      keep-alive:
-      - timeout=5, max=9999
-      status:
-      - 200 OK
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       strict-transport-security:
       - max-age=631139040; includeSubdomains
-      vary:
-      - Accept-Encoding
       x-content-type-options:
       - nosniff
       x-download-options:
@@ -113,7 +110,7 @@ interactions:
       x-permitted-cross-domain-policies:
       - none
       x-xss-protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK
@@ -129,107 +126,102 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/api/operatingsystems?per_page=4294967296&search=title%3D%22MY2NDOS%22
+    uri: https://foreman.example.org/api/operatingsystems?search=title%3D%22MY2NDOS%22&per_page=4294967296
   response:
     body:
-      string: !!python/unicode "{\n  \"total\": 8,\n  \"subtotal\": 1,\n  \"page\":
-        1,\n  \"per_page\": 4294967296,\n  \"search\": \"title=\\\"MY2NDOS\\\"\",\n
+      string: "{\n  \"total\": 4,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"title=\\\"MY2NDOS\\\"\",\n  \"sort\": {\n    \"by\":
+        null,\n    \"order\": null\n  },\n  \"results\": [{\"description\":\"MY2NDOS\",\"major\":\"1\",\"minor\":\"1\",\"family\":\"Debian\",\"release_name\":\"reverse
+        whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2025-09-03 08:23:56 UTC\",\"updated_at\":\"2025-09-03
+        08:23:56 UTC\",\"id\":6,\"name\":\"MY2NDOS\",\"title\":\"MY2NDOS\"}]\n}\n"
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '416'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0-rc2
+      Keep-Alive:
+      - timeout=15, max=98
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/compute_resources/4/images?search=name%3D%22MYOS+1%22%2Coperatingsystem%3D%226%22&per_page=4294967296
+  response:
+    body:
+      string: "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"MYOS 1\\\",operatingsystem=\\\"6\\\"\",\n
         \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"description\":\"MY2NDOS\",\"major\":\"1\",\"minor\":\"1\",\"family\":\"Debian\",\"release_name\":\"reverse
-        whip\",\"password_hash\":\"SHA256\",\"created_at\":\"2020-08-31 15:15:02 UTC\",\"updated_at\":\"2020-08-31
-        15:15:02 UTC\",\"id\":14,\"name\":\"MY2NDOS\",\"title\":\"MY2NDOS\"}]\n}\n"
-    headers:
-      cache-control:
-      - max-age=0, private, must-revalidate
-      connection:
-      - Keep-Alive
-      content-length:
-      - '417'
-      content-security-policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      content-type:
-      - application/json; charset=utf-8
-      foreman_api_version:
-      - '2'
-      foreman_current_location:
-      - ; ANY
-      foreman_current_organization:
-      - ; ANY
-      foreman_version:
-      - 1.24.2
-      keep-alive:
-      - timeout=5, max=9998
-      status:
-      - 200 OK
-      strict-transport-security:
-      - max-age=631139040; includeSubdomains
-      vary:
-      - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-download-options:
-      - noopen
-      x-frame-options:
-      - sameorigin
-      x-permitted-cross-domain-policies:
-      - none
-      x-xss-protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/api/compute_resources/8/images?per_page=4294967296&search=name%3D%22MYOS+1%22%2Coperatingsystem%3D%2214%22
-  response:
-    body:
-      string: !!python/unicode "{\n  \"total\": 1,\n  \"subtotal\": 1,\n  \"page\":
-        1,\n  \"per_page\": 4294967296,\n  \"search\": \"name=\\\"MYOS 1\\\",operatingsystem=\\\"14\\\"\",\n
-        \ \"sort\": {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\":
-        [{\"operatingsystem_id\":14,\"operatingsystem_name\":\"MY2NDOS\",\"compute_resource_id\":8,\"compute_resource_name\":\"MYCR\",\"architecture_id\":6,\"architecture_name\":\"MY1024\",\"uuid\":\"MY2NDOStemplate\",\"username\":\"myosadmin\",\"created_at\":\"2020-08-31
-        15:17:34 UTC\",\"updated_at\":\"2020-08-31 15:17:34 UTC\",\"id\":12,\"name\":\"MYOS
+        [{\"operatingsystem_id\":6,\"operatingsystem_name\":\"MY2NDOS\",\"compute_resource_id\":4,\"compute_resource_name\":\"MYCR\",\"architecture_id\":3,\"architecture_name\":\"MY1024\",\"uuid\":\"/var/lib/libvirt/images/test2.img\",\"username\":\"myosadmin\",\"created_at\":\"2025-09-03
+        08:24:00 UTC\",\"updated_at\":\"2025-09-03 08:24:00 UTC\",\"id\":7,\"name\":\"MYOS
         1\"}]\n}\n"
     headers:
-      cache-control:
+      Cache-Control:
       - max-age=0, private, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-length:
-      - '507'
+      Content-Length:
+      - '522'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0-rc2
+      Keep-Alive:
+      - timeout=15, max=97
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      content-type:
-      - application/json; charset=utf-8
-      foreman_api_version:
-      - '2'
-      foreman_current_location:
-      - ; ANY
-      foreman_current_organization:
-      - ; ANY
-      foreman_version:
-      - 1.24.2
-      keep-alive:
-      - timeout=5, max=9997
-      status:
-      - 200 OK
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       strict-transport-security:
       - max-age=631139040; includeSubdomains
-      vary:
-      - Accept-Encoding
       x-content-type-options:
       - nosniff
       x-download-options:
@@ -239,7 +231,7 @@ interactions:
       x-permitted-cross-domain-policies:
       - none
       x-xss-protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK
@@ -257,40 +249,38 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/api/compute_resources/8/images/12
+    uri: https://foreman.example.org/api/compute_resources/4/images/7
   response:
     body:
-      string: !!python/unicode '{"id":12,"operatingsystem_id":14,"compute_resource_id":8,"architecture_id":6,"uuid":"MY2NDOStemplate","username":"myosadmin","name":"MYOS
-        1","created_at":"2020-08-31T15:17:34.683Z","updated_at":"2020-08-31T15:17:34.683Z","iam_role":null,"user_data":false,"password":null}'
+      string: '{"id":7,"operatingsystem_id":6,"compute_resource_id":4,"architecture_id":3,"uuid":"/var/lib/libvirt/images/test2.img","username":"myosadmin","name":"MYOS
+        1","created_at":"2025-09-03T08:24:00.640Z","updated_at":"2025-09-03T08:24:00.640Z","iam_role":null,"user_data":false,"password":null}'
     headers:
-      cache-control:
+      Cache-Control:
       - max-age=0, private, must-revalidate
-      connection:
+      Connection:
       - Keep-Alive
-      content-length:
-      - '271'
+      Content-Length:
+      - '287'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0-rc2
+      Keep-Alive:
+      - timeout=15, max=96
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data: *.gravatar.com; script-src ''unsafe-eval'' ''unsafe-inline''
-        ''self''; style-src ''unsafe-inline'' ''self'''
-      content-type:
-      - application/json; charset=utf-8
-      foreman_api_version:
-      - '2'
-      foreman_current_location:
-      - ; ANY
-      foreman_current_organization:
-      - ; ANY
-      foreman_version:
-      - 1.24.2
-      keep-alive:
-      - timeout=5, max=9996
-      status:
-      - 200 OK
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
       strict-transport-security:
       - max-age=631139040; includeSubdomains
-      vary:
-      - Accept-Encoding
       x-content-type-options:
       - nosniff
       x-download-options:
@@ -300,7 +290,7 @@ interactions:
       x-permitted-cross-domain-policies:
       - none
       x-xss-protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK
