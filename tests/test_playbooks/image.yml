@@ -42,7 +42,7 @@
     - include_tasks: tasks/image.yml
       vars:
         image_name: "MYOS 1"
-        image_uuid: "MYOStemplate"
+        image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
         image_username: "myosadmin"
         image_operatingsystem: "MYOS SP1"
         image_compute_resource: "MYCR"
@@ -51,7 +51,7 @@
     - include_tasks: tasks/image.yml
       vars:
         image_name: "MYOS 1"
-        image_uuid: "MY2NDOStemplate"
+        image_uuid: "{{ libvirt.compute_resource.image_uuid_2 }}"
         image_username: "myosadmin"
         image_operatingsystem: "MY2NDOS"
         image_compute_resource: "MYCR"
@@ -65,6 +65,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
+    - vars/compute_profile.yml
   tasks:
     - name: 'MYIMAGE'
       block:
@@ -72,7 +73,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MYOStemplate"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
             image_username: "myosadmin"
             image_operatingsystem: "MYOS SP1"
             image_compute_resource: "MYCR"
@@ -83,7 +84,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MYOStemplate"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
             image_username: "myosadmin"
             image_operatingsystem: "MYOS SP1"
             image_compute_resource: "MYCR"
@@ -94,7 +95,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MYOStemplate-new"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
             image_username: "myosadmin"
             image_operatingsystem: "MYOS SP1"
             image_compute_resource: "MYCR"
@@ -106,7 +107,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MY2NDOStemplate"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid_2 }}"
             image_username: "myosadmin"
             image_operatingsystem: "MY2NDOS"
             image_compute_resource: "MYCR"
@@ -117,7 +118,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MY2NDOStemplate"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid_2 }}"
             image_username: "myosadmin"
             image_operatingsystem: "MY2NDOS"
             image_compute_resource: "MYCR"
@@ -128,7 +129,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MYOStemplate-new"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
             image_username: "myosadmin"
             image_operatingsystem: "MYOS SP1"
             image_compute_resource: "MYCR"
@@ -139,7 +140,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MYOStemplate"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid }}"
             image_username: "myosadmin"
             image_operatingsystem: "MYOS SP1"
             image_compute_resource: "MYCR"
@@ -151,7 +152,7 @@
           include_tasks: tasks/image.yml
           vars:
             image_name: "MYOS 1"
-            image_uuid: "MY2NDOStemplate-new"
+            image_uuid: "{{ libvirt.compute_resource.image_uuid_2 }}"
             image_username: "myosadmin"
             image_operatingsystem: "MY2NDOS"
             image_compute_resource: "MYCR"
