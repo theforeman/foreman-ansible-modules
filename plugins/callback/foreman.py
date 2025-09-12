@@ -373,10 +373,7 @@ class CallbackModule(CallbackBase):
 
     def append_result(self, result, failed=False):
         result_info = result._result
-        if hasattr(result._task, 'serialize'):
-            task_info = result._task.serialize()
-        else:
-            task_info = result._task.dump_attrs()
+        task_info = result._task.serialize()
         task_info['args'] = None
         value = {}
         value['result'] = result_info
