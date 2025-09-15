@@ -139,13 +139,16 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = '''
+# This needs to run on a host with API access
 - name: "Generate registration command"
   theforeman.foreman.registration_command:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
   register: command
+  delegate_to: localhost
 
+# This needs to run on the host being registered
 - name: "Perform registration"
   ansible.builtin.shell:
     cmd: "{{ command.registration_command }}"
