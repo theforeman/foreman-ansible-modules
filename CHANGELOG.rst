@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.6.0
+======
+
+Minor Changes
+-------------
+
+- content_upload - fall-back to rpm binary when library can't be imported
+- registration_command - clarify example to show where the generated command needs to be executed
+
 v5.5.0
 ======
 
