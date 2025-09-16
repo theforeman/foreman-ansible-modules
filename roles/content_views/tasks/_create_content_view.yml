@@ -1,5 +1,5 @@
 ---
-- name: Create content view  # noqa: args[module]
+- name: Create or delete content view  # noqa: args[module]
   theforeman.foreman.content_view:
     username: "{{ foreman_username | default(omit) }}"
     password: "{{ foreman_password | default(omit) }}"
@@ -14,6 +14,7 @@
     label: "{{ content_view.label | default(omit) }}"
     repositories: "{{ content_view.repositories | default(omit) }}"
     solve_dependencies: "{{ content_view.solve_dependencies | default(omit) }}"
+    state: "{{ content_view.state | default('present') }}"
 
 - name: Add content view filters
   theforeman.foreman.content_view_filter:
@@ -31,6 +32,8 @@
     filter_state: "{{ item.filter_state | default(omit) }}"
     original_packages: "{{ item.original_packages | default(omit) }}"
     original_module_streams: "{{ item.original_module_streams | default(omit) }}"
+  when:
+    - content_view.state is not defined or content_view.state != 'absent'
   loop: "{{ content_view.filters | default([]) }}"
 
 - name: Add content view filters rules
@@ -53,4 +56,6 @@
     version: "{{ item.version | default(omit) }}"
     architecture: "{{ item.architecture | default(omit) }}"
     rule_state: "{{ item.rule_state | default(omit) }}"
+  when:
+    - content_view.state is not defined or content_view.state != 'absent'
   loop: "{{ content_view.filters | default([]) }}"
