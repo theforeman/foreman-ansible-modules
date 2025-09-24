@@ -5,7 +5,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
-    - vars/search_facts.yml
+    - vars/resource_info.yml
   tasks:
     - include_tasks: tasks/organization.yml
       vars:
@@ -28,22 +28,26 @@
   vars_files:
     - vars/server.yml
   tasks:
-    - include_tasks: tasks/search_facts.yml
+    - name: Search for a setting
+      include_tasks: tasks/resource_info.yml
       vars:
         resource: settings
         search: name = http_proxy
         return_length: 1
-    - include_tasks: tasks/search_facts.yml
+    - name: List all entities of a resource without any filtering
+      include_tasks: tasks/resource_info.yml
       vars:
-        resource: http_proxies
-        return_length: 0
-    - include_tasks: tasks/search_facts.yml
+        resource: instance_hosts
+        return_length: 1
+    - name: Search for an organization and return full details
+      include_tasks: tasks/resource_info.yml
       vars:
         resource: organizations
         search: name="Test Organization"
         full_details: true
         return_length: 1
-    - include_tasks: tasks/search_facts.yml
+    - name: List all entities of an organization
+      include_tasks: tasks/resource_info.yml
       vars:
         resource: domains
         organization: "Facts Organization"
@@ -57,7 +61,8 @@
         resource: organizations
         search: name="Facts Organization"
       register: org_search
-    - include_tasks: tasks/search_facts.yml
+    - name: List all entities of an organization by injecting params manually
+      include_tasks: tasks/resource_info.yml
       vars:
         resource: domains
         params:
@@ -82,7 +87,7 @@
   gather_facts: false
   vars_files:
     - vars/server.yml
-    - vars/search_facts.yml
+    - vars/resource_info.yml
   tasks:
     - include_tasks: tasks/domain.yml
       vars:

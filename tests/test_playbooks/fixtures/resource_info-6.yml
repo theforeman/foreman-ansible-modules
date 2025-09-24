@@ -14,18 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.13.0-develop","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.16.0-rc2","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '71'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '67'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -35,21 +31,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.13.0-develop
+      - 3.16.0-rc2
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
