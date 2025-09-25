@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/api/status
+  response:
+    body:
+      string: '{"satellite_version":"6.18.0","result":"ok","status":200,"version":"3.16.0.4","api_version":2}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '94'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0.4
+      Keep-Alive:
+      - timeout=15, max=100
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"job_invocation": {"targeting_type": "static_query", "inputs": {"package":
+      "podman"}, "search_query": "foreman.example.com", "feature": "katello_package_install"}}'
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '164'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: POST
+    uri: https://foreman.example.org/api/job_invocations
+  response:
+    body:
+      string: '{"id":3,"description":"Install package(s) podman","job_category":"Katello","targeting_id":3,"status":3,"start_at":"2025-10-23
+        21:20:40 UTC","status_label":"running","ssh_user":null,"time_to_pickup":null,"concurrency_level":null,"execution_timeout_interval":null,"dynflow_task":{"id":"deee8465-53b3-49ce-aca0-03e7887dcb15","state":"planned"},"template_id":212,"template_name":"Install
+        Package - Katello Script Default","effective_user":"root","succeeded":0,"failed":0,"pending":1,"cancelled":0,"total":1,"missing":0,"total_hosts":1,"targeting":{"bookmark_id":null,"bookmark_name":null,"search_query":"foreman.example.org","targeting_type":"static_query","user_id":4,"randomized_ordering":null,"hosts":[{"name":"foreman.example.org","id":1,"display_name":"foreman.example.org"}]},"task":{"id":"deee8465-53b3-49ce-aca0-03e7887dcb15","state":"planned","started_at":"2025-10-23
+        21:20:40 UTC"},"pattern_template_invocations":null,"job_organization":null,"job_location":null}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '968'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 3.16.0.4
+      Keep-Alive:
+      - timeout=15, max=99
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 201
+      message: Created
+version: 1

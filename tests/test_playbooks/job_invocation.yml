@@ -42,3 +42,13 @@
           cron_line: "30 2 * * *"
         concurrency_control:
           concurrency_level: 2
+
+    - name: "Run the katello_package_install feature to install a package on a single host"
+      job_invocation:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search_query: "{{ foreman_host }}"
+        feature: 'katello_package_install'
+        inputs: 'package=podman'

@@ -39,7 +39,6 @@ options:
   job_template:
     description:
       - Job template to execute
-    required: true
     type: str
   targeting_type:
     description:
@@ -127,6 +126,11 @@ options:
     description:
       - Override the description format from the template for this invocation only
     type: str
+  feature:
+    description:
+      - Feature label that should be triggered
+      - A job template assigned to this feature will be used
+    type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
 '''
@@ -150,6 +154,12 @@ EXAMPLES = '''
       cron_line: "30 2 * * *"
     concurrency_control:
       concurrency_level: 2
+
+- name: "Run the katello_package_install feature to install a package on a single host"
+  theforeman.foreman.job_invocation:
+    search_query: "name ^ (foreman.example.com)"
+    feature: 'katello_package_install'
+    inputs: 'package=podman'
 '''
 
 RETURN = '''
@@ -199,7 +209,7 @@ def main():
         foreman_spec=dict(
             search_query=dict(),
             bookmark=dict(type='entity'),
-            job_template=dict(required=True, type='entity'),
+            job_template=dict(type='entity'),
             targeting_type=dict(default='static_query', choices=['static_query', 'dynamic_query']),
             randomized_ordering=dict(type='bool'),
             command=dict(),
@@ -210,8 +220,9 @@ def main():
             scheduling=dict(type='dict', options=scheduling_foreman_spec),
             concurrency_control=dict(type='dict', options=concurrency_control_foreman_spec),
             description_format=dict(),
+            feature=dict(),
         ),
-        required_one_of=[['search_query', 'bookmark']],
+        required_one_of=[['search_query', 'bookmark'], ['job_template', 'feature']],
         required_if=[
             ['job_template', 'Run Command - SSH Default', ['command']],
             ['job_template', 'Run Command - Ansible Default', ['command']],
