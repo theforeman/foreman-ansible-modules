@@ -77,9 +77,11 @@
         resource: foo
       register: result
       ignore_errors: true
-    - fail:
-        msg: "{{ result.msg }} should have contained all available resources"
-      when: "'hostgroups' not in result.msg"
+    - assert:
+        that:
+          - "'hostgroups' in result.msg"
+          - "'home' not in result.msg"
+        fail_msg: "{{ result.msg }} should have contained all available resources"
 
 - hosts: localhost
   collections:

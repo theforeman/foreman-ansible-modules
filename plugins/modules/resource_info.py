@@ -148,7 +148,12 @@ def main():
 
     with module.api_connection():
         if resource not in module.foremanapi.resources:
-            msg = "Resource '{0}' does not exist in the API. Existing resources: {1}".format(resource, ', '.join(sorted(module.foremanapi.resources)))
+            existing_resources = [
+                resource for resource in module.foremanapi.resources
+                if module.foremanapi.resource(resource).has_action('index')
+                and module.foremanapi.resource(resource).has_action('show')
+            ]
+            msg = "Resource '{0}' does not exist in the API. Existing resources: {1}".format(resource, ', '.join(sorted(existing_resources)))
             module.fail_json(msg=msg)
         if 'organization' in module_params:
             params['organization_id'] = module.find_resource_by_name('organizations', module_params['organization'], thin=True)['id']
