@@ -1,0 +1,75 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: present
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: present
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: present
+    - name: Create content view
+      include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: present
+        repositories:
+          - name: "Test Repository"
+            product: "Test Product"
+    - name: publish CV version 1.0
+      include_tasks: tasks/content_view_version.yml
+      vars:
+        description: version-1.0
+        version: 1.0
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch content_view_history info
+      content_view_history_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        content_view: "Test Content View"
+        organization: "Test Organization"
+      register: content_view_history_info
+    - name: debug
+      debug:
+        var: content_view_history_info
+    - name: check content_view_history details
+      assert:
+        that:
+          - content_view_history_info['content_view_histories'][0]['status'] == "successful"
+          - content_view_history_info['content_view_histories'][0]['description'] == "version-1.0"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: delete CV
+      include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+    - include_tasks: tasks/repository.yml
+      vars:
+        repository_state: absent
+    - include_tasks: tasks/product.yml
+      vars:
+        product_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: absent
