@@ -104,10 +104,25 @@ def job_invocation_body_matcher(r1, r2):
 
 
 def filter_response(response):
+    response = filter_response_headers(response)
+    response = filter_response_body_bearer(response)
+    return response
+
+
+def filter_response_headers(response):
     for header in FILTER_RESPONSE_HEADERS:
         # headers should be case insensitive, but for some reason they weren't for me
         response['headers'].pop(header.lower(), None)
         response['headers'].pop(header, None)
+    return response
+
+
+def filter_response_body_bearer(response):
+    if 'body' in response and 'string' in response['body']:
+        body_string = response['body']['string'].decode('utf8')
+        if 'Authorization:' in body_string and 'Bearer' in body_string:
+            body_string = re.sub(r'Bearer [0-9a-zA-Z._-]+', 'Bearer INVALID', body_string)
+        response['body']['string'] = body_string.encode('utf8')
     return response
 
 
