@@ -7,6 +7,7 @@ import pytest
 import py.path
 import yaml
 
+from urllib.parse import urlparse
 
 IGNORED_WARNINGS = [
     "Activation Key 'Test Activation Key Copy' already exists.",
@@ -88,8 +89,11 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
             # Only run the tests (skip fixtures)
             limit = 'tests:container'
 
+    foreman_uri = urlparse(get_foreman_url())
+    foreman_hostname = foreman_uri.hostname
+
     # Dump recording parameters to json-file and pass its name by environment
-    test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode, 'check_mode': check_mode}
+    test_params = {'test_name': module, 'serial': 0, 'record_mode': record_mode, 'check_mode': check_mode, 'hostname': foreman_hostname}
     params_file = tmpdir.join('{}_test_params.json'.format(module))
     params_file.write(json.dumps(test_params), ensure=True)
     extra_env['FAM_TEST_VCR_PARAMS_FILE'] = params_file.strpath
