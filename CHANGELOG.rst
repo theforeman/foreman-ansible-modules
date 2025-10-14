@@ -6,6 +6,14 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.7.0
+======
+
+New Modules
+-----------
+
+- theforeman.foreman.content_view_history_info - Fetch history of a Content View
+
 v5.6.0
 ======
 
