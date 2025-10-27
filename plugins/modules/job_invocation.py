@@ -131,6 +131,7 @@ options:
       - Feature label that should be triggered
       - A job template assigned to this feature will be used
     type: str
+    version_added: 5.8.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
 '''
