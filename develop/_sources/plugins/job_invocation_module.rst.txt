@@ -384,6 +384,45 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-feature"></div>
+
+      .. _ansible_collections.theforeman.foreman.job_invocation_module__parameter-feature:
+
+      .. rst-class:: ansible-option-title
+
+      **feature**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-feature" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 5.8.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Feature label that should be triggered
+
+      A job template assigned to this feature will be used
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-inputs"></div>
 
       .. _ansible_collections.theforeman.foreman.job_invocation_module__parameter-inputs:
@@ -432,7 +471,7 @@ Parameters
 
       .. ansible-option-type-line::
 
-        :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -1300,6 +1339,12 @@ Examples
           cron_line: "30 2 * * *"
         concurrency_control:
           concurrency_level: 2
+
+    - name: "Run the katello_package_install feature to install a package on a single host"
+      theforeman.foreman.job_invocation:
+        search_query: "name ^ (foreman.example.com)"
+        feature: 'katello_package_install'
+        inputs: 'package=podman'
 
 
 
