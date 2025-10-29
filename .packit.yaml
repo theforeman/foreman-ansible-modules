@@ -25,11 +25,18 @@ actions:
     - bash -c "ls -1t ./theforeman-foreman-*.tar.gz | head -n 1"
 
 jobs:
-  - job: copr_build
+  - &copr
+    job: copr_build
     trigger: pull_request
     targets:
       - rhel-9
     module_hotfixes: true
+
+  - <<: *copr
+    trigger: commit
+    branch: develop
+    owner: '@theforeman'
+    project: develop
 
 srpm_build_deps:
   - wget
