@@ -9,4 +9,5 @@
     name: "{{ item.name }}"
     content_type: "{{ item.content_type | default(omit) }}"
     content: "{{ item.content | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
   loop: "{{ foreman_content_credentials | default([]) }}"
