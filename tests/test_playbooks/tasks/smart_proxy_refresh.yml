@@ -1,0 +1,12 @@
+---
+- name: "Refresh Smart Proxy '{{ smart_proxy_name }}'"
+  vars:
+    smart_proxy_name: "{{ foreman_proxy }}"
+  smart_proxy_refresh:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    smart_proxy: "{{ smart_proxy_name }}"
+  register: result
+...

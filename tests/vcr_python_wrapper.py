@@ -182,7 +182,8 @@ else:
         method_matcher = 'safe_method_matcher'
 
     query_matcher = 'query'
-    if test_params['test_name'] in ['domain', 'hostgroup', 'katello_hostgroup', 'luna_hostgroup', 'realm', 'subnet', 'puppetclasses_import']:
+    if test_params['test_name'] in ['domain', 'hostgroup', 'katello_hostgroup', 'luna_hostgroup', 'realm',
+                                    'subnet', 'puppetclasses_import', 'smart_proxy_refresh']:
         fam_vcr.register_matcher('query_ignore_proxy', query_matcher_ignore_proxy)
         query_matcher = 'query_ignore_proxy'
     elif test_params['test_name'] in ['snapshot', 'snapshot_info']:
