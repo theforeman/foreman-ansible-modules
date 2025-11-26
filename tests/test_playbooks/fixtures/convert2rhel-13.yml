@@ -14,18 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.7.1","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"3.18.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '102'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '71'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -35,21 +31,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,8 +72,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2023-11-13
-        09:23:21 UTC\",\"updated_at\":\"2023-11-13 09:23:23 UTC\",\"id\":4,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-12-13
+        22:57:39 UTC\",\"updated_at\":\"2025-12-13 22:57:43 UTC\",\"id\":5,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -80,10 +82,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '388'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -93,21 +91,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -123,12 +127,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/4/content_views?search=name%3D%22convert2rhel_centos7%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/5/content_views?search=name%3D%22convert2rhel_centos7%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"convert2rhel_centos7\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"component_ids":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"needs_publish":true,"filtered":false,"repository_ids":[9],"id":6,"name":"convert2rhel_centos7","label":"convert2rhel_centos7","description":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2023-11-13
-        09:24:46 UTC","updated_at":"2023-11-13 09:24:46 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":9,"name":"Convert2RHEL7
+      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"convert2rhel_centos7\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":false,"version_count":0,"latest_version":null,"latest_version_id":null,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":true,"environment_ids":[],"repository_ids":[10],"id":7,"name":"convert2rhel_centos7","label":"convert2rhel_centos7","description":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
+        23:00:00 UTC","updated_at":"2025-12-13 23:00:00 UTC","last_task":null,"latest_version_environments":[],"repositories":[{"id":10,"name":"Convert2RHEL7
         main","label":"Convert2RHEL7_main","content_type":"yum"}],"versions":[],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":null,"environments":[]}]}
 
         '
@@ -138,11 +142,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1062'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '1138'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -150,23 +150,29 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 5; Test Organization
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -182,10 +188,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_versions?search=content_view_id%3D6%2Cversion%3D1.0&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/content_view_versions?search=content_view_id%3D7%2Cversion%3D1.0&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":"4294967296","error":null,"search":"content_view_id=6,version=1.0","sort":{"by":"version","order":"desc"},"results":[]}
+      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"content_view_id=7,version=1.0","sort":{"by":"version","order":"desc"},"results":[]}
 
         '
     headers:
@@ -194,11 +200,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '179'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '177'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -208,21 +210,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -238,12 +246,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/4/environments?search=name%3D%22Library%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/5/environments?search=name%3D%22Library%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":3,"name":"Library","label":"Library","description":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2023-11-13
-        09:23:22 UTC","updated_at":"2023-11-13 09:23:22 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":0,"packages":1782,"module_streams":0,"errata":{"security":4,"bugfix":4,"enhancement":16,"total":24},"yum_repositories":4,"docker_repositories":0,"ostree_repositories":0,"products":4,"debs":0,"deb_repositories":0},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[]}]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":4,"name":"Library","label":"Library","description":null,"organization_id":5,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
+        22:57:40 UTC","updated_at":"2025-12-13 22:57:40 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":0,"packages":1822,"module_streams":0,"errata":{"security":4,"bugfix":6,"enhancement":26,"total":36},"yum_repositories":4,"docker_repositories":0,"ostree_repositories":0,"products":4,"debs":0,"deb_repositories":0},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[],"capsules":[{"id":1,"name":"foreman.example.org","lifecycle_environments":[{"id":1},{"id":4}]}]}]}
 
         '
     headers:
@@ -252,11 +260,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1006'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '1128'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -264,23 +268,29 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 5; Test Organization
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=96
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -300,17 +310,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://foreman.example.org/katello/api/content_views/6/publish
+    uri: https://foreman.example.org/katello/api/content_views/7/publish
   response:
     body:
-      string: '  {"id":"cde4e2e9-d82a-4eb4-95d5-736bb355f4d7","label":"Actions::Katello::ContentView::Publish","pending":true,"action":"Publish
-        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2023-11-13
-        09:24:47 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"content_view":{"id":6,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":4,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":6,"content_view_id":6,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
-        1.0","content_view_version_id":6,"environment_id":3,"user_id":4,"skip_promotion":null,"current_request_id":"fdfae693-e9d8-4b9b-9cb4-0df1832b984e","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
-        view ''convert2rhel_centos7''","link":"/content_views/6/versions"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2023-11-13
-        09:24:47 UTC","available_actions":{"cancellable":false,"resumable":false}}
+      string: '  {"id":"7b4aa579-2dae-4a35-801f-11e71d87453a","label":"Actions::Katello::ContentView::Publish","pending":true,"action":"Publish
+        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2025-12-13
+        23:00:04 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"content_view":{"id":7,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":5,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":7,"content_view_id":7,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
+        1.0","content_view_version_id":7,"environment_id":4,"user_id":4,"skip_promotion":null,"current_request_id":"faaf39cc-d98b-4ff8-982c-a9ad04be0956","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
+        view ''convert2rhel_centos7''","link":"/content_views/7/versions"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/5/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-13
+        23:00:04 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -318,10 +328,6 @@ interactions:
       - no-cache
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -331,23 +337,29 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=95
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       Transfer-Encoding:
       - chunked
-      X-Content-Type-Options:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 202
       message: Accepted
@@ -363,28 +375,24 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/cde4e2e9-d82a-4eb4-95d5-736bb355f4d7
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/7b4aa579-2dae-4a35-801f-11e71d87453a
   response:
     body:
-      string: '{"id":"cde4e2e9-d82a-4eb4-95d5-736bb355f4d7","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
-        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2023-11-13
-        09:24:47 UTC","ended_at":"2023-11-13 09:24:49 UTC","duration":"2.64056","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":6,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":4,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":6,"content_view_id":6,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
-        1.0","content_view_version_id":6,"environment_id":3,"user_id":4,"skip_promotion":null,"current_request_id":"fdfae693-e9d8-4b9b-9cb4-0df1832b984e","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"content_view_id":6,"content_view_version_id":6,"skip_promotion":null,"history_id":6},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
-        view ''convert2rhel_centos7''","link":"/content_views/6/versions"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2023-11-13
-        09:24:47 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+      string: '{"id":"7b4aa579-2dae-4a35-801f-11e71d87453a","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
+        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2025-12-13
+        23:00:04 UTC","ended_at":"2025-12-13 23:00:06 UTC","duration":"2.474384","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":7,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":5,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":7,"content_view_id":7,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
+        1.0","content_view_version_id":7,"environment_id":4,"user_id":4,"skip_promotion":null,"current_request_id":"faaf39cc-d98b-4ff8-982c-a9ad04be0956","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"content_view_id":7,"content_view_version_id":7,"skip_promotion":null,"history_id":7},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
+        view ''convert2rhel_centos7''","link":"/content_views/7/versions"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/5/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-13
+        23:00:04 UTC","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1435'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '1436'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -394,21 +402,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=94
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -424,22 +438,22 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/content_view_versions/6
+    uri: https://foreman.example.org/katello/api/content_view_versions/7
   response:
     body:
-      string: '  {"version":"1.0","major":1,"minor":0,"composite_content_view_ids":[],"published_in_composite_content_view_ids":[],"content_view_id":6,"default":false,"description":null,"id":6,"name":"convert2rhel_centos7
-        1.0","created_at":"2023-11-13 09:24:47 UTC","updated_at":"2023-11-13 09:24:49
-        UTC","content_view":{"id":6,"name":"convert2rhel_centos7","label":"convert2rhel_centos7","generated_for":"none"},"composite_content_views":[],"composite_content_view_versions":[],"published_in_composite_content_views":[],"environments":[{"id":3,"name":"Library","label":"Library","publish_date":"less
-        than a minute","permissions":{"readable":true,"promotable_or_removable":true,"all_hosts_editable":true,"all_keys_editable":true},"host_count":0,"activation_key_count":0}],"repositories":[{"id":13,"name":"Convert2RHEL7
-        main","label":"Convert2RHEL7_main","content_type":"yum","library_instance_id":9,"mirroring_policy":"mirror_content_only"}],"last_event":{"user":"admin","status":"successful","description":null,"action":"publish","created_at":"2023-11-13
-        09:24:47 UTC","updated_at":"2023-11-13 09:24:49 UTC","environment":null,"task":{"id":"cde4e2e9-d82a-4eb4-95d5-736bb355f4d7","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
-        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2023-11-13
-        09:24:47 UTC","ended_at":"2023-11-13 09:24:49 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":6,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":4,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":6,"content_view_id":6,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
-        1.0","content_view_version_id":6,"environment_id":3,"user_id":4,"skip_promotion":null,"current_request_id":"fdfae693-e9d8-4b9b-9cb4-0df1832b984e","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"content_view_id":6,"content_view_version_id":6,"skip_promotion":null,"history_id":6},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
-        view ''convert2rhel_centos7''","link":"/content_views/6/versions"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2023-11-13
-        09:24:47 UTC","available_actions":{"cancellable":false,"resumable":false}},"version":"1.0","publish":true,"version_id":6,"triggered_by":null,"triggered_by_id":null},"active_history":[],"ansible_collection_count":0,"deb_count":0,"docker_manifest_count":0,"docker_manifest_list_count":0,"docker_tag_count":0,"file_count":0,"python_package_count":0,"rpm_count":12,"modulemd_count":0,"erratum_count":12,"package_group_count":0,"srpm_count":0,"module_stream_count":0,"package_count":12,"component_view_count":0,"ansible_collection_repository_count":0,"deb_repository_count":0,"docker_repository_count":0,"file_repository_count":0,"python_repository_count":0,"yum_repository_count":1,"errata_counts":{"security":2,"bugfix":2,"enhancement":8,"total":12},"permissions":{"deletable":true},"filters_applied":false}
+      string: '  {"version":"1.0","major":1,"minor":0,"composite_content_view_ids":[],"published_in_composite_content_view_ids":[],"content_view_id":7,"default":false,"description":null,"id":7,"name":"convert2rhel_centos7
+        1.0","created_at":"2025-12-13 23:00:04 UTC","updated_at":"2025-12-13 23:00:06
+        UTC","content_view":{"id":7,"name":"convert2rhel_centos7","label":"convert2rhel_centos7","generated_for":"none"},"composite_content_views":[],"composite_content_view_versions":[],"published_in_composite_content_views":[],"content_view_environments":[{"label":"Library/convert2rhel_centos7","environment_id":4,"environment_name":"Library"}],"environments":[{"id":4,"name":"Library","label":"Library","publish_date":"less
+        than a minute","permissions":{"readable":true,"promotable_or_removable":true,"all_hosts_editable":true,"all_keys_editable":true},"host_count":0,"multi_env_host_count":0,"activation_key_count":0,"multi_env_ak_count":0}],"repositories":[{"id":14,"name":"Convert2RHEL7
+        main","label":"Convert2RHEL7_main","content_type":"yum","library_instance_id":10,"mirroring_policy":"mirror_content_only"}],"last_event":{"user":"admin","status":"successful","description":null,"action":"publish","created_at":"2025-12-13
+        23:00:04 UTC","updated_at":"2025-12-13 23:00:06 UTC","environment":null,"task":{"id":"7b4aa579-2dae-4a35-801f-11e71d87453a","label":"Actions::Katello::ContentView::Publish","pending":false,"action":"Publish
+        content view ''convert2rhel_centos7''; organization ''Test Organization''","username":"admin","started_at":"2025-12-13
+        23:00:04 UTC","ended_at":"2025-12-13 23:00:06 UTC","state":"stopped","result":"success","progress":1.0,"input":{"content_view":{"id":7,"name":"convert2rhel_centos7","label":"convert2rhel_centos7"},"organization":{"id":5,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3","candlepin","candlepin_auth"],"history_id":7,"content_view_id":7,"auto_publish_composite_ids":[],"content_view_version_name":"convert2rhel_centos7
+        1.0","content_view_version_id":7,"environment_id":4,"user_id":4,"skip_promotion":null,"current_request_id":"faaf39cc-d98b-4ff8-982c-a9ad04be0956","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"content_view_id":7,"content_view_version_id":7,"skip_promotion":null,"history_id":7},"humanized":{"action":"Publish","input":[["content_view",{"text":"content
+        view ''convert2rhel_centos7''","link":"/content_views/7/versions"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/5/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-13
+        23:00:04 UTC","available_actions":{"cancellable":false,"resumable":false}},"version":"1.0","publish":true,"version_id":7,"triggered_by":null,"triggered_by_id":null},"active_history":[],"rpm_count":18,"modulemd_count":0,"erratum_count":18,"package_group_count":0,"srpm_count":0,"ansible_collection_count":0,"deb_count":0,"docker_manifest_count":0,"docker_manifest_list_count":0,"docker_tag_count":0,"file_count":0,"python_package_count":0,"module_stream_count":0,"package_count":18,"component_view_count":0,"ansible_collection_repository_count":0,"deb_repository_count":0,"docker_repository_count":0,"file_repository_count":0,"python_repository_count":0,"yum_repository_count":1,"errata_counts":{"security":2,"bugfix":3,"enhancement":13,"total":18},"permissions":{"deletable":true},"filters_applied":false}
 
         '
     headers:
@@ -448,11 +462,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '3265'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '3434'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -462,21 +472,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.7.1
+      - 3.18.0-develop
       Keep-Alive:
       - timeout=15, max=93
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK

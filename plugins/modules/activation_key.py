@@ -113,6 +113,7 @@ options:
   auto_attach:
     description:
       - Set Auto-Attach on or off
+      - The C(auto_attach) parameter is deprecated since Katello 4.13 and not available after Katello 4.19
     type: bool
   release_version:
     description:
@@ -187,7 +188,6 @@ EXAMPLES = '''
         override: enabled
       - label: ExampleOrganization_ExampleCustomProduct_ExampleRepository
         override: enabled
-    auto_attach: false
     release_version: 7Server
     service_level: Standard
 
