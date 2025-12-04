@@ -127,11 +127,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key+with+multiple+CVs%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
+        Activation Key with multiple CVs\"","sort":{"by":"name","order":"asc"},"results":[{"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Prod/Test_Content_View_3,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":166,"name":"Test
+        Content View 3","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":216,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":376},"lifecycle_environment":{"id":170,"name":"Prod","lifecycle_environment_library":false},"label":"Prod/Test_Content_View_3"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -140,7 +147,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '172'
+      - '2157'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -175,7 +182,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Test Activation Key", "organization_id": 69}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -184,28 +191,29 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '54'
-      Content-Type:
-      - application/json
+      - '0'
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/activation_keys
+    method: DELETE
+    uri: https://foreman.example.org/katello/api/activation_keys/790
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":788,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:52 UTC","updated_at":"2025-12-08 10:28:52 UTC","content_view_environments":[],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":null,"content_view":null,"environment_id":null,"environment":null,"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+      string: '  {"id":"33cbc771-5cfc-42da-be61-68488a34d1eb","label":"Actions::Katello::ActivationKey::Destroy","pending":false,"action":"Delete
+        Activation Key activation key ''Test Activation Key with multiple CVs''; organization
+        ''Test Organization''","username":"admin","started_at":"2025-12-08 10:29:02
+        UTC","ended_at":"2025-12-08 10:29:03 UTC","state":"stopped","result":"success","progress":1.0,"input":{"activation_key":{"id":790,"name":"Test
+        Activation Key with multiple CVs"},"organization":{"id":69,"name":"Test Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"current_request_id":"219c4765-4d88-429f-aa08-f00129590ec1","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Delete
+        Activation Key","input":[["activation_key",{"text":"activation key ''Test
+        Activation Key with multiple CVs''","link":"/activation_keys/790/info"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/69/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-08
+        10:29:02 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
       Cache-Control:
-      - max-age=0, private, must-revalidate
+      - no-cache
       Connection:
       - Keep-Alive
-      Content-Length:
-      - '765'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -213,13 +221,15 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 69; Test Organization
+      - ; ANY
       Foreman_version:
       - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=97
       Referrer-Policy:
       - strict-origin-when-cross-origin
+      Transfer-Encoding:
+      - chunked
       content-security-policy:
       - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
         img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
@@ -237,6 +247,6 @@ interactions:
       x-xss-protection:
       - '0'
     status:
-      code: 201
-      message: Created
+      code: 202
+      message: Accepted
 version: 1

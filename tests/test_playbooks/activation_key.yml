@@ -27,6 +27,37 @@
       vars:
         activation_key_state: absent
         activation_key_name: Test Activation Key Copy
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: present
+        lifecycle_environment_name: "{{ item.name }}"
+        lifecycle_environment_label: "{{ item.label }}"
+        lifecycle_environment_prior: "{{ item.prior }}"
+      loop:
+        - name: Dev
+          prior: Library
+        - name: Test
+          prior: Dev
+        - name: Prod
+          prior: Test
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_name: "{{ item }}"
+      loop:
+        - Test Content View 1
+        - Test Content View 2
+        - Test Content View 3
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        content_view_name: "{{ item }}"
+        lifecycle_environments:
+          - Dev
+          - Test
+          - Prod
+      loop:
+        - Test Content View 1
+        - Test Content View 2
+        - Test Content View 3
 
 - hosts: tests
   collections:
@@ -250,6 +281,102 @@
         activation_key_state: absent
         expected_change: false
 
+    - name: create AK with multiple CVs
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_name: "Test Activation Key with multiple CVs"
+        activation_key_content_view_environments: 
+          - "Dev/Test_Content_View_1"
+          - "Test/Test_Content_View_2"
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "{}"
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Default Organization View must NOT appear
+        expected_diff_after: '^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?!.*Default Organization View).*'
+    - name: swap content-view-environments, nothing should happen
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_name: "Test Activation Key with multiple CVs"
+        activation_key_content_view_environments: 
+          - "Test/Test_Content_View_2"
+          - "Dev/Test_Content_View_1"
+        expected_change: false
+    - name: add another content-view-environment
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_name: "Test Activation Key with multiple CVs"
+        activation_key_content_view_environments: 
+          - "Dev/Test_Content_View_1"
+          - "Test/Test_Content_View_2"
+          - "Prod/Test_Content_View_3"
+        expected_change: true
+        expected_diff: true
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Default Organization View must NOT appear
+        expected_diff_before: '^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?!.*Default Organization View).*'
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Prod/Test_Content_View_3 must appear
+        # Default Organization View must NOT appear
+        expected_diff_after: '^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?=.*Prod/Test_Content_View_3)(?!.*Default Organization View).*'
+    - name: remove AK with multiple CVs
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_name: "Test Activation Key with multiple CVs"
+        activation_key_state: absent
+        expected_change: true
+
+    - name: create AK with multiple CVs
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_content_view_environments: 
+          - "Dev/Test_Content_View_1"
+          - "Test/Test_Content_View_2"
+        expected_change: true
+        expected_diff: true
+        expected_diff_before: "{}"
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Default Organization View must NOT appear
+        expected_diff_after: "^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?!.*Default Organization View).*"
+    - name: change AK to single CV mode
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_content_view: "Default Organization View"
+        activation_key_lifecycle_environment: Library
+        expected_change: true
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Default Organization View must NOT appear
+        expected_diff_before: "^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?!.*Default Organization View).*"
+        # Dev/Test_Content_View_1 must NOT appear
+        # Test/Test_Content_View_2 must NOT appear
+        # Default Organization View must appear
+        expected_diff_after: "^(?!.*(Dev/Test_Content_View_1|Test/Test_Content_View_2))(?=.*Default Organization View).*"
+    - name: change AK back to multiple CV mode
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_content_view_environments: 
+          - "Dev/Test_Content_View_1"
+          - "Test/Test_Content_View_2"
+        expected_change: true
+        # Dev/Test_Content_View_1 must NOT appear
+        # Test/Test_Content_View_2 must NOT appear
+        # Default Organization View must appear
+        expected_diff_before: "^(?!.*(Dev/Test_Content_View_1|Test/Test_Content_View_2))(?=.*Default Organization View).*"
+        # Dev/Test_Content_View_1 must appear
+        # Test/Test_Content_View_2 must appear
+        # Default Organization View must NOT appear
+        expected_diff_after: "^(?=.*Dev/Test_Content_View_1)(?=.*Test/Test_Content_View_2)(?!.*Default Organization View).*"
+    - name: remove AK
+      include_tasks: tasks/activation_key.yml
+      vars:
+        activation_key_state: absent
+        expected_change: true
+
 - hosts: localhost
   collections:
     - theforeman.foreman
@@ -265,6 +392,30 @@
     - include_tasks: tasks/product.yml
       vars:
         product_state: absent
+    - include_tasks: tasks/lifecycle_environment.yml
+      vars:
+        lifecycle_environment_state: absent
+        lifecycle_environment_name: "{{ item }}"
+      loop:
+        - Test
+        - Dev
+    - include_tasks: tasks/content_view_version.yml
+      vars:
+        state: absent
+        content_view_name: "{{ item }}"
+        lifecycle_environments:
+          - Dev
+          - Test
+      loop:
+        - Test Content View 1
+        - Test Content View 2
+    - include_tasks: tasks/content_view.yml
+      vars:
+        content_view_state: absent
+        content_view_name: "{{ item }}"
+      loop:
+        - Test Content View 1
+        - Test Content View 2
     - include_tasks: tasks/organization.yml
       vars:
         organization_state: absent

@@ -45,6 +45,13 @@ options:
     description:
       - Name of the content view
     type: str
+  content_view_environments:
+    description:
+      - List of content view environments to add to activation key.
+      - Mutually exclusive with C(content_view) and C(lifecycle_environment).
+    type: list
+    elements: str
+    version_added: 5.8.0
   subscriptions:
     description:
       - List of subscriptions that include either Name, Pool ID, or Upstream Pool ID.
@@ -183,6 +190,24 @@ EXAMPLES = '''
     auto_attach: false
     release_version: 7Server
     service_level: Standard
+
+- name: "Create client activation key with multiple content views"
+  theforeman.foreman.activation_key:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "Clients"
+    organization: "Default Organization"
+    content_view_environments:
+      - prod/base_rhel_9
+      - test/third_party
+    host_collections:
+      - rhel9-servers
+      - rhel9-production
+      - rhel9-third-party-test
+    auto_attach: false
+    release_version: 9
+    service_level: Standard
 '''
 
 RETURN = '''
@@ -227,6 +252,7 @@ def main():
             description=dict(),
             lifecycle_environment=dict(type='entity', flat_name='environment_id', scope=['organization']),
             content_view=dict(type='entity', scope=['organization']),
+            content_view_environments=dict(type='list', elements='str'),
             host_collections=dict(type='entity_list', scope=['organization']),
             auto_attach=dict(type='bool'),
             release_version=dict(),
@@ -237,6 +263,10 @@ def main():
             purpose_role=dict(),
             purpose_addons=dict(type='list', elements='str'),
         ),
+        mutually_exclusive=[
+            ['lifecycle_environment', 'content_view_environments'],
+            ['content_view', 'content_view_environments']
+        ],
         argument_spec=dict(
             subscriptions=dict(type='list', elements='dict', options=dict(
                 name=dict(),
@@ -273,6 +303,20 @@ def main():
         if not module.desired_absent:
             module.lookup_entity('host_collections')
         host_collections = module.foreman_params.pop('host_collections', None)
+
+        content_view_environments = module.foreman_params.pop('content_view_environments', None)
+        content_view = module.foreman_params.get("content_view")
+        lifecycle_environment = module.foreman_params.get("lifecycle_environment")
+        # only use content view environments if content view and lifecycle environment are not specified
+        if content_view_environments is not None and content_view is None and lifecycle_environment is None:
+            desired_content_view_environments = set(content_view_environments)
+            if not entity:
+                current_content_view_environments = set()
+            else:
+                current_content_view_environments = set(entity.get('content_view_environment_labels', '').split(","))
+            if desired_content_view_environments != current_content_view_environments:
+                module.foreman_params["content_view_environments"] = sorted(list(desired_content_view_environments))
+
         activation_key = module.run()
 
         # only update subscriptions of newly created or updated AKs

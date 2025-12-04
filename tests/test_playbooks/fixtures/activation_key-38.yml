@@ -130,8 +130,14 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
+        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":791,"name":"Test
+        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:29:03 UTC","updated_at":"2025-12-08 10:29:04 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -140,7 +146,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '172'
+      - '1726'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -153,6 +159,70 @@ interactions:
       - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=98
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/katello/api/activation_keys/791?organization_id=69
+  response:
+    body:
+      string: '  {"service_level":null,"content_overrides":[],"id":791,"name":"Test
+        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:29:03 UTC","updated_at":"2025-12-08 10:29:04 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '1601'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - 69; Test Organization
+      Foreman_version:
+      - 3.16.0.7
+      Keep-Alive:
+      - timeout=15, max=97
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -214,7 +284,7 @@ interactions:
       Foreman_version:
       - 3.16.0.7
       Keep-Alive:
-      - timeout=15, max=97
+      - timeout=15, max=96
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -279,7 +349,7 @@ interactions:
       Foreman_version:
       - 3.16.0.7
       Keep-Alive:
-      - timeout=15, max=96
+      - timeout=15, max=95
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -302,8 +372,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Test Activation Key", "organization_id": 69, "content_view_id":
-      163, "environment_id": 167}'
+    body: '{"organization_id": 69, "content_view_id": 163, "environment_id": 167}'
     headers:
       Accept:
       - application/json;version=2
@@ -312,19 +381,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '101'
+      - '70'
       Content-Type:
       - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/activation_keys
+    method: PUT
+    uri: https://foreman.example.org/katello/api/activation_keys/791
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":783,"name":"Test
+      string: '  {"service_level":null,"content_overrides":[],"id":791,"name":"Test
         Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:33 UTC","updated_at":"2025-12-08 10:28:33 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
+        10:29:03 UTC","updated_at":"2025-12-08 10:29:04 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
         Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":213,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":364},"lifecycle_environment":{"id":167,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":163,"content_view":{"id":163,"name":"Default
         Organization View"},"environment_id":167,"environment":{"id":167,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
 
@@ -344,74 +413,6 @@ interactions:
       - ; ANY
       Foreman_current_organization:
       - 69; Test Organization
-      Foreman_version:
-      - 3.16.0.7
-      Keep-Alive:
-      - timeout=15, max=95
-      Referrer-Policy:
-      - strict-origin-when-cross-origin
-      content-security-policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
-      strict-transport-security:
-      - max-age=631139040; includeSubdomains
-      x-content-type-options:
-      - nosniff
-      x-download-options:
-      - noopen
-      x-frame-options:
-      - sameorigin
-      x-permitted-cross-domain-policies:
-      - none
-      x-xss-protection:
-      - '0'
-    status:
-      code: 201
-      message: Created
-- request:
-    body: '{"content_overrides": [{"content_label": "Test_Organization_Test_Product_Test_Repository",
-      "value": false}]}'
-    headers:
-      Accept:
-      - application/json;version=2
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '108'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - apypie (https://github.com/Apipie/apypie)
-    method: PUT
-    uri: https://foreman.example.org/katello/api/activation_keys/783/content_override
-  response:
-    body:
-      string: '  {"service_level":null,"content_overrides":[{"content_label":"Test_Organization_Test_Product_Test_Repository","name":"enabled","value":"0"}],"id":783,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:33 UTC","updated_at":"2025-12-08 10:28:33 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
-        Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":213,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":364},"lifecycle_environment":{"id":167,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":163,"content_view":{"id":163,"name":"Default
-        Organization View"},"environment_id":167,"environment":{"id":167,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
-
-        '
-    headers:
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      Connection:
-      - Keep-Alive
-      Content-Length:
-      - '1288'
-      Content-Type:
-      - application/json; charset=utf-8
-      Foreman_api_version:
-      - '2'
-      Foreman_current_location:
-      - ; ANY
-      Foreman_current_organization:
-      - ; ANY
       Foreman_version:
       - 3.16.0.7
       Keep-Alive:

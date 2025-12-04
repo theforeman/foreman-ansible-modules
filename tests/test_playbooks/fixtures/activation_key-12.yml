@@ -14,18 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"satellite_version":"6.16.0","result":"ok","status":200,"version":"3.11.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.18.1","result":"ok","status":200,"version":"3.16.0.7","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '100'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '94'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -35,21 +31,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.11.0-develop
+      - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,8 +72,8 @@ interactions:
     body:
       string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2024-04-15
-        16:24:33 UTC\",\"updated_at\":\"2024-04-15 16:24:34 UTC\",\"id\":4,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-12-08
+        10:27:40 UTC\",\"updated_at\":\"2025-12-08 10:27:44 UTC\",\"id\":69,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -79,11 +81,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '388'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '389'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -93,21 +91,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.11.0-develop
+      - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -123,15 +127,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/4/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":18,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_id":3,"environment_id":3,"usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":4,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":4},"created_at":"2024-04-15
-        16:24:50 UTC","updated_at":"2024-04-15 16:24:50 UTC","content_view":{"id":3,"name":"Default
-        Organization View"},"environment":{"name":"Library","id":3},"products":[],"host_collections":[],"purpose_addons":[],"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
+        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":783,"name":"Test
+        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:28:33 UTC","updated_at":"2025-12-08 10:28:33 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
+        Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":213,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":364},"lifecycle_environment":{"id":167,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":163,"content_view":{"id":163,"name":"Default
+        Organization View"},"environment_id":167,"environment":{"id":167,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -140,11 +145,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '856'
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      - '1318'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -152,23 +153,29 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 4; Test Organization
+      - 69; Test Organization
       Foreman_version:
-      - 3.11.0-develop
+      - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -186,18 +193,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: DELETE
-    uri: https://foreman.example.org/katello/api/activation_keys/18
+    uri: https://foreman.example.org/katello/api/activation_keys/783
   response:
     body:
-      string: '  {"id":"76bb7ccc-5091-4f1c-846c-102b8a24b21f","label":"Actions::Katello::ActivationKey::Destroy","pending":false,"action":"Delete
+      string: '  {"id":"f3d75a8d-152d-4c9a-a473-c5388410a1fc","label":"Actions::Katello::ActivationKey::Destroy","pending":false,"action":"Delete
         Activation Key activation key ''Test Activation Key''; organization ''Test
-        Organization''","username":"admin","started_at":"2024-04-15 16:24:57 UTC","ended_at":"2024-04-15
-        16:24:57 UTC","state":"stopped","result":"success","progress":1.0,"input":{"activation_key":{"id":18,"name":"Test
-        Activation Key"},"organization":{"id":4,"name":"Test Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"current_request_id":"b7d7f675-8a9f-4f3e-9cc7-9ed3213788d9","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Delete
+        Organization''","username":"admin","started_at":"2025-12-08 10:28:39 UTC","ended_at":"2025-12-08
+        10:28:39 UTC","state":"stopped","result":"success","progress":1.0,"input":{"activation_key":{"id":783,"name":"Test
+        Activation Key"},"organization":{"id":69,"name":"Test Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"current_request_id":"481a8cfc-0d20-4e05-a200-2b53e2013cc8","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Delete
         Activation Key","input":[["activation_key",{"text":"activation key ''Test
-        Activation Key''","link":"/activation_keys/18/info"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/4/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2024-04-15
-        16:24:57 UTC","available_actions":{"cancellable":false,"resumable":false}}
+        Activation Key''","link":"/activation_keys/783/info"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/69/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-08
+        10:28:39 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -205,10 +212,6 @@ interactions:
       - no-cache
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -218,23 +221,29 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.11.0-develop
+      - 3.16.0.7
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       Transfer-Encoding:
       - chunked
-      X-Content-Type-Options:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 202
       message: Accepted

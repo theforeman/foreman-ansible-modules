@@ -127,11 +127,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key+with+multiple+CVs%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
+        Activation Key with multiple CVs\"","sort":{"by":"name","order":"asc"},"results":[{"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -140,7 +146,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '172'
+      - '1762'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -175,7 +181,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Test Activation Key", "organization_id": 69}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -183,20 +189,19 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '54'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/activation_keys
+    method: GET
+    uri: https://foreman.example.org/katello/api/activation_keys/790?organization_id=69
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":788,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+      string: '  {"service_level":null,"content_overrides":[],"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:52 UTC","updated_at":"2025-12-08 10:28:52 UTC","content_view_environments":[],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":null,"content_view":null,"environment_id":null,"environment":null,"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
 
         '
     headers:
@@ -205,7 +210,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '765'
+      - '1619'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -237,6 +242,6 @@ interactions:
       x-xss-protection:
       - '0'
     status:
-      code: 201
-      message: Created
+      code: 200
+      message: OK
 version: 1

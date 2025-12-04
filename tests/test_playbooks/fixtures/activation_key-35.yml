@@ -127,16 +127,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/69/activation_keys?search=name%3D%22Test+Activation+Key+with+multiple+CVs%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Test
-        Activation Key\"","sort":{"by":"name","order":"asc"},"results":[{"id":783,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Activation Key with multiple CVs\"","sort":{"by":"name","order":"asc"},"results":[{"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:33 UTC","updated_at":"2025-12-08 10:28:33 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
-        Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":213,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":364},"lifecycle_environment":{"id":167,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":163,"content_view":{"id":163,"name":"Default
-        Organization View"},"environment_id":167,"environment":{"id":167,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}]}
 
         '
     headers:
@@ -145,7 +146,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1318'
+      - '1762'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -191,15 +192,16 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/activation_keys/783?organization_id=69
+    uri: https://foreman.example.org/katello/api/activation_keys/790?organization_id=69
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":783,"name":"Test
-        Activation Key","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+      string: '  {"service_level":null,"content_overrides":[],"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
-        10:28:33 UTC","updated_at":"2025-12-08 10:28:33 UTC","content_view_environments":[{"content_view":{"id":163,"name":"Default
-        Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":213,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":364},"lifecycle_environment":{"id":167,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":163,"content_view":{"id":163,"name":"Default
-        Organization View"},"environment_id":167,"environment":{"id":167,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
 
         '
     headers:
@@ -208,7 +210,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1193'
+      - '1619'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -243,7 +245,8 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: '{"organization_id": 69, "content_view_environments": ["Dev/Test_Content_View_1",
+      "Prod/Test_Content_View_3", "Test/Test_Content_View_2"]}'
     headers:
       Accept:
       - application/json;version=2
@@ -251,15 +254,24 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '137'
+      Content-Type:
+      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: GET
-    uri: https://foreman.example.org/katello/api/activation_keys/783/product_content?content_access_mode_all=true&per_page=4294967296
+    method: PUT
+    uri: https://foreman.example.org/katello/api/activation_keys/790
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":null,"sort":{"by":"name","order":"asc"},"results":[{"enabled":false,"product":{"id":55,"name":"Test
-        Product"},"content":{"id":55,"name":"Test Repository","label":"Test_Organization_Test_Product_Test_Repository","vendor":"Custom","content_type":"yum","content_url":"/custom/Test_Product/Test_Repository","gpg_url":null},"repositories":[],"name":"Test
-        Repository","vendor":"Custom","label":"Test_Organization_Test_Product_Test_Repository","id":"1765189667908","type":"yum","gpgUrl":null,"contentUrl":"/custom/Test_Product/Test_Repository","archRestricted":"noarch","osRestricted":null,"override":"default","overrides":[],"enabled_content_override":null,"redhat":false}]}
+      string: '  {"service_level":null,"content_overrides":[],"id":790,"name":"Test
+        Activation Key with multiple CVs","description":null,"unlimited_hosts":true,"auto_attach":true,"content_view_environment_labels":"Dev/Test_Content_View_1,Prod/Test_Content_View_3,Test/Test_Content_View_2","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":69,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":69},"created_at":"2025-12-08
+        10:28:59 UTC","updated_at":"2025-12-08 10:28:59 UTC","content_view_environments":[{"content_view":{"id":164,"name":"Test
+        Content View 1","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":214,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":366},"lifecycle_environment":{"id":168,"name":"Dev","lifecycle_environment_library":false},"label":"Dev/Test_Content_View_1"},{"content_view":{"id":166,"name":"Test
+        Content View 3","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":216,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":376},"lifecycle_environment":{"id":170,"name":"Prod","lifecycle_environment_library":false},"label":"Prod/Test_Content_View_3"},{"content_view":{"id":165,"name":"Test
+        Content View 2","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":215,"content_view_version_latest":true,"content_view_default":false,"content_view_environment_id":371},"lifecycle_environment":{"id":169,"name":"Test","lifecycle_environment_library":false},"label":"Test/Test_Content_View_2"}],"products":[],"host_collections":[],"multi_content_view_environment":true,"content_view_id":164,"content_view":{"id":164,"name":"Test
+        Content View 1"},"environment_id":168,"environment":{"id":168,"name":"Dev"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
 
         '
     headers:
@@ -268,7 +280,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '761'
+      - '2014'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -276,7 +288,7 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - ; ANY
+      - 69; Test Organization
       Foreman_version:
       - 3.16.0.7
       Keep-Alive:
