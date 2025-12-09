@@ -340,6 +340,45 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_view_environments"></div>
+
+      .. _ansible_collections.theforeman.foreman.activation_key_module__parameter-content_view_environments:
+
+      .. rst-class:: ansible-option-title
+
+      **content_view_environments**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_view_environments" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      :ansible-option-versionadded:`added in theforeman.foreman 5.8.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of content view environments to add to activation key.
+
+      Mutually exclusive with :literal:`content\_view` and :literal:`lifecycle\_environment`.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
       .. _ansible_collections.theforeman.foreman.activation_key_module__parameter-description:
@@ -1357,6 +1396,24 @@ Examples
             override: enabled
         auto_attach: false
         release_version: 7Server
+        service_level: Standard
+
+    - name: "Create client activation key with multiple content views"
+      theforeman.foreman.activation_key:
+        username: "admin"
+        password: "changeme"
+        server_url: "https://foreman.example.com"
+        name: "Clients"
+        organization: "Default Organization"
+        content_view_environments:
+          - prod/base_rhel_9
+          - test/third_party
+        host_collections:
+          - rhel9-servers
+          - rhel9-production
+          - rhel9-third-party-test
+        auto_attach: false
+        release_version: 9
         service_level: Standard
 
 
