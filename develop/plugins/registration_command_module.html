@@ -362,16 +362,40 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <a class="ansibleOptionLink" href="#parameter-repo" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Repository URL (yum/dnf) or full sources.list entry (apt).</p>
+<p>Deprecated: Use the <em>repo_data</em> option instead. This option was deprecated in version Foreman 3.11.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-repo_data"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-repo-data"><strong>repo_data</strong></p>
+<a class="ansibleOptionLink" href="#parameter-repo_data" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=dictionary</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Array with repository URL and corresponding GPG key URL.</p>
+<p>Each element is a dictionary with keys <code class="docutils literal notranslate"><span class="pre">repo</span></code> and <code class="docutils literal notranslate"><span class="pre">repo_gpg_key_url</span></code>.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-repo_data/repo"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-repo-data-repo"><strong>repo</strong></p>
+<a class="ansibleOptionLink" href="#parameter-repo_data/repo" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>Repository URL or details (e.g., “deb <a class="reference external" href="http://deb.example.com/">http://deb.example.com/</a> buster 1.0” for Debian, “<a class="reference external" href="https://yum.example.com/el8/x86_64/">https://yum.example.com/el8/x86_64/</a> “ for Red Hat/SUSE).</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-repo_data/repo_gpg_key_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-repo-data-repo-gpg-key-url"><strong>repo_gpg_key_url</strong></p>
+<a class="ansibleOptionLink" href="#parameter-repo_data/repo_gpg_key_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>URL of the GPG key for the repository.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-repo_gpg_key_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-repo-gpg-key-url"><strong>repo_gpg_key_url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-repo_gpg_key_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>URL of the GPG key for the repository.</p>
+<p>Deprecated: Use the <em>repo_data</em> option instead. This option was deprecated in version Foreman 3.11.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-server_url"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-server-url"><strong>server_url</strong></p>
 <a class="ansibleOptionLink" href="#parameter-server_url" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
@@ -379,7 +403,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_SERVER_URL</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-setup_insights"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-setup-insights"><strong>setup_insights</strong></p>
 <a class="ansibleOptionLink" href="#parameter-setup_insights" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -391,7 +415,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-setup_remote_execution"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-setup-remote-execution"><strong>setup_remote_execution</strong></p>
 <a class="ansibleOptionLink" href="#parameter-setup_remote_execution" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -403,7 +427,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-setup_remote_execution_pull"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-setup-remote-execution-pull"><strong>setup_remote_execution_pull</strong></p>
 <a class="ansibleOptionLink" href="#parameter-setup_remote_execution_pull" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -415,7 +439,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-smart_proxy"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-smart-proxy"><strong>smart_proxy</strong></p>
 <a class="ansibleOptionLink" href="#parameter-smart_proxy" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -423,7 +447,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>This Proxy must have both the <code class="docutils literal notranslate"><span class="pre">Templates</span></code> and <code class="docutils literal notranslate"><span class="pre">Registration</span></code> features enabled.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-update_packages"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-update-packages"><strong>update_packages</strong></p>
 <a class="ansibleOptionLink" href="#parameter-update_packages" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -435,7 +459,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-use_gssapi"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-use-gssapi"><strong>use_gssapi</strong></p>
 <a class="ansibleOptionLink" href="#parameter-use_gssapi" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -449,7 +473,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-username"><strong>username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -457,7 +481,7 @@ see <a class="reference internal" href="#ansible-collections-theforeman-foreman-
 <p>If the value is not specified in the task, the value of environment variable <code class="docutils literal notranslate"><span class="pre">FOREMAN_USERNAME</span></code> will be used instead.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div><p class="ansible-option-title" id="ansible-collections-theforeman-foreman-registration-command-module-parameter-validate-certs"><strong>validate_certs</strong></p>
 <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
