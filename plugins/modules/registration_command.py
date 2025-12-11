@@ -89,13 +89,33 @@ options:
   repo:
     description:
     - Repository URL (yum/dnf) or full sources.list entry (apt).
+    - "Deprecated: Use the I(repo_data) option instead."
     required: false
-    type: str
+    type: str  
   repo_gpg_key_url:
     description:
     - URL of the GPG key for the repository.
+    - "Deprecated: Use the I(repo_data) option instead."
     required: false
     type: str
+  repo_data:
+    description:
+    - Array with repository URL and corresponding GPG key URL.
+    - Each element is a dictionary with keys C(repo) and C(repo_gpg_key_url).
+    required: false
+    type: list
+    elements: dict
+    suboptions:
+      repo:
+        description:
+        - Repository URL / details, for example, for Debian OS family C(deb deb.example.com/ buster 1.0), for Red Hat and SUSE OS family C(yum.theforeman.org/client/latest/el8/x86_64/).
+        required: true
+        type: str
+      repo_gpg_key_url:
+        description:
+        - URL of the GPG key for the repository.
+        required: false
+        type: str
   setup_insights:
     description:
     - If this is set to C(true), C(insights-client) will be installed
@@ -182,6 +202,10 @@ def main():
             update_packages=dict(type='bool'),
             repo=dict(type='str'),
             repo_gpg_key_url=dict(type='str', no_log=False),
+            repo_data=dict(type='list', elements='dict', options=dict(
+                repo=dict(type='str', required=True),
+                repo_gpg_key_url=dict(type='str'),
+            )),
             remote_execution_interface=dict(type='str'),
             setup_remote_execution_pull=dict(type='bool'),
             activation_keys=dict(type='list', elements='str', no_log=False),
