@@ -89,13 +89,13 @@ options:
   repo:
     description:
     - Repository URL (yum/dnf) or full sources.list entry (apt).
-    - "Deprecated: Use the I(repo_data) option instead."
+    - "Deprecated: Use the I(repo_data) option instead. This option was deprecated in version Foreman 3.11."
     required: false
     type: str
   repo_gpg_key_url:
     description:
     - URL of the GPG key for the repository.
-    - "Deprecated: Use the I(repo_data) option instead."
+    - "Deprecated: Use the I(repo_data) option instead. This option was deprecated in version Foreman 3.11."
     required: false
     type: str
   repo_data:
