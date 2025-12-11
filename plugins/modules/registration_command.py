@@ -91,7 +91,7 @@ options:
     - Repository URL (yum/dnf) or full sources.list entry (apt).
     - "Deprecated: Use the I(repo_data) option instead."
     required: false
-    type: str  
+    type: str
   repo_gpg_key_url:
     description:
     - URL of the GPG key for the repository.
@@ -108,7 +108,7 @@ options:
     suboptions:
       repo:
         description:
-        - Repository URL / details, for example, for Debian OS family C(deb deb.example.com/ buster 1.0), for Red Hat and SUSE OS family C(yum.theforeman.org/client/latest/el8/x86_64/).
+        - Repository URL or details (e.g., "deb http://deb.example.com/ buster 1.0" for Debian, "https://yum.example.com/el8/x86_64/ " for Red Hat/SUSE).
         required: true
         type: str
       repo_gpg_key_url:
