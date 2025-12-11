@@ -204,7 +204,7 @@ def main():
             repo_gpg_key_url=dict(type='str', no_log=False),
             repo_data=dict(type='list', elements='dict', options=dict(
                 repo=dict(type='str', required=True),
-                repo_gpg_key_url=dict(type='str'),
+                repo_gpg_key_url=dict(type='str', no_log=False),
             )),
             remote_execution_interface=dict(type='str'),
             setup_remote_execution_pull=dict(type='bool'),
