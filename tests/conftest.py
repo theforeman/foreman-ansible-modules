@@ -63,7 +63,7 @@ def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode
     if inventory is None:
         inventory = os.path.join(os.getcwd(), 'tests', 'inventory', 'hosts')
     kwargs['inventory'] = inventory
-    kwargs['verbosity'] = 4
+    kwargs['verbosity'] = int(os.environ.get('FAM_TEST_ANSIBLE_VERBOSITY', 4))
     if extra_vars:
         kwargs['extravars'] = extra_vars
     if limit:
