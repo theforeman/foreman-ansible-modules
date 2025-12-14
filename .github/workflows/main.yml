@@ -113,6 +113,9 @@ jobs:
       - name: Install required collections for ansible 2.10
         run: ansible-galaxy collection install https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/artifacts/community-docker-2.7.12.tar.gz
         if: matrix.ansible == 'v2.10.4'
+      - name: Install importlib-metadata for python_version < '3.8'
+        run: pip install importlib-metadata
+        if: matrix.python in ['3.7', '3.8']
       - name: Run crud tests
         run: make test-crud
       - name: Run other tests
