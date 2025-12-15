@@ -20,7 +20,6 @@ The following fields are required for an activation key but have defaults which 
 
 The following fields are optional in the sense that the server will use default values when they are omitted:
 
-- `auto_attach`: Auto Attach behavior for the activation key. When true, it will attempt to attach a minimum of subscriptions (from the subset of assigned subscriptions on the activation key; selects from all subscriptions in the organization if none are assigned) to cover any present products on the host. When false, it will attempt to attach all subscriptions assigned on the activation key to the host at registration time. server defaults to true.
 - `unlimited_hosts`: Allow an unlimited number of hosts to register with the activation key when true. When false, the `max_hosts` parameter which sets a numerical limit on the number of hosts that can be registered becomes required. server defaults to true.
 
 The following fields are optional and will be omitted by default:
@@ -71,7 +70,6 @@ Define two Activation Keys. The first registers hosts in the "ACME" organization
         foreman_organization: "ACME"
         foreman_activation_keys:
           - name: "ACME_App_Key"
-            auto_attach: false
             subscriptions:
               - name: "ACME_App"
           - name: "ACME_RHEL7_Base_Test"
