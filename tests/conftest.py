@@ -2,7 +2,10 @@ import json
 import os
 
 import ansible_runner
-from importlib.metadata import version, PackageNotFoundError
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ModuleNotFoundError:
+    from importlib_metadata import version, PackageNotFoundError
 import pytest
 import py.path
 import yaml
