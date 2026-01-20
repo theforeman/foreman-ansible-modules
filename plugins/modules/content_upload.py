@@ -90,7 +90,6 @@ EXAMPLES = '''
 RETURN = ''' # '''
 
 import os
-import subprocess
 import traceback
 
 from ansible.module_utils.common.text.converters import to_bytes, to_native
@@ -122,10 +121,10 @@ def get_deb_info(path):
     return control['package'], control['version'], control['architecture']
 
 
-def get_rpm_info(path):
+def get_rpm_info(module, path):
     if HAS_RPM_LIB:
         return get_rpm_info_lib(path)
-    return get_rpm_info_bin(path)
+    return get_rpm_info_bin(module, path)
 
 
 def get_rpm_info_lib(path):
@@ -153,10 +152,10 @@ def get_rpm_info_lib(path):
     return (name, epoch, version, release, arch)
 
 
-def get_rpm_info_bin(path):
-    rpmresult = subprocess.check_output(
+def get_rpm_info_bin(module, path):
+    _rc, rpmresult, _rpmerr = module.run_command(
         ['rpm', '--nosignature', '--queryformat', '%{NAME} %{EPOCHNUM} %{VERSION} %{RELEASE} %{ARCH} %{SOURCEPACKAGE}',
-         '-qp', path]).decode('ascii')
+         '-qp', path], check_rc=True)
 
     name, epoch, version, release, arch, sourcepackage = rpmresult.split()
 
@@ -196,7 +195,7 @@ def main():
             if not HAS_RPM:
                 module.fail_json(msg=missing_required_lib("rpm"), exception=RPM_IMP_ERR)
 
-            name, epoch, version, release, arch = get_rpm_info(b_src)
+            name, epoch, version, release, arch = get_rpm_info(module, b_src)
             query = 'name = "{0}" and epoch = "{1}" and version = "{2}" and release = "{3}" and arch = "{4}"'.format(name, epoch, version, release, arch)
             content_unit = module.find_resource('packages', query, params=repository_scope, failsafe=True)
         elif module.foreman_params['repository']['content_type'] == 'file':
