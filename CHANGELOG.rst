@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.8.0
+======
+
+Minor Changes
+-------------
+
+- activation_key - add ``content_view_environments`` parameter to support multi CV (https://github.com/theforeman/foreman-ansible-modules/pull/1935)
+- job_invocation - add ``feature`` parameter (https://github.com/theforeman/foreman-ansible-modules/pull/1923)
+
 v5.7.0
 ======
 
