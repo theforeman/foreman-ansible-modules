@@ -115,12 +115,10 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
 
 
 def get_ansible_version():
-    for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
-        try:
-            return version(ansible_name)
-        except PackageNotFoundError:
-            pass
-    return '2.14.0'
+    try:
+        return version('ansible-core')
+    except PackageNotFoundError:
+        return '2.14.0'
 
 
 def assert_no_warnings(run):
