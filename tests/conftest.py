@@ -115,7 +115,7 @@ def run_playbook_vcr(tmpdir, module, extra_vars=None, limit=None, inventory=None
 
 
 def get_ansible_version():
-    for ansible_name in ['ansible', 'ansible-base', 'ansible-core']:
+    for ansible_name in ['ansible-base', 'ansible-core']:
         try:
             return version(ansible_name)
         except PackageNotFoundError:
