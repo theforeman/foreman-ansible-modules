@@ -11,4 +11,5 @@
     organizations: "{{ item.organizations | default(omit) }}"
     parameters: "{{ item.parameters | default(omit) }}"
     ignore_types: "{{ item.ignore_types | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
   loop: "{{ foreman_locations }}"

@@ -35,4 +35,5 @@ Create the 'UK' location and set its parent to EMEA.
             parameters:
               - name: system_location
                 value: UK
+            state: present
 ```
