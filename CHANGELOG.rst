@@ -6,6 +6,20 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.9.0
+======
+
+Minor Changes
+-------------
+
+- content_view - add support for lifecycle environments in rolling content views
+- locations role - Added ``state`` parameter to manage resource presence.
+
+New Modules
+-----------
+
+- theforeman.foreman.smart_proxy_refresh - Refresh Smart Proxy features
+
 v5.8.0
 ======
 
