@@ -230,6 +230,9 @@ content_filter_rule_docker_spec = {
 content_filter_rule_deb_spec = {
     'id': {},
     'rule_name': {'flat_name': 'name'},
+    'max_version': {},
+    'min_version': {},
+    'version': {},
     'architecture': {},
 }
 
