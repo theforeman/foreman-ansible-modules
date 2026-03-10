@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.18.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.20.0","result":"ok","status":200,"version":"3.19.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '71'
+      - '100'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -31,7 +31,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Referrer-Policy:
@@ -70,10 +70,10 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-12-13
-        22:57:39 UTC\",\"updated_at\":\"2025-12-13 22:57:43 UTC\",\"id\":5,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-03-10
+        15:31:19 UTC\",\"updated_at\":\"2026-03-10 15:31:21 UTC\",\"id\":9,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -91,9 +91,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=99
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -127,10 +127,10 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/activation_keys?search=name%3D%22convert2rhel_oracle7%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/9/activation_keys?search=name%3D%22convert2rhel_oracle8%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"convert2rhel_oracle7\"","sort":{"by":"name","order":"asc"},"results":[]}
+      string: '{"total":3,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"convert2rhel_oracle8\"","sort":{"by":"name","order":"asc"},"results":[]}
 
         '
     headers:
@@ -147,11 +147,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=98
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -185,12 +185,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/environments?search=name%3D%22Library%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/9/environments?search=name%3D%22Library%22&per_page=4294967296
   response:
     body:
-      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":4,"name":"Library","label":"Library","description":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
-        22:57:40 UTC","updated_at":"2025-12-13 22:57:40 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":2,"packages":1822,"module_streams":0,"errata":{"security":4,"bugfix":6,"enhancement":26,"total":36},"yum_repositories":4,"docker_repositories":0,"ostree_repositories":0,"products":4,"debs":0,"deb_repositories":0},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[{"name":"convert2rhel_centos7","id":7},{"name":"convert2rhel_centos8","id":8}],"capsules":[{"id":1,"name":"foreman.example.org","lifecycle_environments":[{"id":1},{"id":4}]}]}]}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Library\"","sort":{"by":"name","order":"asc"},"results":[{"library":true,"registry_name_pattern":null,"registry_unauthenticated_pull":false,"id":8,"name":"Library","label":"Library","description":null,"organization_id":9,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":9},"created_at":"2026-03-10
+        15:31:20 UTC","updated_at":"2026-03-10 15:31:20 UTC","prior":null,"successor":null,"counts":{"content_hosts":0,"content_views":2,"packages":1822,"module_streams":0,"errata":{"security":4,"bugfix":6,"enhancement":26,"total":36},"yum_repositories":4,"docker_repositories":0,"ostree_repositories":0,"products":4,"debs":0,"deb_repositories":0},"permissions":{"create_lifecycle_environments":true,"view_lifecycle_environments":true,"edit_lifecycle_environments":true,"destroy_lifecycle_environments":false,"promote_or_remove_content_views_to_environments":true},"content_views":[{"name":"convert2rhel_centos7","id":9},{"name":"convert2rhel_centos8","id":10}],"capsules":[{"id":1,"name":"foreman.example.org","lifecycle_environments":[{"id":1},{"id":2},{"id":3},{"id":4},{"id":5},{"id":6},{"id":7},{"id":8}]}]}]}
 
         '
     headers:
@@ -199,7 +199,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1205'
+      - '1261'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -207,11 +207,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=97
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -245,17 +245,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/content_views?search=name%3D%22Default+Organization+View%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/9/content_views?search=name%3D%22Default+Organization+View%22&per_page=4294967296
   response:
     body:
       string: '{"total":3,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Default
-        Organization View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":true,"version_count":1,"latest_version":"1.0","latest_version_id":6,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":false,"environment_ids":[4],"repository_ids":[],"id":6,"name":"Default
-        Organization View","label":"Default_Organization_View","description":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
-        22:57:40 UTC","updated_at":"2025-12-13 22:57:40 UTC","last_task":null,"latest_version_environments":[{"id":4,"name":"Library","label":"Library"}],"repositories":[],"versions":[{"id":6,"version":"1.0","published":"2025-12-13
-        22:57:40 UTC","description":null,"environment_ids":[4],"filters_applied":null,"published_at_words":"3
-        minutes"}],"components":[],"content_view_components":[],"activation_keys":[],"hosts":[],"next_version":"1.0","last_published":"2025-12-13
-        22:57:40 UTC","environments":[{"id":4,"label":"Library","name":"Library","activation_keys":[],"hosts":[],"permissions":{"readable":true}}]}]}
+        Organization View\"","sort":{"by":"name","order":"asc"},"results":[{"composite":false,"rolling":false,"component_ids":[],"duplicate_repositories_to_publish":[],"default":true,"version_count":1,"latest_version":"1.0","latest_version_id":8,"auto_publish":false,"solve_dependencies":false,"import_only":false,"generated_for":"none","related_cv_count":0,"related_composite_cvs":[],"filtered":false,"needs_publish":false,"environment_ids":[8],"repository_ids":[],"id":8,"name":"Default
+        Organization View","label":"Default_Organization_View","description":null,"organization_id":9,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":9},"created_at":"2026-03-10
+        15:31:20 UTC","updated_at":"2026-03-10 15:31:20 UTC","last_task":null,"latest_version_environments":[{"id":8,"name":"Library","label":"Library"}],"repositories":[],"versions":[{"id":8,"version":"1.0","published":"2026-03-10
+        15:31:20 UTC","description":null,"environment_ids":[8],"filters_applied":null,"published_at_words":"about
+        4 hours"}],"components":[],"content_view_components":[],"activation_keys":[{"id":6,"name":"convert2rhel_oracle7"}],"hosts":[],"next_version":"1.0","last_published":"2026-03-10
+        15:31:20 UTC","environments":[{"id":8,"label":"Library","name":"Library","activation_keys":[6],"hosts":[],"permissions":{"readable":true}}]}]}
 
         '
     headers:
@@ -264,7 +264,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1393'
+      - '1436'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -272,11 +272,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=96
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -299,8 +299,8 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "convert2rhel_oracle7", "organization_id": 5, "content_view_id":
-      6, "environment_id": 4}'
+    body: '{"name": "convert2rhel_oracle8", "organization_id": 9, "content_view_id":
+      8, "environment_id": 8}'
     headers:
       Accept:
       - application/json;version=2
@@ -318,11 +318,11 @@ interactions:
     uri: https://foreman.example.org/katello/api/activation_keys
   response:
     body:
-      string: '  {"service_level":null,"content_overrides":[],"id":18,"name":"convert2rhel_oracle7","description":null,"unlimited_hosts":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
-        23:00:33 UTC","updated_at":"2025-12-13 23:00:33 UTC","content_view_environments":[{"content_view":{"id":6,"name":"Default
-        Organization View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":6,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":6},"lifecycle_environment":{"id":4,"name":"Library","lifecycle_environment_library":true},"label":"Library"}],"products":[],"host_collections":[],"multi_content_view_environment":false,"content_view_id":6,"content_view":{"id":6,"name":"Default
-        Organization View"},"environment_id":4,"environment":{"id":4,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
+      string: '  {"service_level":null,"content_overrides":[],"id":7,"name":"convert2rhel_oracle8","description":null,"unlimited_hosts":true,"content_view_environment_labels":"Library","usage_count":0,"user_id":4,"max_hosts":null,"release_version":null,"purpose_usage":null,"purpose_role":null,"organization_id":9,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":9},"created_at":"2026-03-10
+        19:19:55 UTC","updated_at":"2026-03-10 19:19:55 UTC","content_view_environments":[{"content_view":{"id":8,"name":"Default
+        Organization View","label":"Default_Organization_View","composite":false,"rolling":false,"content_view_version":"1.0","content_view_version_id":8,"content_view_version_latest":true,"content_view_default":true,"content_view_environment_id":11},"lifecycle_environment":{"id":8,"name":"Library","label":"Library","lifecycle_environment_library":true},"label":"Library"}],"host_collections":[],"multi_content_view_environment":false,"content_view_id":8,"content_view":{"id":8,"name":"Default
+        Organization View"},"environment_id":8,"environment":{"id":8,"name":"Library"},"permissions":{"view_activation_keys":true,"edit_activation_keys":true,"destroy_activation_keys":true}}
 
         '
     headers:
@@ -331,7 +331,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1156'
+      - '1196'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -339,11 +339,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=95
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:

@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.18.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.20.0","result":"ok","status":200,"version":"3.19.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '71'
+      - '100'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -31,7 +31,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Referrer-Policy:
@@ -70,10 +70,10 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-12-13
-        22:57:39 UTC\",\"updated_at\":\"2025-12-13 22:57:43 UTC\",\"id\":5,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-03-10
+        15:31:19 UTC\",\"updated_at\":\"2026-03-10 15:31:21 UTC\",\"id\":9,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -91,9 +91,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=99
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -127,11 +127,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/products?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/9/products?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
   response:
     body:
-      string: '{"total":2,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":7,"cp_id":"600225996063","name":"Convert2RHEL8","label":"Convert2RHEL8","description":null,"provider_id":7,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"sync_plan":null,"repository_count":0}]}
+      string: '{"total":4,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":2,"cp_id":"607498262379","name":"Convert2RHEL8","label":"Convert2RHEL8","description":null,"provider_id":9,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2026-03-10 16:32:58 UTC","last_sync_words":"about
+        3 hours","organization_id":9,"organization":{"name":"Test Organization","label":"Test_Organization","id":9},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -140,7 +141,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '603'
+      - '661'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -148,11 +149,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=98
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -186,11 +187,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/7/repositories?search=name%3D%22Convert2RHEL8+main%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/2/repositories?search=name%3D%22Convert2RHEL8+main%22&per_page=4294967296
   response:
     body:
-      string: '{"total":0,"subtotal":0,"selectable":0,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8
-        main\"","sort":{"by":"name","order":"asc"},"results":[],"org_repository_count":1}
+      string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8
+        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"d9f8c5ca-60a5-42da-ae13-e320d976def0","relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","container_repository_name":null,"full_path":"https://foreman.example.org/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","library_instance_id":null,"full_gpg_key_path":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/019cd85f-f4ed-7151-88d6-ba6d62312ea2/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/019cd85f-f3e6-7464-9df5-8e06d70b7271/","publication_href":"/pulp/api/v3/publications/rpm/rpm/019cd860-4ee8-7551-b946-0e1d6fffd702/","content_counts":{"rpm":18,"erratum":18,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":2,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main","description":null,"organization_id":9,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":9},"content_view_versions":[{"id":10,"version":"1.0","content_view_id":10,"content_view_name":"convert2rhel_centos8"}],"filters":[],"last_sync":{"id":"a7f59f10-1316-4594-a684-6ae058bfe842","username":"admin","started_at":"2026-03-10
+        16:32:58 UTC","ended_at":"2026-03-10 16:33:00 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":8,"name":"Default
+        Organization View"},"content_view_version":{"id":8,"name":"Default Organization
+        View 1.0","content_view_id":8},"kt_environment":{"id":8,"name":"Library"},"content_type":"yum","url":"https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/","docker_upstream_name":null,"arch":"noarch","os_versions":[],"content_id":"1773156693397","generic_remote_options":null,"major":null,"minor":null,"product":{"id":2,"cp_id":"607498262379","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":"about
+        3 hours","flatpak_dependencies":false}],"org_repository_count":8}
 
         '
     headers:
@@ -199,7 +206,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '196'
+      - '2193'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -209,9 +216,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=97
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -234,9 +241,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: '{"name": "Convert2RHEL8 main", "product_id": 7, "content_type": "yum",
-      "url": "https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/",
-      "download_policy": "immediate", "verify_ssl_on_sync": true}'
+    body: null
     headers:
       Accept:
       - application/json;version=2
@@ -244,22 +249,20 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '223'
-      Content-Type:
-      - application/json
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
-    method: POST
-    uri: https://foreman.example.org/katello/api/repositories
+    method: GET
+    uri: https://foreman.example.org/katello/api/repositories/2
   response:
     body:
-      string: '  {"relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","promoted":false,"content_view_version_id":6,"library_instance_id":null,"last_contents_changed":"2025-12-13
-        22:57:57 UTC","organization_id":5,"organization":{"name":"Test Organization","label":"Test_Organization","id":5},"created_at":"2025-12-13
-        22:57:56 UTC","updated_at":"2025-12-13 22:57:57 UTC","backend_identifier":"84ac7715-0446-430c-9a8c-7aca2e8fffe3","container_repository_name":null,"full_path":"https://foreman.example.org/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","full_gpg_key_path":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/019b19ef-613d-72a7-ae06-23dcf7e4b2e5/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/019b19ef-603a-757f-af6e-e421522523c7/","publication_href":null,"content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":11,"name":"Convert2RHEL8
-        main","label":"Convert2RHEL8_main","description":null,"content_view_versions":[],"filters":[],"last_sync":null,"content_view":{"id":6,"name":"Default
-        Organization View"},"content_view_version":{"id":6,"name":"Default Organization
-        View 1.0","content_view_id":6},"kt_environment":{"id":4,"name":"Library"},"content_type":"yum","url":"https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/","docker_upstream_name":null,"arch":"noarch","os_versions":[],"content_id":"1765666677224","generic_remote_options":null,"major":null,"minor":null,"product":{"id":7,"cp_id":"600225996063","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":null,"flatpak_dependencies":false,"environment":{"id":4,"registry_unauthenticated_pull":false},"include_tags":null,"exclude_tags":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_dependencies":true,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"metadata_expire":null,"allow_updates":true,"is_container_push":false,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"gpg_key":{"id":null,"name":null},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":false,"upstream_auth_exists":false,"content_view_environments":[]}
+      string: '  {"relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","promoted":true,"content_view_version_id":8,"library_instance_id":null,"last_contents_changed":"2026-03-10
+        15:31:56 UTC","organization_id":9,"organization":{"name":"Test Organization","label":"Test_Organization","id":9},"created_at":"2026-03-10
+        15:31:32 UTC","updated_at":"2026-03-10 15:31:33 UTC","backend_identifier":"d9f8c5ca-60a5-42da-ae13-e320d976def0","container_repository_name":null,"full_path":"https://foreman.example.org/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","full_gpg_key_path":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/019cd85f-f4ed-7151-88d6-ba6d62312ea2/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/019cd85f-f3e6-7464-9df5-8e06d70b7271/","publication_href":"/pulp/api/v3/publications/rpm/rpm/019cd860-4ee8-7551-b946-0e1d6fffd702/","content_counts":{"rpm":18,"erratum":18,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":2,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main","description":null,"content_view_versions":[{"id":10,"version":"1.0","content_view_id":10,"content_view_name":"convert2rhel_centos8"}],"filters":[],"last_sync":{"id":"a7f59f10-1316-4594-a684-6ae058bfe842","username":"admin","started_at":"2026-03-10
+        16:32:58 UTC","ended_at":"2026-03-10 16:33:00 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":8,"name":"Default
+        Organization View"},"content_view_version":{"id":8,"name":"Default Organization
+        View 1.0","content_view_id":8},"kt_environment":{"id":8,"name":"Library"},"content_type":"yum","url":"https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/","docker_upstream_name":null,"arch":"noarch","os_versions":[],"content_id":"1773156693397","generic_remote_options":null,"major":null,"minor":null,"product":{"id":2,"cp_id":"607498262379","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":"about
+        3 hours","flatpak_dependencies":false,"environment":{"id":8,"registry_unauthenticated_pull":false},"include_tags":null,"exclude_tags":null,"verify_ssl_on_sync":true,"unprotected":true,"checksum_type":null,"download_policy":"immediate","ansible_collection_requirements":null,"ansible_collection_auth_url":null,"ansible_collection_auth_token":null,"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_dependencies":true,"upstream_username":null,"deb_releases":null,"deb_components":null,"deb_architectures":null,"http_proxy_policy":"global_default_http_proxy","http_proxy_id":null,"http_proxy_name":null,"retain_package_versions_count":null,"metadata_expire":null,"allow_updates":true,"is_container_push":false,"ignorable_content":null,"http_proxy":{"id":null,"name":null,"policy":"global_default_http_proxy"},"ssl_ca_cert":{"id":null,"name":null},"ssl_client_cert":{"id":null,"name":null},"ssl_client_key":{"id":null,"name":null},"gpg_key":{"id":null,"name":null},"permissions":{"deletable":true,"deletable_across_cv":true},"upstream_password_exists":false,"upstream_auth_exists":false}
 
         '
     headers:
@@ -268,7 +271,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '2936'
+      - '3263'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -278,9 +281,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=96
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -300,6 +303,6 @@ interactions:
       x-xss-protection:
       - '0'
     status:
-      code: 201
-      message: Created
+      code: 200
+      message: OK
 version: 1

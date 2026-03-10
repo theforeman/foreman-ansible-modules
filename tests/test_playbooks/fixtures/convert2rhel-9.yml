@@ -14,14 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"3.18.0-develop","api_version":2}'
+      string: '{"satellite_version":"6.20.0","result":"ok","status":200,"version":"3.19.0-develop","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '71'
+      - '100'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -31,7 +31,7 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
       - timeout=15, max=100
       Referrer-Policy:
@@ -70,10 +70,10 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+      string: "{\n  \"total\": 5,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
         4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
-        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2025-12-13
-        22:57:39 UTC\",\"updated_at\":\"2025-12-13 22:57:43 UTC\",\"id\":5,\"name\":\"Test
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-03-10
+        15:31:19 UTC\",\"updated_at\":\"2026-03-10 15:31:21 UTC\",\"id\":9,\"name\":\"Test
         Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
@@ -91,9 +91,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=99
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -127,11 +127,12 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/organizations/5/products?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/organizations/9/products?search=name%3D%22Convert2RHEL8%22&per_page=4294967296
   response:
     body:
-      string: '{"total":4,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":7,"cp_id":"600225996063","name":"Convert2RHEL8","label":"Convert2RHEL8","description":null,"provider_id":7,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"sync_plan":null,"repository_count":1}]}
+      string: '{"total":4,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8\"","sort":{"by":"name","order":"asc"},"results":[{"id":2,"cp_id":"607498262379","name":"Convert2RHEL8","label":"Convert2RHEL8","description":null,"provider_id":9,"sync_plan_id":null,"sync_summary":{"success":1},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":"Syncing
+        Complete.","last_sync":"2026-03-10 16:32:58 UTC","last_sync_words":"about
+        3 hours","organization_id":9,"organization":{"name":"Test Organization","label":"Test_Organization","id":9},"sync_plan":null,"repository_count":1}]}
 
         '
     headers:
@@ -140,7 +141,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '603'
+      - '661'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -148,11 +149,11 @@ interactions:
       Foreman_current_location:
       - ; ANY
       Foreman_current_organization:
-      - 5; Test Organization
+      - 9; Test Organization
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=98
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -186,15 +187,17 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/7/repositories?search=name%3D%22Convert2RHEL8+main%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/2/repositories?search=name%3D%22Convert2RHEL8+main%22&per_page=4294967296
   response:
     body:
       string: '{"total":1,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Convert2RHEL8
-        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"84ac7715-0446-430c-9a8c-7aca2e8fffe3","relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","container_repository_name":null,"full_path":"https://foreman.example.org/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","library_instance_id":null,"full_gpg_key_path":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/019b19ef-613d-72a7-ae06-23dcf7e4b2e5/versions/0/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/019b19ef-603a-757f-af6e-e421522523c7/","publication_href":"/pulp/api/v3/publications/rpm/rpm/019b19ef-637c-7451-baae-5f0b23e0fe8c/","content_counts":{"rpm":0,"erratum":0,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":11,"name":"Convert2RHEL8
-        main","label":"Convert2RHEL8_main","description":null,"organization_id":5,"organization":{"name":"Test
-        Organization","label":"Test_Organization","id":5},"content_view_versions":[],"filters":[],"last_sync":null,"content_view":{"id":6,"name":"Default
-        Organization View"},"content_view_version":{"id":6,"name":"Default Organization
-        View 1.0","content_view_id":6},"kt_environment":{"id":4,"name":"Library"},"content_type":"yum","url":"https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/","docker_upstream_name":null,"arch":"noarch","os_versions":[],"content_id":"1765666677224","generic_remote_options":null,"major":null,"minor":null,"product":{"id":7,"cp_id":"600225996063","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":null,"flatpak_dependencies":false}],"org_repository_count":4}
+        main\"","sort":{"by":"name","order":"asc"},"results":[{"backend_identifier":"d9f8c5ca-60a5-42da-ae13-e320d976def0","relative_path":"Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main","container_repository_name":null,"full_path":"https://foreman.example.org/pulp/content/Test_Organization/Library/custom/Convert2RHEL8/Convert2RHEL8_main/","library_instance_id":null,"full_gpg_key_path":null,"version_href":"/pulp/api/v3/repositories/rpm/rpm/019cd85f-f4ed-7151-88d6-ba6d62312ea2/versions/1/","remote_href":"/pulp/api/v3/remotes/rpm/rpm/019cd85f-f3e6-7464-9df5-8e06d70b7271/","publication_href":"/pulp/api/v3/publications/rpm/rpm/019cd860-4ee8-7551-b946-0e1d6fffd702/","content_counts":{"rpm":18,"erratum":18,"package_group":0,"srpm":0,"module_stream":0},"mirroring_policy":"mirror_content_only","id":2,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main","description":null,"organization_id":9,"organization":{"name":"Test
+        Organization","label":"Test_Organization","id":9},"content_view_versions":[{"id":10,"version":"1.0","content_view_id":10,"content_view_name":"convert2rhel_centos8"}],"filters":[],"last_sync":{"id":"a7f59f10-1316-4594-a684-6ae058bfe842","username":"admin","started_at":"2026-03-10
+        16:32:58 UTC","ended_at":"2026-03-10 16:33:00 UTC","state":"stopped","result":"success","progress":1.0},"content_view":{"id":8,"name":"Default
+        Organization View"},"content_view_version":{"id":8,"name":"Default Organization
+        View 1.0","content_view_id":8},"kt_environment":{"id":8,"name":"Library"},"content_type":"yum","url":"https://cdn-public.redhat.com/content/public/addon/dist/convert2rhel8/8/x86_64/os/","docker_upstream_name":null,"arch":"noarch","os_versions":[],"content_id":"1773156693397","generic_remote_options":null,"major":null,"minor":null,"product":{"id":2,"cp_id":"607498262379","name":"Convert2RHEL8","orphaned":false,"redhat":false,"sync_plan":null},"content_label":"Test_Organization_Convert2RHEL8_Convert2RHEL8_main","last_sync_words":"about
+        3 hours","flatpak_dependencies":false}],"org_repository_count":8}
 
         '
     headers:
@@ -203,7 +206,7 @@ interactions:
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1903'
+      - '2193'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -213,9 +216,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=97
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
@@ -253,18 +256,18 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://foreman.example.org/katello/api/repositories/11/sync
+    uri: https://foreman.example.org/katello/api/repositories/2/sync
   response:
     body:
-      string: '  {"id":"816c6cd2-ff31-45da-b849-6736080d0d9b","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
+      string: '  {"id":"7aec5275-256e-4478-9241-d3efa9b56b99","label":"Actions::Katello::Repository::Sync","pending":true,"action":"Synchronize
         repository ''Convert2RHEL8 main''; product ''Convert2RHEL8''; organization
-        ''Test Organization''","username":"admin","started_at":"2025-12-13 22:58:20
-        UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"repository":{"id":11,"name":"Convert2RHEL8
-        main","label":"Convert2RHEL8_main"},"product":{"id":7,"name":"Convert2RHEL8","label":"Convert2RHEL8","cp_id":"600225996063"},"provider":{"id":7,"name":"Anonymous"},"organization":{"id":5,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":11,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"e5197bf5-1e15-4078-aa39-1a41f8f37244","step_id":19,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"e5197bf5-1e15-4078-aa39-1a41f8f37244","step_id":19,"action_id":2,"subkeys":["contents_changed"]},"current_request_id":"3d585220-bb84-4bd6-900b-815acb3427d2","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL8 main''","link":null}],["product",{"text":"product ''Convert2RHEL8''","link":"/products/7/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/5/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2025-12-13
-        22:58:20 UTC","available_actions":{"cancellable":false,"resumable":false}}
+        ''Test Organization''","username":"admin","started_at":"2026-03-10 19:18:50
+        UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"repository":{"id":2,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main"},"product":{"id":2,"name":"Convert2RHEL8","label":"Convert2RHEL8","cp_id":"607498262379"},"provider":{"id":9,"name":"Anonymous"},"organization":{"id":9,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":2,"sync_result":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"27672af7-9399-4f62-a75a-8dbfe866f98e","step_id":19,"action_id":2,"subkeys":[]},"skip_metadata_check":false,"validate_contents":false,"contents_changed":{"class":"Dynflow::ExecutionPlan::OutputReference","execution_plan_id":"27672af7-9399-4f62-a75a-8dbfe866f98e","step_id":19,"action_id":2,"subkeys":["contents_changed"]},"current_request_id":"e3ca4a39-7cdc-48e5-835b-7c3c7556ecde","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Convert2RHEL8 main''","link":null}],["product",{"text":"product ''Convert2RHEL8''","link":"/products/2/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/9/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2026-03-10
+        19:18:50 UTC","available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -281,9 +284,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=96
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Transfer-Encoding:
@@ -319,29 +322,27 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/816c6cd2-ff31-45da-b849-6736080d0d9b
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/7aec5275-256e-4478-9241-d3efa9b56b99
   response:
     body:
-      string: '{"id":"816c6cd2-ff31-45da-b849-6736080d0d9b","label":"Actions::Katello::Repository::Sync","pending":false,"action":"Synchronize
+      string: '{"id":"7aec5275-256e-4478-9241-d3efa9b56b99","label":"Actions::Katello::Repository::Sync","pending":false,"action":"Synchronize
         repository ''Convert2RHEL8 main''; product ''Convert2RHEL8''; organization
-        ''Test Organization''","username":"admin","started_at":"2025-12-13 22:58:20
-        UTC","ended_at":"2025-12-13 22:58:23 UTC","duration":"3.261638","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":11,"name":"Convert2RHEL8
-        main","label":"Convert2RHEL8_main"},"product":{"id":7,"name":"Convert2RHEL8","label":"Convert2RHEL8","cp_id":"600225996063"},"provider":{"id":7,"name":"Anonymous"},"organization":{"id":5,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":11,"sync_result":{"publication_provided":false,"contents_changed":true},"skip_metadata_check":false,"validate_contents":false,"contents_changed":true,"current_request_id":"3d585220-bb84-4bd6-900b-815acb3427d2","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
-        ''Convert2RHEL8 main''","link":null}],["product",{"text":"product ''Convert2RHEL8''","link":"/products/7/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/5/edit"}]],"output":"Added Rpms:
-        18, Errata: 18\nTotal steps: 78/78\n--------------------------------\nAssociating
-        Content: 36/36\nDownloading Artifacts: 0/0\nDownloading Metadata Files: 6/6\nParsed
-        Advisories: 18/18\nParsed Comps: 0/0\nParsed Packages: 18/18\nSkipping Packages:
-        0/0\nUn-Associating Content: 0/0","errors":[]},"cli_example":null,"start_at":"2025-12-13
-        22:58:20 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+        ''Test Organization''","username":"admin","started_at":"2026-03-10 19:18:50
+        UTC","ended_at":"2026-03-10 19:18:52 UTC","duration":"1.733728","state":"stopped","result":"success","progress":1.0,"input":{"repository":{"id":2,"name":"Convert2RHEL8
+        main","label":"Convert2RHEL8_main"},"product":{"id":2,"name":"Convert2RHEL8","label":"Convert2RHEL8","cp_id":"607498262379"},"provider":{"id":9,"name":"Anonymous"},"organization":{"id":9,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["pulp3"],"id":2,"sync_result":{"publication_provided":false,"contents_changed":false},"skip_metadata_check":false,"validate_contents":false,"contents_changed":false,"current_request_id":"e3ca4a39-7cdc-48e5-835b-7c3c7556ecde","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{"post_action_skipped":true},"humanized":{"action":"Synchronize","input":[["repository",{"text":"repository
+        ''Convert2RHEL8 main''","link":null}],["product",{"text":"product ''Convert2RHEL8''","link":"/products/2/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/9/edit"}]],"output":"No content
+        added.\nTotal steps: 1/1\n--------------------------------\nSkipping Sync
+        (no change from previous sync): 1/1","errors":[]},"cli_example":null,"start_at":"2026-03-10
+        19:18:50 UTC","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
       Content-Length:
-      - '1754'
+      - '1609'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -351,9 +352,9 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 3.18.0-develop
+      - 3.19.0-develop
       Keep-Alive:
-      - timeout=15, max=95
+      - timeout=15, max=100
       Referrer-Policy:
       - strict-origin-when-cross-origin
       content-security-policy:
