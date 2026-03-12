@@ -24,7 +24,7 @@
     port: "{{ item.port | default(omit) }}"
     server_type: "{{ item.server_type | default(omit) }}"
     ldap_filter: "{{ item.ldap_filter | default(omit) }}"
-    use_netgroups: "{{ item.use_netgroups | default(omit) }}"
+    use_netgroups: "{{ omit if item.server_type is match('active_directory') else item.use_netgroups | default(omit) }}"
     state: "{{ item.state | default('present') }}"
   loop: "{{ foreman_auth_sources_ldap }}"
   no_log: "{{ item.account_password is defined }}"
