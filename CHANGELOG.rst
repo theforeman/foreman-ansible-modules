@@ -6,6 +6,19 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.10.0
+=======
+
+Minor Changes
+--------------------------------
+
+- convert2rhel role - removed subscription support as it's been unused since Katello 4.12 (05/2024)
+
+Bugfixes
+--------
+
+- content_view_filter_rule - fix content_filter_rule_deb_spec to take into account desired versions
+
 v5.9.0
 ======
 
