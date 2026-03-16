@@ -61,3 +61,6 @@
   when:
     - content_view.state is not defined or content_view.state != 'absent'
   loop: "{{ content_view.filters | default([]) }}"
+  when:
+    - not (item.original_packages | default(omit)) | bool
+    - not (item.original_module_streams | default(omit)) | bool
