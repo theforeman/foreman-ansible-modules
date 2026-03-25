@@ -266,6 +266,12 @@ def _qs_param(param):
     return param
 
 
+def _qs_key(k, v):
+    if isinstance(v, (list, tuple)):
+        return f"{k}[]"
+    return k
+
+
 class Api(object):
     """
     Apipie API bindings
@@ -532,7 +538,7 @@ class Api(object):
 
         if params:
             if http_method in ['get', 'head']:
-                kwargs['params'] = {k: _qs_param(v) for k, v in params.items()}
+                kwargs['params'] = {_qs_key(k, v): _qs_param(v) for k, v in params.items()}
             else:
                 kwargs['json'] = params
         elif http_method in ['post', 'put', 'patch'] and not data and not files:
