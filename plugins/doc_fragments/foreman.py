@@ -43,6 +43,18 @@ options:
       - If the value is not specified in the task, the value of environment variable C(FOREMAN_PASSWORD) will be used instead.
     required: false
     type: str
+  oauth1_consumer_key:
+    description:
+      - OAuth1 consumer key for accessing the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_OAUTH1_CONSUMER_KEY) will be used instead.
+    required: false
+    type: str
+  oauth1_consumer_secret:
+    description:
+      - OAuth1 consumer secret for accessing the Foreman server.
+      - If the value is not specified in the task, the value of environment variable C(FOREMAN_OAUTH1_CONSUMER_SECRET) will be used instead.
+    required: false
+    type: str
   validate_certs:
     description:
       - Whether or not to verify the TLS certificates of the Foreman server.
