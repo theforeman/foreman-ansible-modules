@@ -132,6 +132,12 @@ options:
     - If this is set to true, pull provider client will be deployed on the host.
     required: false
     type: bool
+  setup_container_registry_certs:
+    description:
+    - If this is set to C(true), container registry certificates will be installed on the host.
+    required: false
+    type: bool
+    version_added: 5.11.0
   smart_proxy:
     description:
     - Name of Smart Proxy.
@@ -208,6 +214,7 @@ def main():
             )),
             remote_execution_interface=dict(type='str'),
             setup_remote_execution_pull=dict(type='bool'),
+            setup_container_registry_certs=dict(type='bool'),
             activation_keys=dict(type='list', elements='str', no_log=False),
             lifecycle_environment=dict(type='entity'),
             force=dict(type='bool'),
@@ -216,7 +223,7 @@ def main():
             location=dict(type='entity'),
         ),
         required_plugins=[
-            ('katello', ['activation_key', 'activation_keys', 'lifecycle_environment', 'ignore_subman_errors', 'force']),
+            ('katello', ['activation_key', 'activation_keys', 'lifecycle_environment', 'ignore_subman_errors', 'force', 'setup_container_registry_certs']),
             ('remote_execution', ['remote_execution_interface', 'setup_remote_execution_pull']),
         ],
     )
