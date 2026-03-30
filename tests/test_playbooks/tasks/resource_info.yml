@@ -15,4 +15,8 @@
     fail_msg: "Verification that '{{ return_length }}' '{{ resource }}' resources are found"
     that: result.resources | length == return_length
   when: return_length is defined
+- assert:
+    fail_msg: "Verification that at least '{{ return_min }}' '{{ resource }}' resources are found"
+    that: result.resources | length >= return_min
+  when: return_min is defined
 ...
