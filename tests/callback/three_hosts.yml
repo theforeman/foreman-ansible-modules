@@ -57,6 +57,18 @@
         unsafe: !unsafe |
           THIS IS {{ crypt }}
 
+    - name: Generate a diff
+      copy:
+        content: Test
+        dest: "/tmp/test_{{ lookup('env', 'FOREMAN_REPORT_TYPE') }}.txt"
+        remote_src: false
+        mode: '0644'
+
+    - name: Remove file
+      file:
+        path: "/tmp/test_{{ lookup('env', 'FOREMAN_REPORT_TYPE') }}.txt"
+        state: absent
+
   handlers:
     - name: Test handler 1
       command: echo foo

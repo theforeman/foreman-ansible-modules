@@ -56,7 +56,7 @@ def get_foreman_url():
     return server_yml_content['foreman_server_url']
 
 
-def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode=False, extra_env=None):
+def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode=False, diff_mode=False, extra_env=None):
     # Assemble parameters for playbook call
     os.environ['ANSIBLE_CONFIG'] = os.path.join(os.getcwd(), 'ansible.cfg')
     if extra_env is not None:
@@ -71,8 +71,13 @@ def run_playbook(module, extra_vars=None, limit=None, inventory=None, check_mode
         kwargs['extravars'] = extra_vars
     if limit:
         kwargs['limit'] = limit
+    cmdline = []
     if check_mode:
-        kwargs['cmdline'] = "--check"
+        cmdline.append("--check")
+    if diff_mode:
+        cmdline.append("--diff")
+    if len(cmdline) > 0:
+        kwargs['cmdline'] = ' '.join(cmdline)
     return ansible_runner.run(**kwargs)
 
 

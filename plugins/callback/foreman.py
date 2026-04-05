@@ -110,6 +110,7 @@ from datetime import datetime
 from collections import defaultdict
 import json
 import time
+import re
 
 try:
     import requests
@@ -121,36 +122,6 @@ from ansible.module_utils.common.json import AnsibleJSONEncoder
 from ansible.module_utils.common.text.converters import to_text
 from ansible.module_utils.parsing.convert_bool import boolean as to_bool
 from ansible.plugins.callback import CallbackBase
-
-
-def build_log_foreman(data_list):
-    """
-    Transform the internal log structure to one accepted by Foreman's
-    config_report API.
-    """
-    for data in data_list:
-        result = data.pop('result')
-        task = data.pop('task')
-        result['failed'] = data.get('failed')
-        result['module'] = task.get('action')
-        if data.get('failed'):
-            level = 'err'
-        elif result.get('changed'):
-            level = 'notice'
-        else:
-            level = 'info'
-
-        yield {
-            "log": {
-                'sources': {
-                    'source': task.get('name'),
-                },
-                'messages': {
-                    'message': json.dumps(result, sort_keys=True, cls=AnsibleNoVaultJSONEncoder),
-                },
-                'level': level,
-            }
-        }
 
 
 def get_time():
@@ -269,6 +240,46 @@ class CallbackModule(CallbackBase):
                 self._display.warning(u'Sending data to Foreman at {url} failed for {host}: {err}'.format(
                     host=to_text(host), err=to_text(err), url=to_text(self.foreman_url)))
 
+    def _build_log_foreman(self, data_list):
+        """
+        Transform the internal log structure to one accepted by Foreman's
+        config_report API.
+        """
+        for data in data_list:
+            result = data.pop('result')
+            task = data.pop('task')
+            result['failed'] = data.get('failed')
+            result['module'] = task.get('action')
+            if data.get('failed'):
+                level = 'err'
+            elif result.get('changed'):
+                level = 'notice'
+            else:
+                level = 'info'
+
+            # Check if the 'diff' key is set and transform the state before
+            # and after the change into a unified diff string and store it
+            # below the 'report_diff' key. Remove the 'diff' key afterwards
+            # as in case of a file the content is probably big and it is
+            # stored twice (before and after).
+            if 'diff' in result:
+                diff = self._get_diff(result['diff'])
+                # Remove color escape sequences for terminal output
+                result['report_diff'] = re.sub(u'\033\\[0.*?m', '', diff)
+                del result['diff']
+
+            yield {
+                "log": {
+                    'sources': {
+                        'source': task.get('name'),
+                    },
+                    'messages': {
+                        'message': json.dumps(result, sort_keys=True, cls=AnsibleNoVaultJSONEncoder),
+                    },
+                    'level': level,
+                }
+            }
+
     def send_facts(self):
         """
         Sends facts to Foreman, to be parsed by foreman_ansible fact
@@ -336,7 +347,7 @@ class CallbackModule(CallbackBase):
                         "failed": total['failures'] + total['unreachable'],
                         "skipped": total['skipped'],
                     },
-                    "logs": list(build_log_foreman(self.items[host])),
+                    "logs": list(self._build_log_foreman(self.items[host])),
                     "reporter": "ansible",
                     "check_mode": self.check_mode,
                 }
