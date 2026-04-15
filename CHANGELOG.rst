@@ -6,11 +6,20 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.11.0
+=======
+
+Minor Changes
+-------------
+
+- Support OAuth1 authentication by passing ``oauth1_consumer_key`` and ``oauth1_consumer_secret`` instead of ``username`` and ``password``.
+- registration_command - add support for the setup_container_registry_certs parameter (https://github.com/theforeman/foreman-ansible-modules/pull/1966)
+
 v5.10.0
 =======
 
 Minor Changes
---------------------------------
+-------------
 
 - convert2rhel role - removed subscription support as it's been unused since Katello 4.12 (05/2024)
 

@@ -939,6 +939,29 @@ releases:
     fragments:
       - drop-host-api-fallback.yml
     release_date: '2024-12-06'
+  5.10.0:
+    changes:
+      bugfixes:
+        - content_view_filter_rule - fix content_filter_rule_deb_spec to take into
+          account desired versions
+      minor_changes:
+        - convert2rhel role - removed subscription support as it's been unused since
+          Katello 4.12 (05/2024)
+    fragments:
+      - deb_filter_rule.yml
+      - remove-subscriptions-convert2rhel.yml
+    release_date: '2026-03-13'
+  5.11.0:
+    changes:
+      minor_changes:
+        - Support OAuth1 authentication by passing ``oauth1_consumer_key`` and ``oauth1_consumer_secret``
+          instead of ``username`` and ``password``.
+        - registration_command - add support for the setup_container_registry_certs
+          parameter (https://github.com/theforeman/foreman-ansible-modules/pull/1966)
+    fragments:
+      - oauth1.yml
+      - registration_command_setup_container_registry_certs.yml
+    release_date: '2026-04-15'
   5.2.0:
     changes:
       bugfixes:
@@ -1036,14 +1059,3 @@ releases:
         name: smart_proxy_refresh
         namespace: ''
     release_date: '2026-02-26'
-  5.10.0:
-    changes:
-      minor_changes:
-        - convert2rhel role - removed subscription support as it's been unused since Katello 4.12 (05/2024)
-      bugfixes:
-        - content_view_filter_rule - fix content_filter_rule_deb_spec to take into
-          account desired versions
-    fragments:
-      - deb_filter_rule.yml
-      - remove-subscriptions-convert2rhel.yml
-    release_date: '2026-03-13'
