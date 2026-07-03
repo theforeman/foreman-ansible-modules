@@ -200,7 +200,7 @@ def main():
             solve_dependencies=dict(type='bool'),
             import_only=dict(type='bool'),
             components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
-            lifecycle_environments=dict(type='entity_list', flat_name='environment_ids'),
+            lifecycle_environments=dict(type='entity_list', flat_name='environment_ids', scope=['organization']),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
                 name=dict(required=True),
                 product=dict(required=True),
