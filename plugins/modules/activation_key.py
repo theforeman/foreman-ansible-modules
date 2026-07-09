@@ -330,11 +330,8 @@ def main():
                     "are deprecated. Please use 'content_view_environments' instead."
                 )
 
-                module.lookup_entity('content_view')
-                module.lookup_entity('lifecycle_environment')
-
-                cv = module.foreman_params.get('content_view')
-                lce = module.foreman_params.get('lifecycle_environment')
+                cv = module.lookup_entity('content_view')
+                lce = module.lookup_entity('lifecycle_environment')
 
                 cv_id = cv['id'] if cv else None
                 lce_id = lce['id'] if lce else None

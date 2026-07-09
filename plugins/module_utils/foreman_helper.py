@@ -312,6 +312,8 @@ class HostMixin(ParametersMixin):
             kickstart_repository=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment', 'content_view'],
                                       resource_type='repositories'),
             content_view=dict(type='entity', scope=['organization'], optional_scope=['lifecycle_environment']),
+            content_view_environment_id=dict(type='int', invisible=True),
+            content_view_environment_ids=dict(type='list', elements='int', invisible=True),
             activation_keys=dict(no_log=False),
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
@@ -326,6 +328,9 @@ class HostMixin(ParametersMixin):
         entity = self.lookup_entity('entity')
 
         if not self.desired_absent:
+            if 'content_view' in self.foreman_params or 'lifecycle_environment' in self.foreman_params:
+                self._convert_cv_lce_to_cve(entity)
+
             if 'activation_keys' in self.foreman_params:
                 if 'parameters' not in self.foreman_params:
                     parameters = [param for param in (entity or {}).get('parameters', []) if param['name'] != 'kt_activation_keys']
@@ -342,6 +347,64 @@ class HostMixin(ParametersMixin):
         self.validate_parameters()
 
         return super(HostMixin, self).run(**kwargs)
+
+    def _convert_cv_lce_to_cve(self, entity):
+        resource = inflector.pluralize(self.entity_name)
+        _filtered, unsupported = self.foremanapi.validate_payload(resource, 'create', {'content_view_id': 1})
+        if 'content_view_id' not in unsupported:
+            return
+
+        if entity:
+            entity_cves = entity.get('content_view_environments', [])
+            if len(entity_cves) > 1:
+                self.fail_json(
+                    msg="This {0} has multiple content view environments. "
+                        "The 'content_view' and 'lifecycle_environment' parameters "
+                        "cannot safely update it — they would overwrite the existing "
+                        "multi-CV assignment.".format(self.entity_name)
+                )
+
+        cv = self.lookup_entity('content_view')
+        lce = self.lookup_entity('lifecycle_environment')
+
+        cv_id = cv['id'] if cv else None
+        lce_id = lce['id'] if lce else None
+
+        if entity and cv_id is None:
+            cv_id = entity.get('content_view_id')
+            if cv_id is None:
+                entity_cves = entity.get('content_view_environments', [])
+                if entity_cves:
+                    cv_id = entity_cves[0].get('content_view', {}).get('id')
+        if entity and lce_id is None:
+            lce_id = entity.get('lifecycle_environment_id')
+            if lce_id is None:
+                entity_cves = entity.get('content_view_environments', [])
+                if entity_cves:
+                    lce_id = entity_cves[0].get('lifecycle_environment', {}).get('id')
+
+        if cv_id is None or lce_id is None:
+            self.fail_json(msg="Both 'content_view' and 'lifecycle_environment' must be provided together.")
+
+        org_id = self.lookup_entity('organization')['id'] if 'organization' in self.foreman_params else None
+        if org_id is None and entity:
+            org_id = entity.get('organization_id')
+
+        cve = self.find_content_view_environment(cv_id, lce_id, org_id)
+
+        self.foreman_spec['content_view']['ensure'] = False
+        self.foreman_spec['lifecycle_environment']['ensure'] = False
+
+        if resource == 'hosts':
+            current_cve_ids = []
+            if entity:
+                current_cve_ids = [e['id'] for e in entity.get('content_facet_attributes', {}).get('content_view_environments', [])]
+            if [cve['id']] != current_cve_ids:
+                self.foreman_params['content_view_environment_ids'] = [cve['id']]
+        else:
+            current_cve_id = entity.get('content_view_environment_id') if entity else None
+            if cve['id'] != current_cve_id:
+                self.foreman_params['content_view_environment_id'] = cve['id']
 
 
 class ForemanAnsibleModule(AnsibleModule):
