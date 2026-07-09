@@ -40,10 +40,12 @@ options:
   lifecycle_environment:
     description:
       - Name of the lifecycle environment
+      - "Deprecated: Use I(content_view_environments) instead."
     type: str
   content_view:
     description:
       - Name of the content view
+      - "Deprecated: Use I(content_view_environments) instead."
     type: str
   content_view_environments:
     description:
@@ -307,8 +309,56 @@ def main():
         content_view_environments = module.foreman_params.pop('content_view_environments', None)
         content_view = module.foreman_params.get("content_view")
         lifecycle_environment = module.foreman_params.get("lifecycle_environment")
-        # only use content view environments if content view and lifecycle environment are not specified
-        if content_view_environments is not None and content_view is None and lifecycle_environment is None:
+        converted_from_deprecated = False
+
+        if (content_view is not None or lifecycle_environment is not None) and content_view_environments is None:
+            _filtered, unsupported = module.foremanapi.validate_payload('activation_keys', 'create', {'content_view_id': 1})
+            if 'content_view_id' in unsupported:
+                if entity:
+                    entity_cves = entity.get('content_view_environments', [])
+                    if len(entity_cves) > 1:
+                        module.fail_json(
+                            msg="This activation key has multiple content view environments. "
+                                "The deprecated 'content_view' and 'lifecycle_environment' "
+                                "parameters cannot safely update it — they would overwrite "
+                                "the existing multi-CV assignment. Use "
+                                "'content_view_environments' instead."
+                        )
+
+                module.warn(
+                    "The 'content_view' and 'lifecycle_environment' parameters for activation_key "
+                    "are deprecated. Please use 'content_view_environments' instead."
+                )
+
+                module.lookup_entity('content_view')
+                module.lookup_entity('lifecycle_environment')
+
+                cv = module.foreman_params.get('content_view')
+                lce = module.foreman_params.get('lifecycle_environment')
+
+                cv_id = cv['id'] if cv else None
+                lce_id = lce['id'] if lce else None
+
+                if entity and cv_id is None:
+                    entity_cves = entity.get('content_view_environments', [])
+                    if entity_cves:
+                        cv_id = entity_cves[0]['content_view']['id']
+                if entity and lce_id is None:
+                    entity_cves = entity.get('content_view_environments', [])
+                    if entity_cves:
+                        lce_id = entity_cves[0]['lifecycle_environment']['id']
+
+                if cv_id is None or lce_id is None:
+                    module.fail_json(msg="Both 'content_view' and 'lifecycle_environment' must be provided together.")
+
+                cve = module.find_content_view_environment(cv_id, lce_id, scope['organization_id'])
+                content_view_environments = [cve['label']]
+                converted_from_deprecated = True
+
+                module.foreman_spec['content_view']['ensure'] = False
+                module.foreman_spec['lifecycle_environment']['ensure'] = False
+
+        if content_view_environments is not None and (converted_from_deprecated or (content_view is None and lifecycle_environment is None)):
             desired_content_view_environments = set(content_view_environments)
             if not entity:
                 current_content_view_environments = set()

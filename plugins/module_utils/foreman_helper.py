@@ -742,6 +742,21 @@ class ForemanAnsibleModule(AnsibleModule):
     def find_resources_by_name(self, resource, names, **kwargs):
         return [self.find_resource_by_name(resource, name, **kwargs) for name in names]
 
+    def find_content_view_environment(self, content_view_id, lifecycle_environment_id, organization_id=None):
+        params = {
+            'content_view_id': content_view_id,
+            'lifecycle_environment_id': lifecycle_environment_id,
+        }
+        if organization_id:
+            params['organization_id'] = organization_id
+        results = self.list_resource('content_view_environments', params=params)
+        if len(results) != 1:
+            self.fail_json(
+                msg="Expected one ContentViewEnvironment for content_view_id={0} "
+                    "and lifecycle_environment_id={1}, found {2}".format(
+                        content_view_id, lifecycle_environment_id, len(results)))
+        return results[0]
+
     def find_operatingsystem(self, name, failsafe=False, **kwargs):
         result = self.find_resource_by_title('operatingsystems', name, failsafe=True, **kwargs)
         if not result:
@@ -1097,16 +1112,25 @@ class ForemanAnsibleModule(AnsibleModule):
                 payload[key] = value
         # workaround to ensure LCE and CV are always sent together, even if only one changed
         # using the values from the existing entity, so the user doesn't need to pass it in their playbook
+        # Uses .get() because newer Katello versions may not include these fields in the API response
         if resource == 'hosts':
             if 'content_view_id' in payload and 'lifecycle_environment_id' not in payload:
-                payload['lifecycle_environment_id'] = current_flat_entity['lifecycle_environment_id']
+                lce_id = current_flat_entity.get('lifecycle_environment_id')
+                if lce_id is not None:
+                    payload['lifecycle_environment_id'] = lce_id
             elif 'lifecycle_environment_id' in payload and 'content_view_id' not in payload:
-                payload['content_view_id'] = current_flat_entity['content_view_id']
+                cv_id = current_flat_entity.get('content_view_id')
+                if cv_id is not None:
+                    payload['content_view_id'] = cv_id
         elif resource == 'activation_keys':
             if 'content_view_id' in payload and 'environment_id' not in payload:
-                payload['environment_id'] = current_flat_entity['environment_id']
+                env_id = current_flat_entity.get('environment_id')
+                if env_id is not None:
+                    payload['environment_id'] = env_id
             elif 'environment_id' in payload and 'content_view_id' not in payload:
-                payload['content_view_id'] = current_flat_entity['content_view_id']
+                cv_id = current_flat_entity.get('content_view_id')
+                if cv_id is not None:
+                    payload['content_view_id'] = cv_id
         if self._validate_supported_payload(resource, 'update', payload):
             self.set_changed()
             payload['id'] = current_flat_entity['id']
