@@ -319,7 +319,7 @@ class HostMixin(ParametersMixin):
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', []) + [
             ('katello', ['activation_keys', 'content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view',
-                        'content_view_environments', 'content_view_environment']),
+                         'content_view_environments', 'content_view_environment']),
             ('openscap', ['openscap_proxy']),
         ]
         mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
