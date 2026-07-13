@@ -445,6 +445,7 @@ class HostMixin(ParametersMixin):
 
     def _handle_content_view_environment(self, entity):
         label = self.foreman_params.pop('content_view_environment')
+        resource = inflector.pluralize(self.entity_name)
 
         org_id = self.lookup_entity('organization')['id'] if 'organization' in self.foreman_params else None
         if org_id is None and entity:
@@ -455,9 +456,20 @@ class HostMixin(ParametersMixin):
             search_params['organization_id'] = org_id
         cve = self.find_resource_by('content_view_environments', 'label', label, params=search_params, thin=True)
 
-        current_cve_id = entity.get('content_view_environment_id') if entity else None
-        if cve['id'] != current_cve_id:
-            self.foreman_params['content_view_environment_id'] = cve['id']
+        _filtered, unsupported = self.foremanapi.validate_payload(resource, 'create', {'content_view_environment_id': 1})
+        if 'content_view_environment_id' not in unsupported:
+            current_cve_id = entity.get('content_view_environment_id') if entity else None
+            if cve['id'] != current_cve_id:
+                self.foreman_params['content_view_environment_id'] = cve['id']
+        else:
+            current_cv_id = entity.get('content_view_id') if entity else None
+            current_lce_id = entity.get('lifecycle_environment_id') if entity else None
+            cv_id = cve.get('content_view', {}).get('id')
+            lce_id = cve.get('lifecycle_environment', {}).get('id')
+            if cv_id != current_cv_id:
+                self.foreman_params['content_view_id'] = cv_id
+            if lce_id != current_lce_id:
+                self.foreman_params['lifecycle_environment_id'] = lce_id
 
 
 class ForemanAnsibleModule(AnsibleModule):
