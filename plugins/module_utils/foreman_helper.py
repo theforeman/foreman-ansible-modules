@@ -318,7 +318,8 @@ class HostMixin(ParametersMixin):
         )
         foreman_spec.update(kwargs.pop('foreman_spec', {}))
         required_plugins = kwargs.pop('required_plugins', []) + [
-            ('katello', ['activation_keys', 'content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view']),
+            ('katello', ['activation_keys', 'content_source', 'lifecycle_environment', 'kickstart_repository', 'content_view',
+                        'content_view_environments', 'content_view_environment']),
             ('openscap', ['openscap_proxy']),
         ]
         mutually_exclusive = kwargs.pop('mutually_exclusive', []) + [['medium', 'kickstart_repository']]
@@ -328,7 +329,11 @@ class HostMixin(ParametersMixin):
         entity = self.lookup_entity('entity')
 
         if not self.desired_absent:
-            if 'content_view' in self.foreman_params or 'lifecycle_environment' in self.foreman_params:
+            if 'content_view_environments' in self.foreman_params:
+                self._handle_content_view_environments(entity)
+            elif 'content_view_environment' in self.foreman_params:
+                self._handle_content_view_environment(entity)
+            elif 'content_view' in self.foreman_params or 'lifecycle_environment' in self.foreman_params:
                 self._convert_cv_lce_to_cve(entity)
 
             if 'activation_keys' in self.foreman_params:
@@ -353,6 +358,15 @@ class HostMixin(ParametersMixin):
         _filtered, unsupported = self.foremanapi.validate_payload(resource, 'create', {'content_view_id': 1})
         if 'content_view_id' not in unsupported:
             return
+
+        if resource == 'hosts':
+            replacement = 'content_view_environments'
+        else:
+            replacement = 'content_view_environment'
+        self.warn(
+            "The 'content_view' and 'lifecycle_environment' parameters for {0} "
+            "are deprecated. Please use '{1}' instead.".format(self.entity_name, replacement)
+        )
 
         if entity:
             entity_cves = entity.get('content_view_environments', [])
@@ -405,6 +419,36 @@ class HostMixin(ParametersMixin):
             current_cve_id = entity.get('content_view_environment_id') if entity else None
             if cve['id'] != current_cve_id:
                 self.foreman_params['content_view_environment_id'] = cve['id']
+
+    def _handle_content_view_environments(self, entity):
+        content_view_environments = self.foreman_params.pop('content_view_environments')
+        desired = set(content_view_environments)
+        if entity:
+            current = set()
+            for cve in entity.get('content_facet_attributes', {}).get('content_view_environments', []):
+                label = cve.get('label')
+                if label:
+                    current.add(label)
+        else:
+            current = set()
+        if desired != current:
+            self.foreman_params['content_view_environments'] = sorted(list(desired))
+
+    def _handle_content_view_environment(self, entity):
+        label = self.foreman_params.pop('content_view_environment')
+
+        org_id = self.lookup_entity('organization')['id'] if 'organization' in self.foreman_params else None
+        if org_id is None and entity:
+            org_id = entity.get('organization_id')
+
+        search_params = {}
+        if org_id:
+            search_params['organization_id'] = org_id
+        cve = self.find_resource_by('content_view_environments', 'label', label, params=search_params)
+
+        current_cve_id = entity.get('content_view_environment_id') if entity else None
+        if cve['id'] != current_cve_id:
+            self.foreman_params['content_view_environment_id'] = cve['id']
 
 
 class ForemanAnsibleModule(AnsibleModule):
