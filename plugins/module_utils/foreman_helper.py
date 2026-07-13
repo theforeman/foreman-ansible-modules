@@ -369,13 +369,16 @@ class HostMixin(ParametersMixin):
         )
 
         if entity:
-            entity_cves = entity.get('content_view_environments', [])
+            if resource == 'hosts':
+                entity_cves = entity.get('content_facet_attributes', {}).get('content_view_environments', [])
+            else:
+                entity_cves = entity.get('content_view_environments', [])
             if len(entity_cves) > 1:
                 self.fail_json(
                     msg="This {0} has multiple content view environments. "
                         "The 'content_view' and 'lifecycle_environment' parameters "
                         "cannot safely update it — they would overwrite the existing "
-                        "multi-CV assignment.".format(self.entity_name)
+                        "multi-CV assignment. Use '{1}' instead.".format(self.entity_name, replacement)
                 )
 
         cv = self.lookup_entity('content_view')
@@ -387,13 +390,19 @@ class HostMixin(ParametersMixin):
         if entity and cv_id is None:
             cv_id = entity.get('content_view_id')
             if cv_id is None:
-                entity_cves = entity.get('content_view_environments', [])
+                if resource == 'hosts':
+                    entity_cves = entity.get('content_facet_attributes', {}).get('content_view_environments', [])
+                else:
+                    entity_cves = entity.get('content_view_environments', [])
                 if entity_cves:
                     cv_id = entity_cves[0].get('content_view', {}).get('id')
         if entity and lce_id is None:
             lce_id = entity.get('lifecycle_environment_id')
             if lce_id is None:
-                entity_cves = entity.get('content_view_environments', [])
+                if resource == 'hosts':
+                    entity_cves = entity.get('content_facet_attributes', {}).get('content_view_environments', [])
+                else:
+                    entity_cves = entity.get('content_view_environments', [])
                 if entity_cves:
                     lce_id = entity_cves[0].get('lifecycle_environment', {}).get('id')
 
@@ -444,7 +453,7 @@ class HostMixin(ParametersMixin):
         search_params = {}
         if org_id:
             search_params['organization_id'] = org_id
-        cve = self.find_resource_by('content_view_environments', 'label', label, params=search_params)
+        cve = self.find_resource_by('content_view_environments', 'label', label, params=search_params, thin=True)
 
         current_cve_id = entity.get('content_view_environment_id') if entity else None
         if cve['id'] != current_cve_id:
