@@ -97,6 +97,14 @@ options:
     description: Whether or not to use TLS when contacting the LDAP server.
     required: false
     type: bool
+  cacert:
+    description:
+      - Path to a PEM file with CA certificate(s) used to verify the LDAP server when LDAPS is enabled.
+      - When set, only these certificates are trusted and the system trust store is not used.
+      - Omit to use the system trust store. Pass an empty string to clear a previously set CA certificate.
+      - In containerized deployments, the container's trust store is used, so the CA certificate(s) may need to be provided here explicitly.
+    required: false
+    type: path
   groups_base:
     description: Base DN where groups reside.
     required: false
@@ -181,6 +189,19 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     state: present
+
+- name: LDAPS with a custom CA certificate
+  theforeman.foreman.auth_source_ldap:
+    name: "Example LDAPS"
+    host: "ldap.example.org"
+    port: 636
+    tls: true
+    cacert: /path/to/ldap-ca.pem
+    server_type: free_ipa
+    server_url: "https://foreman.example.com"
+    username: "admin"
+    password: "changeme"
+    state: present
 '''
 
 RETURN = '''
@@ -195,6 +216,8 @@ entity:
       elements: dict
 '''
 
+
+from ansible.module_utils.common.text.converters import to_native
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanTaxonomicEntityAnsibleModule
 
@@ -220,6 +243,7 @@ def main():
             onthefly_register=dict(type='bool'),
             usergroup_sync=dict(type='bool'),
             tls=dict(type='bool'),
+            cacert=dict(type='path'),
             groups_base=dict(),
             server_type=dict(choices=["free_ipa", "active_directory", "posix"]),
             ldap_filter=dict(),
@@ -238,6 +262,13 @@ def main():
 
     if 'ldap_group_membership' in module.foreman_params and module.foreman_params['ldap_group_membership'] == 'rfc4519' and server_type != 'posix':
         module.fail_json(msg=f'ldap_group_membership=rfc4519 cannot be used when server_type={server_type}')
+
+    if module.foreman_params.get('cacert'):
+        try:
+            with open(module.foreman_params['cacert']) as input_file:
+                module.foreman_params['cacert'] = input_file.read()
+        except (IOError, OSError) as e:
+            module.fail_json(msg="Unable to read the CA certificate file: %s" % to_native(e))
 
     with module.api_connection():
         _supported_params, unsupported_params = module.foremanapi.validate_payload('auth_source_ldaps', 'create', module.foreman_params)
