@@ -41,6 +41,7 @@ options:
       - Only available for Katello installations.
       - Each entry is either the name of a Lifecycle Environment, or a dictionary with the keys C(name) and C(organization)
         to select a Lifecycle Environment from a specific Organization.
+      - Any Lifecycle Environment currently synced to the Smart Proxy, but not listed here, is removed.
     required: false
     elements: raw
     type: list
