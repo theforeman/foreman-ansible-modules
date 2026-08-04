@@ -39,8 +39,10 @@ options:
     description:
       - Lifecycle Environments synced to the Smart Proxy.
       - Only available for Katello installations.
+      - Each entry is either the name of a Lifecycle Environment, or a dictionary with the keys C(name) and C(organization)
+        to select a Lifecycle Environment from a specific Organization.
     required: false
-    elements: str
+    elements: raw
     type: list
   url:
     description:
@@ -88,6 +90,21 @@ EXAMPLES = '''
     locations:
       - "Default Location"
     state: present
+
+# Sync Lifecycle Environments that share a name across Organizations
+- name: "Sync per-Organization Lifecycle Environments to a Smart Proxy"
+  theforeman.foreman.smart_proxy:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://{{ ansible_fqdn }}"
+    name: "{{ ansible_fqdn }}"
+    url: "https://{{ ansible_fqdn }}:9090"
+    lifecycle_environments:
+      - name: "Production"
+        organization: "Default Organization"
+      - name: "Production"
+        organization: "My Cool new Organization"
+    state: present
 '''
 
 RETURN = '''
@@ -115,7 +132,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             url=dict(required=True),
-            lifecycle_environments=dict(required=False, type='entity_list'),
+            lifecycle_environments=dict(required=False, type='entity_list', elements='raw', resolve=False),
             download_policy=dict(required=False, choices=['background', 'immediate', 'on_demand', 'streamed', 'inherit']),
         ),
         required_plugins=[('katello', ['lifecycle_environments', 'download_policy'])],
@@ -124,8 +141,19 @@ def main():
     with module.api_connection():
         handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
-            module.lookup_entity('lifecycle_environments')
-            lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
+            desired_environment_ids = set()
+            for lifecycle_environment in module.foreman_params.pop('lifecycle_environments'):
+                if isinstance(lifecycle_environment, dict):
+                    name = lifecycle_environment.get('name')
+                    organization = lifecycle_environment.get('organization')
+                    if not name or not organization:
+                        module.fail_json(msg="Lifecycle Environments must be specified either by name, "
+                                             "or as a dict providing both 'name' and 'organization'.")
+                    scope = {'organization_id': module.find_resource_by_name('organizations', organization, thin=True)['id']}
+                else:
+                    name = lifecycle_environment
+                    scope = {}
+                desired_environment_ids.add(module.find_resource_by_name('lifecycle_environments', name, params=scope, thin=True)['id'])
 
         smart_proxy = module.lookup_entity('entity')
         new_smart_proxy = module.run()
@@ -140,7 +168,6 @@ def main():
             else:
                 current_lces = {'results': []}
 
-            desired_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in lifecycle_environments)
             current_environment_ids = set(lifecycle_environment['id'] for lifecycle_environment in current_lces['results']) if current_lces else set()
 
             module.record_before('smart_proxy_content/lifecycle_environment_ids', current_environment_ids)
