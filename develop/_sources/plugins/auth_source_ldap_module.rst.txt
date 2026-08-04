@@ -6,7 +6,7 @@
     :trim:
 
 .. meta::
-  :antsibull-docs: 2.24.0
+  :antsibull-docs: 2.25.0
 
 .. Anchors
 
@@ -403,6 +403,46 @@ Parameters
       PEM formatted file that contains a CA certificate to be used for validation.
 
       If the value is not specified in the task, the value of environment variable :literal:`FOREMAN\_CA\_PATH` will be used instead.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cacert"></div>
+
+      .. _ansible_collections.theforeman.foreman.auth_source_ldap_module__parameter-cacert:
+
+      .. rst-class:: ansible-option-title
+
+      **cacert**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cacert" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      PEM\-encoded CA certificate(s) used to verify the LDAP server when LDAPS is enabled.
+
+      When set, only these certificates are trusted and the system trust store is not used.
+
+      Omit to use the system trust store. Pass an empty string to clear a previously set CA certificate.
+
+      In containerized deployments, the container's trust store is used, so the CA certificate(s) may need to be provided here explicitly.
 
 
       .. raw:: html
@@ -1384,6 +1424,19 @@ Examples
         attr_lastname: sn
         attr_mail: mail
         ldap_filter: (memberOf=CN=Domain Users,CN=Users,DC=example,DC=com)
+        server_url: "https://foreman.example.com"
+        username: "admin"
+        password: "changeme"
+        state: present
+
+    - name: LDAPS with a custom CA certificate
+      theforeman.foreman.auth_source_ldap:
+        name: "Example LDAPS"
+        host: "ldap.example.org"
+        port: 636
+        tls: true
+        cacert: "{{ lookup('file', '/path/to/ldap-ca.pem') }}"
+        server_type: free_ipa
         server_url: "https://foreman.example.com"
         username: "admin"
         password: "changeme"
