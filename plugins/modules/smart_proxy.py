@@ -42,6 +42,7 @@ options:
       - Each entry is either the name of a Lifecycle Environment, or a dictionary with the keys C(name) and C(organization)
         to select a Lifecycle Environment from a specific Organization.
       - Any Lifecycle Environment currently synced to the Smart Proxy, but not listed here, is removed.
+      - Listing a plain name without specifying an Organization fails if Lifecycle Environments of that name exist in more than one Organization.
     required: false
     elements: raw
     type: list
