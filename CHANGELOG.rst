@@ -6,6 +6,26 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v5.12.0
+=======
+
+Minor Changes
+-------------
+
+- activation_key - internally convert deprecated ``content_view``/``lifecycle_environment`` to content view environment labels for compatibility with newer Katello API versions (https://github.com/theforeman/foreman-ansible-modules/pull/1982)
+- auth_source_ldap - add ``cacert`` parameter to set CA certificates for LDAP server verification (https://github.com/theforeman/foreman-ansible-modules/pull/1985)
+- host, hostgroup - internally convert ``content_view``/``lifecycle_environment`` to content view environment ID for compatibility with newer Katello API versions (https://github.com/theforeman/foreman-ansible-modules/pull/1977)
+
+Deprecated Features
+-------------------
+
+- activation_key - the ``content_view`` and ``lifecycle_environment`` parameters are deprecated, please use ``content_view_environments`` instead (https://github.com/theforeman/foreman-ansible-modules/pull/1982)
+
+Bugfixes
+--------
+
+- content_view - scope lifecycle_environments by organization to avoid errors with duplicate names across organizations (https://github.com/theforeman/foreman-ansible-modules/pull/1980)
+
 v5.11.0
 =======
 
