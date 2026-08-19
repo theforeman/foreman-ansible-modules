@@ -78,7 +78,7 @@ options:
   packages:
     description:
     - Packages to install on the host when registered.
-    - Multiple packages are to be given as a space delimited string.
+    - Multiple packages are to be given as a space delimited string or as a list.
     required: false
     type: str
   remote_execution_interface:
@@ -204,7 +204,7 @@ def main():
             setup_remote_execution=dict(type='bool'),
             jwt_expiration=dict(type='int'),
             insecure=dict(type='bool'),
-            packages=dict(type='str'),
+            packages=dict(type='raw'),
             update_packages=dict(type='bool'),
             repo=dict(type='str'),
             repo_gpg_key_url=dict(type='str', no_log=False),
@@ -227,6 +227,11 @@ def main():
             ('remote_execution', ['remote_execution_interface', 'setup_remote_execution_pull']),
         ],
     )
+
+    # Support both list and string input parameter
+    packages = module.foreman_params.get('packages')
+    if isinstance(packages, list):
+        module.foreman_params['packages'] = ' '.join(map(str, packages))
 
     with module.api_connection():
         module.auto_lookup_entities()
