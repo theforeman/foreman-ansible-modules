@@ -224,8 +224,9 @@ def main():
 
                 with open(b_src, 'rb') as contentfile:
                     for chunk in iter(lambda: contentfile.read(CONTENT_CHUNK_SIZE), b""):
-                        data = {'content': chunk, 'offset': offset, 'size': size}
-                        module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data)
+                        data = {'offset': offset, 'size': size}
+                        files = {'content': chunk}
+                        module.resource_action('content_uploads', 'update', params=content_upload_scope, data=data, files=files)
 
                         offset += len(chunk)
 
