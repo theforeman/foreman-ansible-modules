@@ -53,7 +53,7 @@ EXAMPLES = '''
     task: a03ba49f-4dc2-4ad6-a48b-b271b46f3347
     timeout: 60
 
-- name: Sarch for previously created tasks
+- name: Search for previously created tasks
   resource_info:
     server_url: "https://foreman.example.com"
     password: changeme
