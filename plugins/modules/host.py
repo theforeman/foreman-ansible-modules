@@ -262,6 +262,15 @@ options:
           - When you provide a I(network) here and I(compute_resource) is set, the network id will be automatically looked up.
           - On oVirt/RHV I(cluster) is required in the hosts I(compute_attributes) for the lookup to work.
         type: dict
+  content_view_environments:
+    description:
+      - List of content view environments specified as labels.
+      - 'Labels have the format "lifecycle_environment_label/content_view_label",
+        for example "Library/Default_Organization_View".'
+      - Mutually exclusive with I(content_view) and I(lifecycle_environment).
+      - Only available for Katello installations.
+    type: list
+    elements: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -453,9 +462,12 @@ def main():
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
             interfaces_attributes=dict(type='nested_list', foreman_spec=interfaces_spec, ensure=True),
+            content_view_environments=dict(type='list', elements='str'),
         ),
         mutually_exclusive=[
-            ['owner', 'owner_group']
+            ['owner', 'owner_group'],
+            ['content_view', 'content_view_environments'],
+            ['lifecycle_environment', 'content_view_environments'],
         ],
         required_by=dict(
             image=('compute_resource',),

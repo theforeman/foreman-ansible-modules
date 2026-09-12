@@ -65,6 +65,14 @@ options:
     type: list
     elements: str
     version_added: 2.1.0
+  content_view_environment:
+    description:
+      - Content view environment specified as a label.
+      - 'Labels have the format "lifecycle_environment_label/content_view_label",
+        for example "Library/Default_Organization_View".'
+      - Mutually exclusive with I(content_view) and I(lifecycle_environment).
+      - Only available for Katello installations.
+    type: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -169,14 +177,20 @@ def main():
             parent=dict(type='entity'),
             ansible_roles=dict(type='entity_list', ensure=False),
             organization=dict(type='entity', required=False, ensure=False),
+            content_view_environment=dict(type='str'),
         ),
         argument_spec=dict(
             updated_name=dict(),
         ),
+        mutually_exclusive=[
+            ['content_view', 'content_view_environment'],
+            ['lifecycle_environment', 'content_view_environment'],
+        ],
         required_by=dict(
             content_source=('organization',),
             content_view=('organization',),
             lifecycle_environment=('organization',),
+            content_view_environment=('organization',),
         ),
         required_plugins=[('ansible', ['ansible_roles'])],
     )
