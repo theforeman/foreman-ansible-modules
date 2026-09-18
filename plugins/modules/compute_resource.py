@@ -483,7 +483,7 @@ def main():
                 zone=dict(),
                 cloud=dict(choices=['azure', 'azureusgovernment', 'azurechina', 'azuregermancloud']),
                 ssl_verify_peer=dict(type='bool'),
-                set_console_password=dict(type='bool'),
+                set_console_password=dict(type='bool', no_log=False),
                 keyboard_layout=dict(choices=['ar', 'de-ch', 'es', 'fo', 'fr-ca', 'hu', 'ja', 'mk', 'no', 'pt-br', 'sv', 'da', 'en-gb', 'et', 'fr', 'fr-ch',
                                               'is', 'lt', 'nl', 'pl', 'ru', 'th', 'de', 'en-us', 'fi', 'fr-be', 'hr', 'it', 'lv', 'nl-be', 'pt', 'sl', 'tr']),
                 public_key=dict(),
