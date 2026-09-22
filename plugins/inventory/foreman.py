@@ -197,6 +197,12 @@ from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, to_safe_gr
 
 # 3rd party imports
 try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
+
+try:
     import requests
     if LooseVersion(requests.__version__) < LooseVersion('1.1.0'):
         raise ImportError
