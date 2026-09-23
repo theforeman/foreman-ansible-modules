@@ -187,6 +187,7 @@ hostnames:
   - name.split('.')[0]
 '''
 import copy
+import json
 from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 from collections.abc import MutableMapping
 from time import sleep
@@ -434,7 +435,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         elif (response.status_code == 204 and polls > max_polls):
             raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
         else:
-            self._cache[self.cache_key][url] = response.json()
+            inventory_report = response.json()
+            if isinstance(inventory_report, str):
+                inventory_report = json.loads(inventory_report)
+            self._cache[self.cache_key][url] = inventory_report
             return self._cache[self.cache_key][url]
 
     def _populate(self):
