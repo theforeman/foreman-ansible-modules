@@ -1,0 +1,100 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "present"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "present"
+    - include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "scap_policy_info_name"
+        scap_policy_state: "absent"
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "scap_policy_info_scap_content"
+        scap_content_scap_file: "data/ssg-firefox-ds.xml"
+        scap_content_original_filename: "ssg-firefox-ds.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+    - name: create SCAP policy
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "scap_policy_info_name"
+        scap_policy_scap_content: "scap_policy_info_scap_content"
+        scap_policy_scap_content_profile: "Upstream Firefox STIG"
+        scap_policy_period: "weekly"
+        scap_policy_weekday: "tuesday"
+        scap_policy_deploy_by: "manual"
+        scap_policy_locations:
+          - Test Location
+        scap_policy_organizations:
+          - Test Organization
+        scap_policy_state: "present"
+        expected_change: true
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: fetch SCAP policy info
+      scap_policy_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: "scap_policy_info_name"
+      register: scap_policy_info
+    - name: check SCAP policy details
+      assert:
+        that:
+          - scap_policy_info['policy']['name'] == "scap_policy_info_name"
+          - scap_policy_info['policy']['deploy_by'] == "manual"
+          - scap_policy_info['policy']['period'] == "weekly"
+
+    - name: search SCAP policy info
+      scap_policy_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: "name = scap_policy_info_name"
+      register: scap_policy_info
+    - name: check SCAP policy details
+      assert:
+        that:
+          - scap_policy_info['policies'][0]['name'] == "scap_policy_info_name"
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "scap_policy_info_name"
+        scap_policy_state: "absent"
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "scap_policy_info_scap_content"
+        scap_content_state: "absent"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "absent"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "absent"
