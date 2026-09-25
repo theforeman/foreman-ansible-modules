@@ -117,6 +117,8 @@ options:
       - Additional compute resource specific attributes.
       - When this parameter is set, the module will not be idempotent.
       - When you provide a I(cluster) here and I(compute_resource) is set, the cluster id will be automatically looked up.
+      - Nested I(interfaces_attributes) and I(volumes_attributes) can be provided as lists.
+      - Dictionaries with numeric keys remain supported for compatibility with older Foreman versions.
     type: dict
     required: false
   interfaces_attributes:
@@ -308,6 +310,25 @@ EXAMPLES = '''
     compute_attributes:
       cpus: 2
       memory_mb: 4096
+    state: present
+
+- name: "Create an oVirt VM with a network interface and volume"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host"
+    compute_resource: "ovirt"
+    compute_attributes:
+      cluster: "Default"
+      interfaces_attributes:
+        - name: "nic1"
+          network: "ovirtmgmt"
+          interface: "virtio"
+      volumes_attributes:
+        - size_gb: 16
+          storage_domain: "data"
+          interface: "virtio_scsi"
     state: present
 
 - name: "Create a VM and start it after creation"
@@ -504,7 +525,10 @@ def main():
                     module.foreman_params['compute_attributes']['cluster'] = cluster['_api_identifier']
 
                 if 'volumes_attributes' in module.foreman_params['compute_attributes']:
-                    for volume in module.foreman_params['compute_attributes']['volumes_attributes'].values():
+                    volumes = module.foreman_params['compute_attributes']['volumes_attributes']
+                    if isinstance(volumes, dict):
+                        volumes = volumes.values()
+                    for volume in volumes:
                         if 'storage_pod' in volume:
                             storage_pod = module.find_storage_pod(volume['storage_pod'], compute_resource, cluster)
                             volume['storage_pod'] = storage_pod['name']
