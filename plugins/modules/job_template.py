@@ -300,6 +300,7 @@ entity:
 import os
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanTaxonomicEntityAnsibleModule,
+    _load_entity_details,
     parse_template,
     parse_template_from_file,
 )
@@ -342,23 +343,6 @@ template_input_foreman_spec = {
 
 class ForemanJobTemplateModule(ForemanTaxonomicEntityAnsibleModule):
     pass
-
-
-def _current_template_inputs(module, desired_template_inputs, scope):
-    current_template_inputs = {
-        item['name']: item
-        for item in module.list_resource('template_inputs', params=scope)
-    }
-
-    for desired_template_input in desired_template_inputs:
-        name = desired_template_input['name']
-        current_template_input = current_template_inputs.get(name)
-        if current_template_input is not None and not desired_template_input.keys() <= current_template_input.keys():
-            current_template_inputs[name] = module.show_resource(
-                'template_inputs', current_template_input['id'], params=scope,
-            )
-
-    return current_template_inputs
 
 
 def main():
@@ -471,9 +455,13 @@ def main():
                 scope = {'template_id': job_template['id']}
 
                 # Manage TemplateInputs here
-                current_template_inputs = _current_template_inputs(module, template_inputs, scope) if entity else {}
+                current_template_input_list = module.list_resource('template_inputs', params=scope) if entity else []
+                current_template_inputs = {item['name']: item for item in current_template_input_list}
                 for template_input_dict in template_inputs:
                     template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
+                    template_input_entity = _load_entity_details(
+                        module, 'template_inputs', template_input_dict, template_input_entity, params=scope,
+                    )
 
                     module.ensure_entity(
                         'template_inputs', template_input_dict, template_input_entity,
