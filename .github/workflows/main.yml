@@ -122,6 +122,10 @@ jobs:
         if: matrix.ansible == 'v2.10.4'
       - name: Run crud tests
         run: make test-crud
+      - name: Test repositories role without embedded templates
+        run: make test_repositories_role
+        env:
+          ANSIBLE_ALLOW_EMBEDDED_TEMPLATES: 'False'
       - name: Run other tests
         run: make test-other
       - name: Run dist tests
