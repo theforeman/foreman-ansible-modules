@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://foreman.example.org/api/status
+  response:
+    body:
+      string: '{"result":"ok","status":200,"version":"3.13.0","api_version":2}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://foreman.example.org/api/smart_proxies?search=name%3D%22foreman.example.com%22&per_page=4294967296
+  response:
+    body:
+      string: '{"total":1,"subtotal":1,"page":1,"per_page":4294967296,"search":"name=\"foreman.example.com\"","sort":{"by":null,"order":null},"results":[{"id":1,"name":"foreman.example.com","url":"https://foreman.example.com:8443"}]}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://foreman.example.org/ansible/api/ansible_roles/fetch?proxy_id=1
+  response:
+    body:
+      string: '{"results":{"ansible_roles":[{"name":"namespace.old_role","id":2,"role_action":"Update Role Variables","variables":"Update: 1","hosts_count":"","hostgroup_count":"","kind":"old"}]}}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"proxy_id": 1, "role_names": ["namespace.old_role"]}'
+    headers:
+      Content-Type:
+      - application/json
+    method: PUT
+    uri: https://foreman.example.org/ansible/api/ansible_roles/sync
+  response:
+    body:
+      string: '{"id":"50b8c3bf-26be-48aa-8d61-47938c9c9265","action":"Import roles And Variables","state":"stopped","result":"success","start_at":"2026-09-26 11:01:00 +0200"}'
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+    status:
+      code: 200
+      message: OK
+version: 1
