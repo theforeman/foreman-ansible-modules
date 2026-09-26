@@ -196,7 +196,7 @@
     - include_tasks: tasks/hostgroup.yml
       vars:
         hostgroup_name: "New host group with puppet classes"
-        hostgroup_description: "New host group"
+        hostgroup_description: "This must not update the existing hostgroup"
         hostgroup_architecture: "{{ hostgroup.arch }}"
         hostgroup_operatingsystem: "{{ hostgroup.os.name }} {{ hostgroup.os.major }}.{{ hostgroup.os.minor }}"
         hostgroup_locations: "{{ hostgroup.locations }}"
@@ -211,20 +211,11 @@
         hostgroup_puppet_proxy: "{{ hostgroup.puppet_server }}"
         hostgroup_puppet_ca_proxy: "{{ hostgroup.puppet_ca }}"
         hostgroup_config_groups: "{{ hostgroup.config_groups }}"
-        hostgroup_puppetclasses:
-          - "prometheus::redis_exporter"
+        hostgroup_puppetclasses: []
         hostgroup_parameters:
           - name: subnet_param1
-            value: value1
-          - name: subnet_param2
-            value: value2
-          - name: hidden_secret
-            value: super_secret
-            hidden_value: true
-          - name: excplicit_text
-            value: not_secret
-            hidden_value: false
-        hostgroup_state: present
+            value: must_not_update
+        hostgroup_state: present_with_defaults
         expected_change: false
 
     - include_tasks: tasks/hostgroup.yml
