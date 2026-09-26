@@ -300,6 +300,7 @@ entity:
 import os
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanTaxonomicEntityAnsibleModule,
+    _load_entity_details,
     parse_template,
     parse_template_from_file,
 )
@@ -458,6 +459,9 @@ def main():
                 current_template_inputs = {item['name']: item for item in current_template_input_list}
                 for template_input_dict in template_inputs:
                     template_input_entity = current_template_inputs.pop(template_input_dict['name'], None)
+                    template_input_entity = _load_entity_details(
+                        module, 'template_inputs', template_input_dict, template_input_entity, params=scope,
+                    )
 
                     module.ensure_entity(
                         'template_inputs', template_input_dict, template_input_entity,
