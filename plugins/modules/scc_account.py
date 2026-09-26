@@ -52,6 +52,12 @@ options:
     required: false
     type: str
     choices: ["never", "daily", "weekly", "monthly"]
+  download_policy:
+    description: Default download policy for repositories created from this suse customer center account
+    required: false
+    type: str
+    choices: ["immediate", "on_demand"]
+    version_added: 5.13.0
   sync_date:
     description: Last Sync time of suse customer center account
     required: false
@@ -88,6 +94,7 @@ EXAMPLES = '''
     login: "abcde"
     scc_account_password: "12345"
     base_url: "https://scc.suse.com"
+    download_policy: on_demand
     state: present
 
 - name: "Update a suse customer center account"
@@ -137,6 +144,7 @@ def main():
             base_url=dict(),
             sync_date=dict(),
             interval=dict(choices=['never', 'daily', 'weekly', 'monthly']),
+            download_policy=dict(choices=['immediate', 'on_demand']),
         ),
         argument_spec=dict(
             test_connection=dict(type='bool', default=False),
