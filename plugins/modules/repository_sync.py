@@ -36,10 +36,11 @@ options:
     required: true
     type: str
   repository:
-    description: |
-      Name of the repository to sync
-      If omitted, all repositories in I(product) are synched.
-    type: str
+    description:
+      - Names of the repositories to sync.
+      - If omitted or empty, all repositories in I(product) are synced.
+    type: list
+    elements: str
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.organization
@@ -52,7 +53,9 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
-    repository: "My repository"
+    repository:
+      - "My repository"
+      - "My other repository"
     product: "My Product"
     organization: "Default Organization"
 '''
@@ -62,11 +65,24 @@ RETURN = ''' # '''
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloAnsibleModule
 
 
+def _sync_repositories(module, product, repositories):
+    if not repositories:
+        return module.resource_action('products', 'sync', {'id': product['id']})
+    if len(repositories) == 1:
+        return module.resource_action('repositories', 'sync', {'id': repositories[0]['id']})
+    return module.resource_action(
+        'repositories_bulk_actions',
+        'sync_repositories',
+        {'ids': [repository['id'] for repository in repositories]},
+    )
+
+
 def main():
     module = KatelloAnsibleModule(
         foreman_spec=dict(
             product=dict(type='entity', scope=['organization'], required=True),
-            repository=dict(type='entity', scope=['product']),
+            repository=dict(type='list', elements='str'),
+            repositories=dict(type='entity_list', scope=['product'], invisible=True),
         ),
     )
 
@@ -74,11 +90,10 @@ def main():
 
     with module.api_connection():
         product = module.lookup_entity('product')
-        repository = module.lookup_entity('repository')
-        if repository:
-            task = module.resource_action('repositories', 'sync', {'id': repository['id']})
-        else:
-            task = module.resource_action('products', 'sync', {'id': product['id']})
+        repository_names = module.foreman_params.pop('repository', [])
+        module.foreman_params['repositories'] = repository_names
+        repositories = module.lookup_entity('repositories') if repository_names else []
+        task = _sync_repositories(module, product, repositories)
 
         module.exit_json(task=task)
 
