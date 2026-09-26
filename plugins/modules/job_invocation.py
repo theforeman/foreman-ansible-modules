@@ -214,9 +214,31 @@ class ForemanJobInvocationModule(ForemanAnsibleModule):
 def _normalize_datetime(value):
     if not value:
         return value
-    try:
-        parsed = datetime.fromisoformat(value.replace(' UTC', '+00:00').replace('Z', '+00:00'))
-    except ValueError:
+
+    normalized = value.strip()
+    if normalized.endswith(' UTC'):
+        normalized = normalized[:-4] + '+0000'
+    elif normalized.endswith('Z'):
+        normalized = normalized[:-1] + '+0000'
+    normalized = re.sub(r'([+-]\d{2}):(\d{2})$', r'\1\2', normalized)
+
+    parsed = None
+    for date_format in (
+        '%Y-%m-%dT%H:%M:%S.%f%z',
+        '%Y-%m-%dT%H:%M:%S%z',
+        '%Y-%m-%d %H:%M:%S.%f%z',
+        '%Y-%m-%d %H:%M:%S%z',
+        '%Y-%m-%dT%H:%M:%S.%f',
+        '%Y-%m-%dT%H:%M:%S',
+        '%Y-%m-%d %H:%M:%S.%f',
+        '%Y-%m-%d %H:%M:%S',
+    ):
+        try:
+            parsed = datetime.strptime(normalized, date_format)
+            break
+        except ValueError:
+            pass
+    if parsed is None:
         return value
     if parsed.tzinfo:
         parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)

@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 import pytest
 
@@ -6,7 +7,7 @@ from plugins.module_utils import foreman_helper
 
 sys.modules['ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper'] = foreman_helper
 
-from plugins.modules.job_invocation import _recurring_job_matches  # noqa: E402
+from plugins.modules.job_invocation import _normalize_datetime, _recurring_job_matches  # noqa: E402
 
 
 @pytest.fixture
@@ -61,6 +62,15 @@ def current_job():
 
 def test_matching_recurring_job_is_idempotent(desired_job, current_job):
     assert _recurring_job_matches(desired_job, current_job, 233)
+
+
+@pytest.mark.parametrize(('value', 'expected'), [
+    ('2030-01-02T12:00:00Z', datetime(2030, 1, 2, 12, 0)),
+    ('2030-01-02 12:00:00 UTC', datetime(2030, 1, 2, 12, 0)),
+    ('2030-01-02T14:00:00+02:00', datetime(2030, 1, 2, 12, 0)),
+])
+def test_datetime_normalization(value, expected):
+    assert _normalize_datetime(value) == expected
 
 
 @pytest.mark.parametrize(('path', 'value'), [
