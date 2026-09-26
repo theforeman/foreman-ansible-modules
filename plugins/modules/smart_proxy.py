@@ -39,6 +39,7 @@ options:
     description:
       - Lifecycle Environments synced to the Smart Proxy.
       - Only available for Katello installations.
+      - When I(organizations) is set, names are resolved in each selected organization.
     required: false
     elements: str
     type: list
@@ -110,6 +111,40 @@ class ForemanSmartProxyModule(ForemanTaxonomicEntityAnsibleModule):
     pass
 
 
+def _lookup_lifecycle_environments(module):
+    lifecycle_environment_names = module.foreman_params['lifecycle_environments']
+    organizations = module.lookup_entity('organizations')
+
+    if not organizations:
+        return module.lookup_entity('lifecycle_environments')
+
+    lifecycle_environments = []
+
+    for lifecycle_environment_name in lifecycle_environment_names:
+        matches = [
+            module.find_resource_by(
+                resource='lifecycle_environments',
+                search_field='name',
+                value=lifecycle_environment_name,
+                params={'organization_id': organization['id']},
+                failsafe=True,
+                thin=True,
+            )
+            for organization in organizations
+        ]
+        matches = [match for match in matches if match is not None]
+
+        if not matches:
+            module.fail_json(
+                msg="Could not find lifecycle environment '{0}' in the selected organizations.".format(lifecycle_environment_name)
+            )
+
+        lifecycle_environments.extend(matches)
+
+    module.set_entity('lifecycle_environments', lifecycle_environments)
+    return lifecycle_environments
+
+
 def main():
     module = ForemanSmartProxyModule(
         foreman_spec=dict(
@@ -124,7 +159,7 @@ def main():
     with module.api_connection():
         handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
-            module.lookup_entity('lifecycle_environments')
+            _lookup_lifecycle_environments(module)
             lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
 
         smart_proxy = module.lookup_entity('entity')
