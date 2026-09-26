@@ -12,7 +12,8 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
   Each product is represented as a dictionary and can include `repository_sets` which represent Red Hat Repositories and should be used when the product name matches an existing Red Hat Product.
   Each element of `repository_sets` must have a `name` and should specify the `basearch` and/or `releasever` only when multiple versions are available for that Product.
   All repository sets for a Red Hat Product can be enabled by omitting `repository_sets` and instead specifying that the Product has `all_repositories: true`. When using this option it is also necessary to specify a list of repository `label`s for the Product (e.g. rhel-7-server-rpms). Be wary that this option can result in enabling a large number of unused repositories that, if added to sync plans, can greatly increase sync times and rapidly fill disk space.
-  Custom (i.e. non Red Hat) Products can also be defined, with associated `repositories` which represent custom repositories, and are required to have a `name`, `url`, and `content_type`; they may require additional fields and can take any parameter supported by [theforeman.foreman.repository](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html).
+  Custom (i.e. non Red Hat) Products can also be defined, with associated `repositories` which represent custom repositories, and are required to have a `name` and `content_type`. A `url` is normally provided for remote content, while upload-only repositories can use `src`; repositories may require additional fields and can take any parameter supported by [theforeman.foreman.repository](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/repository_module.html).
+  Repository content can be uploaded after creation by setting `src` to a file on the target host. For OSTree repositories, `ostree_repository_name` can also be specified. Uploads use [theforeman.foreman.content_upload](https://theforeman.github.io/foreman-ansible-modules/develop/plugins/content_upload_module.html) and have the same supported content types and idempotency behavior.
   The `organization` field can be specified for a product and repositories. The `organization` field defaults to `foreman_organization` variable for a product and defaults to the `organization` field of the product for repositories.
   A variety of examples are demonstrated in the data structure below:
 
@@ -57,6 +58,11 @@ foreman_products:
       - name: AppStream x86_64
         content_type: yum
         url: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+  - name: Local Packages
+    repositories:
+      - name: Uploaded RPMs
+        content_type: yum
+        src: /srv/packages/example-1.0-1.noarch.rpm
   - name: Debian 10
     repositories:
       - name: Debian 10 main
