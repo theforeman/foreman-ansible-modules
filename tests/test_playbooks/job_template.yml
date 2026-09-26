@@ -35,11 +35,21 @@
       vars:
         job_template_state: present
         job_template_audit_comment: "create job template"
+        job_template_effective_user:
+          value: root
+          current_user: false
+          overridable: true
+        job_template_execution_timeout_interval: 900
         expected_change: true
     - include_tasks: tasks/job_template.yml
       vars:
         job_template_state: present
         job_template_audit_comment: "don't update job template"
+        job_template_effective_user:
+          value: root
+          current_user: false
+          overridable: true
+        job_template_execution_timeout_interval: 900
         expected_change: false
     - include_tasks: tasks/job_template.yml
       vars:
