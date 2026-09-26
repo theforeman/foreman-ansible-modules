@@ -94,6 +94,9 @@ options:
       purpose:
         description:
           - Designation of a special purpose
+          - Acts as an idempotency key for recurring jobs
+          - An active or disabled job with the same purpose is reused when its managed parameters match
+          - A job with changed managed parameters is cancelled and recreated
         type: str
   scheduling:
     description:
@@ -175,6 +178,9 @@ entity:
       elements: dict
 '''
 
+from datetime import datetime, timezone
+import re
+
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import (
     ForemanAnsibleModule,
 )
@@ -203,6 +209,116 @@ concurrency_control_foreman_spec = {
 
 class ForemanJobInvocationModule(ForemanAnsibleModule):
     pass
+
+
+def _normalize_datetime(value):
+    if not value:
+        return value
+    try:
+        parsed = datetime.fromisoformat(value.replace(' UTC', '+00:00').replace('Z', '+00:00'))
+    except ValueError:
+        return value
+    if parsed.tzinfo:
+        parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)
+    return parsed.replace(second=0, microsecond=0)
+
+
+def _normalize_input(value):
+    if value is None:
+        return value
+    if isinstance(value, bool):
+        return str(value).lower()
+    return str(value)
+
+
+def _render_description(description_format, current, inputs):
+    values = {
+        'job_category': current.get('job_category'),
+        'template_name': current.get('template_name'),
+    }
+    values.update(inputs)
+    return re.sub(r'%{([^}]+)}', lambda match: _normalize_input(values.get(match.group(1), "''")), description_format)
+
+
+def _recurring_job_matches(desired, current, template_id):
+    if current is None or current.get('template_id') != template_id:
+        return False
+
+    targeting = current.get('targeting', {})
+    if targeting.get('targeting_type') != desired.get('targeting_type'):
+        return False
+    if 'bookmark' in desired:
+        if targeting.get('bookmark_id') != desired['bookmark']['id']:
+            return False
+    elif targeting.get('search_query') != desired.get('search_query'):
+        return False
+    if 'randomized_ordering' in desired and targeting.get('randomized_ordering') != desired['randomized_ordering']:
+        return False
+
+    if 'execution_timeout_interval' in desired and current.get('execution_timeout_interval') != desired['execution_timeout_interval']:
+        return False
+    if 'ssh' in desired and current.get('effective_user') != desired['ssh'].get('effective_user'):
+        return False
+    if 'concurrency_control' in desired:
+        for key in ('concurrency_level', 'time_span'):
+            if key in desired['concurrency_control'] and current.get(key) != desired['concurrency_control'][key]:
+                return False
+
+    current_recurrence = current.get('recurrence', {})
+    for key, value in desired['recurrence'].items():
+        current_value = current_recurrence.get(key)
+        if key == 'end_time':
+            value = _normalize_datetime(value)
+            current_value = _normalize_datetime(current_value)
+        if current_value != value:
+            return False
+
+    current_inputs = {}
+    for invocation in current.get('pattern_template_invocations', []):
+        if invocation.get('template_id') == template_id:
+            current_inputs = {
+                item['template_input_name']: item.get('value')
+                for item in invocation.get('input_values', [])
+            }
+            break
+    for name, value in desired.get('inputs', {}).items():
+        current_value = current_inputs.get(name)
+        if isinstance(current_value, str) and current_value and set(current_value) == {'*'}:
+            continue
+        if _normalize_input(current_value) != _normalize_input(value):
+            return False
+
+    if 'description_format' in desired:
+        desired_description = _render_description(desired['description_format'], current, desired.get('inputs', {}))
+        if current.get('description') != desired_description:
+            return False
+
+    return True
+
+
+def _find_active_recurring_logic(module, purpose):
+    purpose = purpose.replace('\\', '\\\\').replace('"', '\\"')
+    recurring_logics = module.list_resource('recurring_logics', search='purpose="{0}"'.format(purpose))
+    active_logics = [logic for logic in recurring_logics if logic.get('state') in ('active', 'disabled')]
+    if len(active_logics) > 1:
+        module.fail_json(msg='Found multiple active or disabled recurring jobs with purpose {0}'.format(purpose))
+    return active_logics[0] if active_logics else None
+
+
+def _find_recurring_job(module, recurring_logic):
+    jobs = module.list_resource('job_invocations', search='recurring_logic.id={0}'.format(recurring_logic['id']))
+    if len(jobs) > 1:
+        module.fail_json(msg='Found multiple job invocations for recurring logic {0}'.format(recurring_logic['id']))
+    if not jobs:
+        return None
+    return module.show_resource('job_invocations', jobs[0]['id'], params={'include_hosts': False})
+
+
+def _feature_template_id(module, feature):
+    features = [item for item in module.list_resource('remote_execution_features') if item.get('label') == feature]
+    if len(features) != 1:
+        module.fail_json(msg='Found {0} remote execution features with label {1}'.format(len(features), feature))
+    return features[0]['job_template_id']
 
 
 def main():
@@ -241,6 +357,27 @@ def main():
                 failsafe=False,
             ))
         module.auto_lookup_entities()
+        recurrence = module.foreman_params.get('recurrence', {})
+        purpose = recurrence.get('purpose')
+        current_logic = _find_active_recurring_logic(module, purpose) if purpose else None
+        current_job = _find_recurring_job(module, current_logic) if current_logic else None
+
+        if current_logic:
+            if 'job_template' in module.foreman_params:
+                template_id = module.foreman_params['job_template']['id']
+            else:
+                template_id = _feature_template_id(module, module.foreman_params['feature'])
+
+            if _recurring_job_matches(module.foreman_params, current_job, template_id):
+                module.record_before('job_invocations', current_job)
+                module.record_after('job_invocations', current_job)
+                module.record_after_full('job_invocations', current_job)
+                if current_logic['state'] == 'disabled':
+                    module.resource_action('recurring_logics', 'update', {'id': current_logic['id'], 'enabled': True})
+                return
+
+            module.resource_action('recurring_logics', 'cancel', {'id': current_logic['id']})
+
         module.ensure_entity('job_invocations', module.foreman_params, None, state='present')
 
 
