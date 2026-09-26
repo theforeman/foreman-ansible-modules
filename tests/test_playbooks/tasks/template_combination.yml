@@ -1,0 +1,18 @@
+---
+- name: "Ensure template combination is {{ template_combination_state }}"
+  vars:
+    template_combination_state: present
+  template_combination:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    provisioning_template: "Template combination test"
+    hostgroup: "Template combination test"
+    state: "{{ template_combination_state }}"
+  register: result
+- assert:
+    fail_msg: "Ensuring template combination is {{ template_combination_state }} failed!"
+    that:
+      - result.changed == expected_change
+...
