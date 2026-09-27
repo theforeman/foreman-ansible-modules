@@ -206,6 +206,16 @@ except ImportError:
     HAS_REQUESTS = False
 
 
+def _get_content_attribute_name(content_attributes, attribute):
+    nested_attribute = content_attributes.get(attribute)
+    if isinstance(nested_attribute, dict):
+        nested_name = nested_attribute.get('name')
+        if nested_name:
+            return nested_name
+
+    return content_attributes.get('%s_name' % attribute)
+
+
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     ''' Host inventory parser for ansible using foreman as source. '''
 
@@ -547,7 +557,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     self.inventory.add_child(env_lo_org, host_name)
 
             for group in ['lifecycle_environment', 'content_view']:
-                val = content_facet_attributes.get('%s_name' % group)
+                val = _get_content_attribute_name(content_facet_attributes, group)
                 if val:
                     safe_key = to_safe_group_name('%s%s_%s' % (
                         to_text(self.group_prefix),
