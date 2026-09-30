@@ -244,12 +244,17 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
     def _get_json(self, url, ignore_errors=None, params=None):
 
-        if not self.use_cache or url not in self._cache.get(self.cache_key, {}):
+        results = []
+        has_data = False
 
-            if self.cache_key not in self._cache:
-                self._cache[self.cache_key] = {url: ''}
+        if self.use_cache:
+            try:
+                results = self._cache[self.cache_key][url]
+                has_data = True
+            except KeyError:
+                self.update_cache = True
 
-            results = []
+        if not has_data:
             s = self._get_session()
             if params is None:
                 params = {}
@@ -302,10 +307,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
                     # get next page
                     params['page'] += 1
-
-            self._cache[self.cache_key][url] = results
-
-        return self._cache[self.cache_key][url]
+        self._results[url] = results
+        return results
 
     def _get_hosts(self):
         url = "%s/api/v2/hosts" % self.foreman_url
@@ -402,44 +405,49 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         url = "%s/ansible/api/v2/ansible_inventories/schedule" % self.foreman_url
         params = {'input_values': self._fetch_params()}
 
-        if self.use_cache and url in self._cache.get(self.cache_key, {}):
-            return self._cache[self.cache_key][url]
+        inventory_report = None
+        has_data = False
 
-        if self.cache_key not in self._cache:
-            self._cache[self.cache_key] = {}
+        if self.use_cache:
+            try:
+                inventory_report = self._cache[self.cache_key][url]
+                has_data = True
+            except KeyError:
+                self.update_cache = True
 
-        session = self._get_session()
-        self.poll_interval = self.get_option('poll_interval')
-        self.max_timeout = self.get_option('max_timeout')
-        # backward compatibility
-        try:
-            self.poll_interval = int(self.get_option('report').get('poll_interval'))
-            self.max_timeout = int(self.get_option('report').get('max_timeout'))
-        except Exception:
-            pass
-        max_polls = self.max_timeout / self.poll_interval
-        ret = session.post(url, json=params)
-        if not ret:
-            raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
-        data_url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
-        polls = 0
-        response = session.get(data_url)
-        while response:
-            if response.status_code != 204 or polls > max_polls:
-                break
-            sleep(self.poll_interval)
-            polls += 1
+        if not has_data:
+            session = self._get_session()
+            self.poll_interval = self.get_option('poll_interval')
+            self.max_timeout = self.get_option('max_timeout')
+            # backward compatibility
+            try:
+                self.poll_interval = int(self.get_option('report').get('poll_interval'))
+                self.max_timeout = int(self.get_option('report').get('max_timeout'))
+            except Exception:
+                pass
+            max_polls = self.max_timeout / self.poll_interval
+            ret = session.post(url, json=params)
+            if not ret:
+                raise Exception("Error scheduling inventory report on foreman. Please check foreman logs!")
+            data_url = "{0}/{1}".format(self.foreman_url, ret.json().get('data_url'))
+            polls = 0
             response = session.get(data_url)
-        if not response:
-            raise Exception("Error receiving inventory report from foreman. Please check foreman logs!")
-        elif (response.status_code == 204 and polls > max_polls):
-            raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
-        else:
+            while response:
+                if response.status_code != 204 or polls > max_polls:
+                    break
+                sleep(self.poll_interval)
+                polls += 1
+                response = session.get(data_url)
+            if not response:
+                raise Exception("Error receiving inventory report from foreman. Please check foreman logs!")
+            elif response.status_code == 204 and polls > max_polls:
+                raise Exception("Timeout receiving inventory report from foreman. Check foreman server and max_timeout in foreman.yml")
             inventory_report = response.json()
             if isinstance(inventory_report, str):
                 inventory_report = json.loads(inventory_report)
-            self._cache[self.cache_key][url] = inventory_report
-            return self._cache[self.cache_key][url]
+
+        self._results[url] = inventory_report
+        return inventory_report
 
     def _populate(self):
         if self._use_inventory_report():
@@ -686,6 +694,10 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.foreman_url = self.get_option('url')
         self.cache_key = self.get_cache_key(path)
         self.use_cache = cache and self.get_option('cache')
+        self.update_cache = not cache and self.get_option('cache')
 
         # actually populate inventory
+        self._results = {}
         self._populate()
+        if self.update_cache:
+            self._cache[self.cache_key] = self._results
