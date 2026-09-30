@@ -1,0 +1,18 @@
+---
+- name: "Run Sync Plan '{{ sync_plan_name }}'"
+  vars:
+    sync_plan_name: "Test Sync Plan"
+    sync_plan_organization: "Test Organization"
+  sync_plan_run:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ sync_plan_organization }}"
+    sync_plan: "{{ sync_plan_name }}"
+  register: result
+- assert:
+    fail_msg: "Running sync plan failed!"
+    that:
+      - result.changed
+...
