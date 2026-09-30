@@ -43,7 +43,7 @@ options:
     type: str
   repositories:
     description:
-      - List of repositories that include name and product.
+      - List of repositories identified by I(label) or by I(name) and I(product).
       - Cannot be combined with I(composite=True).
     type: list
     elements: dict
@@ -52,12 +52,15 @@ options:
         description:
           - Name of the Repository to be added
         type: str
-        required: true
       product:
         description:
           - Product of the Repository to be added
         type: str
-        required: true
+      label:
+        description:
+          - Label of the Repository to be added
+        type: str
+        version_added: 5.13.0
   auto_publish:
     description:
       - Auto publish composite view when a new version of a component content view is created.
@@ -132,6 +135,16 @@ EXAMPLES = '''
       - name: 'Fedora 26'
         product: 'Fedora'
 
+- name: "Create or update content view using a repository label"
+  theforeman.foreman.content_view:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "RHEL 9 CV"
+    organization: "My Cool new Organization"
+    repositories:
+      - label: 'rhel-9-for-x86_64-baseos-rpms'
+
 - name: "Create a composite content view"
   theforeman.foreman.content_view:
     username: "admin"
@@ -202,9 +215,14 @@ def main():
             components=dict(type='nested_list', foreman_spec=cvc_foreman_spec, resolve=False),
             lifecycle_environments=dict(type='entity_list', flat_name='environment_ids', scope=['organization']),
             repositories=dict(type='entity_list', elements='dict', resolve=False, options=dict(
-                name=dict(required=True),
-                product=dict(required=True),
-            )),
+                name=dict(),
+                product=dict(),
+                label=dict(),
+            ),
+                required_one_of=[['label', 'name']],
+                required_together=[['name', 'product']],
+                mutually_exclusive=[['label', 'name'], ['label', 'product']],
+            ),
         ),
         argument_spec=dict(
             state=dict(default='present', choices=['present_with_defaults', 'present', 'absent']),
@@ -231,8 +249,15 @@ def main():
                 else:
                     repositories = []
                     for repository in module.foreman_params['repositories']:
-                        product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
-                        repositories.append(module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True))
+                        if repository.get('label'):
+                            repositories.append(
+                                module.find_resource_by('repositories', 'label', repository['label'], params=scope, thin=True)
+                            )
+                        else:
+                            product = module.find_resource_by_name('products', repository['product'], params=scope, thin=True)
+                            repositories.append(
+                                module.find_resource_by_name('repositories', repository['name'], params={'product_id': product['id']}, thin=True)
+                            )
                     module.foreman_params['repositories'] = repositories
 
             if 'lifecycle_environments' in module.foreman_params:
