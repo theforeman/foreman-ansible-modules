@@ -17,8 +17,6 @@ The main data structure for this role is the list of `foreman_activation_keys`. 
 The following fields are required for an activation key but have defaults which make them optional for this role:
 
 - `organization`: Organization to create the activation key for. Defaults to `foreman_organization` variable.
-- `lifecycle_environment`: Lifecycle Environment to assign to hosts registered with this activation key. Defaults to "Library".
-- `content_view`: Content View to assign to hosts registered with this activation key. Defaults to "Default Organization View".
 
 The following fields are optional in the sense that the server will use default values when they are omitted:
 
@@ -26,6 +24,9 @@ The following fields are optional in the sense that the server will use default 
 
 The following fields are optional and will be omitted by default:
 
+- `lifecycle_environment`: Lifecycle Environment to assign to hosts registered with this activation key.
+- `content_view`: Content View to assign to hosts registered with this activation key.
+- `content_view_environments`: Content View Environments to assign to hosts registerd with this activation key.
 - `description`: Description of the activation key. Helpful for other users to find which activation key to use.
 - `host_collections`: List of Host Collections to associate with the activation key.
 - `subscriptions`: List of Subscriptions to associate with the activation key. Each Subscription is required to have one of `name`, `pool_id`, or `upstream_pool_id`. Of these, only the `pool_id` is guaranteed to be unique. `upstream_pool_id` only exists for subscriptions imported from a 3rd party organization (e.g. on a Red Hat Subscription Manifest). When uniqueness is not an issue, `name` or `upstream_pool_id` can be easier to work with since the `pool_id` does not get determined until the subscription is imported or created and therefore may not yet be determined when you are writing playbooks. Not supported in SCA mode.
