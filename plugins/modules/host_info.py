@@ -67,7 +67,18 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 
 
 class ForemanHostInfo(ForemanInfoAnsibleModule):
-    pass
+    def __init__(self, **kwargs):
+        entity_opts = kwargs.pop('entity_opts', {})
+        entity_opts.setdefault('search_operator', '~')
+        super(ForemanHostInfo, self).__init__(entity_opts=entity_opts, **kwargs)
+
+    def list_resource(self, resource, search=None, params=None):
+        results = super(ForemanHostInfo, self).list_resource(resource, search, params)
+        name = self.foreman_params.get('name')
+        if resource == 'hosts' and name is not None:
+            expected_name = name.casefold()
+            results = [host for host in results if host.get('name', '').casefold() == expected_name]
+        return results
 
 
 def main():
