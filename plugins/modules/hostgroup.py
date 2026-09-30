@@ -67,7 +67,7 @@ options:
     version_added: 2.1.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.entity_state_with_defaults
   - theforeman.foreman.foreman.taxonomy
   - theforeman.foreman.foreman.nested_parameters
   - theforeman.foreman.foreman.host_options
@@ -172,6 +172,7 @@ def main():
         ),
         argument_spec=dict(
             updated_name=dict(),
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
         ),
         required_by=dict(
             content_source=('organization',),
@@ -194,14 +195,15 @@ def main():
         expected_puppetclasses = module_params.pop('puppetclasses', None)
         entity = module.run()
 
-        if not module.desired_absent and 'environment_id' in entity:
+        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
+        if update_dependent_entities and 'environment_id' in entity:
             ensure_puppetclasses(module, 'hostgroup', entity, expected_puppetclasses)
 
         ansible_roles = module_params.get('ansible_roles')
 
         parent_ansible_role_ids = []
 
-        if not module.desired_absent and ansible_roles is not None:
+        if update_dependent_entities and ansible_roles is not None:
             desired_ansible_role_ids = [item['id'] for item in ansible_roles]
 
             if entity.get('parent_id') is not None:
