@@ -85,14 +85,14 @@
     - name: create AK with CV
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_lifecycle_environment: "Library"
-        activation_key_content_view: "Default Organization View"
+        activation_key_content_view_environments:
+          - "Library"
         expected_change: true
     - name: create AK with CV, no change
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_lifecycle_environment: "Library"
-        activation_key_content_view: "Default Organization View"
+        activation_key_content_view_environments:
+          - "Library"
         expected_change: false
     - name: remove AK with CV
       include_tasks: tasks/activation_key.yml
@@ -103,8 +103,8 @@
     - name: create AK with content overrides set to disabled
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_lifecycle_environment: "Library"
-        activation_key_content_view: "Default Organization View"
+        activation_key_content_view_environments:
+          - "Library"
         activation_key_content_overrides:
           - label: "Test_Organization_Test_Product_Test_Repository"
             override: disabled
@@ -211,8 +211,8 @@
     - name: try to update an AK with state=present_with_defaults, no change
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_lifecycle_environment: "Library"
-        activation_key_content_view: "Default Organization View"
+        activation_key_content_view_environments:
+          - "Library"
         activation_key_content_overrides:
           - label: "Test_Organization_Test_Product_Test_Repository"
             override: disabled
@@ -253,7 +253,7 @@
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_name: "Test Activation Key with multiple CVs"
-        activation_key_content_view_environments: 
+        activation_key_content_view_environments:
           - "Dev/Test_Content_View_1"
           - "Test/Test_Content_View_2"
         expected_change: true
@@ -267,7 +267,7 @@
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_name: "Test Activation Key with multiple CVs"
-        activation_key_content_view_environments: 
+        activation_key_content_view_environments:
           - "Test/Test_Content_View_2"
           - "Dev/Test_Content_View_1"
         expected_change: false
@@ -275,7 +275,7 @@
       include_tasks: tasks/activation_key.yml
       vars:
         activation_key_name: "Test Activation Key with multiple CVs"
-        activation_key_content_view_environments: 
+        activation_key_content_view_environments:
           - "Dev/Test_Content_View_1"
           - "Test/Test_Content_View_2"
           - "Prod/Test_Content_View_3"
@@ -300,7 +300,7 @@
     - name: create AK with multiple CVs
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_content_view_environments: 
+        activation_key_content_view_environments:
           - "Dev/Test_Content_View_1"
           - "Test/Test_Content_View_2"
         expected_change: true
@@ -313,8 +313,8 @@
     - name: change AK to single CV mode
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_content_view: "Default Organization View"
-        activation_key_lifecycle_environment: Library
+        activation_key_content_view_environments:
+          - "Library"
         expected_change: true
         # Dev/Test_Content_View_1 must appear
         # Test/Test_Content_View_2 must appear
@@ -327,7 +327,7 @@
     - name: change AK back to multiple CV mode
       include_tasks: tasks/activation_key.yml
       vars:
-        activation_key_content_view_environments: 
+        activation_key_content_view_environments:
           - "Dev/Test_Content_View_1"
           - "Test/Test_Content_View_2"
         expected_change: true
