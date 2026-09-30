@@ -79,6 +79,7 @@ DOCUMENTATION = '''
         description:
             - Toggle, if true the plugin will build legacy hostvars present in the foreman script
             - Places hostvars in a dictionary with keys `foreman`, `foreman_facts`, and `foreman_params`
+            - C(foreman_facts) is only set when I(want_facts) is enabled, and C(foreman_params) only when I(want_params) is enabled
         type: boolean
         default: false
       host_filters:
