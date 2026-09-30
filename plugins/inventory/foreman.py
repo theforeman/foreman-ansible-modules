@@ -75,6 +75,14 @@ DOCUMENTATION = '''
         description: Toggle, if true the plugin will create Ansible groups for host collections
         type: boolean
         default: false
+      want_ansible_roles:
+        description:
+          - Toggle, if true the inventory will retrieve all directly assigned and inherited Ansible roles.
+          - The roles are returned in the C(foreman_ansible_roles) host variable.
+          - Requires the C(foreman_ansible) plugin to be installed on the Foreman server.
+          - Use I(keyed_groups) to create inventory groups from the returned role names.
+        type: boolean
+        default: false
       legacy_hostvars:
         description:
             - Toggle, if true the plugin will build legacy hostvars present in the foreman script
@@ -182,9 +190,14 @@ user: ansibleinventory
 password: changeme
 # Only fetch hosts in the Web Engineering organization
 host_filters: 'organization="Web Engineering"'
-# Use short names (not FQDN) for the hosts in the intentory
+# Use short names (not FQDN) for the hosts in the inventory
 hostnames:
   - name.split('.')[0]
+# Fetch directly assigned and inherited Ansible roles and group hosts by role
+want_ansible_roles: true
+keyed_groups:
+  - key: foreman_ansible_roles
+    prefix: foreman_ansible_role
 '''
 import copy
 import json
@@ -328,6 +341,32 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _get_host_data_by_id(self, hid):
         url = "%s/api/v2/hosts/%s" % (self.foreman_url, hid)
         return self._get_json(url)
+
+    def _get_ansible_roles(self, hosts):
+        url = "%s/ansible/api/v2/ansible_inventories/hosts" % self.foreman_url
+        roles_by_host = {}
+        host_ids = [host['id'] for host in hosts if host]
+        batch_size = self.get_option('batch_size')
+
+        for offset in range(0, len(host_ids), batch_size):
+            batch = host_ids[offset:offset + batch_size]
+            cache_url = "%s?host_ids=%s" % (url, ','.join([to_text(host_id) for host_id in batch]))
+
+            if not self.use_cache or cache_url not in self._cache.get(self.cache_key, {}):
+                if self.cache_key not in self._cache:
+                    self._cache[self.cache_key] = {}
+
+                response = self._get_session().post(url, json={'host_ids': batch})
+                response.raise_for_status()
+                hostvars = response.json().get('_meta', {}).get('hostvars', {})
+                self._cache[self.cache_key][cache_url] = {
+                    host_name: variables.get('foreman_ansible_roles', [])
+                    for host_name, variables in hostvars.items()
+                }
+
+            roles_by_host.update(self._cache[self.cache_key][cache_url])
+
+        return roles_by_host
 
     def _get_facts(self, host):
         """Fetch all host facts of the host"""
@@ -476,6 +515,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
         # We need a deep copy of the data, as we modify it below and this would also modify the cache
         host_data = copy.deepcopy(self._post_request())
+        ansible_roles = self._get_ansible_roles(host_data) if self.get_option('want_ansible_roles') else {}
 
         self.group_prefix = self.get_option('group_prefix')
 
@@ -518,6 +558,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             content_facet_attributes = host.get('content_attributes', {}) or {}
             if self.get_option('want_facts'):
                 self.inventory.set_variable(host_name, 'foreman_facts', fact_list)
+
+            if self.get_option('want_ansible_roles'):
+                self.inventory.set_variable(host_name, 'foreman_ansible_roles', ansible_roles.get(host['name'], []))
 
             # Create ansible groups for hostgroup
             group = 'host_group'
@@ -593,7 +636,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _populate_host_api(self):
         hostnames = self.get_option('hostnames')
         strict = self.get_option('strict')
-        for host in self._get_hosts():
+        hosts = self._get_hosts()
+        ansible_roles = self._get_ansible_roles(hosts) if self.get_option('want_ansible_roles') else {}
+        for host in hosts:
             if not host:
                 continue
 
@@ -652,6 +697,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             # set host vars from facts
             if self.get_option('want_facts'):
                 self.inventory.set_variable(host_name, 'foreman_facts', self._get_facts(host))
+
+            if self.get_option('want_ansible_roles'):
+                self.inventory.set_variable(host_name, 'foreman_ansible_roles', ansible_roles.get(host['name'], []))
 
             # create group for host collections
             if self.get_option('want_hostcollections'):
