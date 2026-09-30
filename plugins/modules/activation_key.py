@@ -112,6 +112,13 @@ options:
           - default
         type: str
         required: true
+  return_repository_sets:
+    description:
+      - Return repository sets and their effective state for the activation key.
+      - Enabling this option performs an additional API request unless the data was already fetched for I(content_overrides).
+    type: bool
+    default: false
+    version_added: 5.13.0
   auto_attach:
     description:
       - Set Auto-Attach on or off
@@ -210,6 +217,16 @@ EXAMPLES = '''
     auto_attach: false
     release_version: 9
     service_level: Standard
+
+- name: "Read repository sets associated with an activation key"
+  theforeman.foreman.activation_key:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "Clients"
+    organization: "Default Organization"
+    return_repository_sets: true
+  register: activation_key
 '''
 
 RETURN = '''
@@ -222,6 +239,13 @@ entity:
       description: List of activation keys.
       type: list
       elements: dict
+repository_sets:
+  description:
+    - Repository sets and their effective state for the activation key.
+    - Returned only when I(return_repository_sets=true).
+  returned: success and I(return_repository_sets=true)
+  type: list
+  elements: dict
 '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule, PER_PAGE
@@ -243,7 +267,14 @@ def override_to_boolnone(override):
 
 
 class KatelloActivationKeyModule(KatelloEntityAnsibleModule):
-    pass
+    def __init__(self, **kwargs):
+        self.repository_sets = None
+        super(KatelloActivationKeyModule, self).__init__(**kwargs)
+
+    def exit_json(self, **kwargs):
+        if self.repository_sets is not None:
+            kwargs['repository_sets'] = self.repository_sets
+        super(KatelloActivationKeyModule, self).exit_json(**kwargs)
 
 
 def main():
@@ -282,6 +313,7 @@ def main():
                 label=dict(required=True),
                 override=dict(required=True, choices=['enabled', 'disabled', 'default']),
             )),
+            return_repository_sets=dict(type='bool', default=False),
             state=dict(default='present', choices=['present', 'present_with_defaults', 'absent', 'copied']),
         ),
         required_if=[
@@ -302,6 +334,7 @@ def main():
 
         subscriptions = module.foreman_params.pop('subscriptions', None)
         content_overrides = module.foreman_params.pop('content_overrides', None)
+        return_repository_sets = module.foreman_params.pop('return_repository_sets')
         if not module.desired_absent:
             module.lookup_entity('host_collections')
         host_collections = module.foreman_params.pop('host_collections', None)
@@ -365,6 +398,7 @@ def main():
                 module.foreman_params["content_view_environments"] = sorted(list(desired_content_view_environments))
 
         activation_key = module.run()
+        product_content = None
 
         # only update subscriptions of newly created or updated AKs
         # copied keys inherit the subscriptions of the origin, so one would not have to specify them again
@@ -484,6 +518,22 @@ def main():
                             'host_collection_ids': list(ids_to_add),
                         }
                         module.resource_action('activation_keys', 'add_host_collections', payload)
+
+        if return_repository_sets:
+            module.repository_sets = []
+            if activation_key and activation_key['id'] != -1:
+                if product_content is None or module.changed:
+                    product_content = module.resource_action(
+                        'activation_keys',
+                        'product_content',
+                        params={
+                            'id': activation_key['id'],
+                            'content_access_mode_all': True,
+                            'per_page': PER_PAGE,
+                        },
+                        ignore_check_mode=True,
+                    )
+                module.repository_sets = product_content['results']
 
 
 if __name__ == '__main__':
