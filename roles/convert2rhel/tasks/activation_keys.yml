@@ -7,8 +7,8 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_centos7 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_key_centos7 }}"
+    content_view_environments:
+      - "{{ foreman_convert2rhel_lifecycle_env }}/{{ foreman_convert2rhel_key_centos7 }}"
   when: foreman_content_rhel_enable_rhel7
 
 - name: "Create activation key '{{ foreman_convert2rhel_key_centos8 }}'"
@@ -19,8 +19,8 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_centos8 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_key_centos8 }}"
+    content_view_environments:
+      - "{{ foreman_convert2rhel_lifecycle_env }}/{{ foreman_convert2rhel_key_centos8 }}"
   when: foreman_content_rhel_enable_rhel8
 
 - name: "Create activation key '{{ foreman_convert2rhel_key_oracle7 }}'"  # noqa: args[module]
@@ -31,8 +31,7 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_oracle7 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
+    content_view_environments: "{{ foreman_convert2rhel_content_view_environments }}"
   when: foreman_convert2rhel_enable_oracle7
 
 - name: "Create activation key '{{ foreman_convert2rhel_key_oracle8 }}'"  # noqa: args[module]
@@ -43,8 +42,7 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_oracle8 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
+    content_view_environments: "{{ foreman_convert2rhel_content_view_environments }}"
   when: foreman_convert2rhel_enable_oracle8
 
 - name: "Create activation key '{{ foreman_convert2rhel_key_rhel7 }}'"
@@ -55,8 +53,7 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_rhel7 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
+    content_view_environments: "{{ foreman_convert2rhel_content_view_environments }}"
   when: foreman_content_rhel_enable_rhel7
 
 - name: "Create activation key '{{ foreman_convert2rhel_key_rhel8 }}'"
@@ -67,6 +64,5 @@
     validate_certs: "{{ foreman_validate_certs | default(omit) }}"
     organization: "{{ foreman_organization }}"
     name: "{{ foreman_convert2rhel_key_rhel8 }}"
-    lifecycle_environment: "{{ foreman_convert2rhel_lifecycle_env }}"
-    content_view: "{{ foreman_convert2rhel_content_view }}"
+    content_view_environments: "{{ foreman_convert2rhel_content_view_environments }}"
   when: foreman_content_rhel_enable_rhel8
