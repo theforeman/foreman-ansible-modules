@@ -14,16 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.3.3","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"5.0.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '62'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -33,25 +31,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '62'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,21 +68,18 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2021-03-18 16:15:36 UTC\",\"updated_at\"\
-        :\"2021-03-18 16:15:36 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-10-01
+        11:22:30 UTC\",\"updated_at\":\"2026-10-01 11:22:33 UTC\",\"id\":3,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '388'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -94,25 +89,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '388'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -131,114 +126,132 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/3
   response:
     body:
-      string: '{"label":"Test_Organization","redhat_repository_url":"https://cdn.redhat.com","system_purposes":{"addons":[],"roles":[],"usage":[],"support_level":[]},"service_levels":[],"service_level":null,"select_all_types":[],"description":"A
-        test organization","created_at":"2021-03-18 16:15:36 UTC","updated_at":"2021-03-18
-        16:15:36 UTC","ancestry":null,"parent_id":null,"parent_name":null,"id":3,"name":"Test
-        Organization","title":"Test Organization","users":[],"smart_proxies":[{"name":"wclark-katello.usersys.redhat.com","id":1,"url":"https://wclark-katello.usersys.redhat.com:9090","inherited":false}],"subnets":[],"compute_resources":[],"media":[],"ptables":[{"description":null,"os_family":"Suse","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"AutoYaST entire
-        SCSI disk","id":110,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"AutoYaST entire
-        virtual disk","id":111,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"AutoYaST LVM","id":112,"inherited":false},{"description":null,"os_family":"Coreos","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"CoreOS default
-        fake","id":113,"inherited":false},{"description":null,"os_family":"Rancheros","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"Empty","id":114,"inherited":false},{"description":null,"os_family":"Freebsd","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"FreeBSD default
-        fake","id":115,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"Jumpstart default","id":116,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2021-03-18
-        16:03:12 UTC","updated_at":"2021-03-18 16:03:12 UTC","name":"Jumpstart mirrored","id":117,"inherited":false},{"description":null,"os_family":"Junos","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Junos default
-        fake","id":118,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Kickstart custom","id":119,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Kickstart default","id":120,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Kickstart default
-        thin","id":121,"inherited":false},{"description":null,"os_family":"NXOS","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"NX-OS default
-        fake","id":122,"inherited":false},{"description":null,"os_family":"Debian","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Preseed default","id":123,"inherited":false},{"description":null,"os_family":"Debian","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Preseed default
-        LVM","id":124,"inherited":false},{"description":null,"os_family":"Windows","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Windows default
-        GPT EFI partition table","id":126,"inherited":false},{"description":null,"os_family":"Windows","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"Windows default
-        partition table","id":125,"inherited":false},{"description":null,"os_family":"Xenserver","created_at":"2021-03-18
-        16:03:13 UTC","updated_at":"2021-03-18 16:03:13 UTC","name":"XenServer default","id":127,"inherited":false}],"provisioning_templates":[{"id":43,"name":"Alterator
-        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":28,"name":"Alterator
+      string: '{"label":"Test_Organization","redhat_repository_url":"https://cdn.redhat.com","manifest_expiration_date":null,"manifest_expire_days_remaining":0,"system_purposes":{"addons":[],"roles":[],"usage":[],"support_type":[],"support_level":[]},"service_levels":[],"service_level":null,"select_all_types":[],"description":"A
+        test organization","created_at":"2026-10-01 11:22:30 UTC","updated_at":"2026-10-01
+        11:22:33 UTC","ancestry":null,"parent_id":null,"parent_name":null,"id":3,"name":"Test
+        Organization","title":"Test Organization","users":[],"smart_proxies":[{"name":"foreman.example.org","id":1,"url":"https://foreman.example.org:9090","inherited":false}],"subnets":[],"compute_resources":[],"media":[],"ptables":[{"description":null,"os_family":"Suse","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Agama default","id":133,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Agama LVM","id":134,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"AutoYaST entire
+        SCSI disk","id":135,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"AutoYaST entire
+        virtual disk","id":136,"inherited":false},{"description":null,"os_family":"Suse","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"AutoYaST LVM","id":137,"inherited":false},{"description":null,"os_family":"Coreos","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"CoreOS default
+        fake","id":138,"inherited":false},{"description":null,"os_family":"Rancheros","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Empty","id":139,"inherited":false},{"description":null,"os_family":"Freebsd","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"FreeBSD default
+        fake","id":140,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Jumpstart default","id":141,"inherited":false},{"description":null,"os_family":"Solaris","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Jumpstart mirrored","id":142,"inherited":false},{"description":null,"os_family":"Junos","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Junos default
+        fake","id":143,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Kickstart custom","id":144,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Kickstart default","id":145,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Kickstart default
+        encrypted","id":146,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Kickstart default
+        thin","id":147,"inherited":false},{"description":null,"os_family":"Redhat","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Kickstart dynamic","id":148,"inherited":false},{"description":null,"os_family":"NXOS","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"NX-OS default
+        fake","id":149,"inherited":false},{"description":null,"os_family":"Debian","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Preseed default","id":150,"inherited":false},{"description":"Preseed
+        Autoinstall default storage snippet configures drives automatically\nwith
+        LVM. The snippet is automatically indented by 2 spaces. For reference:\nhttps://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html","os_family":"Debian","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Preseed default
+        autoinstall","id":151,"inherited":false},{"description":"Preseed Autoinstall
+        default storage snippet configures drives automatically\nwith LVM and disk
+        encryption.\nRequires Ubuntu >= 22.04.3.\nThe snippet is automatically indented
+        by 2 spaces. For reference:\nhttps://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html","os_family":"Debian","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Preseed default
+        autoinstall encrypted","id":152,"inherited":false},{"description":null,"os_family":"Debian","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Preseed default
+        LVM","id":153,"inherited":false},{"description":null,"os_family":"Windows","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Windows default
+        GPT EFI partition table","id":155,"inherited":false},{"description":null,"os_family":"Windows","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"Windows default
+        partition table","id":154,"inherited":false},{"description":null,"os_family":"Xenserver","created_at":"2026-10-01
+        10:55:16 UTC","updated_at":"2026-10-01 10:55:16 UTC","name":"XenServer default","id":156,"inherited":false}],"provisioning_templates":[{"id":28,"name":"Agama
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":38,"name":"Agama
+        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":2,"name":"Agama
+        default PXEGrub2","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":9,"name":"Agama
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":125,"name":"Agama
+        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":67,"name":"agama_generic_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":68,"name":"agama_kernel_options","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":69,"name":"agama_network_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":48,"name":"Agama
+        sles default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":49,"name":"Alterator
+        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":29,"name":"Alterator
         default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":10,"name":"Alterator
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":61,"name":"alterator_pkglist","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":62,"name":"ansible_provisioning_callback","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":63,"name":"ansible_tower_callback_script","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":64,"name":"ansible_tower_callback_service","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":44,"name":"Atomic
-        Kickstart default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":45,"name":"AutoYaST
-        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":36,"name":"AutoYaST
-        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":11,"name":"AutoYaST
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":105,"name":"AutoYaST
-        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":46,"name":"AutoYaST
-        SLES default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":65,"name":"blacklist_kernel_modules","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":66,"name":"bmc_nic_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":67,"name":"built","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":68,"name":"chef_client","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":27,"name":"CloudInit
-        default","template_kind_id":11,"template_kind_name":"cloud-init","inherited":false},{"id":69,"name":"coreos_cloudconfig","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":47,"name":"CoreOS
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":70,"name":"alterator_pkglist","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":71,"name":"ansible_provisioning_callback","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":72,"name":"ansible_tower_callback_script","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":73,"name":"ansible_tower_callback_service","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":50,"name":"AutoYaST
+        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":39,"name":"AutoYaST
+        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":3,"name":"AutoYaST
+        default PXEGrub2","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":11,"name":"AutoYaST
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":126,"name":"AutoYaST
+        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":51,"name":"AutoYaST
+        SLES default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":74,"name":"blacklist_kernel_modules","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":75,"name":"bmc_nic_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":76,"name":"built","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":77,"name":"ca_registration","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":78,"name":"chef_client","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":27,"name":"CloudInit
+        default","template_kind_id":11,"template_kind_name":"cloud-init","inherited":false},{"id":79,"name":"container_certs_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":80,"name":"coreos_cloudconfig","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":52,"name":"CoreOS
         provision","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":12,"name":"CoreOS
-        PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":70,"name":"create_users","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":71,"name":"csr_attributes.yaml","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":72,"name":"efibootmgr_netboot","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":73,"name":"epel","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":74,"name":"fips_packages","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":75,"name":"fix_hosts","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":29,"name":"FreeBSD
-        (mfsBSD) finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":48,"name":"FreeBSD
+        PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":81,"name":"create_users","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":82,"name":"csr_attributes.yaml","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":83,"name":"disk_enc_clevis_tang","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":84,"name":"efibootmgr_netboot","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":85,"name":"eject_cdrom","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":86,"name":"epel","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":87,"name":"fips_packages","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":88,"name":"fix_hosts","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":61,"name":"foreman_ca_refresh","template_kind_id":15,"template_kind_name":"public","inherited":false},{"id":62,"name":"foreman_raw_ca","template_kind_id":15,"template_kind_name":"public","inherited":false},{"id":30,"name":"FreeBSD
+        (mfsBSD) finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":53,"name":"FreeBSD
         (mfsBSD) provision","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":13,"name":"FreeBSD
-        (mfsBSD) PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":76,"name":"freeipa_register","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":57,"name":"Global
-        Registration","template_kind_id":12,"template_kind_name":"registration","inherited":false},{"id":59,"name":"Grubby
-        default","template_kind_id":7,"template_kind_name":"script","inherited":false},{"id":77,"name":"http_proxy","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":80,"name":"insights","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":37,"name":"iPXE
-        default local boot","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":38,"name":"iPXE
-        global default","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":39,"name":"iPXE
-        intermediate script","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":49,"name":"Jumpstart
-        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":30,"name":"Jumpstart
-        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":2,"name":"Jumpstart
-        default PXEGrub","template_kind_id":2,"template_kind_name":"PXEGrub","inherited":false},{"id":31,"name":"Junos
-        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":50,"name":"Junos
+        (mfsBSD) PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":89,"name":"freeipa_register","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":63,"name":"Global
+        Registration","template_kind_id":12,"template_kind_name":"registration","inherited":false},{"id":65,"name":"Grubby
+        default","template_kind_id":7,"template_kind_name":"script","inherited":false},{"id":90,"name":"http_proxy","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":91,"name":"insights","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":40,"name":"iPXE
+        default local boot","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":41,"name":"iPXE
+        global default","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":42,"name":"iPXE
+        intermediate script","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":54,"name":"Jumpstart
+        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":31,"name":"Jumpstart
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":32,"name":"Junos
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":55,"name":"Junos
         default SLAX","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":26,"name":"Junos
-        default ZTP config","template_kind_id":9,"template_kind_name":"ZTP","inherited":false},{"id":51,"name":"Kickstart
-        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":32,"name":"Kickstart
-        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":40,"name":"Kickstart
-        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":3,"name":"Kickstart
-        default PXEGrub","template_kind_id":2,"template_kind_name":"PXEGrub","inherited":false},{"id":6,"name":"Kickstart
+        default ZTP config","template_kind_id":9,"template_kind_name":"ZTP","inherited":false},{"id":56,"name":"Kickstart
+        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":33,"name":"Kickstart
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":43,"name":"Kickstart
+        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":4,"name":"Kickstart
         default PXEGrub2","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":14,"name":"Kickstart
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":106,"name":"Kickstart
-        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":79,"name":"kickstart_ifcfg_bonded_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":78,"name":"kickstart_ifcfg_bond_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":81,"name":"kickstart_ifcfg_generic_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":83,"name":"kickstart_ifcfg_get_identifier_names","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":84,"name":"kickstart_kernel_options","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":85,"name":"kickstart_networking_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":52,"name":"Kickstart
-        oVirt-RHVH","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":15,"name":"Kickstart
-        oVirt-RHVH PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":58,"name":"Linux
-        registration default","template_kind_id":12,"template_kind_name":"registration","inherited":false},{"id":86,"name":"ntp","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":1,"name":"NX-OS
-        default POAP setup","template_kind_id":10,"template_kind_name":"POAP","inherited":false},{"id":53,"name":"Preseed
-        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":33,"name":"Preseed
-        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":41,"name":"Preseed
-        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":7,"name":"Preseed
-        default PXEGrub2","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":16,"name":"Preseed
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":107,"name":"Preseed
-        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":87,"name":"preseed_networking_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":88,"name":"puppet.conf","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":90,"name":"puppetlabs_repo","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":89,"name":"puppet_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":91,"name":"pxegrub2_chainload","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":8,"name":"PXEGrub2
-        default local boot","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":92,"name":"pxegrub2_discovery","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":9,"name":"PXEGrub2
-        global default","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":93,"name":"pxegrub2_mac","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":94,"name":"pxegrub_chainload","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":4,"name":"PXEGrub
-        default local boot","template_kind_id":2,"template_kind_name":"PXEGrub","inherited":false},{"id":95,"name":"pxegrub_discovery","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":5,"name":"PXEGrub
-        global default","template_kind_id":2,"template_kind_name":"PXEGrub","inherited":false},{"id":17,"name":"PXELinux
-        chain iPXE","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":18,"name":"PXELinux
-        chain iPXE UNDI","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":96,"name":"pxelinux_chainload","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":19,"name":"PXELinux
-        default local boot","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":20,"name":"PXELinux
-        default memdisk","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":97,"name":"pxelinux_discovery","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":21,"name":"PXELinux
-        global default","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":98,"name":"rancheros_cloudconfig","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":54,"name":"RancherOS
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":127,"name":"Kickstart
+        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":93,"name":"kickstart_ifcfg_bonded_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":92,"name":"kickstart_ifcfg_bond_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":94,"name":"kickstart_ifcfg_generic_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":95,"name":"kickstart_ifcfg_get_identifier_names","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":96,"name":"kickstart_kernel_options","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":98,"name":"kickstart_networking_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":97,"name":"kickstart_network_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":99,"name":"kickstart_rhsm","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":37,"name":"Linux
+        host_init_config default","template_kind_id":1,"template_kind_name":"host_init_config","inherited":false},{"id":100,"name":"ntp","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":1,"name":"NX-OS
+        default POAP setup","template_kind_id":10,"template_kind_name":"POAP","inherited":false},{"id":101,"name":"pkg_manager","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":102,"name":"preseed_autoinstall_clevis_tang_wrapper","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":128,"name":"Preseed
+        Autoinstall cloud-init user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":57,"name":"Preseed
+        default","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":34,"name":"Preseed
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":44,"name":"Preseed
+        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":45,"name":"Preseed
+        default iPXE Autoinstall","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":5,"name":"Preseed
+        default PXEGrub2","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":6,"name":"Preseed
+        default PXEGrub2 Autoinstall","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":15,"name":"Preseed
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":16,"name":"Preseed
+        default PXELinux Autoinstall","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":129,"name":"Preseed
+        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":103,"name":"preseed_kernel_options","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":104,"name":"preseed_kernel_options_autoinstall","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":105,"name":"preseed_netplan_generic_interface","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":106,"name":"preseed_netplan_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":107,"name":"preseed_networking_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":108,"name":"puppet.conf","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":110,"name":"puppetlabs_repo","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":109,"name":"puppet_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":111,"name":"pxegrub2_chainload","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":7,"name":"PXEGrub2
+        default local boot","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":112,"name":"pxegrub2_discovery","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":8,"name":"PXEGrub2
+        global default","template_kind_id":3,"template_kind_name":"PXEGrub2","inherited":false},{"id":113,"name":"pxegrub2_mac","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":17,"name":"PXELinux
+        chain iPXE","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":18,"name":"PXELinux
+        chain iPXE UNDI","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":114,"name":"pxelinux_chainload","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":19,"name":"PXELinux
+        default local boot","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":20,"name":"PXELinux
+        default memdisk","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":115,"name":"pxelinux_discovery","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":21,"name":"PXELinux
+        global default","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":116,"name":"rancheros_cloudconfig","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":58,"name":"RancherOS
         provision","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":22,"name":"RancherOS
-        PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":99,"name":"redhat_register","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":100,"name":"remote_execution_ssh_keys","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":101,"name":"saltstack_minion","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":102,"name":"saltstack_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":82,"name":"schedule_reboot","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":108,"name":"UserData
-        default","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":109,"name":"UserData
+        PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":117,"name":"redhat_register","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":64,"name":"remote_execution_pull_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":118,"name":"remote_execution_ssh_keys","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":119,"name":"saltstack_minion","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":120,"name":"saltstack_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":121,"name":"schedule_reboot","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":122,"name":"subscription_manager_setup","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":130,"name":"UserData
+        default","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":131,"name":"UserData
         open-vm-tools","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":23,"name":"WAIK
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":34,"name":"Windows
-        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":42,"name":"Windows
-        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":55,"name":"Windows
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":35,"name":"Windows
+        default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":46,"name":"Windows
+        default iPXE","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":47,"name":"Windows
+        default iPXE httpboot","template_kind_id":4,"template_kind_name":"iPXE","inherited":false},{"id":59,"name":"Windows
         default provision","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":24,"name":"Windows
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":103,"name":"Windows
-        network","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":60,"name":"Windows
-        peSetup.cmd","template_kind_id":7,"template_kind_name":"script","inherited":false},{"id":56,"name":"XenServer
-        default answerfile","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":35,"name":"XenServer
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":132,"name":"Windows
+        default user data","template_kind_id":8,"template_kind_name":"user_data","inherited":false},{"id":123,"name":"windows_network","template_kind_id":null,"template_kind_name":null,"inherited":false},{"id":66,"name":"Windows
+        peSetup.cmd","template_kind_id":7,"template_kind_name":"script","inherited":false},{"id":60,"name":"XenServer
+        default answerfile","template_kind_id":5,"template_kind_name":"provision","inherited":false},{"id":36,"name":"XenServer
         default finish","template_kind_id":6,"template_kind_name":"finish","inherited":false},{"id":25,"name":"XenServer
-        default PXELinux","template_kind_id":1,"template_kind_name":"PXELinux","inherited":false},{"id":104,"name":"yum_proxy","template_kind_id":null,"template_kind_name":null,"inherited":false}],"domains":[],"realms":[],"environments":[],"hostgroups":[],"locations":[{"id":2,"name":"Default
-        Location","title":"Default Location","description":null}],"hosts_count":0,"parameters":[],"simple_content_access":false,"owner_details":{"id":"8a889d597846119d0178461eff130005","key":"Test_Organization","created":"2021-03-18T16:15:39+0000","updated":"2021-03-18T16:15:39+0000","lastRefreshed":null,"virt_who":false,"upstreamConsumer":null},"default_content_view_id":2,"library_id":2}'
+        default PXELinux","template_kind_id":2,"template_kind_name":"PXELinux","inherited":false},{"id":124,"name":"yum_proxy","template_kind_id":null,"template_kind_name":null,"inherited":false}],"domains":[],"realms":[],"hostgroups":[],"locations":[{"id":2,"name":"Default
+        Location","title":"Default Location","description":null}],"hosts_count":0,"parameters":[],"deprecations":{"environments":"Environments
+        got deprecated from this endpoint."},"manifest_expiring_soon":false,"manifest_expired":false,"owner_details":{"id":"4028fc7ba0f732d201a0f733a3c50000","key":"Test_Organization","created":"2026-10-01T11:22:31+0000","updated":"2026-10-01T11:22:31+0000","lastRefreshed":null,"virt_who":false,"upstreamConsumer":null},"cdn_configuration":{"url":"https://cdn.redhat.com","username":null,"upstream_organization_label":null,"ssl_ca_credential_id":null,"upstream_content_view_label":null,"upstream_lifecycle_environment_label":null,"type":"redhat_cdn","password_exists":false},"default_content_view_id":2,"composite_content_views_count":null,"rolling_content_views_count":null,"content_view_components_count":null,"library_id":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '21130'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -248,25 +261,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '16329'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -280,21 +293,22 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '743113'
+      - '1445872'
       Content-Type:
-      - multipart/form-data; boundary=205f77d680b6eec60262c5b815c79437
+      - multipart/form-data; boundary=221dbb9a2dd4edd1cf331bb8108a1a09
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
     uri: https://foreman.example.org/katello/api/organizations/3/subscriptions/upload
   response:
     body:
-      string: '  {"id":"b8baa7d6-c0d9-48ae-ae86-65d835679ab0","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
-        Manifest organization ''Test Organization''","username":"admin","started_at":"2021-03-18
-        16:15:45 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"remote_user":"admin","remote_cp_user":"admin","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":3,"current_location_id":null},"output":{},"humanized":{"action":"Import
-        Manifest","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:15:45 UTC","available_actions":{"cancellable":false,"resumable":false}}
+      string: '  {"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":null,"available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -302,10 +316,6 @@ interactions:
       - no-cache
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -315,23 +325,27 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
       Transfer-Encoding:
       - chunked
-      X-Content-Type-Options:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 202
       message: Accepted
@@ -347,24 +361,23 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/b8baa7d6-c0d9-48ae-ae86-65d835679ab0
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
   response:
     body:
-      string: '{"id":"b8baa7d6-c0d9-48ae-ae86-65d835679ab0","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
-        Manifest organization ''Test Organization''","username":"admin","started_at":"2021-03-18
-        16:15:45 UTC","ended_at":null,"state":"running","result":"pending","progress":0.0,"input":{"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"remote_user":"admin","remote_cp_user":"admin","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":3,"current_location_id":null},"output":{},"humanized":{"action":"Import
-        Manifest","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:15:45 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"running","result":"pending","progress":0.13,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"4.133107","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '956'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -374,25 +387,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=96
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '910'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -408,24 +421,23 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/b8baa7d6-c0d9-48ae-ae86-65d835679ab0
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
   response:
     body:
-      string: '{"id":"b8baa7d6-c0d9-48ae-ae86-65d835679ab0","label":"Actions::Katello::Organization::ManifestImport","pending":false,"action":"Import
-        Manifest organization ''Test Organization''","username":"admin","started_at":"2021-03-18
-        16:15:45 UTC","ended_at":"2021-03-18 16:16:30 UTC","state":"stopped","result":"success","progress":1.0,"input":{"organization":{"id":3,"name":"Test
-        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"remote_user":"admin","remote_cp_user":"admin","current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":3,"current_location_id":null},"output":{},"humanized":{"action":"Import
-        Manifest","input":[["organization",{"text":"organization ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:15:45 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"running","result":"pending","progress":0.25,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"8.169249","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '956'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -435,25 +447,265 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
-      - timeout=15, max=86
-      Strict-Transport-Security:
+      - timeout=15, max=95
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '932'
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
+  response:
+    body:
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"running","result":"pending","progress":0.25,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"12.197862","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '957'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 5.0.0
+      Keep-Alive:
+      - timeout=15, max=94
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
+  response:
+    body:
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"running","result":"pending","progress":0.25,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"16.222725","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '957'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 5.0.0
+      Keep-Alive:
+      - timeout=15, max=93
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
+  response:
+    body:
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":true,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":null,"state":"running","result":"pending","progress":0.25,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"20.250157","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '957'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 5.0.0
+      Keep-Alive:
+      - timeout=15, max=92
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json;version=2
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - apypie (https://github.com/Apipie/apypie)
+    method: GET
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03
+  response:
+    body:
+      string: '{"id":"2ea76dc9-8fbc-4f87-b929-b84fe0e0ac03","label":"Actions::Katello::Organization::ManifestImport","pending":false,"action":"Import
+        Manifest for organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:22:34 UTC","ended_at":"2026-10-01 11:22:56 UTC","state":"stopped","result":"success","progress":1.0,"input":{"organization":{"id":3,"name":"Test
+        Organization","label":"Test_Organization"},"services_checked":["candlepin","candlepin_auth"],"organization_name":"Test
+        Organization","remote_user":"admin","remote_cp_user":"admin","current_request_id":"602628bd-d410-4c4a-a60e-9d77af0c5dcb","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Import
+        Manifest","input":"for organization ''Test Organization''","output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:22:34 UTC","duration":"21.607153","available_actions":{"cancellable":false,"resumable":false}}'
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '978'
+      Content-Type:
+      - application/json; charset=utf-8
+      Foreman_api_version:
+      - '2'
+      Foreman_current_location:
+      - ; ANY
+      Foreman_current_organization:
+      - ; ANY
+      Foreman_version:
+      - 5.0.0
+      Keep-Alive:
+      - timeout=15, max=91
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
+      - nosniff
+      x-download-options:
+      - noopen
+      x-frame-options:
+      - sameorigin
+      x-permitted-cross-domain-policies:
+      - none
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK

@@ -14,16 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.3.3","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"5.0.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '62'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -33,25 +31,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '62'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,21 +68,18 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2021-03-18 16:15:36 UTC\",\"updated_at\"\
-        :\"2021-03-18 16:16:30 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-10-01
+        11:22:30 UTC\",\"updated_at\":\"2026-10-01 11:22:56 UTC\",\"id\":3,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '388'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -94,25 +89,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '388'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -131,10 +126,9 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Red+Hat+Enterprise+Linux+Server%22&per_page=4294967296
   response:
     body:
-      string: '{"total":289,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Red
-        Hat Enterprise Linux Server\"","sort":{"by":"name","order":"asc"},"results":[{"id":126,"cp_id":"69","name":"Red
-        Hat Enterprise Linux Server","label":"Red_Hat_Enterprise_Linux_Server","description":null,"provider_id":4,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2021-03-18
-        16:16:40 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
+      string: '{"total":378,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Red
+        Hat Enterprise Linux Server\"","sort":{"by":"name","order":"asc"},"results":[{"id":321,"cp_id":"69","name":"Red
+        Hat Enterprise Linux Server","label":"Red_Hat_Enterprise_Linux_Server","description":null,"provider_id":4,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
@@ -143,10 +137,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '651'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -156,25 +148,25 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '675'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -194,13 +186,13 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: POST
-    uri: https://foreman.example.org/katello/api/products/126/sync
+    uri: https://foreman.example.org/katello/api/products/321/sync
   response:
     body:
-      string: '  {"id":"9770cad7-e6ff-465d-9de0-95fbbdb6dc97","label":"Actions::BulkAction","pending":true,"action":"Bulk
-        action","username":"admin","started_at":"2021-03-18 16:16:57 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{},"humanized":{"action":"Bulk
-        action","input":null,"output":null,"errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:16:57 UTC","available_actions":{"cancellable":false,"resumable":false}}
+      string: '  {"id":"54011bce-3a05-4756-b16a-b16a28993acb","label":"Actions::BulkAction","pending":true,"action":"Bulk
+        action","username":"admin","started_at":"2026-10-01 11:23:12 UTC","ended_at":null,"state":"planned","result":"pending","progress":0.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"kwargs":{},"current_request_id":"1362cc42-6e4a-43df-81f3-49a982e9d499","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4},"output":{},"humanized":{"action":"Bulk
+        action","input":null,"output":null,"errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:23:12 UTC","duration":null,"available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -208,10 +200,6 @@ interactions:
       - no-cache
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -221,23 +209,27 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
       Transfer-Encoding:
       - chunked
-      X-Content-Type-Options:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 202
       message: Accepted
@@ -253,25 +245,23 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/9770cad7-e6ff-465d-9de0-95fbbdb6dc97
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/54011bce-3a05-4756-b16a-b16a28993acb
   response:
     body:
-      string: '{"id":"9770cad7-e6ff-465d-9de0-95fbbdb6dc97","label":"Actions::BulkAction","pending":true,"action":"Bulk
-        action","username":"admin","started_at":"2021-03-18 16:16:57 UTC","ended_at":null,"state":"running","result":"pending","progress":0.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"planned_count":1,"cancelled_count":0,"total_count":1,"failed_count":0,"pending_count":1,"success_count":0},"humanized":{"action":"Synchronize","input":["synchronize",["repository",{"text":"repository
+      string: '{"id":"54011bce-3a05-4756-b16a-b16a28993acb","label":"Actions::BulkAction","pending":true,"action":"Bulk
+        action","username":"admin","started_at":"2026-10-01 11:23:12 UTC","ended_at":null,"state":"running","result":"pending","progress":0.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"kwargs":{},"current_request_id":"1362cc42-6e4a-43df-81f3-49a982e9d499","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4,"dynflow":{}},"output":{"planned_count":1,"cancelled_count":0,"total_count":1,"failed_count":0,"pending_count":1,"success_count":0},"humanized":{"action":"Synchronize","input":["synchronize",["repository",{"text":"repository
         ''Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server''","link":null}],["product",{"text":"product
-        ''Red Hat Enterprise Linux Server''","link":"/products/126/"}],["organization",{"text":"organization
+        ''Red Hat Enterprise Linux Server''","link":"/products/321/"}],["organization",{"text":"organization
         ''Test Organization''","link":"/organizations/3/edit"}],"..."],"output":"1
-        task(s), 0 success, 0 fail","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:16:57 UTC","available_actions":{"cancellable":true,"resumable":false}}'
+        task(s), 0 success, 0 fail","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:23:12 UTC","duration":"4.129485","available_actions":{"cancellable":true,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '1213'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -281,25 +271,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=96
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1132'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -315,28 +305,26 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/foreman_tasks/api/tasks/9770cad7-e6ff-465d-9de0-95fbbdb6dc97
+    uri: https://foreman.example.org/foreman_tasks/api/tasks/54011bce-3a05-4756-b16a-b16a28993acb
   response:
     body:
-      string: '{"id":"9770cad7-e6ff-465d-9de0-95fbbdb6dc97","label":"Actions::BulkAction","pending":false,"action":"Synchronize
+      string: '{"id":"54011bce-3a05-4756-b16a-b16a28993acb","label":"Actions::BulkAction","pending":false,"action":"Synchronize
         synchronize; repository ''Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server'';
         product ''Red Hat Enterprise Linux Server''; organization ''Test Organization'';
-        ...","username":"admin","started_at":"2021-03-18 16:16:57 UTC","ended_at":"2021-03-18
-        17:08:33 UTC","state":"stopped","result":"success","progress":1.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":null,"current_location_id":null},"output":{"planned_count":1,"cancelled_count":0,"total_count":1,"failed_count":0,"pending_count":0,"success_count":1},"humanized":{"action":"Synchronize","input":["synchronize",["repository",{"text":"repository
+        ...","username":"admin","started_at":"2026-10-01 11:23:12 UTC","ended_at":"2026-10-01
+        11:35:26 UTC","state":"stopped","result":"success","progress":1.0,"input":{"action_class":"Actions::Katello::Repository::Sync","target_ids":[1],"target_class":"Katello::Repository","args":[],"kwargs":{},"current_request_id":"1362cc42-6e4a-43df-81f3-49a982e9d499","current_timezone":"UTC","current_organization_id":null,"current_location_id":null,"current_user_id":4,"dynflow":{}},"output":{"planned_count":1,"cancelled_count":0,"total_count":1,"failed_count":0,"pending_count":0,"success_count":1},"humanized":{"action":"Synchronize","input":["synchronize",["repository",{"text":"repository
         ''Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server''","link":null}],["product",{"text":"product
-        ''Red Hat Enterprise Linux Server''","link":"/products/126/"}],["organization",{"text":"organization
+        ''Red Hat Enterprise Linux Server''","link":"/products/321/"}],["organization",{"text":"organization
         ''Test Organization''","link":"/organizations/3/edit"}],"..."],"output":"1
-        task(s), 1 success, 0 fail","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:16:57 UTC","available_actions":{"cancellable":false,"resumable":false}}'
+        task(s), 1 success, 0 fail","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:23:12 UTC","duration":"734.622808","available_actions":{"cancellable":false,"resumable":false}}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '1400'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -346,25 +334,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
-      - timeout=15, max=97
-      Strict-Transport-Security:
+      - timeout=15, max=19
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1317'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
