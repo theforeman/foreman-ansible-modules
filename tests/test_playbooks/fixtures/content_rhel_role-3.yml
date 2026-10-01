@@ -14,16 +14,14 @@ interactions:
     uri: https://foreman.example.org/api/status
   response:
     body:
-      string: '{"result":"ok","status":200,"version":"2.3.3","api_version":2}'
+      string: '{"result":"ok","status":200,"version":"5.0.0","api_version":2}'
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '62'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -33,25 +31,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=100
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '62'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -70,21 +68,18 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations?search=name%3D%22Test+Organization%22&per_page=4294967296
   response:
     body:
-      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\"\
-        : 4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\"\
-        : {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\"\
-        :\"Test_Organization\",\"created_at\":\"2021-03-18 16:15:36 UTC\",\"updated_at\"\
-        :\"2021-03-18 16:16:30 UTC\",\"id\":3,\"name\":\"Test Organization\",\"title\"\
-        :\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
+      string: "{\n  \"total\": 2,\n  \"subtotal\": 1,\n  \"page\": 1,\n  \"per_page\":
+        4294967296,\n  \"search\": \"name=\\\"Test Organization\\\"\",\n  \"sort\":
+        {\n    \"by\": null,\n    \"order\": null\n  },\n  \"results\": [{\"label\":\"Test_Organization\",\"created_at\":\"2026-10-01
+        11:22:30 UTC\",\"updated_at\":\"2026-10-01 11:22:56 UTC\",\"id\":3,\"name\":\"Test
+        Organization\",\"title\":\"Test Organization\",\"description\":\"A test organization\"}]\n}\n"
     headers:
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '388'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -94,25 +89,25 @@ interactions:
       Foreman_current_organization:
       - ; ANY
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=99
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '388'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -131,10 +126,9 @@ interactions:
     uri: https://foreman.example.org/katello/api/organizations/3/products?search=name%3D%22Red+Hat+Enterprise+Linux+for+x86_64%22&per_page=4294967296
   response:
     body:
-      string: '{"total":289,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Red
-        Hat Enterprise Linux for x86_64\"","sort":{"by":"name","order":"asc"},"results":[{"id":21,"cp_id":"479","name":"Red
-        Hat Enterprise Linux for x86_64","label":"Red_Hat_Enterprise_Linux_for_x86_64","description":null,"provider_id":4,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":"2021-03-18
-        16:16:48 UTC","last_sync_words":"less than a minute","organization_id":3,"organization":{"name":"Test
+      string: '{"total":378,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Red
+        Hat Enterprise Linux for x86_64\"","sort":{"by":"name","order":"asc"},"results":[{"id":259,"cp_id":"479","name":"Red
+        Hat Enterprise Linux for x86_64","label":"Red_Hat_Enterprise_Linux_for_x86_64","description":null,"provider_id":4,"sync_plan_id":null,"sync_summary":{},"gpg_key_id":null,"ssl_ca_cert_id":null,"ssl_client_cert_id":null,"ssl_client_key_id":null,"sync_state":null,"last_sync":null,"last_sync_words":null,"organization_id":3,"organization":{"name":"Test
         Organization","label":"Test_Organization","id":3},"sync_plan":null,"repository_count":1}]}
 
         '
@@ -143,10 +137,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '664'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -156,25 +148,25 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=98
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '687'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -190,13 +182,15 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/21/repository_sets?organization_id=3&search=name%3D%22Red+Hat+Enterprise+Linux+8+for+x86_64+-+AppStream+%28RPMs%29%22&per_page=4294967296
+    uri: https://foreman.example.org/katello/api/products/259/repository_sets?organization_id=3&search=name%3D%22Red+Hat+Enterprise+Linux+8+for+x86_64+-+AppStream+%28RPMs%29%22&per_page=4294967296
   response:
     body:
-      string: '{"total":44,"subtotal":1,"page":1,"per_page":"4294967296","error":null,"search":"name=\"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\"","sort":{"by":"name","order":"asc"},"results":[{"enabled":true,"product":{"id":21,"name":"Red
-        Hat Enterprise Linux for x86_64"},"repositories":[],"name":"Red Hat Enterprise
-        Linux 8 for x86_64 - AppStream (RPMs)","vendor":"Red Hat","label":"rhel-8-for-x86_64-appstream-rpms","id":"7441","type":"yum","gpgUrl":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release","contentUrl":"/content/dist/rhel8/$releasever/x86_64/appstream/os"}]}
+      string: '{"total":272,"subtotal":1,"selectable":1,"page":1,"per_page":4294967296,"error":null,"search":"name=\"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)\"","sort":{"by":"name","order":"asc"},"results":[{"enabled":true,"product":{"id":259,"name":"Red
+        Hat Enterprise Linux for x86_64"},"content":{"id":6073,"name":"Red Hat Enterprise
+        Linux 8 for x86_64 - AppStream (RPMs)","label":"rhel-8-for-x86_64-appstream-rpms","vendor":"Red
+        Hat","content_type":"yum","content_url":"/content/dist/rhel8/$releasever/x86_64/appstream/os","gpg_url":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"},"repositories":[],"name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","vendor":"Red Hat","label":"rhel-8-for-x86_64-appstream-rpms","id":"7441","type":"yum","gpgUrl":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release","contentUrl":"/content/dist/rhel8/$releasever/x86_64/appstream/os","archRestricted":null,"osRestricted":null,"override":"default","overrides":[],"enabled_content_override":null,"redhat":true}]}
 
         '
     headers:
@@ -204,10 +198,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '1019'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -217,25 +209,25 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=97
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '578'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -251,12 +243,14 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/21/repository_sets/7441?organization_id=3
+    uri: https://foreman.example.org/katello/api/products/259/repository_sets/7441?organization_id=3
   response:
     body:
-      string: '  {"enabled":true,"product":{"id":21,"name":"Red Hat Enterprise Linux
-        for x86_64"},"repositories":[],"name":"Red Hat Enterprise Linux 8 for x86_64
-        - AppStream (RPMs)","vendor":"Red Hat","label":"rhel-8-for-x86_64-appstream-rpms","id":"7441","type":"yum","gpgUrl":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release","contentUrl":"/content/dist/rhel8/$releasever/x86_64/appstream/os"}
+      string: '  {"enabled":true,"product":{"id":259,"name":"Red Hat Enterprise Linux
+        for x86_64"},"content":{"id":6073,"name":"Red Hat Enterprise Linux 8 for x86_64
+        - AppStream (RPMs)","label":"rhel-8-for-x86_64-appstream-rpms","vendor":"Red
+        Hat","content_type":"yum","content_url":"/content/dist/rhel8/$releasever/x86_64/appstream/os","gpg_url":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"},"repositories":[],"name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","vendor":"Red Hat","label":"rhel-8-for-x86_64-appstream-rpms","id":"7441","type":"yum","gpgUrl":"file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release","contentUrl":"/content/dist/rhel8/$releasever/x86_64/appstream/os","archRestricted":null,"osRestricted":null,"override":null,"overrides":null,"enabled_content_override":null,"redhat":true}
 
         '
     headers:
@@ -264,10 +258,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '808'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -277,25 +269,25 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=96
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '384'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -311,19 +303,33 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: GET
-    uri: https://foreman.example.org/katello/api/products/21/repository_sets/7441/available_repositories?organization_id=3
+    uri: https://foreman.example.org/katello/api/products/259/repository_sets/7441/available_repositories?organization_id=3
   response:
     body:
-      string: '{"total":5,"subtotal":5,"page":null,"per_page":null,"error":null,"search":null,"sort":{"by":null,"order":null},"results":[{"substitutions":{"releasever":"8"},"path":"/content/dist/rhel8/8/x86_64/appstream/os","repo_name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8","pulp_id":"6c176bd9-8000-43db-89b3-8bcb5dcb1abb","name":"Red
+      string: '{"total":12,"subtotal":12,"selectable":12,"page":null,"per_page":null,"error":null,"search":null,"sort":{"by":null,"order":null},"results":[{"substitutions":{"releasever":"8"},"path":"/content/dist/rhel8/8/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8","pulp_id":"b97414d6-3ba8-4654-8f3e-2ba4bcf58975","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.10"},"path":"/content/dist/rhel8/8.10/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.10","pulp_id":"5ca4d0d6-bc03-4297-909e-a38f3576f05a","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.9"},"path":"/content/dist/rhel8/8.9/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.9","pulp_id":"a6d60f2a-bc9c-42da-b78d-6f68e998e94e","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.8"},"path":"/content/dist/rhel8/8.8/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.8","pulp_id":"45cc2213-7fca-4010-a6fb-d195a29bda21","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.7"},"path":"/content/dist/rhel8/8.7/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.7","pulp_id":"0343b337-f67d-46a5-a56a-172d12354137","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.6"},"path":"/content/dist/rhel8/8.6/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.6","pulp_id":"b2d3b4d8-b8d7-4a61-b230-ded92d74e05f","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.5"},"path":"/content/dist/rhel8/8.5/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.5","pulp_id":"accf315b-7c82-4071-8871-5157157caacf","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.4"},"path":"/content/dist/rhel8/8.4/x86_64/appstream/os","repo_name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.4","pulp_id":"1c7e7bd6-0829-44f8-8f32-c05de411fe11","name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.3"},"path":"/content/dist/rhel8/8.3/x86_64/appstream/os","repo_name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.3","pulp_id":"de92ec11-d28c-4bee-ba4b-a61c3e059845","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.3","pulp_id":"7346e1ea-513a-4722-b2f1-62652ae1a916","name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.2"},"path":"/content/dist/rhel8/8.2/x86_64/appstream/os","repo_name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.2","pulp_id":"016080c7-b767-43f3-903e-2b06ec59f24b","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.2","pulp_id":"7c6d9880-fc8a-48d4-8225-de6a3565fea7","name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.1"},"path":"/content/dist/rhel8/8.1/x86_64/appstream/os","repo_name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.1","pulp_id":"093d1a9e-617f-4138-af18-bed295ce1f6e","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.1","pulp_id":"e9642cb1-f36c-4c10-a5de-15d2fb29d293","name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null},{"substitutions":{"releasever":"8.0"},"path":"/content/dist/rhel8/8.0/x86_64/appstream/os","repo_name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.0","pulp_id":"795abf64-835f-481b-a9f2-50234f109f6a","name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8.0","pulp_id":"ef94db38-64ec-4bf0-83c9-103d08be0f82","name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)","enabled":false,"promoted":false,"repository_id":null}]}
 
         '
@@ -332,10 +338,8 @@ interactions:
       - max-age=0, private, must-revalidate
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
+      Content-Length:
+      - '4147'
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -345,25 +349,25 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=95
-      Strict-Transport-Security:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
       - max-age=631139040; includeSubdomains
-      Vary:
-      - Accept-Encoding
-      X-Content-Type-Options:
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
-      content-length:
-      - '1788'
+      x-xss-protection:
+      - '0'
     status:
       code: 200
       message: OK
@@ -383,21 +387,21 @@ interactions:
       User-Agent:
       - apypie (https://github.com/Apipie/apypie)
     method: PUT
-    uri: https://foreman.example.org/katello/api/products/21/repository_sets/7441/enable
+    uri: https://foreman.example.org/katello/api/products/259/repository_sets/7441/enable
   response:
     body:
-      string: '  {"id":"a798a4e6-5efc-4c58-8216-b92f46a56ccc","label":"Actions::Katello::RepositorySet::EnableRepository","pending":false,"action":"Enable
+      string: '  {"id":"b20de816-16bc-4a60-8e8a-e938f942ebcd","label":"Actions::Katello::RepositorySet::EnableRepository","pending":false,"action":"Enable
         repository ''Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8''; product
-        ''Red Hat Enterprise Linux for x86_64''; organization ''Test Organization''","username":"admin","started_at":"2021-03-18
-        16:16:51 UTC","ended_at":"2021-03-18 16:16:54 UTC","state":"stopped","result":"success","progress":1.0,"input":{"services_checked":["pulp3","candlepin","candlepin_auth"],"repository":{"id":3,"name":"Red
-        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8","label":"Red_Hat_Enterprise_Linux_8_for_x86_64_-_AppStream_RPMs_8"},"product":{"id":21,"name":"Red
+        ''Red Hat Enterprise Linux for x86_64''; organization ''Test Organization''","username":"admin","started_at":"2026-10-01
+        11:23:09 UTC","ended_at":"2026-10-01 11:23:10 UTC","state":"stopped","result":"success","progress":1.0,"input":{"services_checked":["pulp3","candlepin","candlepin_auth"],"repository":{"id":3,"name":"Red
+        Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8","label":"Red_Hat_Enterprise_Linux_8_for_x86_64_-_AppStream_RPMs_8"},"product":{"id":259,"name":"Red
         Hat Enterprise Linux for x86_64","label":"Red_Hat_Enterprise_Linux_for_x86_64","cp_id":"479"},"provider":{"id":4,"name":"Red
-        Hat"},"organization":{"id":3,"name":"Test Organization","label":"Test_Organization"},"current_request_id":null,"current_timezone":"UTC","current_user_id":4,"current_organization_id":3,"current_location_id":null},"output":{"repository":{"name":"Red
+        Hat"},"organization":{"id":3,"name":"Test Organization","label":"Test_Organization"},"current_request_id":"aad7c32c-cb16-4c4d-b3ea-f61e584ee808","current_timezone":"UTC","current_organization_id":3,"current_location_id":null,"current_user_id":4},"output":{"repository":{"name":"Red
         Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8","id":3,"content_type":"yum"}},"humanized":{"action":"Enable","input":[["repository",{"text":"repository
         ''Red Hat Enterprise Linux 8 for x86_64 - AppStream RPMs 8''","link":null}],["product",{"text":"product
-        ''Red Hat Enterprise Linux for x86_64''","link":"/products/21/"}],["organization",{"text":"organization
-        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2021-03-18
-        16:16:51 UTC","available_actions":{"cancellable":false,"resumable":false}}
+        ''Red Hat Enterprise Linux for x86_64''","link":"/products/259/"}],["organization",{"text":"organization
+        ''Test Organization''","link":"/organizations/3/edit"}]],"output":"","errors":[]},"cli_example":null,"start_at":"2026-10-01
+        11:23:09 UTC","duration":null,"available_actions":{"cancellable":false,"resumable":false}}
 
         '
     headers:
@@ -405,10 +409,6 @@ interactions:
       - no-cache
       Connection:
       - Keep-Alive
-      Content-Security-Policy:
-      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
-        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
-        style-src ''unsafe-inline'' ''self'''
       Content-Type:
       - application/json; charset=utf-8
       Foreman_api_version:
@@ -418,23 +418,27 @@ interactions:
       Foreman_current_organization:
       - 3; Test Organization
       Foreman_version:
-      - 2.3.3
+      - 5.0.0
       Keep-Alive:
       - timeout=15, max=94
-      Strict-Transport-Security:
-      - max-age=631139040; includeSubdomains
       Transfer-Encoding:
       - chunked
-      X-Content-Type-Options:
+      content-security-policy:
+      - 'default-src ''self''; child-src ''self''; connect-src ''self'' ws: wss:;
+        img-src ''self'' data:; script-src ''unsafe-eval'' ''unsafe-inline'' ''self'';
+        style-src ''unsafe-inline'' ''self'''
+      strict-transport-security:
+      - max-age=631139040; includeSubdomains
+      x-content-type-options:
       - nosniff
-      X-Download-Options:
+      x-download-options:
       - noopen
-      X-Frame-Options:
+      x-frame-options:
       - sameorigin
-      X-Permitted-Cross-Domain-Policies:
+      x-permitted-cross-domain-policies:
       - none
-      X-XSS-Protection:
-      - 1; mode=block
+      x-xss-protection:
+      - '0'
     status:
       code: 202
       message: Accepted
