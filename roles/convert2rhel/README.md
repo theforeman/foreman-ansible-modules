@@ -16,7 +16,7 @@ This role supports the [Common Role Variables](https://github.com/theforeman/for
 
 - `foreman_convert2rhel_manage_subscription`: Run [content_rhel Role](https://github.com/theforeman/foreman-ansible-modules/blob/develop/roles/content_rhel/README.md) role, default: `true`
 - `foreman_convert2rhel_lifecycle_env`: Lifecycle environment for activation keys, default: Library.
-- `foreman_convert2rhel_content_view`: Content view for activation keys, default: Default Organization View.
+- `foreman_convert2rhel_content_view_environments`: Content view environments for activation keys, default: `['Library']`.
 - `foreman_convert2rhel_enable_oracle7`: Create data for Oracle Linux 7 conversion, default: `false`
 
 Example Playbooks
@@ -39,6 +39,7 @@ Convert2RHEL
         foreman_content_rhel_rhel8_releasever: 8.5
         foreman_content_rhel_wait_for_syncs: false
         foreman_convert2rhel_lifecycle_env: "Library"
-        foreman_convert2rhel_content_view: "Default Organization View"
+        foreman_convert2rhel_content_view_environments:
+          - "Library"
         foreman_convert2rhel_enable_oracle7: true
 ```

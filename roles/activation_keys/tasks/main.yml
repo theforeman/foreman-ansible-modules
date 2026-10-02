@@ -12,13 +12,13 @@
       {{
         item.lifecycle_environment | default(omit)
         if (item.content_view_environments | default([]) | length > 0)
-        else item.lifecycle_environment | default('Library')
+        else item.lifecycle_environment | default(omit)
       }}
     content_view: >-
       {{
         item.content_view | default(omit)
         if (item.content_view_environments | default([]) | length > 0)
-        else item.content_view | default('Default Organization View')
+        else item.content_view | default(omit)
       }}
     content_view_environments: "{{ item.content_view_environments | default(omit) }}"
     host_collections: "{{ item.host_collections | default(omit) }}"
