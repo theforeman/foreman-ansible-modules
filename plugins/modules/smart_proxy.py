@@ -124,7 +124,10 @@ def main():
     with module.api_connection():
         handle_lifecycle_environments = not module.desired_absent and 'lifecycle_environments' in module.foreman_params
         if handle_lifecycle_environments:
-            module.lookup_entity('lifecycle_environments')
+            # LCE names are only unique within an organization, so scope the lookup when unambiguous
+            organizations = module.lookup_entity('organizations') or []
+            lce_params = {'organization_id': organizations[0]['id']} if len(organizations) == 1 else None
+            module.lookup_entity('lifecycle_environments', params=lce_params)
             lifecycle_environments = module.foreman_params.pop('lifecycle_environments', [])
 
         smart_proxy = module.lookup_entity('entity')

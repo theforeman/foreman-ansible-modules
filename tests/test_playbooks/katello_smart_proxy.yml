@@ -91,4 +91,13 @@
         smart_proxy_download_policy: immediate
         smart_proxy_state: present
         expected_change: false
+    # Verify lifecycle_environments lookup is scoped when organizations resolves to exactly one
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_organizations:
+          - 'Test Organization'
+        smart_proxy_lifecycle_environments:
+          - 'Test'
+        smart_proxy_state: present
+        expected_change: true
 ...
