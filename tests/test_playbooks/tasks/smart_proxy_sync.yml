@@ -1,0 +1,14 @@
+---
+- name: "Sync Smart Proxy '{{ foreman_proxy }}'"
+  theforeman.foreman.smart_proxy_sync:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "Test Organization"
+    smart_proxy: "{{ foreman_proxy }}"
+  register: result
+- ansible.builtin.assert:
+    that:
+      - result.changed
+...

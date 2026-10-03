@@ -1,0 +1,30 @@
+---
+- name: 'Sync Smart Proxy content'
+  theforeman.foreman.smart_proxy_sync:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ foreman_smart_proxies_sync_item.organization | default(foreman_organization) }}"
+    smart_proxy: "{{ foreman_smart_proxies_sync_item.name }}"
+    lifecycle_environment: "{{ foreman_smart_proxies_sync_item.lifecycle_environment | default(omit) }}"
+    content_view: "{{ foreman_smart_proxies_sync_item.content_view | default(omit) }}"
+    product: "{{ foreman_smart_proxies_sync_item.product | default(omit) }}"
+    repository: "{{ foreman_smart_proxies_sync_item.repository | default(omit) }}"
+    skip_metadata_check: "{{ foreman_smart_proxies_sync_item.skip_metadata_check | default(omit) }}"
+  async: 43200
+  poll: 0
+  loop: "{{ foreman_smart_proxies_sync }}"
+  loop_control:
+    loop_var: foreman_smart_proxies_sync_item
+  register: __foreman_smart_proxies_sync_jobs
+
+- name: 'Wait for Smart Proxy sync tasks'  # noqa: args[module]
+  ansible.builtin.async_status:
+    jid: "{{ item.ansible_job_id }}"
+  loop: "{{ __foreman_smart_proxies_sync_jobs.results }}"
+  register: __foreman_smart_proxies_sync_result
+  until: __foreman_smart_proxies_sync_result is finished
+  retries: 99999
+  delay: 10
+  when: foreman_smart_proxies_sync_wait | default(true)
