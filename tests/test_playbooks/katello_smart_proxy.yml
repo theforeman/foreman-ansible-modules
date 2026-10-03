@@ -35,11 +35,15 @@
         location_state: "present"
     - include_tasks: tasks/organization.yml
       vars:
-        organization_name: "Test Organization"
+        organization_name: "{{ item }}"
         organization_state: "present"
+      loop:
+        - "Test Organization"
+        - "Test Organization 2"
     - include_tasks: tasks/lifecycle_environment.yml
       vars:
         lifecycle_environment_state: present
+        organization_name: "{{ item.organization }}"
         lifecycle_environment_name: "{{ item.name }}"
         lifecycle_environment_label: "{{ item.label }}"
         lifecycle_environment_prior: "{{ item.prior }}"
@@ -47,9 +51,19 @@
         - name: Dev
           label: dev
           prior: Library
+          organization: "Test Organization"
         - name: Test
           label: test
           prior: Dev
+          organization: "Test Organization"
+        - name: Prod
+          label: prod
+          prior: Test
+          organization: "Test Organization"
+        - name: Prod
+          label: prod
+          prior: Library
+          organization: "Test Organization 2"
 
 - hosts: tests
   collections:
@@ -91,4 +105,34 @@
         smart_proxy_download_policy: immediate
         smart_proxy_state: present
         expected_change: false
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - name: 'Prod'
+            organization: 'Test Organization'
+        expected_change: true
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - name: 'Prod'
+            organization: 'Test Organization'
+        expected_change: false
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - name: 'Prod'
+            organization: 'Test Organization'
+          - name: 'Prod'
+            organization: 'Test Organization 2'
+        expected_change: true
+    - include_tasks: tasks/smart_proxy.yml
+      vars:
+        smart_proxy_state: present
+        smart_proxy_lifecycle_environments:
+          - name: 'Prod'
+            organization: 'Test Organization 2'
+        expected_change: true
 ...
