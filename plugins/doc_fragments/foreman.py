@@ -293,6 +293,7 @@ options:
     description:
       - Lifecycle environment.
       - Only available for Katello installations.
+      - "Deprecated: Use I(content_view_environments) for hosts or I(content_view_environment) for hostgroups instead."
     required: false
     type: str
   kickstart_repository:
@@ -307,6 +308,7 @@ options:
     description:
       - Content view.
       - Only available for Katello installations.
+      - "Deprecated: Use I(content_view_environments) for hosts or I(content_view_environment) for hostgroups instead."
     required: false
     type: str
   activation_keys:
