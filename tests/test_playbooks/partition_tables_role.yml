@@ -1,0 +1,65 @@
+---
+- name: Setup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: ensure test organization
+      include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: "present"
+    - name: ensure test location
+      include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: present
+    - include_tasks: tasks/ptable.yml
+      vars:
+        ptable_name: "A partition table 2"
+        ptable_state: absent
+
+- name: Tests
+  hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  roles:
+    - role: partition_tables
+      vars:
+        foreman_partition_tables:
+          - name: "A partition table 2"
+            layout: |
+              zerombr
+              clearpart --all --initlabel
+              autopart
+            organizations:
+              - Test Organization
+            locations:
+              - Test Location
+
+- name: Cleanup
+  hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/ptable.yml
+      vars:
+        ptable_name: "A partition table 2"
+        ptable_state: absent
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_name: "Test Organization"
+        organization_state: absent
+    - include_tasks: tasks/location.yml
+      vars:
+        location_name: "Test Location"
+        location_state: absent
