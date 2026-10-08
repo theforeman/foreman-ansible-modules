@@ -6,6 +6,15 @@ theforeman.foreman Release Notes
 
 This changelog describes changes after version 0.8.1.
 
+v6.0.0
+======
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- activation_keys role - The defaults for ``lifecycle_environment`` and ``content_view`` were removed and the variables are now optional. This allows using ``content_view_environments`` to assign Content View Environments instead.
+- convert2rhel role - The ``foreman_convert2rhel_content_view`` variable was replaced by ``foreman_convert2rhel_content_view_environments`` to support Katello 5.0 which removed the old CV API. This breaks compatibility with Katello older than 4.15.
+
 v5.13.0
 =======
 
