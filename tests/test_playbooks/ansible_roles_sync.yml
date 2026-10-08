@@ -1,0 +1,26 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/ansible_roles_sync.yml
+      vars:
+        ansible_roles_sync_smart_proxy: "{{ foreman_host }}"
+        ansible_roles_sync_roles:
+          - namespace.new_role
+        expected_change: true
+        expected_roles: 1
+    - include_tasks: tasks/ansible_roles_sync.yml
+      vars:
+        ansible_roles_sync_smart_proxy: "{{ foreman_host }}"
+        expected_change: true
+        expected_roles: 1
+    - include_tasks: tasks/ansible_roles_sync.yml
+      vars:
+        ansible_roles_sync_smart_proxy: "{{ foreman_host }}"
+        expected_change: false
+        expected_roles: 0
+...
