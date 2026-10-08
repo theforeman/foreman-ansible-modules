@@ -99,8 +99,6 @@
 <p>The following fields are required for an activation key but have defaults which make them optional for this role:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">organization</span></code>: Organization to create the activation key for. Defaults to <code class="docutils literal notranslate"><span class="pre">foreman_organization</span></code> variable.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code>: Lifecycle Environment to assign to hosts registered with this activation key. Defaults to “Library”.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">content_view</span></code>: Content View to assign to hosts registered with this activation key. Defaults to “Default Organization View”.</p></li>
 </ul>
 <p>The following fields are optional in the sense that the server will use default values when they are omitted:</p>
 <ul class="simple">
@@ -108,6 +106,9 @@
 </ul>
 <p>The following fields are optional and will be omitted by default:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lifecycle_environment</span></code>: Lifecycle Environment to assign to hosts registered with this activation key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content_view</span></code>: Content View to assign to hosts registered with this activation key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">content_view_environments</span></code>: Content View Environments to assign to hosts registerd with this activation key.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: Description of the activation key. Helpful for other users to find which activation key to use.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">host_collections</span></code>: List of Host Collections to associate with the activation key.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">subscriptions</span></code>: List of Subscriptions to associate with the activation key. Each Subscription is required to have one of <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">pool_id</span></code>, or <code class="docutils literal notranslate"><span class="pre">upstream_pool_id</span></code>. Of these, only the <code class="docutils literal notranslate"><span class="pre">pool_id</span></code> is guaranteed to be unique. <code class="docutils literal notranslate"><span class="pre">upstream_pool_id</span></code> only exists for subscriptions imported from a 3rd party organization (e.g. on a Red Hat Subscription Manifest). When uniqueness is not an issue, <code class="docutils literal notranslate"><span class="pre">name</span></code> or <code class="docutils literal notranslate"><span class="pre">upstream_pool_id</span></code> can be easier to work with since the <code class="docutils literal notranslate"><span class="pre">pool_id</span></code> does not get determined until the subscription is imported or created and therefore may not yet be determined when you are writing playbooks. Not supported in SCA mode.</p></li>
