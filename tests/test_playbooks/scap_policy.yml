@@ -1,0 +1,139 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "present"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "present"
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "Test SCAP Content"
+        scap_content_scap_file: "data/ssg-firefox-ds.xml"
+        scap_content_original_filename: "ssg-firefox-ds.xml"
+        scap_content_locations:
+          - Test Location
+        scap_content_organizations:
+          - Test Organization
+        scap_content_state: "present"
+    - include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "{{ item }}"
+        scap_policy_state: "absent"
+      loop:
+        - test_scap_policy
+        - updated_scap_policy
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: create scap policy
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "test_scap_policy"
+        scap_policy_description: "Test SCAP policy"
+        scap_policy_scap_content: "Test SCAP Content"
+        scap_policy_scap_content_profile: "Upstream Firefox STIG"
+        scap_policy_deploy_by: "ansible"
+        scap_policy_period: "weekly"
+        scap_policy_weekday: "monday"
+        scap_policy_locations:
+          - Test Location
+        scap_policy_organizations:
+          - Test Organization
+        scap_policy_state: "present"
+        expected_change: true
+    - name: create scap policy again, no change
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "test_scap_policy"
+        scap_policy_description: "Test SCAP policy"
+        scap_policy_scap_content: "Test SCAP Content"
+        scap_policy_scap_content_profile: "Upstream Firefox STIG"
+        scap_policy_deploy_by: "ansible"
+        scap_policy_period: "weekly"
+        scap_policy_weekday: "monday"
+        scap_policy_locations:
+          - Test Location
+        scap_policy_organizations:
+          - Test Organization
+        scap_policy_state: "present"
+        expected_change: false
+    - name: update scap policy schedule to custom cron
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "test_scap_policy"
+        scap_policy_scap_content: "Test SCAP Content"
+        scap_policy_scap_content_profile: "Upstream Firefox STIG"
+        scap_policy_deploy_by: "ansible"
+        scap_policy_period: "custom"
+        scap_policy_cron_line: "0 2 * * 0"
+        scap_policy_locations:
+          - Test Location
+        scap_policy_organizations:
+          - Test Organization
+        scap_policy_state: "present"
+        expected_change: true
+    - name: rename scap policy
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "test_scap_policy"
+        scap_policy_updated_name: "updated_scap_policy"
+        scap_policy_scap_content: "Test SCAP Content"
+        scap_policy_scap_content_profile: "Upstream Firefox STIG"
+        scap_policy_deploy_by: "ansible"
+        scap_policy_period: "weekly"
+        scap_policy_weekday: "friday"
+        scap_policy_locations:
+          - Test Location
+        scap_policy_organizations:
+          - Test Organization
+        scap_policy_state: "present"
+        expected_change: true
+    - name: delete scap policy
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "updated_scap_policy"
+        scap_policy_state: "absent"
+        expected_change: true
+    - name: delete scap policy again, no change
+      include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "updated_scap_policy"
+        scap_policy_state: "absent"
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/scap_policy.yml
+      vars:
+        scap_policy_name: "{{ item }}"
+        scap_policy_state: "absent"
+      loop:
+        - test_scap_policy
+        - updated_scap_policy
+    - include_tasks: tasks/scap_content.yml
+      vars:
+        scap_content_title: "Test SCAP Content"
+        scap_content_state: "absent"
+    - include_tasks: tasks/location.yml
+      vars:
+        location_state: "absent"
+    - include_tasks: tasks/organization.yml
+      vars:
+        organization_state: "absent"
