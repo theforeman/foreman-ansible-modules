@@ -226,7 +226,7 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 class ForemanScapPolicyModule(ForemanTaxonomicEntityAnsibleModule):
 
     def run(self, **kwargs):
-        entity = self.lookup_entity('entity')
+        self.lookup_entity('entity')
 
         if not self.desired_absent:
             self._resolve_scap_content_profile()
