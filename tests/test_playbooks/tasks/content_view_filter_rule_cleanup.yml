@@ -344,3 +344,42 @@
   when: expected_change is defined
   vars:
     rule_state: absent
+
+
+- name: "Delete Content View Filter Rule - modulemd nextcloud by name only (catch extras)"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nextcloud"
+    state: "{{ rule_state }}"
+  register: result
+
+
+- name: "Delete Content View Filter Rule - modulemd 389-directory-server by name+stream (catch extras)"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "389-directory-server"
+    stream: "next"
+    state: "{{ rule_state }}"
+  register: result

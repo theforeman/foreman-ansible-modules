@@ -50,6 +50,14 @@ options:
       - the context for a module
       - only valid in filter I(type=modulemd)
     type: str
+  fail_on_missing:
+    description:
+      - controls whether the module fails when a modulemd stream is not found
+      - when I(false) (default), missing module streams are silently skipped
+      - when I(true), missing module streams cause the module to fail with an error
+      - only valid in filter I(type=modulemd)
+    type: bool
+    default: false
   date_type:
     description:
       - set whether rule applied to erratum using the 'Issued On' or 'Updated On' date
@@ -159,7 +167,7 @@ EXAMPLES = '''
     name: "tcsh"
     version: "6.23.00"
 
-- name: "Content View Filter Rule for 389"
+- name: "Content View Filter Rule for 389 - fully qualified NSVCA"
   theforeman.foreman.content_view_filter_rule:
     username: "admin"
     password: "changeme"
@@ -172,6 +180,29 @@ EXAMPLES = '''
     stream: "next"
     version: "820220325123957"
     context: "9edba152"
+    state: present
+
+- name: "Exclude all mariadb module streams by name only"
+  theforeman.foreman.content_view_filter_rule:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "RHEL9 Kickstart"
+    content_view_filter: "Exclude CDN Duplicate Streams"
+    name: "mariadb"
+    state: present
+
+- name: "Exclude mariadb module streams - fail if not found"
+  theforeman.foreman.content_view_filter_rule:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "RHEL9 Kickstart"
+    content_view_filter: "Exclude CDN Duplicate Streams"
+    name: "mariadb"
+    fail_on_missing: true
     state: present
 '''
 
@@ -247,6 +278,7 @@ def main():
             content_view=dict(type='entity', scope=['organization'], required=True),
             content_view_filter=dict(type='entity', scope=['content_view'], required=True),
             name=dict(aliases=['rule_name', 'module_name', 'package_name', 'package_group', 'tag']),
+            fail_on_missing=dict(type='bool', default=False),
             errata_id=dict(),
             types=dict(default=["bugfix", "enhancement", "security"], type='list', elements='str'),
             date_type=dict(default='updated', choices=['issued', 'updated']),
@@ -306,20 +338,62 @@ def main():
                 module.foreman_params['uuid'] = package_group['uuid']
 
         elif filter_type == 'modulemd':
-            # this filter type support many rules
-            # module_stream_ids are internal and non-searchable
-            # find the module_stream_id by NSVCA
-            search = ','.join('{0}="{1}"'.format(key, module.foreman_params.get(key, '')) for key in ('name', 'stream', 'version', 'context'))
-            module_stream = module.find_resource('module_streams', search, failsafe=True)
-            # determine if there is a rule for the module_stream
-            existing_rule = next((rule for rule in cvf['rules'] if rule['module_stream_id'] == module_stream['id']), None)
-            # if the rule exists, return it in a form ammenable to the API
-            if existing_rule:
-                content_view_filter_rule = module.find_resource_by_id('content_view_filter_rules', existing_rule['id'], params=search_scope, failsafe=True)
+            # Build NSVCA search - name is required, others are optional
+            search_parts = []
+            for key in ('name', 'stream', 'version', 'context'):
+                val = module.foreman_params.get(key)
+                if val:
+                    search_parts.append('{0} = "{1}"'.format(key, val))
 
-            # if the state is present and the module_id is NOT in the exising list, add module_stream_id.
+            if not search_parts or not module.foreman_params.get('name'):
+                module.fail_json(msg="At least 'name' must be provided for modulemd filter rules.")
+
+            nsvca_search = ' and '.join(search_parts)
+
+            # Scope to filter repositories if defined, otherwise all CV repos
+            repo_clauses = []
+            if cvf.get('repositories'):
+                for repo in cvf['repositories']:
+                    repo_clauses.append('repository ~ "{0}"'.format(repo['name']))
+            else:
+                cv = module.lookup_entity('content_view')
+                if cv.get('repositories'):
+                    for repo in cv['repositories']:
+                        repo_clauses.append('repository ~ "{0}"'.format(repo['name']))
+
+            if repo_clauses:
+                search_string = '({0}) and {1}'.format(' or '.join(repo_clauses), nsvca_search)
+            else:
+                search_string = nsvca_search
+
+            response = module.resource_action('module_streams', 'index',
+                                              params={'search': search_string, 'per_page': 1000})
+            results = response.get('results', [])
+
+            if not results:
+                if module.desired_absent:
+                    return
+                if module.foreman_params.get('fail_on_missing', False):
+                    module.fail_json(msg="Could not find any module streams matching: {0}. "
+                                     "Verify the module stream exists in the content view "
+                                     "repositories.".format(search_string))
+                else:
+                    return
+
+            stream_ids = [ms['id'] for ms in results]
+
+            # check for existing rules matching any of the found streams
+            existing_rules = [rule for rule in cvf['rules'] if rule['module_stream_id'] in stream_ids]
+            if existing_rules:
+                existing_rule = existing_rules[0]
+                content_view_filter_rule = module.find_resource_by_id(
+                    'content_view_filter_rules', existing_rule['id'],
+                    params=search_scope, failsafe=True)
+            else:
+                existing_rule = None
+
             if not module.desired_absent and not existing_rule:
-                module.foreman_params['module_stream_ids'] = [module_stream['id']]
+                module.foreman_params['module_stream_ids'] = stream_ids
 
         module.ensure_entity(
             'content_view_filter_rules',
