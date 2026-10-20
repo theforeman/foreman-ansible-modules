@@ -367,7 +367,8 @@ def main():
                 search_string = nsvca_search
 
             response = module.resource_action('module_streams', 'index',
-                                              params={'search': search_string, 'per_page': 1000})
+                                              params={'search': search_string, 'per_page': 1000},
+                                              ignore_check_mode=True, record_change=False)
             results = response.get('results', [])
 
             if not results:
