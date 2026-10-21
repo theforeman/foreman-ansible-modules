@@ -1,0 +1,62 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Reject an unsupported CDN configuration type
+      cdn_configuration:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        type: unsupported
+      register: result
+      ignore_errors: true
+
+    - assert:
+        fail_msg: "Unsupported CDN configuration type was accepted."
+        that:
+          - result is failed
+          - "'value of type must be one of' in result.msg"
+
+    - name: Require a URL for a custom CDN
+      cdn_configuration:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        type: custom_cdn
+      register: result
+      ignore_errors: true
+
+    - assert:
+        fail_msg: "Custom CDN configuration without a URL was accepted."
+        that:
+          - result is failed
+          - "'url' in result.msg"
+
+    - name: Require upstream details for network sync
+      cdn_configuration:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        organization: "Test Organization"
+        type: network_sync
+      register: result
+      ignore_errors: true
+
+    - assert:
+        fail_msg: "Network sync configuration without upstream details was accepted."
+        that:
+          - result is failed
+          - "'url' in result.msg"
+          - "'upstream_username' in result.msg"
+          - "'upstream_organization_label' in result.msg"
+          - "'ssl_ca_credential' in result.msg"
+...
