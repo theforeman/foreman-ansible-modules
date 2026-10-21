@@ -43,6 +43,29 @@ options:
       - The path of a template file, that shall be imported.
       - Either this or I(template) is required as a source for the Job Template "content".
     type: path
+  effective_user:
+    description:
+      - Effective user options for Remote Execution.
+    type: dict
+    version_added: 5.13.0
+    suboptions:
+      value:
+        description:
+          - User used to execute the job through sudo-like mechanisms.
+        type: str
+      current_user:
+        description:
+          - Use the current Foreman user's login as the effective user.
+        type: bool
+      overridable:
+        description:
+          - Allow overriding the effective user when invoking the job.
+        type: bool
+  execution_timeout_interval:
+    description:
+      - Time in seconds after which the job should be killed.
+    type: int
+    version_added: 5.13.0
   job_category:
     description:
       - The category the template should be assigend to
@@ -179,6 +202,11 @@ EXAMPLES = '''
       - Gallifrey
     organizations:
       - TARDIS INC
+    effective_user:
+      value: root
+      current_user: false
+      overridable: true
+    execution_timeout_interval: 900
 
 - name: "Create a Job Template from a file"
   theforeman.foreman.job_template:
@@ -311,6 +339,13 @@ template_defaults = {
 }
 
 
+effective_user_foreman_spec = {
+    'value': dict(),
+    'current_user': dict(type='bool'),
+    'overridable': dict(type='bool'),
+}
+
+
 template_input_foreman_spec = {
     'id': dict(invisible=True),
     'name': dict(required=True),
@@ -348,6 +383,8 @@ def main():
     module = ForemanJobTemplateModule(
         foreman_spec=dict(
             description_format=dict(),
+            effective_user=dict(type='dict', options=effective_user_foreman_spec, flat_name='effective_user_attributes'),
+            execution_timeout_interval=dict(type='int'),
             job_category=dict(),
             locked=dict(type='bool', default=False),
             name=dict(),
