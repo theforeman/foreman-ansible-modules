@@ -81,6 +81,29 @@ entity:
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
 
 
+def _external_usergroup_auth_source_id(external_usergroup):
+    if external_usergroup.get('auth_source_id') is not None:
+        return external_usergroup['auth_source_id']
+
+    for key in ('auth_source', 'auth_source_ldap', 'auth_source_external'):
+        auth_source = external_usergroup.get(key)
+        if isinstance(auth_source, dict):
+            return auth_source.get('id')
+
+    return None
+
+
+def _find_external_usergroup(external_usergroups, name, auth_source_id):
+    for external_usergroup in external_usergroups:
+        if (
+            external_usergroup['name'] == name
+            and _external_usergroup_auth_source_id(external_usergroup) == auth_source_id
+        ):
+            return external_usergroup
+
+    return None
+
+
 class ForemanExternalUsergroupModule(ForemanEntityAnsibleModule):
     pass
 
@@ -96,19 +119,17 @@ def main():
         ),
     )
 
-    entity = None
-
     with module.api_connection():
         params = module.scope_for('usergroup')
+        external_usergroups = module.list_resource("external_usergroups", params=params)
+        auth_source = module.lookup_entity('auth_source')
+
         # There is no way to find by name via API search, so we need
         # to iterate over all external user groups of a given usergroup
-        for external_usergroup in module.list_resource("external_usergroups", params=params):
-            if external_usergroup['name'] == module.foreman_params['name']:
-                entity = external_usergroup
+        entity = _find_external_usergroup(external_usergroups, module.foreman_params['name'], auth_source['id'])
 
         module.set_entity('entity', entity)
 
-        auth_source = module.lookup_entity('auth_source')
         if auth_source.get('type') == 'AuthSourceExternal':
             module.set_entity('auth_source_external', auth_source)
         elif auth_source.get('type') == 'AuthSourceLdap':
