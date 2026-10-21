@@ -1,0 +1,36 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Fetch a discovered host that does not exist
+      discovered_host_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: ansible-test-discovered-host.example.com
+      register: discovered_host_info
+
+    - name: Check that no discovered host was found
+      assert:
+        that:
+          - discovered_host_info.discovered_host is none
+
+    - name: Search discovered hosts
+      discovered_host_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        search: name = ansible-test-discovered-host.example.com
+      register: discovered_hosts_info
+
+    - name: Check that the discovered host search is empty
+      assert:
+        that:
+          - discovered_hosts_info.discovered_hosts | length == 0
+...
