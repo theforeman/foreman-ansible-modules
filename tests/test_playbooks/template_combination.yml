@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "Template combination test"
+        hostgroup_state: present
+    - include_tasks: tasks/provisioning_template.yml
+      vars:
+        provisioning_template_name: "Template combination test"
+        provisioning_template_kind: finish
+        provisioning_template_locations: []
+        provisioning_template_organizations: []
+        provisioning_template_state: present
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/template_combination.yml
+      vars:
+        template_combination_state: present
+        expected_change: true
+    - include_tasks: tasks/template_combination.yml
+      vars:
+        template_combination_state: present
+        expected_change: false
+    - include_tasks: tasks/template_combination.yml
+      vars:
+        template_combination_state: absent
+        expected_change: true
+    - include_tasks: tasks/template_combination.yml
+      vars:
+        template_combination_state: absent
+        expected_change: false
+
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - include_tasks: tasks/provisioning_template.yml
+      vars:
+        provisioning_template_name: "Template combination test"
+        provisioning_template_locations: []
+        provisioning_template_organizations: []
+        provisioning_template_state: absent
+    - include_tasks: tasks/hostgroup.yml
+      vars:
+        hostgroup_name: "Template combination test"
+        hostgroup_state: absent
+...
