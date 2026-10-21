@@ -61,6 +61,12 @@ options:
       - Force metadata regeneration when performing Publish and Promote tasks
     type: bool
     default: false
+  publish_only_if_needed:
+    description:
+      - Publish only when content or filters have changed since the latest version.
+      - When no publish is needed, the module returns without reporting a change.
+    type: bool
+    default: false
   current_lifecycle_environment:
     description:
       - The lifecycle environment that is already associated with the content view version
@@ -103,6 +109,15 @@ EXAMPLES = '''
     server_url: "https://foreman.example.com"
     content_view: "CV 1"
     organization: "Default Organization"
+
+- name: "Publish a content view only when its content or filters changed"
+  theforeman.foreman.content_view_version:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    content_view: "CV 1"
+    organization: "Default Organization"
+    publish_only_if_needed: true
 
 - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
   theforeman.foreman.content_view_version:
@@ -195,6 +210,7 @@ def main():
             lifecycle_environments=dict(type='entity_list', scope=['organization'], flat_name='environments'),
             force_promote=dict(type='bool', aliases=['force'], default=False),
             force_yum_metadata_regeneration=dict(type='bool', default=False),
+            publish_only_if_needed=dict(type='bool', default=False),
             current_lifecycle_environment=dict(type='entity', resource_type='lifecycle_environments', scope=['organization']),
         ),
         mutually_exclusive=[['current_lifecycle_environment', 'version']],
@@ -221,6 +237,12 @@ def main():
             content_view_version = module.find_resource('content_view_versions', search=search, failsafe=True)
         else:
             content_view_version = None
+            if module.foreman_params['publish_only_if_needed'] and content_view.get('needs_publish') is False:
+                if content_view.get('latest_version_id') is not None:
+                    content_view_version = module.show_resource(
+                        'content_view_versions',
+                        content_view['latest_version_id'],
+                    )
         module.set_entity('entity', content_view_version)
 
         if module.desired_absent:
@@ -241,6 +263,8 @@ def main():
                     payload['description'] = module.foreman_params['description']
                 if 'force_yum_metadata_regeneration' in module.foreman_params:
                     payload['force_yum_metadata_regeneration'] = module.foreman_params['force_yum_metadata_regeneration']
+                if module.foreman_params['publish_only_if_needed']:
+                    payload['publish_only_if_needed'] = True
                 if 'version' in module.foreman_params:
                     split_version = list(map(int, str(module.foreman_params['version']).split('.')))
                     payload['major'] = split_version[0]
