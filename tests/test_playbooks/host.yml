@@ -124,13 +124,15 @@
         host_managed: false
         expected_change: true
 
-    - name: create host again, no change
+    - name: keep existing host unchanged with defaults
       include_tasks: tasks/host.yml
       vars:
         host_name: "test-host.{{ host.domain }}"
         host_organization: "{{ host.organization }}"
         host_location: "{{ host.location }}"
-        host_managed: false
+        host_build: true
+        host_comment: "This must not update the existing host"
+        host_state: present_with_defaults
         expected_change: false
 
     - name: update host, set owner to a user
