@@ -1819,6 +1819,13 @@ def _flatten_entity(entity, foreman_spec):
     return result
 
 
+def _load_entity_details(module, resource, desired_entity, current_entity, params=None):
+    """Load full entity details if the list response omits a desired field."""
+    if current_entity is not None and not desired_entity.keys() <= current_entity.keys():
+        return module.show_resource(resource, current_entity['id'], params=params)
+    return current_entity
+
+
 def _recursive_dict_without_none(a_dict, exclude=None):
     """
     Remove all entries with `None` value from a dict, recursively.
