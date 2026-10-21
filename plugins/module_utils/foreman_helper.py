@@ -787,8 +787,12 @@ class ForemanAnsibleModule(AnsibleModule):
             result = self.show_resource(resource, result['id'], params=params)
         return result
 
-    def find_resource_by(self, resource, search_field, value, **kwargs):
+    def find_resource_by(self, resource, search_field, value, required=False, **kwargs):
         if not value:
+            if required:
+                search_operator = kwargs.pop('search_operator', '=')
+                search = '{0}{1}"{2}"'.format(search_field, search_operator, value)
+                self.fail_json(msg="Found no results while searching for {0} with {1}".format(resource, search))
             return NoEntity
         search = '{0}{1}"{2}"'.format(search_field, kwargs.pop('search_operator', '='), value)
         return self.find_resource(resource, search, **kwargs)
@@ -971,6 +975,7 @@ class ForemanAnsibleModule(AnsibleModule):
                         value=identifier,
                         search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
                         search_operator=entity_spec.get('search_operator', '='),
+                        required=entity_spec.get('required', False),
                         failsafe=failsafe, thin=thin, params=params,
                     )
                 else:
@@ -979,6 +984,7 @@ class ForemanAnsibleModule(AnsibleModule):
                         value=value,
                         search_field=entity_spec.get('search_by', ENTITY_KEYS.get(resource_type, 'name')),
                         search_operator=entity_spec.get('search_operator', '='),
+                        required=entity_spec.get('required', False),
                         failsafe=failsafe, thin=thin, params=params,
                     ) for value in identifier]
         return result
