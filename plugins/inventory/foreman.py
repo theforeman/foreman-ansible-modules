@@ -71,6 +71,15 @@ DOCUMENTATION = '''
         description: Toggle, if true the inventory will retrieve 'all_parameters' information as host vars
         type: boolean
         default: false
+      want_puppetclass_params:
+        description:
+          - Toggle, if true the inventory will retrieve effective Puppet smart class parameter values.
+          - The values are returned in the C(foreman_puppetclass_parameters) host variable, grouped by Puppet class.
+          - Requires the C(foreman_puppet) plugin to be installed on the Foreman server.
+          - This makes one additional request per host and can be expensive for large inventories.
+          - Smart class parameters can contain secrets, so protect inventory output and any persistent inventory cache.
+        type: boolean
+        default: false
       want_hostcollections:
         description: Toggle, if true the plugin will create Ansible groups for host collections
         type: boolean
@@ -186,12 +195,18 @@ host_filters: 'organization="Web Engineering"'
 # Use short names (not FQDN) for the hosts in the intentory
 hostnames:
   - name.split('.')[0]
+# Fetch effective Puppet smart class parameter values
+# Access them by class and parameter, for example foreman_puppetclass_parameters['ntp']['servers']
+want_puppetclass_params: true
 '''
 import copy
 import json
-from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 from collections.abc import MutableMapping
 from time import sleep
+from urllib.parse import quote
+
+import yaml
+from ansible_collections.theforeman.foreman.plugins.module_utils._version import LooseVersion
 from ansible.errors import AnsibleError
 from ansible.module_utils.common.text.converters import to_bytes, to_native, to_text
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, to_safe_group_name, Constructable
@@ -329,6 +344,20 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _get_host_data_by_id(self, hid):
         url = "%s/api/v2/hosts/%s" % (self.foreman_url, hid)
         return self._get_json(url)
+
+    def _get_puppetclass_parameters(self, host_name):
+        url = "%s/foreman_puppet/node/%s.yml" % (self.foreman_url, quote(host_name, safe=''))
+
+        if not self.use_cache or url not in self._cache.get(self.cache_key, {}):
+            if self.cache_key not in self._cache:
+                self._cache[self.cache_key] = {}
+
+            response = self._get_session().get(url, verify=self.get_option('validate_certs'))
+            response.raise_for_status()
+            host_info = yaml.safe_load(response.text) or {}
+            self._cache[self.cache_key][url] = host_info.get('classes', {})
+
+        return self._cache[self.cache_key][url]
 
     def _get_facts(self, host):
         """Fetch all host facts of the host"""
@@ -520,6 +549,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             if self.get_option('want_facts'):
                 self.inventory.set_variable(host_name, 'foreman_facts', fact_list)
 
+            if self.get_option('want_puppetclass_params'):
+                self.inventory.set_variable(
+                    host_name,
+                    'foreman_puppetclass_parameters',
+                    self._get_puppetclass_parameters(host['name']),
+                )
+
             # Create ansible groups for hostgroup
             group = 'host_group'
             group_name = host.get(group)
@@ -653,6 +689,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             # set host vars from facts
             if self.get_option('want_facts'):
                 self.inventory.set_variable(host_name, 'foreman_facts', self._get_facts(host))
+
+            if self.get_option('want_puppetclass_params'):
+                self.inventory.set_variable(
+                    host_name,
+                    'foreman_puppetclass_parameters',
+                    self._get_puppetclass_parameters(host['name']),
+                )
 
             # create group for host collections
             if self.get_option('want_hostcollections'):
