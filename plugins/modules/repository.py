@@ -210,9 +210,12 @@ options:
   ignorable_content:
     description:
       - List of content units to ignore while syncing a yum repository.
-      - Must be subset of rpm,drpm,srpm,distribution,erratum.
+      - Must be a subset of C(srpm) and C(treeinfo).
     type: list
     elements: str
+    choices:
+      - srpm
+      - treeinfo
     required: false
   ansible_collection_requirements:
     description:
@@ -441,7 +444,7 @@ def main():
             description=dict(),
             unprotected=dict(type='bool'),
             checksum_type=dict(choices=['sha1', 'sha256']),
-            ignorable_content=dict(type='list', elements='str'),
+            ignorable_content=dict(type='list', elements='str', choices=['srpm', 'treeinfo']),
             ansible_collection_requirements=dict(),
             auto_enabled=dict(type='bool'),
             os_versions=dict(type='list', elements='str', choices=['rhel-6', 'rhel-7', 'rhel-8', 'rhel-9', 'rhel-10']),
