@@ -114,6 +114,30 @@ class KatelloSyncPlanModule(KatelloEntityAnsibleModule):
     pass
 
 
+def _ensure_enabled(module, sync_plan, enabled):
+    """Ensure the recurring logic reflects the requested sync plan state."""
+    if sync_plan is None or sync_plan['enabled'] == enabled:
+        return
+
+    recurring_logic_id = sync_plan['foreman_tasks_recurring_logic_id']
+    current_enabled = sync_plan['enabled']
+    module.record_before('recurring_logics', {'id': recurring_logic_id, 'enabled': current_enabled})
+
+    if not module.check_mode:
+        recurring_logic = module.resource_action(
+            'recurring_logics',
+            'update',
+            {'id': recurring_logic_id, 'enabled': enabled},
+        )
+        expected_state = 'active' if enabled else 'disabled'
+        if recurring_logic['state'] != expected_state:
+            module.fail_json(msg='Failed to set sync plan enabled state.')
+
+    module.record_after('recurring_logics', {'id': recurring_logic_id, 'enabled': enabled})
+    sync_plan['enabled'] = enabled
+    module.set_changed()
+
+
 def main():
     module = KatelloSyncPlanModule(
         foreman_spec=dict(
@@ -145,7 +169,11 @@ def main():
             module.lookup_entity('products')
 
         products = module.foreman_params.pop('products', None)
+        enabled = module.foreman_params['enabled']
+        enabled_needs_update = entity is not None and entity['enabled'] != enabled
         sync_plan = module.run()
+        if enabled_needs_update:
+            _ensure_enabled(module, sync_plan, enabled)
 
         if handle_products:
             desired_product_ids = set(product['id'] for product in products)
