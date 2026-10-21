@@ -96,3 +96,22 @@
     - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
     - repositories
   no_log: "{{ item.1.upstream_password is defined }}"
+
+- name: 'Upload Repository Content'
+  theforeman.foreman.content_upload:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    organization: "{{ item.0.organization | default(foreman_organization) }}"
+    product: "{{ item.0.name }}"
+    repository: "{{ item.1.name }}"
+    src: "{{ item.1.src | default(omit) }}"
+    ostree_repository_name: "{{ item.1.ostree_repository_name | default(omit) }}"
+  with_subelements:
+    - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
+    - repositories
+  when:
+    - item.0.state | default('present') == 'present'
+    - item.1.state | default('present') == 'present'
+    - item.1.src is defined
