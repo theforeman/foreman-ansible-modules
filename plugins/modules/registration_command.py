@@ -78,9 +78,10 @@ options:
   packages:
     description:
     - Packages to install on the host when registered.
-    - Multiple packages are to be given as a space delimited string.
+    - A space-delimited string remains accepted for backwards compatibility.
     required: false
-    type: str
+    type: list
+    elements: str
   remote_execution_interface:
     description:
     - Identifier of the Host interface for Remote execution.
@@ -171,6 +172,9 @@ EXAMPLES = '''
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
+    packages:
+      - foreman_scap_client_bash
+      - katello-host-tools-tracer
   register: command
   delegate_to: localhost
 
@@ -204,7 +208,7 @@ def main():
             setup_remote_execution=dict(type='bool'),
             jwt_expiration=dict(type='int'),
             insecure=dict(type='bool'),
-            packages=dict(type='str'),
+            packages=dict(type='list', elements='str'),
             update_packages=dict(type='bool'),
             repo=dict(type='str'),
             repo_gpg_key_url=dict(type='str', no_log=False),
@@ -227,6 +231,9 @@ def main():
             ('remote_execution', ['remote_execution_interface', 'setup_remote_execution_pull']),
         ],
     )
+
+    if module.foreman_params.get('packages') is not None:
+        module.foreman_params['packages'] = ' '.join(module.foreman_params['packages'])
 
     with module.api_connection():
         module.auto_lookup_entities()
