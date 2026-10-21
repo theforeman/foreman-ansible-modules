@@ -37,7 +37,8 @@ options:
     type: str
   label:
     description:
-      - Label to show the user
+      - Immutable label of the product.
+      - When supplied, it is used instead of O(name) to find an existing product.
     required: false
     type: str
   gpg_key:
@@ -115,7 +116,24 @@ from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper 
 
 
 class KatelloProductModule(KatelloEntityAnsibleModule):
-    pass
+    def __init__(self, **kwargs):
+        super(KatelloProductModule, self).__init__(**kwargs)
+
+        if 'label' in self.foreman_params:
+            self.foreman_spec['entity']['search_by'] = 'label'
+            self.foreman_params['entity'] = self.foreman_params['label']
+
+    def ensure_entity(self, resource, desired_entity, current_entity, **kwargs):
+        if current_entity is not None and 'label' in desired_entity:
+            desired_entity = desired_entity.copy()
+            desired_entity.pop('label')
+
+        return super(KatelloProductModule, self).ensure_entity(
+            resource,
+            desired_entity,
+            current_entity,
+            **kwargs
+        )
 
 
 def main():
