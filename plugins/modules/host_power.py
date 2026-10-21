@@ -23,22 +23,23 @@ DOCUMENTATION = '''
 ---
 module: host_power
 version_added: 1.0.0
-short_description: Manage Power State of Hosts
+short_description: Manage the power state of a host
 description:
-  - "Manage power state of a host"
-  - "This beta version can start and stop an existing foreman host and question the current power state."
+  - Manage the power state of a host.
+  - Use M(theforeman.foreman.host_power_info) to query the current power state.
+  - The C(state) and C(status) states are kept for backwards compatibility.
 author:
   - "Bernhard Hopfenmueller (@Fobhep) ATIX AG"
   - "Baptiste Agasse (@bagasse)"
 options:
   name:
-    description: Name (FQDN) of the host
+    description: Name (FQDN) of the host.
     required: true
     aliases:
       - hostname
     type: str
   state:
-    description: Desired power state
+    description: Desired power state.
     default: state
     choices:
       - 'on'
@@ -74,14 +75,14 @@ EXAMPLES = '''
     state: 'off'
 
 - name: "Query host power state"
-  theforeman.foreman.host_power:
+  theforeman.foreman.host_power_info:
     username: "admin"
     password: "changeme"
     server_url: "https://foreman.example.com"
     hostname: "test-host.domain.test"
-    state: state
-    register: result
-- debug:
+  register: result
+
+- ansible.builtin.debug:
     msg: "Host power state is {{ result.power_state }}"
 '''
 
@@ -94,6 +95,7 @@ power_state:
  '''
 
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import ForemanEntityAnsibleModule
+from ansible_collections.theforeman.foreman.plugins.module_utils.host_power import get_host_power_state
 
 
 def main():
@@ -109,22 +111,13 @@ def main():
     module_params = module.foreman_params
 
     with module.api_connection():
-        # power_status endpoint was only added in foreman 1.22.0 per https://projects.theforeman.org/issues/25436
-        # Delete this piece when versions below 1.22 are off common use
-        # begin delete
-        if 'power_status' not in module.foremanapi.resource('hosts').actions:
-            params = {'id': module_params['name'], 'power_action': 'status'}
-            power_state = module.resource_action('hosts', 'power', params=params, ignore_check_mode=True)
-            power_state['state'] = 'on' if power_state['power'] == 'running' else 'off'
-        else:
-            # end delete (on delete un-indent the below two lines)
-            params = {'id': module_params['name']}
-            power_state = module.resource_action('hosts', 'power_status', params=params, ignore_check_mode=True)
+        power_state = get_host_power_state(module, module_params['name'])
+        params = {'id': module_params['name']}
 
         if module.state in ['state', 'status']:
-            module.exit_json(power_state=power_state['state'])
-        elif ((module.state in ['on', 'start'] and power_state['state'] == 'on')
-              or (module.state in ['off', 'stop'] and power_state['state'] == 'off')):
+            module.exit_json(power_state=power_state)
+        elif ((module.state in ['on', 'start'] and power_state == 'on')
+              or (module.state in ['off', 'stop'] and power_state == 'off')):
             module.exit_json()
         else:
             params['power_action'] = module.state
