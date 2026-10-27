@@ -60,4 +60,6 @@
     rule_state: "{{ item.rule_state | default(omit) }}"
   when:
     - content_view.state is not defined or content_view.state != 'absent'
+    - not (item.original_packages | default(omit)) | bool
+    - not (item.original_module_streams | default(omit)) | bool
   loop: "{{ content_view.filters | default([]) }}"
