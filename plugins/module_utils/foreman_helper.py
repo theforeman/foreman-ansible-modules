@@ -1194,6 +1194,13 @@ class ForemanAnsibleModule(AnsibleModule):
                 cv_id = current_flat_entity.get('content_view_id')
                 if cv_id is not None:
                     payload['content_view_id'] = cv_id
+        elif resource == 'content_view_filter_rules':
+            if any(k in payload for k in ('version', 'min_version', 'max_version')):
+                for filter_rule_field in ('version', 'min_version', 'max_version'):
+                    if filter_rule_field not in payload:
+                        current_value = current_flat_entity.get(filter_rule_field)
+                        if current_value is not None:
+                            payload[filter_rule_field] = current_value
         if self._validate_supported_payload(resource, 'update', payload):
             self.set_changed()
             payload['id'] = current_flat_entity['id']
