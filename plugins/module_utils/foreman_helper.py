@@ -72,6 +72,7 @@ _PLUGIN_RESOURCES = {
 }
 
 ENTITY_KEYS = dict(
+    content_view_environments='label',
     hostgroups='title',
     locations='title',
     operatingsystems='title',
