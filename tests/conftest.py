@@ -17,6 +17,15 @@ IGNORED_WARNINGS = [
     "You have configured a plain HTTP server URL. All communication will happen unencrypted.",
 ]
 
+# Substrings of benign warnings emitted by _validate_supported_payload when the
+# payload contains a parameter that the target server's apidoc doesn't declare
+# (e.g. a newer collection run against an older Satellite/Foreman). The module
+# only warns; the unsupported key is dropped by the server, so the operation
+# still succeeds. These are expected when live-testing against older releases.
+IGNORED_WARNING_PATTERNS = [
+    "are not supported by your server when performing",
+]
+
 TEST_PLAYBOOKS_PATH = py.path.local(__file__).realpath() / '..' / 'test_playbooks'
 
 
@@ -129,5 +138,10 @@ def assert_no_warnings(run):
         assert not event.get('event_data', {}).get('warning', False)
 
         # check for task level warnings
-        event_warnings = [warning for warning in event.get('event_data', {}).get('res', {}).get('warnings', []) if warning not in IGNORED_WARNINGS]
+        event_warnings = [
+            warning
+            for warning in event.get('event_data', {}).get('res', {}).get('warnings', [])
+            if warning not in IGNORED_WARNINGS
+            and not any(pattern in warning for pattern in IGNORED_WARNING_PATTERNS)
+        ]
         assert not event_warnings
