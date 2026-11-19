@@ -262,6 +262,14 @@ options:
           - When you provide a I(network) here and I(compute_resource) is set, the network id will be automatically looked up.
           - On oVirt/RHV I(cluster) is required in the hosts I(compute_attributes) for the lookup to work.
         type: dict
+  content_view_environments:
+    description:
+    - Content View Environments to be associated with the host.
+    - Ignored if C(content_view) and C(lifecycle_environment) are set.
+    required: false
+    type: list
+    elements: str
+    version_added: 5.4.0
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -453,6 +461,7 @@ def main():
             image=dict(type='entity', scope=['compute_resource']),
             compute_attributes=dict(type='dict'),
             interfaces_attributes=dict(type='nested_list', foreman_spec=interfaces_spec, ensure=True),
+            content_view_environments=dict(type='entity_list'),
         ),
         mutually_exclusive=[
             ['owner', 'owner_group']
