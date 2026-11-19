@@ -69,6 +69,7 @@ def run_callback(tmpdir, report_type, vcrmode):
         contents = re.sub(r"\d+-\d+-\d+ \d+:\d+:\d+\+\d+:\d+", "2000-01-01 12:00:00+00:00", contents)
         contents = re.sub(r"\d+-\d+-\d+[ T]\d+:\d+:\d+\.\d+", "2000-01-01 12:00:00.0000", contents)
         contents = re.sub(r"\d+:\d+:\d+\.\d+", "12:00:00.0000", contents)
+        contents = re.sub(r"<redacted>", "$REDACTED$", contents)
         if report_type == "foreman":
             # drop_incompatible_items cannot be used for the legacy format
             contents = re.sub(r", \\\"msg\\\": \\\"\\\"", "", contents)
