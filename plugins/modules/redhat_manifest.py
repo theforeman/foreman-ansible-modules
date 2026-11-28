@@ -216,7 +216,7 @@ def get_owner(module):
 
 
 def get_subs(module, manifest):
-    path = "/subscription/consumers/%s/entitlements" % (manifest['uuid'])
+    path = "/subscription/consumers/%s/entitlements?regen=false" % (manifest['uuid'])
     resp, info = fetch_portal(module, path, 'GET')
     all_subs = json.loads(to_text(resp.read()))
     subs = [s for s in all_subs if s['pool']['id'] == module.params['pool_id']]
