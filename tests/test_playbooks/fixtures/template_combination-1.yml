@@ -1,0 +1,42 @@
+interactions:
+  - request:
+      body: null
+      headers: {}
+      method: GET
+      uri: https://foreman.example.org/api/status
+    response:
+      body:
+        string: '{"result":"ok","status":200,"version":"3.13.0","api_version":2}'
+      headers: {Content-Type: [application/json; charset=utf-8]}
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers: {}
+      method: GET
+      uri: https://foreman.example.org/api/provisioning_templates?search=name%3D%22Template+combination+test%22&per_page=4294967296
+    response:
+      body:
+        string: '{"total":1,"subtotal":1,"page":1,"per_page":4294967296,"results":[{"id":501,"name":"Template combination test"}]}'
+      headers: {Content-Type: [application/json; charset=utf-8]}
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers: {}
+      method: GET
+      uri: https://foreman.example.org/api/hostgroups?search=title%3D%22Template+combination+test%22&per_page=4294967296
+    response:
+      body:
+        string: '{"total":1,"subtotal":1,"page":1,"per_page":4294967296,"results":[{"id":502,"name":"Template combination test","title":"Template combination test"}]}'
+      headers: {Content-Type: [application/json; charset=utf-8]}
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers: {}
+      method: GET
+      uri: https://foreman.example.org/api/provisioning_templates/501/template_combinations
+    response:
+      body:
+        string: '{"total":1,"subtotal":1,"page":1,"per_page":20,"results":[{"id":503,"provisioning_template_id":501,"provisioning_template_name":"Template combination test","hostgroup_id":502,"hostgroup_name":"Template combination test"}]}'
+      headers: {Content-Type: [application/json; charset=utf-8]}
+      status: {code: 200, message: OK}
+version: 1
