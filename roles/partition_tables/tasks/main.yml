@@ -1,0 +1,17 @@
+---
+- name: 'Create Partition Tables'  # noqa: args[module]
+  theforeman.foreman.partition_table:
+    username: "{{ foreman_username | default(omit) }}"
+    password: "{{ foreman_password | default(omit) }}"
+    server_url: "{{ foreman_server_url | default(omit) }}"
+    validate_certs: "{{ foreman_validate_certs | default(omit) }}"
+    name: "{{ item.name }}"
+    file_name: "{{ item.file_name | default(omit) }}"
+    layout: "{{ item.layout | default(omit) }}"
+    locations: "{{ item.locations | default(omit) }}"
+    locked: "{{ item.locked | default(omit) }}"
+    organizations: "{{ item.organizations | default(omit) }}"
+    os_family: "{{ item.os_family | default(omit) }}"
+    updated_name: "{{ item.updated_name | default(omit) }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ foreman_partition_tables }}"
