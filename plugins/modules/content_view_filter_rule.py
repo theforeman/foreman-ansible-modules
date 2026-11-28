@@ -72,10 +72,16 @@ options:
   max_version:
     description:
       - package maximum version
+      - When used alone, creates a "Less than" rule (applies to versions below max_version)
+      - When used with O(min_version), creates a "Range" rule (applies to versions between min_version and max_version)
+      - Set to an empty string to remove an existing max version bound, changing the rule to "Greater than" or "All versions" depending on O(min_version)
     type: str
   min_version:
     description:
       - package minimum version
+      - When used alone, creates a "Greater than" rule (applies to versions above min_version)
+      - When used with O(max_version), creates a "Range" rule (applies to versions between min_version and max_version)
+      - Set to an empty string to remove an existing min version bound, changing the rule to "Less than" or "All versions" depending on O(max_version)
     type: str
   name:
     description:
@@ -148,6 +154,18 @@ EXAMPLES = '''
     name: "tcsh"
     max_version: "6.20.00"
 
+- name: "Include tcsh versions 6.20 up to and including 6.23"
+  theforeman.foreman.content_view_filter_rule:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    organization: "Default Organization"
+    content_view: "Standard Operating Environment"
+    content_view_filter: "package filter 1"
+    name: "tcsh"
+    min_version: "6.20"
+    max_version: "6.23"
+
 - name: "Exclude csh version 6.23 due to example policy"
   theforeman.foreman.content_view_filter_rule:
     username: "admin"
@@ -169,6 +187,7 @@ EXAMPLES = '''
     content_view: "Standard Operating Environment"
     content_view_filter: "modulemd filter"
     name: "389-directory-server"
+
     stream: "next"
     version: "820220325123957"
     context: "9edba152"
