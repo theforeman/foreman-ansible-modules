@@ -89,6 +89,12 @@ class ForemanSettingModule(ForemanStatelessEntityAnsibleModule):
     pass
 
 
+def setting_value_to_str(value, settings_type):
+    if value is None:
+        return None
+    return parameter_value_to_str(value, settings_type)
+
+
 def main():
     module = ForemanSettingModule(
         foreman_spec=dict(
@@ -100,17 +106,28 @@ def main():
     with module.api_connection():
         entity = module.lookup_entity('entity')
 
-        if 'value' not in module.foreman_params:
-            module.foreman_params['value'] = entity['default'] or ''
-
         settings_type = entity['settings_type']
-        new_value = module.foreman_params['value']
-        # Allow to pass integers as string
-        if settings_type == 'integer':
-            new_value = int(new_value)
-        module.foreman_params['value'] = parameter_value_to_str(new_value, settings_type)
+        new_value = module.foreman_params.get('value', entity['default'])
         old_value = entity['value']
-        entity['value'] = parameter_value_to_str(old_value, settings_type)
+
+        if new_value is None:
+            if old_value is None:
+                module.foreman_params.pop('value', None)
+            elif settings_type in ['string', 'text', None]:
+                # The API uses an empty string to reset a string setting with a null default.
+                module.foreman_params['value'] = ''
+            else:
+                module.fail_json(msg=(
+                    "Setting '{0}' has a null default that cannot be restored through the Foreman API. "
+                    "Set an explicit value instead."
+                ).format(entity['name']))
+        # Allow to pass integers as string
+        else:
+            if settings_type == 'integer':
+                new_value = int(new_value)
+            module.foreman_params['value'] = setting_value_to_str(new_value, settings_type)
+
+        entity['value'] = setting_value_to_str(old_value, settings_type)
 
         entity = module.ensure_entity('settings', module.foreman_params, entity, state='present')
 
