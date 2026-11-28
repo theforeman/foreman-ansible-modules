@@ -14,7 +14,13 @@
 #
 import datetime
 import os
+import re
+import shutil
 import sys
+from pathlib import Path
+
+from docutils import nodes
+
 sys.path.insert(0, os.path.abspath('../plugins/module_utils/'))
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -171,3 +177,44 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None), 'ansible': ('https://docs.ansible.com/ansible/latest/', None)}
+
+
+SOURCE_LINK_PATTERN = re.compile(r'\]\(\.\./(plugins/[^)]+)\)')
+
+
+def rewrite_source_links(app, docname, source):
+    if docname == 'developing' and app.builder.format == 'html':
+        source[0] = SOURCE_LINK_PATTERN.sub(r'](source/\1)', source[0])
+
+
+def resolve_source_link(app, env, node, contnode):
+    target = node['reftarget']
+    if (
+        app.builder.format == 'html'
+        and node.get('refdoc') == 'developing'
+        and target.startswith('source/plugins/')
+    ):
+        reference = nodes.reference('', '', refuri=target)
+        reference += contnode
+        return reference
+
+
+def copy_linked_sources(app, exception):
+    if exception or app.builder.format != 'html':
+        return
+
+    repository_root = Path(app.srcdir).parent
+    documentation = repository_root / 'docs' / 'developing.md'
+    linked_sources = set(SOURCE_LINK_PATTERN.findall(documentation.read_text(encoding='utf-8')))
+
+    for relative_path in linked_sources:
+        source = repository_root / relative_path
+        destination = Path(app.outdir) / 'source' / relative_path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+
+
+def setup(app):
+    app.connect('source-read', rewrite_source_links)
+    app.connect('missing-reference', resolve_source_link)
+    app.connect('build-finished', copy_linked_sources)
