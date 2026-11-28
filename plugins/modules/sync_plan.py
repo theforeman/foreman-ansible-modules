@@ -58,7 +58,8 @@ options:
   sync_date:
     description:
       - Start date and time of the first synchronization.
-      - Multiple formats are accepted, but only C(YYYY-mm-dd HH:MM:SS +z) (e.g. C(2024-08-01 00:00:00 +0000)) will be idempotent.
+      - Multiple timezone-aware formats are accepted and compared by their
+        actual point in time.
     required: true
     type: str
   cron_expression:
@@ -107,7 +108,37 @@ entity:
 '''
 
 
+import re
+from datetime import datetime
+
 from ansible_collections.theforeman.foreman.plugins.module_utils.foreman_helper import KatelloEntityAnsibleModule
+
+
+def _parse_sync_date(value):
+    if not isinstance(value, str):
+        return None
+
+    normalized = value.strip()
+    normalized = re.sub(r'\s+(?:UTC|GMT)$', ' +0000', normalized)
+    normalized = re.sub(r'Z$', '+0000', normalized)
+    normalized = re.sub(r'([+-]\d{2}):(\d{2})$', r'\1\2', normalized)
+
+    for date_format in (
+        '%Y-%m-%d %H:%M:%S %z',
+        '%Y-%m-%d %H:%M:%S%z',
+        '%Y-%m-%dT%H:%M:%S%z',
+    ):
+        try:
+            return datetime.strptime(normalized, date_format)
+        except ValueError:
+            pass
+    return None
+
+
+def _same_sync_date(first, second):
+    first_date = _parse_sync_date(first)
+    second_date = _parse_sync_date(second)
+    return first_date is not None and second_date is not None and first_date == second_date
 
 
 class KatelloSyncPlanModule(KatelloEntityAnsibleModule):
@@ -139,6 +170,9 @@ def main():
     with module.api_connection():
         entity = module.lookup_entity('entity')
         scope = module.scope_for('organization')
+
+        if entity and _same_sync_date(module.foreman_params['sync_date'], entity.get('sync_date')):
+            module.foreman_params['sync_date'] = entity['sync_date']
 
         handle_products = not (module.desired_absent or module.state == 'present_with_defaults') and 'products' in module.foreman_params
         if handle_products:
