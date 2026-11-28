@@ -264,7 +264,7 @@ options:
         type: dict
 extends_documentation_fragment:
   - theforeman.foreman.foreman
-  - theforeman.foreman.foreman.entity_state
+  - theforeman.foreman.foreman.entity_state_with_defaults
   - theforeman.foreman.foreman.host_options
   - theforeman.foreman.foreman.nested_parameters
   - theforeman.foreman.foreman.operatingsystem
@@ -460,6 +460,9 @@ def main():
         required_by=dict(
             image=('compute_resource',),
         ),
+        argument_spec=dict(
+            state=dict(default='present', choices=['present', 'present_with_defaults', 'absent']),
+        ),
     )
 
     # additional param validation
@@ -529,7 +532,8 @@ def main():
 
         entity = module.run()
 
-        if not module.desired_absent:
+        update_dependent_entities = (module.state == 'present' or (module.state == 'present_with_defaults' and module.changed))
+        if update_dependent_entities:
             if 'environment_id' in entity:
                 ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
             if interfaces is not None:
