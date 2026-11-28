@@ -24,6 +24,7 @@
     purpose_role: "{{ activation_key_purpose_role | default(omit) }}"
     purpose_addons: "{{ activation_key_purpose_addons | default(omit) }}"
     content_overrides: "{{ activation_key_content_overrides | default(omit) }}"
+    return_repository_sets: "{{ activation_key_return_repository_sets | default(false) }}"
     state: "{{ activation_key_state }}"
   register: result
 - assert:
@@ -31,6 +32,19 @@
     that:
       - result.changed == expected_change
   when: expected_change is defined
+- name: Find returned repository set
+  set_fact:
+    returned_repository_set: >-
+      {{ result.repository_sets
+      | selectattr('label', 'equalto', expected_repository_set_label)
+      | first }}
+  when: expected_repository_set_label is defined
+- name: Assert repository set was returned
+  assert:
+    fail_msg: "Activation key did not return the expected repository set state"
+    that:
+      - returned_repository_set.enabled_content_override == expected_repository_set_override
+  when: expected_repository_set_label is defined
 - include_tasks: _assert_diff.yml
   vars:
     module: activation_key
