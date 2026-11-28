@@ -11,5 +11,4 @@
     prior: "{{ item.prior }}"
     label: "{{ item.label | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-  with_items:
-    - "{{ foreman_lifecycle_environments }}"
+  loop: "{{ foreman_lifecycle_environments }}"
