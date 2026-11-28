@@ -1,4 +1,4 @@
-from plugins.module_utils.foreman_helper import _foreman_spec_helper
+from plugins.module_utils.foreman_helper import _foreman_spec_helper, _load_entity_details
 
 
 def test_empty_entity():
@@ -59,3 +59,45 @@ def test_full_entity():
             'value': {'type': 'int'},
         }},
     }
+
+
+class FakeModule:
+    def __init__(self, entities):
+        self.entities = entities
+        self.shown = []
+
+    def show_resource(self, resource, resource_id, params):
+        self.shown.append((resource, resource_id, params))
+        return self.entities[resource_id]
+
+
+def test_load_entity_details_keeps_complete_list_result():
+    current_entity = {'id': 1, 'name': 'complete', 'input_type': 'user'}
+    module = FakeModule({})
+
+    result = _load_entity_details(
+        module,
+        'template_inputs',
+        {'name': 'complete', 'input_type': 'user'},
+        current_entity,
+        params={'template_id': 42},
+    )
+
+    assert result == current_entity
+    assert module.shown == []
+
+
+def test_load_entity_details_fetches_missing_desired_fields():
+    detailed_entity = {'id': 1, 'name': 'incomplete', 'input_type': 'user', 'value_type': 'plain'}
+    module = FakeModule({1: detailed_entity})
+
+    result = _load_entity_details(
+        module,
+        'template_inputs',
+        {'name': 'incomplete', 'input_type': 'user', 'value_type': 'plain'},
+        {'id': 1, 'name': 'incomplete', 'input_type': 'user'},
+        params={'template_id': 42},
+    )
+
+    assert result == detailed_entity
+    assert module.shown == [('template_inputs', 1, {'template_id': 42})]
