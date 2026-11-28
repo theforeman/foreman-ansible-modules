@@ -1,0 +1,117 @@
+---
+argument_specs:
+  main:
+    short_description: Create and manages Activation Keys
+    description:
+      - This role creates and manages Activation Keys.
+    options:
+      foreman_server_url:
+        type: "str"
+        required: false
+        description: URL of the Foreman server. If the variable is not specified, the value of environment variable C(FOREMAN_SERVER_URL) will be used instead.
+      foreman_username:
+        type: "str"
+        required: false
+        description: Username accessing the Foreman server. If the variable is not specified, the value of environment variable C(FOREMAN_USERNAME) will be used instead.
+      foreman_password:
+        type: "str"
+        required: false
+        description: Password of the user accessing the Foreman server. If the variable is not specified, the value of environment variable C(FOREMAN_PASSWORD) will be used instead.
+      foreman_validate_certs:
+        type: "bool"
+        required: false
+        description: Whether or not to verify the TLS certificates of the Foreman server. If the variable is not specified, the value of environment variable C(FOREMAN_VALIDATE_CERTS) will be used instead.
+      foreman_organization:
+        type: "str"
+        required: false
+        description: Organization where configuration will be applied.
+      foreman_activation_keys:
+        type: "list"
+        elements: "dict"
+        required: true
+        description: List of Activation Keys to manage.
+        options:
+          name:
+            type: "str"
+            required: true
+            description:
+              - The name of the activation key.
+          lifecycle_environment:
+            type: "str"
+            description:
+              - Lifecycle Environment to assign to hosts registered with this activation key.
+            default: "Library"
+          content_view:
+            type: "str"
+            description:
+              - Content View to assign to hosts registered with this activation key.
+            default: "Default Organization View"
+          auto_attach:
+            type: "bool"
+            description:
+              - Auto Attach behavior for the activation key.
+              - When C(true), it will attempt to attach a minimum of subscriptions (from the subset of assigned subscriptions on the activation key; selects from all subscriptions in the organization if none are assigned) to cover any present products on the host.
+              - When C(false), it will attempt to attach all subscriptions assigned on the activation key to the host at registration time.
+          unlimited_hosts:
+            type: "bool"
+            description:
+              - Allow an unlimited number of hosts to register with the activation key when true.
+              - When C(false), the C(max_hosts) parameter which sets a numerical limit on the nnumber of hosts that can be registered becomes required.
+          description:
+            type: "str"
+            description:
+              - Description of the activation key.
+              - Helpful for other users to find which activation key to use.
+          host_collections:
+            type: "list"
+            elements: "str"
+            description:
+              - List of Host Collections to associate with the activation key.
+          subscriptions:
+            type: "list"
+            elements: "dict"
+            description:
+              - List of Subscriptions to associate with the activation key.
+              - Each Subscription is required to have one of C(name), C(pool_id), or C(upstream_pool_id).
+              - Of these, only the C(pool_id) is guaranteed to be unique.
+              - C(upstream_pool_id) only exists for subscriptions imported from a 3rd party organization (e.g. on a Red Hat Subscription Manifest).
+              - When uniqueness is not an issue, C(name) or C(upstream_pool_id) can be easier to work with since the C(pool_id) does not get determined until the subscription is imported or created and therefore may not yet be determined when you are writing playbooks.
+          content_overrides:
+            type: "list"
+            elements: "dict"
+            description:
+              - List of Content Overrides for the activation key.
+              - Each Content Override is required to have a C(label) which refers to a repository and C(override) which refers to one of the states enabled, disabled, or default.
+          release_version:
+            type: "str"
+            description:
+              - Release Version to set when registering hosts with the activation key.
+          service_level:
+            type: "str"
+            description:
+              - Service Level to set when registering hosts with the activation key.
+              - Premium, Standard, or Self-Support.
+              - This will limit Subscriptions available to hosts to those matching this service level.
+          purpose_usage:
+            type: "str"
+            description:
+              - System Purpose Usage to set when registering hosts with the activation key.
+              - Production, Development/Test, Disaster Recovery.
+              - When left unset this will not set System Purpose Usage on registering hosts.
+              - This should only be used when it is supported by the OS of registering hosts (RHEL 8 only at the time of writing).
+          purpose_role:
+            type: "str"
+            description:
+              - System Purpose Role to set when registering hosts with the activation key.
+              - Red Hat Enterprise Linux Server, Red Hat Enterprise Linux Workstation, Red Hat Enterprise Linux Compute Node.
+              - When left unset this will not set System Purpose Role on registering hosts.
+              - This should only be used when it is supported by the OS of registering hosts (RHEL 8 only at the time of writing).
+          purpose_addons:
+            type: "list"
+            elements: "str"
+            description:
+              - List of System Purpose Addons (ELS, EUS) to set on registering hosts.
+              - This should only be used when it is supported by the OS of registering hosts (RHEL 8 only at the time of writing).
+
+    notes:
+      - A helpful behavior to keep in mind when creating activation keys is that a host can register with multiple activation keys; each activation key will attach subscriptions according to its own logic, in the order that the activation keys are listed. Host attributes like Lifecycle Environment, Content View, etc will be overwritten by later activation keys so that the last activation key listed wins. A common pattern is to first use an activation key which has auto-attach disabled and a list of subscriptions to attach for any applicable custom products, followed by a second activation key which has auto attach enabled to attach the best fitting subscription(s) for the OS and any remaining products which were not already covered, and also defines the LCE, Content View, and other host attributes as required.
