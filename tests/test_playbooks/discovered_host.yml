@@ -1,0 +1,23 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Delete a discovered host that does not exist
+      discovered_host:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: ansible-test-discovered-host.example.com
+        action: delete
+      register: result
+
+    - name: Check that deleting a missing discovered host is idempotent
+      assert:
+        that:
+          - not result.changed
+...
