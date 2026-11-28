@@ -1,0 +1,23 @@
+---
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  tasks:
+    - name: Query host power state
+      host_power_info:
+        username: "{{ foreman_username }}"
+        password: "{{ foreman_password }}"
+        server_url: "{{ foreman_server_url }}"
+        validate_certs: "{{ foreman_validate_certs }}"
+        name: vm01.example.com
+      register: result
+
+    - name: Verify host power state
+      assert:
+        that:
+          - result is not changed
+          - result.power_state == 'off'
+...
