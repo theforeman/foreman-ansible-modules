@@ -18,7 +18,7 @@
 # https://fedorapeople.org/~sgallagh/docs/modularity/modularity/architecture/nsvca/
 
 
-- name: "Create Content View Filter Rule for module 1"
+- name: "Create Content View Filter Rule for module 1 - full NSVCA"
   vars:
     content_view_filter_name: "Test Content View Filter - modulemd"
     content_view_name: "Test Content View"
@@ -54,7 +54,7 @@
     rule_state: present
 
 
-- name: "Create Content View Filter Rule for module 2"
+- name: "Create Content View Filter Rule for module 2 - full NSVCA"
   vars:
     content_view_filter_name: "Test Content View Filter - modulemd"
     content_view_name: "Test Content View"
@@ -115,16 +115,11 @@
     state: "{{ rule_state }}"
   register: result
 
-- name: Set expected_change
-  ansible.builtin.set_fact:
-    my_expected_change: false
-
-- name: "Assert success"
+- name: "Assert idempotent"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected no change)"
     that:
-      - result.changed == my_expected_change
-  when: my_expected_change is defined
+      - result.changed == false
   vars:
     rule_state: present
 
@@ -153,16 +148,11 @@
     state: "{{ rule_state }}"
   register: result
 
-- name: Set expected_change
-  ansible.builtin.set_fact:
-    my_expected_change: true
-
-- name: "Assert success"
+- name: "Assert removed"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected change)"
     that:
-      - result.changed == my_expected_change
-  when: my_expected_change is defined
+      - result.changed == true
   vars:
     rule_state: absent
 
@@ -191,16 +181,11 @@
     state: "{{ rule_state }}"
   register: result
 
-- name: Set expected_change
-  ansible.builtin.set_fact:
-    my_expected_change: false
-
-- name: "Assert success"
+- name: "Assert idempotent absent"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected no change)"
     that:
-      - result.changed == my_expected_change
-  when: my_expected_change is defined
+      - result.changed == false
   vars:
     rule_state: absent
 
@@ -230,15 +215,231 @@
     state: "{{ rule_state }}"
   register: result
 
-- name: Set expected_change
-  ansible.builtin.set_fact:
-    my_expected_change: true
-
-- name: "Assert success"
+- name: "Assert re-added"
   ansible.builtin.assert:
-    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected_change: {{ expected_change | default('unknown') }})"
+    fail_msg: "Ensuring content view filter rule is {{ rule_state }} failed! (expected change)"
     that:
-      - result.changed == my_expected_change
-  when: my_expected_change is defined
+      - result.changed == true
   vars:
     rule_state: present
+
+
+# New test cases for name-only search (matches multiple streams)
+
+- name: "Create Content View Filter Rule by name only - should match all streams"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nextcloud"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert name-only search succeeded"
+  ansible.builtin.assert:
+    fail_msg: "Name-only modulemd filter rule creation failed"
+    that:
+      - result is success
+
+
+# Test name + stream partial search
+
+- name: "Create Content View Filter Rule by name and stream"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "389-directory-server"
+    stream: "next"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert name+stream search succeeded"
+  ansible.builtin.assert:
+    fail_msg: "Name+stream modulemd filter rule creation failed"
+    that:
+      - result is success
+
+
+# Test name + context partial search
+
+- name: "Create Content View Filter Rule by name and context"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nextcloud"
+    context: "nx4"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert name+context search succeeded"
+  ansible.builtin.assert:
+    fail_msg: "Name+context modulemd filter rule creation failed"
+    that:
+      - result is success
+
+
+# Test name + version partial search
+
+- name: "Create Content View Filter Rule by name and version"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "389-directory-server"
+    version: "820220325123957"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert name+version search succeeded"
+  ansible.builtin.assert:
+    fail_msg: "Name+version modulemd filter rule creation failed"
+    that:
+      - result is success
+
+
+# Test adding a different version to a filter that already has rules for the same module name
+
+- name: "Add a second version of the same module - should succeed alongside existing rule"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nextcloud"
+    stream: "24"
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert second version added"
+  ansible.builtin.assert:
+    fail_msg: "Adding a different version of the same module should succeed"
+    that:
+      - result is success
+
+
+# Test fail_on_missing behavior
+
+- name: "Create rule for nonexistent module - fail_on_missing false (default) - should skip silently"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nonexistent_module_xyz"
+    fail_on_missing: false
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert silently skipped"
+  ansible.builtin.assert:
+    fail_msg: "Module should have been silently skipped for nonexistent module stream"
+    that:
+      - result is success
+
+
+- name: "Create rule for nonexistent module - fail_on_missing true - should fail"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: present
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nonexistent_module_xyz"
+    fail_on_missing: true
+    state: "{{ rule_state }}"
+  register: result
+  ignore_errors: true
+
+- name: "Assert failed with message"
+  ansible.builtin.assert:
+    fail_msg: "Module should have failed for nonexistent module stream with fail_on_missing=true"
+    that:
+      - result is failed
+      - "'Could not find any module streams matching' in result.msg"
+
+
+- name: "Remove nonexistent module - state absent - should skip silently regardless of fail_on_missing"
+  vars:
+    content_view_filter_name: "Test Content View Filter - modulemd"
+    content_view_name: "Test Content View"
+    organization_name: "Test Organization"
+    rule_state: absent
+  content_view_filter_rule:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    organization: "{{ organization_name }}"
+    content_view: "{{ content_view_name }}"
+    content_view_filter: "{{ content_view_filter_name }}"
+    name: "nonexistent_module_xyz"
+    fail_on_missing: true
+    state: "{{ rule_state }}"
+  register: result
+
+- name: "Assert absent skip"
+  ansible.builtin.assert:
+    fail_msg: "Absent for nonexistent module should succeed silently"
+    that:
+      - result is success
