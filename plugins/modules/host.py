@@ -83,6 +83,15 @@ options:
       - Comment about the host.
     type: str
     required: false
+  ansible_roles:
+    description:
+      - A list of Ansible roles to assign directly to the host.
+      - Roles inherited from the host group are preserved.
+      - The C(foreman_ansible) plugin must be installed to use this parameter.
+    type: list
+    elements: str
+    required: false
+    version_added: 5.13.0
   owner:
     description:
       - Owner (user) of the host.
@@ -299,6 +308,17 @@ EXAMPLES = '''
     managed: false
     state: present
 
+- name: "Assign Ansible roles directly to a host"
+  theforeman.foreman.host:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "new_host.example.com"
+    ansible_roles:
+      - namespace.webserver
+      - namespace.monitoring
+    state: present
+
 - name: "Create a VM with 2 CPUs and 4GB RAM"
   theforeman.foreman.host:
     username: "admin"
@@ -429,6 +449,36 @@ def ensure_host_interfaces(module, entity, interfaces):
                              foreman_spec=module.foreman_spec['interfaces_attributes']['foreman_spec'])
 
 
+def ensure_ansible_roles(module, entity, old_entity, ansible_roles):
+    desired_ansible_role_ids = [item['id'] for item in ansible_roles]
+    inherited_ansible_role_ids = []
+
+    if entity.get('hostgroup_id') is not None:
+        inherited_ansible_role_ids = [
+            item['id']
+            for item in module.resource_action(
+                'hostgroups',
+                'ansible_roles',
+                {'id': entity['hostgroup_id']},
+                ignore_check_mode=True,
+                record_change=False,
+            )
+        ]
+
+    current_ansible_role_ids = [
+        item['id'] for item in module.resource_action(
+            'hosts', 'ansible_roles', {'id': entity['id']},
+            ignore_check_mode=True, record_change=False,
+        )
+    ] if old_entity else []
+
+    if set(current_ansible_role_ids) != set(desired_ansible_role_ids + inherited_ansible_role_ids):
+        module.resource_action(
+            'hosts', 'assign_ansible_roles',
+            {'id': entity['id'], 'ansible_role_ids': desired_ansible_role_ids},
+        )
+
+
 class ForemanHostModule(HostMixin, ForemanEntityAnsibleModule):
     pass
 
@@ -446,6 +496,7 @@ def main():
             ip=dict(),
             mac=dict(),
             comment=dict(),
+            ansible_roles=dict(type='entity_list', ensure=False),
             owner=dict(type='entity', resource_type='users', flat_name='owner_id'),
             owner_group=dict(type='entity', resource_type='usergroups', flat_name='owner_id'),
             owner_type=dict(invisible=True),
@@ -460,6 +511,7 @@ def main():
         required_by=dict(
             image=('compute_resource',),
         ),
+        required_plugins=[('ansible', ['ansible_roles'])],
     )
 
     # additional param validation
@@ -485,7 +537,7 @@ def main():
             module.foreman_params['owner_type'] = 'Usergroup'
 
     with module.api_connection():
-        entity = module.lookup_entity('entity', params={'show_hidden_parameters': True})
+        old_entity = module.lookup_entity('entity', params={'show_hidden_parameters': True})
 
         if not module.desired_absent:
             module.auto_lookup_entities()
@@ -520,7 +572,7 @@ def main():
 
         # We use different APIs for creating a host with interfaces
         # and updating it, so let's differentiate based on entity being present or not
-        if entity and 'interfaces_attributes' in module.foreman_params:
+        if old_entity and 'interfaces_attributes' in module.foreman_params:
             interfaces = module.foreman_params.pop('interfaces_attributes')
         else:
             interfaces = None
@@ -534,6 +586,9 @@ def main():
                 ensure_puppetclasses(module, 'host', entity, expected_puppetclasses)
             if interfaces is not None:
                 ensure_host_interfaces(module, entity, interfaces)
+            ansible_roles = module.foreman_params.get('ansible_roles')
+            if ansible_roles is not None:
+                ensure_ansible_roles(module, entity, old_entity, ansible_roles)
 
 
 if __name__ == '__main__':
