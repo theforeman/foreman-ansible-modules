@@ -126,6 +126,11 @@
           - Prod
         force_promote: true
         expected_change: false
+    - name: skip publishing an unchanged content view
+      include_tasks: tasks/content_view_version.yml
+      vars:
+        publish_only_if_needed: true
+        expected_change: false
 
 - hosts: localhost
   collections:
