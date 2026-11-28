@@ -13,9 +13,10 @@
     repositories:
       - releasever: "{{ item.1.releasever | default(omit) }}"
         basearch: "{{ item.1.basearch | default(omit) }}"
-  with_subelements:
-    - "{{ foreman_products | selectattr('repository_sets', 'defined') | list }}"
-    - repository_sets
+  loop: >-
+    {{ query('ansible.builtin.subelements',
+        foreman_products | selectattr('repository_sets', 'defined') | list,
+        'repository_sets') }}
 
 - name: 'Enable Red Hat Repository Sets'
   theforeman.foreman.repository_set:
@@ -27,9 +28,10 @@
     label: "{{ item.1 }}"
     all_repositories: true
     state: "{{ item.1.state | default(omit) }}"
-  with_subelements:
-    - "{{ foreman_products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list }}"
-    - labels
+  loop: >-
+    {{ query('ansible.builtin.subelements',
+        foreman_products | selectattr('all_repositories', 'defined') | selectattr('all_repositories', 'equalto', True) | list,
+        'labels') }}
 
 - name: 'Create Products'
   theforeman.foreman.product:
@@ -47,8 +49,7 @@
     ssl_client_key: "{{ item.ssl_client_key | default(omit) }}"
     state: "{{ item.state | default(omit) }}"
     sync_plan: "{{ item.sync_plan | default(omit) }}"
-  with_items:
-    - "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
+  loop: "{{ foreman_products | selectattr('repositories', 'defined') | map('combine', {'repositories': '[FILTERED]'}) | list }}"
 
 - name: 'Create Repositories'   # noqa: args[module]
   theforeman.foreman.repository:
@@ -92,7 +93,8 @@
     upstream_username: "{{ item.1.upstream_username | default(omit) }}"
     verify_ssl_on_sync: "{{ item.1.verify_ssl_on_sync | default(omit) }}"
     ansible_collection_requirements: "{{ item.1.ansible_collection_requirements | default(omit) }}"
-  with_subelements:
-    - "{{ foreman_products | selectattr('repositories', 'defined') | list }}"
-    - repositories
+  loop: >-
+    {{ query('ansible.builtin.subelements',
+        foreman_products | selectattr('repositories', 'defined') | list,
+        'repositories') }}
   no_log: "{{ item.1.upstream_password is defined }}"
