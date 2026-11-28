@@ -535,6 +535,35 @@ class ForemanAnsibleModule(AnsibleModule):
         _subnet_update_params_subnet = next(x for x in _subnet_update['params'] if x['name'] == 'subnet')
         _subnet_update_params_subnet['params'].append(_subnet_rex_proxies_parameter)
 
+    @_check_patch_needed(plugins=['remote_execution'])
+    def _patch_job_template_execution_timeout_api(self):
+        """
+        This is a workaround for execution_timeout_interval being accepted by Remote Execution,
+        but missing from the job template apidoc.
+        See https://github.com/theforeman/foreman-ansible-modules/issues/1368
+        """
+
+        _execution_timeout_parameter = {
+            u'validations': [],
+            u'name': u'execution_timeout_interval',
+            u'show': True,
+            u'description': u'\n<p>Timeout interval in seconds</p>\n',
+            u'required': False,
+            u'allow_nil': True,
+            u'allow_blank': False,
+            u'full_name': u'job_template[execution_timeout_interval]',
+            u'expected_type': u'numeric',
+            u'metadata': None,
+            u'validator': u'Must be a number.',
+        }
+        _job_template_methods = self.foremanapi.apidoc['docs']['resources']['job_templates']['methods']
+
+        for action in ['create', 'update']:
+            _job_template_action = next(x for x in _job_template_methods if x['name'] == action)
+            _job_template_params = next(x for x in _job_template_action['params'] if x['name'] == 'job_template')['params']
+            if next((x for x in _job_template_params if x['name'] == 'execution_timeout_interval'), None) is None:
+                _job_template_params.append(_execution_timeout_parameter)
+
     @_check_patch_needed(introduced_version='2.1.0', fixed_version='2.3.0')
     def _patch_subnet_externalipam_group_api(self):
         """
@@ -715,6 +744,7 @@ class ForemanAnsibleModule(AnsibleModule):
         self._patch_host_update()
 
         self._patch_subnet_rex_api()
+        self._patch_job_template_execution_timeout_api()
         self._patch_subnet_externalipam_group_api()
 
         # Katello
