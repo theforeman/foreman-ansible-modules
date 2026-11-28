@@ -35,6 +35,15 @@ options:
       - Description of the host collection
     required: false
     type: str
+  hosts:
+    description:
+      - Hosts assigned to the host collection.
+      - The provided list replaces the current host collection membership.
+      - An empty list removes all hosts from the host collection.
+    required: false
+    type: list
+    elements: str
+    version_added: 5.13.0
   name:
     description:
       - Name of the host collection
@@ -59,6 +68,18 @@ EXAMPLES = '''
     name: "Foo"
     description: "Foo host collection for Foo servers"
     organization: "My Cool new Organization"
+    state: present
+
+- name: "Assign hosts to Foo host collection"
+  theforeman.foreman.host_collection:
+    username: "admin"
+    password: "changeme"
+    server_url: "https://foreman.example.com"
+    name: "Foo"
+    organization: "My Cool new Organization"
+    hosts:
+      - "host1.example.com"
+      - "host2.example.com"
     state: present
 '''
 
@@ -89,6 +110,7 @@ def main():
         foreman_spec=dict(
             name=dict(required=True),
             description=dict(),
+            hosts=dict(type='entity_list', scope=['organization']),
         ),
     )
 
