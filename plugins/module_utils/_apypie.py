@@ -235,6 +235,11 @@ class Action(object):
 Apypie Api module
 """
 
+try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError:
+    pass
 
 import errno
 import glob
