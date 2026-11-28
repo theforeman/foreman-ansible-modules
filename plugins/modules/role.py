@@ -52,6 +52,10 @@ options:
         description: Filter condition for the resources
         required: false
         type: str
+      override:
+        description: Allow access to all resources if the filter matches no resources
+        required: false
+        type: bool
 extends_documentation_fragment:
   - theforeman.foreman.foreman
   - theforeman.foreman.foreman.entity_state
@@ -71,6 +75,7 @@ EXAMPLES = '''
       - permissions:
           - view_hosts
         search: "owner_type = Usergroup and owner_id = 4"
+        override: false
     server_url: "https://foreman.example.com"
     username: "admin"
     password: "changeme"
@@ -98,6 +103,7 @@ filter_foreman_spec = dict(
     id=dict(invisible=True),
     permissions=dict(type='entity_list', required=True, resolve=False),
     search=dict(),
+    override=dict(type='bool'),
 )
 
 
@@ -132,7 +138,13 @@ def main():
                 # search for an existing filter
                 for current_filter in current_filters:
                     if desired_filter.get('search') == current_filter['search']:
-                        if set(desired_filter.get('permissions', [])) == set(perm['name'] for perm in current_filter['permissions']):
+                        permissions_match = (
+                            set(desired_filter.get('permissions', [])) == set(perm['name'] for perm in current_filter['permissions'])
+                        )
+                        override_matches = (
+                            'override' not in desired_filter or desired_filter['override'] == current_filter.get('override', False)
+                        )
+                        if permissions_match and override_matches:
                             current_filters.remove(current_filter)
                             break
                 else:
