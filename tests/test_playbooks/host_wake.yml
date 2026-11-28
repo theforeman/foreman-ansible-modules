@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  vars:
+    host_name: tester.hu.lan
+  tasks:
+    - include_tasks: tasks/host_wake.yml
+      vars:
+        host_wake_name: "{{ host_name }}"
+        host_wake_state: "on"
+
+- hosts: tests
+  collections:
+    - theforeman.foreman
+  gather_facts: false
+  vars_files:
+    - vars/server.yml
+  vars:
+    host_name: tester.hu.lan
+  tasks:
+    - include_tasks: tasks/host_wake.yml
+      vars:
+        host_wake_name: "{{ host_name }}"
+        host_wake_state: "on"
+        expected_change: true
+
+    - include_tasks: tasks/host_wake.yml
+      vars:
+        host_wake_name: "{{ host_name }}"
+        host_wake_state: "on"
+        expected_change: true 

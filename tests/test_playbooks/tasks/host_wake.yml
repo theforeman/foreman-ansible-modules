@@ -1,0 +1,16 @@
+---
+- name: "Send Wake-on-LAN request to host '{{ host_wake_name }}'"
+  host_wake:
+    username: "{{ foreman_username }}"
+    password: "{{ foreman_password }}"
+    server_url: "{{ foreman_server_url }}"
+    validate_certs: "{{ foreman_validate_certs }}"
+    name: "{{ host_wake_name | default(omit) }}"
+    hostname: "{{ host_wake_hostname | default(omit) }}"
+    state: "{{ host_wake_state | default(omit) }}"
+  register: result
+- assert:
+    fail_msg: "Wake-on-LAN request failed! (expected_change: {{ expected_change | default('unknown') }})"
+    that:
+      - result.changed == expected_change
+  when: expected_change is defined 
